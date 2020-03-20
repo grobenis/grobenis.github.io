@@ -1,0 +1,1142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/03/20/hello-world/</url>
+    <content><![CDATA[<p>今天是我生平的第一个博客空间！</p>
+<p>以后把好玩的东西、学习过程都写在这里！</p>
+<p>愿世界和平！</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Kalman滤波器学习</title>
+    <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
+    <content><![CDATA[<p>概率图+时间=动态系统</p>
+<p>动态模型分为三类：</p>
+<ol>
+<li>HMM要求隐状态离散，不要求</li>
+<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
+<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
+</ol>
+<p>本节用来介绍kalman滤波器</p>
+<a id="more"></a>
+
+<h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><p>根据线性高斯系统可以得到卡尔曼滤波器。</p>
+<p>线性高斯系统时说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N\<br>z_k=C_kx_k+v_k<br>\end{cases}<br>$$<br>并假设了所有的状态和噪声均满足高斯分布。噪声服从零均值高斯分布：<br>$$<br>w_k\sim N(0,R).v_k\sim N(0,Q)<br>$$</p>
+<p>线性系统中的线性体现在以下两个方面</p>
+<ol>
+<li>$X_t=A*Z_{t-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
+<li>$Z_t=C*X_t+D+\delta,\epsilon \sim N(0,R)$</li>
+</ol>
+<p>两个条件服从高斯分布：<br>$$<br>P(X_t|X_{t-1})\sim N(A*X_{t-1}+B,Q)<br>$$</p>
+<p>$$<br>P(Z_t|X_t)\sim N(C*X_t+D,R)<br>$$</p>
+<p>可以系统的初始状态：<br>$$<br>X_1\sim N(\mu_1,\Sigma_1)<br>$$</p>
+<p>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{lr}<br>        P(X_t|X_{t-1})\sim N(A<em>X_{t-1}+B,Q)\<br>        P(Z_t|X_t)\sim N(C</em>X_t+D,R)\<br>        P(Z_1)=N(mu_1,\Sigma_1)<br>    \end{array}<br>\right.<br>\end{equation}<br>$$<br>总共的参数表如下：</p>
+<p>$$<br>\theta = (A,B,C,D,A,R,\mu_1,\Sigma_1)<br>$$</p>
+<h3 id="Filter问题求解"><a href="#Filter问题求解" class="headerlink" title="Filter问题求解"></a>Filter问题求解</h3><p>$$<br>P(X_t|z_1,z_2,…,z_t)<br>$$</p>
+<p>$$<br>P(X_t|z_1,z_2,…z_t)\propto P(z_1,z_2,…z_t,X_t)\=P(z_t|z_1,z_2,…z_{t-1},X_t)*P(z_1,z_2,…z_{t-1},X_t)\<br>=P(z_t|X_t)P(z_1,…,z_{t-1},X_t)\<br>=P(z_t|X_t)P(X_t|z_1,…,z_{t-1})P(z_1,…,z_{t-1})\<br>\propto P(z_t|X_t)P(X_t|z_1,…,z_{t-1})\<br>=\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,…,z_{t-1})dz_{t-1}\<br>=\int_{X_{t-1}}P(X_t|X_{t-1},z_1,…,z_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>\=\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>$$</p>
+<p> 算法步骤：</p>
+<ul>
+<li><p>t=1,<br>$$<br>\begin{equation}<br>\left {</p>
+<pre><code>\begin{array}{lr}
+P(X_1|z_1)\rarr update\\
+P(X_2|z_1)\rarr prediction
+\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
+</li>
+<li><p>t=2,<br>$$<br>\begin{equation}<br>\left {</p>
+<pre><code>\begin{array}{lr}
+P(X_2|z_1,z_2)\rarr update\\
+P(X_3|z_1,z_2)\rarr prediction
+\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
+</li>
+<li><p>t=T,<br>$$<br>\begin{equation}<br>\left {</p>
+<pre><code>\begin{array}{lr}
+P(X_T|z_1,z_2...z_T)\rarr update\\
+P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
+\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
+</li>
+</ul>
+<h2 id="拓展Kalman滤波器"><a href="#拓展Kalman滤波器" class="headerlink" title="拓展Kalman滤波器"></a>拓展Kalman滤波器</h2><p>核心思想：把卡尔曼滤波器的结果拓展到非线性系统中</p>
+<p>做法：在某个点附近考虑运动方程以及观测方程的一阶泰勒展开，只保留一阶项，即闲下来部分，然后按照线性系统进行推导。</p>
+<p>卡尔曼滤波器给出了在线性化之后，状态变量分布的变化过程。在线性系统和高斯噪声下，卡尔曼滤波器给出了无偏最优估计。而在SLAM 这种非线性的情况下，它给出了单次线性近似下最大后验估计（MAP）。</p>
+<h2 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h2><h2 id="EKF的应用"><a href="#EKF的应用" class="headerlink" title="EKF的应用"></a>EKF的应用</h2><p>EKF在SLAM中有着广泛的应用</p>
+<h2 id="EKF的局限性"><a href="#EKF的局限性" class="headerlink" title="EKF的局限性"></a>EKF的局限性</h2><ol>
+<li>EKF假设了马尔可夫性，即k时刻的状态只与k-1时刻相关，而与k-1之前的状态和观测都无关。但在视觉里程计中，只考虑相邻两帧的关系会累积误差。如果有回环检测的，滤波器就很难处理这种情况。</li>
+<li>与非线性优化方法相比，EKF滤波器仅在$\hat{x}_{k-1}$处做了一次线性化，然后直接根据这次线性化结果计算后验概率。。这相当于在说，我们认为该点处的线性化近似，在后验概率处仍然是有效的。而实际上，当我们离开工作点较远的时候，一阶泰勒展开并不一定能够近似整个函数，这取决于运动模型和观测模型的非线性情况。如果它们有强烈的非线性，那线性近似就只在很小范围内成立，不能认为在<br>很远的地方仍能用线性来近似。这就是EKF 的非线性误差，是它的主要问题所在。在优化问题中，尽管我们也做一阶（最速下降）或二阶（G-N 或L-M）的近似，但每迭代一次，状态估计发生改变之后，我们会重新对新的估计点做泰勒展开，而不像EKF 那样只在固定点上做一次泰勒展开。这就导致优化方法适用范围更广，则在状态变化较大时亦能适用。</li>
+<li>从程序实现上来说，EKF 需要存储状态量的均值和方差，并对它们进行维护和更新。如果把路标也放进状态的话，由于视觉SLAM 中路标数量很大，这个存储量是相当可观的，且与状态量呈平方增长（因为要存储协方差矩阵）。因此，EKF-SLAM 普遍被认为不可适用于大型场景。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Kalman滤波器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高斯混合模型</title>
+    <url>/2020/03/14/2020-03-14-GMM/</url>
+    <content><![CDATA[<p>高斯混合模型</p>
+<a id="more"></a>
+
+<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p><strong>定义</strong></p>
+<p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$<br>\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})<br>$$<br>称为第k个分模型。</p>
+<p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p>
+<h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p>
+<p>假设观测数据$y_1,y_2,…,y_N$由高斯混合模型生成，<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\theta=(\alpha_1,\alpha_2,…,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p>
+<p><strong>EM（期望最大化）算法</strong></p>
+<p>输入：观测数据$y_1,y_2,…,y_N$，高斯混合模型；</p>
+<p>输出：高斯混合模型参数。</p>
+<ol>
+<li><p>取参数的初始值开始迭代</p>
+</li>
+<li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$<br>\hat{\gamma}<em>{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K</em>{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,…N;k=1,2,..K<br>$$</p>
+</li>
+<li><p>求M步:计算新一轮的迭代的模型参数：<br>$$<br>\hat{\mu}<em>k=\cfrac{\sum^N</em>{j=1}\hat{\gamma}<em>{jk}y_j}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,..,K<br>$$</p>
+</li>
+</ol>
+<p>$$<br>\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}<em>{jk}(y_j-\mu_k)^2}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,…K<br>$$</p>
+<p>$$<br>\hat{\alpha}<em>k=\cfrac{\sum^N_j=1\hat{\gamma</em>{jk}}}{N},k=1,2,…,K<br>$$</p>
+<ol start="4">
+<li>重复第二步和第三步，直至收敛。</li>
+</ol>
+<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="..%5Cimages%5CGMM%5C20140528175313171.png" alt="20140528175313171"></p>
+<p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p>
+<ul>
+<li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li>
+<li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li>
+<li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li>
+<li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li>
+</ul>
+<p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p>
+<p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p>
+<p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,…,O_n$，可以理解成：</p>
+<ul>
+<li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li>
+<li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li>
+<li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,…,O_n$实际上就是一个混合高斯模型下的采样值。</li>
+</ul>
+<p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p>
+<p><strong>利用声学特征训练HMM</strong></p>
+<p>确定状态转移矩阵，是执行解码问题的基础。</p>
+<p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u=max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p>
+<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="..%5Cimages%5CGMM%5C20160901093401467.png" alt=""></p>
+<ul>
+<li><strong>对待识别语音做信号预处理</strong></li>
+<li><strong>对待识别语音提取声学特征</strong></li>
+<li><strong>对声学特征利用Viterbi算法解码</strong></li>
+</ul>
+<p>对声学特征解码后得到的是状态序列，即音素序列。</p>
+<p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p>
+<p><strong>其它应用</strong></p>
+<p><img src="D:%5CProject%5Cgrobenis.github.io%5Cimages%5CHMM%5CHMM_nlp.jpg" alt=""></p>
+<p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>
+]]></content>
+      <tags>
+        <tag>GMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率图模型</title>
+    <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
+    <content><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p>本节将用来介绍概率图模型。</p>
+<a id="more"></a>
+
+<h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p>
+<p><strong>分类</strong></p>
+<p>根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p>
+<p><strong>前提背景</strong></p>
+<p>利用条件独立性可以降低概率模型的计算复杂度；</p>
+<p>条件独立性要在图的结构上有所映射；</p>
+<p><strong>图的构建方法</strong></p>
+<p>拓扑排序;</p>
+<p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p>
+<p>性质：</p>
+<p>如果父节点被观测，则其子节点独立；</p>
+<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p>
+<p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p>
+<p>道德图：有向图$\rarr$无向图</p>
+<p>出发点：</p>
+<ol>
+<li>引入环</li>
+<li>简便</li>
+</ol>
+<p>因子图把因子引入图里边。</p>
+<p><img src="D:%5CProject%5Cgrobenis.github.io%5Cimages%5C%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20200315165811022"></p>
+]]></content>
+      <tags>
+        <tag>概率图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率图模型</title>
+    <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
+    <content><![CDATA[<h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p>
+<p>目的：对图片中各部分进行运动一致性判断以分离出目标和背景。</p>
+<p>下面介绍各个论文中的判断方法</p>
+<h2 id="Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment"><a href="#Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment" class="headerlink" title="Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment"></a>Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment</h2><p>该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割</p>
+<p>过程：</p>
+<ol>
+<li>进行k-means聚类</li>
+<li>计算每一个簇的残差</li>
+<li>根据计算出的残差建立非参数统计模型</li>
+</ol>
+<p>聚类的好处有两点：</p>
+<ol>
+<li>能够将非刚体场景表示基于聚类的刚体场景</li>
+<li>可有效增强密集运动的分割效果，从而支持场景流估计和避障。</li>
+</ol>
+<p>本文使用了一个残差模型。该模型基于一个假设：</p>
+<p>若图片对齐，则基于静态背景的聚类将会有一个很小的残差。</p>
+<p>光照强度残差：<br>$$<br>r^p_I(\xi）= I_k(W(x^p_{k-n},\xi^k_{k-n}))-I_{k-n}(x^p_{k-n})<br>$$<br>图像扭曲，Warp函数：<br>$$<br>W(x^p_{k-n},\xi^k_{k-n})=\pi(T^k_{k-n}\pi^{-1}(x^p_{k-n},Z_{k-n}(x^p_{k-n})))<br>$$</p>
+<p>第i个聚类的残差计算方法如下所示：<br>$$<br>\delta^{k,i}<em>{k-n}=\cfrac{\sum^{S_i-O_i}</em>{p=1}\alpha_Ir^p_I+r^P_Z/\hat Z_i}{S_i-O_i}<br>$$<br>其中，$S_i$是第i类的像素大小。$O_i$是第i类遮挡的区域大小。</p>
+<p>$\hat Z_i$是第i类的平均深度，$\alpha_I$是平衡深度和广度的权重。<br>$$<br>r_Z^P(\Chi)=Z_k(W(x^p_{k-n},\Chi^k_{k-n}))-|T^k_{k-n}|_Z<br>$$</p>
+<p><strong>非参数统计模型</strong></p>
+<p>该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动</p>
+<p>静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。</p>
+<p>对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图2是高动态场景的统计残差直方图示例。</p>
+<p><img src="D:%5CProject%5Cgrobenis.github.io%5Cimages%5C%E8%BF%90%E5%8A%A8%E4%B8%80%E8%87%B4%E6%80%A7%5C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%A8%A1%E5%9E%8B.png" alt="image-20200316123237971"></p>
+<p>在概率论和统计学中，t-分布（t-distribution）用于根据小样本来估计呈正态分布且方差未知的总体的均值。</p>
+<p>受[14，23]的启发，基于t分布的非参数统计模型构造如下：<br>$$<br>w_i = \cfrac{v_0+1}{v_0+((\delta’_i-\mu))^2}<br>$$</p>
+<p>$$<br>\delta = 1.4826 Median {|\delta’_i-\mu|}<br>$$</p>
+<p>其中，$v_0$是t分布的自由度，决定了分布曲线的陡峭程度。</p>
+<p>实验中，$v_0$被设置为10，$\mu$是样本均值，设为0；</p>
+<p>$\delta$是样本方差，即基于中位数绝对偏差的非参数统计。</p>
+<p>由于统计模型的概率表示簇的运动可能性，因此它可以指导场景运动分割，并为每个聚类提供权重以估计自我运动。</p>
+<p>聚类标签根据如下给出：<br>$$<br>\Beta_i=\left{<br>\begin{array}{l}<br>1,&amp;\delta’_i\leq1/(\min(10,\max(3.\alpha_Bv_c\delta)))<br>\0,&amp;\delta’_i\geq1/(\min(10,\max(3,\alpha_Bv_c\delta)))<br>\end{array}<br>\right.<br>$$<br>Bi表示第i个簇的聚类标签。1表示该类属于静态背景。</p>
+<p>0表示该类属于动态部分。$\alpha_B$是一个用来调节独立变量和残差的维度协方差，计算方法为：<br>$$<br>\alpha_B=10^3\times\min(10^3,10^{N_d})<br>$$<br>$N_d$是标记为移动部分的聚类数。</p>
+<p>聚类权重参考聚类的残差来给出，如下所示：<br>$$<br>w_i^p=\left{<br>\begin{array}{}<br> w_i, &amp;Meadian(\delta’_i)&gt;0.02\or N_d&gt;5\<br>1-\delta’_i,&amp;Others<br>\end{array}<br>\right.<br>$$<br>其中，$w_i$是第i类的权重。Median($\delta’_i$)是聚类残差的中位数。</p>
+<p>最后将运动标记和权重模型添加到稠密视觉里程计的能量优化函数中。优化函数是根据Kerl的工作[9]基于深度和强度构建的，具有很高的稳定性，而Jaimez的工作[15]的方法表明优化过程可以在Cauchy M估计器中获得良好的结果。自运动通过以下等式估算：<br>$$<br>\Chi = \arg \min_{\Chi}{\sum^M_{m=1}\Beta_i[F(w^P_i)r^P_Z(\Chi)+F(\alpha_I)w^p_ir^p_I(\Chi)]<br>$$</p>
+<p>$$<br>F(r)=\cfrac{c^2}{2}\log(1+(\cfrac{r}{c})^2)<br>$$</p>
+<p>此外，基于能量函数的视觉里程计方法只有在运动较小时才能收敛到真实值，而较大的运动通常会将收敛收敛到局部最小值。因此，我们使用金字塔模型来解决此优化问题，以获得更准确的自我运动估计。</p>
+<h2 id="Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry"><a href="#Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry" class="headerlink" title="Dection and Resolution of Motion Conflict Inertial Odometry"></a>Dection and Resolution of Motion Conflict Inertial Odometry</h2><p>判断路标点间一致性的策略：</p>
+<ol>
+<li><p>基于IMU判断的运动对每一个特征点计算重投影残差<br>$$<br>\delta_{l_j}=\sum_{i\in S}(z_ij-h(\hat X^I_j,l_j))<br>$$</p>
+</li>
+<li><p>计算当前帧中特征点的残差不一致点的个数，如果不一致点的个数超过了一定比例，则判断发生了运动冲突。<br>$$<br>Mr:=\cfrac{landmarks<del>wihtout</del>confilt}{landmarks}<br>$$</p>
+</li>
+<li><p>另一方面，分别根据基于IMU和视觉的运动计算重投影误差，再计算二者的分歧度，再根据分歧度计算当前帧是否发生了冲突。<br>$$<br>\delta_{MC}=||{\hat p_k^V-\hat p_k^I}||_{\sum}<br>$$</p>
+</li>
+</ol>
+<h2 id="On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions"><a href="#On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions" class="headerlink" title="On Exploting Per-Pixel Conflict to Extract Secondary Motions"></a>On Exploting Per-Pixel Conflict to Extract Secondary Motions</h2><p>基于DNN训练一个概率图，提取出概率图（Mask）</p>
+<p>然后基于该概率图分别计算主要运动和次要运动。</p>
+<h2 id="A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes"><a href="#A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes" class="headerlink" title="A Compatible Framework for RGB-D in Dynamic Scenes"></a>A Compatible Framework for RGB-D in Dynamic Scenes</h2><ol>
+<li><p>首先利用CNN提取出图像中潜在的动态区域</p>
+</li>
+<li><p><strong>运动检测方法</strong></p>
+<p>​    本文采用基于光学流的方法来检查潜在动态区域和背景区域的一致性。光学流算法[30]在该领域已被广泛研究，该算法在运动检测中表现出色。该算法的总体思想是在两个图像的时空一致性假设下，从两个连续的图像中确定点的对应关系。提出了两种针对光流问题的解决方法，分别称为稀疏法和稠密法。稠密解决方案逐像素计算图像中的光学流值。但稀疏解决方案仅在这些兴趣点上计算流量矢量。可以通过以下公式获得一个像素的光学流值：<br>$$<br>\tau(\Chi,u)=\sum_{\Chi_i\in S}[I_{l-1}(X_i)-I_l(X_i+u(X_i))]^2<br>$$<br>​    对于每一个2D再集合$S\subset R^2$的点$X_i$，$I_{l-1}(X_i)$是第l-1帧的$X_i$的雄塑强度。$I_l(X_i+u(X_I))$表示相应的第l帧中的光照强度。</p>
+<p>$u(X_i)$是第l-1和第l帧的相应点的变化，该项根据局部窗口中基于重心$X_i$的变化而来，是使函数达到最小的变量。</p>
+<p>为了减少上面所说的损失函数，$X_i$点的光流向量$(\frac{u_x(X_i)}{dt},\frac{u_y(X_i)}{dt})$。$\frac{u_x(X_i)}{dt}$是其沿x轴的时间随时间变化的导数，$\frac{u_y(X_i)}{dt}$是其沿y轴方向变化的倒数。沿y轴的时间。利用广泛使用的Lucas-Kanade光流法用于跟踪潜在动态对象内部和外部的稀疏点。</p>
+<p>对于光学流向量$p =（u，v）$，其方向$\Phi$和大小$ρ$表示如下：<br>$$<br>\phi=\left{<br>\begin{array}{}<br>atan2(\frac{v}{u})<em>180/\pi,&amp;if~atan2(\frac{v}{u})&gt;0\<br>(360+atan2(\frac{v}{u}))</em>180/\pi,&amp;otherwise<br>\end{array}<br>\right.<br>$$</p>
+<p>$$<br>\rho = \sqrt2{u^2+v^2}<br>$$</p>
+<p>然后，类似于[15]，将为潜在的动态区域和背景区域构建标准化的直方图，其中每个单元格的范围将由如下所示的公式确定：<br>$$<br>2\pi<em>\frac{r-1}{R}&lt;\psi&lt;2\pi</em>{\frac{r}{R}}<br>$$<br>其中，$\R$是bins的数目，r是从左到右的系列字母。所有的流向量将根据它们与水平轴的夹角划分为每个容器。此外，所有流向量将分配给不同的簇。每个bin的高度将如下计算：<br>$$<br>H=\frac{\sum_{\xi\in bin}\rho_\xi}{\sum_{\mu\in area}\rho_\mu}<br>$$</p>
+</li>
+</ol>
+<p>   其中$ρ_ξ$表示一个箱中流量矢量的大小，而$ρ_\mu$是势能动态区域或背景区域中流量矢量的大小。</p>
+]]></content>
+      <tags>
+        <tag>概率图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>粒子滤波器</title>
+    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>粒子滤波器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DBoW2库学习</title>
+    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
+<a id="more"></a>
+
+<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
+<table>
+<thead>
+<tr>
+<th align="center">算法结果事实</th>
+<th align="center">是回环</th>
+<th align="center">不是回环</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是回环</td>
+<td align="center">真阳性</td>
+<td align="center">假阳性</td>
+</tr>
+<tr>
+<td align="center">不是回环</td>
+<td align="center">假阴性</td>
+<td align="center">真阴性</td>
+</tr>
+</tbody></table>
+<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
+<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
+<p>准确率描述了检测到的回环中真回环的个数。</p>
+<p>Recall描述了真回环中有多少个被检测出来了。</p>
+<p>根据准确率和召回率可以得到ROC曲线.</p>
+<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
+<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2>]]></content>
+      <tags>
+        <tag>DBoW2</tag>
+        <tag>回环检测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VINS-Fusion代码阅读</title>
+    <url>/2020/03/10/2020-03-10-Read-VINS-Fusion/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<h2 id="Loop-Fusion"><a href="#Loop-Fusion" class="headerlink" title="Loop Fusion"></a>Loop Fusion</h2><p>Loop Fusion结点包括：</p>
+<h2 id="VINS-estimator"><a href="#VINS-estimator" class="headerlink" title="VINS_estimator"></a>VINS_estimator</h2><p>VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。</p>
+<h3 id="rosNodeTest-cpp"><a href="#rosNodeTest-cpp" class="headerlink" title="rosNodeTest.cpp"></a>rosNodeTest.cpp</h3><p>rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。</p>
+<p>主程序包含以下流程：</p>
+<ol>
+<li><p>读取配置文件参数 readParameter()</p>
+</li>
+<li><p>订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理</p>
+</li>
+<li><p>开启一个新线程sync_process。</p>
+<p>该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。</p>
+</li>
+</ol>
+<h3 id="estimator"><a href="#estimator" class="headerlink" title="estimator"></a>estimator</h3><p>VIO系统的整个程序从Estimator estimator开启。</p>
+<p>estimator类的定义由estimator.h和estimator.cpp两个文件完成。</p>
+<p>包含以下重要的自定义成员：</p>
+<table>
+<thead>
+<tr>
+<th align="center">成员</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Feature_Tracker featureTracker</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">FeatureManager f_manager</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>estimator类中包含两类成员函数：</p>
+<ol>
+<li><p>接口函数</p>
+<p>包括以下8个函数：</p>
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">initFirstPose()</td>
+<td align="left">初始化初始位姿</td>
+</tr>
+<tr>
+<td align="center">inputIMU()</td>
+<td align="left">输入IMU数据</td>
+</tr>
+<tr>
+<td align="center">inputImage()</td>
+<td align="left">输入图片数据</td>
+</tr>
+<tr>
+<td align="center">inputFeature()</td>
+<td align="left">输入特征</td>
+</tr>
+<tr>
+<td align="center">ProcessIMU()</td>
+<td align="left">处理IMU数据，对IMU进行预积分；</td>
+</tr>
+<tr>
+<td align="center">ProcessImage()</td>
+<td align="left">处理相机数据；<br />1. 基于特征点的视差来判断当前帧是否属于关键帧；<br />2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃；<br />3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。<br />4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃，比如非线性求解器中的解有大跳动，求解出相机IMU的外参矩阵或IMU偏移等等，系统挂掉就清空状态，重新初始化。</td>
+</tr>
+<tr>
+<td align="center">ProcessMeasurements()</td>
+<td align="left">处理测量值；处理各buffer里的数据，当featureBuf不等于空时，开始进行以下处理（为什么是featureBuf，因为当有图像buffer数据的时候，才会有featuretracker.push(make_pair(t,featureFrame))，即有图像数据后，程序才发给跟踪器叫他产生feature，因此当featureBuf不等于空，所有的buffer，包括imu,图像，都不为空）：</td>
+</tr>
+<tr>
+<td align="center">changeSensrType</td>
+<td align="left">改变传感器类型，用于确定是否使用IMU，使用单目相机还是双目相机</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<ol start="2">
+<li>内部函数</li>
+</ol>
+<p>类的初始化函数Estimator()，由于Estimator类成员内部有两个比较重要的自定义类成员：<br>（1）Feature_Tracker featuretracker;（以前vins-mono这部分是作为一个独立的Node存在）:<br>用来对原始图像进行畸变校正，特征点采集，光流跟踪<br>（2）FeatureManager f_manager;<br>用来对滑动窗口内所有特征点的管理。<br>简单设置了一些参数后，系统进入main()。</p>
+<p>接着main()与Estimator estimator两者开始发生联系：<br>main()中estimator.setParameter()开启了滑动窗口估计的一个新线程<br>由于我们在配置文件中 多线程MULTIPLE_THREAD设置为1，因此当setParameter()时候，就开启了一个Estimator类内的新线程：processMeasurements();</p>
+<p>pub VIO的各种话题，包括里程计信息，tf变换，相机姿态，点云信息，并且发布关键帧。</p>
+]]></content>
+      <tags>
+        <tag>VINS</tag>
+        <tag>代码阅读</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>经典聚类算法调研</title>
+    <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
+    <content><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续的研究。经典的聚类算法主要包括以下六种：</p>
+<ol>
+<li>Means-shift聚类</li>
+<li>k-means聚类</li>
+<li>Fuzzy C means聚类</li>
+<li>Medoid shift算法</li>
+<li>Turbopixel算法</li>
+<li>SLIC算法</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p>
+<p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组/类的中心点。</p>
+<p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p>
+<p><strong>算法步骤</strong></p>
+<ol>
+<li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p>
+</li>
+<li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p>
+</li>
+<li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p>
+</li>
+<li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p>
+<p>下图演示了均值漂移聚类的计算步骤：</p>
+<p><img src="..%5Cimages%5C%E8%81%9A%E7%B1%BB%5CMeanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法"></p>
+</li>
+</ol>
+<p><strong>算法评价</strong></p>
+<p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p>
+<p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小/半径</p>
+<h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p>
+<p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p>
+<p><strong>算法步骤</strong></p>
+<ol>
+<li>选择一些类/组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li>
+<li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li>
+<li>计算每一类中中心点作为新的中心点。</li>
+<li>重复以上步骤，直至聚类中心变化在一定范围内为止</li>
+</ol>
+<p><strong>算法评价</strong></p>
+<p>优点：简单快速高效；对异常值不太敏感</p>
+<p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p>
+<p>下图演示了k均值聚类的过程：</p>
+<p><img src="..%5Cimages%5C%E8%81%9A%E7%B1%BB%5Ck%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" alt=""></p>
+<h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p>
+<p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p>
+<p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$<br>J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞<br>$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p>
+<p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p>
+<p><strong>算法思路</strong></p>
+<p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p>
+<p><strong>算法步骤</strong></p>
+<ol>
+<li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p>
+</li>
+<li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p>
+</li>
+<li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p>
+</li>
+</ol>
+<p><strong>算法评价</strong></p>
+<p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p>
+<p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p>
+<h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p>
+<p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p>
+<p><strong>算法步骤</strong></p>
+<p><strong>算法评价</strong></p>
+<p>优点：比Mean shift更高效</p>
+<p>缺点：不能控制图像块数量和大小</p>
+<h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p>
+<p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p>
+<p>①每个图像块尺寸大小尽可能均匀：</p>
+<p>②各个图像块之间紧凑连接且保持连通</p>
+<p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p>
+<p><strong>算法步骤</strong></p>
+<ol>
+<li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p>
+</li>
+<li><p>对图像中的像素点进行标记</p>
+</li>
+<li><p>初始化水平集函数。</p>
+</li>
+<li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p>
+</li>
+</ol>
+<p>⑤返回边界。</p>
+<p><strong>算法评价</strong></p>
+<p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p>
+<h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p>
+<p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p>
+<p>像素相似性与向量距离成反比。</p>
+<p><strong>算法步骤</strong></p>
+<p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p>
+<p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p>
+<p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p>
+<p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p>
+<p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p>
+<p><strong>算法评价</strong></p>
+<p>优点：</p>
+<p>1.聚类结果紧凑整齐且邻域特征明显。</p>
+<p>2.可处理彩色图和灰度图</p>
+<p>3.只需一个超参数。</p>
+<p>4.运行速度较快。</p>
+<p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>
+]]></content>
+      <tags>
+        <tag>聚类</tag>
+        <tag>图像分割</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>隐马尔可夫模型</title>
+    <url>/2020/03/10/2020-03-13-HMM_model/</url>
+    <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
+<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
+<p>来源：李航的《统计学习方法》</p>
+<a id="more"></a>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>机器学习中的步骤优化：</p>
+<ol>
+<li>确定模型</li>
+<li>确定策略 即准则（损失函数）</li>
+<li>算法：GN</li>
+</ol>
+<h3 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h3><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）;</p>
+<p>概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）；</p>
+<p>概率图模型+时间序列=动态模型；</p>
+<p>动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器；</p>
+<ol>
+<li>HMM：系统状态离散</li>
+<li>Kalman滤波器：系统状态连续且线性分布</li>
+<li>Particle滤波器：系统状态连续且非线性分布</li>
+</ol>
+<h3 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h3><p>​        隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下：</p>
+<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q = {q_1,q_2,…,q_N},V={v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
+<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I={i_1,i_2,…,i_N},O={v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A=[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
+<p>B是观测概率矩阵：<br>$$<br>B=[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)=P(o_t=v_k|i_t=q_j)，i=1,2,…N;j=1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
+<p>$\pi$是初始状态概率向量：<br>$$<br>\pi=(\pi_i)<br>$$<br>其中，<br>$$<br>\pi=P(i_1=q_i),i=1,2,…N<br>$$<br>是时刻t=1处于状态$t=1$处于状态$q_i$的概率。</p>
+<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda=(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
+<p>​    状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列</p>
+<h3 id="两个基本假设"><a href="#两个基本假设" class="headerlink" title="两个基本假设"></a>两个基本假设</h3><ol>
+<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)=P(i_t|i_t-1),t=1,2,…,T<br>$$</p>
+</li>
+<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)=P(o_t|i_t)<br>$$</p>
+</li>
+</ol>
+<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O=(o_1,o_2,…o_T)$的生成过程描述如下：</p>
+<p>算法：观测序列的生成</p>
+<p>输入：隐马尔可夫模型$\lambda=(A,B,\pi)$,观测序列长度；</p>
+<p>输出：观测序列$O=(o_1,o_2,…,o_T)$</p>
+<ol>
+<li>按照初始状态分布$\pi$产生状态$i_1$</li>
+<li>令t=1</li>
+<li>按照状态$i_t$的观测概率分布$b_{i_t(k)}$生成$o_t$</li>
+<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}=1,2,…N$ </li>
+<li>令t=t+1,如果t&lt;T，转步（3），否则，终止</li>
+</ol>
+<h2 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h2><p>隐马尔可夫模型有三个<strong>基本问题</strong>：</p>
+<ol>
+<li><strong>概率计算问题</strong>。给的模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
+<li><strong>学习问题</strong>。阈值观测序列$O=(o_1,o_2,…,o_T)$，估计模型参数$\lambda=(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
+<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I=(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
+</ol>
+<p>本节将介绍HMM模型的概率计算算法、学习算法以及预测算法</p>
+<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
+<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I=(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O=(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
+<p>状态序列$I=(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)=\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I=(i_1,i_2,…i_T)$,观测序列$O=(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)=b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)=P(O|I,\lambda)P(I,\lambda)=\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)=\sum_IP(O|I,\lambda)P(I|\lambda)=\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
+<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O=(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)=P(o_1,o_2,…,o_t,i_t=q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
+<p>输入：隐马尔可夫模型$\lambda$，观测序列O;</p>
+<p>输出：观测序列概率$P(O|\lambda)$</p>
+<ol>
+<li><p>初值<br>$$<br>\alpha_1(i)=\pi_ib_i(o_1),i=1,2,…N<br>$$</p>
+</li>
+<li><p>递推 对 $t=1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)=[\sum^N_{j=1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i=1,2,…N<br>$$</p>
+</li>
+<li><p>终止<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$</p>
+</li>
+</ol>
+<p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
+<p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
+<p><img src="..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
+<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
+<p><strong>算法步骤</strong></p>
+<p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
+<p><strong>输出</strong>：观测序列$P(O|\lambda)$;</p>
+<ol>
+<li><p>$\beta_T(i)=1,i=1,2,…N$</p>
+</li>
+<li><p>对$t=T-1,T-2,…1$<br>$$<br>\beta_t(i)=\sum^N_{j=1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i=1,2,…,N<br>$$</p>
+</li>
+</ol>
+<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
+<p><img src="..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
+<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
+<p>HMM的主要应用是解码</p>
+<p>两种解码方法：</p>
+<ol>
+<li>Viterbi算法解码</li>
+<li>前向后向算法+贝叶斯后验概率</li>
+</ol>
+<h3 id="语音识别"><a href="#语音识别" class="headerlink" title="语音识别"></a>语音识别</h3><h3 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h3><h3 id="词性标注"><a href="#词性标注" class="headerlink" title="词性标注"></a>词性标注</h3><p>词性是隐藏状态，词出现时观察序列。</p>
+<p>首先我们要知道模型的参数，如果又标注数据，直接用比例代替概率，如果没有用前向后向算法求除</p>
+<p>知道模型参数吧，使用Viterbi算法来计算某个标注序列（隐含状态）的概率</p>
+<h3 id="实际建模过程"><a href="#实际建模过程" class="headerlink" title="实际建模过程"></a>实际建模过程</h3><ul>
+<li>根据实际问题确定状态个数及观察序列</li>
+<li>用若干已知序列，采用B-W算法估计参数（转移概率和输出概率的值）</li>
+<li>输入位置序列用Viterbi算法或者贝叶斯概率解码</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>HMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
+    <content><![CDATA[<p>本文主要讲如何利用ROS框架下的工具标定USB相机</p>
+<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
+<li>驱动USB摄像头</li>
+<li>利用camera_calibration标定相机</li>
+</ol>
+<a id="more"></a>
+
+<p>执行命令为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
+</li>
+<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>ROS</tag>
+        <tag>相机标定</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用Kalibr标定双目相机与IMU</title>
+    <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
+    <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定</p>
+<h2 id="1-生成标定板"><a href="#1-生成标定板" class="headerlink" title="1. 生成标定板"></a>1. 生成标定板</h2><p>使用AprilTag</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun kalibr kalibr_create_target_pdf --type apriltag --nx 6 --ny 6 --tsize 0.002 --tspace 0.3</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="2-标定双目相机"><a href="#2-标定双目相机" class="headerlink" title="2. 标定双目相机"></a>2. 标定双目相机</h2><p>降低帧率</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun topic_tools throttle messages &#x2F;l_cam&#x2F;image_raw 4 &#x2F;left</span><br><span class="line">rosrun topic_tools throttle messages &#x2F;r_cam&#x2F;image_raw 4 &#x2F;right</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">advertised as &#x2F;left &#x2F;&#x2F;出现时说明将帧成功</span><br></pre></td></tr></table></figure>
+
+<p>录制bag包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosbag record &#x2F;left &#x2F;right &gt;mycamera.bag</span><br></pre></td></tr></table></figure>
+
+<h3 id="遇到的错误"><a href="#遇到的错误" class="headerlink" title="遇到的错误"></a>遇到的错误</h3><h4 id="ImportError-cannot-import-name-NavigationToolbar2Wx"><a href="#ImportError-cannot-import-name-NavigationToolbar2Wx" class="headerlink" title="ImportError: cannot import name NavigationToolbar2Wx"></a>ImportError: cannot import name NavigationToolbar2Wx</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;home&#x2F;cjn&#x2F;kalibr&#x2F;src&#x2F;kalibr&#x2F;Schweizer-Messer&#x2F;sm_python&#x2F;python&#x2F;sm&#x2F;PlotCollection.py</span><br><span class="line">解决：将 PlotCollection.py 中的NavigationToolbar2Wx 改为 NavigationToolbar2WxAgg</span><br></pre></td></tr></table></figure>
+
+<h4 id="ImportError-No-module-named-igraph"><a href="#ImportError-No-module-named-igraph" class="headerlink" title="ImportError: No module named igraph"></a>ImportError: No module named igraph</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python2.7-igraph</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="kalibr标定时出现：ImportError-No-module-named-Image"><a href="#kalibr标定时出现：ImportError-No-module-named-Image" class="headerlink" title="kalibr标定时出现：ImportError: No module named Image."></a>kalibr标定时出现：ImportError: No module named Image.</h4><p>解决方法： 在kalibr_workspace/aslam_offline_calibration/kalibr/python/kalibr_camera_calibration/MulticamGraph.py中<br>将import Image改为from PIL import Image</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun kalibr kalibr_calibrate_cameras --bag &#39;&#x2F;home&#x2F;guoben&#x2F;stereocam.bag&#39; --topics &#x2F;left &#x2F;right --models pinhole-radtan pinhole-radtan --target &#39;&#x2F;home&#x2F;guoben&#x2F;Project&#x2F;Kalibr_ws&#x2F;april_6x6_80x80cm.yaml&#39; --show-extraction --approx-sync 0.1</span><br></pre></td></tr></table></figure>
+
+<p>注意事项：</p>
+<ul>
+<li>标定的时候图中不能存在两个标定板</li>
+<li>起始画面和终止画面要稳定</li>
+</ul>
+<h2 id="3-标定IMU"><a href="#3-标定IMU" class="headerlink" title="3. 标定IMU"></a>3. 标定IMU</h2><p>参考：<a href="https://blog.csdn.net/learning_tortosie/article/details/89878769" target="_blank" rel="noopener">IMU噪声标定——加速度计和陀螺仪的白噪声和零偏不稳定性</a></p>
+<p>//录制bag文件</p>
+<ol>
+<li>collect the data while the IMU is Stationary, with a two hours duration;</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosbag	record &#x2F;imu0</span><br></pre></td></tr></table></figure>
+
+<p>有Code_utils和imu_utils两个包 先编译code_utils再编译imu_tils</p>
+<p>得到的imu.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">type:</span> <span class="string">IMU</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">ICM20602</span></span><br><span class="line"><span class="attr">Gyr:</span></span><br><span class="line">   <span class="attr">unit:</span> <span class="string">" rad/s"</span></span><br><span class="line">   <span class="attr">avg-axis:</span></span><br><span class="line">      <span class="attr">gyr_n:</span> <span class="number">1.4127871720120859e+02</span></span><br><span class="line">      <span class="attr">gyr_w:</span> <span class="number">4.8477797168896648e-03</span></span><br><span class="line">   <span class="attr">x-axis:</span></span><br><span class="line">      <span class="attr">gyr_n:</span> <span class="number">3.9615886574940606e+02</span></span><br><span class="line">      <span class="attr">gyr_w:</span> <span class="number">4.8477797168896648e-03</span></span><br><span class="line">   <span class="attr">y-axis:</span></span><br><span class="line">      <span class="attr">gyr_n:</span> <span class="number">1.5284722859858114e+01</span></span><br><span class="line">      <span class="attr">gyr_w:</span> <span class="number">4.8477797168896648e-03</span></span><br><span class="line">   <span class="attr">z-axis:</span></span><br><span class="line">      <span class="attr">gyr_n:</span> <span class="number">1.2392562994361640e+01</span></span><br><span class="line">      <span class="attr">gyr_w:</span> <span class="number">4.8477797168896648e-03</span></span><br><span class="line"><span class="attr">Acc:</span></span><br><span class="line">   <span class="attr">unit:</span> <span class="string">" m/s^2"</span></span><br><span class="line">   <span class="attr">avg-axis:</span></span><br><span class="line">      <span class="attr">acc_n:</span> <span class="number">3.8264508828802807e-01</span></span><br><span class="line">      <span class="attr">acc_w:</span> <span class="number">1.0613073078261251e-02</span></span><br><span class="line">   <span class="attr">x-axis:</span></span><br><span class="line">      <span class="attr">acc_n:</span> <span class="number">3.6962189636668691e-01</span></span><br><span class="line">      <span class="attr">acc_w:</span> <span class="number">1.0916554449621266e-02</span></span><br><span class="line">   <span class="attr">y-axis:</span></span><br><span class="line">      <span class="attr">acc_n:</span> <span class="number">4.6707198750779616e-01</span></span><br><span class="line">      <span class="attr">acc_w:</span> <span class="number">1.0721472803944067e-02</span></span><br><span class="line">   <span class="attr">z-axis:</span></span><br><span class="line">      <span class="attr">acc_n:</span> <span class="number">3.1124138098960102e-01</span></span><br><span class="line">      <span class="attr">acc_w:</span> <span class="number">1.0201191981218414e-02</span></span><br></pre></td></tr></table></figure>
+
+<p>修改为如下样式：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">rostopic:</span> <span class="string">/imu0</span></span><br><span class="line"><span class="attr">update_rate:</span> <span class="number">100.0</span> <span class="comment">#Hz</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">accelerometer_noise_density:</span> <span class="number">3.8264508828802807e-01</span> <span class="comment">#continous</span></span><br><span class="line"><span class="attr">accelerometer_random_walk:</span> <span class="number">1.0613073078261251e-02</span> </span><br><span class="line"><span class="attr">gyroscope_noise_density:</span> <span class="number">1.4127871720120859e+02</span> <span class="comment">#continous</span></span><br><span class="line"><span class="attr">gyroscope_random_walk:</span> <span class="number">4.8477797168896648e-03</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-录制数据包"><a href="#4-录制数据包" class="headerlink" title="4. 录制数据包"></a>4. 录制数据包</h2><p>沿着3个轴旋转平移三次</p>
+<h2 id="5-联合标定"><a href="#5-联合标定" class="headerlink" title="5. 联合标定"></a>5. 联合标定</h2><p>准备好四个文件</p>
+<ol>
+<li>标定半文件</li>
+<li>相机参数文件</li>
+<li>imu参数文件</li>
+<li>数据bag文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun kalibr kalibr_calibrate_imu_camera --target april_6x6_80x80cm.yaml --cam stereocam.yaml --imu ICM20602.yaml --bag camera_imu.bag --timeoffset-padding 0.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-标定结果"><a href="#6-标定结果" class="headerlink" title="6. 标定结果"></a>6. 标定结果</h2><p>得到结果为camchain.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cam0:</span></span><br><span class="line">  <span class="attr">T_cam_imu:</span> <span class="comment"># 从IMU到相机坐标的转换</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.08233179976406399,</span> <span class="number">-0.9949127683235393</span><span class="string">,</span> <span class="number">-0.05805220214946505</span><span class="string">,</span> <span class="number">-0.008744023342066004</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[-0.9959106050536686,</span> <span class="number">-0.08430878258416843</span><span class="string">,</span> <span class="number">0.032466843406961834</span><span class="string">,</span> <span class="number">0.07000917129335886</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[-0.03719598754229868,</span> <span class="number">0.055141750117018384</span><span class="string">,</span> <span class="number">-0.9977854708827878</span><span class="string">,</span> <span class="number">-0.11902680705823296</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.0,</span> <span class="number">0.0</span><span class="string">,</span> <span class="number">0.0</span><span class="string">,</span> <span class="number">1.0</span><span class="string">]</span></span><br><span class="line">  <span class="attr">cam_overlaps:</span> <span class="string">[1]</span></span><br><span class="line">  <span class="attr">camera_model:</span> <span class="string">pinhole</span></span><br><span class="line">  <span class="attr">distortion_coeffs:</span> <span class="string">[-0.4274960254764774,</span> <span class="number">0.1522753401860188</span><span class="string">,</span> <span class="number">0.022086313718892994</span><span class="string">,</span></span><br><span class="line">    <span class="number">-0.0007250205609533983</span><span class="string">]</span> <span class="comment">#失真模型的参数向量</span></span><br><span class="line">  <span class="attr">distortion_model:</span> <span class="string">radtan</span> </span><br><span class="line">  <span class="attr">intrinsics:</span> <span class="string">[576.2948258096362,</span> <span class="number">570.5120047531799</span><span class="string">,</span> <span class="number">290.9276492936449</span><span class="string">,</span> <span class="number">165.99488000803987</span><span class="string">]</span> <span class="comment">#相机内参 之前标好的</span></span><br><span class="line">  <span class="attr">resolution:</span> <span class="string">[640,</span> <span class="number">480</span><span class="string">]</span> <span class="comment">#分辨率</span></span><br><span class="line">  <span class="attr">rostopic:</span> <span class="string">/l_cam/image_raw</span> <span class="comment">#话题</span></span><br><span class="line">  <span class="attr">timeshift_cam_imu:</span> <span class="number">-0.04319840825131607</span> <span class="comment">#漂移</span></span><br><span class="line"><span class="attr">cam1:</span> </span><br><span class="line">  <span class="attr">T_cam_imu:</span> <span class="comment"># 从IMU到相机坐标的转换</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.0894795247331801,</span> <span class="number">-0.9911722483784674</span><span class="string">,</span> <span class="number">0.0978314300104943</span><span class="string">,</span> <span class="number">-0.06676213145949367</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[-0.995095690056223,</span> <span class="number">-0.08480851440432002</span><span class="string">,</span> <span class="number">0.05091250844401363</span><span class="string">,</span> <span class="number">0.06960856622513922</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[-0.04216612722380045,</span> <span class="number">-0.10190726141402426</span><span class="string">,</span> <span class="number">-0.9938998580269747</span><span class="string">,</span> <span class="number">-0.12389393733183268</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.0,</span> <span class="number">0.0</span><span class="string">,</span> <span class="number">0.0</span><span class="string">,</span> <span class="number">1.0</span><span class="string">]</span></span><br><span class="line">  <span class="attr">T_cn_cnm1:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.9878176058814627,</span> <span class="number">-0.002372804306504643</span><span class="string">,</span> <span class="number">-0.1555980311904324</span><span class="string">,</span> <span class="number">-0.07647885002996721</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[-0.000506528488511444,</span> <span class="number">0.9998294218114983</span><span class="string">,</span> <span class="number">-0.01846268422998622</span><span class="string">,</span> <span class="number">-0.0025906464811484946</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.155615297896788,</span> <span class="number">0.018316579369764666</span><span class="string">,</span> <span class="number">0.9876479038507021</span><span class="string">,</span> <span class="number">-0.0062589855841411746</span><span class="string">]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">[0.0,</span> <span class="number">0.0</span><span class="string">,</span> <span class="number">0.0</span><span class="string">,</span> <span class="number">1.0</span><span class="string">]</span></span><br><span class="line">  <span class="attr">cam_overlaps:</span> <span class="string">[0]</span></span><br><span class="line">  <span class="attr">camera_model:</span> <span class="string">pinhole</span></span><br><span class="line">  <span class="attr">distortion_coeffs:</span> <span class="string">[-0.4358292770104687,</span> <span class="number">0.13856343257725542</span><span class="string">,</span> <span class="number">0.01867787729653694</span><span class="string">,</span></span><br><span class="line">    <span class="number">-0.011189753016360725</span><span class="string">]</span></span><br><span class="line">  <span class="attr">distortion_model:</span> <span class="string">radtan</span></span><br><span class="line">  <span class="attr">intrinsics:</span> <span class="string">[572.0873971077864,</span> <span class="number">571.5888157262697</span><span class="string">,</span> <span class="number">349.04660762135626</span><span class="string">,</span> <span class="number">174.35778659111406</span><span class="string">]</span></span><br><span class="line">  <span class="attr">resolution:</span> <span class="string">[640,</span> <span class="number">480</span><span class="string">]</span></span><br><span class="line">  <span class="attr">rostopic:</span> <span class="string">/r_cam/image_raw</span></span><br><span class="line">  <span class="attr">timeshift_cam_imu:</span> <span class="number">-0.002440062477866302</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <tags>
+        <tag>ROS</tag>
+        <tag>IMU</tag>
+        <tag>Kalibr</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu1604连接蓝牙鼠标</title>
+    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
+
+<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>发布IMU信息到ROS系统中</title>
+    <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
+    <content><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p>
+<a id="more"></a>
+
+<h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-Imu-msg"><a href="#sensor-msgs-Imu-msg" class="headerlink" title="sensor_msgs/Imu.msg"></a>sensor_msgs/Imu.msg</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
+
+<p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs/Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs/Vector3）。</p>
+<h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol>
+<li><p>WiringPi未安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 .&#x2F;build</span><br><span class="line">sudo .&#x2F;build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>I2C device</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建ros包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
+
+<p>然后修改XML和CMakeLists.txt</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>ROS</tag>
+        <tag>IMU</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VIO主流框架</title>
+    <url>/2020/02/15/2020-02-15-VIO_Framework/</url>
+    <content><![CDATA[<p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297" target="_blank" rel="noopener">B站</a>。</p>
+<a id="more"></a>
+
+<h2 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h2><p>误差项:<br>$$<br>e(x+\Delta x)=e(x)+J(x)\Delta x<br>$$</p>
+<ol>
+<li>一次观测</li>
+<li>多次观测</li>
+<li>逆深度 + VIO</li>
+</ol>
+<h2 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h2><ol>
+<li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li>
+<li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li>
+</ol>
+<h2 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h2><ol>
+<li>积分下一个时刻的PVQ作为视觉初始值</li>
+<li>预计分相邻帧的PVQ变化量，作为IMU的约束</li>
+<li>计算IMU误差的协方差和jacobian</li>
+</ol>
+<p><img src="/images/photo/image-20191202112248399.png" alt="image-20191202112248399"></p>
+<h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol>
+<li><p>将视觉约束就加到联合优化是紧耦合</p>
+</li>
+<li><p>将视觉约束后的位姿加入到联合优化是松耦合</p>
+</li>
+</ol>
+<p><img src="/image/image-20191202135710367.png" alt="image-20191202135710367"></p>
+<h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p>
+<ol>
+<li>初始化</li>
+<li>IMU预测</li>
+<li>视觉跟踪</li>
+<li>视觉增广</li>
+<li>视觉更新—选老点或者看不见的点</li>
+<li>视觉更新—边缘化</li>
+<li>剔除老帧</li>
+</ol>
+<p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678"></p>
+<p>误差状态向量<br>$$<br>\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}<em>{C_1} …\ce{^{G}\hat{p}</em>{c_N} \ce{G}\hat{p}_{C_N}}]<br>$$</p>
+<p>$$<br>\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T<br>$$</p>
+<blockquote>
+<p>每得到一个新图像以后需要对协方差矩阵做一个增广</p>
+</blockquote>
+<p><img src="/images/SLAM/%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E6%8E%A8%E5%AF%BC/MSCKF%E5%AF%B9%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5%E7%9A%84%E5%A2%9E%E5%B9%BF.png" alt="MSCKF对协方差矩阵的增广"></p>
+<p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268"></p>
+<blockquote>
+<p>成熟的路标点 表示窗口内各帧都看得到的点</p>
+</blockquote>
+<p><strong>因子图</strong></p>
+<p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572"></p>
+<blockquote>
+<p>Tbc表示IMU与相机间的转换矩阵</p>
+</blockquote>
+<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717"></p>
+<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060"></p>
+<p>路标点边缘化完后就可以了</p>
+<p><strong>第j个路标点的所有视觉误差为</strong><br>$$<br>r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}<br>$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897"></p>
+<p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。<br>$$<br>r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)<br>$$</p>
+<h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote>
+<p>复杂 不常用</p>
+</blockquote>
+<p>流程</p>
+<ol>
+<li>IMU预测</li>
+<li>视觉更新</li>
+<li>IEKF</li>
+<li>相机模型</li>
+<li>像素坐标校正</li>
+<li>光度误差</li>
+<li>QR分解</li>
+<li>Paych提取及Warp计算</li>
+<li>路标点质量评价及维护</li>
+</ol>
+<p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738"></p>
+<blockquote>
+<p>ROVIO使用光度误差</p>
+<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499"></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>ROVIO将路标点包含到状态向量中。有因将路标点表征在当前帧的坐标系下，有范围限制，因此对其进行归一化得到无约束的状态量—方向向量Bearing Vector</p>
+</blockquote>
+</blockquote>
+<p>ROVIO的创新点如下所示：</p>
+<p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing  Vector老了使得Pc平滑可导</p>
+<p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978"></p>
+<p>状态向量：当前帧的PVQB和路标点( mu,p)</p>
+<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085"></p>
+<p>因子图如下</p>
+<p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998"></p>
+<h3 id="VINS"><a href="#VINS" class="headerlink" title="VINS"></a>VINS</h3><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote>
+<p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p>
+</blockquote>
+<p>$$<br>X=[x_0,x_1,…x_n,x_c^b,\lambda_0,\lambda_1,…\lambda_m]<br>$$</p>
+<p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170"></p>
+<blockquote>
+<p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p>
+</blockquote>
+<h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722"></p>
+<p>Tracklocal map：仅优化当前帧</p>
+<p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305"></p>
+<p>Local Map：优化华创内的所有帧的PVQB和路标点</p>
+<p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237"></p>
+<h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p>
+<p><img src="/home/guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
+<p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p>
+<p>总结而言，在ICE-BA中更新Factor有三种情况：</p>
+<ol>
+<li>该Factor在本次迭代中没有变化，则不更新；</li>
+<li>该Factor是新Factor，则在原来基础上+=新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li>
+<li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li>
+</ol>
+<p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
+]]></content>
+      <tags>
+        <tag>VIO</tag>
+        <tag>VINS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VINS系统解析</title>
+    <url>/2020/02/15/2020-02-15-VINS_Mono_System/</url>
+    <content><![CDATA[<h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
+<a id="more"></a>
+
+<p><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%B8%A7%E9%97%B4%E7%BA%A6%E6%9D%9F.png" alt="image-20191202163857217"></p>
+<blockquote>
+<ol>
+<li>黄色的是IMU的帧间约束（PVQBaBg 15*1）</li>
+<li>蓝色为视觉重投影误差约束（2*1）</li>
+<li>绿色为闭环帧，用来计算相对位资，用于闭环优化时使用</li>
+<li>红色的是IMU预计分步骤</li>
+</ol>
+</blockquote>
+<p>本文重点看IMU约束与视觉约束</p>
+<h4 id="前端使用光流跟踪"><a href="#前端使用光流跟踪" class="headerlink" title="前端使用光流跟踪"></a>前端使用光流跟踪</h4><ol>
+<li>cv::goodfeaturesToTrack检测Harris角点</li>
+<li>cv::CalcOpticalFlowPyrLK跟踪相邻帧的角点</li>
+<li>cv::findFundamentalMat 去除异常点</li>
+<li>统一的球面模型</li>
+</ol>
+<h4 id="关键帧选择机制"><a href="#关键帧选择机制" class="headerlink" title="关键帧选择机制"></a>关键帧选择机制</h4><ol>
+<li>平均视差大于某个阈值</li>
+<li>跟踪的特征点数量小于某个阈值</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>VINS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用evo工具评测SLAM</title>
+    <url>/2020/02/15/2020-02-19-How_to_use_evo/</url>
+    <content><![CDATA[<p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
+<p><a href="https://github.com/MichaelGrupp/evo" target="_blank" rel="noopener">github地址</a></p>
+<a id="more"></a>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol>
+<li>使用pypi直接安装：</li>
+</ol>
+<figure class="highlight plain"><figcaption><span>install evo --upgrade --no-binary evo ```</span></figcaption><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">2. 本地编译安装</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96; pip install --editable . --upgrade --no-binary evo</span><br></pre></td></tr></table></figure>
+<p>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p>
+<ul>
+<li><code>evo_ape</code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；<br>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</li>
+<li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差=绝对误差/真值）</li>
+</ul>
+<p><strong>工具命令</strong></p>
+<ul>
+<li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p>
+</li>
+<li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p>
+</li>
+<li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p>
+</li>
+<li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p>
+</li>
+<li><p><code>-va</code> a 对齐轨迹</p>
+</li>
+</ul>
+<p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum/kitti/bag/euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li>对比/绘制VINS-mono/fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html" target="_blank" rel="noopener">该博客</a>.</li>
+</ul>
+<h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">evo_traj euroc .&#x2F;groundtruth&#x2F;MH_01_data.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<p>画某一次结果的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">evo_traj tum .&#x2F;result&#x2F;MH_01&#x2F;loop_result.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p>
+<h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p>
+<ul>
+<li><p>“vins_result_loop” : defined in [path to Vins folder]/pose_graph/src/pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p>
+</li>
+<li><p>“vins_result_no_loop”: defined in [path to Vins folder]/vins_estimator/src/utility/visualization.cpp in function pubOdometry(). </p>
+<p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p>
+</li>
+</ul>
+<p>代码修改过程：</p>
+<p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="keyword">double</span> turetime = header.stamp.toSec();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.w() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+
+<p>*<em>pose_graph.cpp *</em></p>
+<p>updatePath()</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">"/home/guoben/Documents/output/loop_result.csv"</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="keyword">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.setf(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.w() &lt;&lt; <span class="built_in">endl</span>;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.setf(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; P.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; P.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.w() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>画某一个结果的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">evo_traj tum .&#x2F;loop_result.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<p>对比结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">evo_rpe euroc .&#x2F;groundtruth&#x2F;MH_01_data.csv .&#x2F;result&#x2F;MH_01&#x2F;vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure>
+
+<p>MSCKF</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; ofstream foutC(&quot;&#x2F;home&#x2F;guoben&#x2F;Documents&#x2F;output&#x2F;result_vio.csv&quot;, ios::app);</span><br><span class="line">&#x2F;&#x2F; foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">&#x2F;&#x2F; foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <tags>
+        <tag>VIO</tag>
+        <tag>evo</tag>
+        <tag>SLAM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SLAM各算法运行方法与过程</title>
+    <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
+    <content><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p>
+<p>主要包括以下五种算法:</p>
+<ol>
+<li>VINS_mono/fusion</li>
+<li>OKVIS</li>
+<li>ROVIO</li>
+<li>VI_ORB-SLAM</li>
+<li>MSCKF</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr>
+<h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p>
+<hr>
+<h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：[该博客]<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html" target="_blank" rel="noopener">https://www.cnblogs.com/Jessica-jie/p/6607719.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE&#x3D;Release -DMAKE_SCENE&#x3D;ON</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ source devel&#x2F;setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;&#x2F;home&#x2F;guoben&#x2F;Documents&#x2F;output&#x2F;vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB" target="_blank" rel="noopener"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc    </p>
+<hr>
+<h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~&#x2F;Project&#x2F;msckf_vio_workspace&#x2F;src&#x2F;msckf_vio&#x2F;rviz&#x2F;rviz_euroc_config.rviz   &#x2F;&#x2F;rviz显示模型</span><br><span class="line">  rosbag play &#x2F;home&#x2F;wj&#x2F;Downloads&#x2F;dataset&#x2F;EuRoC&#x2F;ROS_bag&#x2F;MH_05_difficult.bag</span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>
+<hr>
+]]></content>
+      <tags>
+        <tag>SLAM算法文档</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LaTex渲染的说明和测试</title>
+    <url>/2020/01/15/2020-01-15-math-test/</url>
+    <content><![CDATA[<p>LaTeX渲染已经在全站头部文件引入，可以直接使用，公式块上下使用<code>$$</code>标明，内联公式则用<code>$</code>. </p>
+<p>最好不要让公式出现在文章摘要里。</p>
+<p>Jekyll的默认文章摘要是第一段，但使用中选取摘要不是很稳定，因此加入了手动摘要分割线，默认为<code>&lt;!-- more --&gt;</code>，并且加入了首页摘要的字符数限制。</p>
+<p>因此有特殊符号、内容的文章，建议将这些内容折叠在摘要以下。例如本文</p>
+<a id="more"></a>
+
+<p>Block math test</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">\begin&#123;align*&#125;</span><br><span class="line">y &#x3D; y(x,t) &amp;&#x3D; A e^&#123;i\theta&#125; \\</span><br><span class="line">&amp;&#x3D; A (\cos \theta + i \sin \theta) \\</span><br><span class="line">&amp;&#x3D; A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \\</span><br><span class="line">&amp;&#x3D; A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \\</span><br><span class="line">&amp;&#x3D; A\cos \Big(\frac&#123;2\pi&#125;&#123;\lambda&#125;x - \frac&#123;2\pi v&#125;&#123;\lambda&#125; t \Big) + i A\sin \Big(\frac&#123;2\pi&#125;&#123;\lambda&#125;x - \frac&#123;2\pi v&#125;&#123;\lambda&#125; t \Big)  \\</span><br><span class="line">&amp;&#x3D; A\cos \frac&#123;2\pi&#125;&#123;\lambda&#125; (x - v t) + i A\sin \frac&#123;2\pi&#125;&#123;\lambda&#125; (x - v t)</span><br><span class="line">\end&#123;align*&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
+<p>$$<br>\begin{align<em>}<br>y = y(x,t) &amp;= A e^{i\theta} \<br>&amp;= A (\cos \theta + i \sin \theta) \<br>&amp;= A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \<br>&amp;= A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \<br>&amp;= A\cos \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big) + i A\sin \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big)  \<br>&amp;= A\cos \frac{2\pi}{\lambda} (x - v t) + i A\sin \frac{2\pi}{\lambda} (x - v t)<br>\end{align</em>}<br>$$</p>
+<p>Inline math test <code>$\lim_{x \to \infty} \exp(-x) = 0$</code>, $\lim_{x \to \infty} \exp(-x) = 0$</p>
+]]></content>
+      <tags>
+        <tag>说明文档</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown语法简介</title>
+    <url>/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/</url>
+    <content><![CDATA[<h2 id="分段与分行"><a href="#分段与分行" class="headerlink" title="分段与分行"></a>分段与分行</h2><p>以一个或多个空行来隔开段落；以两个或多个空格来段内换行。</p>
+<h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line"># This is an H1</span><br><span class="line"></span><br><span class="line">##  This is an H2</span><br><span class="line"></span><br><span class="line">######  This is an H6</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>在每一行前面写一个<code>&gt;</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt;</span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+<p>Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse id sem consectetuer libero luctus adipiscing.</p>
+</blockquote>
+<p>或者在每一段前面写一个<code>&gt;</code>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line"></span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<h2 id="多重引用"><a href="#多重引用" class="headerlink" title="多重引用"></a>多重引用</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; Back to the first level.</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<blockquote>
+<p>This is the first level of quoting.</p>
+<blockquote>
+<p>This is nested blockquote.</p>
+</blockquote>
+<p>Back to the first level.</p>
+</blockquote>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>列表项占一行，以*、+、-开头即可：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*   Red</span><br><span class="line">*   Green</span><br><span class="line">*   Blue</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<ul>
+<li>Red</li>
+<li>Green</li>
+<li>Blue</li>
+</ul>
+<p>有序列表只需要将上述标记符换成数字加句点。而且顺序由书写顺序决定，与数字无关，但数字需要从1开始。例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1\.  Bird</span><br><span class="line">3.  McHale</span><br><span class="line">2.  Parish</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<ol>
+<li>Bird</li>
+<li>McHale</li>
+<li>Parish</li>
+</ol>
+<p>每一个列表项可以多行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<ul>
+<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</li>
+<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse id sem consectetuer libero luctus adipiscing.</li>
+</ul>
+<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>每一行前面缩进四个或以上个空格，就认为是开始了一段代码块。代码块内原样输出。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">This is a normal paragraph:</span><br><span class="line"></span><br><span class="line">    This is a code block.</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p>This is a normal paragraph:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">This is a code block.</span><br></pre></td></tr></table></figure>
+
+<h2 id="横线"><a href="#横线" class="headerlink" title="横线"></a>横线</h2><p>三个或更多个<code>*</code>、<code>-</code>（它们之间可以有空格）会产生横线：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* * *</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<hr>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p>内嵌链接：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">I get 10 times more traffic from [Google](http:&#x2F;&#x2F;google.com&#x2F; &quot;Google&quot;)</span><br><span class="line">than from [Yahoo](http:&#x2F;&#x2F;search.yahoo.com&#x2F; &quot;Yahoo Search&quot;) or</span><br><span class="line">[MSN](http:&#x2F;&#x2F;search.msn.com&#x2F; &quot;MSN Search&quot;).</span><br></pre></td></tr></table></figure>
+
+<p>或参考文献式链接（缺省的链接标记认为与文本一致）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">I get 10 times more traffic from [Google] [1] than from</span><br><span class="line">[Yahoo] [2] or [MSN] [3].</span><br><span class="line"></span><br><span class="line">  [1]: http:&#x2F;&#x2F;google.com&#x2F;        &quot;Google&quot;</span><br><span class="line">  [2]: http:&#x2F;&#x2F;search.yahoo.com&#x2F;  &quot;Yahoo Search&quot;</span><br><span class="line">  [3]: http:&#x2F;&#x2F;search.msn.com&#x2F;    &quot;MSN Search&quot;</span><br><span class="line"></span><br><span class="line">I get 10 times more traffic from [Google][] than from</span><br><span class="line">[Yahoo][] or [MSN][].</span><br><span class="line"></span><br><span class="line">  [google]: http:&#x2F;&#x2F;google.com&#x2F;        &quot;Google&quot;</span><br><span class="line">  [yahoo]:  http:&#x2F;&#x2F;search.yahoo.com&#x2F;  &quot;Yahoo Search&quot;</span><br><span class="line">  [msn]:    http:&#x2F;&#x2F;search.msn.com&#x2F;    &quot;MSN Search&quot;</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p>I get 10 times more traffic from <a href="http://google.com/" target="_blank" rel="noopener" title="Google">Google</a> than from <a href="http://search.yahoo.com/" target="_blank" rel="noopener" title="Yahoo Search">Yahoo</a> or <a href="http://search.msn.com/" target="_blank" rel="noopener" title="MSN Search">MSN</a>.</p>
+<p>如果直接以链接地址作为链接文本，可以用如下快捷写法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;http:&#x2F;&#x2F;www.shengbin.me&gt; 效果：</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://www.shengbin.me/" target="_blank" rel="noopener">http://www.shengbin.me</a></p>
+<h2 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h2><p>单个<code>*</code>或<code>_</code>产生斜体，两个（<code>**</code>、<code>__</code>）则产生粗体。例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*like* _this_</span><br><span class="line"></span><br><span class="line">**like** **this**</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><em>like</em> <em>this</em></p>
+<p><strong>like</strong> <strong>this</strong></p>
+<h2 id="内嵌代码"><a href="#内嵌代码" class="headerlink" title="内嵌代码"></a>内嵌代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">code: &#96;echo hello&#96;</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p>code: <code>echo hello</code></p>
+<h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><p>图片与链接类似，只需在文本前面加上感叹号<code>!</code>即可。图片位置和大小无法通过Markdown来指定。</p>
+<h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h2><p>以下特殊字符需要用<code>\</code>转义得到。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\   backslash</span><br><span class="line">&#96;   backtick</span><br><span class="line">*   asterisk</span><br><span class="line">_   underscore</span><br><span class="line">&#123;&#125;  curly braces</span><br><span class="line">[]  square brackets</span><br><span class="line">()  parentheses</span><br><span class="line">#   hash mark</span><br><span class="line">+   plus sign</span><br><span class="line">-   minus sign (hyphen)</span><br><span class="line">.   dot</span><br><span class="line">!   exclamation mark</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>说明文档</tag>
+      </tags>
+  </entry>
+</search>

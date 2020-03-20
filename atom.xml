@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>曾是少年</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://grobenis.github.io/"/>
+  <updated>2020-03-20T09:37:38.238Z</updated>
+  <id>https://grobenis.github.io/</id>
+  
+  <author>
+    <name>guoben</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://grobenis.github.io/2020/03/20/hello-world/"/>
+    <id>https://grobenis.github.io/2020/03/20/hello-world/</id>
+    <published>2020-03-20T08:04:16.647Z</published>
+    <updated>2020-03-20T09:37:38.238Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;今天是我生平的第一个博客空间！&lt;/p&gt;
+&lt;p&gt;以后把好玩的东西、学习过程都写在这里！&lt;/p&gt;
+&lt;p&gt;愿世界和平！&lt;/p&gt;
+&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Kalman滤波器学习</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-13-Kalman_Filter/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-13-Kalman_Filter/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-18T06:08:13.253Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;概率图+时间=动态系统&lt;/p&gt;
+&lt;p&gt;动态模型分为三类：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;HMM要求隐状态离散，不要求&lt;/li&gt;
+&lt;li&gt;如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）&lt;/li&gt;
+&lt;li&gt;如果隐状态连续且非线性，作为得到粒子滤波器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;本节用来介绍kalman滤波器&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Kalman滤波器" scheme="https://grobenis.github.io/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>高斯混合模型</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-GMM/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-15T09:19:45.246Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;高斯混合模型&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="GMM" scheme="https://grobenis.github.io/tags/GMM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>概率图模型</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-15T09:19:45.246Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）&lt;/p&gt;
+&lt;p&gt;本节将用来介绍概率图模型。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="概率图" scheme="https://grobenis.github.io/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>概率图模型</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-20T09:55:13.672Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;运动一致性判断&quot;&gt;&lt;a href=&quot;#运动一致性判断&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="概率图" scheme="https://grobenis.github.io/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>粒子滤波器</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-15T16:42:22.125Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+      <category term="粒子滤波器" scheme="https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBoW2库学习</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-10T08:28:35.608Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="DBoW2" scheme="https://grobenis.github.io/tags/DBoW2/"/>
+    
+      <category term="回环检测" scheme="https://grobenis.github.io/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VINS-Fusion代码阅读</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-10T11:14:06.167Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+
+&lt;h2 id=&quot;Loop-Fusion&quot;&gt;&lt;a href=&quot;#Loop-Fusion&quot; class=&quot;headerlink&quot; title=&quot;Loop Fusion&quot;&gt;&lt;/a&gt;Loop Fusion&lt;/h2&gt;&lt;p&gt;Loop
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
+    
+      <category term="代码阅读" scheme="https://grobenis.github.io/tags/%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>经典聚类算法调研</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-12T15:29:50.572Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文将盘点六个经典的聚类算法，以便于后续的研究。经典的聚类算法主要包括以下六种：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Means-shift聚类&lt;/li&gt;
+&lt;li&gt;k-means聚类&lt;/li&gt;
+&lt;li&gt;Fuzzy C means聚类&lt;/li&gt;
+&lt;li&gt;Medoid shift算法&lt;/li&gt;
+&lt;li&gt;Turbopixel算法&lt;/li&gt;
+&lt;li&gt;SLIC算法&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="聚类" scheme="https://grobenis.github.io/tags/%E8%81%9A%E7%B1%BB/"/>
+    
+      <category term="图像分割" scheme="https://grobenis.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>隐马尔可夫模型</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-14T09:56:09.371Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
+&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
+&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-02-15T11:10:28.752Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文主要讲如何利用ROS框架下的工具标定USB相机&lt;/p&gt;
+&lt;h2 id=&quot;利用IMU标定相机流程&quot;&gt;&lt;a href=&quot;#利用IMU标定相机流程&quot; class=&quot;headerlink&quot; title=&quot;利用IMU标定相机流程&quot;&gt;&lt;/a&gt;利用IMU标定相机流程&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;驱动USB摄像头&lt;/li&gt;
+&lt;li&gt;利用camera_calibration标定相机&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
+    
+      <category term="相机标定" scheme="https://grobenis.github.io/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>利用Kalibr标定双目相机与IMU</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-02-15T13:17:00.119Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定&lt;/p&gt;
+&lt;h2 id=&quot;1-生成标定板&quot;&gt;&lt;a href=&quot;#1-生成标定板&quot; class=&quot;headerlink&quot; title=&quot;1. 生成标定板&quot;&gt;&lt;/a&gt;1. 生成标定板&lt;/h2&gt;&lt;p&gt;使用AprilTag&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rosrun kalibr kalibr_create_target_pdf --type apriltag --nx 6 --ny 6 --tsize 0.002 --tspace 0.3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
+    
+      <category term="IMU" scheme="https://grobenis.github.io/tags/IMU/"/>
+    
+      <category term="Kalibr" scheme="https://grobenis.github.io/tags/Kalibr/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Ubuntu1604连接蓝牙鼠标</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-02-15T13:31:11.801Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;打开命令行&lt;br&gt;$ sudo -i&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Ubuntu" scheme="https://grobenis.github.io/tags/Ubuntu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>发布IMU信息到ROS系统中</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-02-15T12:37:27.666Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以下记录是在调试树莓派3b中得到的经验&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
+    
+      <category term="IMU" scheme="https://grobenis.github.io/tags/IMU/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VIO主流框架</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-VIO_Framework/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-VIO_Framework/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-02-18T03:24:57.314Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本节主要说明当前主流的VIO算法流程。课程来源于&lt;a href=&quot;https://www.bilibili.com/video/av44472237?t=297&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;B站&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="VIO" scheme="https://grobenis.github.io/tags/VIO/"/>
+    
+      <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VINS系统解析</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-VINS_Mono_System/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-VINS_Mono_System/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-02-15T13:18:07.115Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;基本框架&quot;&gt;&lt;a href=&quot;#基本框架&quot; class=&quot;headerlink&quot; title=&quot;基本框架&quot;&gt;&lt;/a&gt;基本框架&lt;/h2&gt;&lt;p&gt;基本框架如下图所示&lt;br&gt;&lt;img src=&quot;/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png&quot; alt=&quot;image-20191202164309191&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用evo工具评测SLAM</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-03-10T07:54:19.245Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/MichaelGrupp/evo&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;github地址&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="VIO" scheme="https://grobenis.github.io/tags/VIO/"/>
+    
+      <category term="evo" scheme="https://grobenis.github.io/tags/evo/"/>
+    
+      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SLAM各算法运行方法与过程</title>
+    <link href="https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
+    <id>https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</id>
+    <published>2020-01-14T16:00:00.000Z</published>
+    <updated>2020-02-15T11:27:10.359Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。&lt;/p&gt;
+&lt;p&gt;主要包括以下五种算法:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;VINS_mono/fusion&lt;/li&gt;
+&lt;li&gt;OKVIS&lt;/li&gt;
+&lt;li&gt;ROVIO&lt;/li&gt;
+&lt;li&gt;VI_ORB-SLAM&lt;/li&gt;
+&lt;li&gt;MSCKF&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="SLAM算法文档" scheme="https://grobenis.github.io/tags/SLAM%E7%AE%97%E6%B3%95%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LaTex渲染的说明和测试</title>
+    <link href="https://grobenis.github.io/2020/01/15/2020-01-15-math-test/"/>
+    <id>https://grobenis.github.io/2020/01/15/2020-01-15-math-test/</id>
+    <published>2020-01-14T16:00:00.000Z</published>
+    <updated>2020-02-15T10:42:52.088Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;LaTeX渲染已经在全站头部文件引入，可以直接使用，公式块上下使用&lt;code&gt;$$&lt;/code&gt;标明，内联公式则用&lt;code&gt;$&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;最好不要让公式出现在文章摘要里。&lt;/p&gt;
+&lt;p&gt;Jekyll的默认文章摘要是第一段，但使用中选取摘要不是很稳定，因此加入了手动摘要分割线，默认为&lt;code&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;，并且加入了首页摘要的字符数限制。&lt;/p&gt;
+&lt;p&gt;因此有特殊符号、内容的文章，建议将这些内容折叠在摘要以下。例如本文&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="说明文档" scheme="https://grobenis.github.io/tags/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Markdown语法简介</title>
+    <link href="https://grobenis.github.io/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/"/>
+    <id>https://grobenis.github.io/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/</id>
+    <published>2020-01-14T16:00:00.000Z</published>
+    <updated>2020-02-15T11:26:46.267Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;分段与分行&quot;&gt;&lt;a href=&quot;#分段与分行&quot; class=&quot;headerlink&quot; title=&quot;分段与分行&quot;&gt;&lt;/a&gt;分段与分行&lt;/h2&gt;&lt;p&gt;以一个或多个空行来隔开段落；以两个或多个空格来段内换行。&lt;/p&gt;
+&lt;h2 id=&quot;标题&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="说明文档" scheme="https://grobenis.github.io/tags/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+</feed>
