@@ -73,85 +73,6 @@
     
     
     
-    <article id="post-hello-world" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/20/hello-world/"
-    >Hello World</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/20/hello-world/" class="article-date">
-  <time datetime="2020-03-20T08:04:16.647Z" itemprop="datePublished">2020-03-20</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>今天是我生平的第一个博客空间！</p>
-<p>以后把好玩的东西、学习过程都写在这里！</p>
-<p>愿世界和平！</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
     <article id="post-2020-03-13-Kalman_Filter" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -376,7 +297,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2020/03/14/2020-03-15-Motion_consistency/"
-    >概率图模型</a
+    >运动一致性判断</a
   >
 </h2>
   
@@ -404,69 +325,10 @@
       
 
       
-      <h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p>
-<p>目的：对图片中各部分进行运动一致性判断以分离出目标和背景。</p>
-<p>下面介绍各个论文中的判断方法</p>
-<h2 id="Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment"><a href="#Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment" class="headerlink" title="Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment"></a>Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment</h2><p>该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割</p>
-<p>过程：</p>
-<ol>
-<li>进行k-means聚类</li>
-<li>计算每一个簇的残差</li>
-<li>根据计算出的残差建立非参数统计模型</li>
-</ol>
-<p>聚类的好处有两点：</p>
-<ol>
-<li>能够将非刚体场景表示基于聚类的刚体场景</li>
-<li>可有效增强密集运动的分割效果，从而支持场景流估计和避障。</li>
-</ol>
-<p>本文使用了一个残差模型。该模型基于一个假设：</p>
-<p>若图片对齐，则基于静态背景的聚类将会有一个很小的残差。</p>
-<p>光照强度残差：<br>$$<br>r^p_I(\xi）= I_k(W(x^p_{k-n},\xi^k_{k-n}))-I_{k-n}(x^p_{k-n})<br>$$<br>图像扭曲，Warp函数：<br>$$<br>W(x^p_{k-n},\xi^k_{k-n})=\pi(T^k_{k-n}\pi^{-1}(x^p_{k-n},Z_{k-n}(x^p_{k-n})))<br>$$</p>
-<p>第i个聚类的残差计算方法如下所示：<br>$$<br>\delta^{k,i}<em>{k-n}=\cfrac{\sum^{S_i-O_i}</em>{p=1}\alpha_Ir^p_I+r^P_Z/\hat Z_i}{S_i-O_i}<br>$$<br>其中，$S_i$是第i类的像素大小。$O_i$是第i类遮挡的区域大小。</p>
-<p>$\hat Z_i$是第i类的平均深度，$\alpha_I$是平衡深度和广度的权重。<br>$$<br>r_Z^P(\Chi)=Z_k(W(x^p_{k-n},\Chi^k_{k-n}))-|T^k_{k-n}|_Z<br>$$</p>
-<p><strong>非参数统计模型</strong></p>
-<p>该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动</p>
-<p>静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。</p>
-<p>对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图2是高动态场景的统计残差直方图示例。</p>
-<p><img src="D:%5CProject%5Cgrobenis.github.io%5Cimages%5C%E8%BF%90%E5%8A%A8%E4%B8%80%E8%87%B4%E6%80%A7%5C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%A8%A1%E5%9E%8B.png" alt="image-20200316123237971"></p>
-<p>在概率论和统计学中，t-分布（t-distribution）用于根据小样本来估计呈正态分布且方差未知的总体的均值。</p>
-<p>受[14，23]的启发，基于t分布的非参数统计模型构造如下：<br>$$<br>w_i = \cfrac{v_0+1}{v_0+((\delta’_i-\mu))^2}<br>$$</p>
-<p>$$<br>\delta = 1.4826 Median {|\delta’_i-\mu|}<br>$$</p>
-<p>其中，$v_0$是t分布的自由度，决定了分布曲线的陡峭程度。</p>
-<p>实验中，$v_0$被设置为10，$\mu$是样本均值，设为0；</p>
-<p>$\delta$是样本方差，即基于中位数绝对偏差的非参数统计。</p>
-<p>由于统计模型的概率表示簇的运动可能性，因此它可以指导场景运动分割，并为每个聚类提供权重以估计自我运动。</p>
-<p>聚类标签根据如下给出：<br>$$<br>\Beta_i=\left{<br>\begin{array}{l}<br>1,&amp;\delta’_i\leq1/(\min(10,\max(3.\alpha_Bv_c\delta)))<br>\0,&amp;\delta’_i\geq1/(\min(10,\max(3,\alpha_Bv_c\delta)))<br>\end{array}<br>\right.<br>$$<br>Bi表示第i个簇的聚类标签。1表示该类属于静态背景。</p>
-<p>0表示该类属于动态部分。$\alpha_B$是一个用来调节独立变量和残差的维度协方差，计算方法为：<br>$$<br>\alpha_B=10^3\times\min(10^3,10^{N_d})<br>$$<br>$N_d$是标记为移动部分的聚类数。</p>
-<p>聚类权重参考聚类的残差来给出，如下所示：<br>$$<br>w_i^p=\left{<br>\begin{array}{}<br> w_i, &amp;Meadian(\delta’_i)&gt;0.02\or N_d&gt;5\<br>1-\delta’_i,&amp;Others<br>\end{array}<br>\right.<br>$$<br>其中，$w_i$是第i类的权重。Median($\delta’_i$)是聚类残差的中位数。</p>
-<p>最后将运动标记和权重模型添加到稠密视觉里程计的能量优化函数中。优化函数是根据Kerl的工作[9]基于深度和强度构建的，具有很高的稳定性，而Jaimez的工作[15]的方法表明优化过程可以在Cauchy M估计器中获得良好的结果。自运动通过以下等式估算：<br>$$<br>\Chi = \arg \min_{\Chi}{\sum^M_{m=1}\Beta_i[F(w^P_i)r^P_Z(\Chi)+F(\alpha_I)w^p_ir^p_I(\Chi)]<br>$$</p>
-<p>$$<br>F(r)=\cfrac{c^2}{2}\log(1+(\cfrac{r}{c})^2)<br>$$</p>
-<p>此外，基于能量函数的视觉里程计方法只有在运动较小时才能收敛到真实值，而较大的运动通常会将收敛收敛到局部最小值。因此，我们使用金字塔模型来解决此优化问题，以获得更准确的自我运动估计。</p>
-<h2 id="Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry"><a href="#Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry" class="headerlink" title="Dection and Resolution of Motion Conflict Inertial Odometry"></a>Dection and Resolution of Motion Conflict Inertial Odometry</h2><p>判断路标点间一致性的策略：</p>
-<ol>
-<li><p>基于IMU判断的运动对每一个特征点计算重投影残差<br>$$<br>\delta_{l_j}=\sum_{i\in S}(z_ij-h(\hat X^I_j,l_j))<br>$$</p>
-</li>
-<li><p>计算当前帧中特征点的残差不一致点的个数，如果不一致点的个数超过了一定比例，则判断发生了运动冲突。<br>$$<br>Mr:=\cfrac{landmarks<del>wihtout</del>confilt}{landmarks}<br>$$</p>
-</li>
-<li><p>另一方面，分别根据基于IMU和视觉的运动计算重投影误差，再计算二者的分歧度，再根据分歧度计算当前帧是否发生了冲突。<br>$$<br>\delta_{MC}=||{\hat p_k^V-\hat p_k^I}||_{\sum}<br>$$</p>
-</li>
-</ol>
-<h2 id="On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions"><a href="#On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions" class="headerlink" title="On Exploting Per-Pixel Conflict to Extract Secondary Motions"></a>On Exploting Per-Pixel Conflict to Extract Secondary Motions</h2><p>基于DNN训练一个概率图，提取出概率图（Mask）</p>
-<p>然后基于该概率图分别计算主要运动和次要运动。</p>
-<h2 id="A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes"><a href="#A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes" class="headerlink" title="A Compatible Framework for RGB-D in Dynamic Scenes"></a>A Compatible Framework for RGB-D in Dynamic Scenes</h2><ol>
-<li><p>首先利用CNN提取出图像中潜在的动态区域</p>
-</li>
-<li><p><strong>运动检测方法</strong></p>
-<p>​    本文采用基于光学流的方法来检查潜在动态区域和背景区域的一致性。光学流算法[30]在该领域已被广泛研究，该算法在运动检测中表现出色。该算法的总体思想是在两个图像的时空一致性假设下，从两个连续的图像中确定点的对应关系。提出了两种针对光流问题的解决方法，分别称为稀疏法和稠密法。稠密解决方案逐像素计算图像中的光学流值。但稀疏解决方案仅在这些兴趣点上计算流量矢量。可以通过以下公式获得一个像素的光学流值：<br>$$<br>\tau(\Chi,u)=\sum_{\Chi_i\in S}[I_{l-1}(X_i)-I_l(X_i+u(X_i))]^2<br>$$<br>​    对于每一个2D再集合$S\subset R^2$的点$X_i$，$I_{l-1}(X_i)$是第l-1帧的$X_i$的雄塑强度。$I_l(X_i+u(X_I))$表示相应的第l帧中的光照强度。</p>
-<p>$u(X_i)$是第l-1和第l帧的相应点的变化，该项根据局部窗口中基于重心$X_i$的变化而来，是使函数达到最小的变量。</p>
-<p>为了减少上面所说的损失函数，$X_i$点的光流向量$(\frac{u_x(X_i)}{dt},\frac{u_y(X_i)}{dt})$。$\frac{u_x(X_i)}{dt}$是其沿x轴的时间随时间变化的导数，$\frac{u_y(X_i)}{dt}$是其沿y轴方向变化的倒数。沿y轴的时间。利用广泛使用的Lucas-Kanade光流法用于跟踪潜在动态对象内部和外部的稀疏点。</p>
-<p>对于光学流向量$p =（u，v）$，其方向$\Phi$和大小$ρ$表示如下：<br>$$<br>\phi=\left{<br>\begin{array}{}<br>atan2(\frac{v}{u})<em>180/\pi,&amp;if~atan2(\frac{v}{u})&gt;0\<br>(360+atan2(\frac{v}{u}))</em>180/\pi,&amp;otherwise<br>\end{array}<br>\right.<br>$$</p>
-<p>$$<br>\rho = \sqrt2{u^2+v^2}<br>$$</p>
-<p>然后，类似于[15]，将为潜在的动态区域和背景区域构建标准化的直方图，其中每个单元格的范围将由如下所示的公式确定：<br>$$<br>2\pi<em>\frac{r-1}{R}&lt;\psi&lt;2\pi</em>{\frac{r}{R}}<br>$$<br>其中，$\R$是bins的数目，r是从左到右的系列字母。所有的流向量将根据它们与水平轴的夹角划分为每个容器。此外，所有流向量将分配给不同的簇。每个bin的高度将如下计算：<br>$$<br>H=\frac{\sum_{\xi\in bin}\rho_\xi}{\sum_{\mu\in area}\rho_\mu}<br>$$</p>
-</li>
-</ol>
-<p>   其中$ρ_ξ$表示一个箱中流量矢量的大小，而$ρ_\mu$是势能动态区域或背景区域中流量矢量的大小。</p>
-
+      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Motion_consistency/">阅读更多...</a>
+      
       
       <!-- reward -->
       
@@ -478,7 +340,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
 
 
     </footer>
@@ -922,6 +784,79 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-02-15-Calibrate_Camera_by_ROS" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/"
+    >利用ROS标定相机步骤与方法</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文主要讲如何利用ROS框架下的工具标定USB相机</p>
+<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
+<li>驱动USB摄像头</li>
+<li>利用camera_calibration标定相机</li>
+</ol>
+      
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li></ul>
 
 
     </footer>

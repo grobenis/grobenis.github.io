@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    概率图模型 |  曾是少年
+    运动一致性判断 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -41,7 +41,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  概率图模型
+  运动一致性判断
 </h1>
   
 
@@ -61,7 +61,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.1k字</span>
+            <span class="post-count">2.2k字</span>
         </span>
     </span>
 
@@ -95,7 +95,10 @@
       
 
       
-      <h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p>
+      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
+<a id="more"></a>
+
+<h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p>
 <p>目的：对图片中各部分进行运动一致性判断以分离出目标和背景。</p>
 <p>下面介绍各个论文中的判断方法</p>
 <h2 id="Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment"><a href="#Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment" class="headerlink" title="Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment"></a>Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment</h2><p>该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割</p>
@@ -233,7 +236,7 @@
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
 
 
     </footer>

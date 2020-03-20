@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-20T09:37:38.238Z</updated>
+  <updated>2020-03-18T06:08:13.253Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -15,32 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="https://grobenis.github.io/2020/03/20/hello-world/"/>
-    <id>https://grobenis.github.io/2020/03/20/hello-world/</id>
-    <published>2020-03-20T08:04:16.647Z</published>
-    <updated>2020-03-20T09:37:38.238Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;今天是我生平的第一个博客空间！&lt;/p&gt;
-&lt;p&gt;以后把好玩的东西、学习过程都写在这里！&lt;/p&gt;
-&lt;p&gt;愿世界和平！&lt;/p&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick
-        
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
   
   <entry>
     <title>Kalman滤波器学习</title>
@@ -108,27 +82,21 @@
   </entry>
   
   <entry>
-    <title>概率图模型</title>
+    <title>运动一致性判断</title>
     <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/"/>
     <id>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T09:55:13.672Z</updated>
+    <updated>2020-03-20T10:41:11.421Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h1 id=&quot;运动一致性判断&quot;&gt;&lt;a href=&quot;#运动一致性判断&quot; class=&quot;headerlink&quot;
-        
-      
+      &lt;p&gt;直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。&lt;/p&gt;
     
     </summary>
     
     
     
-      <category term="概率图" scheme="https://grobenis.github.io/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/"/>
+      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
     
   </entry>
   
@@ -482,6 +450,27 @@
     
     
       <category term="说明文档" scheme="https://grobenis.github.io/tags/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World!</title>
+    <link href="https://grobenis.github.io/2020/01/14/hello-world/"/>
+    <id>https://grobenis.github.io/2020/01/14/hello-world/</id>
+    <published>2020-01-13T16:00:00.000Z</published>
+    <updated>2020-03-20T10:42:15.691Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天是我生平的第一个博客空间！&lt;/p&gt;
+&lt;p&gt;以后把好玩的东西、学习过程都写在这里！&lt;/p&gt;
+&lt;p&gt;愿世界和平！&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
     
   </entry>
   

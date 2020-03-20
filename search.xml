@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/03/20/hello-world/</url>
-    <content><![CDATA[<p>今天是我生平的第一个博客空间！</p>
-<p>以后把好玩的东西、学习过程都写在这里！</p>
-<p>愿世界和平！</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Kalman滤波器学习</title>
     <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
     <content><![CDATA[<p>概率图+时间=动态系统</p>
@@ -184,9 +164,12 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>概率图模型</title>
+    <title>运动一致性判断</title>
     <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
-    <content><![CDATA[<h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p>
+    <content><![CDATA[<p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
+<a id="more"></a>
+
+<h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p>
 <p>目的：对图片中各部分进行运动一致性判断以分离出目标和背景。</p>
 <p>下面介绍各个论文中的判断方法</p>
 <h2 id="Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment"><a href="#Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment" class="headerlink" title="Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment"></a>Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment</h2><p>该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割</p>
@@ -250,7 +233,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>   其中$ρ_ξ$表示一个箱中流量矢量的大小，而$ρ_\mu$是势能动态区域或背景区域中流量矢量的大小。</p>
 ]]></content>
       <tags>
-        <tag>概率图</tag>
+        <tag>SLAM</tag>
       </tags>
   </entry>
   <entry>
@@ -1137,6 +1120,31 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\   backslash</span><br><span class="line">&#96;   backtick</span><br><span class="line">*   asterisk</span><br><span class="line">_   underscore</span><br><span class="line">&#123;&#125;  curly braces</span><br><span class="line">[]  square brackets</span><br><span class="line">()  parentheses</span><br><span class="line">#   hash mark</span><br><span class="line">+   plus sign</span><br><span class="line">-   minus sign (hyphen)</span><br><span class="line">.   dot</span><br><span class="line">!   exclamation mark</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>说明文档</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World!</title>
+    <url>/2020/01/14/hello-world/</url>
+    <content><![CDATA[<p>今天是我生平的第一个博客空间！</p>
+<p>以后把好玩的东西、学习过程都写在这里！</p>
+<p>愿世界和平！</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+      <tags>
+        <tag>SLAM</tag>
       </tags>
   </entry>
 </search>
