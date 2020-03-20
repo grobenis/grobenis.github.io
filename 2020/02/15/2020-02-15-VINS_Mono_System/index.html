@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hello World |  曾是少年
+    VINS系统解析 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-hello-world" class="article article-type-post" itemscope
+  <article id="post-2020-02-15-VINS_Mono_System" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hello World
+  VINS系统解析
 </h1>
   
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/20/hello-world/" class="article-date">
-  <time datetime="2020-03-20T08:04:16.647Z" itemprop="datePublished">2020-03-20</time>
+      <a href="/2020/02/15/2020-02-15-VINS_Mono_System/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
       
@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">73字</span>
+            <span class="post-count">155字</span>
         </span>
     </span>
 
@@ -94,21 +94,29 @@
       
 
       
-      <p>今天是我生平的第一个博客空间！</p>
-<p>以后把好玩的东西、学习过程都写在这里！</p>
-<p>愿世界和平！</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+      <h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
+<a id="more"></a>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%B8%A7%E9%97%B4%E7%BA%A6%E6%9D%9F.png" alt="image-20191202163857217"></p>
+<blockquote>
+<ol>
+<li>黄色的是IMU的帧间约束（PVQBaBg 15*1）</li>
+<li>蓝色为视觉重投影误差约束（2*1）</li>
+<li>绿色为闭环帧，用来计算相对位资，用于闭环优化时使用</li>
+<li>红色的是IMU预计分步骤</li>
+</ol>
+</blockquote>
+<p>本文重点看IMU约束与视觉约束</p>
+<h4 id="前端使用光流跟踪"><a href="#前端使用光流跟踪" class="headerlink" title="前端使用光流跟踪"></a>前端使用光流跟踪</h4><ol>
+<li>cv::goodfeaturesToTrack检测Harris角点</li>
+<li>cv::CalcOpticalFlowPyrLK跟踪相邻帧的角点</li>
+<li>cv::findFundamentalMat 去除异常点</li>
+<li>统一的球面模型</li>
+</ol>
+<h4 id="关键帧选择机制"><a href="#关键帧选择机制" class="headerlink" title="关键帧选择机制"></a>关键帧选择机制</h4><ol>
+<li>平均视差大于某个阈值</li>
+<li>跟踪的特征点数量小于某个阈值</li>
+</ol>
 
       
       <!-- reward -->
@@ -178,13 +186,15 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/03/20/hello-world/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/02/15/2020-02-15-VINS_Mono_System/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li></ul>
+
 
     </footer>
 
@@ -194,19 +204,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/20/2020-03-15-Motion_consistency/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            2020-03-15-Motion_consistency
+            VIO主流框架
           
         </div>
       </a>
     
     
-      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-nav-link">
+      <a href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Kalman滤波器学习</div>
+        <div class="article-nav-title">SLAM各算法运行方法与过程</div>
       </a>
     
   </nav>

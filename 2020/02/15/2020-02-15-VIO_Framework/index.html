@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hello World |  曾是少年
+    VIO主流框架 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-hello-world" class="article article-type-post" itemscope
+  <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hello World
+  VIO主流框架
 </h1>
   
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/20/hello-world/" class="article-date">
-  <time datetime="2020-03-20T08:04:16.647Z" itemprop="datePublished">2020-03-20</time>
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
       
@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">73字</span>
+            <span class="post-count">1.1k字</span>
         </span>
     </span>
 
@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -94,21 +94,118 @@
       
 
       
-      <p>今天是我生平的第一个博客空间！</p>
-<p>以后把好玩的东西、学习过程都写在这里！</p>
-<p>愿世界和平！</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297" target="_blank" rel="noopener">B站</a>。</p>
+<a id="more"></a>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<h2 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h2><p>误差项:<br>$$<br>e(x+\Delta x)=e(x)+J(x)\Delta x<br>$$</p>
+<ol>
+<li>一次观测</li>
+<li>多次观测</li>
+<li>逆深度 + VIO</li>
+</ol>
+<h2 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h2><ol>
+<li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li>
+<li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li>
+</ol>
+<h2 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h2><ol>
+<li>积分下一个时刻的PVQ作为视觉初始值</li>
+<li>预计分相邻帧的PVQ变化量，作为IMU的约束</li>
+<li>计算IMU误差的协方差和jacobian</li>
+</ol>
+<p><img src="/images/photo/image-20191202112248399.png" alt="image-20191202112248399"></p>
+<h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol>
+<li><p>将视觉约束就加到联合优化是紧耦合</p>
+</li>
+<li><p>将视觉约束后的位姿加入到联合优化是松耦合</p>
+</li>
+</ol>
+<p><img src="/image/image-20191202135710367.png" alt="image-20191202135710367"></p>
+<h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p>
+<ol>
+<li>初始化</li>
+<li>IMU预测</li>
+<li>视觉跟踪</li>
+<li>视觉增广</li>
+<li>视觉更新—选老点或者看不见的点</li>
+<li>视觉更新—边缘化</li>
+<li>剔除老帧</li>
+</ol>
+<p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678"></p>
+<p>误差状态向量<br>$$<br>\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}<em>{C_1} …\ce{^{G}\hat{p}</em>{c_N} \ce{G}\hat{p}_{C_N}}]<br>$$</p>
+<p>$$<br>\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T<br>$$</p>
+<blockquote>
+<p>每得到一个新图像以后需要对协方差矩阵做一个增广</p>
+</blockquote>
+<p><img src="/images/SLAM/%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E6%8E%A8%E5%AF%BC/MSCKF%E5%AF%B9%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5%E7%9A%84%E5%A2%9E%E5%B9%BF.png" alt="MSCKF对协方差矩阵的增广"></p>
+<p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268"></p>
+<blockquote>
+<p>成熟的路标点 表示窗口内各帧都看得到的点</p>
+</blockquote>
+<p><strong>因子图</strong></p>
+<p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572"></p>
+<blockquote>
+<p>Tbc表示IMU与相机间的转换矩阵</p>
+</blockquote>
+<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717"></p>
+<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060"></p>
+<p>路标点边缘化完后就可以了</p>
+<p><strong>第j个路标点的所有视觉误差为</strong><br>$$<br>r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}<br>$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897"></p>
+<p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。<br>$$<br>r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)<br>$$</p>
+<h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote>
+<p>复杂 不常用</p>
+</blockquote>
+<p>流程</p>
+<ol>
+<li>IMU预测</li>
+<li>视觉更新</li>
+<li>IEKF</li>
+<li>相机模型</li>
+<li>像素坐标校正</li>
+<li>光度误差</li>
+<li>QR分解</li>
+<li>Paych提取及Warp计算</li>
+<li>路标点质量评价及维护</li>
+</ol>
+<p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738"></p>
+<blockquote>
+<p>ROVIO使用光度误差</p>
+<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499"></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>ROVIO将路标点包含到状态向量中。有因将路标点表征在当前帧的坐标系下，有范围限制，因此对其进行归一化得到无约束的状态量—方向向量Bearing Vector</p>
+</blockquote>
+</blockquote>
+<p>ROVIO的创新点如下所示：</p>
+<p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing  Vector老了使得Pc平滑可导</p>
+<p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978"></p>
+<p>状态向量：当前帧的PVQB和路标点( mu,p)</p>
+<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085"></p>
+<p>因子图如下</p>
+<p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998"></p>
+<h3 id="VINS"><a href="#VINS" class="headerlink" title="VINS"></a>VINS</h3><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote>
+<p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p>
+</blockquote>
+<p>$$<br>X=[x_0,x_1,…x_n,x_c^b,\lambda_0,\lambda_1,…\lambda_m]<br>$$</p>
+<p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170"></p>
+<blockquote>
+<p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p>
+</blockquote>
+<h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722"></p>
+<p>Tracklocal map：仅优化当前帧</p>
+<p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305"></p>
+<p>Local Map：优化华创内的所有帧的PVQB和路标点</p>
+<p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237"></p>
+<h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p>
+<p><img src="/home/guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
+<p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p>
+<p>总结而言，在ICE-BA中更新Factor有三种情况：</p>
+<ol>
+<li>该Factor在本次迭代中没有变化，则不更新；</li>
+<li>该Factor是新Factor，则在原来基础上+=新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li>
+<li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li>
+</ol>
+<p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
 
       
       <!-- reward -->
@@ -178,13 +275,15 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/03/20/hello-world/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/02/15/2020-02-15-VIO_Framework/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
+
 
     </footer>
 
@@ -194,19 +293,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/20/2020-03-15-Motion_consistency/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            2020-03-15-Motion_consistency
+            使用evo工具评测SLAM
           
         </div>
       </a>
     
     
-      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-VINS_Mono_System/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Kalman滤波器学习</div>
+        <div class="article-nav-title">VINS系统解析</div>
       </a>
     
   </nav>

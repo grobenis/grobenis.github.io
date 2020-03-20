@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hello World |  曾是少年
+    使用evo工具评测SLAM |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-hello-world" class="article article-type-post" itemscope
+  <article id="post-2020-02-19-How_to_use_evo" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hello World
+  使用evo工具评测SLAM
 </h1>
   
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/20/hello-world/" class="article-date">
-  <time datetime="2020-03-20T08:04:16.647Z" itemprop="datePublished">2020-03-20</time>
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
       
@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">73字</span>
+            <span class="post-count">1.1k字</span>
         </span>
     </span>
 
@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -94,21 +94,72 @@
       
 
       
-      <p>今天是我生平的第一个博客空间！</p>
-<p>以后把好玩的东西、学习过程都写在这里！</p>
-<p>愿世界和平！</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+      <p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
+<p><a href="https://github.com/MichaelGrupp/evo" target="_blank" rel="noopener">github地址</a></p>
+<a id="more"></a>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol>
+<li>使用pypi直接安装：</li>
+</ol>
+<figure class="highlight plain"><figcaption><span>install evo --upgrade --no-binary evo ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 本地编译安装</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96; pip install --editable . --upgrade --no-binary evo</span><br></pre></td></tr></table></figure>
+<p>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p>
+<ul>
+<li><code>evo_ape</code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；<br>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</li>
+<li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差=绝对误差/真值）</li>
+</ul>
+<p><strong>工具命令</strong></p>
+<ul>
+<li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p>
+</li>
+<li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p>
+</li>
+<li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p>
+</li>
+<li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p>
+</li>
+<li><p><code>-va</code> a 对齐轨迹</p>
+</li>
+</ul>
+<p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum/kitti/bag/euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li>对比/绘制VINS-mono/fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html" target="_blank" rel="noopener">该博客</a>.</li>
+</ul>
+<h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj euroc .&#x2F;groundtruth&#x2F;MH_01_data.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>画某一次结果的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum .&#x2F;result&#x2F;MH_01&#x2F;loop_result.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p>
+<h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p>
+<ul>
+<li><p>“vins_result_loop” : defined in [path to Vins folder]/pose_graph/src/pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p>
+</li>
+<li><p>“vins_result_no_loop”: defined in [path to Vins folder]/vins_estimator/src/utility/visualization.cpp in function pubOdometry(). </p>
+<p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p>
+</li>
+</ul>
+<p>代码修改过程：</p>
+<p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="keyword">double</span> turetime = header.stamp.toSec();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.w() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>*<em>pose_graph.cpp *</em></p>
+<p>updatePath()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">"/home/guoben/Documents/output/loop_result.csv"</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="keyword">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.setf(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.w() &lt;&lt; <span class="built_in">endl</span>;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.setf(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; P.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; P.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.w() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>画某一个结果的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum .&#x2F;loop_result.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<p>对比结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_rpe euroc .&#x2F;groundtruth&#x2F;MH_01_data.csv .&#x2F;result&#x2F;MH_01&#x2F;vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure>
+
+<p>MSCKF</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; ofstream foutC(&quot;&#x2F;home&#x2F;guoben&#x2F;Documents&#x2F;output&#x2F;result_vio.csv&quot;, ios::app);</span><br><span class="line">&#x2F;&#x2F; foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">&#x2F;&#x2F; foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+
 
       
       <!-- reward -->
@@ -178,13 +229,15 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/03/20/hello-world/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/02/15/2020-02-19-How_to_use_evo/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
+
 
     </footer>
 
@@ -194,19 +247,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/20/2020-03-15-Motion_consistency/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            2020-03-15-Motion_consistency
+            Ubuntu1604连接蓝牙鼠标
           
         </div>
       </a>
     
     
-      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Kalman滤波器学习</div>
+        <div class="article-nav-title">VIO主流框架</div>
       </a>
     
   </nav>
