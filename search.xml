@@ -638,11 +638,19 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
   <entry>
     <title>利用Kalibr标定双目相机与IMU</title>
     <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
-    <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定</p>
+    <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
+<ol>
+<li>生成标定板</li>
+<li>标定双目相机</li>
+<li>标定IMU</li>
+<li>联合标定</li>
+</ol>
+<a id="more"></a>
+
 <h2 id="1-生成标定板"><a href="#1-生成标定板" class="headerlink" title="1. 生成标定板"></a>1. 生成标定板</h2><p>使用AprilTag</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun kalibr kalibr_create_target_pdf --type apriltag --nx 6 --ny 6 --tsize 0.002 --tspace 0.3</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
+
 
 <h2 id="2-标定双目相机"><a href="#2-标定双目相机" class="headerlink" title="2. 标定双目相机"></a>2. 标定双目相机</h2><p>降低帧率</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun topic_tools throttle messages &#x2F;l_cam&#x2F;image_raw 4 &#x2F;left</span><br><span class="line">rosrun topic_tools throttle messages &#x2F;r_cam&#x2F;image_raw 4 &#x2F;right</span><br></pre></td></tr></table></figure>
@@ -720,6 +728,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
     <title>发布IMU信息到ROS系统中</title>
     <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
     <content><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p>
+<p>​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
 <a id="more"></a>
 
 <h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-Imu-msg"><a href="#sensor-msgs-Imu-msg" class="headerlink" title="sensor_msgs/Imu.msg"></a>sensor_msgs/Imu.msg</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
@@ -1007,25 +1016,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 ]]></content>
       <tags>
         <tag>SLAM算法文档</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LaTex渲染的说明和测试</title>
-    <url>/2020/01/15/2020-01-15-math-test/</url>
-    <content><![CDATA[<p>LaTeX渲染已经在全站头部文件引入，可以直接使用，公式块上下使用<code>$$</code>标明，内联公式则用<code>$</code>. </p>
-<p>最好不要让公式出现在文章摘要里。</p>
-<p>Jekyll的默认文章摘要是第一段，但使用中选取摘要不是很稳定，因此加入了手动摘要分割线，默认为<code>&lt;!-- more --&gt;</code>，并且加入了首页摘要的字符数限制。</p>
-<p>因此有特殊符号、内容的文章，建议将这些内容折叠在摘要以下。例如本文</p>
-<a id="more"></a>
-
-<p>Block math test</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">\begin&#123;align*&#125;</span><br><span class="line">y &#x3D; y(x,t) &amp;&#x3D; A e^&#123;i\theta&#125; \\</span><br><span class="line">&amp;&#x3D; A (\cos \theta + i \sin \theta) \\</span><br><span class="line">&amp;&#x3D; A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \\</span><br><span class="line">&amp;&#x3D; A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \\</span><br><span class="line">&amp;&#x3D; A\cos \Big(\frac&#123;2\pi&#125;&#123;\lambda&#125;x - \frac&#123;2\pi v&#125;&#123;\lambda&#125; t \Big) + i A\sin \Big(\frac&#123;2\pi&#125;&#123;\lambda&#125;x - \frac&#123;2\pi v&#125;&#123;\lambda&#125; t \Big)  \\</span><br><span class="line">&amp;&#x3D; A\cos \frac&#123;2\pi&#125;&#123;\lambda&#125; (x - v t) + i A\sin \frac&#123;2\pi&#125;&#123;\lambda&#125; (x - v t)</span><br><span class="line">\end&#123;align*&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-
-<p>$$<br>\begin{align<em>}<br>y = y(x,t) &amp;= A e^{i\theta} \<br>&amp;= A (\cos \theta + i \sin \theta) \<br>&amp;= A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \<br>&amp;= A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \<br>&amp;= A\cos \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big) + i A\sin \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big)  \<br>&amp;= A\cos \frac{2\pi}{\lambda} (x - v t) + i A\sin \frac{2\pi}{\lambda} (x - v t)<br>\end{align</em>}<br>$$</p>
-<p>Inline math test <code>$\lim_{x \to \infty} \exp(-x) = 0$</code>, $\lim_{x \to \infty} \exp(-x) = 0$</p>
-]]></content>
-      <tags>
-        <tag>说明文档</tag>
       </tags>
   </entry>
   <entry>

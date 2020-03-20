@@ -61,7 +61,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">750字</span>
+            <span class="post-count">778字</span>
         </span>
     </span>
 
@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -95,11 +95,19 @@
       
 
       
-      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定</p>
+      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
+<ol>
+<li>生成标定板</li>
+<li>标定双目相机</li>
+<li>标定IMU</li>
+<li>联合标定</li>
+</ol>
+<a id="more"></a>
+
 <h2 id="1-生成标定板"><a href="#1-生成标定板" class="headerlink" title="1. 生成标定板"></a>1. 生成标定板</h2><p>使用AprilTag</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun kalibr kalibr_create_target_pdf --type apriltag --nx 6 --ny 6 --tsize 0.002 --tspace 0.3</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
+
 
 <h2 id="2-标定双目相机"><a href="#2-标定双目相机" class="headerlink" title="2. 标定双目相机"></a>2. 标定双目相机</h2><p>降低帧率</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rosrun topic_tools throttle messages &#x2F;l_cam&#x2F;image_raw 4 &#x2F;left</span><br><span class="line">rosrun topic_tools throttle messages &#x2F;r_cam&#x2F;image_raw 4 &#x2F;right</span><br></pre></td></tr></table></figure>

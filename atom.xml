@@ -247,13 +247,17 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-02-15T13:17:00.119Z</updated>
+    <updated>2020-03-20T11:17:22.129Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定&lt;/p&gt;
-&lt;h2 id=&quot;1-生成标定板&quot;&gt;&lt;a href=&quot;#1-生成标定板&quot; class=&quot;headerlink&quot; title=&quot;1. 生成标定板&quot;&gt;&lt;/a&gt;1. 生成标定板&lt;/h2&gt;&lt;p&gt;使用AprilTag&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rosrun kalibr kalibr_create_target_pdf --type apriltag --nx 6 --ny 6 --tsize 0.002 --tspace 0.3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      &lt;p&gt;本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;生成标定板&lt;/li&gt;
+&lt;li&gt;标定双目相机&lt;/li&gt;
+&lt;li&gt;标定IMU&lt;/li&gt;
+&lt;li&gt;联合标定&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
@@ -298,11 +302,12 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-02-15T12:37:27.666Z</updated>
+    <updated>2020-03-20T11:19:51.139Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;以下记录是在调试树莓派3b中得到的经验&lt;/p&gt;
+&lt;p&gt;​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。&lt;/p&gt;
     
     </summary>
     
@@ -402,28 +407,6 @@
     
     
       <category term="SLAM算法文档" scheme="https://grobenis.github.io/tags/SLAM%E7%AE%97%E6%B3%95%E6%96%87%E6%A1%A3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LaTex渲染的说明和测试</title>
-    <link href="https://grobenis.github.io/2020/01/15/2020-01-15-math-test/"/>
-    <id>https://grobenis.github.io/2020/01/15/2020-01-15-math-test/</id>
-    <published>2020-01-14T16:00:00.000Z</published>
-    <updated>2020-02-15T10:42:52.088Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;LaTeX渲染已经在全站头部文件引入，可以直接使用，公式块上下使用&lt;code&gt;$$&lt;/code&gt;标明，内联公式则用&lt;code&gt;$&lt;/code&gt;. &lt;/p&gt;
-&lt;p&gt;最好不要让公式出现在文章摘要里。&lt;/p&gt;
-&lt;p&gt;Jekyll的默认文章摘要是第一段，但使用中选取摘要不是很稳定，因此加入了手动摘要分割线，默认为&lt;code&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;，并且加入了首页摘要的字符数限制。&lt;/p&gt;
-&lt;p&gt;因此有特殊符号、内容的文章，建议将这些内容折叠在摘要以下。例如本文&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="说明文档" scheme="https://grobenis.github.io/tags/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/"/>
     
   </entry>
   
