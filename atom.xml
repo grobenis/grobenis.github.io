@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-18T06:08:13.253Z</updated>
+  <updated>2020-03-20T12:00:05.567Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -21,14 +21,14 @@
     <link href="https://grobenis.github.io/2020/03/14/2020-03-13-Kalman_Filter/"/>
     <id>https://grobenis.github.io/2020/03/14/2020-03-13-Kalman_Filter/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-18T06:08:13.253Z</updated>
+    <updated>2020-03-20T12:00:05.567Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;概率图+时间=动态系统&lt;/p&gt;
-&lt;p&gt;动态模型分为三类：&lt;/p&gt;
+&lt;p&gt;​    对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;HMM要求隐状态离散，不要求&lt;/li&gt;
+&lt;li&gt;若隐状态离散，不要求分布，则为隐马尔可夫模型&lt;/li&gt;
 &lt;li&gt;如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）&lt;/li&gt;
 &lt;li&gt;如果隐状态连续且非线性，作为得到粒子滤波器&lt;/li&gt;
 &lt;/ol&gt;
@@ -36,6 +36,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="Kalman滤波器" scheme="https://grobenis.github.io/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
@@ -415,7 +417,7 @@
     <link href="https://grobenis.github.io/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/"/>
     <id>https://grobenis.github.io/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/</id>
     <published>2020-01-14T16:00:00.000Z</published>
-    <updated>2020-02-15T11:26:46.267Z</updated>
+    <updated>2020-03-20T11:44:46.381Z</updated>
     
     <summary type="html">
     
@@ -438,10 +440,10 @@
   
   <entry>
     <title>Hello World!</title>
-    <link href="https://grobenis.github.io/2020/01/14/hello-world/"/>
-    <id>https://grobenis.github.io/2020/01/14/hello-world/</id>
+    <link href="https://grobenis.github.io/2020/01/14/2020-1-14_hello_world/"/>
+    <id>https://grobenis.github.io/2020/01/14/2020-1-14_hello_world/</id>
     <published>2020-01-13T16:00:00.000Z</published>
-    <updated>2020-03-20T10:42:15.691Z</updated>
+    <updated>2020-03-20T11:53:31.395Z</updated>
     
     <summary type="html">
     

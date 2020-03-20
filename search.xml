@@ -4,9 +4,9 @@
     <title>Kalman滤波器学习</title>
     <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
     <content><![CDATA[<p>概率图+时间=动态系统</p>
-<p>动态模型分为三类：</p>
+<p>​    对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
 <ol>
-<li>HMM要求隐状态离散，不要求</li>
+<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
 <li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
 <li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
 </ol>
@@ -58,6 +58,9 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <li>从程序实现上来说，EKF 需要存储状态量的均值和方差，并对它们进行维护和更新。如果把路标也放进状态的话，由于视觉SLAM 中路标数量很大，这个存储量是相当可观的，且与状态量呈平方增长（因为要存储协方差矩阵）。因此，EKF-SLAM 普遍被认为不可适用于大型场景。</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
       <tags>
         <tag>Kalman滤波器</tag>
       </tags>
@@ -1114,7 +1117,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
   </entry>
   <entry>
     <title>Hello World!</title>
-    <url>/2020/01/14/hello-world/</url>
+    <url>/2020/01/14/2020-1-14_hello_world/</url>
     <content><![CDATA[<p>今天是我生平的第一个博客空间！</p>
 <p>以后把好玩的东西、学习过程都写在这里！</p>
 <p>愿世界和平！</p>
