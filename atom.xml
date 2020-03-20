@@ -49,7 +49,7 @@
     <link href="https://grobenis.github.io/2020/03/14/2020-03-14-GMM/"/>
     <id>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-15T09:19:45.246Z</updated>
+    <updated>2020-03-20T12:44:32.336Z</updated>
     
     <summary type="html">
     
@@ -57,6 +57,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="GMM" scheme="https://grobenis.github.io/tags/GMM/"/>
@@ -68,7 +70,7 @@
     <link href="https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/"/>
     <id>https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-15T09:19:45.246Z</updated>
+    <updated>2020-03-20T12:44:40.152Z</updated>
     
     <summary type="html">
     
@@ -77,6 +79,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="概率图" scheme="https://grobenis.github.io/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/"/>
@@ -88,7 +92,7 @@
     <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/"/>
     <id>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T10:41:11.421Z</updated>
+    <updated>2020-03-20T12:45:08.430Z</updated>
     
     <summary type="html">
     
@@ -96,6 +100,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
@@ -107,12 +113,14 @@
     <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/"/>
     <id>https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-15T16:42:22.125Z</updated>
+    <updated>2020-03-20T12:45:25.283Z</updated>
     
     <summary type="html">
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="粒子滤波器" scheme="https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
@@ -124,7 +132,7 @@
     <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</id>
     <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-10T08:28:35.608Z</updated>
+    <updated>2020-03-20T12:43:59.591Z</updated>
     
     <summary type="html">
     
@@ -132,6 +140,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="DBoW2" scheme="https://grobenis.github.io/tags/DBoW2/"/>
@@ -145,7 +155,7 @@
     <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/</id>
     <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-10T11:14:06.167Z</updated>
+    <updated>2020-03-20T12:38:53.113Z</updated>
     
     <summary type="html">
     
@@ -162,6 +172,8 @@
     </summary>
     
     
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
     
       <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
     
@@ -174,7 +186,7 @@
     <link href="https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/</id>
     <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-12T15:29:50.572Z</updated>
+    <updated>2020-03-20T12:44:14.269Z</updated>
     
     <summary type="html">
     
@@ -191,6 +203,8 @@
     </summary>
     
     
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
     
       <category term="聚类" scheme="https://grobenis.github.io/tags/%E8%81%9A%E7%B1%BB/"/>
     
@@ -203,7 +217,7 @@
     <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
     <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-14T09:56:09.371Z</updated>
+    <updated>2020-03-20T12:44:24.248Z</updated>
     
     <summary type="html">
     
@@ -213,6 +227,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
@@ -224,18 +240,16 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-02-15T11:10:28.752Z</updated>
+    <updated>2020-03-20T12:42:51.015Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;本文主要讲如何利用ROS框架下的工具标定USB相机&lt;/p&gt;
-&lt;h2 id=&quot;利用IMU标定相机流程&quot;&gt;&lt;a href=&quot;#利用IMU标定相机流程&quot; class=&quot;headerlink&quot; title=&quot;利用IMU标定相机流程&quot;&gt;&lt;/a&gt;利用IMU标定相机流程&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;驱动USB摄像头&lt;/li&gt;
-&lt;li&gt;利用camera_calibration标定相机&lt;/li&gt;
-&lt;/ol&gt;
+      &lt;p&gt;本文讲解利用ROS框架下的工具标定USB相机的过程。&lt;/p&gt;
     
     </summary>
     
+    
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
       <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
@@ -249,7 +263,7 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-03-20T11:17:22.129Z</updated>
+    <updated>2020-03-20T12:43:07.486Z</updated>
     
     <summary type="html">
     
@@ -263,6 +277,8 @@
     
     </summary>
     
+    
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
       <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
@@ -278,7 +294,7 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-02-15T13:31:11.801Z</updated>
+    <updated>2020-03-20T12:43:34.230Z</updated>
     
     <summary type="html">
     
@@ -294,6 +310,8 @@
     </summary>
     
     
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
+    
     
       <category term="Ubuntu" scheme="https://grobenis.github.io/tags/Ubuntu/"/>
     
@@ -304,7 +322,7 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-03-20T11:19:51.139Z</updated>
+    <updated>2020-03-20T12:43:16.671Z</updated>
     
     <summary type="html">
     
@@ -313,6 +331,8 @@
     
     </summary>
     
+    
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
       <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
@@ -347,7 +367,7 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-VINS_Mono_System/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-VINS_Mono_System/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-02-15T13:18:07.115Z</updated>
+    <updated>2020-03-20T12:38:28.433Z</updated>
     
     <summary type="html">
     
@@ -355,6 +375,8 @@
     
     </summary>
     
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
       <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
@@ -366,7 +388,7 @@
     <link href="https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/</id>
     <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-03-10T07:54:19.245Z</updated>
+    <updated>2020-03-20T12:38:49.009Z</updated>
     
     <summary type="html">
     
@@ -375,6 +397,8 @@
     
     </summary>
     
+    
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
       <category term="VIO" scheme="https://grobenis.github.io/tags/VIO/"/>
@@ -390,7 +414,7 @@
     <link href="https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
     <id>https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</id>
     <published>2020-01-14T16:00:00.000Z</published>
-    <updated>2020-02-15T11:27:10.359Z</updated>
+    <updated>2020-03-20T12:43:26.523Z</updated>
     
     <summary type="html">
     
@@ -408,33 +432,7 @@
     
     
     
-      <category term="SLAM算法文档" scheme="https://grobenis.github.io/tags/SLAM%E7%AE%97%E6%B3%95%E6%96%87%E6%A1%A3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Markdown语法简介</title>
-    <link href="https://grobenis.github.io/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/"/>
-    <id>https://grobenis.github.io/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/</id>
-    <published>2020-01-14T16:00:00.000Z</published>
-    <updated>2020-03-20T11:44:46.381Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;分段与分行&quot;&gt;&lt;a href=&quot;#分段与分行&quot; class=&quot;headerlink&quot; title=&quot;分段与分行&quot;&gt;&lt;/a&gt;分段与分行&lt;/h2&gt;&lt;p&gt;以一个或多个空行来隔开段落；以两个或多个空格来段内换行。&lt;/p&gt;
-&lt;h2 id=&quot;标题&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="说明文档" scheme="https://grobenis.github.io/tags/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/"/>
+      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
     
   </entry>
   
@@ -443,7 +441,7 @@
     <link href="https://grobenis.github.io/2020/01/14/2020-1-14_hello_world/"/>
     <id>https://grobenis.github.io/2020/01/14/2020-1-14_hello_world/</id>
     <published>2020-01-13T16:00:00.000Z</published>
-    <updated>2020-03-20T11:53:31.395Z</updated>
+    <updated>2020-03-20T12:42:38.783Z</updated>
     
     <summary type="html">
     
@@ -455,7 +453,9 @@
     
     
     
-      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
+      <category term="Hello" scheme="https://grobenis.github.io/tags/Hello/"/>
+    
+      <category term="me" scheme="https://grobenis.github.io/tags/me/"/>
     
   </entry>
   

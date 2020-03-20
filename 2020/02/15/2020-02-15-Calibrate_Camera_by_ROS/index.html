@@ -54,6 +54,10 @@
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -95,17 +99,15 @@
       
 
       
-      <p>本文主要讲如何利用ROS框架下的工具标定USB相机</p>
+      <p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
+<a id="more"></a>
+
 <h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
 <li>驱动USB摄像头</li>
 <li>利用camera_calibration标定相机</li>
 </ol>
-<a id="more"></a>
-
 <p>执行命令为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
-
-
 
 <h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
 
@@ -348,7 +350,7 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/about">关于我</a>
+      <a class="nav-item-link" href="/about">关于</a>
     </li>
     
   </ul>
@@ -603,8 +605,8 @@
     
     
     
-    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
-        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=32"></iframe>
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
 </div>
 
 <style>
