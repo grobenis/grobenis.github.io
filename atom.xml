@@ -44,7 +44,7 @@
     <link href="https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/"/>
     <id>https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/</id>
     <published>2020-03-22T05:40:34.000Z</published>
-    <updated>2020-03-22T09:22:09.508Z</updated>
+    <updated>2020-03-22T14:08:36.952Z</updated>
     
     <summary type="html">
     
@@ -67,7 +67,30 @@
     
       <category term="周赛" scheme="https://grobenis.github.io/tags/%E5%91%A8%E8%B5%9B/"/>
     
-      <category term="C++，刷题" scheme="https://grobenis.github.io/tags/C-%EF%BC%8C%E5%88%B7%E9%A2%98/"/>
+      <category term="C++" scheme="https://grobenis.github.io/tags/C/"/>
+    
+      <category term="刷题" scheme="https://grobenis.github.io/tags/%E5%88%B7%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>高斯混合模型</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-GMM/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-20T13:23:38.131Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;高斯混合模型&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="GMM" scheme="https://grobenis.github.io/tags/GMM/"/>
     
   </entry>
   
@@ -100,15 +123,13 @@
   </entry>
   
   <entry>
-    <title>高斯混合模型</title>
-    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-GMM/"/>
-    <id>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</id>
+    <title>粒子滤波器</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T13:23:38.131Z</updated>
+    <updated>2020-03-20T12:45:25.283Z</updated>
     
     <summary type="html">
-    
-      &lt;p&gt;高斯混合模型&lt;/p&gt;
     
     </summary>
     
@@ -116,7 +137,7 @@
       <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="GMM" scheme="https://grobenis.github.io/tags/GMM/"/>
+      <category term="粒子滤波器" scheme="https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
     
   </entry>
   
@@ -164,48 +185,6 @@
   </entry>
   
   <entry>
-    <title>粒子滤波器</title>
-    <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/"/>
-    <id>https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/</id>
-    <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T12:45:25.283Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="粒子滤波器" scheme="https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBoW2库学习</title>
-    <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
-    <id>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</id>
-    <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-20T12:43:59.591Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="DBoW2" scheme="https://grobenis.github.io/tags/DBoW2/"/>
-    
-      <category term="回环检测" scheme="https://grobenis.github.io/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/"/>
-    
-  </entry>
-  
-  <entry>
     <title>VINS-Fusion代码阅读</title>
     <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/</id>
@@ -237,6 +216,52 @@
   </entry>
   
   <entry>
+    <title>DBoW2库学习</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-20T12:43:59.591Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="DBoW2" scheme="https://grobenis.github.io/tags/DBoW2/"/>
+    
+      <category term="回环检测" scheme="https://grobenis.github.io/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>隐马尔可夫模型</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-20T12:44:24.248Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
+&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
+&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>经典聚类算法调研</title>
     <link href="https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/</id>
@@ -264,29 +289,6 @@
       <category term="聚类" scheme="https://grobenis.github.io/tags/%E8%81%9A%E7%B1%BB/"/>
     
       <category term="图像分割" scheme="https://grobenis.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>隐马尔可夫模型</title>
-    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
-    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
-    <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-20T12:44:24.248Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
-&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
-&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
     
   </entry>
   
