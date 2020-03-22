@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-20T13:23:38.131Z</updated>
+  <updated>2020-03-22T06:01:28.527Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -17,45 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>高斯混合模型</title>
-    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-GMM/"/>
-    <id>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</id>
-    <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T13:23:38.131Z</updated>
+    <title>LeeCode第181场周赛</title>
+    <link href="https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/"/>
+    <id>https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/</id>
+    <published>2020-03-22T05:40:34.000Z</published>
+    <updated>2020-03-22T06:01:28.527Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;高斯混合模型&lt;/p&gt;
+      &lt;p&gt;第 181 场周赛&lt;/p&gt;
+&lt;p&gt;题目列表如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;按既定顺序创建目标数组&lt;/li&gt;
+&lt;li&gt;四因数&lt;/li&gt;
+&lt;li&gt;检查网络中是否存在有效路径&lt;/li&gt;
+&lt;li&gt;最长快乐前缀&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
     
-      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+      <category term="刷题" scheme="https://grobenis.github.io/categories/%E5%88%B7%E9%A2%98/"/>
     
     
-      <category term="GMM" scheme="https://grobenis.github.io/tags/GMM/"/>
+      <category term="LeeCode" scheme="https://grobenis.github.io/tags/LeeCode/"/>
     
-  </entry>
-  
-  <entry>
-    <title>概率图模型</title>
-    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/"/>
-    <id>https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/</id>
-    <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T12:44:40.152Z</updated>
+      <category term="周赛" scheme="https://grobenis.github.io/tags/%E5%91%A8%E8%B5%9B/"/>
     
-    <summary type="html">
-    
-      &lt;p&gt;概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）&lt;/p&gt;
-&lt;p&gt;本节将用来介绍概率图模型。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="概率图" scheme="https://grobenis.github.io/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/"/>
+      <category term="C++，刷题" scheme="https://grobenis.github.io/tags/C-%EF%BC%8C%E5%88%B7%E9%A2%98/"/>
     
   </entry>
   
@@ -88,15 +77,16 @@
   </entry>
   
   <entry>
-    <title>运动一致性判断</title>
-    <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/"/>
-    <id>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</id>
+    <title>概率图模型</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/</id>
     <published>2020-03-13T16:00:00.000Z</published>
-    <updated>2020-03-20T15:13:26.066Z</updated>
+    <updated>2020-03-20T12:44:40.152Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。&lt;/p&gt;
+      &lt;p&gt;概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）&lt;/p&gt;
+&lt;p&gt;本节将用来介绍概率图模型。&lt;/p&gt;
     
     </summary>
     
@@ -104,7 +94,28 @@
       <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
+      <category term="概率图" scheme="https://grobenis.github.io/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>高斯混合模型</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-14-GMM/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-20T13:23:38.131Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;高斯混合模型&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="GMM" scheme="https://grobenis.github.io/tags/GMM/"/>
     
   </entry>
   
@@ -128,15 +139,15 @@
   </entry>
   
   <entry>
-    <title>DBoW2库学习</title>
-    <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
-    <id>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</id>
-    <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-20T12:43:59.591Z</updated>
+    <title>运动一致性判断</title>
+    <link href="https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/"/>
+    <id>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</id>
+    <published>2020-03-13T16:00:00.000Z</published>
+    <updated>2020-03-20T15:13:26.066Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成&lt;/p&gt;
+      &lt;p&gt;直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。&lt;/p&gt;
     
     </summary>
     
@@ -144,9 +155,7 @@
       <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="DBoW2" scheme="https://grobenis.github.io/tags/DBoW2/"/>
-    
-      <category term="回环检测" scheme="https://grobenis.github.io/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/"/>
+      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
     
   </entry>
   
@@ -182,17 +191,15 @@
   </entry>
   
   <entry>
-    <title>隐马尔可夫模型</title>
-    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
-    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
+    <title>DBoW2库学习</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</id>
     <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-20T12:44:24.248Z</updated>
+    <updated>2020-03-20T12:43:59.591Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
-&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
-&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
+      &lt;p&gt;本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成&lt;/p&gt;
     
     </summary>
     
@@ -200,7 +207,9 @@
       <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
+      <category term="DBoW2" scheme="https://grobenis.github.io/tags/DBoW2/"/>
+    
+      <category term="回环检测" scheme="https://grobenis.github.io/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/"/>
     
   </entry>
   
@@ -236,6 +245,29 @@
   </entry>
   
   <entry>
+    <title>隐马尔可夫模型</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-20T12:44:24.248Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
+&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
+&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>利用ROS标定相机步骤与方法</title>
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</id>
@@ -255,37 +287,6 @@
       <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
     
       <category term="相机标定" scheme="https://grobenis.github.io/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>利用Kalibr标定双目相机与IMU</title>
-    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
-    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</id>
-    <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-03-20T12:43:07.486Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;生成标定板&lt;/li&gt;
-&lt;li&gt;标定双目相机&lt;/li&gt;
-&lt;li&gt;标定IMU&lt;/li&gt;
-&lt;li&gt;联合标定&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-    
-      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
-    
-      <category term="IMU" scheme="https://grobenis.github.io/tags/IMU/"/>
-    
-      <category term="Kalibr" scheme="https://grobenis.github.io/tags/Kalibr/"/>
     
   </entry>
   
@@ -338,6 +339,37 @@
     
     
       <category term="Ubuntu" scheme="https://grobenis.github.io/tags/Ubuntu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>利用Kalibr标定双目相机与IMU</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-03-20T12:43:07.486Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;生成标定板&lt;/li&gt;
+&lt;li&gt;标定双目相机&lt;/li&gt;
+&lt;li&gt;标定IMU&lt;/li&gt;
+&lt;li&gt;联合标定&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
+    
+      <category term="IMU" scheme="https://grobenis.github.io/tags/IMU/"/>
+    
+      <category term="Kalibr" scheme="https://grobenis.github.io/tags/Kalibr/"/>
     
   </entry>
   
