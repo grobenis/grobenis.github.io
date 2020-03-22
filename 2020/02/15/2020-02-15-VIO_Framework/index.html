@@ -120,7 +120,7 @@
 <li><p>将视觉约束后的位姿加入到联合优化是松耦合</p>
 </li>
 </ol>
-<p><img src="/image/image-20191202135710367.png" alt="image-20191202135710367"></p>
+<p><img src="/.io//image-20191202135710367.png" alt="image-20191202135710367"></p>
 <h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p>
 <ol>
 <li>初始化</li>
@@ -198,7 +198,7 @@
 <p>Local Map：优化华创内的所有帧的PVQB和路标点</p>
 <p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237"></p>
 <h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p>
-<p><img src="/home/guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
+<p><img src="/.io//guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
 <p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p>
 <p>总结而言，在ICE-BA中更新Factor有三种情况：</p>
 <ol>
@@ -294,19 +294,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            发布IMU信息到ROS系统中
+            Ubuntu1604连接蓝牙鼠标
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-VINS_Mono_System/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">VINS系统解析</div>
+        <div class="article-nav-title">使用evo工具评测SLAM</div>
       </a>
     
   </nav>
