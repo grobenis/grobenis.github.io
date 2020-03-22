@@ -108,8 +108,8 @@
 </ul>
 <h2 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h2><p><strong>题目</strong></p>
 <p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
-<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。</p>
-<p><img src="/.io//3.png" alt></p>
+<p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。    </p>
+<p><img src="/2020/03/22/LeeCode-Contest-181/3.png" alt="lee"></p>
 <h3 id="DFS解法"><a href="#DFS解法" class="headerlink" title="DFS解法"></a>DFS解法</h3><p>通过构建pipe数组，将每个拼图转化为四个方向上的移动限制图。<br>$pipe[3][2]=3$ ，代表三号拼图可以由向上的方向进入其中，并转向左方向继续前进。<br>$pipe[5][3]=-1$ ，代表五号拼图不可以由向左的方向进入其中。</p>
 <p>其中0代表向下、1代表向右、2代表向上、3代表向左、-1代表不可走</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> row,col;</span><br><span class="line">    <span class="keyword">int</span> dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;;<span class="comment">//0下、1右、2上、3左</span></span><br><span class="line">    <span class="keyword">int</span> pipe[<span class="number">7</span>][<span class="number">4</span>]=&#123;&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">3</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">2</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">3</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">2</span>&#125;&#125;;</span><br><span class="line">    <span class="comment">//记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> dir,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( x == row<span class="number">-1</span> &amp;&amp; y == col<span class="number">-1</span> ) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//到达终点</span></span><br><span class="line">        <span class="keyword">int</span> nextx = x + dx[dir] ,nexty = y + dy[dir];</span><br><span class="line">        <span class="keyword">if</span>(nextx&lt;<span class="number">0</span> || nexty&lt;<span class="number">0</span> || nextx &gt;= row || nexty&gt;=col)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//越界</span></span><br><span class="line">        <span class="keyword">int</span> nxt=grid[nextx][nexty]; <span class="comment">//得到下一块拼图的编号</span></span><br><span class="line">        <span class="keyword">if</span>( pipe[nxt][dir]!= <span class="number">-1</span> )</span><br><span class="line">            <span class="keyword">return</span> dfs(nextx,nexty,pipe[nxt][dir],grid); <span class="comment">//如果当前方向可走，则方向改变，继续走。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasValidPath</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;    </span><br><span class="line">        row=grid.<span class="built_in">size</span>();</span><br><span class="line">        col=grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> sta=grid[<span class="number">0</span>][<span class="number">0</span>];<span class="comment">//起点的拼图编号</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;++i)<span class="comment">//朝着四个方向都试一下</span></span><br><span class="line">            <span class="keyword">if</span>(pipe[sta][i]!=<span class="number">-1</span>)<span class="comment">//当前方向可以走</span></span><br><span class="line">                <span class="keyword">if</span>(dfs(<span class="number">0</span>,<span class="number">0</span>,pipe[sta][i],grid))<span class="comment">//沿着当前方向搜索</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -218,55 +218,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>粒子滤波器</title>
-    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>粒子滤波器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率图模型</title>
-    <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
-    <content><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
-<p>本节将用来介绍概率图模型。</p>
-<a id="more"></a>
-
-<h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p>
-<p><strong>分类</strong></p>
-<p>根据边的性质不同，概率图模型可大致分为两类：</p>
-<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
-<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p>
-<p><strong>前提背景</strong></p>
-<p>利用条件独立性可以降低概率模型的计算复杂度；</p>
-<p>条件独立性要在图的结构上有所映射；</p>
-<p><strong>图的构建方法</strong></p>
-<p>拓扑排序;</p>
-<p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p>
-<p>性质：</p>
-<p>如果父节点被观测，则其子节点独立；</p>
-<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p>
-<p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p>
-<p>道德图：有向图$\rarr$无向图</p>
-<p>出发点：</p>
-<ol>
-<li>引入环</li>
-<li>简便</li>
-</ol>
-<p>因子图把因子引入图里边。</p>
-<p><img src="/.io//D:%5CProject%5Cgrobenis.github.io%5Cimages%5C%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20200315165811022"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>概率图</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>高斯混合模型</title>
     <url>/2020/03/14/2020-03-14-GMM/</url>
     <content><![CDATA[<p>高斯混合模型</p>
@@ -296,7 +247,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <ol start="4">
 <li>重复第二步和第三步，直至收敛。</li>
 </ol>
-<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/.io//20140528175313171.png" alt="20140528175313171"></p>
+<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171"></p>
 <p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p>
 <ul>
 <li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li>
@@ -316,7 +267,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p><strong>利用声学特征训练HMM</strong></p>
 <p>确定状态转移矩阵，是执行解码问题的基础。</p>
 <p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u=max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p>
-<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/.io//..%5Cimages%5CGMM%5C20160901093401467.png" alt></p>
+<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/2020/03/14/2020-03-14-GMM/..%5Cimages%5CGMM%5C20160901093401467.png" alt></p>
 <ul>
 <li><strong>对待识别语音做信号预处理</strong></li>
 <li><strong>对待识别语音提取声学特征</strong></li>
@@ -325,7 +276,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>对声学特征解码后得到的是状态序列，即音素序列。</p>
 <p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p>
 <p><strong>其它应用</strong></p>
-<p><img src="/.io//D:%5CProject%5Cgrobenis.github.io%5Cimages%5CHMM%5CHMM_nlp.jpg" alt></p>
+<p><img src="/2020/03/14/2020-03-14-GMM/D:%5CProject%5Cgrobenis.github.io%5Cimages%5CHMM%5CHMM_nlp.jpg" alt></p>
 <p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>
 ]]></content>
       <categories>
@@ -333,6 +284,44 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>GMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率图模型</title>
+    <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
+    <content><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p>本节将用来介绍概率图模型。</p>
+<a id="more"></a>
+
+<h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p>
+<p><strong>分类</strong></p>
+<p>根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p>
+<p><strong>前提背景</strong></p>
+<p>利用条件独立性可以降低概率模型的计算复杂度；</p>
+<p>条件独立性要在图的结构上有所映射；</p>
+<p><strong>图的构建方法</strong></p>
+<p>拓扑排序;</p>
+<p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p>
+<p>性质：</p>
+<p>如果父节点被观测，则其子节点独立；</p>
+<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p>
+<p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p>
+<p>道德图：有向图 → 无向图</p>
+<p>出发点：</p>
+<ol>
+<li>引入环</li>
+<li>简便</li>
+</ol>
+<p>因子图把因子引入图里边。</p>
+<p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>概率图</tag>
       </tags>
   </entry>
   <entry>
@@ -365,7 +354,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动</p>
 <p>静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。</p>
 <p>对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图2是高动态场景的统计残差直方图示例。</p>
-<p><img src="/.io//Motion_consistency.png" alt="image-20200316123237971"></p>
+<p><img src="/2020/03/14/2020-03-15-Motion_consistency/Motion_consistency.png" alt="image-20200316123237971"></p>
 <p>在概率论和统计学中，t-分布（t-distribution）用于根据小样本来估计呈正态分布且方差未知的总体的均值。</p>
 <p>受[14，23]的启发，基于t分布的非参数统计模型构造如下：<br>$$<br>w_i = \cfrac{v_0+1}{v_0+((\delta’_i-\mu))^2}<br>$$</p>
 <p>$$<br>\delta = 1.4826 Median {|\delta’_i-\mu|}<br>$$</p>
@@ -412,6 +401,17 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>粒子滤波器</title>
+    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>粒子滤波器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DBoW2库学习</title>
     <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
     <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
@@ -450,115 +450,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       <tags>
         <tag>DBoW2</tag>
         <tag>回环检测</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>隐马尔可夫模型</title>
-    <url>/2020/03/10/2020-03-13-HMM_model/</url>
-    <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
-<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
-<p>来源：李航的《统计学习方法》</p>
-<a id="more"></a>
-
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。</p>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>机器学习中的步骤优化：</p>
-<ol>
-<li>确定模型</li>
-<li>确定策略 即准则（损失函数）</li>
-<li>算法：GN</li>
-</ol>
-<h3 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h3><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
-<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
-<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）;</p>
-<p>概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）；</p>
-<p>概率图模型+时间序列=动态模型；</p>
-<p>动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器；</p>
-<ol>
-<li>HMM：系统状态离散</li>
-<li>Kalman滤波器：系统状态连续且线性分布</li>
-<li>Particle滤波器：系统状态连续且非线性分布</li>
-</ol>
-<h3 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h3><p>​        隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下：</p>
-<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q = {q_1,q_2,…,q_N},V={v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
-<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I={i_1,i_2,…,i_N},O={v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A=[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
-<p>B是观测概率矩阵：<br>$$<br>B=[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)=P(o_t=v_k|i_t=q_j)，i=1,2,…N;j=1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
-<p>$\pi$是初始状态概率向量：<br>$$<br>\pi=(\pi_i)<br>$$<br>其中，<br>$$<br>\pi=P(i_1=q_i),i=1,2,…N<br>$$<br>是时刻t=1处于状态$t=1$处于状态$q_i$的概率。</p>
-<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda=(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
-<p>​    状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列</p>
-<h3 id="两个基本假设"><a href="#两个基本假设" class="headerlink" title="两个基本假设"></a>两个基本假设</h3><ol>
-<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)=P(i_t|i_t-1),t=1,2,…,T<br>$$</p>
-</li>
-<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)=P(o_t|i_t)<br>$$</p>
-</li>
-</ol>
-<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O=(o_1,o_2,…o_T)$的生成过程描述如下：</p>
-<p>算法：观测序列的生成</p>
-<p>输入：隐马尔可夫模型$\lambda=(A,B,\pi)$,观测序列长度；</p>
-<p>输出：观测序列$O=(o_1,o_2,…,o_T)$</p>
-<ol>
-<li>按照初始状态分布$\pi$产生状态$i_1$</li>
-<li>令t=1</li>
-<li>按照状态$i_t$的观测概率分布$b_{i_t(k)}$生成$o_t$</li>
-<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}=1,2,…N$ </li>
-<li>令t=t+1,如果t&lt;T，转步（3），否则，终止</li>
-</ol>
-<h2 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h2><p>隐马尔可夫模型有三个<strong>基本问题</strong>：</p>
-<ol>
-<li><strong>概率计算问题</strong>。给的模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
-<li><strong>学习问题</strong>。阈值观测序列$O=(o_1,o_2,…,o_T)$，估计模型参数$\lambda=(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
-<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I=(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
-</ol>
-<p>本节将介绍HMM模型的概率计算算法、学习算法以及预测算法</p>
-<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
-<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I=(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O=(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
-<p>状态序列$I=(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)=\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I=(i_1,i_2,…i_T)$,观测序列$O=(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)=b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)=P(O|I,\lambda)P(I,\lambda)=\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)=\sum_IP(O|I,\lambda)P(I|\lambda)=\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
-<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O=(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)=P(o_1,o_2,…,o_t,i_t=q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
-<p>输入：隐马尔可夫模型$\lambda$，观测序列O;</p>
-<p>输出：观测序列概率$P(O|\lambda)$</p>
-<ol>
-<li><p>初值<br>$$<br>\alpha_1(i)=\pi_ib_i(o_1),i=1,2,…N<br>$$</p>
-</li>
-<li><p>递推 对 $t=1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)=[\sum^N_{j=1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i=1,2,…N<br>$$</p>
-</li>
-<li><p>终止<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$</p>
-</li>
-</ol>
-<p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
-<p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
-<p><img src="/.io//..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
-<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
-<p><strong>算法步骤</strong></p>
-<p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
-<p><strong>输出</strong>：观测序列$P(O|\lambda)$;</p>
-<ol>
-<li><p>$\beta_T(i)=1,i=1,2,…N$</p>
-</li>
-<li><p>对$t=T-1,T-2,…1$<br>$$<br>\beta_t(i)=\sum^N_{j=1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i=1,2,…,N<br>$$</p>
-</li>
-</ol>
-<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
-<p><img src="/.io//..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
-<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
-<p>HMM的主要应用是解码</p>
-<p>两种解码方法：</p>
-<ol>
-<li>Viterbi算法解码</li>
-<li>前向后向算法+贝叶斯后验概率</li>
-</ol>
-<h3 id="语音识别"><a href="#语音识别" class="headerlink" title="语音识别"></a>语音识别</h3><h3 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h3><h3 id="词性标注"><a href="#词性标注" class="headerlink" title="词性标注"></a>词性标注</h3><p>词性是隐藏状态，词出现时观察序列。</p>
-<p>首先我们要知道模型的参数，如果又标注数据，直接用比例代替概率，如果没有用前向后向算法求除</p>
-<p>知道模型参数吧，使用Viterbi算法来计算某个标注序列（隐含状态）的概率</p>
-<h3 id="实际建模过程"><a href="#实际建模过程" class="headerlink" title="实际建模过程"></a>实际建模过程</h3><ul>
-<li>根据实际问题确定状态个数及观察序列</li>
-<li>用若干已知序列，采用B-W算法估计参数（转移概率和输出概率的值）</li>
-<li>输入位置序列用Viterbi算法或者贝叶斯概率解码</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>HMM</tag>
       </tags>
   </entry>
   <entry>
@@ -694,7 +585,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 </li>
 <li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p>
 <p>下图演示了均值漂移聚类的计算步骤：</p>
-<p><img src="/.io//..%5Cimages%5C%E8%81%9A%E7%B1%BB%5CMeanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法"></p>
+<p><img src="/2020/03/10/2020-03-12-Clustering_Survey/..%5Cimages%5C%E8%81%9A%E7%B1%BB%5CMeanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法"></p>
 </li>
 </ol>
 <p><strong>算法评价</strong></p>
@@ -713,7 +604,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>优点：简单快速高效；对异常值不太敏感</p>
 <p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p>
 <p>下图演示了k均值聚类的过程：</p>
-<p><img src="/.io//..%5Cimages%5C%E8%81%9A%E7%B1%BB%5Ck%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" alt></p>
+<p><img src="/2020/03/10/2020-03-12-Clustering_Survey/..%5Cimages%5C%E8%81%9A%E7%B1%BB%5Ck%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" alt></p>
 <h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p>
 <p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p>
 <p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$<br>J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞<br>$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p>
@@ -780,6 +671,115 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       <tags>
         <tag>聚类</tag>
         <tag>图像分割</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>隐马尔可夫模型</title>
+    <url>/2020/03/10/2020-03-13-HMM_model/</url>
+    <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
+<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
+<p>来源：李航的《统计学习方法》</p>
+<a id="more"></a>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>机器学习中的步骤优化：</p>
+<ol>
+<li>确定模型</li>
+<li>确定策略 即准则（损失函数）</li>
+<li>算法：GN</li>
+</ol>
+<h3 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h3><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）;</p>
+<p>概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）；</p>
+<p>概率图模型+时间序列=动态模型；</p>
+<p>动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器；</p>
+<ol>
+<li>HMM：系统状态离散</li>
+<li>Kalman滤波器：系统状态连续且线性分布</li>
+<li>Particle滤波器：系统状态连续且非线性分布</li>
+</ol>
+<h3 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h3><p>​        隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下：</p>
+<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q = {q_1,q_2,…,q_N},V={v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
+<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I={i_1,i_2,…,i_N},O={v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A=[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
+<p>B是观测概率矩阵：<br>$$<br>B=[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)=P(o_t=v_k|i_t=q_j)，i=1,2,…N;j=1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
+<p>$\pi$是初始状态概率向量：<br>$$<br>\pi=(\pi_i)<br>$$<br>其中，<br>$$<br>\pi=P(i_1=q_i),i=1,2,…N<br>$$<br>是时刻t=1处于状态$t=1$处于状态$q_i$的概率。</p>
+<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda=(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
+<p>​    状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列</p>
+<h3 id="两个基本假设"><a href="#两个基本假设" class="headerlink" title="两个基本假设"></a>两个基本假设</h3><ol>
+<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)=P(i_t|i_t-1),t=1,2,…,T<br>$$</p>
+</li>
+<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)=P(o_t|i_t)<br>$$</p>
+</li>
+</ol>
+<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O=(o_1,o_2,…o_T)$的生成过程描述如下：</p>
+<p>算法：观测序列的生成</p>
+<p>输入：隐马尔可夫模型$\lambda=(A,B,\pi)$,观测序列长度；</p>
+<p>输出：观测序列$O=(o_1,o_2,…,o_T)$</p>
+<ol>
+<li>按照初始状态分布$\pi$产生状态$i_1$</li>
+<li>令t=1</li>
+<li>按照状态$i_t$的观测概率分布$b_{i_t(k)}$生成$o_t$</li>
+<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}=1,2,…N$ </li>
+<li>令t=t+1,如果t&lt;T，转步（3），否则，终止</li>
+</ol>
+<h2 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h2><p>隐马尔可夫模型有三个<strong>基本问题</strong>：</p>
+<ol>
+<li><strong>概率计算问题</strong>。给的模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
+<li><strong>学习问题</strong>。阈值观测序列$O=(o_1,o_2,…,o_T)$，估计模型参数$\lambda=(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
+<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I=(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
+</ol>
+<p>本节将介绍HMM模型的概率计算算法、学习算法以及预测算法</p>
+<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
+<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I=(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O=(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
+<p>状态序列$I=(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)=\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I=(i_1,i_2,…i_T)$,观测序列$O=(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)=b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)=P(O|I,\lambda)P(I,\lambda)=\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)=\sum_IP(O|I,\lambda)P(I|\lambda)=\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
+<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O=(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)=P(o_1,o_2,…,o_t,i_t=q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
+<p>输入：隐马尔可夫模型$\lambda$，观测序列O;</p>
+<p>输出：观测序列概率$P(O|\lambda)$</p>
+<ol>
+<li><p>初值<br>$$<br>\alpha_1(i)=\pi_ib_i(o_1),i=1,2,…N<br>$$</p>
+</li>
+<li><p>递推 对 $t=1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)=[\sum^N_{j=1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i=1,2,…N<br>$$</p>
+</li>
+<li><p>终止<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$</p>
+</li>
+</ol>
+<p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
+<p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
+<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
+<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
+<p><strong>算法步骤</strong></p>
+<p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
+<p><strong>输出</strong>：观测序列$P(O|\lambda)$;</p>
+<ol>
+<li><p>$\beta_T(i)=1,i=1,2,…N$</p>
+</li>
+<li><p>对$t=T-1,T-2,…1$<br>$$<br>\beta_t(i)=\sum^N_{j=1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i=1,2,…,N<br>$$</p>
+</li>
+</ol>
+<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
+<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
+<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
+<p>HMM的主要应用是解码</p>
+<p>两种解码方法：</p>
+<ol>
+<li>Viterbi算法解码</li>
+<li>前向后向算法+贝叶斯后验概率</li>
+</ol>
+<h3 id="语音识别"><a href="#语音识别" class="headerlink" title="语音识别"></a>语音识别</h3><h3 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h3><h3 id="词性标注"><a href="#词性标注" class="headerlink" title="词性标注"></a>词性标注</h3><p>词性是隐藏状态，词出现时观察序列。</p>
+<p>首先我们要知道模型的参数，如果又标注数据，直接用比例代替概率，如果没有用前向后向算法求除</p>
+<p>知道模型参数吧，使用Viterbi算法来计算某个标注序列（隐含状态）的概率</p>
+<h3 id="实际建模过程"><a href="#实际建模过程" class="headerlink" title="实际建模过程"></a>实际建模过程</h3><ul>
+<li>根据实际问题确定状态个数及观察序列</li>
+<li>用若干已知序列，采用B-W算法估计参数（转移概率和输出概率的值）</li>
+<li>输入位置序列用Viterbi算法或者贝叶斯概率解码</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>HMM</tag>
       </tags>
   </entry>
   <entry>
@@ -1004,7 +1004,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <li><p>将视觉约束后的位姿加入到联合优化是松耦合</p>
 </li>
 </ol>
-<p><img src="/.io//image-20191202135710367.png" alt="image-20191202135710367"></p>
+<p><img src="/image/image-20191202135710367.png" alt="image-20191202135710367"></p>
 <h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p>
 <ol>
 <li>初始化</li>
@@ -1082,7 +1082,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>Local Map：优化华创内的所有帧的PVQB和路标点</p>
 <p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237"></p>
 <h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p>
-<p><img src="/.io//guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
+<p><img src="/home/guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
 <p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p>
 <p>总结而言，在ICE-BA中更新Factor有三种情况：</p>
 <ol>

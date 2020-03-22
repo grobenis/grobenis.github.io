@@ -169,7 +169,7 @@
 </ol>
 <p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
 <p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
-<p><img src="/.io//..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
+<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
 <h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
 <p><strong>算法步骤</strong></p>
 <p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
@@ -181,7 +181,7 @@
 </li>
 </ol>
 <p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
-<p><img src="/.io//..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
+<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
 <h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
 <p>HMM的主要应用是解码</p>
 <p>两种解码方法：</p>
@@ -284,19 +284,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-12-Clustering_Survey/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            DBoW2库学习
+            经典聚类算法调研
           
         </div>
       </a>
     
     
-      <a href="/2020/03/10/2020-03-10-Read-VINS-Fusion/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">VINS-Fusion代码阅读</div>
+        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
       </a>
     
   </nav>

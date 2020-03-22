@@ -126,7 +126,7 @@
 <p>该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动</p>
 <p>静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。</p>
 <p>对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图2是高动态场景的统计残差直方图示例。</p>
-<p><img src="/.io//Motion_consistency.png" alt="image-20200316123237971"></p>
+<p><img src="/2020/03/14/2020-03-15-Motion_consistency/Motion_consistency.png" alt="image-20200316123237971"></p>
 <p>在概率论和统计学中，t-分布（t-distribution）用于根据小样本来估计呈正态分布且方差未知的总体的均值。</p>
 <p>受[14，23]的启发，基于t分布的非参数统计模型构造如下：<br>$$<br>w_i = \cfrac{v_0+1}{v_0+((\delta’_i-\mu))^2}<br>$$</p>
 <p>$$<br>\delta = 1.4826 Median {|\delta’_i-\mu|}<br>$$</p>
@@ -251,19 +251,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/14/2020-03-14-GMM/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-14-Probability_graph_model/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            高斯混合模型
+            概率图模型
           
         </div>
       </a>
     
     
-      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">DBoW2库学习</div>
+        <div class="article-nav-title">粒子滤波器</div>
       </a>
     
   </nav>
