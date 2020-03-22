@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-22T06:01:28.527Z</updated>
+  <updated>2020-03-22T07:21:50.759Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/"/>
     <id>https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/</id>
     <published>2020-03-22T05:40:34.000Z</published>
-    <updated>2020-03-22T06:01:28.527Z</updated>
+    <updated>2020-03-22T07:21:50.759Z</updated>
     
     <summary type="html">
     
@@ -44,7 +44,9 @@
     
       <category term="周赛" scheme="https://grobenis.github.io/tags/%E5%91%A8%E8%B5%9B/"/>
     
-      <category term="C++，刷题" scheme="https://grobenis.github.io/tags/C-%EF%BC%8C%E5%88%B7%E9%A2%98/"/>
+      <category term="C++" scheme="https://grobenis.github.io/tags/C/"/>
+    
+      <category term="刷题" scheme="https://grobenis.github.io/tags/%E5%88%B7%E9%A2%98/"/>
     
   </entry>
   
