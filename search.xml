@@ -109,7 +109,7 @@
 <h2 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h2><p><strong>题目</strong></p>
 <p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
 <p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。</p>
-<p><img src="/.io//3.png" alt="img"></p>
+<p><img src="/.io//3.png" alt></p>
 <h3 id="DFS解法"><a href="#DFS解法" class="headerlink" title="DFS解法"></a>DFS解法</h3><p>通过构建pipe数组，将每个拼图转化为四个方向上的移动限制图。<br>$pipe[3][2]=3$ ，代表三号拼图可以由向上的方向进入其中，并转向左方向继续前进。<br>$pipe[5][3]=-1$ ，代表五号拼图不可以由向左的方向进入其中。</p>
 <p>其中0代表向下、1代表向右、2代表向上、3代表向左、-1代表不可走</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> row,col;</span><br><span class="line">    <span class="keyword">int</span> dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;;<span class="comment">//0下、1右、2上、3左</span></span><br><span class="line">    <span class="keyword">int</span> pipe[<span class="number">7</span>][<span class="number">4</span>]=&#123;&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">3</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">2</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">3</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">2</span>&#125;&#125;;</span><br><span class="line">    <span class="comment">//记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> dir,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( x == row<span class="number">-1</span> &amp;&amp; y == col<span class="number">-1</span> ) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//到达终点</span></span><br><span class="line">        <span class="keyword">int</span> nextx = x + dx[dir] ,nexty = y + dy[dir];</span><br><span class="line">        <span class="keyword">if</span>(nextx&lt;<span class="number">0</span> || nexty&lt;<span class="number">0</span> || nextx &gt;= row || nexty&gt;=col)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//越界</span></span><br><span class="line">        <span class="keyword">int</span> nxt=grid[nextx][nexty]; <span class="comment">//得到下一块拼图的编号</span></span><br><span class="line">        <span class="keyword">if</span>( pipe[nxt][dir]!= <span class="number">-1</span> )</span><br><span class="line">            <span class="keyword">return</span> dfs(nextx,nexty,pipe[nxt][dir],grid); <span class="comment">//如果当前方向可走，则方向改变，继续走。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasValidPath</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;    </span><br><span class="line">        row=grid.<span class="built_in">size</span>();</span><br><span class="line">        col=grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> sta=grid[<span class="number">0</span>][<span class="number">0</span>];<span class="comment">//起点的拼图编号</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;++i)<span class="comment">//朝着四个方向都试一下</span></span><br><span class="line">            <span class="keyword">if</span>(pipe[sta][i]!=<span class="number">-1</span>)<span class="comment">//当前方向可以走</span></span><br><span class="line">                <span class="keyword">if</span>(dfs(<span class="number">0</span>,<span class="number">0</span>,pipe[sta][i],grid))<span class="comment">//沿着当前方向搜索</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -453,112 +453,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>VINS-Fusion代码阅读</title>
-    <url>/2020/03/10/2020-03-10-Read-VINS-Fusion/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h2 id="Loop-Fusion"><a href="#Loop-Fusion" class="headerlink" title="Loop Fusion"></a>Loop Fusion</h2><p>Loop Fusion结点包括：</p>
-<h2 id="VINS-estimator"><a href="#VINS-estimator" class="headerlink" title="VINS_estimator"></a>VINS_estimator</h2><p>VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。</p>
-<h3 id="rosNodeTest-cpp"><a href="#rosNodeTest-cpp" class="headerlink" title="rosNodeTest.cpp"></a>rosNodeTest.cpp</h3><p>rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。</p>
-<p>主程序包含以下流程：</p>
-<ol>
-<li><p>读取配置文件参数 readParameter()</p>
-</li>
-<li><p>订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理</p>
-</li>
-<li><p>开启一个新线程sync_process。</p>
-<p>该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。</p>
-</li>
-</ol>
-<h3 id="estimator"><a href="#estimator" class="headerlink" title="estimator"></a>estimator</h3><p>VIO系统的整个程序从Estimator estimator开启。</p>
-<p>estimator类的定义由estimator.h和estimator.cpp两个文件完成。</p>
-<p>包含以下重要的自定义成员：</p>
-<table>
-<thead>
-<tr>
-<th align="center">成员</th>
-<th align="center">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">Feature_Tracker featureTracker</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">FeatureManager f_manager</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-<p>estimator类中包含两类成员函数：</p>
-<ol>
-<li><p>接口函数</p>
-<p>包括以下8个函数：</p>
-<table>
-<thead>
-<tr>
-<th align="center">函数</th>
-<th align="left">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">initFirstPose()</td>
-<td align="left">初始化初始位姿</td>
-</tr>
-<tr>
-<td align="center">inputIMU()</td>
-<td align="left">输入IMU数据</td>
-</tr>
-<tr>
-<td align="center">inputImage()</td>
-<td align="left">输入图片数据</td>
-</tr>
-<tr>
-<td align="center">inputFeature()</td>
-<td align="left">输入特征</td>
-</tr>
-<tr>
-<td align="center">ProcessIMU()</td>
-<td align="left">处理IMU数据，对IMU进行预积分；</td>
-</tr>
-<tr>
-<td align="center">ProcessImage()</td>
-<td align="left">处理相机数据；<br>1. 基于特征点的视差来判断当前帧是否属于关键帧；<br>2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃；<br>3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。<br>4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃，比如非线性求解器中的解有大跳动，求解出相机IMU的外参矩阵或IMU偏移等等，系统挂掉就清空状态，重新初始化。</td>
-</tr>
-<tr>
-<td align="center">ProcessMeasurements()</td>
-<td align="left">处理测量值；处理各buffer里的数据，当featureBuf不等于空时，开始进行以下处理（为什么是featureBuf，因为当有图像buffer数据的时候，才会有featuretracker.push(make_pair(t,featureFrame))，即有图像数据后，程序才发给跟踪器叫他产生feature，因此当featureBuf不等于空，所有的buffer，包括imu,图像，都不为空）：</td>
-</tr>
-<tr>
-<td align="center">changeSensrType</td>
-<td align="left">改变传感器类型，用于确定是否使用IMU，使用单目相机还是双目相机</td>
-</tr>
-</tbody></table>
-</li>
-</ol>
-<ol start="2">
-<li>内部函数</li>
-</ol>
-<p>类的初始化函数Estimator()，由于Estimator类成员内部有两个比较重要的自定义类成员：<br>（1）Feature_Tracker featuretracker;（以前vins-mono这部分是作为一个独立的Node存在）:<br>用来对原始图像进行畸变校正，特征点采集，光流跟踪<br>（2）FeatureManager f_manager;<br>用来对滑动窗口内所有特征点的管理。<br>简单设置了一些参数后，系统进入main()。</p>
-<p>接着main()与Estimator estimator两者开始发生联系：<br>main()中estimator.setParameter()开启了滑动窗口估计的一个新线程<br>由于我们在配置文件中 多线程MULTIPLE_THREAD设置为1，因此当setParameter()时候，就开启了一个Estimator类内的新线程：processMeasurements();</p>
-<p>pub VIO的各种话题，包括里程计信息，tf变换，相机姿态，点云信息，并且发布关键帧。</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>VINS</tag>
-        <tag>代码阅读</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>隐马尔可夫模型</title>
     <url>/2020/03/10/2020-03-13-HMM_model/</url>
     <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
@@ -665,6 +559,112 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>HMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VINS-Fusion代码阅读</title>
+    <url>/2020/03/10/2020-03-10-Read-VINS-Fusion/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<h2 id="Loop-Fusion"><a href="#Loop-Fusion" class="headerlink" title="Loop Fusion"></a>Loop Fusion</h2><p>Loop Fusion结点包括：</p>
+<h2 id="VINS-estimator"><a href="#VINS-estimator" class="headerlink" title="VINS_estimator"></a>VINS_estimator</h2><p>VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。</p>
+<h3 id="rosNodeTest-cpp"><a href="#rosNodeTest-cpp" class="headerlink" title="rosNodeTest.cpp"></a>rosNodeTest.cpp</h3><p>rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。</p>
+<p>主程序包含以下流程：</p>
+<ol>
+<li><p>读取配置文件参数 readParameter()</p>
+</li>
+<li><p>订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理</p>
+</li>
+<li><p>开启一个新线程sync_process。</p>
+<p>该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。</p>
+</li>
+</ol>
+<h3 id="estimator"><a href="#estimator" class="headerlink" title="estimator"></a>estimator</h3><p>VIO系统的整个程序从Estimator estimator开启。</p>
+<p>estimator类的定义由estimator.h和estimator.cpp两个文件完成。</p>
+<p>包含以下重要的自定义成员：</p>
+<table>
+<thead>
+<tr>
+<th align="center">成员</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Feature_Tracker featureTracker</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">FeatureManager f_manager</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>estimator类中包含两类成员函数：</p>
+<ol>
+<li><p>接口函数</p>
+<p>包括以下8个函数：</p>
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">initFirstPose()</td>
+<td align="left">初始化初始位姿</td>
+</tr>
+<tr>
+<td align="center">inputIMU()</td>
+<td align="left">输入IMU数据</td>
+</tr>
+<tr>
+<td align="center">inputImage()</td>
+<td align="left">输入图片数据</td>
+</tr>
+<tr>
+<td align="center">inputFeature()</td>
+<td align="left">输入特征</td>
+</tr>
+<tr>
+<td align="center">ProcessIMU()</td>
+<td align="left">处理IMU数据，对IMU进行预积分；</td>
+</tr>
+<tr>
+<td align="center">ProcessImage()</td>
+<td align="left">处理相机数据；<br>1. 基于特征点的视差来判断当前帧是否属于关键帧；<br>2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃；<br>3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。<br>4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃，比如非线性求解器中的解有大跳动，求解出相机IMU的外参矩阵或IMU偏移等等，系统挂掉就清空状态，重新初始化。</td>
+</tr>
+<tr>
+<td align="center">ProcessMeasurements()</td>
+<td align="left">处理测量值；处理各buffer里的数据，当featureBuf不等于空时，开始进行以下处理（为什么是featureBuf，因为当有图像buffer数据的时候，才会有featuretracker.push(make_pair(t,featureFrame))，即有图像数据后，程序才发给跟踪器叫他产生feature，因此当featureBuf不等于空，所有的buffer，包括imu,图像，都不为空）：</td>
+</tr>
+<tr>
+<td align="center">changeSensrType</td>
+<td align="left">改变传感器类型，用于确定是否使用IMU，使用单目相机还是双目相机</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<ol start="2">
+<li>内部函数</li>
+</ol>
+<p>类的初始化函数Estimator()，由于Estimator类成员内部有两个比较重要的自定义类成员：<br>（1）Feature_Tracker featuretracker;（以前vins-mono这部分是作为一个独立的Node存在）:<br>用来对原始图像进行畸变校正，特征点采集，光流跟踪<br>（2）FeatureManager f_manager;<br>用来对滑动窗口内所有特征点的管理。<br>简单设置了一些参数后，系统进入main()。</p>
+<p>接着main()与Estimator estimator两者开始发生联系：<br>main()中estimator.setParameter()开启了滑动窗口估计的一个新线程<br>由于我们在配置文件中 多线程MULTIPLE_THREAD设置为1，因此当setParameter()时候，就开启了一个Estimator类内的新线程：processMeasurements();</p>
+<p>pub VIO的各种话题，包括里程计信息，tf变换，相机姿态，点云信息，并且发布关键帧。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>VINS</tag>
+        <tag>代码阅读</tag>
       </tags>
   </entry>
   <entry>
@@ -783,6 +783,39 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
+    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
+<a id="more"></a>
+
+<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
+<li>驱动USB摄像头</li>
+<li>利用camera_calibration标定相机</li>
+</ol>
+<p>执行命令为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
+</li>
+<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>ROS</tag>
+        <tag>相机标定</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>利用Kalibr标定双目相机与IMU</title>
     <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
     <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
@@ -860,39 +893,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
         <tag>ROS</tag>
         <tag>IMU</tag>
         <tag>Kalibr</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>利用ROS标定相机步骤与方法</title>
-    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
-    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
-<a id="more"></a>
-
-<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
-<li>驱动USB摄像头</li>
-<li>利用camera_calibration标定相机</li>
-</ol>
-<p>执行命令为：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
-
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
-</li>
-<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>ROS</tag>
-        <tag>相机标定</tag>
       </tags>
   </entry>
   <entry>

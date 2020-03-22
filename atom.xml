@@ -44,7 +44,7 @@
     <link href="https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/"/>
     <id>https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/</id>
     <published>2020-03-22T05:40:34.000Z</published>
-    <updated>2020-03-22T09:01:05.515Z</updated>
+    <updated>2020-03-22T09:07:56.416Z</updated>
     
     <summary type="html">
     
@@ -206,6 +206,29 @@
   </entry>
   
   <entry>
+    <title>隐马尔可夫模型</title>
+    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
+    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-20T12:44:24.248Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
+&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
+&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>VINS-Fusion代码阅读</title>
     <link href="https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
     <id>https://grobenis.github.io/2020/03/10/2020-03-10-Read-VINS-Fusion/</id>
@@ -233,29 +256,6 @@
       <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
     
       <category term="代码阅读" scheme="https://grobenis.github.io/tags/%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>隐马尔可夫模型</title>
-    <link href="https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/"/>
-    <id>https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/</id>
-    <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-20T12:44:24.248Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。&lt;/p&gt;
-&lt;p&gt;隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。&lt;/p&gt;
-&lt;p&gt;来源：李航的《统计学习方法》&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="HMM" scheme="https://grobenis.github.io/tags/HMM/"/>
     
   </entry>
   
@@ -291,6 +291,29 @@
   </entry>
   
   <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/"/>
+    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</id>
+    <published>2020-02-14T16:00:00.000Z</published>
+    <updated>2020-03-20T12:42:51.015Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文讲解利用ROS框架下的工具标定USB相机的过程。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
+    
+      <category term="相机标定" scheme="https://grobenis.github.io/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/"/>
+    
+  </entry>
+  
+  <entry>
     <title>利用Kalibr标定双目相机与IMU</title>
     <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
     <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</id>
@@ -318,29 +341,6 @@
       <category term="IMU" scheme="https://grobenis.github.io/tags/IMU/"/>
     
       <category term="Kalibr" scheme="https://grobenis.github.io/tags/Kalibr/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>利用ROS标定相机步骤与方法</title>
-    <link href="https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/"/>
-    <id>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</id>
-    <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-03-20T12:42:51.015Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文讲解利用ROS框架下的工具标定USB相机的过程。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-      <category term="ROS" scheme="https://grobenis.github.io/tags/ROS/"/>
-    
-      <category term="相机标定" scheme="https://grobenis.github.io/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/"/>
     
   </entry>
   
