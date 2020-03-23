@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-23T03:34:05.631Z</updated>
+  <updated>2020-03-23T13:44:59.430Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SLAM初始化</title>
+    <link href="https://grobenis.github.io/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
+    <id>https://grobenis.github.io/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
+    <published>2020-03-23T04:23:32.000Z</published>
+    <updated>2020-03-23T13:44:59.430Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本节的学习要点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;初始化的目的(单目/双目)&lt;/li&gt;
+&lt;li&gt;初始化的两种方法&lt;/li&gt;
+&lt;li&gt;初始化过程&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
+    
+      <category term="初始化" scheme="https://grobenis.github.io/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
+    
+      <category term="VO" scheme="https://grobenis.github.io/tags/VO/"/>
+    
+      <category term="SLAM面试题" scheme="https://grobenis.github.io/tags/SLAM%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
   
   <entry>
     <title>LeeCode 每日打卡3-23</title>
@@ -491,33 +523,6 @@
       <category term="VIO" scheme="https://grobenis.github.io/tags/VIO/"/>
     
       <category term="evo" scheme="https://grobenis.github.io/tags/evo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SLAM各算法运行方法与过程</title>
-    <link href="https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
-    <id>https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</id>
-    <published>2020-01-14T16:00:00.000Z</published>
-    <updated>2020-03-20T13:25:43.196Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。&lt;/p&gt;
-&lt;p&gt;主要包括以下五种算法:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;VINS_mono/fusion&lt;/li&gt;
-&lt;li&gt;OKVIS&lt;/li&gt;
-&lt;li&gt;ROVIO&lt;/li&gt;
-&lt;li&gt;VI_ORB-SLAM&lt;/li&gt;
-&lt;li&gt;MSCKF&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
     
   </entry>
   

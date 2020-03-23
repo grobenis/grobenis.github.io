@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    SLAM初始化 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-SLAM初始化" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  SLAM初始化
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/" class="article-date">
+  <time datetime="2020-03-23T04:23:32.000Z" itemprop="datePublished">2020-03-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.3k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">7分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节的学习要点：</p>
+<ol>
+<li>初始化的目的(单目/双目)</li>
+<li>初始化的两种方法</li>
+<li>初始化过程</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="初始化的目的"><a href="#初始化的目的" class="headerlink" title="初始化的目的"></a>初始化的目的</h2><p>​        单目SLAM初始化的目的是 ==<strong>构建初始的三维点云地图（空间点）并为之后的计算提供初始值</strong>==。</p>
+<p>​        由于仅从单帧的图像不能得到深度信息，因此需要从图像序列中选取两帧以上的图像以估计相机机姿态并重建出初始的三维点云。</p>
+<h2 id="常见的方法"><a href="#常见的方法" class="headerlink" title="常见的方法"></a>常见的方法</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>​        追踪一个已知物体。单帧图像的每一个点都对应于空间的一条射线。通过不同角度不同位置扫描同一个物体，期望能够将三维点的不确定性缩小到可接受的范围。</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>​        基于假设空间存在一个平面物体，选取两帧不同位置的图像，通过计算<strong>单应矩阵</strong>来估计位姿。这类方法在视差较小或者平面上的点靠近某个主点时效果不好。</p>
+<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>​        根据两帧之间的特征点匹配计算<strong>基础矩阵</strong>，进一步估计位姿。这种方法要求存在不共面的特征点。</p>
+<h2 id="单目初始化"><a href="#单目初始化" class="headerlink" title="单目初始化"></a>单目初始化</h2><h3 id="方法流程"><a href="#方法流程" class="headerlink" title="方法流程"></a>方法流程</h3><ol>
+<li>匹配初始帧；</li>
+<li>位姿计算；</li>
+<li>三角测量和地图创建；</li>
+<li>BA优化。</li>
+</ol>
+<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><h4 id="1-匹配初始帧"><a href="#1-匹配初始帧" class="headerlink" title="1. 匹配初始帧"></a>1. 匹配初始帧</h4><p>​        该阶段工作是，根据连续两帧图片中能够匹配的特征点数量来判断其是否可以作为初始帧，即只有连续两帧中能够匹配的特征点的数量大于某个值时才认为该帧（前一帧）为初始帧；<br>​        在ORM-SLAM2中认为连续帧匹配点的数量大于100时可以将前一帧作为初始帧并记录两帧的匹配关系；<br>​        以下是在ORB-SLAM2中相关部分的代码，功能为对两帧图片进行ORB特征点提取并进行匹配，当匹配的点的数量大于100时认为前一帧可以作为初始帧；可以通过修改代码中的参数来调整判断是否能够作为初始帧的条件。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-位姿计算"><a href="#2-位姿计算" class="headerlink" title="2. 位姿计算"></a>2. 位姿计算</h4><p>​        得到超过100对匹配点后，ORB-SLAM2同时计算适用于平面场景的单应矩阵H和适用于普通场景的基础矩阵F;<br>方法是：首先由抽样点计算出单次抽样的H（四对点）和F矩阵（八点法）,通过若干次RANSAC抽样计算出最优的H和F矩阵；然后选择最合适的结果作为相机的初始位姿。</p>
+<h5 id="2-1-八点法"><a href="#2-1-八点法" class="headerlink" title="2.1. 八点法"></a>2.1. 八点法</h5><p>相机位姿估计问题是为了求解本质矩阵E或者基础矩阵F，然后求解旋转R和平移t。<br> 对于E矩阵认为是一个3*3的矩阵，因为任意常数乘以E不变，所以E矩阵的自由度是8。实际上E矩阵的自由度是5（反对称），但是对于SLAM运算中八点法和五点法区别不大且会增加麻烦所以我们只考虑E矩阵的尺度等价性用八点法来计算），从上式可以看出一对点可以确定一个关于E矩阵的方程，8个自由度就需要8对点来求解E矩阵，这就是八点法。</p>
+<h5 id="2-2-计算位姿"><a href="#2-2-计算位姿" class="headerlink" title="2.2 计算位姿"></a>2.2 计算位姿</h5><p>在同时计算单应矩阵和基础矩阵后对两个模型进行打分选择得分高的那个模型用来位姿计算，打分是用求得的E矩阵和F矩阵将前一帧上的特征点投影到下一帧并将下一帧的特征点投影到前一帧来计算重投影误差的和，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cv::Mat Hn = ComputeH21(vPn1i,vPn2i); <span class="comment">//计算单应矩阵        </span></span><br><span class="line">currentScore = CheckHomography(H21i, H12i, vbCurrentInliers, mSigma); <span class="comment">//进行评分</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cv::Mat Fn = ComputeF21(vPn1i,vPn2i);<span class="comment">//计算基础矩阵         </span></span><br><span class="line">currentScore = CheckFundamental(F21i, vbCurrentInliers, mSigma);<span class="comment">//   进行评分</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> RH = SH/(SH+SF);<span class="comment">//计算评分比,如果RH&gt;0.4，选择单应矩阵来恢复相机位姿，否则选择基础矩阵来恢复相机位姿。</span></span><br></pre></td></tr></table></figure>
+
+<p>在计算完E矩阵和F矩阵并确定模型后，如果是本质矩阵E，进行SVD分解会得到4组可能的R，t，对这些解进行检查求出唯一真正的解；如果是单应矩阵进行分解（数值法、解析法）得到4组解，利用先验信息进行排除得到唯一解。</p>
+<h4 id="3-三角测量和地图创建"><a href="#3-三角测量和地图创建" class="headerlink" title="3. 三角测量和地图创建"></a>3. 三角测量和地图创建</h4><p>已知位姿后通过三角测量可以计算出特征点对应的深度从而生成点云；并以第一帧为世界坐标系创建地图并进行数据关联。</p>
+<p>三角测量是指通过在两处观察同一个点的夹角从而确定该点的距离。数学上可以从上式进行求解，设$x_1$,$x_2$是两个特征点的归一化坐标，那么存在<br>$$<br>s_1x_1=s_2Rx_2+t<br>$$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1$^:</p>
+<p><img src="/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/image-20200323214017168.png" alt="image-20200323214017168"></p>
+<h5 id="数据关联"><a href="#数据关联" class="headerlink" title="数据关联"></a>数据关联</h5><ol>
+<li><strong>地图点与关键帧关联</strong></li>
+</ol>
+<p>一个地图点可被多个关键帧观测到，将观测到这个地图点的关键帧与这个地图点进行关联，同时记录关键帧上哪一个特征点与这个地图点有关联。对于单目初始化来说，地图点需要关联第一步创建的两个关键帧；地图点与关键帧上的特征点关联后，计算最合适的描述子来描述该地图点，用于之后跟踪的匹配。</p>
+<ol start="2">
+<li><strong>关键帧与地图点关联</strong></li>
+</ol>
+<p>一个关键帧上的特征点由多个地图点投影而成，将关键帧与地图点关联。</p>
+<ol start="3">
+<li><strong>关键帧与关键帧关联</strong></li>
+</ol>
+<p>关键帧之间会共视一个地图点，如果共视的地图点个数越多，说明这两个关键帧之间的联系越紧密。对于某个关键帧，统计其与其他关键帧共视的特征点个数，如果大于某个阈值，那么将这两个关键帧进行关联。</p>
+<ol start="4">
+<li><strong>将关键帧和地图点加入到地图中</strong></li>
+</ol>
+<h4 id="4-BA优化。"><a href="#4-BA优化。" class="headerlink" title="4. BA优化。"></a>4. BA优化。</h4><p>初始化的最后一步将对只有两个关键帧的地图进行BA优化来优化位姿和路标点，以优化后的结果来重新生成点云地图。<br>同局部BA优化来最小化重投影误差不同，全局BA优化是在求解观测误差的最小二乘。由于观测误差的最小二乘是非线性的，利用了雅克比矩阵和H矩阵的稀疏性进行边缘化来简化运算，其中也使用了图优化理论。<br>实际上求解观测误差的最小二乘的过程是较复杂的，在这里就不多赘述了。<br>值得一提的是，由于单目没有尺度，因此在地图尺寸初始化时<strong>选择生成点深度的中位数作为单位尺寸1当作基准</strong>来进行地图的尺寸初始化。</p>
+<h2 id="双目初始化"><a href="#双目初始化" class="headerlink" title="双目初始化"></a>双目初始化</h2><p>由于双目和RGB-D相机不需要通过两个相邻帧来恢复地图点深度，所以初始化过程极其相似。</p>
+<p>只要得到两个满足条件的关键帧即可开始初始化。</p>
+<p>双目/RGB-D相机已知若干个特征点的深度（通过双目匹配、结构光或者飞行时间等深度计算方法），可以求解二维点对应的世界坐标系下的空间点，即已知若干个3D空间点及其投影的位置；此时使用PnP来估计相机运动;PnP问题的求解方法有很多种，包括<code>P3P</code>, <code>DLT</code>,<code>EPnP</code>,<code>UPnP</code>, BA等，其中<code>ORM-SLAM2</code>使用的<code>PnP</code>方法是<code>EPnP</code>,具体计算方不作赘述。</p>
+<h2 id="RGB-D初始化"><a href="#RGB-D初始化" class="headerlink" title="RGB-D初始化"></a>RGB-D初始化</h2><ol>
+<li>初始化的目的是建立三维的空间点和地图并为之后的计算提供初始值；<br>2.同双目/RGB-D SLAM不同，单目SLAM无法从一帧图片中计算出深度，因此初始化需要两帧连续满足条件的图片来进行初始化；<br>3.单目SLAM初始化计算位姿是一个对极约束问题，而双目/RGB-D SLAM的初始化计算位姿是一个PnP问题；<br>4.在初始化成功后单目SLAM和双目SLAM一样是通过PnP来求解相机位姿的；<br>5.单目SLAM尺度不确定性的原因是因为在通过SVD分解E矩阵求解R，t时计算的t是没有单位的；<br>6.单目SLAM初始化的过程中对t进行了归一化来固定尺度，即以求解的初始帧的t为单位1，而后的轨迹和平移都将以这个t为单位；<br>7.单目SLAM的初始化一定要有一定程度的平移，纯旋转是无法完成初始化的。</li>
+</ol>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">SLAM面试题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VO/" rel="tag">VO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="tag">初始化</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/03/23/2020-03-23-LeeCode-Check-EveryDay/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">LeeCode 每日打卡3-23</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', ''],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>

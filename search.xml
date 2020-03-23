@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>SLAM初始化</title>
+    <url>/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <content><![CDATA[<p>本节的学习要点：</p>
+<ol>
+<li>初始化的目的(单目/双目)</li>
+<li>初始化的两种方法</li>
+<li>初始化过程</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="初始化的目的"><a href="#初始化的目的" class="headerlink" title="初始化的目的"></a>初始化的目的</h2><p>​        单目SLAM初始化的目的是 ==<strong>构建初始的三维点云地图（空间点）并为之后的计算提供初始值</strong>==。</p>
+<p>​        由于仅从单帧的图像不能得到深度信息，因此需要从图像序列中选取两帧以上的图像以估计相机机姿态并重建出初始的三维点云。</p>
+<h2 id="常见的方法"><a href="#常见的方法" class="headerlink" title="常见的方法"></a>常见的方法</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>​        追踪一个已知物体。单帧图像的每一个点都对应于空间的一条射线。通过不同角度不同位置扫描同一个物体，期望能够将三维点的不确定性缩小到可接受的范围。</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>​        基于假设空间存在一个平面物体，选取两帧不同位置的图像，通过计算<strong>单应矩阵</strong>来估计位姿。这类方法在视差较小或者平面上的点靠近某个主点时效果不好。</p>
+<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>​        根据两帧之间的特征点匹配计算<strong>基础矩阵</strong>，进一步估计位姿。这种方法要求存在不共面的特征点。</p>
+<h2 id="单目初始化"><a href="#单目初始化" class="headerlink" title="单目初始化"></a>单目初始化</h2><h3 id="方法流程"><a href="#方法流程" class="headerlink" title="方法流程"></a>方法流程</h3><ol>
+<li>匹配初始帧；</li>
+<li>位姿计算；</li>
+<li>三角测量和地图创建；</li>
+<li>BA优化。</li>
+</ol>
+<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><h4 id="1-匹配初始帧"><a href="#1-匹配初始帧" class="headerlink" title="1. 匹配初始帧"></a>1. 匹配初始帧</h4><p>​        该阶段工作是，根据连续两帧图片中能够匹配的特征点数量来判断其是否可以作为初始帧，即只有连续两帧中能够匹配的特征点的数量大于某个值时才认为该帧（前一帧）为初始帧；<br>​        在ORM-SLAM2中认为连续帧匹配点的数量大于100时可以将前一帧作为初始帧并记录两帧的匹配关系；<br>​        以下是在ORB-SLAM2中相关部分的代码，功能为对两帧图片进行ORB特征点提取并进行匹配，当匹配的点的数量大于100时认为前一帧可以作为初始帧；可以通过修改代码中的参数来调整判断是否能够作为初始帧的条件。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-位姿计算"><a href="#2-位姿计算" class="headerlink" title="2. 位姿计算"></a>2. 位姿计算</h4><p>​        得到超过100对匹配点后，ORB-SLAM2同时计算适用于平面场景的单应矩阵H和适用于普通场景的基础矩阵F;<br>方法是：首先由抽样点计算出单次抽样的H（四对点）和F矩阵（八点法）,通过若干次RANSAC抽样计算出最优的H和F矩阵；然后选择最合适的结果作为相机的初始位姿。</p>
+<h5 id="2-1-八点法"><a href="#2-1-八点法" class="headerlink" title="2.1. 八点法"></a>2.1. 八点法</h5><p>相机位姿估计问题是为了求解本质矩阵E或者基础矩阵F，然后求解旋转R和平移t。<br> 对于E矩阵认为是一个3*3的矩阵，因为任意常数乘以E不变，所以E矩阵的自由度是8。实际上E矩阵的自由度是5（反对称），但是对于SLAM运算中八点法和五点法区别不大且会增加麻烦所以我们只考虑E矩阵的尺度等价性用八点法来计算），从上式可以看出一对点可以确定一个关于E矩阵的方程，8个自由度就需要8对点来求解E矩阵，这就是八点法。</p>
+<h5 id="2-2-计算位姿"><a href="#2-2-计算位姿" class="headerlink" title="2.2 计算位姿"></a>2.2 计算位姿</h5><p>在同时计算单应矩阵和基础矩阵后对两个模型进行打分选择得分高的那个模型用来位姿计算，打分是用求得的E矩阵和F矩阵将前一帧上的特征点投影到下一帧并将下一帧的特征点投影到前一帧来计算重投影误差的和，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cv::Mat Hn = ComputeH21(vPn1i,vPn2i); <span class="comment">//计算单应矩阵        </span></span><br><span class="line">currentScore = CheckHomography(H21i, H12i, vbCurrentInliers, mSigma); <span class="comment">//进行评分</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cv::Mat Fn = ComputeF21(vPn1i,vPn2i);<span class="comment">//计算基础矩阵         </span></span><br><span class="line">currentScore = CheckFundamental(F21i, vbCurrentInliers, mSigma);<span class="comment">//   进行评分</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">float</span> RH = SH/(SH+SF);<span class="comment">//计算评分比,如果RH&gt;0.4，选择单应矩阵来恢复相机位姿，否则选择基础矩阵来恢复相机位姿。</span></span><br></pre></td></tr></table></figure>
+
+<p>在计算完E矩阵和F矩阵并确定模型后，如果是本质矩阵E，进行SVD分解会得到4组可能的R，t，对这些解进行检查求出唯一真正的解；如果是单应矩阵进行分解（数值法、解析法）得到4组解，利用先验信息进行排除得到唯一解。</p>
+<h4 id="3-三角测量和地图创建"><a href="#3-三角测量和地图创建" class="headerlink" title="3. 三角测量和地图创建"></a>3. 三角测量和地图创建</h4><p>已知位姿后通过三角测量可以计算出特征点对应的深度从而生成点云；并以第一帧为世界坐标系创建地图并进行数据关联。</p>
+<p>三角测量是指通过在两处观察同一个点的夹角从而确定该点的距离。数学上可以从上式进行求解，设$x_1$,$x_2$是两个特征点的归一化坐标，那么存在<br>$$<br>s_1x_1=s_2Rx_2+t<br>$$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1$^:</p>
+<p><img src="/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/image-20200323214017168.png" alt="image-20200323214017168"></p>
+<h5 id="数据关联"><a href="#数据关联" class="headerlink" title="数据关联"></a>数据关联</h5><ol>
+<li><strong>地图点与关键帧关联</strong></li>
+</ol>
+<p>一个地图点可被多个关键帧观测到，将观测到这个地图点的关键帧与这个地图点进行关联，同时记录关键帧上哪一个特征点与这个地图点有关联。对于单目初始化来说，地图点需要关联第一步创建的两个关键帧；地图点与关键帧上的特征点关联后，计算最合适的描述子来描述该地图点，用于之后跟踪的匹配。</p>
+<ol start="2">
+<li><strong>关键帧与地图点关联</strong></li>
+</ol>
+<p>一个关键帧上的特征点由多个地图点投影而成，将关键帧与地图点关联。</p>
+<ol start="3">
+<li><strong>关键帧与关键帧关联</strong></li>
+</ol>
+<p>关键帧之间会共视一个地图点，如果共视的地图点个数越多，说明这两个关键帧之间的联系越紧密。对于某个关键帧，统计其与其他关键帧共视的特征点个数，如果大于某个阈值，那么将这两个关键帧进行关联。</p>
+<ol start="4">
+<li><strong>将关键帧和地图点加入到地图中</strong></li>
+</ol>
+<h4 id="4-BA优化。"><a href="#4-BA优化。" class="headerlink" title="4. BA优化。"></a>4. BA优化。</h4><p>初始化的最后一步将对只有两个关键帧的地图进行BA优化来优化位姿和路标点，以优化后的结果来重新生成点云地图。<br>同局部BA优化来最小化重投影误差不同，全局BA优化是在求解观测误差的最小二乘。由于观测误差的最小二乘是非线性的，利用了雅克比矩阵和H矩阵的稀疏性进行边缘化来简化运算，其中也使用了图优化理论。<br>实际上求解观测误差的最小二乘的过程是较复杂的，在这里就不多赘述了。<br>值得一提的是，由于单目没有尺度，因此在地图尺寸初始化时<strong>选择生成点深度的中位数作为单位尺寸1当作基准</strong>来进行地图的尺寸初始化。</p>
+<h2 id="双目初始化"><a href="#双目初始化" class="headerlink" title="双目初始化"></a>双目初始化</h2><p>由于双目和RGB-D相机不需要通过两个相邻帧来恢复地图点深度，所以初始化过程极其相似。</p>
+<p>只要得到两个满足条件的关键帧即可开始初始化。</p>
+<p>双目/RGB-D相机已知若干个特征点的深度（通过双目匹配、结构光或者飞行时间等深度计算方法），可以求解二维点对应的世界坐标系下的空间点，即已知若干个3D空间点及其投影的位置；此时使用PnP来估计相机运动;PnP问题的求解方法有很多种，包括<code>P3P</code>, <code>DLT</code>,<code>EPnP</code>,<code>UPnP</code>, BA等，其中<code>ORM-SLAM2</code>使用的<code>PnP</code>方法是<code>EPnP</code>,具体计算方不作赘述。</p>
+<h2 id="RGB-D初始化"><a href="#RGB-D初始化" class="headerlink" title="RGB-D初始化"></a>RGB-D初始化</h2><ol>
+<li>初始化的目的是建立三维的空间点和地图并为之后的计算提供初始值；<br>2.同双目/RGB-D SLAM不同，单目SLAM无法从一帧图片中计算出深度，因此初始化需要两帧连续满足条件的图片来进行初始化；<br>3.单目SLAM初始化计算位姿是一个对极约束问题，而双目/RGB-D SLAM的初始化计算位姿是一个PnP问题；<br>4.在初始化成功后单目SLAM和双目SLAM一样是通过PnP来求解相机位姿的；<br>5.单目SLAM尺度不确定性的原因是因为在通过SVD分解E矩阵求解R，t时计算的t是没有单位的；<br>6.单目SLAM初始化的过程中对t进行了归一化来固定尺度，即以求解的初始帧的t为单位1，而后的轨迹和平移都将以这个t为单位；<br>7.单目SLAM的初始化一定要有一定程度的平移，纯旋转是无法完成初始化的。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+        <tag>初始化</tag>
+        <tag>VO</tag>
+        <tag>SLAM面试题</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeeCode 每日打卡3-23</title>
     <url>/2020/03/23/2020-03-23-LeeCode-Check-EveryDay/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
