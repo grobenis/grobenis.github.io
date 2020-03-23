@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>LeeCode 每日打卡</title>
+    <url>/2020/03/23/2020-03-23-LeeCode-Check-EveryDay/</url>
+    <content><![CDATA[<p>876、链表的中间结点</p>
+<p> 【每日打卡23】876、链表的中间结点</p>
+<p>190、颠倒二进制位</p>
+<p>191、位1的个数</p>
+<a id="more"></a>
+
+<h2 id="876、链表的中间结点"><a href="#876、链表的中间结点" class="headerlink" title="876、链表的中间结点"></a>876、链表的中间结点</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个带有头结点 <code>head</code> 的非空单链表，返回链表的中间结点。</p>
+<p>如果有两个中间结点，则返回第二个中间结点。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a>示例 1</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,2,3,4,5]</span><br><span class="line">输出：此列表中的结点 3 (序列化形式：[3,4,5])</span><br><span class="line">返回的结点值为 3 。 (测评系统对该结点序列化表述是 [3,4,5])。</span><br><span class="line">注意，我们返回了一个 ListNode 类型的对象 ans，这样：</span><br><span class="line">ans.val &#x3D; 3, ans.next.val &#x3D; 4, ans.next.next.val &#x3D; 5, 以及 ans.next.next.next &#x3D; NULL.</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a>示例 2：</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">输入：[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">输出：此列表中的结点 <span class="number">4</span> (序列化形式：[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</span><br><span class="line">由于该列表有两个中间结点，值分别为 <span class="number">3</span> 和 <span class="number">4</span>，我们返回第二个结点。</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法一：数组"><a href="#方法一：数组" class="headerlink" title="方法一：数组"></a>方法一：数组</h3><p>思路和算法</p>
+<p>链表的缺点在于不能通过下标访问对应的元素。因此我们可以考虑对链表进行遍历，同时将遍历到的元素依次放入数组 A 中。如果我们遍历到了 N 个元素，那么链表以及数组的长度也为 N，对应的中间节点即为 A[N/2]。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;ListNode*&gt; A = &#123;head&#125;;</span><br><span class="line">        <span class="keyword">while</span> (A.back()-&gt;next != <span class="literal">NULL</span>)</span><br><span class="line">            A.push_back(A.back()-&gt;next);</span><br><span class="line">        <span class="keyword">return</span> A[A.size() / <span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><p><strong>时间复杂度</strong>：<code>O(N)</code>，其中 <code>N</code> 是给定链表中的结点数目。</p>
+<p><strong>空间复杂度</strong>：<code>O(N)</code>，即数组 <code>A</code> 用去的空间。</p>
+<h4 id="方法二：单指针法"><a href="#方法二：单指针法" class="headerlink" title="方法二：单指针法"></a>方法二：单指针法</h4><p>我们可以对方法一进行空间优化，省去数组 A。</p>
+<p>我们可以对链表进行两次遍历。第一次遍历时，我们统计链表中的元素个数 N；第二次遍历时，我们遍历到第 N/2 个元素（链表的首节点为第 0 个元素）时，将该元素返回即可。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">        ListNode* cur = head;</span><br><span class="line">        <span class="keyword">while</span> (cur != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            ++n;</span><br><span class="line">            cur = cur-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">        cur = head;</span><br><span class="line">        <span class="keyword">while</span> (k &lt; n / <span class="number">2</span>) &#123;</span><br><span class="line">            ++k;</span><br><span class="line">            cur = cur-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cur;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a><strong>复杂度分析</strong></h4><p>时间复杂度：O(N)，其中 N 是给定链表的结点数目。</p>
+<p>空间复杂度：<code>O(1)</code>，只需要常数空间存放变量和指针。</p>
+<h3 id="快慢指针解法"><a href="#快慢指针解法" class="headerlink" title="快慢指针解法"></a>快慢指针解法</h3><p>快慢指针，使用一个快的一个慢的。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head==<span class="literal">nullptr</span>||head-&gt;next==<span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        ListNode* back = head;</span><br><span class="line">        ListNode* front = head-&gt;next;</span><br><span class="line">        <span class="keyword">while</span>(back&amp;&amp;front)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>( front &amp;&amp;front-&gt;next)</span><br><span class="line">                front=front-&gt;next-&gt;next;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(!front)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> back;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(!front-&gt;next)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> back-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            back=back-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> back;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>时间复杂度</strong>：<code>O(n)</code></p>
+<p><strong>空间复杂度</strong>：<code>O(1)</code></p>
+<h2 id="190、颠倒二进制位"><a href="#190、颠倒二进制位" class="headerlink" title="190、颠倒二进制位"></a>190、颠倒二进制位</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>颠倒给定的 32 位无符号整数的二进制位。</p>
+<h4 id="示例1："><a href="#示例1：" class="headerlink" title="示例1："></a>示例1：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：00000000000000000000000000001011</span><br><span class="line">输出：3</span><br><span class="line">解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 &#39;1&#39;。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例2："><a href="#示例2：" class="headerlink" title="示例2："></a>示例2：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：00000000000000000000000010000000</span><br><span class="line">输出：1</span><br><span class="line">解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 &#39;1&#39;。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例3："><a href="#示例3：" class="headerlink" title="示例3："></a>示例3：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：11111111111111111111111111111101</span><br><span class="line">输出：31</span><br><span class="line">解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 &#39;1&#39;。</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>本题考查位操作：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">uint32_t</span> <span class="title">reverseBits</span><span class="params">(<span class="keyword">uint32_t</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">uint32_t</span> res=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> bit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            bit ++;</span><br><span class="line">            <span class="keyword">int</span> i=n&amp;<span class="number">1</span>;</span><br><span class="line">            n=n&gt;&gt;<span class="number">1</span>;</span><br><span class="line">            res=(res&lt;&lt;<span class="number">1</span>)|i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        res=bit==<span class="number">0</span>?<span class="number">0</span>:res&lt;&lt;(<span class="number">32</span>-bit);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="191、位1的个数"><a href="#191、位1的个数" class="headerlink" title="191、位1的个数"></a>191、位1的个数</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>编写一个函数，输入是一个无符号整数，返回其二进制表达式中数字位数为 ‘1’ 的个数（也被称为<a href="https://baike.baidu.com/item/汉明重量" target="_blank" rel="noopener">汉明重量</a>）。</p>
+<h4 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">输入：<span class="number">00000000000000000000000000001011</span></span><br><span class="line">输出：<span class="number">3</span></span><br><span class="line">解释：输入的二进制串 <span class="number">00000000000000000000000000001011</span> 中，共有三位为 <span class="string">'1'</span>。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">输入：<span class="number">00000000000000000000000010000000</span></span><br><span class="line">输出：<span class="number">1</span></span><br><span class="line">解释：输入的二进制串 <span class="number">00000000000000000000000010000000</span> 中，共有一位为 <span class="string">'1'</span>。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">输入：<span class="number">11111111111111111111111111111101</span></span><br><span class="line">输出：<span class="number">31</span></span><br><span class="line">解释：输入的二进制串 <span class="number">11111111111111111111111111111101</span> 中，共有 <span class="number">31</span> 位为 <span class="string">'1'</span>。</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法-1"><a href="#解法-1" class="headerlink" title="解法"></a>解法</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">uint32_t</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (n&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            i+=n&amp;<span class="number">1</span>;</span><br><span class="line">            n=n&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>LeeCode</tag>
+        <tag>每日打卡</tag>
+        <tag>链表</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>KMP-Algorithm</title>
     <url>/2020/03/22/KMP-Algorithm/</url>
     <content><![CDATA[<p>KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。</p>
