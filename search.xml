@@ -60,7 +60,13 @@
 <p>只要得到两个满足条件的关键帧即可开始初始化。</p>
 <p>双目/RGB-D相机已知若干个特征点的深度（通过双目匹配、结构光或者飞行时间等深度计算方法），可以求解二维点对应的世界坐标系下的空间点，即已知若干个3D空间点及其投影的位置；此时使用PnP来估计相机运动;PnP问题的求解方法有很多种，包括<code>P3P</code>, <code>DLT</code>,<code>EPnP</code>,<code>UPnP</code>, BA等，其中<code>ORM-SLAM2</code>使用的<code>PnP</code>方法是<code>EPnP</code>,具体计算方不作赘述。</p>
 <h2 id="RGB-D初始化"><a href="#RGB-D初始化" class="headerlink" title="RGB-D初始化"></a>RGB-D初始化</h2><ol>
-<li>初始化的目的是建立三维的空间点和地图并为之后的计算提供初始值；<br>2.同双目/RGB-D SLAM不同，单目SLAM无法从一帧图片中计算出深度，因此初始化需要两帧连续满足条件的图片来进行初始化；<br>3.单目SLAM初始化计算位姿是一个对极约束问题，而双目/RGB-D SLAM的初始化计算位姿是一个PnP问题；<br>4.在初始化成功后单目SLAM和双目SLAM一样是通过PnP来求解相机位姿的；<br>5.单目SLAM尺度不确定性的原因是因为在通过SVD分解E矩阵求解R，t时计算的t是没有单位的；<br>6.单目SLAM初始化的过程中对t进行了归一化来固定尺度，即以求解的初始帧的t为单位1，而后的轨迹和平移都将以这个t为单位；<br>7.单目SLAM的初始化一定要有一定程度的平移，纯旋转是无法完成初始化的。</li>
+<li>初始化的目的是建立三维的空间点和地图并为之后的计算提供初始值；</li>
+<li>同双目/RGB-D SLAM不同，单目SLAM无法从一帧图片中计算出深度，因此初始化需要两帧连续满足条件的图片来进行初始化；</li>
+<li>单目SLAM初始化计算位姿是一个对极约束问题，而双目/RGB-D SLAM的初始化计算位姿是一个PnP问题；</li>
+<li>在初始化成功后单目SLAM和双目SLAM一样是通过PnP来求解相机位姿的；</li>
+<li>单目SLAM尺度不确定性的原因是因为在通过SVD分解E矩阵求解R，t时计算的t是没有单位的；</li>
+<li>单目SLAM初始化的过程中对t进行了归一化来固定尺度，即以求解的初始帧的t为单位1，而后的轨迹和平移都将以这个t为单位；</li>
+<li>单目SLAM的初始化一定要有一定程度的平移，纯旋转是无法完成初始化的。</li>
 </ol>
 ]]></content>
       <categories>
@@ -279,79 +285,10 @@
         <category>刷题</category>
       </categories>
       <tags>
+        <tag>C++</tag>
         <tag>LeeCode</tag>
         <tag>周赛</tag>
-        <tag>C++</tag>
         <tag>刷题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>高斯混合模型</title>
-    <url>/2020/03/14/2020-03-14-GMM/</url>
-    <content><![CDATA[<p>高斯混合模型</p>
-<a id="more"></a>
-
-<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
-<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
-<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
-<p><strong>定义</strong></p>
-<p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$<br>\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})<br>$$<br>称为第k个分模型。</p>
-<p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p>
-<h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p>
-<p>假设观测数据$y_1,y_2,…,y_N$由高斯混合模型生成，<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\theta=(\alpha_1,\alpha_2,…,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p>
-<p><strong>EM（期望最大化）算法</strong></p>
-<p>输入：观测数据$y_1,y_2,…,y_N$，高斯混合模型；</p>
-<p>输出：高斯混合模型参数。</p>
-<ol>
-<li><p>取参数的初始值开始迭代</p>
-</li>
-<li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$<br>\hat{\gamma}<em>{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K</em>{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,…N;k=1,2,..K<br>$$</p>
-</li>
-<li><p>求M步:计算新一轮的迭代的模型参数：<br>$$<br>\hat{\mu}<em>k=\cfrac{\sum^N</em>{j=1}\hat{\gamma}<em>{jk}y_j}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,..,K<br>$$</p>
-</li>
-</ol>
-<p>$$<br>\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}<em>{jk}(y_j-\mu_k)^2}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,…K<br>$$</p>
-<p>$$<br>\hat{\alpha}<em>k=\cfrac{\sum^N_j=1\hat{\gamma</em>{jk}}}{N},k=1,2,…,K<br>$$</p>
-<ol start="4">
-<li>重复第二步和第三步，直至收敛。</li>
-</ol>
-<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171"></p>
-<p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p>
-<ul>
-<li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li>
-<li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li>
-<li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li>
-<li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li>
-</ul>
-<p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p>
-<p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p>
-<p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,…,O_n$，可以理解成：</p>
-<ul>
-<li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li>
-<li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li>
-<li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,…,O_n$实际上就是一个混合高斯模型下的采样值。</li>
-</ul>
-<p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p>
-<p><strong>利用声学特征训练HMM</strong></p>
-<p>确定状态转移矩阵，是执行解码问题的基础。</p>
-<p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u=max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p>
-<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/2020/03/14/2020-03-14-GMM/..%5Cimages%5CGMM%5C20160901093401467.png" alt></p>
-<ul>
-<li><strong>对待识别语音做信号预处理</strong></li>
-<li><strong>对待识别语音提取声学特征</strong></li>
-<li><strong>对声学特征利用Viterbi算法解码</strong></li>
-</ul>
-<p>对声学特征解码后得到的是状态序列，即音素序列。</p>
-<p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p>
-<p><strong>其它应用</strong></p>
-<p><img src="/2020/03/14/2020-03-14-GMM/D:%5CProject%5Cgrobenis.github.io%5Cimages%5CHMM%5CHMM_nlp.jpg" alt></p>
-<p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>GMM</tag>
       </tags>
   </entry>
   <entry>
@@ -477,6 +414,75 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>高斯混合模型</title>
+    <url>/2020/03/14/2020-03-14-GMM/</url>
+    <content><![CDATA[<p>高斯混合模型</p>
+<a id="more"></a>
+
+<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p><strong>定义</strong></p>
+<p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$<br>\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})<br>$$<br>称为第k个分模型。</p>
+<p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p>
+<h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p>
+<p>假设观测数据$y_1,y_2,…,y_N$由高斯混合模型生成，<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\theta=(\alpha_1,\alpha_2,…,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p>
+<p><strong>EM（期望最大化）算法</strong></p>
+<p>输入：观测数据$y_1,y_2,…,y_N$，高斯混合模型；</p>
+<p>输出：高斯混合模型参数。</p>
+<ol>
+<li><p>取参数的初始值开始迭代</p>
+</li>
+<li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$<br>\hat{\gamma}<em>{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K</em>{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,…N;k=1,2,..K<br>$$</p>
+</li>
+<li><p>求M步:计算新一轮的迭代的模型参数：<br>$$<br>\hat{\mu}<em>k=\cfrac{\sum^N</em>{j=1}\hat{\gamma}<em>{jk}y_j}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,..,K<br>$$</p>
+</li>
+</ol>
+<p>$$<br>\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}<em>{jk}(y_j-\mu_k)^2}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,…K<br>$$</p>
+<p>$$<br>\hat{\alpha}<em>k=\cfrac{\sum^N_j=1\hat{\gamma</em>{jk}}}{N},k=1,2,…,K<br>$$</p>
+<ol start="4">
+<li>重复第二步和第三步，直至收敛。</li>
+</ol>
+<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171"></p>
+<p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p>
+<ul>
+<li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li>
+<li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li>
+<li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li>
+<li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li>
+</ul>
+<p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p>
+<p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p>
+<p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,…,O_n$，可以理解成：</p>
+<ul>
+<li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li>
+<li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li>
+<li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,…,O_n$实际上就是一个混合高斯模型下的采样值。</li>
+</ul>
+<p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p>
+<p><strong>利用声学特征训练HMM</strong></p>
+<p>确定状态转移矩阵，是执行解码问题的基础。</p>
+<p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u=max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p>
+<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/2020/03/14/2020-03-14-GMM/..%5Cimages%5CGMM%5C20160901093401467.png" alt></p>
+<ul>
+<li><strong>对待识别语音做信号预处理</strong></li>
+<li><strong>对待识别语音提取声学特征</strong></li>
+<li><strong>对声学特征利用Viterbi算法解码</strong></li>
+</ul>
+<p>对声学特征解码后得到的是状态序列，即音素序列。</p>
+<p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p>
+<p><strong>其它应用</strong></p>
+<p><img src="/2020/03/14/2020-03-14-GMM/D:%5CProject%5Cgrobenis.github.io%5Cimages%5CHMM%5CHMM_nlp.jpg" alt></p>
+<p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>GMM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>运动一致性判断</title>
     <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
     <content><![CDATA[<p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
@@ -550,6 +556,47 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>SLAM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DBoW2库学习</title>
+    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
+<a id="more"></a>
+
+<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
+<table>
+<thead>
+<tr>
+<th align="center">算法结果事实</th>
+<th align="center">是回环</th>
+<th align="center">不是回环</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是回环</td>
+<td align="center">真阳性</td>
+<td align="center">假阳性</td>
+</tr>
+<tr>
+<td align="center">不是回环</td>
+<td align="center">假阴性</td>
+<td align="center">真阴性</td>
+</tr>
+</tbody></table>
+<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
+<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
+<p>准确率描述了检测到的回环中真回环的个数。</p>
+<p>Recall描述了真回环中有多少个被检测出来了。</p>
+<p>根据准确率和召回率可以得到ROC曲线.</p>
+<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
+<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>DBoW2</tag>
+        <tag>回环检测</tag>
       </tags>
   </entry>
   <entry>
@@ -656,47 +703,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       <tags>
         <tag>VINS</tag>
         <tag>代码阅读</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DBoW2库学习</title>
-    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
-    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
-<a id="more"></a>
-
-<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
-<table>
-<thead>
-<tr>
-<th align="center">算法结果事实</th>
-<th align="center">是回环</th>
-<th align="center">不是回环</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">是回环</td>
-<td align="center">真阳性</td>
-<td align="center">假阳性</td>
-</tr>
-<tr>
-<td align="center">不是回环</td>
-<td align="center">假阴性</td>
-<td align="center">真阴性</td>
-</tr>
-</tbody></table>
-<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
-<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
-<p>准确率描述了检测到的回环中真回环的个数。</p>
-<p>Recall描述了真回环中有多少个被检测出来了。</p>
-<p>根据准确率和召回率可以得到ROC曲线.</p>
-<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
-<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2>]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>DBoW2</tag>
-        <tag>回环检测</tag>
       </tags>
   </entry>
   <entry>
@@ -924,39 +930,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>利用ROS标定相机步骤与方法</title>
-    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
-    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
-<a id="more"></a>
-
-<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
-<li>驱动USB摄像头</li>
-<li>利用camera_calibration标定相机</li>
-</ol>
-<p>执行命令为：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
-
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
-</li>
-<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>ROS</tag>
-        <tag>相机标定</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>利用Kalibr标定双目相机与IMU</title>
     <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
     <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
@@ -1034,6 +1007,39 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
         <tag>ROS</tag>
         <tag>IMU</tag>
         <tag>Kalibr</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
+    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
+<a id="more"></a>
+
+<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
+<li>驱动USB摄像头</li>
+<li>利用camera_calibration标定相机</li>
+</ol>
+<p>执行命令为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
+</li>
+<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>ROS</tag>
+        <tag>相机标定</tag>
       </tags>
   </entry>
   <entry>
