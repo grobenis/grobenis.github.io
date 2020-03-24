@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-23T13:47:12.773Z</updated>
+  <updated>2020-03-24T05:29:10.049Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020-3-24-LeeCode-CheckDaily</title>
+    <link href="https://grobenis.github.io/2020/03/24/2020-03-24-LeeCode-CheckDaily/"/>
+    <id>https://grobenis.github.io/2020/03/24/2020-03-24-LeeCode-CheckDaily/</id>
+    <published>2020-03-24T03:31:10.000Z</published>
+    <updated>2020-03-24T05:29:10.049Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今日打卡题目如下：&lt;/p&gt;
+&lt;p&gt;面试题17.16、按摩师 【每日打卡24】&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="刷题" scheme="https://grobenis.github.io/categories/%E5%88%B7%E9%A2%98/"/>
+    
+    
+      <category term="LeeCode" scheme="https://grobenis.github.io/tags/LeeCode/"/>
+    
+      <category term="每日打卡" scheme="https://grobenis.github.io/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/"/>
+    
+      <category term="刷题" scheme="https://grobenis.github.io/tags/%E5%88%B7%E9%A2%98/"/>
+    
+      <category term="动态规划" scheme="https://grobenis.github.io/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+  </entry>
   
   <entry>
     <title>SLAM初始化</title>
@@ -50,8 +78,8 @@
   
   <entry>
     <title>LeeCode 每日打卡3-23</title>
-    <link href="https://grobenis.github.io/2020/03/23/2020-03-23-LeeCode-Check-EveryDay/"/>
-    <id>https://grobenis.github.io/2020/03/23/2020-03-23-LeeCode-Check-EveryDay/</id>
+    <link href="https://grobenis.github.io/2020/03/23/2020-03-23-LeeCode-CheckDaily/"/>
+    <id>https://grobenis.github.io/2020/03/23/2020-03-23-LeeCode-CheckDaily/</id>
     <published>2020-03-23T02:29:04.000Z</published>
     <updated>2020-03-23T03:34:25.739Z</updated>
     
@@ -497,32 +525,6 @@
       <category term="VINS" scheme="https://grobenis.github.io/tags/VINS/"/>
     
       <category term="VIO" scheme="https://grobenis.github.io/tags/VIO/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用evo工具评测SLAM</title>
-    <link href="https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/"/>
-    <id>https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/</id>
-    <published>2020-02-14T16:00:00.000Z</published>
-    <updated>2020-03-20T12:38:49.009Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/MichaelGrupp/evo&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;github地址&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="实验" scheme="https://grobenis.github.io/categories/%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-      <category term="SLAM" scheme="https://grobenis.github.io/tags/SLAM/"/>
-    
-      <category term="VIO" scheme="https://grobenis.github.io/tags/VIO/"/>
-    
-      <category term="evo" scheme="https://grobenis.github.io/tags/evo/"/>
     
   </entry>
   
