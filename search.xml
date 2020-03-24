@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>SLAM中的三角测量</title>
+    <url>/2020/03/24/2020-03-24-Triangulation/</url>
+    <content><![CDATA[<p>三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。</p>
+<p>本节旨在解决以下问题：</p>
+<ol>
+<li>三角测量的概念</li>
+<li>三角测量的过程及代码实现；</li>
+<li>三角测量有哪些不确定性</li>
+<li>如何提高三角测量的精度</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><p>在SLAM中，利用对极几何约束估计相机运动之后，我们还需要通过三角测量来估计地图点的深度。三角测量（三角化）指的是，通过在两处观测同一个点的夹角，从而确定该点的距离。</p>
+<p>SLAM中主要用三角化来估计像素点的距离。</p>
+<p><img src="/2020/03/24/2020-03-24-Triangulation/2020-03-24-Triangulation%5C%E4%B8%89%E8%A7%92%E6%B5%8B%E9%87%8F.png" alt="image-20200324165223362"></p>
+<h2 id="2-过程"><a href="#2-过程" class="headerlink" title="2. 过程"></a>2. 过程</h2><p>按照对极几何的定义，设$x_1,x_2$为两个特征点的归一化坐标，那么他们满足：<br>$$<br>s_1x_1=s_2Rx_2+t.<br>$$<br>经过对极几何之后，已得到了运动$R,t$，需要求解两个特征点的深度$s_1$,$s_2$。</p>
+<p>两个深度可以分开算。若先算$s_2$,那么对上市两个做成一个$x_1$^,得：</p>
+<p><img src="/2020/03/24/2020-03-24-Triangulation/2020-03-24-Triangulation%5C%E6%96%B9%E7%A8%8B.png" alt="image-20200324170444757"></p>
+<p>该式子左侧为0，右侧可看成是$s_2$的一个方程，可以根据它直接求$s_2$。有了$s_2$,$s_1$也非常容易求出。预测就可以得到两帧下的深度，即确定了空间坐标。</p>
+<h2 id="3-代码实现；"><a href="#3-代码实现；" class="headerlink" title="3. 代码实现；"></a>3. 代码实现；</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangulation</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoint_1,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoint_2,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> Mat&amp; R, <span class="keyword">const</span> Mat&amp; t,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="built_in">vector</span>&lt;Point3d&gt;&amp; points</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangulation</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="built_in">vector</span>&lt; KeyPoint &gt;&amp; keypoint_1,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="built_in">vector</span>&lt; KeyPoint &gt;&amp; keypoint_2,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> Mat&amp; R, <span class="keyword">const</span> Mat&amp; t,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="built_in">vector</span>&lt; Point3d &gt;&amp; points )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Mat T1 = (Mat_&lt;<span class="keyword">double</span>&gt; (<span class="number">3</span>,<span class="number">4</span>) &lt;&lt;</span><br><span class="line">	<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">	Mat T2 = (Mat_&lt;<span class="keyword">double</span>&gt; (<span class="number">3</span>,<span class="number">4</span>) &lt;&lt;</span><br><span class="line">	R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">0</span>,<span class="number">0</span>), R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">0</span>,<span class="number">1</span>), R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">0</span>,<span class="number">2</span>), t.at&lt;<span class="keyword">double</span>&gt;(<span class="number">0</span>,<span class="number">0</span>),</span><br><span class="line">	R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">1</span>,<span class="number">0</span>), R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">1</span>,<span class="number">1</span>), R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">1</span>,<span class="number">2</span>), t.at&lt;<span class="keyword">double</span>&gt;(<span class="number">1</span>,<span class="number">0</span>),</span><br><span class="line">	R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">2</span>,<span class="number">0</span>), R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">2</span>,<span class="number">1</span>), R.at&lt;<span class="keyword">double</span>&gt;(<span class="number">2</span>,<span class="number">2</span>), t.at&lt;<span class="keyword">double</span>&gt;(<span class="number">2</span>,<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    Mat K = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="built_in">vector</span>&lt;Point2d&gt; pts_1, pts_2;</span><br><span class="line">    <span class="keyword">for</span> ( DMatch m:matches )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 将像素坐标转换至相机坐标</span></span><br><span class="line">        pts_1.push_back ( pixel2cam( keypoint_1[m.queryIdx].pt, K) );</span><br><span class="line">        pts_2.push_back ( pixel2cam( keypoint_2[m.trainIdx].pt, K) );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Mat pts_4d;</span><br><span class="line">    cv::triangulatePoints( T1, T2, pts_1, pts_2, pts_4d );</span><br><span class="line">    <span class="comment">// 转换成非齐次坐标</span></span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;pts_4d.cols; i++ )</span><br><span class="line">	&#123;</span><br><span class="line">        Mat x = pts_4d.col(i);</span><br><span class="line">        x /= x.at&lt;<span class="keyword">float</span>&gt;(<span class="number">3</span>,<span class="number">0</span>); <span class="comment">// 归一化</span></span><br><span class="line">        <span class="function">Point3d <span class="title">p</span> <span class="params">(x.at&lt;<span class="keyword">float</span>&gt;(<span class="number">0</span>,<span class="number">0</span>),x.at&lt;<span class="keyword">float</span>&gt;(<span class="number">1</span>,<span class="number">0</span>),x.at&lt;<span class="keyword">float</span>&gt;(<span class="number">2</span>,<span class="number">0</span>))</span></span>;</span><br><span class="line">	points.push_back( p );</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时，在main函数中增加三角测量部分，并验证重投影关系：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>∗∗ argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// .....</span></span><br><span class="line">	<span class="comment">//􀀀􀀀 三角化</span></span><br><span class="line">	<span class="built_in">vector</span>&lt;Point3d&gt; points;</span><br><span class="line">	triangulation( keypoints_1, keypoints_2, matches, R, t, points );</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//􀀀􀀀 验证三角化点与特征点的重投影关系</span></span><br><span class="line">	Mat K = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;matches.<span class="built_in">size</span>(); i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        Point2d pt1_cam = pixel2cam( keypoints_1[ matches[i].queryIdx ].pt, K );</span><br><span class="line">        <span class="function">Point2d <span class="title">pt1_cam_3d</span> <span class="params">(points[i].x/points[i].z, points[i].y/points[i].z )</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"point in the first camera frame: "</span>&lt;&lt;pt1_cam&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"point projected from 3D "</span>&lt;&lt;pt1_cam_3d&lt;&lt;<span class="string">", d="</span>&lt;&lt;points[i].z&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 第2幅图</span></span><br><span class="line">        Point2f pt2_cam = pixel2cam( keypoints_2[ matches[i].trainIdx ].pt, K );</span><br><span class="line">        Mat pt2_trans = R∗( Mat_&lt;<span class="keyword">double</span>&gt;(<span class="number">3</span>,<span class="number">1</span>) &lt;&lt; points[i].x, points[i].y, points[i].z ) + t;</span><br><span class="line">        pt2_trans /= pt2_trans.at&lt;<span class="keyword">double</span>&gt;(<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"point in the second camera frame: "</span>&lt;&lt;pt2_cam&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"point reprojected from second frame: "</span>&lt;&lt;pt2_trans.t()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们打印了每个空间点在两个相机坐标系下的投影坐标与像素坐标——相当于P 的投影位置与看到的特征点位置。由于误差的存在，它们会有一些微小的差异。以下是某一特征点的信息：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">point</span> in the first camera frame: [<span class="number">0.0844072</span>, <span class="number">0.0734976</span>]</span><br><span class="line"><span class="built_in">point</span> projected from <span class="number">3</span>D [<span class="number">0.0843702</span>, <span class="number">0.0743606</span>], d=<span class="number">14.9895</span></span><br><span class="line"><span class="built_in">point</span> in the second camera frame: [<span class="number">0.0431343</span>, <span class="number">0.0459876</span>]</span><br><span class="line"><span class="built_in">point</span> reprojected from second frame: [<span class="number">0.04312769812378599</span>, <span class="number">0.04515455276163744</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，误差的量级大约在小数点后第3 位。可以看到，三角化特征点的距离大约为15。</p>
+<p>但由于尺度不确定性，我们并不知道这里的15 究竟是多少米。</p>
+<h2 id="4-不确定性因素"><a href="#4-不确定性因素" class="headerlink" title="4. 不确定性因素"></a>4. 不确定性因素</h2><ol>
+<li>由于<strong>噪声</strong>的存在，我们估得的运动R; t 不一定精确使(1)式为零，所以更常见的做法是求最小二乘解而不是零解。</li>
+<li>三角测量是由平移得到的，有平移才会有对极几何中的三角形，才谈得上三角测量。因此，<strong>纯旋转</strong>是无法使用三角测量的，因为对极约束将永远满足。在平移存在的情况下，我们还要关心三角测量的不确定性，这会引出一个三角测量的矛盾</li>
+<li>当平移很小时，<strong>像素上的不确定性</strong>将导致较大的深度不确定性。即若特征点运动一个像素x，使得视线角变化了一个角度，那么将测量到深度值有d 的变化。从几何关系可以看出，当t 较大时，d 将明显变小，这说明平移较大时，在同样的相机分辨率下，三角化测量将更精确。对该过程的定量分析可以使用正弦定理得到，不过这里先考虑定性分析。</li>
+</ol>
+<h2 id="5-如何提高精度"><a href="#5-如何提高精度" class="headerlink" title="5. 如何提高精度"></a>5. 如何提高精度</h2><p>要提高三角化的精度，主要有两种方法：</p>
+<ol>
+<li>提高特征点的提取精度，也就是提高图像分辨率——但这会导致图像变大，增加计算成本。</li>
+<li>使平移量增大。但是，这会导致图像的外观发生明显的变化，比如箱子原先被挡住的侧面显示出来，又比如反射光发生变化，等等。外观变化会使得特征提取与匹配变得困难。</li>
+</ol>
+<p>总而言之，增大平移，会导致匹配失效；而平移太小，则三角化精度不够——这就是三角化的矛盾。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+        <tag>面试</tag>
+        <tag>三角化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeeCode 每日打卡3-24</title>
     <url>/2020/03/24/2020-03-24-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
@@ -69,7 +120,7 @@
   </entry>
   <entry>
     <title>SLAM初始化</title>
-    <url>/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <url>/2020/03/23/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     <content><![CDATA[<p>本节的学习要点：</p>
 <ol>
 <li>初始化的目的(单目/双目)</li>
@@ -106,7 +157,7 @@
 <p>在计算完E矩阵和F矩阵并确定模型后，如果是本质矩阵E，进行SVD分解会得到4组可能的R，t，对这些解进行检查求出唯一真正的解；如果是单应矩阵进行分解（数值法、解析法）得到4组解，利用先验信息进行排除得到唯一解。</p>
 <h4 id="3-三角测量和地图创建"><a href="#3-三角测量和地图创建" class="headerlink" title="3. 三角测量和地图创建"></a>3. 三角测量和地图创建</h4><p>已知位姿后通过三角测量可以计算出特征点对应的深度从而生成点云；并以第一帧为世界坐标系创建地图并进行数据关联。</p>
 <p>三角测量是指通过在两处观察同一个点的夹角从而确定该点的距离。数学上可以从上式进行求解，设$x_1$,$x_2$是两个特征点的归一化坐标，那么存在<br>$$<br>s_1x_1=s_2Rx_2+t<br>$$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1$^:</p>
-<p><img src="/2020/03/23/SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/image-20200323214017168.png" alt="image-20200323214017168"></p>
+<p><img src="/2020/03/23/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/image-20200323214017168.png" alt="image-20200323214017168"></p>
 <h5 id="数据关联"><a href="#数据关联" class="headerlink" title="数据关联"></a>数据关联</h5><ol>
 <li><strong>地图点与关键帧关联</strong></li>
 </ol>
@@ -142,8 +193,7 @@
       <tags>
         <tag>SLAM</tag>
         <tag>初始化</tag>
-        <tag>VO</tag>
-        <tag>SLAM面试题</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -357,10 +407,10 @@
         <category>刷题</category>
       </categories>
       <tags>
-        <tag>C++</tag>
         <tag>LeeCode</tag>
-        <tag>周赛</tag>
         <tag>刷题</tag>
+        <tag>C++</tag>
+        <tag>周赛</tag>
       </tags>
   </entry>
   <entry>
@@ -437,55 +487,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>粒子滤波器</title>
-    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>粒子滤波器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率图模型</title>
-    <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
-    <content><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
-<p>本节将用来介绍概率图模型。</p>
-<a id="more"></a>
-
-<h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p>
-<p><strong>分类</strong></p>
-<p>根据边的性质不同，概率图模型可大致分为两类：</p>
-<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
-<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p>
-<p><strong>前提背景</strong></p>
-<p>利用条件独立性可以降低概率模型的计算复杂度；</p>
-<p>条件独立性要在图的结构上有所映射；</p>
-<p><strong>图的构建方法</strong></p>
-<p>拓扑排序;</p>
-<p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p>
-<p>性质：</p>
-<p>如果父节点被观测，则其子节点独立；</p>
-<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p>
-<p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p>
-<p>道德图：有向图 → 无向图</p>
-<p>出发点：</p>
-<ol>
-<li>引入环</li>
-<li>简便</li>
-</ol>
-<p>因子图把因子引入图里边。</p>
-<p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph"></p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>概率图</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>高斯混合模型</title>
     <url>/2020/03/14/2020-03-14-GMM/</url>
     <content><![CDATA[<p>高斯混合模型</p>
@@ -552,6 +553,44 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>GMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率图模型</title>
+    <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
+    <content><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p>本节将用来介绍概率图模型。</p>
+<a id="more"></a>
+
+<h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p>
+<p><strong>分类</strong></p>
+<p>根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p>
+<p><strong>前提背景</strong></p>
+<p>利用条件独立性可以降低概率模型的计算复杂度；</p>
+<p>条件独立性要在图的结构上有所映射；</p>
+<p><strong>图的构建方法</strong></p>
+<p>拓扑排序;</p>
+<p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p>
+<p>性质：</p>
+<p>如果父节点被观测，则其子节点独立；</p>
+<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p>
+<p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p>
+<p>道德图：有向图 → 无向图</p>
+<p>出发点：</p>
+<ol>
+<li>引入环</li>
+<li>简便</li>
+</ol>
+<p>因子图把因子引入图里边。</p>
+<p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph"></p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>概率图</tag>
       </tags>
   </entry>
   <entry>
@@ -631,44 +670,14 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>DBoW2库学习</title>
-    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
-    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
-<a id="more"></a>
-
-<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
-<table>
-<thead>
-<tr>
-<th align="center">算法结果事实</th>
-<th align="center">是回环</th>
-<th align="center">不是回环</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">是回环</td>
-<td align="center">真阳性</td>
-<td align="center">假阳性</td>
-</tr>
-<tr>
-<td align="center">不是回环</td>
-<td align="center">假阴性</td>
-<td align="center">真阴性</td>
-</tr>
-</tbody></table>
-<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
-<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
-<p>准确率描述了检测到的回环中真回环的个数。</p>
-<p>Recall描述了真回环中有多少个被检测出来了。</p>
-<p>根据准确率和召回率可以得到ROC曲线.</p>
-<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
-<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2>]]></content>
+    <title>粒子滤波器</title>
+    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+    <content><![CDATA[]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>DBoW2</tag>
-        <tag>回环检测</tag>
+        <tag>粒子滤波器</tag>
       </tags>
   </entry>
   <entry>
@@ -775,6 +784,47 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       <tags>
         <tag>VINS</tag>
         <tag>代码阅读</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DBoW2库学习</title>
+    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
+<a id="more"></a>
+
+<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
+<table>
+<thead>
+<tr>
+<th align="center">算法结果事实</th>
+<th align="center">是回环</th>
+<th align="center">不是回环</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是回环</td>
+<td align="center">真阳性</td>
+<td align="center">假阳性</td>
+</tr>
+<tr>
+<td align="center">不是回环</td>
+<td align="center">假阴性</td>
+<td align="center">真阴性</td>
+</tr>
+</tbody></table>
+<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
+<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
+<p>准确率描述了检测到的回环中真回环的个数。</p>
+<p>Recall描述了真回环中有多少个被检测出来了。</p>
+<p>根据准确率和召回率可以得到ROC曲线.</p>
+<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
+<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>DBoW2</tag>
+        <tag>回环检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1002,6 +1052,71 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
+    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
+<a id="more"></a>
+
+<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
+<li>驱动USB摄像头</li>
+<li>利用camera_calibration标定相机</li>
+</ol>
+<p>执行命令为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
+</li>
+<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>ROS</tag>
+        <tag>相机标定</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>发布IMU信息到ROS系统中</title>
+    <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
+    <content><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p>
+<p>​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
+<a id="more"></a>
+
+<h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-Imu-msg"><a href="#sensor-msgs-Imu-msg" class="headerlink" title="sensor_msgs/Imu.msg"></a>sensor_msgs/Imu.msg</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
+
+<p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs/Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs/Vector3）。</p>
+<h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol>
+<li><p>WiringPi未安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 .&#x2F;build</span><br><span class="line">sudo .&#x2F;build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>I2C device</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建ros包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
+
+<p>然后修改XML和CMakeLists.txt</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>ROS</tag>
+        <tag>IMU</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>利用Kalibr标定双目相机与IMU</title>
     <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
     <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
@@ -1082,86 +1197,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>利用ROS标定相机步骤与方法</title>
-    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
-    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
-<a id="more"></a>
-
-<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
-<li>驱动USB摄像头</li>
-<li>利用camera_calibration标定相机</li>
-</ol>
-<p>执行命令为：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
-
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
-</li>
-<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>ROS</tag>
-        <tag>相机标定</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>发布IMU信息到ROS系统中</title>
-    <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
-    <content><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p>
-<p>​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
-<a id="more"></a>
-
-<h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-Imu-msg"><a href="#sensor-msgs-Imu-msg" class="headerlink" title="sensor_msgs/Imu.msg"></a>sensor_msgs/Imu.msg</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
-
-<p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs/Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs/Vector3）。</p>
-<h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol>
-<li><p>WiringPi未安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 .&#x2F;build</span><br><span class="line">sudo .&#x2F;build</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>I2C device</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建ros包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
-
-<p>然后修改XML和CMakeLists.txt</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>ROS</tag>
-        <tag>IMU</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu1604连接蓝牙鼠标</title>
-    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
-    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
-
-<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>VINS系统解析</title>
     <url>/2020/02/15/2020-02-15-VINS_Mono_System/</url>
     <content><![CDATA[<h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
@@ -1193,6 +1228,21 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>VINS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu1604连接蓝牙鼠标</title>
+    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
+
+<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
