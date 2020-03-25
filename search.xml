@@ -984,7 +984,39 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>Recall描述了真回环中有多少个被检测出来了。</p>
 <p>根据准确率和召回率可以得到ROC曲线.</p>
 <p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
-<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2>]]></content>
+<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener">Github地址</a></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p>
+<ul>
+<li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li>
+<li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li>
+<li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li>
+<li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li>
+<li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li>
+<li>出于性能原因，DBoW2不支持停用词。</li>
+</ul>
+<p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p>
+<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p>
+<h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p>
+<h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedVocabulary</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedDatabase</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p>
+<h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p>
+<h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener"><strong>Github地址</strong></a></p>
+<h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p>
+<ul>
+<li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li>
+<li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li>
+<li>DBoW3可以在linux和Windows中进行编译。</li>
+<li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li>
+<li>使用二进制文件的可能性。二进制文件的加载/保存速度比yml快4-5倍。同样，它们可以被压缩。</li>
+<li>兼容DBoW2 yml文件</li>
+</ul>
+<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p>
+<h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p>
+<h4 id="读取-存储-词汇"><a href="#读取-存储-词汇" class="headerlink" title="读取/存储 词汇"></a>读取/存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
