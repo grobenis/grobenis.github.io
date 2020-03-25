@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://grobenis.github.io/"/>
-  <updated>2020-03-25T04:04:34.654Z</updated>
+  <updated>2020-03-25T04:07:17.967Z</updated>
   <id>https://grobenis.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://grobenis.github.io/2020/03/25/2020-03-25-LeeCode-CheckDaily/"/>
     <id>https://grobenis.github.io/2020/03/25/2020-03-25-LeeCode-CheckDaily/</id>
     <published>2020-03-25T03:05:15.000Z</published>
-    <updated>2020-03-25T04:04:34.654Z</updated>
+    <updated>2020-03-25T04:07:17.967Z</updated>
     
     <summary type="html">
     
@@ -30,6 +30,8 @@
 &lt;li&gt;三维形体的表面积&lt;/li&gt;
 &lt;li&gt;202.快乐数&lt;/li&gt;
 &lt;li&gt;204.计算质数&lt;/li&gt;
+&lt;li&gt;263.丑数&lt;/li&gt;
+&lt;li&gt;268.缺失数字&lt;/li&gt;
 &lt;/ol&gt;
     
     </summary>

@@ -104,6 +104,8 @@
 <li>三维形体的表面积</li>
 <li>202.快乐数</li>
 <li>204.计算质数</li>
+<li>263.丑数</li>
+<li>268.缺失数字</li>
 </ol>
 <a id="more"></a>
 
@@ -174,7 +176,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isHappy</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">10</span>)</span><br><span class="line">            <span class="keyword">if</span>(n==<span class="number">1</span>||n==<span class="number">7</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;         </span><br><span class="line">            </span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> i = n%<span class="number">10</span>;</span><br><span class="line">            sum+=i*i;</span><br><span class="line">            n/=<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum==<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> isHappy(sum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><strong>算法复杂度</strong>： <code>O(N * loglogN)</code></p>
-<h2 id="268-丑数"><a href="#268-丑数" class="headerlink" title="268. 丑数"></a>268. 丑数</h2><table>
+<h2 id="263-丑数"><a href="#263-丑数" class="headerlink" title="263. 丑数"></a>263. 丑数</h2><table>
 <thead>
 <tr>
 <th align="center">Category</th>
