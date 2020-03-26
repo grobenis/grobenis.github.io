@@ -1,6 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>哈希表与C++</title>
+    <url>/2020/03/26/2020-03-26-Hash-Table/</url>
+    <content><![CDATA[<p>散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。<br>给定表M，存在函数f(key)，对任意给定的关键字值key，代入函数后若能得到包含该关键字的记录在表中的地址，则称表M为哈希(Hash）表，函数f(key)为哈希(Hash) 函数。</p>
+<p>本节将介绍哈希表的基本概念，与C++实现方法。</p>
+<a id="more"></a>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ol>
+<li><p>若关键字为<strong>k</strong>，则其值存放在<strong>f(k)</strong>的存储位置上。由此，不需比较便可直接取得所查记录。称这个对应关系<strong>f</strong>为散列函数，按这个思想建立的表为散列表。</p>
+</li>
+<li><p>对不同的关键字可能得到同一散列地址，即<code>k1≠k2</code>，而<code>f(k1)=f(k2)</code>，这种现象称为冲突（英语：Collision）。具有相同函数值的关键字对该散列函数来说称做同义词。综上所述，根据散列函数<code>f(k)</code>和处理冲突的方法将一组关键字映射到一个有限的连续的地址集（区间）上，并以关键字在地址集中的“像”作为记录在表中的存储位置，这种表便称为散列表，这一映射过程称为散列造表或散列，所得的存储位置称散列地址。</p>
+</li>
+<li><p>若对于关键字集合中的任一个关键字，经散列函数映象到地址集合中任何一个地址的概率是相等的，则称此类散列函数为均匀散列函数（Uniform Hash function），这就是使关键字经过散列函数得到一个“随机的地址”，从而减少冲突。</p>
+</li>
+</ol>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><p>散列函数能使对一个数据序列的访问过程更加迅速有效，通过散列函数，数据元素将被更快地定位。</p>
+<p>实际工作中需视不同的情况采用不同的哈希函数，通常考虑的因素有：</p>
+<ol>
+<li><p>计算哈希函数所需时间</p>
+</li>
+<li><p>关键字的长度</p>
+</li>
+<li><p>哈希表的大小</p>
+</li>
+<li><p>关键字的分布情况</p>
+</li>
+<li><p>记录的查找频率</p>
+</li>
+</ol>
+<h3 id="1-直接寻址法"><a href="#1-直接寻址法" class="headerlink" title="1. 直接寻址法"></a>1. 直接寻址法</h3><p>取关键字或关键字的某个线性函数值为散列地址。即H(key)=key或H(key) = a·key + b，其中a和b为常数（这种<a href="https://baike.baidu.com/item/散列函数" target="_blank" rel="noopener">散列函数</a>叫做自身函数）。若其中H(key）中已经有值了，就往下一个找，直到H(key）中没有值了，就放进去。</p>
+<h3 id="2-数字分析法"><a href="#2-数字分析法" class="headerlink" title="2. 数字分析法"></a>2. 数字分析法</h3><p>分析一组数据，比如一组员工的出生年月日，这时我们发现出生年月日的前几位数字大体相同，这样的话，出现冲突的几率就会很大，但是我们发现年月日的后几位表示月份和具体日期的数字差别很大，如果用后面的数字来构成散列地址，则冲突的几率会明显降低。因此数字分析法就是找出数字的规律，尽可能利用这些数据来构造冲突几率较低的散列地址。</p>
+<h3 id="3-平方取中法"><a href="#3-平方取中法" class="headerlink" title="3. 平方取中法"></a>3. 平方取中法</h3><p>当无法确定关键字中哪几位分布较均匀时，可以先求出关键字的平方值，然后按需要取平方值的中间几位作为哈希地址。这是因为：平方后中间几位和关键字中每一位都相关，故不同关键字会以较高的概率产生不同的哈希地址。 [1] </p>
+<p>例：我们把英文字母在字母表中的位置序号作为该英文字母的内部编码。例如K的内部编码为11，E的内部编码为05，Y的内部编码为25，A的内部编码为01, B的内部编码为02。由此组成关键字“KEYA”的内部代码为11052501，同理我们可以得到关键字“KYAB”、“AKEY”、“BKEY”的内部编码。之后对关键字进行平方运算后，取出第7到第9位作为该关键字哈希地址，如下图所示</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>内部编码</th>
+<th>内部编码的平方值</th>
+<th>H(k)关键字的哈希地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KEYA</td>
+<td>11052501</td>
+<td>122157778355001</td>
+<td>778</td>
+</tr>
+<tr>
+<td>KYAB</td>
+<td>11250102</td>
+<td>126564795010404</td>
+<td>795</td>
+</tr>
+<tr>
+<td>AKEY</td>
+<td>01110525</td>
+<td>001233265775625</td>
+<td>265</td>
+</tr>
+<tr>
+<td>BKEY</td>
+<td>02110525</td>
+<td>004454315775625</td>
+<td>315</td>
+</tr>
+</tbody></table>
+<h3 id="4-折叠法"><a href="#4-折叠法" class="headerlink" title="4. 折叠法"></a>4. 折叠法</h3><p>将关键字分割成位数相同的几部分，最后一部分位数可以不同，然后取这几部分的叠加和（去除进位）作为散列地址。数位叠加可以有移位叠加和间界叠加两种方法。移位叠加是将分割后的每一部分的最低位对齐，然后相加；间界叠加是从一端向另一端沿分割界来回折叠，然后对齐相加。</p>
+<h3 id="5-随机数法"><a href="#5-随机数法" class="headerlink" title="5. 随机数法"></a>5. 随机数法</h3><p>选择一随机函数，取关键字的随机值作为散列地址，即$H(key)=random(key)$其中random为随机函数,通常用于关键字长度不等的场合。</p>
+<h3 id="6-除留余数法"><a href="#6-除留余数法" class="headerlink" title="6. 除留余数法"></a>6. 除留余数法</h3><p>取关键字被某个不大于散列表表长m的数p除后所得的余数为散列地址。即$H(key) = key \mod p,p&lt;=m$。不仅可以对关键字直接取模，也可在折叠、平方取中等运算之后取模。对p的选择很重要，一般取素数或m，若p选的不好，容易产生同义词。</p>
+<h2 id="处理冲突"><a href="#处理冲突" class="headerlink" title="处理冲突"></a>处理冲突</h2><h3 id="1-开放寻址法"><a href="#1-开放寻址法" class="headerlink" title="1. 开放寻址法"></a>1. 开放寻址法</h3><p>$H_i=(H(key) + d_i) MOD m,i=1,2，…，k(k&lt;=m-1）$，其中<code>H(key）</code>为散列函数，<code>m</code>为散列表长，$d_i$为增量序列，可有下列三种取法：<br>1.1. di=1,2,3，…，m-1，称线性探测再散列；<br>1.2. di=1^2,-1^2,2^2,-2^2，⑶^2，…，±（k)^2,(k&lt;=m/2）称二次探测再散列；<br>1.3. di=伪随机数序列，称伪随机探测再散列。</p>
+<h3 id="2-再散列法"><a href="#2-再散列法" class="headerlink" title="2. 再散列法"></a>2. 再散列法</h3><p>$H_i=RH_i(key), i=1,2，…，k$ ,$RH_i$均是不同的散列函数，即在同义词产生地址冲突时计算另一个散列函数地址，直到冲突不再发生，这种方法不易产生“聚集”，但增加了计算时间。</p>
+<h3 id="3-链地址法（拉链法）"><a href="#3-链地址法（拉链法）" class="headerlink" title="3. 链地址法（拉链法）"></a>3. 链地址法（拉链法）</h3><h3 id="4-建立一个公共溢出区"><a href="#4-建立一个公共溢出区" class="headerlink" title="4. 建立一个公共溢出区"></a>4. 建立一个公共溢出区</h3><h2 id="查找性能"><a href="#查找性能" class="headerlink" title="查找性能"></a>查找性能</h2><p>​        散列表的查找过程基本上和造表过程相同。一些关键码可通过散列函数转换的地址直接找到，另一些关键码在散列函数得到的地址上产生了冲突，需要按处理冲突的方法进行查找。在介绍的三种处理冲突的方法中，产生冲突后的查找仍然是给定值与关键码进行比较的过程。所以，对散列表查找效率的量度，依然用平均查找长度来衡量。<br>​        查找过程中，关键码的比较次数，取决于产生冲突的多少，产生的冲突少，查找效率就高，产生的冲突多，查找效率就低。因此，影响产生冲突多少的因素，也就是影响查找效率的因素。影响产生冲突多少有以下三个因素：</p>
+<ol>
+<li>散列函数是否均匀；</li>
+<li>处理冲突的方法；</li>
+<li>散列表的装填因子。<br>散列表的装填因子定义为：α= 填入表中的元素个数 / 散列表的长度<br>α是散列表装满程度的标志因子。由于表长是定值，α与“填入表中的元素个数”成正比，所以，α越大，填入表中的元素较多，产生冲突的可能性就越大；α越小，填入表中的元素较少，产生冲突的可能性就越小。<br>实际上，散列表的平均查找长度是装填因子α的函数，只是不同处理冲突的方法有不同的函数。</li>
+</ol>
+<h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><p>C++中的STL提供了hash_map来实现哈希表功能，但在C++11中，<code>unordered_map</code>作为一种关联容器，替代了<code>hash_map</code>，<code>unordered_map</code>的底层实现是<code>hash</code>表，所以被称为无序关联容器。<br>不管是map还是unordered_map都是一种 key-map(value) 映射的容器，提供非常高的查找效率，下面我们来了解<code>unordered_map</code>的用法。</p>
+<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><p>在讲解<code>unordered_map</code>之前，我们先得了解一些预备知识：</p>
+<h4 id="元素类型"><a href="#元素类型" class="headerlink" title="元素类型"></a>元素类型</h4><p>除常用的语言内置类型以外，<code>unordered_map</code>的元素类型大致有以下几种：</p>
+<ul>
+<li>value_type : unordered_map元素类型，这种类型的形式为 key-map类型，key和map的类型都是模板类型。</li>
+<li>key_type : key，模板类型</li>
+<li>mapped_type ：map，即我们常说的value，模板类型</li>
+<li>pair类型 ：pair类型也是STL中的常用类型，原型为template &lt;class T1, class T2&gt; struct pair;由于unordered_map使用的就是Key-Map匹配对，所以在这里使用比较多。</li>
+</ul>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>插槽：英文为bucket，又可以翻译成桶。在hash表中，hash函数通常返回一个整型(或无符号整型)元素，对应hash表的数组下标，但是数组类型通常为指针指向一片内存或者是一个链表头，对应许多元素，就像一个桶可以装很多元素，这里称为插槽。</li>
+</ul>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">unordered_map</span> <span class="params">( size_type n = N,<span class="keyword">const</span> hasher&amp; hf = hasher(),<span class="keyword">const</span> key_equal&amp; eql = key_equal(),<span class="keyword">const</span> allocator_type&amp; alloc = allocator_type() )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这个构造函数接受无参数构造</p>
+<ul>
+<li>n：为hash表的最小插槽数，如果未指定，将会被自动确定(取决于特定的库实现，并不固定)</li>
+<li>hf: hash函数，因为底层实现是hash表，必然就有hash函数，STL提供了非常全面的不同类型的hash函数实现，也可以自己实现hash函数。</li>
+<li>key_equal:判断两个key对象的hash值相等以确定查找的命中，STL提供了大部分的不同类型的key_equal实现，同样也可以实现hash函数</li>
+<li>alloc：容易使用的内存构造器，可选择不同的内存构建方式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">explicit unordered_map ( const allocator_type&amp; alloc );</span><br></pre></td></tr></table></figure>
+
+<p>指定unordered_map的构造器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">template &lt;class InputIterator&gt;</span><br><span class="line">unordered_map ( InputIterator first, InputIterator last,size_type n &#x3D; N,const hasher&amp; hf &#x3D; hasher(),const key_equal&amp; eql &#x3D; key_equal(),const allocator_type&amp; alloc &#x3D; allocator_type() );</span><br></pre></td></tr></table></figure>
+
+<p>接收输入迭代器构造方式，将迭代器指向的元素区间进行复制构造</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">unordered_map ( const unordered_map&amp; ump );</span><br><span class="line">unordered_map ( const unordered_map&amp; ump, const allocator_type&amp; alloc );</span><br></pre></td></tr></table></figure>
+
+<p>复制构造，第二个可指定构造器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">unordered_map ( unordered_map&amp;&amp; ump );</span><br><span class="line">unordered_map ( unordered_map&amp;&amp; ump, const allocator_type&amp; alloc );</span><br></pre></td></tr></table></figure>
+
+<p>移动构造方式，这个C++11中新支持的特性，移动构造方式提供临时变量的引用，即右值引用的功能,&amp;表示左值引用，&amp;&amp;表示右值引用。</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">unordered_map ( initializer_list&lt;value_type&gt; il,size_type n &#x3D; N,const hasher&amp; hf &#x3D; hasher(),const key_equal&amp; eql &#x3D; key_equal(),const allocator_type&amp; alloc &#x3D; allocator_type() );</span><br></pre></td></tr></table></figure>
+
+<p>以传入列表的形式构造</p>
+<p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unordered_map</span>[<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="built_in">std</span>::<span class="built_in">string</span>](<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="built_in">std</span>::<span class="built_in">string</span>) strmap( &#123;&#123;<span class="string">"name"</span>,<span class="string">"downey"</span>&#125;,&#123;<span class="string">"age"</span>,<span class="string">"500"</span>&#125;&#125; );</span><br></pre></td></tr></table></figure>
+
+<h3 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h3><h4 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h4><h5 id="at"><a href="#at" class="headerlink" title="at()"></a>at()</h5><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">mapped_type&amp; <span class="title">at</span> <span class="params">( <span class="keyword">const</span> key_type&amp; k )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">const</span> mapped_type&amp; <span class="title">at</span> <span class="params">( <span class="keyword">const</span> key_type&amp; k )</span> <span class="keyword">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>根据Key值查找容器内元素，并返回map元素的引用。</p>
+<p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">int</span>&gt; mymap=&#123;<span class="string">"key"</span>,<span class="number">111</span>&#125;;</span><br><span class="line"><span class="built_in">map</span>.at(<span class="string">"key"</span>)=<span class="number">123</span>;</span><br><span class="line"><span class="built_in">map</span>.at(<span class="string">"key"</span>)+=<span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="begin"><a href="#begin" class="headerlink" title="begin()"></a>begin()</h5><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">begin</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">local_iterator <span class="title">begin</span> <span class="params">( size_type n )</span></span>;</span><br><span class="line"><span class="function">const_local_iterator <span class="title">begin</span> <span class="params">( size_type n )</span> <span class="keyword">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>指向容器内第一个元素的迭代器。迭代器访问元素时，it-&gt;first对应key，it-&gt;second对应map(value).</p>
+<h5 id="end"><a href="#end" class="headerlink" title="end()"></a>end()</h5><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">const_iterator <span class="title">end</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">local_iterator <span class="title">end</span> <span class="params">(size_type n)</span></span>;</span><br><span class="line"><span class="function">const_local_iterator <span class="title">end</span> <span class="params">(size_type n)</span> <span class="keyword">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>指向容器内最后一个元素的后一个位置的迭代器。</p>
+<h5 id="cbegin"><a href="#cbegin" class="headerlink" title="cbegin()"></a>cbegin()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const_iterator cbegin() const noexcept;</span><br><span class="line">const_local_iterator cbegin ( size_type n ) const;</span><br></pre></td></tr></table></figure>
+
+<p>返回const类型的第一位置迭代器</p>
+<h5 id="cend"><a href="#cend" class="headerlink" title="cend()"></a>cend()</h5><p>返回const类型的最后一个位置的下一位置的迭代器。</p>
+<h4 id="清空：clear"><a href="#清空：clear" class="headerlink" title="清空：clear()"></a>清空：clear()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void clear() noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>删除容器内所有元素。</p>
+<h4 id="计数：count"><a href="#计数：count" class="headerlink" title="计数：count()"></a>计数：count()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">size_type count ( const key_type&amp; k ) const;</span><br></pre></td></tr></table></figure>
+
+<p>某个key值对应的map(value)值的数量，因为unordered_map不允许重复元素，所以返回值总是0或1</p>
+<h4 id="emplace"><a href="#emplace" class="headerlink" title="emplace()"></a>emplace()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">template &lt;class... Args&gt;</span><br><span class="line">pair&lt;iterator, bool&gt; emplace ( Args&amp;&amp;... args );</span><br></pre></td></tr></table></figure>
+
+<p>如果key元素是唯一的，在unordered_map中插入新元素，使用Args作为元素构造函数的参数来构造这个新元素。参数为右值引用。<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mymap.emplace (&quot;NCC-1701&quot;, &quot;J.T. Kirk&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>即可插入相应的map元素</p>
+<h4 id="emplace-hint"><a href="#emplace-hint" class="headerlink" title="emplace_hint()"></a>emplace_hint()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">template &lt;class... Args&gt;</span><br><span class="line">iterator emplace_hint ( const_iterator position, Args&amp;&amp;... args );</span><br></pre></td></tr></table></figure>
+
+<p>与emplace()操作一致，position参数则是提供一个建议搜索位置的起点的提示，可以优化执行时间。</p>
+<h4 id="判断是否为空：empty"><a href="#判断是否为空：empty" class="headerlink" title="判断是否为空：empty()"></a>判断是否为空：empty()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool empty() const noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>判断容器是否为空，返回bool值</p>
+<h4 id="擦除：erase"><a href="#擦除：erase" class="headerlink" title="擦除：erase()"></a>擦除：erase()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iterator erase ( const_iterator position );</span><br><span class="line">size_type erase ( const key_type&amp; k );</span><br><span class="line">iterator erase ( const_iterator first, const_iterator last );</span><br></pre></td></tr></table></figure>
+
+<p>根据不同的索引擦除插槽中的元素.</p>
+<h4 id="查找：find"><a href="#查找：find" class="headerlink" title="查找：find()"></a>查找：find()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iterator find ( const key_type&amp; k );</span><br><span class="line">const_iterator find ( const key_type&amp; k ) const;</span><br></pre></td></tr></table></figure>
+
+<p>查找函数，通过key查找一个元素，返回迭代器类型。</p>
+<h4 id="查找：bucket"><a href="#查找：bucket" class="headerlink" title="查找：bucket()"></a>查找：bucket()</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">size_type <span class="title">bucket</span> <span class="params">( <span class="keyword">const</span> key_type&amp; k )</span> <span class="keyword">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>以key值寻找元素在容器中的位置。</p>
+<p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">str_map map1;</span><br><span class="line">map1.insert(&#123;<span class="string">"downey"</span>,<span class="string">"hello"</span>&#125;);   </span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;map1.bucket (it-&gt;first)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">output:</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>从返回值可以看出，即使是插入的第一个元素，位置也不一定是1，这跟容器的hash实现相关。</p>
+<h4 id="插入：insert"><a href="#插入：insert" class="headerlink" title="插入：insert()"></a>插入：insert()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pair&lt;iterator,bool&gt; insert ( const value_type&amp; val );</span><br></pre></td></tr></table></figure>
+
+<p>直接插入元素类型，返回pair类型，返回值pair第一元素是插入元素迭代器，第二元素表示操作是否成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">template &lt;class P&gt;</span><br><span class="line">pair&lt;iterator,bool&gt; insert ( P&amp;&amp; val );</span><br></pre></td></tr></table></figure>
+
+<p>移动插入方式，可以传入右值插入<br>iterator insert ( const_iterator hint, const value_type&amp; val );</p>
+<p>用户给出一个插入起点以优化查找时间<br>template<br>iterator insert ( const_iterator hint, P&amp;&amp; val );<br>template<br>void insert ( InputIterator first, InputIterator last );</p>
+<p>复制型插入，将(first,last]所包含的内容全部复制插入<br>void insert ( initializer_list<value_type> il );<br>插入一个列表形式的元素</value_type></p>
+<h4 id="比较：key-eq"><a href="#比较：key-eq" class="headerlink" title="比较：key_eq()"></a>比较：key_eq()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">key_equal key_eq() const;</span><br></pre></td></tr></table></figure>
+
+<p>返回比较关键相等性的函数。获取key equal函数，key_equal函数为判断key值是否匹配，在一般情况下，hash函数并不能保证每一个输入对应一个独一无二的输出，可能多个输入会对应同一个输出，这就是hash冲突。可能一个槽内同时由多个元素，这时候就需要使用key_equal来进行进一步判断。</p>
+<h4 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h4><h5 id="‘-’-运算符重载"><a href="#‘-’-运算符重载" class="headerlink" title="‘=’ 运算符重载"></a>‘=’ 运算符重载</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">unordered_map&amp; operator&#x3D; ( const unordered_map&amp; ump );</span><br><span class="line">unordered_map&amp; operator&#x3D; ( unordered_map&amp;&amp; ump );</span><br><span class="line">unordered_map&amp; operator&#x3D; ( intitializer_list&lt;value_type&gt; il );</span><br></pre></td></tr></table></figure>
+
+<p>以不同方式对容器进行赋值。</p>
+<h5 id="‘-’-操作符重载"><a href="#‘-’-操作符重载" class="headerlink" title="‘[]’ 操作符重载"></a>‘[]’ 操作符重载</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mapped_type&amp; operator[] ( const key_type&amp; k );</span><br><span class="line">mapped_type&amp; operator[] ( key_type&amp;&amp; k );</span><br></pre></td></tr></table></figure>
+
+<p>[]操作符重载，使得容易可以通过map[Key]的方式进行索引。</p>
+<h4 id="重建：rehash"><a href="#重建：rehash" class="headerlink" title="重建：rehash()"></a>重建：rehash()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void rehash( size_type n );</span><br></pre></td></tr></table></figure>
+
+<p>重建hash表，将插槽的数量扩展的n，如果n小于目前插槽数量，这个函数并不起作用。</p>
+<h4 id="翻转：reserve"><a href="#翻转：reserve" class="headerlink" title="翻转：reserve()"></a>翻转：reserve()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void reserve ( size_type n );</span><br></pre></td></tr></table></figure>
+
+<p>将容器的插槽数设置成最适合n个元素的情况，这样可以避免多次rehash和直接rehash空间的浪费。</p>
+<p>与rehash相比，这个函数由用户给一个插槽数量建议值，由系统去分配空间，而rehash则是指定容器的插槽值</p>
+<h4 id="大小：size"><a href="#大小：size" class="headerlink" title="大小：size()"></a>大小：size()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">size_type size() const noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>返回当前容器中元素的个数</p>
+<h4 id="交换：swap"><a href="#交换：swap" class="headerlink" title="交换：swap()"></a>交换：swap()</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void swap ( unordered_map&amp; ump )</span><br></pre></td></tr></table></figure>
+
+<p>交换两个容器的内容，两个容器的类型必须一致，但大小可以不同。</p>
+<h4 id="内部信息获取"><a href="#内部信息获取" class="headerlink" title="内部信息获取"></a>内部信息获取</h4><h5 id="get-allocator"><a href="#get-allocator" class="headerlink" title="get_allocator()"></a>get_allocator()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">allocator_type get_allocator() const noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>返回容器目前使用的内存构造器。</p>
+<h5 id="hash-function"><a href="#hash-function" class="headerlink" title="hash_function()"></a>hash_function()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hasher hash_function() const;</span><br></pre></td></tr></table></figure>
+
+<p>获取hash容器当前使用的hash函数</p>
+<h5 id="bucket-count"><a href="#bucket-count" class="headerlink" title="bucket_count()"></a>bucket_count()</h5><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">size_type <span class="title">bucket_count</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>返回hash表的插槽值个数，这个函数的值对应构造函数中的n(最小插槽数)参数。</p>
+<h5 id="max-bucket-count"><a href="#max-bucket-count" class="headerlink" title="max_bucket_count()"></a>max_bucket_count()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">size_type max_bucket_count() const noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>返回容器所能支持的最大插槽数，根据平台不同而不同，一般是一个非常大的数字。</p>
+<h5 id="bucket-size"><a href="#bucket-size" class="headerlink" title="bucket_size()"></a>bucket_size()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">size_type bucket_size ( size_type n ) const;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数返回每个插槽中的元素数量。</p>
+<h5 id="max-load-factor"><a href="#max-load-factor" class="headerlink" title="max_load_factor()"></a>max_load_factor()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float max_load_factor() const noexcept;</span><br><span class="line">void max_load_factor ( float z );</span><br></pre></td></tr></table></figure>
+
+<p>第一个函数是查询目前容器最大的负载因子，默认为1。</p>
+<p>第二个函数是进行最大的负载因子的设置。</p>
+<h5 id="max-size"><a href="#max-size" class="headerlink" title="max_size()"></a>max_size()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">size_type max_size() const noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>容器可支持的元素最大数量，linux平台下，使用4.8.5的STL库中这个值是：268435455</p>
+<h5 id="load-factor"><a href="#load-factor" class="headerlink" title="load_factor()"></a>load_factor()</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float load_factor() const noexcept;</span><br></pre></td></tr></table></figure>
+
+<p>load factor在中文中被翻译成负载因子，负载因子是容器中元素数量与插槽数量之间的比例。即：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">load_factor &#x3D; size &#x2F; bucket_count</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>数据结构</tag>
+        <tag>哈希表</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeeCode 每日打卡3-26</title>
     <url>/2020/03/26/2020-03-26-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
@@ -695,9 +927,9 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>刷题</tag>
         <tag>C++</tag>
         <tag>周赛</tag>
+        <tag>刷题</tag>
       </tags>
   </entry>
   <entry>
@@ -1147,115 +1379,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>隐马尔可夫模型</title>
-    <url>/2020/03/10/2020-03-13-HMM_model/</url>
-    <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
-<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
-<p>来源：李航的《统计学习方法》</p>
-<a id="more"></a>
-
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。</p>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>机器学习中的步骤优化：</p>
-<ol>
-<li>确定模型</li>
-<li>确定策略 即准则（损失函数）</li>
-<li>算法：GN</li>
-</ol>
-<h3 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h3><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
-<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
-<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）;</p>
-<p>概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）；</p>
-<p>概率图模型+时间序列=动态模型；</p>
-<p>动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器；</p>
-<ol>
-<li>HMM：系统状态离散</li>
-<li>Kalman滤波器：系统状态连续且线性分布</li>
-<li>Particle滤波器：系统状态连续且非线性分布</li>
-</ol>
-<h3 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h3><p>​        隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下：</p>
-<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q = {q_1,q_2,…,q_N},V={v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
-<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I={i_1,i_2,…,i_N},O={v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A=[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
-<p>B是观测概率矩阵：<br>$$<br>B=[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)=P(o_t=v_k|i_t=q_j)，i=1,2,…N;j=1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
-<p>$\pi$是初始状态概率向量：<br>$$<br>\pi=(\pi_i)<br>$$<br>其中，<br>$$<br>\pi=P(i_1=q_i),i=1,2,…N<br>$$<br>是时刻t=1处于状态$t=1$处于状态$q_i$的概率。</p>
-<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda=(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
-<p>​    状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列</p>
-<h3 id="两个基本假设"><a href="#两个基本假设" class="headerlink" title="两个基本假设"></a>两个基本假设</h3><ol>
-<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)=P(i_t|i_t-1),t=1,2,…,T<br>$$</p>
-</li>
-<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)=P(o_t|i_t)<br>$$</p>
-</li>
-</ol>
-<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O=(o_1,o_2,…o_T)$的生成过程描述如下：</p>
-<p>算法：观测序列的生成</p>
-<p>输入：隐马尔可夫模型$\lambda=(A,B,\pi)$,观测序列长度；</p>
-<p>输出：观测序列$O=(o_1,o_2,…,o_T)$</p>
-<ol>
-<li>按照初始状态分布$\pi$产生状态$i_1$</li>
-<li>令t=1</li>
-<li>按照状态$i_t$的观测概率分布$b_{i_t(k)}$生成$o_t$</li>
-<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}=1,2,…N$ </li>
-<li>令t=t+1,如果t&lt;T，转步（3），否则，终止</li>
-</ol>
-<h2 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h2><p>隐马尔可夫模型有三个<strong>基本问题</strong>：</p>
-<ol>
-<li><strong>概率计算问题</strong>。给的模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
-<li><strong>学习问题</strong>。阈值观测序列$O=(o_1,o_2,…,o_T)$，估计模型参数$\lambda=(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
-<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I=(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
-</ol>
-<p>本节将介绍HMM模型的概率计算算法、学习算法以及预测算法</p>
-<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
-<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I=(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O=(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
-<p>状态序列$I=(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)=\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I=(i_1,i_2,…i_T)$,观测序列$O=(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)=b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)=P(O|I,\lambda)P(I,\lambda)=\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)=\sum_IP(O|I,\lambda)P(I|\lambda)=\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
-<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O=(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)=P(o_1,o_2,…,o_t,i_t=q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
-<p>输入：隐马尔可夫模型$\lambda$，观测序列O;</p>
-<p>输出：观测序列概率$P(O|\lambda)$</p>
-<ol>
-<li><p>初值<br>$$<br>\alpha_1(i)=\pi_ib_i(o_1),i=1,2,…N<br>$$</p>
-</li>
-<li><p>递推 对 $t=1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)=[\sum^N_{j=1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i=1,2,…N<br>$$</p>
-</li>
-<li><p>终止<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$</p>
-</li>
-</ol>
-<p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
-<p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
-<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
-<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
-<p><strong>算法步骤</strong></p>
-<p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
-<p><strong>输出</strong>：观测序列$P(O|\lambda)$;</p>
-<ol>
-<li><p>$\beta_T(i)=1,i=1,2,…N$</p>
-</li>
-<li><p>对$t=T-1,T-2,…1$<br>$$<br>\beta_t(i)=\sum^N_{j=1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i=1,2,…,N<br>$$</p>
-</li>
-</ol>
-<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
-<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
-<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
-<p>HMM的主要应用是解码</p>
-<p>两种解码方法：</p>
-<ol>
-<li>Viterbi算法解码</li>
-<li>前向后向算法+贝叶斯后验概率</li>
-</ol>
-<h3 id="语音识别"><a href="#语音识别" class="headerlink" title="语音识别"></a>语音识别</h3><h3 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h3><h3 id="词性标注"><a href="#词性标注" class="headerlink" title="词性标注"></a>词性标注</h3><p>词性是隐藏状态，词出现时观察序列。</p>
-<p>首先我们要知道模型的参数，如果又标注数据，直接用比例代替概率，如果没有用前向后向算法求除</p>
-<p>知道模型参数吧，使用Viterbi算法来计算某个标注序列（隐含状态）的概率</p>
-<h3 id="实际建模过程"><a href="#实际建模过程" class="headerlink" title="实际建模过程"></a>实际建模过程</h3><ul>
-<li>根据实际问题确定状态个数及观察序列</li>
-<li>用若干已知序列，采用B-W算法估计参数（转移概率和输出概率的值）</li>
-<li>输入位置序列用Viterbi算法或者贝叶斯概率解码</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>HMM</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>经典聚类算法调研</title>
     <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
     <content><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p>
@@ -1371,6 +1494,115 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>隐马尔可夫模型</title>
+    <url>/2020/03/10/2020-03-13-HMM_model/</url>
+    <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
+<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
+<p>来源：李航的《统计学习方法》</p>
+<a id="more"></a>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>机器学习中的步骤优化：</p>
+<ol>
+<li>确定模型</li>
+<li>确定策略 即准则（损失函数）</li>
+<li>算法：GN</li>
+</ol>
+<h3 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h3><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
+<p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
+<p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）;</p>
+<p>概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）；</p>
+<p>概率图模型+时间序列=动态模型；</p>
+<p>动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器；</p>
+<ol>
+<li>HMM：系统状态离散</li>
+<li>Kalman滤波器：系统状态连续且线性分布</li>
+<li>Particle滤波器：系统状态连续且非线性分布</li>
+</ol>
+<h3 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h3><p>​        隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下：</p>
+<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q = {q_1,q_2,…,q_N},V={v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
+<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I={i_1,i_2,…,i_N},O={v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A=[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
+<p>B是观测概率矩阵：<br>$$<br>B=[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)=P(o_t=v_k|i_t=q_j)，i=1,2,…N;j=1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
+<p>$\pi$是初始状态概率向量：<br>$$<br>\pi=(\pi_i)<br>$$<br>其中，<br>$$<br>\pi=P(i_1=q_i),i=1,2,…N<br>$$<br>是时刻t=1处于状态$t=1$处于状态$q_i$的概率。</p>
+<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda=(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
+<p>​    状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列</p>
+<h3 id="两个基本假设"><a href="#两个基本假设" class="headerlink" title="两个基本假设"></a>两个基本假设</h3><ol>
+<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)=P(i_t|i_t-1),t=1,2,…,T<br>$$</p>
+</li>
+<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)=P(o_t|i_t)<br>$$</p>
+</li>
+</ol>
+<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O=(o_1,o_2,…o_T)$的生成过程描述如下：</p>
+<p>算法：观测序列的生成</p>
+<p>输入：隐马尔可夫模型$\lambda=(A,B,\pi)$,观测序列长度；</p>
+<p>输出：观测序列$O=(o_1,o_2,…,o_T)$</p>
+<ol>
+<li>按照初始状态分布$\pi$产生状态$i_1$</li>
+<li>令t=1</li>
+<li>按照状态$i_t$的观测概率分布$b_{i_t(k)}$生成$o_t$</li>
+<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}=1,2,…N$ </li>
+<li>令t=t+1,如果t&lt;T，转步（3），否则，终止</li>
+</ol>
+<h2 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h2><p>隐马尔可夫模型有三个<strong>基本问题</strong>：</p>
+<ol>
+<li><strong>概率计算问题</strong>。给的模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
+<li><strong>学习问题</strong>。阈值观测序列$O=(o_1,o_2,…,o_T)$，估计模型参数$\lambda=(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
+<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I=(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
+</ol>
+<p>本节将介绍HMM模型的概率计算算法、学习算法以及预测算法</p>
+<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
+<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I=(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O=(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
+<p>状态序列$I=(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)=\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I=(i_1,i_2,…i_T)$,观测序列$O=(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)=b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)=P(O|I,\lambda)P(I,\lambda)=\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)=\sum_IP(O|I,\lambda)P(I|\lambda)=\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
+<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O=(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)=P(o_1,o_2,…,o_t,i_t=q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
+<p>输入：隐马尔可夫模型$\lambda$，观测序列O;</p>
+<p>输出：观测序列概率$P(O|\lambda)$</p>
+<ol>
+<li><p>初值<br>$$<br>\alpha_1(i)=\pi_ib_i(o_1),i=1,2,…N<br>$$</p>
+</li>
+<li><p>递推 对 $t=1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)=[\sum^N_{j=1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i=1,2,…N<br>$$</p>
+</li>
+<li><p>终止<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$</p>
+</li>
+</ol>
+<p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
+<p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
+<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
+<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
+<p><strong>算法步骤</strong></p>
+<p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
+<p><strong>输出</strong>：观测序列$P(O|\lambda)$;</p>
+<ol>
+<li><p>$\beta_T(i)=1,i=1,2,…N$</p>
+</li>
+<li><p>对$t=T-1,T-2,…1$<br>$$<br>\beta_t(i)=\sum^N_{j=1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i=1,2,…,N<br>$$</p>
+</li>
+</ol>
+<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
+<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
+<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
+<p>HMM的主要应用是解码</p>
+<p>两种解码方法：</p>
+<ol>
+<li>Viterbi算法解码</li>
+<li>前向后向算法+贝叶斯后验概率</li>
+</ol>
+<h3 id="语音识别"><a href="#语音识别" class="headerlink" title="语音识别"></a>语音识别</h3><h3 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h3><h3 id="词性标注"><a href="#词性标注" class="headerlink" title="词性标注"></a>词性标注</h3><p>词性是隐藏状态，词出现时观察序列。</p>
+<p>首先我们要知道模型的参数，如果又标注数据，直接用比例代替概率，如果没有用前向后向算法求除</p>
+<p>知道模型参数吧，使用Viterbi算法来计算某个标注序列（隐含状态）的概率</p>
+<h3 id="实际建模过程"><a href="#实际建模过程" class="headerlink" title="实际建模过程"></a>实际建模过程</h3><ul>
+<li>根据实际问题确定状态个数及观察序列</li>
+<li>用若干已知序列，采用B-W算法估计参数（转移概率和输出概率的值）</li>
+<li>输入位置序列用Viterbi算法或者贝叶斯概率解码</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>HMM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>利用ROS标定相机步骤与方法</title>
     <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
     <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
@@ -1404,35 +1636,18 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>发布IMU信息到ROS系统中</title>
-    <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
-    <content><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p>
-<p>​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
-<a id="more"></a>
+    <title>Ubuntu1604连接蓝牙鼠标</title>
+    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
 
-<h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-Imu-msg"><a href="#sensor-msgs-Imu-msg" class="headerlink" title="sensor_msgs/Imu.msg"></a>sensor_msgs/Imu.msg</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
-
-<p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs/Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs/Vector3）。</p>
-<h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol>
-<li><p>WiringPi未安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 .&#x2F;build</span><br><span class="line">sudo .&#x2F;build</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>I2C device</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建ros包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
-
-<p>然后修改XML和CMakeLists.txt</p>
-</li>
-</ol>
+<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
 ]]></content>
       <categories>
         <category>实验</category>
       </categories>
       <tags>
-        <tag>ROS</tag>
-        <tag>IMU</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -1516,52 +1731,35 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>VINS系统解析</title>
-    <url>/2020/02/15/2020-02-15-VINS_Mono_System/</url>
-    <content><![CDATA[<h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
+    <title>发布IMU信息到ROS系统中</title>
+    <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
+    <content><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p>
+<p>​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
 <a id="more"></a>
 
-<p><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%B8%A7%E9%97%B4%E7%BA%A6%E6%9D%9F.png" alt="image-20191202163857217"></p>
-<blockquote>
-<ol>
-<li>黄色的是IMU的帧间约束（PVQBaBg 15*1）</li>
-<li>蓝色为视觉重投影误差约束（2*1）</li>
-<li>绿色为闭环帧，用来计算相对位资，用于闭环优化时使用</li>
-<li>红色的是IMU预计分步骤</li>
-</ol>
-</blockquote>
-<p>本文重点看IMU约束与视觉约束</p>
-<h4 id="前端使用光流跟踪"><a href="#前端使用光流跟踪" class="headerlink" title="前端使用光流跟踪"></a>前端使用光流跟踪</h4><ol>
-<li>cv::goodfeaturesToTrack检测Harris角点</li>
-<li>cv::CalcOpticalFlowPyrLK跟踪相邻帧的角点</li>
-<li>cv::findFundamentalMat 去除异常点</li>
-<li>统一的球面模型</li>
-</ol>
-<h4 id="关键帧选择机制"><a href="#关键帧选择机制" class="headerlink" title="关键帧选择机制"></a>关键帧选择机制</h4><ol>
-<li>平均视差大于某个阈值</li>
-<li>跟踪的特征点数量小于某个阈值</li>
-</ol>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>VINS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu1604连接蓝牙鼠标</title>
-    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
-    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
+<h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-Imu-msg"><a href="#sensor-msgs-Imu-msg" class="headerlink" title="sensor_msgs/Imu.msg"></a>sensor_msgs/Imu.msg</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs&#x2F;Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
 
-<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
+<p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs/Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs/Vector3）。</p>
+<h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol>
+<li><p>WiringPi未安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 .&#x2F;build</span><br><span class="line">sudo .&#x2F;build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>I2C device</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建ros包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure>
+
+<p>然后修改XML和CMakeLists.txt</p>
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>实验</category>
       </categories>
       <tags>
-        <tag>Ubuntu</tag>
+        <tag>ROS</tag>
+        <tag>IMU</tag>
       </tags>
   </entry>
   <entry>
@@ -1681,8 +1879,42 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
 ]]></content>
       <tags>
-        <tag>VINS</tag>
         <tag>VIO</tag>
+        <tag>VINS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VINS系统解析</title>
+    <url>/2020/02/15/2020-02-15-VINS_Mono_System/</url>
+    <content><![CDATA[<h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
+<a id="more"></a>
+
+<p><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%B8%A7%E9%97%B4%E7%BA%A6%E6%9D%9F.png" alt="image-20191202163857217"></p>
+<blockquote>
+<ol>
+<li>黄色的是IMU的帧间约束（PVQBaBg 15*1）</li>
+<li>蓝色为视觉重投影误差约束（2*1）</li>
+<li>绿色为闭环帧，用来计算相对位资，用于闭环优化时使用</li>
+<li>红色的是IMU预计分步骤</li>
+</ol>
+</blockquote>
+<p>本文重点看IMU约束与视觉约束</p>
+<h4 id="前端使用光流跟踪"><a href="#前端使用光流跟踪" class="headerlink" title="前端使用光流跟踪"></a>前端使用光流跟踪</h4><ol>
+<li>cv::goodfeaturesToTrack检测Harris角点</li>
+<li>cv::CalcOpticalFlowPyrLK跟踪相邻帧的角点</li>
+<li>cv::findFundamentalMat 去除异常点</li>
+<li>统一的球面模型</li>
+</ol>
+<h4 id="关键帧选择机制"><a href="#关键帧选择机制" class="headerlink" title="关键帧选择机制"></a>关键帧选择机制</h4><ol>
+<li>平均视差大于某个阈值</li>
+<li>跟踪的特征点数量小于某个阈值</li>
+</ol>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>VINS</tag>
       </tags>
   </entry>
   <entry>
