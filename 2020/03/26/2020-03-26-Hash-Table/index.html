@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.1k字</span>
+            <span class="post-count">4.2k字</span>
         </span>
     </span>
 
@@ -324,6 +324,8 @@
 <p>load factor在中文中被翻译成负载因子，负载因子是容器中元素数量与插槽数量之间的比例。即：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load_factor &#x3D; size &#x2F; bucket_count</span><br></pre></td></tr></table></figure>
 
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><h5 id="使用迭代器遍历"><a href="#使用迭代器遍历" class="headerlink" title="使用迭代器遍历"></a>使用迭代器遍历</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> n:deck)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">map</span>[n]++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> res=<span class="built_in">map</span>[deck[<span class="number">0</span>]];</span><br><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;::iterator  iter;</span><br><span class="line"><span class="keyword">for</span>(iter = <span class="built_in">map</span>.<span class="built_in">begin</span>(); iter != <span class="built_in">map</span>.<span class="built_in">end</span>(); iter++)</span><br><span class="line">&#123;</span><br><span class="line">    res = gcd(res,iter-&gt;second);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> res&gt;=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
 
       
       <!-- reward -->
@@ -410,6 +412,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/03/26/2020-03-26-Epipolar-constraint/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            对极约束
+          
+        </div>
+      </a>
     
     
       <a href="/2020/03/26/2020-03-26-LeeCode-CheckDaily/" class="article-nav-link">

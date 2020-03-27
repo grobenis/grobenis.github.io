@@ -1,6 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2020-03-27-LeeCode-CheckDaily</title>
+    <url>/2020/03/27/2020-03-27-LeeCode-CheckDaily/</url>
+    <content><![CDATA[<p>今日打卡题目如下：</p>
+<ol>
+<li>914.卡牌分组</li>
+<li>226.翻转二叉树</li>
+<li>231.2的幂</li>
+<li>278.第一个错误的版本</li>
+<li>258.各位相加</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="914-卡牌分组"><a href="#914-卡牌分组" class="headerlink" title="914. 卡牌分组"></a>914. 卡牌分组</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一副牌，每张牌上都写着一个整数。</p>
+<p>此时，你需要选定一个数字 <code>X</code>，使我们可以将整副牌按下述规则分成 1 组或更多组：</p>
+<ul>
+<li>每组都有 <code>X</code> 张牌。</li>
+<li>组内所有的牌上都写着相同的整数。</li>
+</ul>
+<p>仅当你可选的 <code>X &gt;= 2</code> 时返回 <code>true</code>。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a>示例 1</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,2,3,4,4,3,2,1]</span><br><span class="line">输出：true</span><br><span class="line">解释：可行的分组是 [1,1]，[2,2]，[3,3]，[4,4]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a>示例 2</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1,1,2,2,2,3,3]</span><br><span class="line">输出：false</span><br><span class="line">解释：没有满足要求的分组。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3"><a href="#示例-3" class="headerlink" title="示例 3"></a>示例 3</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1]</span><br><span class="line">输出：false</span><br><span class="line">解释：没有满足要求的分组。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4"><a href="#示例-4" class="headerlink" title="示例 4"></a>示例 4</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1]</span><br><span class="line">输出：true</span><br><span class="line">解释：可行的分组是 [1,1]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-5"><a href="#示例-5" class="headerlink" title="示例 5"></a>示例 5</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1,2,2,2,2]</span><br><span class="line">输出：true</span><br><span class="line">解释：可行的分组是 [1,1]，[2,2]，[2,2]</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ul>
+<li>1 &lt;= deck.length &lt;= 10000</li>
+<li>0 &lt;= deck[i] &lt; 10000</li>
+</ul>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>思路：统计各个数字的个数，然后求最大公约数；</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasGroupsSizeX</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; deck)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!deck.<span class="built_in">size</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> n:deck)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">map</span>[n]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res=<span class="built_in">map</span>[deck[<span class="number">0</span>]];</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;::iterator  iter;</span><br><span class="line">       	<span class="keyword">for</span>(iter = <span class="built_in">map</span>.<span class="built_in">begin</span>(); iter != <span class="built_in">map</span>.<span class="built_in">end</span>(); iter++)</span><br><span class="line">        &#123;</span><br><span class="line">           res = gcd(res,iter-&gt;second);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res&gt;=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> cnt[<span class="number">10000</span>];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasGroupsSizeX</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; deck)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> x: deck) cnt[x]++;</span><br><span class="line">        <span class="keyword">int</span> g = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; ++i)<span class="keyword">if</span>(cnt[i]) &#123;</span><br><span class="line">            <span class="keyword">if</span> (~g) g = gcd(g, cnt[i]);</span><br><span class="line">            <span class="keyword">else</span> g = cnt[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> g &gt;= <span class="number">2</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>复杂度分析</p>
+<p>时间复杂度：<code>O(N log C)</code>，其中<code>N</code> 是卡牌的个数，<code>C</code> 是数组 <code>deck</code> 中数的范围，在本题中 C 的值为 10000。求两个数最大公约数的复杂度是 <code>O(log C)</code>，需要求最多 <code>N-1</code>次。</p>
+<p>空间复杂度：<code>O(N + C)</code> 或 <code>O(N)</code>。</p>
+<h2 id="226-翻转二叉树"><a href="#226-翻转二叉树" class="headerlink" title="226. 翻转二叉树"></a>226. 翻转二叉树</h2><table>
+<thead>
+<tr>
+<th align="center">Category</th>
+<th align="center">Difficulty</th>
+<th align="center">Likes</th>
+<th align="center">Dislikes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">algorithms</td>
+<td align="center">Easy (74.43%)</td>
+<td align="center">393</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+<h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>翻转一棵二叉树。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a><strong>示例</strong></h4><p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">     4</span><br><span class="line">   &#x2F;   \</span><br><span class="line">  2     7</span><br><span class="line"> &#x2F; \   &#x2F; \</span><br><span class="line">1   3 6   9</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">     4</span><br><span class="line">   &#x2F;   \</span><br><span class="line">  7     2</span><br><span class="line"> &#x2F; \   &#x2F; \</span><br><span class="line">9   6 3   1</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><p>递归思路</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">invertTree</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        swap(root-&gt;left,root-&gt;right);</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;left)</span><br><span class="line">            invertTree(root-&gt;left);</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;right)</span><br><span class="line">            invertTree(root-&gt;right);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="231-2的幂"><a href="#231-2的幂" class="headerlink" title="231. 2的幂"></a>231. 2的幂</h2><table>
+<thead>
+<tr>
+<th align="center">Category</th>
+<th align="center">Difficulty</th>
+<th align="center">Likes</th>
+<th align="center">Dislikes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">algorithms</td>
+<td align="center">Easy (47.79%)</td>
+<td align="center">173</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+<h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>一个函数来判断它是否是 2 的幂次方。</p>
+<h4 id="示例-1-1"><a href="#示例-1-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1</span><br><span class="line">输出: true</span><br><span class="line">解释: 20 &#x3D; 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2-1"><a href="#示例-2-1" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 16</span><br><span class="line">输出: true</span><br><span class="line">解释: 24 &#x3D; 16</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3-1"><a href="#示例-3-1" class="headerlink" title="示例 3"></a><strong>示例 3</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 218</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><p>位操作</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;=<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            res+=n&amp;<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(res&gt;<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            n=n&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="278-第一个错误的版本"><a href="#278-第一个错误的版本" class="headerlink" title="278.第一个错误的版本"></a>278.第一个错误的版本</h2><table>
+<thead>
+<tr>
+<th align="center">Category</th>
+<th align="center">Difficulty</th>
+<th align="center">Likes</th>
+<th align="center">Dislikes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">algorithms</td>
+<td align="center">Easy (37.51%)</td>
+<td align="center">148</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+<h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
+<p>假设你有 <code>n</code> 个版本 <code>[1, 2, ..., n]</code>，你想找出导致之后所有版本出错的第一个错误的版本。</p>
+<p>你可以通过调用 <code>bool isBadVersion(version)</code> 接口来判断版本号 <code>version</code> 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a><strong>示例</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">给定 n &#x3D; 5，并且 version &#x3D; 4 是第一个错误的版本。</span><br><span class="line"></span><br><span class="line">调用 isBadVersion(3) -&gt; false</span><br><span class="line">调用 isBadVersion(5) -&gt; true</span><br><span class="line">调用 isBadVersion(4) -&gt; true</span><br><span class="line"></span><br><span class="line">所以，4 是第一个错误的版本。</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法-3"><a href="#我的解法-3" class="headerlink" title="我的解法"></a>我的解法</h3><p>使用二分查找</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">firstBadVersion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> right = n;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left+(right-left)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(isBadVersion(mid))</span><br><span class="line">            &#123;</span><br><span class="line">                right=mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                left=mid+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>注意：求mid的时候要防止int溢出。</p>
+<h2 id="258-各位相加"><a href="#258-各位相加" class="headerlink" title="258. 各位相加"></a>258. 各位相加</h2><table>
+<thead>
+<tr>
+<th align="center">Category</th>
+<th align="center">Difficulty</th>
+<th align="center">Likes</th>
+<th align="center">Dislikes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">algorithms</td>
+<td align="center">Easy (65.90%)</td>
+<td align="center">219</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+<h3 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个非负整数 <code>num</code>，反复将各个位上的数字相加，直到结果为一位数。</p>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a><strong>示例</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 38</span><br><span class="line">输出: 2 </span><br><span class="line">解释: 各位相加的过程为：3 + 8 &#x3D; 11, 1 + 1 &#x3D; 2。 由于 2 是一位数，所以返回 2。</span><br></pre></td></tr></table></figure>
+
+<h5 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a><strong>进阶</strong></h5><p>你可以不使用循环或者递归，且在 O(1) 时间复杂度内解决这个问题吗？</p>
+<h3 id="我的解法-4"><a href="#我的解法-4" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">addDigits</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(num&gt;=<span class="number">10</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            sum+=num%<span class="number">10</span>;</span><br><span class="line">            num/=<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        sum+=num;</span><br><span class="line">        <span class="keyword">return</span> sum&lt;<span class="number">10</span>?sum:addDigits(sum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数学方法"><a href="#数学方法" class="headerlink" title="数学方法"></a>数学方法</h3><p>时间复杂度为O(1)的解法：</p>
+<ul>
+<li><p>除个位外，每一位上的值都是通过(9+1)进位的过程得到的，想一下拨算盘进位</p>
+</li>
+<li><p>把整数n看成n样物品，原本是以10个1份打包的，现在从这些10个1份打包好的里面，拿出1个，让它们以9个为1份打包。</p>
+<p>这样就出现了两部分的东西：</p>
+</li>
+<li><p>原本10个现在9个1份的，打包好的物品，这些，我们不用管零散的物品，它们还可以分成：</p>
+<ul>
+<li>从原来打包的里面拿出来的物品，<strong>它们的总和 =》 原来打包好的份数 =》 10进制进位的次数 =》 10进制下，除个位外其他位上的值的总和</strong></li>
+<li>以10个为1份打包时，打不进去的零散物品 =》 10进制个位上的值</li>
+</ul>
+</li>
+<li><p>如上零散物品的总数，就是第一次处理num后得到的累加值<br>如果这个累加值&gt;9，那么如题就还需要将各个位上的值再相加，直到结果为个位数为止。也就意味着还需要来一遍如上的过程。</p>
+<p>那么按照如上的思路，似乎可以通过n % 9得到最后的值。但是有1个关键的问题，如果num是9的倍数，那么就不适用上述逻辑。原本我是想得到n被打包成10个1份的份数+打不进10个1份的散落个数的和。通过与9取模，去获得那个不能整除的1，作为计算份数的方式，但是如果可以被9整除，我就无法得到那个1，也得不到个位上的数。<br>所以需要做一下特殊处理，<code>(num - 1) % 9 + 1</code><br>可以这么做的原因：原本可以被完美分成9个为一份的n样物品，我故意去掉一个，那么就又可以回到上述逻辑中去得到我要的n被打包成10个一份的份数+打不进10个一份的散落个数的和。而这个减去的1就相当于从，在10个1份打包的时候散落的个数中借走的，本来就不影响原来10个1份打包的份数，先拿走再放回来，都只影响散落的个数，所以没有关系。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addDigits</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (num - <span class="number">1</span>) % <span class="number">9</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>LeeCode</tag>
+        <tag>C++</tag>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>对极约束</title>
+    <url>/2020/03/26/2020-03-26-Epipolar-constraint/</url>
+    <content><![CDATA[<p>本文旨在了解一下几点：</p>
+<ol>
+<li>对极约束是什么</li>
+<li>基础矩阵F</li>
+<li>F的秩有什么意义</li>
+<li>本质矩阵E</li>
+<li>E与F的区别与联系</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="对极约束"><a href="#对极约束" class="headerlink" title="对极约束"></a>对极约束</h2><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>在已知 2D像素坐标的前提下，根据两幅图像间多组2D像素点对来估计相机的运动。</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h3><p><img src="/2020/03/26/2020-03-26-Epipolar-constraint/image-20200326152746588.png" alt="image-20200326152746588"></p>
+<p>如上图所示，我们希望求取两帧图像 $I_1$,$ I_2$ 之间的运动，设第一帧到第二帧的运动为 $R$，$t$。两个相机中心分别为 $O_1$,$O_2$。现在，考虑 $I_1$ 中有一个特征点 $p_1$，它在 $I_2$ 中对应着特征点 $p_2$。我们知道两者是通过特征匹配得到的。首先，连线 $O_2P$与$O_1P$ 在三维空间中会相交于点 P。由$O_1$, $O_2$, $P$ 三点确定的平面为<strong>极平面</strong>（<code>Epipolar plane</code>）。$O_1O_2$ 连线与像平面 $I_1$, $I_2$ 的交点$e_1$, $e_2$ 称为<strong>极点</strong>（<code>Epipoles</code>），$O_1O_2$ 被称为<strong>基线</strong>（<code>Baseline</code>）。我们称极平面与两个像平面 $I_1$, $I_2$ 之间的相交线 $l_1$, $l_2$ 为<strong>极线</strong>（<code>Epipolar line</code>）。</p>
+<p>设P的空间位置为 $P=[X,Y,Z]^T$。则根据针孔模型，两个像素点$p_1,p_2$的像素位置为:<br>$$<br>s_1p_1=KP,s_2p_2=K(RP+t)<br>$$<br>其中，K为相机内参矩阵，R，t为两个坐标系的相机运动。具体来说，计算的是$R_{21}$，$t_{21}$，因为他们把第一个坐标系下的坐标转换到了第二个坐标系下。其也可写作是李代数形式。</p>
+<p>尺度意义下相等记作：$sp\simeq p$，可表示投影关系。</p>
+<p>因此有:<br>$$<br>x_1=K^{-1}p_1, x_2=K^{-1}p_2<br>$$<br>其中，$x_1$,$x_2$表示像素点在归一化平面上的坐标。代入上式，得：<br>$$<br>x_2\simeq Rx_1+t<br>$$<br>两边同时左乘<code>t^</code>。因此得到:<br>$$<br>t^{.}x_2\simeq t^{.}Rx_1<br>$$<br>然后同时左乘<code>x2^</code>，得到</p>
+<p><img src="/2020/03/26/2020-03-26-Epipolar-constraint/image-20200326155950749.png" alt="image-20200326155950749"></p>
+<p>重新带入$p_1,p_2$有:</p>
+<p><img src="/2020/03/26/2020-03-26-Epipolar-constraint/image-20200326160100489.png" alt="image-20200326160100489"></p>
+<p>上述两式称为<strong>对极约束</strong>。</p>
+<p><strong>几何意义</strong>:    $O_1,P,O_2$三者共面。</p>
+<p>把中间部分记作两个矩阵，基础矩阵F和本质矩阵E，可进一步检核对极约束：<code>E=t^R</code>，$F=K^{-T}EK^{-1}$，$x^T_2Ex^1=p^T_2Fp_1=0$。</p>
+<p>可看出，对极约束简洁地给出了两个匹配点之间的中间位置关系。</p>
+<p>于是位子估计变为以下两部:</p>
+<ol>
+<li>根据配对点的像素为最初求出E或者F。</li>
+<li>根据E或者F求出R,t。</li>
+</ol>
+<p>由于E和F只相差了相机内参，而内参在SLAM通常是已知的，因此实践中往往使用形式更简单的E。</p>
+<h2 id="基础矩阵F"><a href="#基础矩阵F" class="headerlink" title="基础矩阵F"></a>基础矩阵F</h2><h2 id="本质矩阵E"><a href="#本质矩阵E" class="headerlink" title="本质矩阵E"></a>本质矩阵E</h2>]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+        <tag>对极约束</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>哈希表与C++</title>
     <url>/2020/03/26/2020-03-26-Hash-Table/</url>
     <content><![CDATA[<p>散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。<br>给定表M，存在函数f(key)，对任意给定的关键字值key，代入函数后若能得到包含该关键字的记录在表中的地址，则称表M为哈希(Hash）表，函数f(key)为哈希(Hash) 函数。</p>
@@ -228,6 +440,8 @@
 
 <p>load factor在中文中被翻译成负载因子，负载因子是容器中元素数量与插槽数量之间的比例。即：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">load_factor &#x3D; size &#x2F; bucket_count</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><h5 id="使用迭代器遍历"><a href="#使用迭代器遍历" class="headerlink" title="使用迭代器遍历"></a>使用迭代器遍历</h5><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> n:deck)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">map</span>[n]++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> res=<span class="built_in">map</span>[deck[<span class="number">0</span>]];</span><br><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;::iterator  iter;</span><br><span class="line"><span class="keyword">for</span>(iter = <span class="built_in">map</span>.<span class="built_in">begin</span>(); iter != <span class="built_in">map</span>.<span class="built_in">end</span>(); iter++)</span><br><span class="line">&#123;</span><br><span class="line">    res = gcd(res,iter-&gt;second);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> res&gt;=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
