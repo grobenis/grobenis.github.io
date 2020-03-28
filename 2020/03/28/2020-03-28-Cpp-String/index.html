@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    KMP-Algorithm |  曾是少年
+    C++字符串 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-KMP-Algorithm" class="article article-type-post" itemscope
+  <article id="post-2020-03-28-Cpp-String" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  KMP-Algorithm
+  C++字符串
 </h1>
   
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/22/KMP-Algorithm/" class="article-date">
-  <time datetime="2020-03-22T06:31:40.000Z" itemprop="datePublished">2020-03-22</time>
+      <a href="/2020/03/28/2020-03-28-Cpp-String/" class="article-date">
+  <time datetime="2020-03-28T09:06:29.000Z" itemprop="datePublished">2020-03-28</time>
 </a>
       
   <div class="article-category">
@@ -98,46 +98,77 @@
       
 
       
-      <p>KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。</p>
+      <p>string是C++标准库的一个重要的部分，主要用于字符串处理。可以使用输入输出流方式直接进行string操作，也可以通过文件等手段进行string操作。同时，C++的算法库对string类也有着很好的支持，并且string类还和c语言的字符串之间有着良好的接口。</p>
+<p>本文将介绍字符串的基本概念和C++的常用操作。</p>
 <a id="more"></a>
 
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>有一个文本串S，和一个模式串P，现在要查找P在S中的位置，怎么查找呢？</p>
-<h2 id="暴力匹配算法"><a href="#暴力匹配算法" class="headerlink" title="暴力匹配算法"></a>暴力匹配算法</h2><p>如果用暴力匹配的思路，并假设现在文本串S匹配到 i 位置，模式串P匹配到 j 位置，则有：</p>
-<ul>
-<li>如果当前字符匹配成功（即S[i] == P[j]），则i++，j++，继续匹配下一个字符；</li>
-<li>如果失配（即S[i]! = P[j]），令i = i - (j - 1)，j = 0。相当于每次匹配失败时，i 回溯，j 被置为0。</li>
-</ul>
-<p>回溯的方法使得算法复杂度上升。</p>
-<p>因此需要优化回溯的步骤以简化算法。</p>
-<p>源代码：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 字符串下标始于 0 */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">NaiveStringSearch</span><span class="params">(<span class="built_in">string</span> S, <span class="built_in">string</span> P)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;    <span class="comment">// S 的下标</span></span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">0</span>;    <span class="comment">// P 的下标</span></span><br><span class="line">    <span class="keyword">int</span> s_len = S.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> p_len = P.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">while</span> (i &lt; s_len &amp;&amp; j &lt; p_len)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (S[i] == P[j])  <span class="comment">// 若相等，都前进一步</span></span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>               <span class="comment">// 不相等</span></span><br><span class="line">        &#123;</span><br><span class="line">            i = i - j + <span class="number">1</span>;</span><br><span class="line">            j = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j == p_len)        <span class="comment">// 匹配成功</span></span><br><span class="line">        <span class="keyword">return</span> i - j;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>字符串或串(String)是由数字、字母、下划线组成的一串字符。一般记为 <code>s=“a1a2···an”(n&gt;=0)</code>。它是编程语言中表示文本的数据类型。在程序设计中，字符串（string）为符号或数值的一个连续序列，如符号串（一串字符）或二进制数字串（一串二进制数字）。</p>
+<p>通常以串的整体作为操作对象，如：在串中查找某个子串、求取一个子串、在串的某个位置上插入一个子串以及删除一个子串等。两个字符串相等的充要条件是：长度相等，并且各个对应位置上的字符都相等。设p、q是两个串，求q在p中首次出现的位置的运算叫做模式匹配。</p>
+<p>串的两种最基本的存储方式是顺序存储方式和链接存储方式。</p>
+<h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><h4 id="1-常规方式"><a href="#1-常规方式" class="headerlink" title="1. 常规方式"></a>1. 常规方式</h4><p>下标+operator[]</p>
+<h4 id="2-使用迭代器遍历"><a href="#2-使用迭代器遍历" class="headerlink" title="2. 使用迭代器遍历"></a>2. 使用迭代器遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>::iterator it = str.<span class="built_in">begin</span>();<span class="comment">//返回第一个位置的迭代器（类似于指针）</span></span><br><span class="line"><span class="keyword">while</span> (it != str.<span class="built_in">end</span>()) <span class="comment">//str.end()是最后一个数据的下一个位置 </span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*it&lt;&lt;<span class="built_in">endl</span>;   </span><br><span class="line">    it++; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>时间复杂度：$O(nm)$</p>
-<p>当n和m很大的时候不好用。</p>
-<h2 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h2><p><strong>引入概念</strong></p>
-<ul>
-<li>前缀：指的是字符串的子串中从原串最前面开始的子串</li>
-<li>后缀：指的是字符串的子串中在原串结尾处结尾的子串</li>
-</ul>
-<p><strong>算法思想</strong></p>
-<p>利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。</p>
-<p>KMP算法引入了一个next数组，next[i]表示的是前i的字符组成的这个子串。</p>
-<p><strong>next数组的意义</strong></p>
-<p>next 数组里面的变量，存的是最有可能匹配的长度，也就是在模式串中，前缀和后缀相等的最大长度。</p>
-<p>以”ABCDABD”为例</p>
-<p>－”A”的前缀和后缀都为空集，共有元素的长度为0；</p>
-<p>－”AB”的前缀为[A]，后缀为[B]，共有元素的长度为0；</p>
-<p>－”ABC”的前缀为[A, AB]，后缀为[BC, C]，共有元素的长度0；</p>
-<p>－”ABCD”的前缀为[A, AB, ABC]，后缀为[BCD, CD, D]，共有元素的长度为0；</p>
-<p>－”ABCDA”的前缀为[A, AB, ABC, ABCD]，后缀为[BCDA, CDA, DA, A]，共有元素为”A”，长度为1；</p>
-<p>－”ABCDAB”的前缀为[A, AB, ABC, ABCD, ABCDA]，后缀为[BCDAB, CDAB, DAB, AB, B]，共有元素为”AB”，长度为2；</p>
-<p>－”ABCDABD”的前缀为[A, AB, ABC, ABCD, ABCDA, ABCDAB]，后缀为[BCDABD, CDABD, DABD, ABD, BD, D]，共有元素的长度为0。</p>
-<p>next 数组中，第一个值，也就是next [0] = -1，而且，next [n]里面存的是 str[0] ~ str[n - 1]的前缀和后缀相等的最大长度。</p>
-<p><strong>源代码：</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* P 为模式串，下标从 0 开始 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetNext</span><span class="params">(<span class="built_in">string</span> P, <span class="keyword">int</span> next[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p_len = P.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;   <span class="comment">// P 的下标</span></span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">-1</span>;  </span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (i &lt; p_len)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (j == <span class="number">-1</span> || P[i] == P[j])</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            next[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            j = next[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 在 S 中找到 P 第一次出现的位置 */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KMP</span><span class="params">(<span class="built_in">string</span> S, <span class="built_in">string</span> P, <span class="keyword">int</span> next[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    GetNext(P, next);</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;  <span class="comment">// S 的下标</span></span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">0</span>;  <span class="comment">// P 的下标</span></span><br><span class="line">    <span class="keyword">int</span> s_len = S.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> p_len = P.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">while</span> (i &lt; s_len &amp;&amp; j &lt; p_len) <span class="comment">// 因为末尾 '\0' 的存在，所以不会越界</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (j == <span class="number">-1</span> || S[i] == P[j])  <span class="comment">// P 的第一个字符不匹配或 S[i] == P[j]</span></span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            j = next[j];  <span class="comment">// 当前字符匹配失败，进行跳转</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j == p_len)  <span class="comment">// 匹配成功</span></span><br><span class="line">        <span class="keyword">return</span> i - j;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> next[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; KMP(<span class="string">"bbc abcdab abcdabcdabde"</span>, <span class="string">"abcdabd"</span>, next) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 15</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-新式for循环"><a href="#3-新式for循环" class="headerlink" title="3. 新式for循环"></a>3. 新式for循环</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> ch:s)  <span class="built_in">cout</span>&lt;&lt;ch;</span><br></pre></td></tr></table></figure>
 
-<p><strong>时间复杂度</strong>：$O(m+n)$</p>
 
+
+<h3 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a><strong>成员函数</strong></h3><h4 id="长度"><a href="#长度" class="headerlink" title="长度"></a>长度</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> len = str.length();</span><br></pre></td></tr></table></figure>
+
+<h4 id="查找"><a href="#查找" class="headerlink" title="查找"></a><strong>查找</strong></h4><p>find() 方法检测字符串中是否包含子字符串 str ，如果指定 beg（开始） 和 end（结束） 范围，则检查是否包含在指定范围内，如果指定范围内如果包含指定索引值，返回的是索引值在字符串中的起始位置。如果不包含索引值，返回-1。</p>
+<h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><p>对string字符串进行插入和删除字符操作函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">insert</span><span class="params">(<span class="keyword">int</span> pos, <span class="keyword">const</span> <span class="keyword">char</span>* s)</span></span>; <span class="comment">//插入字符串</span></span><br><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">insert</span><span class="params">(<span class="keyword">int</span> pos, <span class="keyword">const</span> <span class="built_in">string</span>&amp; str)</span></span>; <span class="comment">//插入字符串</span></span><br><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">insert</span><span class="params">(<span class="keyword">int</span> pos, <span class="keyword">int</span> n, <span class="keyword">char</span> c)</span></span>; <span class="comment">//在指定位置插入n个字符</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="添加字符"><a href="#添加字符" class="headerlink" title="添加字符"></a>添加字符</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str.append(ch);</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cstring&amp; erase(int pos, int n &#x3D; npos); &#x2F;&#x2F;删除从Pos开始的n个字符</span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h4><p>实现在字符串末尾拼接字符串；重载很多</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> <span class="keyword">char</span>* str); <span class="comment">//重载+=操作符</span></span><br><span class="line"><span class="built_in">string</span>&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> <span class="keyword">char</span> c); <span class="comment">//重载+=操作符s</span></span><br><span class="line">tring&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str); <span class="comment">//重载+=操作符</span></span><br><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">append</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s)</span></span>; <span class="comment">//把字符串s连接到当前字符串结尾</span></span><br><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">append</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s, <span class="keyword">int</span> n)</span></span>; <span class="comment">//把字符串s的前n个字符连接到当前字符串结尾</span></span><br><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">append</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s)</span></span>; <span class="comment">//同operator+=(const string&amp; str)</span></span><br><span class="line"><span class="function"><span class="built_in">string</span>&amp; <span class="title">append</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s, <span class="keyword">int</span> pos, <span class="keyword">int</span> n)</span></span>;<span class="comment">//字符串s中从pos开始的n个字符连接到字符串结尾</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：例如在 C++ 中，res += s 和 res = res + s 的含义是不一样的。前者是直接在 res 后面添加字符串；后者是用一个临时对象计算 res + s，会消耗很多时间和内存。</p>
+<h4 id="提取子串"><a href="#提取子串" class="headerlink" title="提取子串"></a>提取子串</h4><p>函数substr可以提取string字符串中的子字符串，该函数有两个参数，第一个参数为需要提取的子字符串的起始下标，第二个参数是需要提取的子字符串的长度。 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">"first second third"</span>;  </span><br><span class="line"><span class="built_in">string</span> s2;  s2 = s1.substr(<span class="number">6</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort(str.<span class="built_in">begin</span>(),src.<span class="built_in">end</span>());</span><br></pre></td></tr></table></figure>
+
+<h4 id="替换字符串"><a href="#替换字符串" class="headerlink" title="替换字符串"></a>替换字符串</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace()</span><br></pre></td></tr></table></figure>
+
+<h4 id="整型转串"><a href="#整型转串" class="headerlink" title="整型转串"></a>整型转串</h4><p>使用to_string()函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num =<span class="number">0</span>;</span><br><span class="line"><span class="built_in">string</span> s = to_string(num);</span><br></pre></td></tr></table></figure>
+
+<h4 id="其它操作"><a href="#其它操作" class="headerlink" title="其它操作"></a>其它操作</h4><table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="left">函数 &amp; 目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><strong>strcpy(s1, s2);</strong> 复制字符串 s2 到字符串 s1。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>strcat(s1, s2);</strong> 连接字符串 s2 到字符串 s1 的末尾。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>strlen(s1);</strong> 返回字符串 s1 的长度。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>strcmp(s1, s2);</strong> 如果 s1 和 s2 是相同的，则返回 0；如果 s1&lt;s2 则返回值小于 0；如果 s1&gt;s2 则返回值大于 0。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><strong>strchr(s1, ch);</strong> 返回一个指针，指向字符串 s1 中字符 ch 的第一次出现的位置。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"><strong>strstr(s1, s2);</strong> 返回一个指针，指向字符串 s1 中字符串 s2 的第一次出现的位置。</td>
+</tr>
+</tbody></table>
+<h4 id><a href="#" class="headerlink" title></a></h4>
       
       <!-- reward -->
       
@@ -206,14 +237,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/22/KMP-Algorithm/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/28/2020-03-28-Cpp-String/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KMP/" rel="tag">KMP</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/" rel="tag">String</a></li></ul>
 
 
     </footer>
@@ -224,19 +255,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/23/2020-03-23-LeeCode-CheckDaily/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            LeeCode 每日打卡3-23
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/03/22/LeeCode-Contest-181/" class="article-nav-link">
+      <a href="/2020/03/28/2020-03-28-LeeCode-CheckDaily/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">LeeCode第181场周赛</div>
+        <div class="article-nav-title">LeeCode 每日打卡3-28</div>
       </a>
     
   </nav>

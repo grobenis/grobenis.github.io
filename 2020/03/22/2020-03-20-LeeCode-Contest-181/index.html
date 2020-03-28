@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-LeeCode-Contest-181" class="article article-type-post" itemscope
+  <article id="post-2020-03-20-LeeCode-Contest-181" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -49,7 +49,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/22/LeeCode-Contest-181/" class="article-date">
+      <a href="/2020/03/22/2020-03-20-LeeCode-Contest-181/" class="article-date">
   <time datetime="2020-03-22T05:40:34.000Z" itemprop="datePublished">2020-03-22</time>
 </a>
       
@@ -153,7 +153,7 @@
 <h2 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h2><p><strong>题目</strong></p>
 <p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
 <p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。    </p>
-<p><img src="/2020/03/22/LeeCode-Contest-181/3.png" alt="lee"></p>
+<p><img src="/2020/03/22/2020-03-20-LeeCode-Contest-181/3.png" alt="lee"></p>
 <h3 id="DFS解法"><a href="#DFS解法" class="headerlink" title="DFS解法"></a>DFS解法</h3><p>通过构建pipe数组，将每个拼图转化为四个方向上的移动限制图。<br>$pipe[3][2]=3$ ，代表三号拼图可以由向上的方向进入其中，并转向左方向继续前进。<br>$pipe[5][3]=-1$ ，代表五号拼图不可以由向左的方向进入其中。</p>
 <p>其中0代表向下、1代表向右、2代表向上、3代表向左、-1代表不可走</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> row,col;</span><br><span class="line">    <span class="keyword">int</span> dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;;<span class="comment">//0下、1右、2上、3左</span></span><br><span class="line">    <span class="keyword">int</span> pipe[<span class="number">7</span>][<span class="number">4</span>]=&#123;&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">3</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">2</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">3</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">2</span>&#125;&#125;;</span><br><span class="line">    <span class="comment">//记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> dir,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( x == row<span class="number">-1</span> &amp;&amp; y == col<span class="number">-1</span> ) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//到达终点</span></span><br><span class="line">        <span class="keyword">int</span> nextx = x + dx[dir] ,nexty = y + dy[dir];</span><br><span class="line">        <span class="keyword">if</span>(nextx&lt;<span class="number">0</span> || nexty&lt;<span class="number">0</span> || nextx &gt;= row || nexty&gt;=col)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//越界</span></span><br><span class="line">        <span class="keyword">int</span> nxt=grid[nextx][nexty]; <span class="comment">//得到下一块拼图的编号</span></span><br><span class="line">        <span class="keyword">if</span>( pipe[nxt][dir]!= <span class="number">-1</span> )</span><br><span class="line">            <span class="keyword">return</span> dfs(nextx,nexty,pipe[nxt][dir],grid); <span class="comment">//如果当前方向可走，则方向改变，继续走。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasValidPath</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;    </span><br><span class="line">        row=grid.<span class="built_in">size</span>();</span><br><span class="line">        col=grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> sta=grid[<span class="number">0</span>][<span class="number">0</span>];<span class="comment">//起点的拼图编号</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;++i)<span class="comment">//朝着四个方向都试一下</span></span><br><span class="line">            <span class="keyword">if</span>(pipe[sta][i]!=<span class="number">-1</span>)<span class="comment">//当前方向可以走</span></span><br><span class="line">                <span class="keyword">if</span>(dfs(<span class="number">0</span>,<span class="number">0</span>,pipe[sta][i],grid))<span class="comment">//沿着当前方向搜索</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -247,7 +247,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/22/LeeCode-Contest-181/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/22/2020-03-20-LeeCode-Contest-181/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -265,7 +265,7 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/22/KMP-Algorithm/" class="article-nav-link">
+      <a href="/2020/03/22/2020-03-22-KMP-Algorithm/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
