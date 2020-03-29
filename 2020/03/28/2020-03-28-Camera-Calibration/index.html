@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    相机标定 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-03-28-Camera-Calibration" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  相机标定
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/28/2020-03-28-Camera-Calibration/" class="article-date">
+  <time datetime="2020-03-28T11:34:04.000Z" itemprop="datePublished">2020-03-28</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.8k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节将探讨相机标定，主要探讨以下三个问题</p>
+<ol>
+<li>相机标定原理</li>
+<li>实现过程</li>
+<li>棋盘格的好处</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="相机标定"><a href="#相机标定" class="headerlink" title="相机标定"></a>相机标定</h2><h3 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h3><p>图像测量过程以及计算器视觉中，为确定空间物体某点的三维几何关系位置与其在图像中对应点之间的相互关系，必须建立相机成像的几何模型，模型的参数就是相机的参数。<strong>求解参数的过程</strong>称为相机标定。</p>
+<p><strong>目的</strong>：求出相机的内、外参数，以及畸变参数。</p>
+<p>标定相机后做的两件事：</p>
+<ol>
+<li>通过相机标定校正这种镜头畸变，生成矫正后的图像；</li>
+<li>是根据获得的图像重构三维场景。</li>
+</ol>
+<h3 id="2-标定原理"><a href="#2-标定原理" class="headerlink" title="2. 标定原理"></a>2. 标定原理</h3><p>先定义以下<strong>涉及概念</strong>：</p>
+<p><strong>世界坐标系</strong>：用户定义的三维世界的坐标系，为了描述目标物在真实世界里的位置而被引入。单位为m。</p>
+<p><strong>相机坐标系</strong>：在相机上建立的坐标系，为了从相机的角度描述物体位置而定义，作为沟通世界坐标系和图像/像素坐标系的中间一环。单位为m。</p>
+<p><strong>图像坐标系</strong>：为了描述成像过程中物体从相机坐标系到图像坐标系的投影透射关系而引入，方便进一步得到像素坐标系下的坐标。 单位为m。</p>
+<p><strong>像素坐标系</strong>：为了描述物体成像后的像点在数字图像上（相片）的坐标而引入，即从相机内读取到的信息所在的坐标系。单位为像素。</p>
+<p>下图可以清晰地表达四个坐标系之间的关系：</p>
+<p><img src="/2020/03/28/2020-03-28-Camera-Calibration/%E5%9D%90%E6%A0%87%E7%B3%BB.jpg" alt="img"></p>
+<p>世界坐标系：<code>Xw</code>、<code>Yw</code>、<code>Zw</code>。相机坐标系： <code>Xc</code>、<code>Yc</code>、<code>Zc</code>。图像坐标系：<code>x</code>、<code>y</code>。像素坐标系：<code>u</code>、<code>v</code>。</p>
+<p>其中，相机坐标系的<code>Zc</code>轴与光轴重合，且垂直于图像坐标系平面并通过图像坐标系的原点，相机坐标系与图像坐标系之间的距离为焦距f（也即图像坐标系原点与焦点重合）。像素坐标系平面<code>u-v</code>和图像坐标系平面<code>x-y</code>重合，但像素坐标系原点位于图中左上角（之所以这么定义，目的是从存储信息的首地址开始读写）。</p>
+<p>下面将依次对刚体进行一系列变换，使之从世界坐标系进行仿射变换、投影透射，最终得到像素坐标系下的离散图像点，过程中会逐步引入各参数矩阵。</p>
+<h4 id="A-从世界坐标系到相机坐标系"><a href="#A-从世界坐标系到相机坐标系" class="headerlink" title="A. 从世界坐标系到相机坐标系"></a>A. 从世界坐标系到相机坐标系</h4><p>刚体从世界坐标系转换到相机坐标系的过程，可以通过旋转和平移来得到，我们将其变换矩阵由一个旋转矩阵和平移向量组合成的齐次坐标矩阵（为什么要引入齐次坐标可见后续文章）来表示：</p>
+<p><img src="https://img-blog.csdn.net/20180204203239598?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>其中，R为旋转矩阵，t为平移向量，因为假定在世界坐标系中物点所在平面过世界坐标系原点且与Zw轴垂直（也即棋盘平面与Xw-Yw平面重合，目的在于方便后续计算），所以<code>zw=0</code>，可直接转换成式1的形式。其中变换矩阵<br>$$<br>\left[<br>\begin{matrix}<br>R&amp;t\<br>0_3^T&amp;1<br>\end{matrix}<br>\right]<br>$$<br>即为前文提到的外参矩阵，之所称之为外参矩阵可以理解为只与相机外部参数有关，且外参矩阵随刚体位置的变化而变化。</p>
+<p><img src="https://img-blog.csdn.net/20180204203322511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<h4 id="B-从相机坐标系到理想图像坐标系（不考虑畸变）"><a href="#B-从相机坐标系到理想图像坐标系（不考虑畸变）" class="headerlink" title="B. 从相机坐标系到理想图像坐标系（不考虑畸变）"></a>B. 从相机坐标系到理想图像坐标系（不考虑畸变）</h4><p>该过程进行了从三维坐标到二维坐标的转换，也即投影透视过程（用中心投影法将物体投射到投影面上，从而获得的一种较为接近视觉效果的单面投影图，也就是使我们人眼看到景物近大远小的一种成像方式）。以针孔成像为例（除了成像亮度低外，成像效果和透镜成像是一样的，但是光路更简单）。成像过程如图二所示：</p>
+<p>针孔面（相机坐标系）在图像平面（图像坐标系）和物点平面（棋盘平面）之间，所成图像为倒立实像。</p>
+<p><img src="https://img-blog.csdn.net/20180204203348763?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>为了在数学上更方便描述，我们将相机坐标系和图像坐标系位置对调，变成图三所示的布置方式（没有实际的物理意义，只是方便计算）：</p>
+<p><img src="https://img-blog.csdn.net/20180204203408825?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>此时，假设相机坐标系中有一点M，则在理想图像坐标系下（无畸变）的成像点P的坐标为（可由相似三角形原则得出）：<br>$$<br>x_p=f\frac{x_M}{z_M},y_p=f\frac{y_M}{z_M}<br>$$<br>将上式化为齐次坐标表示形式为：<br>$$<br>z_M<br>\left[\begin{matrix}f&amp;0&amp;0&amp;0\0&amp;f&amp;0&amp;0\0&amp;0&amp;1&amp;0\\end{matrix}\right]<br>\left[\begin{matrix}x_M\y_M\z_M\1\end{matrix}\right]=<br>\left[\begin{matrix}f&amp;0&amp;0\0&amp;f&amp;0\0&amp;0&amp;1\\end{matrix}\right]<br>\left[\begin{matrix}1&amp;0&amp;0&amp;0\0&amp;1&amp;0&amp;0\0&amp;0&amp;1&amp;0\\end{matrix}\right]<br>\left[\begin{matrix}x_M\y_M\z_M\1\end{matrix}\right]<br>$$</p>
+<h4 id="C-从理想图像坐标系到实际图像坐标系（考虑畸变）"><a href="#C-从理想图像坐标系到实际图像坐标系（考虑畸变）" class="headerlink" title="C. 从理想图像坐标系到实际图像坐标系（考虑畸变）"></a>C. 从理想图像坐标系到实际图像坐标系（考虑畸变）</h4><p>透镜的畸变主要分为径向畸变和切向畸变，还有薄透镜畸变等等，但都没有径向和切向畸变影响显著，所以我们在这里只考虑径向和切向畸变。</p>
+<h5 id="径向畸变"><a href="#径向畸变" class="headerlink" title="径向畸变"></a><strong>径向畸变</strong></h5><p>由于透镜形状的制造工艺导致。且越向透镜边缘移动径向畸变越严重。下图所示是径向畸变的两种类型：桶形畸变和枕形畸变。</p>
+<p><img src="https://img-blog.csdn.net/20180204203515701?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>实际情况中我们常用r=0处的泰勒级数展开的前几项来近似描述径向畸变。矫正径向畸变前后的坐标关系为：<br>$$<br>\left{<br>\begin<br>\end<br>\right<br>$$</p>
+<p><img src="https://img-blog.csdn.net/20180204203540542?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>由此可知对于径向畸变，我们有3个畸变参数需要求解。</p>
+<h5 id="切向畸变"><a href="#切向畸变" class="headerlink" title="切向畸变"></a><strong>切向畸变</strong></h5><p>由于透镜和CMOS或者CCD的安装位置误差导致。因此，如果存在切向畸变，一个矩形被投影到成像平面上时，很可能会变成一个梯形。切向畸变需要两个额外的畸变参数来描述，矫正前后的坐标关系为：</p>
+<p><img src="https://img-blog.csdn.net/20180204203600045?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>由此可知对于切向畸变，我们有2个畸变参数需要求解。</p>
+<p>综上，我们一共需要5个畸变参数（<code>k1</code>、<code>k2</code>、<code>k3</code>、<code>p1</code>和<code>p2</code> ）来描述透镜畸变。</p>
+<p>下图表示了用<code>R</code>，<code>t</code>将上述世界坐标系转换到相机坐标系的过程。</p>
+<h4 id="D-从图像坐标系到像素坐标系"><a href="#D-从图像坐标系到像素坐标系" class="headerlink" title="D. 从图像坐标系到像素坐标系"></a>D. 从图像坐标系到像素坐标系</h4><p>像素坐标系原点与图像坐标系原点不重合。假设像素坐标系原点在图像坐标系下的坐标为<code>（u0，v0）</code>，每个像素点在图像坐标系x轴、y轴方向的尺寸为：<code>dx</code>、<code>dy</code>，且像点在实际图像坐标系下的坐标为<code>（xc，yc）</code>，可得到像点在像素坐标系下的坐标为：<br>$$<br>u=\frac{x_t}{d_x}+u_0,v=\frac{y_c}{dy}+v_0<br>$$<br>化为齐次坐标表示形式可得：<br>$$<br>\left[\begin{matrix}u\v\1\end{matrix}\right]=<br>\left[\begin{matrix}1/d_x&amp;0&amp;u_0\0&amp;1/d_y&amp;v_0\0&amp;0&amp;1\end{matrix}\right]<br>\left[\begin{matrix}x_c\y_c\1\end{matrix}\right]<br>$$</p>
+<p>公式2中1<code>(xp, yp)</code>与公式5中<code>(xc, yc)</code>相同，都是图像坐标系下的坐标。</p>
+<p>若暂不考虑透镜畸变，则将式2与式5的转换矩阵相乘即为内参矩阵M：</p>
+<p><img src="https://img-blog.csdn.net/20180204203659583?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>之所以称之为内参矩阵可以理解为矩阵内各值只与相机内部参数有关，且不随物体位置变化而变化。</p>
+<p>最后用一幅图来总结从世界坐标系到像素坐标系（不考虑畸变）的转换关系：</p>
+<p><strong>总结：</strong>从世界坐标系到像素坐标系（不考虑畸变）的转换关系</p>
+<p><img src="/2020/03/28/2020-03-28-Camera-Calibration/%E8%BD%AC%E6%8D%A2%E8%BF%87%E7%A8%8B.jpg" alt="img"></p>
+<h3 id="3-标定方法"><a href="#3-标定方法" class="headerlink" title="3. 标定方法"></a>3. 标定方法</h3><h4 id="传统相机标定法"><a href="#传统相机标定法" class="headerlink" title="传统相机标定法"></a>传统相机标定法</h4><p>传统相机标定法需要使用尺寸已知的标定物，通过建立标定物上坐标已知的点与其图像点之间的对应，利用一定的算法获得相机模型的内外参数。根据标定物的不同可分为三维标定物和平面型标定物。三维标定物可由单幅图像进行标定，标定精度较高，但高精密三维标定物的加工和维护较困难。平面型标定物比三维标定物制作简单，精度易保证，但标定时必须采用两幅或两幅以上的图像。</p>
+<p><strong>缺点：</strong>传统相机标定法在标定过程中始终需要标定物，且标定物的制作精度会影响标定结果。同时有些场合不适合放置标定物也限制了传统相机标定法的应用。</p>
+<h4 id="相机自标定法"><a href="#相机自标定法" class="headerlink" title="相机自标定法"></a>相机自标定法</h4><p>​    目前出现的自标定算法中主要是利用相机运动的约束。相机的运动约束条件太强，因此使得其在实际中并不实用。利用场景约束主要是利用场景中的一些平行或者正交的信息。其中空间平行线在相机图像平面上的交点被称为消失点，它是射影几何中一个非常重要的特征，所以很多学者研究了基于消失点的相机自标定方法。</p>
+<p><strong>优点：</strong>自标定方法灵活性强，可对相机进行在线定标。</p>
+<p><strong>缺点：</strong>但由于它是基于绝对二次曲线或曲面的方法，其算法鲁棒性差。</p>
+<h4 id="主动视觉相机标定方法"><a href="#主动视觉相机标定方法" class="headerlink" title="主动视觉相机标定方法"></a>主动视觉相机标定方法</h4><p>基于主动视觉的相机标定法是指已知相机的某些运动信息对相机进行标定。该方法不需要标定物，但需要控制相机做某些特殊运动，利用这种运动的特殊性可以计算出相机内部参数。</p>
+<p><strong>优点：</strong>是算法简单，往往能够获得线性解，故鲁棒性较高；</p>
+<p><strong>缺点：</strong>是系统的成本高、实验设备昂贵、实验条件要求高，而且不适合于运动参数未知或无法控制的场合。</p>
+<h3 id="4-棋盘格"><a href="#4-棋盘格" class="headerlink" title="4. 棋盘格"></a>4. 棋盘格</h3><p><strong>棋盘</strong>是一块由黑白方块间隔组成的标定板，我们用它来作为相机标定的标定物（从真实世界映射到数字图像内的对象）。之所以我们用棋盘作为标定物是因为平面棋盘模式更容易处理（相对于复杂的三维物体），但与此同时，二维物体相对于三维物体会缺少一部分信息，于是我们会多次改变棋盘的方位来捕捉图像，以求获得更丰富的坐标信息。如下图所示，是相机在不同方向下拍摄的同一个棋盘图像。</p>
+<p><img src="/2020/03/28/2020-03-28-Camera-Calibration/%E6%A3%8B%E7%9B%98.jpg" alt="img"></p>
+<h4 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h4><h3 id="5-张正友标定法"><a href="#5-张正友标定法" class="headerlink" title="5. 张正友标定法"></a>5. 张正友标定法</h3>
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/28/2020-03-28-Camera-Calibration/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/03/29/2020-03-29-LeeCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            2020-03-29-LeeCode-CheckDaily
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/03/28/2020-03-28-Cpp-String/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">C++字符串</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>
