@@ -1,6 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2020-03-31-LeeCode-CheckDaily</title>
+    <url>/2020/03/31/2020-03-31-LeeCode-CheckDaily/</url>
+    <content><![CDATA[<p>今日打卡题目如下：</p>
+<ol>
+<li>排序数组</li>
+</ol>
+<p>还要学习各种排序算法。</p>
+<a id="more"></a>
+
+<h2 id="912-排序数组"><a href="#912-排序数组" class="headerlink" title="912. 排序数组"></a>912. 排序数组</h2><p>给定一个整数数组 <code>nums</code>，将该数组升序排列。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[5,2,3,1]</span><br><span class="line">输出：[1,2,3,5]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[5,1,1,2,0,0]</span><br><span class="line">输出：[0,0,1,1,2,5]</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ol>
+<li><code>1 &lt;= A.length &lt;= 10000</code></li>
+<li><code>-50000 &lt;= A[i] &lt;= 50000</code></li>
+</ol>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>快速排序：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        quicksort(nums,<span class="number">0</span>,nums.<span class="built_in">size</span>()<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">quicksort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums,<span class="keyword">int</span> low ,<span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(low &gt;= high) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> num = nums[low];</span><br><span class="line">        <span class="keyword">int</span> left = low+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> right = high;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(left&lt;=right &amp;&amp; nums[left]&lt;=num) left++;</span><br><span class="line">            <span class="keyword">while</span>(left&lt;=right &amp;&amp; nums[right]&gt;=num) right--;</span><br><span class="line">            <span class="keyword">if</span>(left&gt;right)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            swap(nums[left],nums[right]);</span><br><span class="line">        &#125;</span><br><span class="line">        nums[low] = nums[right];</span><br><span class="line">        nums[right] = num;</span><br><span class="line">        quicksort(nums,low,right<span class="number">-1</span>);</span><br><span class="line">        quicksort(nums,right+<span class="number">1</span>,high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>LeeCode</tag>
+        <tag>每日打卡</tag>
+        <tag>刷题</tag>
+        <tag>排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020-03-30-Bundle_adjustment</title>
+    <url>/2020/03/30/2020-03-30-Bundle-adjustment/</url>
+    <content><![CDATA[<p>本节介绍SLAM中的后端优化过程</p>
+<a id="more"></a>
+
+<h2 id="一、问题阐述"><a href="#一、问题阐述" class="headerlink" title="一、问题阐述"></a>一、问题阐述</h2><p>同时对三维点位置和相机参数进行非线性优化</p>
+<p><img src="/2020/03/30/2020-03-30-Bundle-adjustment/BA%E4%BC%98%E5%8C%96.jpg" alt="BA原理"></p>
+<h2 id="二、LM法的原理与优势"><a href="#二、LM法的原理与优势" class="headerlink" title="二、LM法的原理与优势"></a>二、LM法的原理与优势</h2><p> <strong>原理</strong>：是一种“信赖域”的方法，当收敛速度较快时，增大信赖域使算法趋向于高斯牛顿法；当收敛速度较慢时，减小信赖域使算法趋向于最速下降法。</p>
+<p><strong>优势</strong>：速度快；可以在距离初始值较远处得到最优解。</p>
+<h4 id="SLAM优化算法对比"><a href="#SLAM优化算法对比" class="headerlink" title="SLAM优化算法对比"></a>SLAM优化算法对比</h4><table>
+<thead>
+<tr>
+<th align="center">算法</th>
+<th align="center">缺点</th>
+<th align="center">优点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">KF/EKF</td>
+<td align="center">假设噪声为高斯分布，在高维状态空间时计算效率较低，不适合大规模场景的地图构建</td>
+<td align="center">原理简单，小场景下收敛性好。</td>
+</tr>
+<tr>
+<td align="center">PF</td>
+<td align="center">会不可避免出现粒子退化现象，每个粒子需包含整张地图信息导致不适合大场景地图构建</td>
+<td align="center">将运动方程表示为一组粒子，通过蒙特卡罗方法求解，能够处理非线性非高斯噪声。</td>
+</tr>
+<tr>
+<td align="center">EM</td>
+<td align="center">计算量大，不能用于大规模场景</td>
+<td align="center">有效解决了数据关联问题</td>
+</tr>
+<tr>
+<td align="center">图优化</td>
+<td align="center">对闭环检测算法的要求严格</td>
+<td align="center">出现多种图优化框架，能够有效解决滤波器算法的缺陷，能用于大规模场景的地图创建</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+        <tag>优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeeCode 每日打卡3-30</title>
+    <url>/2020/03/30/2020-03-30-LeeCode-Contest/</url>
+    <content><![CDATA[<p>今日打卡题目如下：</p>
+<ol>
+<li>面试题62. 圆圈中最后剩下的数字</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="面试题62-圆圈中最后剩下的数字"><a href="#面试题62-圆圈中最后剩下的数字" class="headerlink" title="面试题62. 圆圈中最后剩下的数字"></a>面试题62. 圆圈中最后剩下的数字</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>0,1,,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字。求出这个圆圈里剩下的最后一个数字。</p>
+<p>例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。</p>
+<p> <strong>示例 1</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: n &#x3D; 5, m &#x3D; 3</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: n &#x3D; 10, m &#x3D; 17</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+
+<p> <strong>限制：</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 10^5</code></li>
+<li><code>1 &lt;= m &lt;= 10^6</code></li>
+</ul>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>该问题为约瑟夫环问题。</p>
+<p>存储一个数组，每次删除一个元素，使用递归进行求解。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">num</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>;i&lt;n;i++) num[i]=i;</span><br><span class="line">        <span class="keyword">return</span> deletem(num,n,<span class="number">0</span>,m<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deletem</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;num,<span class="keyword">int</span> n,<span class="keyword">int</span> start,<span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> num[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it=num.<span class="built_in">begin</span>();</span><br><span class="line">        num.erase(it+(start+m)%n);</span><br><span class="line">        start = (start+m)%n;</span><br><span class="line">        <span class="keyword">return</span> deletem(num,n<span class="number">-1</span>,start,m);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结果：超时</p>
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="方法一：数学-递归"><a href="#方法一：数学-递归" class="headerlink" title="方法一：数学 + 递归"></a>方法一：数学 + 递归</h4><h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>题目中的要求可以表述为：给定一个长度为 n 的序列，每次向后数 m 个元素并删除，那么最终留下的是第几个元素？</p>
+<p>这个问题很难快速给出答案。但是同时也要看到，这个问题似乎有拆分为较小子问题的潜质：如果我们知道对于一个长度 n - 1 的序列，留下的是第几个元素，那么我们就可以由此计算出长度为 n 的序列的答案。</p>
+<p>算法</p>
+<p>我们将上述问题建模为函数 <code>f(n, m)</code>，该函数的返回值为最终留下的元素的序号。</p>
+<p>首先，长度为 n 的序列会先删除第<code>m % n</code> 个元素，然后剩下一个长度为 n - 1 的序列。那么，我们可以递归地求解 f(n - 1, m)，就可以知道对于剩下的 n - 1 个元素，最终会留下第几个元素，我们设答案为 <code>x = f(n - 1, m)</code>。</p>
+<p>由于我们删除了第 <code>m % n</code> 个元素，将序列的长度变为 <code>n - 1</code>。当我们知道了 <code>f(n - 1, m)</code> 对应的答案 <code>x</code> 之后，我们也就可以知道，长度为 n 的序列最后一个删除的元素，应当是从 m % n 开始数的第 x 个元素。因此有 <code>f(n, m) = (m % n + x) % n = (m + x) % n</code>。</p>
+<p>我们递归计算 <code>f(n, m), f(n - 1, m), f(n - 2, m), ...</code>直到递归的终点<code>f(1, m)</code>。当序列长度为 1 时，一定会留下唯一的那个元素，它的编号为 0。</p>
+<p>下面的代码实现了上述的递归函数。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> x=lastRemaining(n<span class="number">-1</span>,m);</span><br><span class="line">        <span class="keyword">return</span> (x+m)%n;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：<code>O(n)</code>，需要求解的函数值有 <code>n</code> 个。</p>
+<p>空间复杂度：<code>O(n)</code>，函数的递归深度为 <code>n</code>，需要使用 <code>O(n)</code>的栈空间。</p>
+<h4 id="方法二：数学-迭代"><a href="#方法二：数学-迭代" class="headerlink" title="方法二：数学 + 迭代"></a>方法二：数学 + 迭代</h4><h5 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h5><p>上面的递归可以改写为迭代，避免递归使用栈空间。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> f = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i != n + <span class="number">1</span>; ++i)</span><br><span class="line">            f = (m + f) % i;</span><br><span class="line">        <span class="keyword">return</span> f;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：<code>O(n)</code>，需要求解的函数值有 <code>n</code> 个。</p>
+<p>空间复杂度：<code>O(1)</code>，只使用常数个变量。</p>
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>LeeCode</tag>
+        <tag>每日打卡</tag>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020-03-30-LeeCode CheckDaily</title>
+    <url>/2020/03/30/2020-03-30-LeeCode-CheckDaily/</url>
+    <content><![CDATA[<a id="more"></a>]]></content>
+  </entry>
+  <entry>
     <title>LeeCode 每日打卡3-29</title>
     <url>/2020/03/29/2020-03-29-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
@@ -1516,23 +1656,60 @@
 <li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
 <li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
 </ol>
-<p>本节用来介绍kalman滤波器</p>
+<p>本节主要来介绍kalman滤波器。</p>
 <a id="more"></a>
 
-<h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><p>根据线性高斯系统可以得到卡尔曼滤波器。</p>
-<p>线性高斯系统时说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N\<br>z_k=C_kx_k+v_k<br>\end{cases}<br>$$<br>并假设了所有的状态和噪声均满足高斯分布。噪声服从零均值高斯分布：<br>$$<br>w_k\sim N(0,R).v_k\sim N(0,Q)<br>$$</p>
-<p>线性系统中的线性体现在以下两个方面</p>
+<h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>卡尔曼滤波器是由Swerling（1958）和Kalman（1960）作为线性高斯系统中的预测和滤波技术而发明的，使用矩来定义的。KF实现了对连续状态的置信度计算。KF用矩参数来表示置信度：在时刻k，置信度用均值$ \mu_k $（一阶矩）和方差$ \sum _{k-1} $（二阶矩）表达。</p>
+<p>卡尔曼滤波建立在线性代数和隐马尔可夫模型上。其基本动态系统可以用一个马尔可夫链来表示，该马尔可夫链建立在一个线性高斯系统上。系统的状态可以用一个元素为实数的向量表示。随着离散时间的每一个增加，这个线性算子就会作用在当前状态上，产生一个新的状态，并也会带入一些噪声，同时系统的一些已知的控制器的控制信息也会被加入。同时，另一个受噪声干扰的线性算子产生出这些隐含状态的可见输出。</p>
+<p>使后验为高斯分布的前提，同时也是KF的特性：<br>       （1）状态转移必须是带有随机高斯噪声的参数的线性函数。<br>       （2）测量也与带有高斯噪声的自变量呈线性关系。<br>       （3）初始置信度必须是正态分布的。</p>
+<p>这三个假设足以确保后验在任何时刻<code>t</code>总符合高斯分布。</p>
+<p>根据线性高斯系统可以得到<strong>卡尔曼滤波器</strong>。 </p>
+<p>卡尔曼滤波器的状态由以下两个变量表示：</p>
 <ol>
-<li>$X_t=A*Z_{t-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
-<li>$Z_t=C*X_t+D+\delta,\epsilon \sim N(0,R)$</li>
+<li>$\hat{x}_k$，在时刻k的状态的估计；</li>
+<li>$\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。</li>
 </ol>
-<p>两个条件服从高斯分布：<br>$$<br>P(X_t|X_{t-1})\sim N(A*X_{t-1}+B,Q)<br>$$</p>
-<p>$$<br>P(Z_t|X_t)\sim N(C*X_t+D,R)<br>$$</p>
+<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N\<br>z_k=C_kx_k+v_k<br>\end{cases}<br>$$<br><img src="/2020/03/14/2020-03-13-Kalman_Filter/C:%5CUsers%5C%E9%83%AD%E7%8A%87%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200330234714941.png" alt="image-20200330234714941"></p>
+<h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$<br>x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N<br>$$</p>
+<p>其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵/矢量）。</p>
+<p>$w_k$是过程噪声,满足$w_k\sim N(0,Q)$</p>
+<h4 id="观测模型"><a href="#观测模型" class="headerlink" title="观测模型"></a>观测模型</h4><p>$$<br>z_k = C_kx_k+v_k<br>$$</p>
+<p>其中$C_k$是观测模型，能把真实状态空间映射成观测空间。并假设了所有的状态和噪声均满足高斯分布。</p>
+<p>$v_k$观测噪声服从零均值高斯分布：即$.v_k\sim N(0,R)$。</p>
+<p><strong>线性</strong></p>
+<p>线性系统中的线性体现在以下两个方面:</p>
+<ol>
+<li>$X_k=A*X_{k-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
+<li>$Z_k=C*X_k+D+\delta,\epsilon \sim N(0,R)$</li>
+</ol>
+<p>两个条件服从高斯分布：<br>$$<br>P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)<br>$$</p>
+<p>$$<br>P(Z_k|X_k)\sim N(C*X_k+D,R)<br>$$</p>
 <p>可以系统的初始状态：<br>$$<br>X_1\sim N(\mu_1,\Sigma_1)<br>$$</p>
-<p>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{lr}<br>        P(X_t|X_{t-1})\sim N(A<em>X_{t-1}+B,Q)\<br>        P(Z_t|X_t)\sim N(C</em>X_t+D,R)\<br>        P(Z_1)=N(mu_1,\Sigma_1)<br>    \end{array}<br>\right.<br>\end{equation}<br>$$<br>总共的参数表如下：</p>
-<p>$$<br>\theta = (A,B,C,D,A,R,\mu_1,\Sigma_1)<br>$$</p>
-<h3 id="Filter问题求解"><a href="#Filter问题求解" class="headerlink" title="Filter问题求解"></a>Filter问题求解</h3><p>$$<br>P(X_t|z_1,z_2,…,z_t)<br>$$</p>
-<p>$$<br>P(X_t|z_1,z_2,…z_t)\propto P(z_1,z_2,…z_t,X_t)\=P(z_t|z_1,z_2,…z_{t-1},X_t)*P(z_1,z_2,…z_{t-1},X_t)\<br>=P(z_t|X_t)P(z_1,…,z_{t-1},X_t)\<br>=P(z_t|X_t)P(X_t|z_1,…,z_{t-1})P(z_1,…,z_{t-1})\<br>\propto P(z_t|X_t)P(X_t|z_1,…,z_{t-1})\<br>$$</p>
+<p>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{lr}<br>        P(X_k|X_{k-1})\sim N(A<em>X_{k-1}+B,Q)\<br>        P(Z_k|X_k)\sim N(C</em>X_k+D,R)\<br>        P(Z_1)=N(\mu_1,\Sigma_1)<br>    \end{array}<br>\right.<br>\end{equation}<br>$$<br>总共的参数表如下：</p>
+<p>$$<br>\theta = (A,B,C,D,Q,R,\mu_1,\Sigma_1)<br>$$</p>
+<p>卡尔曼滤波是一种递归的估计，即只要获知上一时刻状态的估计值以及当前状态的观测值就可以计算出当前状态的估计值，因此不需要记录观测或者估计的历史信息。卡尔曼滤波器与大多数滤波器不同之处，在于它是一种纯粹的时域滤波器，它不需要像低通滤波器等频域滤波器那样，需要在频域设计再转换到时域实现。</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>卡尔曼滤波器的操作包括两个阶段：<strong>预测</strong>与<strong>更新</strong>。</p>
+<ol>
+<li>预测阶段，滤波器使用上一状态的估计，做出对当前状态的预测。</li>
+<li>更新阶段，滤波器利用对当前状态的观测值优化在预测阶段获得的预测值，以获得一个更精确的新估计值。</li>
+</ol>
+<p><strong>输入：</strong>系统在<code>t-1</code>时刻状态的置信度（正态分布，均值和方差用$\mu_{t-1}$和$\Sigma_{t-1}$）; 输入的控制向量$u_t$和测量向量$z_t$。</p>
+<p><strong>输出：</strong>系统t时刻的状态的置信度$bel(x_t)$，均值向量$\mu_t$，方差$\Sigma_t$。</p>
+<p><strong>伪代码</strong></p>
+<p><strong>Algorithm Kalman_filter</strong> ($\mu_{t-1}$,$\Sigma_{t-1}$,$\mu_t$,$z_t$)</p>
+<ol>
+<li>$\hat\mu_t = A_t\mu_{t-1}+B_tu_t$</li>
+<li>$\hat\sum_t =A_t\sum_{t-1}A^T_t+R_t$</li>
+<li>$K_t=\hat\sum_tC^T_t(C_t\hat\sum_tC^T_t+Q_t)^{-1}$</li>
+<li>$\mu_t=\hat\mu_t+K_t(z_t-C_t\hat\mu_t)$</li>
+<li>$\sum_t=(I-K_tC_t)\hat\sum_t$</li>
+</ol>
+<p><strong>return</strong> $\mu_t$, $ \sum_t$</p>
+<h3 id="代码样例"><a href="#代码样例" class="headerlink" title="代码样例"></a>代码样例</h3><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[ predictx, predicty, state, param ]</span> = <span class="title">kalmanFilter</span><span class="params">( t, x, y, state, param, previous_t )</span></span></span><br><span class="line"><span class="comment">% 卡尔曼滤波器</span></span><br><span class="line"><span class="comment">% 输入：当前时间t，位置，状态，参数，前一帧的时间t-1</span></span><br><span class="line"><span class="comment">% UNTITLED Summary of this function goes here</span></span><br><span class="line"><span class="comment">%   假设状态为四维:[p_x,p_y,v_x,v_y]</span></span><br><span class="line"><span class="comment">%   Four dimensional state: position_x, position_y, velocity_x, velocity_y</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">%% Place parameters like covarainces, etc. here:</span></span><br><span class="line">    <span class="comment">% P = eye(4)</span></span><br><span class="line">    <span class="comment">% R = eye(2)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">% Check if the first time running this function</span></span><br><span class="line">    <span class="comment">% 初始化</span></span><br><span class="line">    <span class="keyword">if</span> previous_t&lt;<span class="number">0</span></span><br><span class="line">        state = [x, y, <span class="number">0</span>, <span class="number">0</span>];</span><br><span class="line">        param.P = <span class="number">0.1</span> * <span class="built_in">eye</span>(<span class="number">4</span>);</span><br><span class="line">        predictx = x;</span><br><span class="line">        predicty = y;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">%% Naive estimate 朴素估计</span></span><br><span class="line"><span class="comment">%     % As an example, here is a Naive estimate without a Kalman filter</span></span><br><span class="line"><span class="comment">%     % You should replace this code</span></span><br><span class="line"><span class="comment">%     vx = (x - state(1)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     vy = (y - state(2)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     % Predict 330ms into the future</span></span><br><span class="line"><span class="comment">%     predictx = x + vx * 0.330;</span></span><br><span class="line"><span class="comment">%     predicty = y + vy * 0.330;</span></span><br><span class="line"><span class="comment">%     % State is a four dimensional element</span></span><br><span class="line"><span class="comment">%     state = [x, y, vx, vy];</span></span><br><span class="line">    <span class="comment">%% <span class="doctag">TODO:</span> Add Kalman filter updates</span></span><br><span class="line">    <span class="comment">%% 当前目的：更新kalman滤波器</span></span><br><span class="line">    <span class="comment">% 1. 计算时间间隔</span></span><br><span class="line">    dt = t - previous_t; <span class="comment">% Time interval</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% PREDICT</span></span><br><span class="line">    <span class="comment">% 2. 预测</span></span><br><span class="line">    A = [<span class="number">1</span> <span class="number">0</span> dt <span class="number">0</span>; <span class="comment">% Transform matrix A</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> dt;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>  <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>  <span class="number">1</span>];</span><br><span class="line">     </span><br><span class="line">    C = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>; <span class="comment">% Observation matrix C</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line">     </span><br><span class="line">    z_t = [x, y]'; <span class="comment">% Measurement data</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Q = 0.005 * eye(4);</span></span><br><span class="line">    Q = [dt^<span class="number">2</span>  <span class="number">0</span>        <span class="number">0</span>       <span class="number">0</span>; <span class="comment">% System (Motion) noise covariance</span></span><br><span class="line">         <span class="number">0</span>        dt^<span class="number">2</span>  <span class="number">0</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">1</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>       <span class="number">1</span>];</span><br><span class="line">           </span><br><span class="line">    R = <span class="number">0.005</span> * <span class="built_in">eye</span>(<span class="number">2</span>); <span class="comment">% Measurement noise covariance</span></span><br><span class="line">    </span><br><span class="line">    P = A * param.P * transpose(A) + Q; <span class="comment">% Prior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% UPDATE</span></span><br><span class="line">    <span class="comment">% 3. 更新</span></span><br><span class="line">    K = P * transpose(C) * inv(R + C * P * transpose(C)); <span class="comment">% Kalman gain</span></span><br><span class="line">    state = (A * (state') + K * (z_t - C * A * (state')))'; <span class="comment">% Posterior state estimation</span></span><br><span class="line">    param.P = P - K * C * P; <span class="comment">% Posterior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Predict 330ms into the future</span></span><br><span class="line">    predictx = state(<span class="number">1</span>) + state(<span class="number">3</span>) * <span class="number">0.330</span>;</span><br><span class="line">    predicty = state(<span class="number">2</span>) + state(<span class="number">4</span>) * <span class="number">0.330</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="基于后验概率推导Kalman滤波器·"><a href="#基于后验概率推导Kalman滤波器·" class="headerlink" title="基于后验概率推导Kalman滤波器·"></a>基于后验概率推导Kalman滤波器·</h3><p>可以看作是一个Filter问题的求解过程<br>$$<br>P(X_t|z_1,z_2,…z_t)\propto P(z_1,z_2,…z_t,X_t)\=P(z_t|z_1,z_2,…z_{t-1},X_t)*P(z_1,z_2,…z_{t-1},X_t)\<br>=P(z_t|X_t)P(z_1,…,z_{t-1},X_t)\<br>=P(z_t|X_t)P(X_t|z_1,…,z_{t-1})P(z_1,…,z_{t-1})\<br>\propto P(z_t|X_t)P(X_t|z_1,…,z_{t-1})\<br>$$</p>
 <p>其中：<br>$$<br>P(X_t|z_1,…,z_{t-1})<br>=\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,…,z_{t-1})dz_{t-1}\<br>=\int_{X_{t-1}}P(X_t|X_{t-1},z_1,…,z_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>\=\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>$$</p>
 <p> 基于概率的推导步骤：</p>
 <ul>
@@ -1555,18 +1732,13 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 \end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
 </li>
 </ul>
-<p>算法步骤：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
+<h3 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h3><p>本节<a href="https://www.cnblogs.com/pinking/p/9201405.html" target="_blank" rel="noopener">出处</a>。</p>
+<p>Kalman与HMM的关系，事实上，他们解决的问题模型都是如上图所示，只不过一个是利用最小均方误差准则进行估计，一个是利用最大后验进行估计。事实上，HMM的预测问题中，就是一个最大的后验概率作为其似然函数，然后通过viterbi算法解的这个似然函数。</p>
 <h2 id="拓展Kalman滤波器"><a href="#拓展Kalman滤波器" class="headerlink" title="拓展Kalman滤波器"></a>拓展Kalman滤波器</h2><p>核心思想：把卡尔曼滤波器的结果拓展到非线性系统中</p>
 <p>做法：在某个点附近考虑运动方程以及观测方程的一阶泰勒展开，只保留一阶项，即闲下来部分，然后按照线性系统进行推导。</p>
 <p>卡尔曼滤波器给出了在线性化之后，状态变量分布的变化过程。在线性系统和高斯噪声下，卡尔曼滤波器给出了无偏最优估计。而在SLAM 这种非线性的情况下，它给出了单次线性近似下最大后验估计（MAP）。</p>
-<h2 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h2><p>本节<a href="https://www.cnblogs.com/pinking/p/9201405.html" target="_blank" rel="noopener">出处</a>。</p>
-<p>Kalman与HMM的关系，事实上，他们解决的问题模型都是如上图所示，只不过一个是利用最小均方误差准则进行估计，一个是利用最大后验进行估计。事实上，HMM的预测问题中，就是一个最大的后验概率作为其似然函数，然后通过viterbi算法解的这个似然函数。</p>
-<h2 id="EKF的应用"><a href="#EKF的应用" class="headerlink" title="EKF的应用"></a>EKF的应用</h2><p>EKF在SLAM中有着广泛的应用</p>
-<h2 id="EKF的局限性"><a href="#EKF的局限性" class="headerlink" title="EKF的局限性"></a>EKF的局限性</h2><ol>
+<h3 id="EKF的应用"><a href="#EKF的应用" class="headerlink" title="EKF的应用"></a>EKF的应用</h3><p>EKF在SLAM中有着广泛的应用</p>
+<h3 id="EKF的局限性"><a href="#EKF的局限性" class="headerlink" title="EKF的局限性"></a>EKF的局限性</h3><ol>
 <li>EKF假设了马尔可夫性，即k时刻的状态只与k-1时刻相关，而与k-1之前的状态和观测都无关。但在视觉里程计中，只考虑相邻两帧的关系会累积误差。如果有回环检测的，滤波器就很难处理这种情况。</li>
 <li>与非线性优化方法相比，EKF滤波器仅在$\hat{x}_{k-1}$处做了一次线性化，然后直接根据这次线性化结果计算后验概率。。这相当于在说，我们认为该点处的线性化近似，在后验概率处仍然是有效的。而实际上，当我们离开工作点较远的时候，一阶泰勒展开并不一定能够近似整个函数，这取决于运动模型和观测模型的非线性情况。如果它们有强烈的非线性，那线性近似就只在很小范围内成立，不能认为在<br>很远的地方仍能用线性来近似。这就是EKF 的非线性误差，是它的主要问题所在。在优化问题中，尽管我们也做一阶（最速下降）或二阶（G-N 或L-M）的近似，但每迭代一次，状态估计发生改变之后，我们会重新对新的估计点做泰勒展开，而不像EKF 那样只在固定点上做一次泰勒展开。这就导致优化方法适用范围更广，则在状态变化较大时亦能适用。</li>
 <li>从程序实现上来说，EKF 需要存储状态量的均值和方差，并对它们进行维护和更新。如果把路标也放进状态的话，由于视觉SLAM 中路标数量很大，这个存储量是相当可观的，且与状态量呈平方增长（因为要存储协方差矩阵）。因此，EKF-SLAM 普遍被认为不可适用于大型场景。</li>
@@ -1880,9 +2052,14 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>DBoW2库学习</title>
+    <title>回环检测与DBoW2库</title>
     <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
-    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成</p>
+    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p>
+<ol>
+<li>回环检测</li>
+<li>DBOW2介绍</li>
+<li>DBOW3介绍</li>
+</ol>
 <a id="more"></a>
 
 <h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
@@ -1911,7 +2088,13 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>Recall描述了真回环中有多少个被检测出来了。</p>
 <p>根据准确率和召回率可以得到ROC曲线.</p>
 <p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
-<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener">Github地址</a></p>
+<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p>
+<p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img"></p>
+<p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p>
+<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p>
+<h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p>
+<h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p>
+<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener">Github地址</a></p>
 <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p>
 <ul>
 <li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li>
@@ -2047,7 +2230,12 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>像素相似性与向量距离成反比。</p>
 <p><strong>算法步骤</strong></p>
 <p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p>
+<p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p>
 <p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p>
+<p>距离计算公式如下：<br>$$<br>d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}<br>$$</p>
+<p>$$<br>d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}<br>$$</p>
+<p>$$<br>D’=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}<br>$$</p>
+<p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p>
 <p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p>
 <p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p>
 <p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p>

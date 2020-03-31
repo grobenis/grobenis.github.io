@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.4k字</span>
+            <span class="post-count">2.5k字</span>
         </span>
     </span>
 
@@ -190,7 +190,12 @@
 <p>像素相似性与向量距离成反比。</p>
 <p><strong>算法步骤</strong></p>
 <p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p>
+<p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p>
 <p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p>
+<p>距离计算公式如下：<br>$$<br>d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}<br>$$</p>
+<p>$$<br>d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}<br>$$</p>
+<p>$$<br>D’=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}<br>$$</p>
+<p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p>
 <p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p>
 <p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p>
 <p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p>
@@ -292,7 +297,7 @@
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            DBoW2库学习
+            回环检测与DBoW2库
           
         </div>
       </a>

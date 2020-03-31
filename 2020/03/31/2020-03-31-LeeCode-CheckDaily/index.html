@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    回环检测与DBoW2库 |  曾是少年
+    2020-03-31-LeeCode-CheckDaily |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-2020-03-10-Use_DBoW2_to_Loop_Detection" class="article article-type-post" itemscope
+  <article id="post-2020-03-31-LeeCode-CheckDaily" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  回环检测与DBoW2库
+  2020-03-31-LeeCode-CheckDaily
 </h1>
   
 
@@ -49,12 +49,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-date">
-  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
+      <a href="/2020/03/31/2020-03-31-LeeCode-CheckDaily/" class="article-date">
+  <time datetime="2020-03-31T02:41:37.000Z" itemprop="datePublished">2020-03-31</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
   </div>
 
       
@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.9k字</span>
+            <span class="post-count">209字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">6分钟</span>
+            <span class="post-count">1分钟</span>
         </span>
     </span>
 </div>
@@ -98,78 +98,26 @@
       
 
       
-      <p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p>
+      <p>今日打卡题目如下：</p>
 <ol>
-<li>回环检测</li>
-<li>DBOW2介绍</li>
-<li>DBOW3介绍</li>
+<li>排序数组</li>
 </ol>
+<p>还要学习各种排序算法。</p>
 <a id="more"></a>
 
-<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
-<table>
-<thead>
-<tr>
-<th align="center">算法结果事实</th>
-<th align="center">是回环</th>
-<th align="center">不是回环</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">是回环</td>
-<td align="center">真阳性</td>
-<td align="center">假阳性</td>
-</tr>
-<tr>
-<td align="center">不是回环</td>
-<td align="center">假阴性</td>
-<td align="center">真阴性</td>
-</tr>
-</tbody></table>
-<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
-<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
-<p>准确率描述了检测到的回环中真回环的个数。</p>
-<p>Recall描述了真回环中有多少个被检测出来了。</p>
-<p>根据准确率和召回率可以得到ROC曲线.</p>
-<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
-<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p>
-<p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img"></p>
-<p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p>
-<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p>
-<h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p>
-<h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p>
-<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener">Github地址</a></p>
-<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p>
-<ul>
-<li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li>
-<li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li>
-<li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li>
-<li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li>
-<li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li>
-<li>出于性能原因，DBoW2不支持停用词。</li>
-</ul>
-<p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p>
-<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p>
-<h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p>
-<h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedVocabulary</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedDatabase</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="912-排序数组"><a href="#912-排序数组" class="headerlink" title="912. 排序数组"></a>912. 排序数组</h2><p>给定一个整数数组 <code>nums</code>，将该数组升序排列。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[5,2,3,1]</span><br><span class="line">输出：[1,2,3,5]</span><br></pre></td></tr></table></figure>
 
-<p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p>
-<h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p>
-<h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener"><strong>Github地址</strong></a></p>
-<h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p>
-<ul>
-<li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li>
-<li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li>
-<li>DBoW3可以在linux和Windows中进行编译。</li>
-<li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li>
-<li>使用二进制文件的可能性。二进制文件的加载/保存速度比yml快4-5倍。同样，它们可以被压缩。</li>
-<li>兼容DBoW2 yml文件</li>
-</ul>
-<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p>
-<h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p>
-<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p>
-<h4 id="读取-存储-词汇"><a href="#读取-存储-词汇" class="headerlink" title="读取/存储 词汇"></a>读取/存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[5,1,1,2,0,0]</span><br><span class="line">输出：[0,0,1,1,2,5]</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ol>
+<li><code>1 &lt;= A.length &lt;= 10000</code></li>
+<li><code>-50000 &lt;= A[i] &lt;= 50000</code></li>
+</ol>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>快速排序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        quicksort(nums,<span class="number">0</span>,nums.<span class="built_in">size</span>()<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">quicksort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums,<span class="keyword">int</span> low ,<span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(low &gt;= high) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> num = nums[low];</span><br><span class="line">        <span class="keyword">int</span> left = low+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> right = high;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(left&lt;=right &amp;&amp; nums[left]&lt;=num) left++;</span><br><span class="line">            <span class="keyword">while</span>(left&lt;=right &amp;&amp; nums[right]&gt;=num) right--;</span><br><span class="line">            <span class="keyword">if</span>(left&gt;right)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            swap(nums[left],nums[right]);</span><br><span class="line">        &#125;</span><br><span class="line">        nums[low] = nums[right];</span><br><span class="line">        nums[right] = num;</span><br><span class="line">        quicksort(nums,low,right<span class="number">-1</span>);</span><br><span class="line">        quicksort(nums,right+<span class="number">1</span>,high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 
       
       <!-- reward -->
@@ -239,14 +187,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/31/2020-03-31-LeeCode-CheckDaily/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DBoW2/" rel="tag">DBoW2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/" rel="tag">回环检测</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
 
 
     </footer>
@@ -257,19 +205,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/10/2020-03-10-Read-VINS-Fusion/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            VINS-Fusion代码阅读
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/03/10/2020-03-12-Clustering_Survey/" class="article-nav-link">
+      <a href="/2020/03/30/2020-03-30-Bundle-adjustment/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">经典聚类算法调研</div>
+        <div class="article-nav-title">2020-03-30-Bundle_adjustment</div>
       </a>
     
   </nav>
