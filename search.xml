@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>2020-03-31-LeeCode-CheckDaily</title>
+    <title>LeeCode 每日打卡3-31</title>
     <url>/2020/03/31/2020-03-31-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>排序数组</li>
 </ol>
-<p>还要学习各种排序算法。</p>
+<p>各种排序算法</p>
+<ol>
+<li>冒泡排序</li>
+<li>插入排序</li>
+<li>快速排序</li>
+<li>堆排序</li>
+<li>桶排序</li>
+</ol>
 <a id="more"></a>
 
 <h2 id="912-排序数组"><a href="#912-排序数组" class="headerlink" title="912. 排序数组"></a>912. 排序数组</h2><p>给定一个整数数组 <code>nums</code>，将该数组升序排列。</p>
@@ -35,7 +42,7 @@
       </tags>
   </entry>
   <entry>
-    <title>2020-03-30-Bundle_adjustment</title>
+    <title>SLAM中的后端优化</title>
     <url>/2020/03/30/2020-03-30-Bundle-adjustment/</url>
     <content><![CDATA[<p>本节介绍SLAM中的后端优化过程</p>
 <a id="more"></a>
@@ -80,11 +87,12 @@
       <tags>
         <tag>SLAM</tag>
         <tag>优化</tag>
+        <tag>BA</tag>
       </tags>
   </entry>
   <entry>
     <title>LeeCode 每日打卡3-30</title>
-    <url>/2020/03/30/2020-03-30-LeeCode-Contest/</url>
+    <url>/2020/03/30/2020-03-30-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>面试题62. 圆圈中最后剩下的数字</li>
@@ -134,11 +142,6 @@
         <tag>每日打卡</tag>
         <tag>刷题</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>2020-03-30-LeeCode CheckDaily</title>
-    <url>/2020/03/30/2020-03-30-LeeCode-CheckDaily/</url>
-    <content><![CDATA[<a id="more"></a>]]></content>
   </entry>
   <entry>
     <title>LeeCode 每日打卡3-29</title>

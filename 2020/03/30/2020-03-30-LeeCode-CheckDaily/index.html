@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    2020-03-30-LeeCode CheckDaily |  曾是少年
+    LeeCode 每日打卡3-30 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  2020-03-30-LeeCode CheckDaily
+  LeeCode 每日打卡3-30
 </h1>
   
 
@@ -50,9 +50,13 @@
     
     <div class="article-meta">
       <a href="/2020/03/30/2020-03-30-LeeCode-CheckDaily/" class="article-date">
-  <time datetime="2020-03-30T02:01:18.000Z" itemprop="datePublished">2020-03-30</time>
+  <time datetime="2020-03-30T02:01:37.000Z" itemprop="datePublished">2020-03-30</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -60,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">0字</span>
+            <span class="post-count">916字</span>
         </span>
     </span>
 
@@ -69,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">3分钟</span>
         </span>
     </span>
 </div>
@@ -80,6 +84,8 @@
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -92,7 +98,47 @@
       
 
       
-      <a id="more"></a>
+      <p>今日打卡题目如下：</p>
+<ol>
+<li>面试题62. 圆圈中最后剩下的数字</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="面试题62-圆圈中最后剩下的数字"><a href="#面试题62-圆圈中最后剩下的数字" class="headerlink" title="面试题62. 圆圈中最后剩下的数字"></a>面试题62. 圆圈中最后剩下的数字</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>0,1,,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字。求出这个圆圈里剩下的最后一个数字。</p>
+<p>例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。</p>
+<p> <strong>示例 1</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: n &#x3D; 5, m &#x3D; 3</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: n &#x3D; 10, m &#x3D; 17</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+
+<p> <strong>限制：</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 10^5</code></li>
+<li><code>1 &lt;= m &lt;= 10^6</code></li>
+</ul>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>该问题为约瑟夫环问题。</p>
+<p>存储一个数组，每次删除一个元素，使用递归进行求解。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">num</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>;i&lt;n;i++) num[i]=i;</span><br><span class="line">        <span class="keyword">return</span> deletem(num,n,<span class="number">0</span>,m<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deletem</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;num,<span class="keyword">int</span> n,<span class="keyword">int</span> start,<span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> num[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it=num.<span class="built_in">begin</span>();</span><br><span class="line">        num.erase(it+(start+m)%n);</span><br><span class="line">        start = (start+m)%n;</span><br><span class="line">        <span class="keyword">return</span> deletem(num,n<span class="number">-1</span>,start,m);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结果：超时</p>
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="方法一：数学-递归"><a href="#方法一：数学-递归" class="headerlink" title="方法一：数学 + 递归"></a>方法一：数学 + 递归</h4><h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>题目中的要求可以表述为：给定一个长度为 n 的序列，每次向后数 m 个元素并删除，那么最终留下的是第几个元素？</p>
+<p>这个问题很难快速给出答案。但是同时也要看到，这个问题似乎有拆分为较小子问题的潜质：如果我们知道对于一个长度 n - 1 的序列，留下的是第几个元素，那么我们就可以由此计算出长度为 n 的序列的答案。</p>
+<p>算法</p>
+<p>我们将上述问题建模为函数 <code>f(n, m)</code>，该函数的返回值为最终留下的元素的序号。</p>
+<p>首先，长度为 n 的序列会先删除第<code>m % n</code> 个元素，然后剩下一个长度为 n - 1 的序列。那么，我们可以递归地求解 f(n - 1, m)，就可以知道对于剩下的 n - 1 个元素，最终会留下第几个元素，我们设答案为 <code>x = f(n - 1, m)</code>。</p>
+<p>由于我们删除了第 <code>m % n</code> 个元素，将序列的长度变为 <code>n - 1</code>。当我们知道了 <code>f(n - 1, m)</code> 对应的答案 <code>x</code> 之后，我们也就可以知道，长度为 n 的序列最后一个删除的元素，应当是从 m % n 开始数的第 x 个元素。因此有 <code>f(n, m) = (m % n + x) % n = (m + x) % n</code>。</p>
+<p>我们递归计算 <code>f(n, m), f(n - 1, m), f(n - 2, m), ...</code>直到递归的终点<code>f(1, m)</code>。当序列长度为 1 时，一定会留下唯一的那个元素，它的编号为 0。</p>
+<p>下面的代码实现了上述的递归函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> x=lastRemaining(n<span class="number">-1</span>,m);</span><br><span class="line">        <span class="keyword">return</span> (x+m)%n;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：<code>O(n)</code>，需要求解的函数值有 <code>n</code> 个。</p>
+<p>空间复杂度：<code>O(n)</code>，函数的递归深度为 <code>n</code>，需要使用 <code>O(n)</code>的栈空间。</p>
+<h4 id="方法二：数学-迭代"><a href="#方法二：数学-迭代" class="headerlink" title="方法二：数学 + 迭代"></a>方法二：数学 + 迭代</h4><h5 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h5><p>上面的递归可以改写为迭代，避免递归使用栈空间。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> f = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i != n + <span class="number">1</span>; ++i)</span><br><span class="line">            f = (m + f) % i;</span><br><span class="line">        <span class="keyword">return</span> f;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：<code>O(n)</code>，需要求解的函数值有 <code>n</code> 个。</p>
+<p>空间复杂度：<code>O(1)</code>，只使用常数个变量。</p>
+
       
       <!-- reward -->
       
@@ -168,6 +214,8 @@
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
+
 
     </footer>
 
@@ -177,11 +225,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/30/2020-03-30-LeeCode-Contest/" class="article-nav-link">
+      <a href="/2020/03/30/2020-03-30-Bundle-adjustment/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            LeeCode 每日打卡3-30
+            SLAM中的后端优化
           
         </div>
       </a>
