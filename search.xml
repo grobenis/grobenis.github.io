@@ -1,6 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2020-04-02-Cpp_Vector</title>
+    <url>/2020/04/02/2020-04-02-Cpp-Vector/</url>
+    <content><![CDATA[<p>向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。</p>
+<a id="more"></a>
+
+<h2 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h2><p>向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。</p>
+<h2 id="二、容器特性"><a href="#二、容器特性" class="headerlink" title="二、容器特性"></a>二、容器特性</h2><h3 id="1-顺序序列"><a href="#1-顺序序列" class="headerlink" title="1. 顺序序列"></a>1. 顺序序列</h3><p>顺序容器中的元素按照严格的线性顺序排序。可以通过元素在序列中的位置访问对应的元素。</p>
+<h3 id="2-动态数组"><a href="#2-动态数组" class="headerlink" title="2. 动态数组"></a>2. 动态数组</h3><p>支持对序列中的任意元素进行快速直接访问，甚至可以通过指针算述进行该操作。操供了在序列末尾相对快速地添加/删除元素的操作。</p>
+<h3 id="3-能够感知内存分配器的（Allocator-aware）"><a href="#3-能够感知内存分配器的（Allocator-aware）" class="headerlink" title="3. 能够感知内存分配器的（Allocator-aware）"></a>3. 能够感知内存分配器的（Allocator-aware）</h3><p>容器使用一个内存分配器对象来动态地处理它的存储需求。</p>
+<h2 id="三、基本函数"><a href="#三、基本函数" class="headerlink" title="三、基本函数"></a>三、基本函数</h2><h3 id="1-构造函数"><a href="#1-构造函数" class="headerlink" title="1.构造函数"></a>1.构造函数</h3><ul>
+<li>vector():创建一个空vector</li>
+<li>vector(int nSize):创建一个vector,元素个数为nSize</li>
+<li>vector(int nSize,const t&amp; t):创建一个vector，元素个数为nSize,且值均为t</li>
+<li>vector(const vector&amp;):复制构造函数</li>
+<li>vector(begin,end):复制[begin,end)区间内另一个数组的元素到vector中</li>
+</ul>
+<h3 id="2-增加函数"><a href="#2-增加函数" class="headerlink" title="2.增加函数"></a>2.增加函数</h3><ul>
+<li>void push_back(const T&amp; x):向量尾部增加一个元素X</li>
+<li>iterator insert(iterator it,const T&amp; x):向量中迭代器指向元素前增加一个元素x</li>
+<li>iterator insert(iterator it,int n,const T&amp; x):向量中迭代器指向元素前增加n个相同的元素x</li>
+<li>iterator insert(iterator it,const_iterator first,const_iterator last):向量中迭代器指向元素前插入另一个相同类型向量的[first,last)间的数据</li>
+</ul>
+<h3 id="3-删除函数"><a href="#3-删除函数" class="headerlink" title="3.删除函数"></a>3.删除函数</h3><ul>
+<li>iterator erase(iterator it):删除向量中迭代器指向元素</li>
+<li>iterator erase(iterator first,iterator last):删除向量中[first,last)中元素</li>
+<li>void pop_back():删除向量中最后一个元素</li>
+<li>void clear():清空向量中所有元素</li>
+</ul>
+<h3 id="4-遍历函数"><a href="#4-遍历函数" class="headerlink" title="4.遍历函数"></a>4.遍历函数</h3><ul>
+<li>reference at(int pos):返回pos位置元素的引用</li>
+<li>reference front():返回首元素的引用</li>
+<li>reference back():返回尾元素的引用</li>
+<li>iterator begin():返回向量头指针，指向第一个元素</li>
+<li>iterator end():返回向量尾指针，指向向量最后一个元素的下一个位置</li>
+<li>reverse_iterator rbegin():反向迭代器，指向最后一个元素</li>
+<li>reverse_iterator rend():反向迭代器，指向第一个元素之前的位置</li>
+</ul>
+<h3 id="5-判断函数"><a href="#5-判断函数" class="headerlink" title="5.判断函数"></a>5.判断函数</h3><ul>
+<li>bool empty() const:判断向量是否为空，若为空，则向量中无元素</li>
+</ul>
+<h3 id="6-大小函数"><a href="#6-大小函数" class="headerlink" title="6.大小函数"></a>6.大小函数</h3><ul>
+<li>int size() const:返回向量中元素的个数</li>
+<li>int capacity() const:返回当前向量所能容纳的最大元素值</li>
+<li>int max_size() const:返回最大可允许的vector元素数量值</li>
+</ul>
+<h3 id="7-其他函数"><a href="#7-其他函数" class="headerlink" title="7.其他函数"></a>7.其他函数</h3><ul>
+<li>void swap(vector&amp;):交换两个同类型向量的数据</li>
+<li>void assign(int n,const T&amp; x):设置向量中第n个元素的值为x</li>
+<li>void assign(const_iterator first,const_iterator last):向量中[first,last)中元素设置成当前向量元素</li>
+</ul>
+<h3 id="8-看着清楚"><a href="#8-看着清楚" class="headerlink" title="8.看着清楚"></a>8.看着清楚</h3><table>
+<thead>
+<tr>
+<th></th>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td align="center">push_back( )</td>
+<td align="center">在数组的最后添加一个数据</td>
+</tr>
+<tr>
+<td>2</td>
+<td align="center">pop_back()</td>
+<td align="center">去掉数组的最后一个数据</td>
+</tr>
+<tr>
+<td>3</td>
+<td align="center">at</td>
+<td align="center">得到编号位置的数据</td>
+</tr>
+<tr>
+<td>4</td>
+<td align="center">begin</td>
+<td align="center">得到数组头的指针</td>
+</tr>
+<tr>
+<td>5</td>
+<td align="center">end</td>
+<td align="center">得到数组的最后一个单元+1的指针</td>
+</tr>
+<tr>
+<td>6</td>
+<td align="center">front</td>
+<td align="center">得到数组头的引用</td>
+</tr>
+<tr>
+<td>7</td>
+<td align="center">back</td>
+<td align="center">得到数组的最后一个单元的引用</td>
+</tr>
+<tr>
+<td>8</td>
+<td align="center">max_size</td>
+<td align="center">得到vector最大可以是多大</td>
+</tr>
+<tr>
+<td>9</td>
+<td align="center">capacity</td>
+<td align="center">当前vector分配的大小</td>
+</tr>
+<tr>
+<td>10</td>
+<td align="center">size</td>
+<td align="center">当前使用数据的大小</td>
+</tr>
+<tr>
+<td>11</td>
+<td align="center">resize</td>
+<td align="center">改变当前使用数据的大小，如果它比当前使用的大，者填充默认值</td>
+</tr>
+<tr>
+<td>12</td>
+<td align="center">reserve</td>
+<td align="center">改变当前vecotr所分配空间的大小</td>
+</tr>
+<tr>
+<td>13</td>
+<td align="center">erase</td>
+<td align="center">删除指针指向的数据项</td>
+</tr>
+<tr>
+<td>14</td>
+<td align="center">clear</td>
+<td align="center">清空当前的vector</td>
+</tr>
+<tr>
+<td>15</td>
+<td align="center">rbegin</td>
+<td align="center">将vector反转后的开始指针返回(其实就是原来的end-1)</td>
+</tr>
+<tr>
+<td>16</td>
+<td align="center">rend</td>
+<td align="center">将vector反转构的结束指针返回(其实就是原来的begin-1)</td>
+</tr>
+<tr>
+<td>17</td>
+<td align="center">empty</td>
+<td align="center">判断vector是否为空</td>
+</tr>
+<tr>
+<td>18</td>
+<td align="center">swap</td>
+<td align="center">与另一个vector交换数据</td>
+</tr>
+</tbody></table>
+<h2 id="四、二维Vector初始化"><a href="#四、二维Vector初始化" class="headerlink" title="四、二维Vector初始化"></a>四、二维Vector初始化</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//二维vector初始化</span></span><br><span class="line"><span class="built_in">vector</span>&lt; <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; vt;<span class="comment">//初始化一个 二维vector</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt; <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; <span class="title">vect</span><span class="params">(vt)</span></span>;<span class="comment">//使用另一个 二维 vector 初始化当前二维vector</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt; <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; <span class="title">vec</span><span class="params">(row,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(column))</span></span>;<span class="comment">//初始化一个 二维的vector 行row,列column,且值为0</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; <span class="title">visited</span><span class="params">(row,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(column,<span class="number">6</span>))</span></span>;<span class="comment">//初始化一个 二维vector 行row,列column ,且 值为data=6 自定义data;</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; <span class="title">vecto</span><span class="params">(row,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(vt[<span class="number">0</span>].<span class="built_in">begin</span>()+<span class="number">1</span>,vt[<span class="number">0</span>].<span class="built_in">begin</span>()+<span class="number">3</span>))</span></span>;<span class="comment">////初始化一个 二维vector 行row,第二个参数为一维vector;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Vector</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeeCode 每日打卡4-1</title>
+    <url>/2020/04/01/2020-04-01-LeeCode-CheckDaily/</url>
+    <content><![CDATA[<p>今日打卡题目如下：</p>
+<ol>
+<li>1111.有效括号的嵌套深度</li>
+<li>面试题29. 顺时针打印矩阵</li>
+<li>面试题10- II. 青蛙跳台阶问题</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="1111-有效括号的嵌套深度"><a href="#1111-有效括号的嵌套深度" class="headerlink" title="1111. 有效括号的嵌套深度"></a>1111. 有效括号的嵌套深度</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p><strong>有效括号字符串</strong> 定义：对于每个左括号，都能找到与之对应的右括号，反之亦然。详情参见题末「<strong>有效括号字符串</strong>」部分。</p>
+<p><strong>嵌套深度</strong> <code>depth</code> 定义：即有效括号字符串嵌套的层数，<code>depth(A)</code> 表示有效括号字符串 <code>A</code> 的嵌套深度。详情参见题末「<strong>嵌套深度</strong>」部分。</p>
+<p>有效括号字符串类型与对应的嵌套深度计算方法如下图所示：</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/01/1111.png" alt="img"></p>
+<p>给你一个「有效括号字符串」 <code>seq</code>，请你将其分成两个不相交的有效括号字符串，<code>A</code> 和 <code>B</code>，并使这两个字符串的深度最小。</p>
+<ul>
+<li>不相交：每个 <code>seq[i]</code> 只能分给 <code>A</code> 和 <code>B</code> 二者中的一个，不能既属于 <code>A</code> 也属于 <code>B</code> 。</li>
+<li><code>A</code> 或 <code>B</code> 中的元素在原字符串中可以不连续。</li>
+<li><code>A.length + B.length = seq.length</code></li>
+<li>深度最小：<code>max(depth(A), depth(B))</code> 的可能取值最小。 </li>
+</ul>
+<p>划分方案用一个长度为 <code>seq.length</code> 的答案数组 <code>answer</code> 表示，编码规则如下：</p>
+<ul>
+<li><code>answer[i] = 0</code>，<code>seq[i]</code> 分给 <code>A</code> 。</li>
+<li><code>answer[i] = 1</code>，<code>seq[i]</code> 分给 <code>B</code> 。</li>
+</ul>
+<p>如果存在多个满足要求的答案，只需返回其中任意 <strong>一个</strong> 即可。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：seq &#x3D; &quot;(()())&quot;</span><br><span class="line">输出：[0,1,1,1,1,0]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：seq &#x3D; &quot;()(())()&quot;</span><br><span class="line">输出：[0,0,0,1,1,0,1,1]</span><br><span class="line">解释：本示例答案不唯一。</span><br><span class="line">按此输出 A &#x3D; &quot;()()&quot;, B &#x3D; &quot;()()&quot;, max(depth(A), depth(B)) &#x3D; 1，它们的深度最小。</span><br><span class="line">像 [1,1,1,0,0,1,1,1]，也是正确结果，其中 A &#x3D; &quot;()()()&quot;, B &#x3D; &quot;()&quot;, max(depth(A), depth(B)) &#x3D; 1 。</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt; seq.size &lt;= 10000</code> </li>
+</ul>
+<p><strong>有效括号字符串：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">仅由 &quot;(&quot; 和 &quot;)&quot; 构成的字符串，对于每个左括号，都能找到与之对应的右括号，反之亦然。</span><br><span class="line">下述几种情况同样属于有效括号字符串：</span><br><span class="line"></span><br><span class="line">  1. 空字符串</span><br><span class="line">  2. 连接，可以记作 AB（A 与 B 连接），其中 A 和 B 都是有效括号字符串</span><br><span class="line">  3. 嵌套，可以记作 (A)，其中 A 是有效括号字符串</span><br></pre></td></tr></table></figure>
+
+<p><strong>嵌套深度：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">类似地，我们可以定义任意有效括号字符串 s 的 嵌套深度 depth(S)：</span><br><span class="line"></span><br><span class="line">  1. s 为空时，depth(&quot;&quot;) &#x3D; 0</span><br><span class="line">  2. s 为 A 与 B 连接时，depth(A + B) &#x3D; max(depth(A), depth(B))，其中 A 和 B 都是有效括号字符串</span><br><span class="line">  3. s 为嵌套情况，depth(&quot;(&quot; + A + &quot;)&quot;) &#x3D; 1 + depth(A)，其中 A 是有效括号字符串</span><br><span class="line"></span><br><span class="line">例如：&quot;&quot;，&quot;()()&quot;，和 &quot;()(()())&quot; 都是有效括号字符串，嵌套深度分别为 0，1，2，而 &quot;)(&quot; 和 &quot;(()&quot; 都不是有效括号字符串。</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路及算法"><a href="#思路及算法" class="headerlink" title="思路及算法"></a>思路及算法</h4><p>要求划分出使得最大嵌套深度最小的分组，我们首先得知道如何计算嵌套深度。我们可以通过栈实现括号匹配来计算：</p>
+<p>维护一个栈 s，从左至右遍历括号字符串中的每一个字符：</p>
+<p>如果当前字符是 (，就把 ( 压入栈中，此时这个 ( 的嵌套深度为栈的高度；</p>
+<p>如果当前字符是 )，此时这个 ) 的嵌套深度为栈的高度，随后再从栈中弹出一个 (。</p>
+<p>下面给出了括号序列 (()(())()) 在每一个字符处的嵌套深度：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">括号序列   ( ( ) ( ( ) ) ( ) )</span><br><span class="line">下标编号   <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span></span><br><span class="line">嵌套深度   <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">3</span> <span class="number">3</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>知道如何计算嵌套深度，问题就很简单了：只要在遍历过程中，我们保证栈内一半的括号属于序列 A，一半的括号属于序列 B，那么就能保证拆分后最大的嵌套深度最小，是当前最大嵌套深度的一半。要实现这样的对半分配，我们只需要把奇数层的 ( 分配给 A，偶数层的 ( 分配给 B 即可。对于上面的例子，我们将嵌套深度为 1 和 3 的所有括号 (()) 分配给 A，嵌套深度为 2 的所有括号 ()()() 分配给 B。<br>此外，由于在这个问题中，栈中只会存放 (，因此我们不需要维护一个真正的栈，只需要用一个变量模拟记录栈<br>的大小。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">maxDepthAfterSplit</span><span class="params">(<span class="built_in">string</span> seq)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; A;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> ch:seq)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(ch==<span class="string">'('</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                A.push_back(st.<span class="built_in">size</span>()%<span class="number">2</span>);</span><br><span class="line">                st.push(<span class="string">'('</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(ch == <span class="string">')'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                st.pop();</span><br><span class="line">                A.push_back(st.<span class="built_in">size</span>()%<span class="number">2</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> A;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面试题29-顺时针打印矩阵"><a href="#面试题29-顺时针打印矩阵" class="headerlink" title="面试题29. 顺时针打印矩阵"></a>面试题29. 顺时针打印矩阵</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
+<h4 id="示例-1-1"><a href="#示例-1-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：matrix &#x3D; [[1,2,3],[4,5,6],[7,8,9]]</span><br><span class="line">输出：[1,2,3,6,9,8,7,4,5]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2-1"><a href="#示例-2-1" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：matrix &#x3D; [[1,2,3,4],[5,6,7,8],[9,10,11,12]]</span><br><span class="line">输出：[1,2,3,4,8,12,11,10,9,5,6,7]</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解题"><a href="#我的解题" class="headerlink" title="我的解题"></a>我的解题</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>对矩阵进行顺时针访问时，利用一个标志矩阵判断是否访问过该元素。如果发生越界或者碰到已访问节点则会退一格，并换个方向继续访问。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">// 表示方向:→、↓、←、↑</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; di = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;; </span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dj = &#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">spiralOrder</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//空值情况处理</span></span><br><span class="line">        <span class="keyword">if</span>(!matrix.<span class="built_in">size</span>()) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="keyword">if</span>(!matrix[<span class="number">0</span>].<span class="built_in">size</span>()) <span class="keyword">return</span> matrix[<span class="number">0</span>];</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; Res;</span><br><span class="line">    <span class="keyword">int</span> row = matrix.<span class="built_in">size</span>(),col = matrix[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> num = row*col;      <span class="comment">//矩阵元素个数</span></span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">0</span>, y=<span class="number">0</span> ;        <span class="comment">//待访问元素坐标</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">flag</span><span class="params">(row,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(col,<span class="number">1</span>))</span></span>; <span class="comment">//是否访问过该数组</span></span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">0</span>;              <span class="comment">//遍历方向        </span></span><br><span class="line">    <span class="keyword">while</span>(Res.<span class="built_in">size</span>()&lt; num)&#123;</span><br><span class="line">        <span class="keyword">if</span>( <span class="number">0</span>&lt;= x &amp;&amp; x&lt;row &amp;&amp; <span class="number">0</span>&lt;= y &amp;&amp; y&lt;col &amp;&amp; flag[x][y])&#123;</span><br><span class="line">            Res.push_back(matrix[x][y]);</span><br><span class="line">            flag[x][y]=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;               <span class="comment">//越界则回溯一个值，然后换个方向继续走</span></span><br><span class="line">            x-=di[k]; y-=dj[k];</span><br><span class="line">            k=(++k)%<span class="number">4</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        x+=di[k]; y+=dj[k];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Res;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="其它解法"><a href="#其它解法" class="headerlink" title="其它解法"></a>其它解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">spiralOrder</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</span><br><span class="line">      <span class="comment">/*判断是否为空*/</span></span><br><span class="line">      <span class="keyword">if</span>(matrix.<span class="built_in">size</span>() == <span class="number">0</span> || matrix[<span class="number">0</span>].<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">      <span class="comment">/*设置上下左右四个界限*/</span></span><br><span class="line">      <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res; <span class="comment">/*存储遍历结果*/</span></span><br><span class="line">      <span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> bottom = matrix.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> right = matrix[<span class="number">0</span>].<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">      <span class="comment">/*此算法模拟顺时针输出的过程，请联想打印过程*/</span></span><br><span class="line">      <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="comment">/*1.top行从左到右遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;=right;i++)&#123;</span><br><span class="line">              res.push_back(matrix[top][i]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*top移动至下一行，并进行边界检测*/</span></span><br><span class="line">          top++;</span><br><span class="line">          <span class="keyword">if</span>(top &gt; bottom ) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">          <span class="comment">/*2.right列从上到下遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=top;i&lt;=bottom;i++)&#123;</span><br><span class="line">              res.push_back(matrix[i][right]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*right左移，并进行边界检测*/</span></span><br><span class="line">          right--;</span><br><span class="line">          <span class="keyword">if</span>(right &lt; left) <span class="keyword">break</span>;</span><br><span class="line">          </span><br><span class="line">          <span class="comment">/*3.bottom行从右往左遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i = right;i&gt;=left;i--)&#123;</span><br><span class="line">              res.push_back(matrix[bottom][i]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*bottom行上移，并进行边界检测*/</span></span><br><span class="line">          bottom -- ;</span><br><span class="line">          <span class="keyword">if</span>(bottom &lt; top) <span class="keyword">break</span>;</span><br><span class="line">          <span class="comment">/*4.left列从下往上遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=bottom;i&gt;=top;i--)&#123;</span><br><span class="line">              res.push_back(matrix[i][left]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*left右移，并进行边界检测*/</span></span><br><span class="line">          left++;</span><br><span class="line">          <span class="keyword">if</span>(left &gt; right) <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/*返回遍历结果*/</span></span><br><span class="line">      <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面试题10-II-青蛙跳台阶问题"><a href="#面试题10-II-青蛙跳台阶问题" class="headerlink" title="面试题10- II. 青蛙跳台阶问题"></a>面试题10- II. 青蛙跳台阶问题</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 <code>n</code> 级的台阶总共有多少种跳法。</p>
+<p>答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。</p>
+<h4 id="示例-1-2"><a href="#示例-1-2" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：n &#x3D; 2</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2-2"><a href="#示例-2-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：n &#x3D; 7</span><br><span class="line">输出：21</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>0 &lt;= n &lt;= 100</code></li>
+</ul>
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><p>递归方法容易超时，因此采用哈希表保存中间结果</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numWays</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!n) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;=<span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> n;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>.<span class="built_in">find</span>(n<span class="number">-1</span>) == <span class="built_in">map</span>.<span class="built_in">end</span>())</span><br><span class="line">            <span class="built_in">map</span>[n<span class="number">-1</span>]= numWays(n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>.<span class="built_in">find</span>(n<span class="number">-2</span>) == <span class="built_in">map</span>.<span class="built_in">end</span>())</span><br><span class="line">            <span class="built_in">map</span>[n<span class="number">-2</span>]= numWays(n<span class="number">-2</span>);</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">map</span>[n<span class="number">-1</span>]+<span class="built_in">map</span>[n<span class="number">-2</span>])%<span class="number">1000000007</span>;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>LeeCode</tag>
+        <tag>每日打卡</tag>
+        <tag>刷题</tag>
+        <tag>剑指offer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeeCode 每日打卡3-31</title>
     <url>/2020/03/31/2020-03-31-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
