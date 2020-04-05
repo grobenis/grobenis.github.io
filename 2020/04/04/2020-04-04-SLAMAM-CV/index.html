@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    LeeCode 每日打卡3-31 |  曾是少年
+    SLAM岗位简历与求职 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-2020-03-31-LeeCode-CheckDaily" class="article article-type-post" itemscope
+  <article id="post-2020-04-04-SLAMAM-CV" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  LeeCode 每日打卡3-31
+  SLAM岗位简历与求职
 </h1>
   
 
@@ -49,12 +49,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/31/2020-03-31-LeeCode-CheckDaily/" class="article-date">
-  <time datetime="2020-03-31T02:41:37.000Z" itemprop="datePublished">2020-03-31</time>
+      <a href="/2020/04/04/2020-04-04-SLAMAM-CV/" class="article-date">
+  <time datetime="2020-04-03T16:58:46.000Z" itemprop="datePublished">2020-04-04</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+    <a class="article-category-link" href="/categories/%E6%B1%82%E8%81%8C/">求职</a>
   </div>
 
       
@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">486字</span>
+            <span class="post-count">838字</span>
         </span>
     </span>
 
@@ -98,49 +98,70 @@
       
 
       
-      <p>今日打卡题目如下：</p>
-<ol>
-<li>排序数组</li>
-</ol>
-<p>各种排序算法</p>
-<ol>
-<li>冒泡排序</li>
-<li>插入排序</li>
-<li>快速排序</li>
-<li>堆排序</li>
-<li>桶排序</li>
-</ol>
+      <p>本文学习自B站计算机视觉Life的<a href="https://www.bilibili.com/video/BV1mE411t7rT?from=search&seid=15622956175563291600" target="_blank" rel="noopener">如何写简历</a>。</p>
 <a id="more"></a>
 
-<h2 id="912-排序数组"><a href="#912-排序数组" class="headerlink" title="912. 排序数组"></a>912. 排序数组</h2><p>给定一个整数数组 <code>nums</code>，将该数组升序排列。</p>
-<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[5,2,3,1]</span><br><span class="line">输出：[1,2,3,5]</span><br></pre></td></tr></table></figure>
-
-<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[5,1,1,2,0,0]</span><br><span class="line">输出：[0,0,1,1,2,5]</span><br></pre></td></tr></table></figure>
-
-<p> <strong>提示：</strong></p>
+<h2 id="当前求职背景怎么样"><a href="#当前求职背景怎么样" class="headerlink" title="当前求职背景怎么样"></a>当前求职背景怎么样</h2><p>2019计算机直觉算法岗的求职情况为：</p>
 <ol>
-<li><code>1 &lt;= A.length &lt;= 10000</code></li>
-<li><code>-50000 &lt;= A[i] &lt;= 50000</code></li>
+<li>候选人数很多，优秀者极少</li>
+<li>找工作不仅需要实力，也需要运气</li>
 </ol>
-<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        quicksort(nums,<span class="number">0</span>,nums.<span class="built_in">size</span>()<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">quicksort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums,<span class="keyword">int</span> low ,<span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(low &gt;= high) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> num = nums[low];</span><br><span class="line">        <span class="keyword">int</span> left = low+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> right = high;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(left&lt;=right &amp;&amp; nums[left]&lt;=num) left++;</span><br><span class="line">            <span class="keyword">while</span>(left&lt;=right &amp;&amp; nums[right]&gt;=num) right--;</span><br><span class="line">            <span class="keyword">if</span>(left&gt;right)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            swap(nums[left],nums[right]);</span><br><span class="line">        &#125;</span><br><span class="line">        nums[low] = nums[right];</span><br><span class="line">        nums[right] = num;</span><br><span class="line">        quicksort(nums,low,right<span class="number">-1</span>);</span><br><span class="line">        quicksort(nums,right+<span class="number">1</span>,high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h1 id="十种常见排序算法"><a href="#十种常见排序算法" class="headerlink" title="十种常见排序算法"></a>十种常见排序算法</h1><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
-<li><strong>比较类排序</strong></li>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ul>
+<li>贸易战影响：华为、海康、大华、商汤、旷视、依图、讯飞。</li>
+<li>宏观经济下行：裁员潮商业落地困难大量其他行业转行到AI人才成本高</li>
+<li>视觉算法的未来依然前途光明（智能手机、无人汽车、机器人、无人机等)。</li>
 </ul>
-<p>通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序。</p>
-<ul>
-<li><strong>非比较类排序</strong></li>
+<h2 id="简历内容怎么写"><a href="#简历内容怎么写" class="headerlink" title="简历内容怎么写"></a>简历内容怎么写</h2><h4 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h4><p>姓名、电话、邮箱（尽量用edu结尾的邮箱）、Github、博客、个人网站等</p>
+<p>Github主页最好展示自己最有含金量的工作。</p>
+<p>个人网站：自己、项目、论文、荣誉、生活博客</p>
+<h4 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h4><p>从本科开始，包括时间、专业、成绩排名；</p>
+<p>本科学校211以上就没问题了</p>
+<p>相关课程：图像处理；模式识别啥的；参加过的培训；</p>
+<h4 id="相关科研项目经历"><a href="#相关科研项目经历" class="headerlink" title="相关科研项目经历"></a>相关科研项目经历</h4><p>从最后学历开始，最重要的写前面。条理要清晰（背景、原理、结果）、用词要准确。</p>
+<p>项目实现细节，成果（指标、论文、专利）。</p>
+<p>可以放一个直观的研究成果展示，项目主页。</p>
+<p>好的实习、竞赛、科研交流经历：简洁、突出结果。、行业知名公司</p>
+<p>行业知名竞赛：Kitti，Kaggle，天池</p>
+<h4 id="专业技能"><a href="#专业技能" class="headerlink" title="专业技能"></a>专业技能</h4><p>提到的方向尽量对口</p>
+<p>内容：编程、奖学金、竞赛获奖、论文</p>
+<p>语言得体不要夸大：精通C++，算法掌握程度</p>
+<p>量化一下技能结果，比如国家励志奖学金、Kaggle比赛（3/1000）、ACM竞赛、CVPR论文（状态、几座、创新点、细节）</p>
+<h4 id="什么是不需要的"><a href="#什么是不需要的" class="headerlink" title="什么是不需要的"></a>什么是不需要的</h4><ul>
+<li><p>个人评价：没有区分度</p>
+</li>
+<li><p>社会活动经历、兴趣爱好、照片</p>
+</li>
 </ul>
-<p>不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。 </p>
-<h3 id="各算法复杂度"><a href="#各算法复杂度" class="headerlink" title="各算法复杂度"></a>各算法复杂度</h3><p><img src="/2020/03/31/2020-03-31-LeeCode-CheckDaily/849589-20180402133438219-1946132192.png" alt="img"></p>
-<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a><strong>相关概念</strong></h3><ul>
-<li><strong>稳定</strong>：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。</li>
-<li><strong>不稳定</strong>：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。</li>
-<li><strong>时间复杂度</strong>：对排序数据的总的操作次数。反映当n变化时，操作次数呈现什么规律。</li>
-<li><strong>空间复杂度：</strong>是指算法在计算机</li>
+<h2 id="其它注意事项"><a href="#其它注意事项" class="headerlink" title="其它注意事项"></a>其它注意事项</h2><ul>
+<li><p>简历有很多格式格式：pdf，Word，Wps等，最好用pdf格式。</p>
+</li>
+<li><p>可以针对性地准备几份简历；</p>
+</li>
+<li><p>尽可能了解你投递的公司、岗位。（新闻，内部员工等途径）</p>
+</li>
+<li><p>可以根据不同公司、不同岗位调整简历。</p>
+</li>
 </ul>
-<h3 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1. 冒泡排序"></a>1. 冒泡排序</h3><h3 id="2-插入排序"><a href="#2-插入排序" class="headerlink" title="2. 插入排序"></a>2. 插入排序</h3><h3 id="3-选择排序"><a href="#3-选择排序" class="headerlink" title="3. 选择排序"></a>3. 选择排序</h3><h3 id="4-快速排序"><a href="#4-快速排序" class="headerlink" title="4. 快速排序"></a>4. 快速排序</h3><h3 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h3><h3 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h3><ol start="7">
-<li><h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3></li>
+<h3 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h3><ol>
+<li>重视数学、编程；</li>
+<li>传统图像处理、计算机视觉算法不可忽视；</li>
+<li>挖掘底层技术原理，知其所以然；</li>
+<li>注重CV领域和其它方向结合；</li>
+<li>关注产品落地</li>
+<li>越是站在浪潮之巅，越要保持清醒头脑</li>
+</ol>
+<h2 id="求职经历与心路历程"><a href="#求职经历与心路历程" class="headerlink" title="求职经历与心路历程"></a>求职经历与心路历程</h2><p>可能有SLAM岗位的公司：</p>
+<p>企业：地平线、商汤、网易(3D视觉算法工程师)、百度、阿里菜鸟、海康威视、旷视、百度、大疆、大华、360、OPPO、奥比中光、臻迪、华为、图森未来、驭势科技、地平线、联想、滴滴、美团、优必选、博世、小马智行、纵目科技、步飞科技、宽凳科技爱笔科技、高仙、托斯达、瓜子二手车、速腾聚创、博智林、亿嘉和、四维图新、极智嘉、九阳、虹软（3维重建）。</p>
+<p>其它：九号机器人、 Auto、银星智能、中车、徐工</p>
+<p>研究所比较稳定</p>
+<p>薪资：25w+</p>
+<p><img src="/2020/04/04/2020-04-04-SLAMAM-CV/image-20200404020123103.png" alt="image-20200404020123103"></p>
+<h2 id="需要准备的东西"><a href="#需要准备的东西" class="headerlink" title="需要准备的东西"></a>需要准备的东西</h2><ol>
+<li>刷题（剑指offer(面试)、LeeCode（笔试）、牛客(笔试)）</li>
+<li>简历</li>
+<li>往届面试题 </li>
+<li>项目情况压缩包及简介（VINS初始化/ORB）一定要了解VINS</li>
+<li></li>
 </ol>
 
       
@@ -211,14 +232,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/31/2020-03-31-LeeCode-CheckDaily/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/04/2020-04-04-SLAMAM-CV/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B1%82%E8%81%8C/" rel="tag">求职</a></li></ul>
 
 
     </footer>
@@ -229,19 +250,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/04/01/2020-04-01-LeeCode-CheckDaily/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            LeeCode 每日打卡4-1
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/03/30/2020-03-30-Bundle-adjustment/" class="article-nav-link">
+      <a href="/2020/04/03/2020-04-03-LeeCodeCheckDaily/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">SLAM中的后端优化</div>
+        <div class="article-nav-title">LeeCode 每日打卡4-3</div>
       </a>
     
   </nav>
