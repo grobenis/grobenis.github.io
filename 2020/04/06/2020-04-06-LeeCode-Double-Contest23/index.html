@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    2020-04-06-LeeCode Double Contest23 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="LeeCode 第23场双周赛-2020-04-06-LeeCode-Double-Contest23" class="article article-type-LeeCode 第23场双周赛" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  2020-04-06-LeeCode Double Contest23
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/06/2020-04-06-LeeCode-Double-Contest23/" class="article-date">
+  <time datetime="2020-04-06T02:41:59.000Z" itemprop="datePublished">2020-04-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.3k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">6分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>这次参加了LeeCode刷周赛，差了一分钟拿到四个pass，最后排名是585/2044；</p>
+<table>
+<thead>
+<tr>
+<th>题目列表</th>
+<th>得分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://leetcode-cn.com/problems/count-largest-group/" target="_blank" rel="noopener">统计最大组的数目</a></td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/construct-k-palindrome-strings/" target="_blank" rel="noopener">构造 K 个回文字符串</a></td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/circle-and-rectangle-overlapping/" target="_blank" rel="noopener">圆和矩形是否有重叠</a></td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/reducing-dishes/" target="_blank" rel="noopener">做菜顺序</a></td>
+<td>6</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h2 id="1-统计最大组的数目"><a href="#1-统计最大组的数目" class="headerlink" title="1. 统计最大组的数目"></a>1. 统计最大组的数目</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个整数 <code>n</code> 。请你先求出从 <code>1</code> 到 <code>n</code> 的每个整数 10 进制表示下的数位和（每一位上的数字相加），然后把数位和相等的数字放到同一个组中。</p>
+<p>请你统计每个组中的数字数目，并返回数字数目并列最多的组有多少个。</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 13</span><br><span class="line">输出：4</span><br><span class="line">解释：总共有 9 个组，将 1 到 13 按数位求和后这些组分别是：</span><br><span class="line">[1,10]，[2,11]，[3,12]，[4,13]，[5]，[6]，[7]，[8]，[9]。总共有 4 个组拥有的数字并列最多。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 2</span><br><span class="line">输出：2</span><br><span class="line">解释：总共有 2 个大小为 1 的组 [1]，[2]。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3："><a href="#示例-3：" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 15</span><br><span class="line">输出：6</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4："><a href="#示例-4：" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 24</span><br><span class="line">输出：5</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countLargestGroup</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> Maxnum = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> sum = BitSum(i);</span><br><span class="line">            <span class="built_in">map</span>[sum]++;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">map</span>[sum]&gt;Maxnum)</span><br><span class="line">            &#123;</span><br><span class="line">                Maxnum = <span class="built_in">map</span>[sum];</span><br><span class="line">                count = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">map</span>[sum] == Maxnum)</span><br><span class="line">            &#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">BitSum</span><span class="params">(<span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            sum+=i%<span class="number">10</span>;</span><br><span class="line">            i/=<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-构造K个回文字符串"><a href="#2-构造K个回文字符串" class="headerlink" title="2. 构造K个回文字符串"></a>2. 构造K个回文字符串</h2><h2 id="3-圆和矩形是否有重叠"><a href="#3-圆和矩形是否有重叠" class="headerlink" title="3. 圆和矩形是否有重叠"></a>3. 圆和矩形是否有重叠</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个以 (<code>radius</code>, <code>x_center</code>, <code>y_center</code>) 表示的圆和一个与坐标轴平行的矩形 (<code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code>)，其中 (<code>x1</code>, <code>y1</code>) 是矩形左下角的坐标，(<code>x2</code>, <code>y2</code>) 是右上角的坐标。</p>
+<p>如果圆和矩形有重叠的部分，请你返回 True ，否则返回 False 。</p>
+<p>换句话说，请你检测是否 <strong>存在</strong> 点 (xi, yi) ，它既在圆上也在矩形上（两者都包括点落在边界上的情况）。</p>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_4_1728.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 0, y_center &#x3D; 0, x1 &#x3D; 1, y1 &#x3D; -1, x2 &#x3D; 3, y2 &#x3D; 1</span><br><span class="line">输出：true</span><br><span class="line">解释：圆和矩形有公共点 (1,0)</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_2_1728.png" alt="img"></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 0, y_center &#x3D; 0, x1 &#x3D; -1, y1 &#x3D; 0, x2 &#x3D; 0, y2 &#x3D; 1</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_6_1728.png" alt="img"></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 1, y_center &#x3D; 1, x1 &#x3D; -3, y1 &#x3D; -3, x2 &#x3D; 3, y2 &#x3D; 3</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4：-1"><a href="#示例-4：-1" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 1, y_center &#x3D; 1, x1 &#x3D; 1, y1 &#x3D; -3, x2 &#x3D; 2, y2 &#x3D; -1</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>1 &lt;= radius &lt;= 2000</code></li>
+<li><code>-10^4 &lt;= x_center, y_center, x1, y1, x2, y2 &lt;= 10^4</code></li>
+<li><code>x1 &lt; x2</code></li>
+<li><code>y1 &lt; y2</code></li>
+</ul>
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p><strong>1.</strong> 先计算矩形中心，边长；</p>
+<p><strong>2.</strong> 把矩形中心，圆心投影到坐标轴上；</p>
+<p><strong>3.</strong> 计算矩形中心与圆心在坐标轴上的距离；</p>
+<p><strong>4.</strong> 判断，圆心超出矩形的距离是否小于圆的半径;</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkOverlap</span><span class="params">(<span class="keyword">int</span> radius, <span class="keyword">int</span> x_center, <span class="keyword">int</span> y_center, <span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2, <span class="keyword">int</span> y2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">double</span> x= <span class="number">0.5</span>*(x1+x2),y=<span class="number">0.5</span>*(y1+y2);</span><br><span class="line">        <span class="keyword">double</span> lenx = x2-x1,leny = y2-y1;</span><br><span class="line">        <span class="keyword">double</span> disx = <span class="built_in">abs</span>(x_center-x);</span><br><span class="line">        <span class="keyword">double</span> disy = <span class="built_in">abs</span>(y_center-y);</span><br><span class="line">        <span class="keyword">double</span> dis = <span class="built_in">max</span>(disx-lenx/<span class="number">2</span>,<span class="number">0.0</span>)*<span class="built_in">max</span>(disx-lenx/<span class="number">2</span>,<span class="number">0.0</span>)+<span class="built_in">max</span>(disy-leny/<span class="number">2</span>,<span class="number">0.0</span>)*<span class="built_in">max</span>(disy-leny/<span class="number">2</span>,<span class="number">0.0</span>);</span><br><span class="line">        <span class="keyword">return</span> dis&lt;=radius*radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-做菜顺序"><a href="#4-做菜顺序" class="headerlink" title="4. 做菜顺序"></a>4. 做菜顺序</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>一个厨师收集了他 <code>n</code> 道菜的满意程度 <code>satisfaction</code> ，这个厨师做出每道菜的时间都是 1 单位时间。</p>
+<p>一道菜的 「喜爱时间」系数定义为烹饪这道菜以及之前每道菜所花费的时间乘以这道菜的满意程度，也就是 <code>time[i]</code>*<code>satisfaction[i]</code> 。</p>
+<p>请你返回做完所有菜 「喜爱时间」总和的最大值为多少。</p>
+<p>你可以按 <strong>任意</strong> 顺序安排做菜的顺序，你也可以选择放弃做某些菜来获得更大的总和。</p>
+<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-1,-8,0,5,-9]</span><br><span class="line">输出：14</span><br><span class="line">解释：去掉第二道和最后一道菜，最大的喜爱时间系数和为 (-1*1 + 0*2 + 5*3 &#x3D; 14) 。每道菜都需要花费 1 单位时间完成。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [4,3,2]</span><br><span class="line">输出：20</span><br><span class="line">解释：按照原来顺序相反的时间做菜 (2*1 + 3*2 + 4*3 &#x3D; 20)</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-2"><a href="#示例-3：-2" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-1,-4,-5]</span><br><span class="line">输出：0</span><br><span class="line">解释：大家都不喜欢这些菜，所以不做任何菜可以获得最大的喜爱时间系数。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4：-2"><a href="#示例-4：-2" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-2,5,-1,0,3,-3]</span><br><span class="line">输出：35</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示：-1"><a href="#提示：-1" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>n == satisfaction.length</code></li>
+<li><code>1 &lt;= n &lt;= 500</code></li>
+<li><code>-10^3 &lt;= satisfaction[i] &lt;= 10^3</code></li>
+</ul>
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><ol>
+<li>首先对满意度排序，满意度越大的菜方法放到后边越好</li>
+<li>首先把满意度为正的菜的序号拿出来；</li>
+<li>然后逐步放进满意度为负的菜；一直到总体满意度下降为止；</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxSatisfaction</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; satisfaction)</span> </span>&#123;</span><br><span class="line">        sort(satisfaction.<span class="built_in">begin</span>(),satisfaction.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">int</span> maxT = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> pos = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;satisfaction.<span class="built_in">size</span>();i++)</span><br><span class="line">            <span class="keyword">if</span>(satisfaction[i]&gt;<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                pos = i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">if</span>(pos&lt;<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = pos;j&gt;=<span class="number">0</span>;j--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> temp = Compute(satisfaction,j);</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;temp&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            <span class="keyword">if</span>(temp&gt;maxT)</span><br><span class="line">                maxT = temp;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">return</span> maxT;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxT;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Compute</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; satisfaction,<span class="keyword">int</span> pos)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> c = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = pos;i&lt;satisfaction.<span class="built_in">size</span>();i++)</span><br><span class="line">            sum += satisfaction[i]* (++c);</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/06/2020-04-06-LeeCode-Double-Contest23/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E5%91%A8%E8%B5%9B/" rel="tag">双周赛</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/04/04/2020-04-04-SLAM-CV/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">SLAM岗位求职与简历书写</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>
