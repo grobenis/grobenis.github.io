@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.3k字</span>
+            <span class="post-count">1.8k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">6分钟</span>
+            <span class="post-count">8分钟</span>
         </span>
     </span>
 </div>
@@ -98,7 +98,7 @@
       
 
       
-      <p>这次参加了LeeCode刷周赛，差了一分钟拿到四个pass，最后排名是585/2044；</p>
+      <p>这次参加了LeeCode双周赛，差了一分钟拿到四个pass，最后排名是585/2044；</p>
 <table>
 <thead>
 <tr>
@@ -139,19 +139,42 @@
 
 
 
-<h2 id="2-构造K个回文字符串"><a href="#2-构造K个回文字符串" class="headerlink" title="2. 构造K个回文字符串"></a>2. 构造K个回文字符串</h2><h2 id="3-圆和矩形是否有重叠"><a href="#3-圆和矩形是否有重叠" class="headerlink" title="3. 圆和矩形是否有重叠"></a>3. 圆和矩形是否有重叠</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个以 (<code>radius</code>, <code>x_center</code>, <code>y_center</code>) 表示的圆和一个与坐标轴平行的矩形 (<code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code>)，其中 (<code>x1</code>, <code>y1</code>) 是矩形左下角的坐标，(<code>x2</code>, <code>y2</code>) 是右上角的坐标。</p>
+<h2 id="2-构造K个回文字符串"><a href="#2-构造K个回文字符串" class="headerlink" title="2. 构造K个回文字符串"></a>2. 构造K个回文字符串</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>难度中等2</p>
+<p>给你一个字符串 <code>s</code> 和一个整数 <code>k</code> 。请你用 <code>s</code> 字符串中 <strong>所有字符</strong> 构造 <code>k</code> 个非空 <strong>回文串</strong> 。</p>
+<p>如果你可以用 <code>s</code> 中所有字符构造 <code>k</code> 个回文字符串，那么请你返回 <strong>True</strong> ，否则返回 <strong>False</strong> 。</p>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;annabelle&quot;, k &#x3D; 2</span><br><span class="line">输出：true</span><br><span class="line">解释：可以用 s 中所有字符构造 2 个回文字符串。</span><br><span class="line">一些可行的构造方案包括：&quot;anna&quot; + &quot;elble&quot;，&quot;anbna&quot; + &quot;elle&quot;，&quot;anellena&quot; + &quot;b&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;leetcode&quot;, k &#x3D; 3</span><br><span class="line">输出：false</span><br><span class="line">解释：无法用 s 中所有字符构造 3 个回文串。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;true&quot;, k &#x3D; 4</span><br><span class="line">输出：true</span><br><span class="line">解释：唯一可行的方案是让 s 中每个字符单独构成一个字符串。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4：-1"><a href="#示例-4：-1" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;yzyzyzyzyzyzyzy&quot;, k &#x3D; 2</span><br><span class="line">输出：true</span><br><span class="line">解释：你只需要将所有的 z 放在一个字符串中，所有的 y 放在另一个字符串中。那么两个字符串都是回文串。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-5："><a href="#示例-5：" class="headerlink" title="示例 5："></a><strong>示例 5：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;cr&quot;, k &#x3D; 7</span><br><span class="line">输出：false</span><br><span class="line">解释：我们没有足够的字符去构造 7 个回文串。</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 10^5</code></li>
+<li><code>s</code> 中所有字符都是小写英文字母。</li>
+<li><code>1 &lt;= k &lt;= 10^5</code></li>
+</ul>
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">canConstruct</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(k==<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> ch:s)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">map</span>[ch]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;::iterator  iter;</span><br><span class="line">        <span class="keyword">for</span>(iter = <span class="built_in">map</span>.<span class="built_in">begin</span>();iter!=<span class="built_in">map</span>.<span class="built_in">end</span>();iter++)</span><br><span class="line">        &#123;</span><br><span class="line">            i+=iter-&gt;second%<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;i&lt;&lt;k&lt;&lt;len&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> i&lt;=k&amp;&amp;(len-i)&gt;=k-i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-圆和矩形是否有重叠"><a href="#3-圆和矩形是否有重叠" class="headerlink" title="3. 圆和矩形是否有重叠"></a>3. 圆和矩形是否有重叠</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个以 (<code>radius</code>, <code>x_center</code>, <code>y_center</code>) 表示的圆和一个与坐标轴平行的矩形 (<code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code>)，其中 (<code>x1</code>, <code>y1</code>) 是矩形左下角的坐标，(<code>x2</code>, <code>y2</code>) 是右上角的坐标。</p>
 <p>如果圆和矩形有重叠的部分，请你返回 True ，否则返回 False 。</p>
 <p>换句话说，请你检测是否 <strong>存在</strong> 点 (xi, yi) ，它既在圆上也在矩形上（两者都包括点落在边界上的情况）。</p>
-<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_4_1728.png" alt="img"></p>
+<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_4_1728.png" alt="img"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 0, y_center &#x3D; 0, x1 &#x3D; 1, y1 &#x3D; -1, x2 &#x3D; 3, y2 &#x3D; 1</span><br><span class="line">输出：true</span><br><span class="line">解释：圆和矩形有公共点 (1,0)</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_2_1728.png" alt="img"></strong></p>
+<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_2_1728.png" alt="img"></strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 0, y_center &#x3D; 0, x1 &#x3D; -1, y1 &#x3D; 0, x2 &#x3D; 0, y2 &#x3D; 1</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_6_1728.png" alt="img"></strong></p>
+<h4 id="示例-3：-2"><a href="#示例-3：-2" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/04/04/sample_6_1728.png" alt="img"></strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 1, y_center &#x3D; 1, x1 &#x3D; -3, y1 &#x3D; -3, x2 &#x3D; 3, y2 &#x3D; 3</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-4：-1"><a href="#示例-4：-1" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 1, y_center &#x3D; 1, x1 &#x3D; 1, y1 &#x3D; -3, x2 &#x3D; 2, y2 &#x3D; -1</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+<h4 id="示例-4：-2"><a href="#示例-4：-2" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：radius &#x3D; 1, x_center &#x3D; 1, y_center &#x3D; 1, x1 &#x3D; 1, y1 &#x3D; -3, x2 &#x3D; 2, y2 &#x3D; -1</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
 
 <h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
 <li><code>1 &lt;= radius &lt;= 2000</code></li>
@@ -159,32 +182,35 @@
 <li><code>x1 &lt; x2</code></li>
 <li><code>y1 &lt; y2</code></li>
 </ul>
-<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p><strong>1.</strong> 先计算矩形中心，边长；</p>
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p><strong>1.</strong> 先计算矩形中心，边长；</p>
 <p><strong>2.</strong> 把矩形中心，圆心投影到坐标轴上；</p>
 <p><strong>3.</strong> 计算矩形中心与圆心在坐标轴上的距离；</p>
 <p><strong>4.</strong> 判断，圆心超出矩形的距离是否小于圆的半径;</p>
 <h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkOverlap</span><span class="params">(<span class="keyword">int</span> radius, <span class="keyword">int</span> x_center, <span class="keyword">int</span> y_center, <span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2, <span class="keyword">int</span> y2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">double</span> x= <span class="number">0.5</span>*(x1+x2),y=<span class="number">0.5</span>*(y1+y2);</span><br><span class="line">        <span class="keyword">double</span> lenx = x2-x1,leny = y2-y1;</span><br><span class="line">        <span class="keyword">double</span> disx = <span class="built_in">abs</span>(x_center-x);</span><br><span class="line">        <span class="keyword">double</span> disy = <span class="built_in">abs</span>(y_center-y);</span><br><span class="line">        <span class="keyword">double</span> dis = <span class="built_in">max</span>(disx-lenx/<span class="number">2</span>,<span class="number">0.0</span>)*<span class="built_in">max</span>(disx-lenx/<span class="number">2</span>,<span class="number">0.0</span>)+<span class="built_in">max</span>(disy-leny/<span class="number">2</span>,<span class="number">0.0</span>)*<span class="built_in">max</span>(disy-leny/<span class="number">2</span>,<span class="number">0.0</span>);</span><br><span class="line">        <span class="keyword">return</span> dis&lt;=radius*radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<h3 id="其它解法"><a href="#其它解法" class="headerlink" title="其它解法"></a>其它解法</h3><p><a href="https://www.zhihu.com/question/24251545" target="_blank" rel="noopener">一个很经典的解法</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">checkOverlap</span><span class="params">(<span class="keyword">int</span> radius,<span class="keyword">int</span> x_center,<span class="keyword">int</span> y_center,<span class="keyword">int</span> XI, Int y1, <span class="keyword">int</span> X2, <span class="keyword">int</span> y2)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a =<span class="built_in">max</span>(<span class="number">0</span>, <span class="built_in">max</span>(X1-x_center, x_center -X2));</span><br><span class="line">	<span class="keyword">int</span> b= <span class="built_in">max</span>(<span class="number">0</span>, <span class="built_in">max</span>(y1-y_center, y_center -y2));</span><br><span class="line">	<span class="keyword">return</span> a*a+b*b&lt;=radius*radius;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="4-做菜顺序"><a href="#4-做菜顺序" class="headerlink" title="4. 做菜顺序"></a>4. 做菜顺序</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>一个厨师收集了他 <code>n</code> 道菜的满意程度 <code>satisfaction</code> ，这个厨师做出每道菜的时间都是 1 单位时间。</p>
+
+<h2 id="4-做菜顺序"><a href="#4-做菜顺序" class="headerlink" title="4. 做菜顺序"></a>4. 做菜顺序</h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>一个厨师收集了他 <code>n</code> 道菜的满意程度 <code>satisfaction</code> ，这个厨师做出每道菜的时间都是 1 单位时间。</p>
 <p>一道菜的 「喜爱时间」系数定义为烹饪这道菜以及之前每道菜所花费的时间乘以这道菜的满意程度，也就是 <code>time[i]</code>*<code>satisfaction[i]</code> 。</p>
 <p>请你返回做完所有菜 「喜爱时间」总和的最大值为多少。</p>
 <p>你可以按 <strong>任意</strong> 顺序安排做菜的顺序，你也可以选择放弃做某些菜来获得更大的总和。</p>
-<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-1,-8,0,5,-9]</span><br><span class="line">输出：14</span><br><span class="line">解释：去掉第二道和最后一道菜，最大的喜爱时间系数和为 (-1*1 + 0*2 + 5*3 &#x3D; 14) 。每道菜都需要花费 1 单位时间完成。</span><br></pre></td></tr></table></figure>
+<h4 id="示例-1：-3"><a href="#示例-1：-3" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-1,-8,0,5,-9]</span><br><span class="line">输出：14</span><br><span class="line">解释：去掉第二道和最后一道菜，最大的喜爱时间系数和为 (-1*1 + 0*2 + 5*3 &#x3D; 14) 。每道菜都需要花费 1 单位时间完成。</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [4,3,2]</span><br><span class="line">输出：20</span><br><span class="line">解释：按照原来顺序相反的时间做菜 (2*1 + 3*2 + 4*3 &#x3D; 20)</span><br></pre></td></tr></table></figure>
+<h4 id="示例-2：-3"><a href="#示例-2：-3" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [4,3,2]</span><br><span class="line">输出：20</span><br><span class="line">解释：按照原来顺序相反的时间做菜 (2*1 + 3*2 + 4*3 &#x3D; 20)</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-3：-2"><a href="#示例-3：-2" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-1,-4,-5]</span><br><span class="line">输出：0</span><br><span class="line">解释：大家都不喜欢这些菜，所以不做任何菜可以获得最大的喜爱时间系数。</span><br></pre></td></tr></table></figure>
+<h4 id="示例-3：-3"><a href="#示例-3：-3" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-1,-4,-5]</span><br><span class="line">输出：0</span><br><span class="line">解释：大家都不喜欢这些菜，所以不做任何菜可以获得最大的喜爱时间系数。</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-4：-2"><a href="#示例-4：-2" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-2,5,-1,0,3,-3]</span><br><span class="line">输出：35</span><br></pre></td></tr></table></figure>
+<h4 id="示例-4：-3"><a href="#示例-4：-3" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：satisfaction &#x3D; [-2,5,-1,0,3,-3]</span><br><span class="line">输出：35</span><br></pre></td></tr></table></figure>
 
 <h4 id="提示：-1"><a href="#提示：-1" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
 <li><code>n == satisfaction.length</code></li>
 <li><code>1 &lt;= n &lt;= 500</code></li>
 <li><code>-10^3 &lt;= satisfaction[i] &lt;= 10^3</code></li>
 </ul>
-<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><ol>
+<h3 id="我的解法-3"><a href="#我的解法-3" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><ol>
 <li>首先对满意度排序，满意度越大的菜方法放到后边越好</li>
 <li>首先把满意度为正的菜的序号拿出来；</li>
 <li>然后逐步放进满意度为负的菜；一直到总体满意度下降为止；</li>
@@ -277,6 +303,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/04/07/2020-04-07-LeeCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            LeeCode每日打卡4-7
+          
+        </div>
+      </a>
     
     
       <a href="/2020/04/04/2020-04-04-SLAM-CV/" class="article-nav-link">
