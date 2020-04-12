@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    LeeCode 每日打卡4-11 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-04-11-LeeCode-CheckDaily" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  LeeCode 每日打卡4-11
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/10/2020-04-11-LeeCode-CheckDaily/" class="article-date">
+  <time datetime="2020-04-10T05:12:47.000Z" itemprop="datePublished">2020-04-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.4k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>今日打卡题目如下：</p>
+<ol>
+<li>鸡蛋掉落</li>
+<li>二叉树的最近公共祖先</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="887-鸡蛋掉落"><a href="#887-鸡蛋掉落" class="headerlink" title="887. 鸡蛋掉落"></a>887. 鸡蛋掉落</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>你将获得 <code>K</code> 个鸡蛋，并可以使用一栋从 <code>1</code> 到 <code>N</code> 共有 <code>N</code> 层楼的建筑。</p>
+<p>每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。</p>
+<p>你知道存在楼层 <code>F</code> ，满足 <code>0 &lt;= F &lt;= N</code> 任何从高于 <code>F</code> 的楼层落下的鸡蛋都会碎，从 <code>F</code> 楼层或比它低的楼层落下的鸡蛋都不会破。</p>
+<p>每次<em>移动</em>，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 <code>X</code> 扔下（满足 <code>1 &lt;= X &lt;= N</code>）。</p>
+<p>你的目标是<strong>确切地</strong>知道 <code>F</code> 的值是多少。</p>
+<p>无论 <code>F</code> 的初始值如何，你确定 <code>F</code> 的值的最小移动次数是多少？</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：K &#x3D; 1, N &#x3D; 2</span><br><span class="line">输出：2</span><br><span class="line">解释：</span><br><span class="line">鸡蛋从 1 楼掉落。如果它碎了，我们肯定知道 F &#x3D; 0 。</span><br><span class="line">否则，鸡蛋从 2 楼掉落。如果它碎了，我们肯定知道 F &#x3D; 1 。</span><br><span class="line">如果它没碎，那么我们肯定知道 F &#x3D; 2 。</span><br><span class="line">因此，在最坏的情况下我们需要移动 2 次以确定 F 是多少。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：K &#x3D; 2, N &#x3D; 6</span><br><span class="line">输出：3</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3："><a href="#示例-3：" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：K &#x3D; 3, N &#x3D; 14</span><br><span class="line">输出：4</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ol>
+<li><code>1 &lt;= K &lt;= 100</code></li>
+<li><code>1 &lt;= N &lt;= 10000</code></li>
+</ol>
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="背景资料"><a href="#背景资料" class="headerlink" title="背景资料"></a>背景资料</h4><p>本题是谷歌用于面试的一道经典面试题之一。由于本题过于经典，谷歌公司已经不再将这题作为面试的候选题目了。</p>
+<p>本题难度较高，要想通过本题，需要一定的动态规划优化或数学功底。本题的标准解法为动态规划，由于篇幅有限，不会叙述 动态规划的边界条件、自底向上的动态规划和自顶向下的动态规划分别怎么实现 等较为基础的知识，而是把重点放在推导动态规划状态转移方程的过程，以及优化的思路、证明以及方法。</p>
+<p>读者应当期望在阅读完本题解后，能够对方法一有一个大致的思路，并且可以在尝试中编写出代码。方法一已经是很优秀的解法，本题解也着重于此。而对于方法二和方法三，已经超过了面试难度，是竞赛中的考点，仅供读者挑战自我的极限。</p>
+<h4 id="方法一：动态规划-二分搜索"><a href="#方法一：动态规划-二分搜索" class="headerlink" title="方法一：动态规划 + 二分搜索"></a>方法一：动态规划 + 二分搜索</h4><h5 id="思路和算法"><a href="#思路和算法" class="headerlink" title="思路和算法"></a>思路和算法</h5><p>我们可以考虑使用动态规划来做这道题，状态可以表示成 <code>(K, N)</code>，其中 <code>K</code>为鸡蛋数，<code>N</code>为楼层数。当我们从第 XX 楼扔鸡蛋的时候：</p>
+<p>如果鸡蛋不碎，那么状态变成 <code>(K, N-X)</code>，即我们鸡蛋的数目不变，但答案只可能在上方的 <code>N-X</code>层楼了。也就是说，我们把原问题缩小成了一个规模为 <code>(K, N-X)</code>的子问题；</p>
+<p>如果鸡蛋碎了，那么状态变成 <code>(K-1, X-1)</code>，即我们少了一个鸡蛋，但我们知道答案只可能在第<code>X</code>楼下方的 <code>X-1</code>层楼中了。也就是说，我们把原问题缩小成了一个规模为 <code>(K-1, X-1)</code>的子问题。</p>
+<p>这样一来，我们定义 <code>dp(K, N)</code>为在状态 <code>(K, N)</code>下最少需要的步数。</p>
+<p>根据以上分析我们可以列出状态转移方程：<br>$$<br>dp(K, N) = 1 + \min\limits_{1 \leq X \leq N} \Big( \max(dp(K-1, X-1), dp(K, N-X)) \Big)\<br>dp(K,N)=1+1≤X≤N \min<br> (max(dp(K−1,X−1),dp(K,N−X)))<br>$$<br>这个状态转移方程是如何得来的呢？对于 <code>dp(K, N)</code>而言，我们像上面分析的那样，枚举第一个鸡蛋扔在的楼层数 <code>X</code>。由于我们并不知道真正的 <code>F</code>值，因此我们必须保证 鸡蛋碎了之后接下来需要的步数 和 鸡蛋没碎之后接下来需要的步数 二者的 最大值 最小，这样就保证了在 最坏情况下（也就是无论 <code>F</code> 的值如何） <code>dp(K, N)</code>的值最小。如果能理解这一点，也就能理解上面的状态转移方程。即最小化 $\max(dp(K-1, X-1), dp(K, N-X))$。</p>
+<p>如果我们直接暴力转移求解每个状态的<code>dp</code>值，时间复杂度是为 <code>O(KN^2)</code>，即一共有 <code>O(KN)</code>个状态，对于每个状态枚举扔鸡蛋的楼层 <code>X</code>,需要 <code>O(N)</code>的时间。这无疑在当前数据范围下是会超出时间限制的，因此我们需要想办法优化枚举的时间复杂度。</p>
+<p>我们观察到 <code>dp(K, N)</code>是一个关于 <code>N</code> 的单调递增函数，也就是说在鸡蛋数 <code>K</code>固定的情况下，楼层数 <code>N</code>越多，需要的步数一定不会变少。在上述的状态转移方程中，第一项$\mathcal{T_1}(X) = dp(K-1, X-1)$是一个随 <code>X</code>的增加而单调递增的函数，第二项 $\mathcal{T_2}(X) = dp(K, N-X)$是一个随着 <code>X</code>的增加而单调递减的函数。这如何帮助我们来优化这个问题呢？当X增加时，$\mathcal{T_1}(X)$单调递增。而$\mathcal{T_2}(X)$单调递减，我们可以想象在一个直角坐标系中，横坐标为 XX，纵坐标为 $\mathcal{T_1}(X)$ 和 $\mathcal{T_2}(X)$。当一个函数单调递增而另一个函数单调递减时，我们如何找到一个位置使得它们的最大值最小呢？</p>
+<p>如上图所示，如果这两个函数都是连续函数，那么我们只需要找出这两个函数的交点，在交点处就能保证这两个函数的最大值最小。但在本题中，$\mathcal{T_1}(X)$都是离散函数，也就是说，X的值只能取 <code>1,2,3</code> 等等。在这种情况下，我们需要找到最大的满足 $\mathcal{T_1}(X) &lt; \mathcal{T_2}(X)$ ，以及最小的满足 $\mathcal{T_1}(X) \geq \mathcal{T_2}(X)$，对应到上图中，就是离这两个函数（想象中的）交点左右两侧最近的整数。</p>
+<p>我们只需要比较在$X_0$ 和 $X_1$处两个函数的最大值，取一个最小的作为 <code>X</code> 即可。在数学上，我们可以证明出 $X_0$和 $X_1$相差1，这也是比较显然的，因为它们正好夹住了那个想象中的交点，并且相距尽可能地近。因此我们就可以使用二分查找的方法找出 $X_0$ ，再得到$X_1$</p>
+<p>我们在所有满足条件的 <code>X</code>X 上进行二分查找。对于状态 <code>(K, N)</code> 而言，<code>X</code>即为 <code>[1, N]</code>中的任一整数；</p>
+<p>在二分查找的过程中，假设当前这一步我们查找到了 $X_\textit{mid}$，如果 $\mathcal{T_1}(X_\textit{mid}) &gt; \mathcal{T_2}(X_\textit{mid})$ ,那么真正的 $X_0$  一定在 $X_\textit{mid}$  的左侧，否则真正的 $X_0$  在 $X_\textit{mid}$  的右侧。</p>
+<p>二分查找的写法因人而异，本质上我们就是需要找到最大的满足 $\mathcal{T_1}(X) &lt; \mathcal{T_2}(X)$ 的 $X_0$ ，根据 $X_\textit{mid}$  进行二分边界的调整。在得到了<code>X_0</code> 后，我们可以知道 $X_1$  即为 $X_0 + 1$，此时我们只需要比较 $\max(\mathcal{T_1}(X_0), \mathcal{T_2}(X_0))$和$\max(\mathcal{T_1}(X_1), \mathcal{T_2}(X_1))$，取较小的那个对应的位置作为 <code>X</code>即可。</p>
+<p>这样一来，对于给定的状态 <code>(K, N)</code>，我们只需要 <code>O(logN)</code> 的时间，通过二分查找就能得到最优的那个<code>X</code>，因此时间复杂度从 <code>O(KN^2)</code>降低至 <code>O(KN \log N)</code>，可以通过本题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; memo;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dp</span><span class="params">(<span class="keyword">int</span> K, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (memo.<span class="built_in">find</span>(N * <span class="number">100</span> + K) == memo.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> ans;</span><br><span class="line">            <span class="keyword">if</span> (N == <span class="number">0</span>) ans = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (K == <span class="number">1</span>) ans = N;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">int</span> lo = <span class="number">1</span>, hi = N;</span><br><span class="line">                <span class="keyword">while</span> (lo + <span class="number">1</span> &lt; hi) &#123;</span><br><span class="line">                    <span class="keyword">int</span> x = (lo + hi) / <span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">int</span> t1 = dp(K<span class="number">-1</span>, x<span class="number">-1</span>);</span><br><span class="line">                    <span class="keyword">int</span> t2 = dp(K, N-x);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (t1 &lt; t2) lo = x;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (t1 &gt; t2) hi = x;</span><br><span class="line">                    <span class="keyword">else</span> lo = hi = x;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                ans = <span class="number">1</span> + <span class="built_in">min</span>(<span class="built_in">max</span>(dp(K<span class="number">-1</span>, lo<span class="number">-1</span>), dp(K, N-lo)),</span><br><span class="line">                                   <span class="built_in">max</span>(dp(K<span class="number">-1</span>, hi<span class="number">-1</span>), dp(K, N-hi)));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            memo[N * <span class="number">100</span> + K] = ans;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> memo[N * <span class="number">100</span> + K];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">superEggDrop</span><span class="params">(<span class="keyword">int</span> K, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dp(K, N);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="面试题68-II-二叉树的最近公共祖先"><a href="#面试题68-II-二叉树的最近公共祖先" class="headerlink" title="面试题68 - II. 二叉树的最近公共祖先"></a>面试题68 - II. 二叉树的最近公共祖先</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p><a href="https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin" target="_blank" rel="noopener">百度百科</a>中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（<strong>一个节点也可以是它自己的祖先</strong>）。”</p>
+<p>例如，给定如下二叉树: root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png" alt="img"></p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1:"></a><strong>示例 1:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root &#x3D; [3,5,1,6,2,0,8,null,null,7,4], p &#x3D; 5, q &#x3D; 1</span><br><span class="line">输出: 3</span><br><span class="line">解释: 节点 5 和节点 1 的最近公共祖先是节点 3。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2:"></a><strong>示例 2:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root &#x3D; [3,5,1,6,2,0,8,null,null,7,4], p &#x3D; 5, q &#x3D; 4</span><br><span class="line">输出: 5</span><br><span class="line">解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">NULL</span>)<span class="keyword">return</span> <span class="literal">NULL</span>;        </span><br><span class="line">        <span class="keyword">if</span>(root == p||root == q)<span class="keyword">return</span> root;</span><br><span class="line">        TreeNode* left = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">        TreeNode* right = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">        <span class="keyword">if</span>(left &amp;&amp; right) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">return</span> left ? left : right; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/10/2020-04-11-LeeCode-CheckDaily/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/04/09/2020-04-09-LeeCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">LeeCode 每日打卡4-9</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>
