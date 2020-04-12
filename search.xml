@@ -157,9 +157,9 @@
     <url>/2020/04/10/2020-04-11-LeeCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
-<li>鸡蛋掉落</li>
-<li>二叉树的最近公共祖先</li>
-<li></li>
+<li>[困难] 鸡蛋掉落 </li>
+<li>[简单] 二叉树的最近公共祖先</li>
+<li>[困难] 求两线段交点</li>
 </ol>
 <a id="more"></a>
 
@@ -210,6 +210,24 @@
 
 <h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">NULL</span>)<span class="keyword">return</span> <span class="literal">NULL</span>;        </span><br><span class="line">        <span class="keyword">if</span>(root == p||root == q)<span class="keyword">return</span> root;</span><br><span class="line">        TreeNode* left = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">        TreeNode* right = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">        <span class="keyword">if</span>(left &amp;&amp; right) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">return</span> left ? left : right; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<h2 id="面试题-16-03-交点"><a href="#面试题-16-03-交点" class="headerlink" title="面试题 16.03. 交点"></a>面试题 16.03. 交点</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a><strong>题目描述</strong></h3><p>给定两条线段（表示为起点<code>start = {X1, Y1}</code>和终点<code>end = {X2, Y2}</code>），如果它们有交点，请计算其交点，没有交点则返回空值。</p>
+<p>要求浮点型误差不超过<code>10^-6</code>。若有多个交点（线段重叠）则返回 X 值最小的点，X 坐标相同则返回 Y 值最小的点。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 0&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;0, -1&#125;</span><br><span class="line">输出： &#123;0.5, 0&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;3, 3&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;2, 2&#125;</span><br><span class="line">输出： &#123;1, 1&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 1&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 0&#125;, &#123;2, 1&#125;</span><br><span class="line">输出： &#123;&#125;，两条线段没有交点</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>提示：</strong></p>
+<ul>
+<li>坐标绝对值不会超过 2^7</li>
+<li>输入的坐标均是有效的二维坐标</li>
+</ul>
 ]]></content>
       <categories>
         <category>刷题</category>
