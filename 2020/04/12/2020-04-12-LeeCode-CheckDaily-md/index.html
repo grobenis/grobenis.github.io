@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    LeeCode周赛184 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-04-12-LeeCode-CheckDaily-md" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  LeeCode周赛184
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/12/2020-04-12-LeeCode-CheckDaily-md/" class="article-date">
+  <time datetime="2020-04-12T06:47:23.000Z" itemprop="datePublished">2020-04-12</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.7k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">12分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本周周赛战况不佳，只做出前两个来，剩下的其实也很简单。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th align="left">题目</th>
+<th align="left">分值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td align="left">数组中的字符串匹配</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td>2</td>
+<td align="left">查询带键的排列</td>
+<td align="left">4</td>
+</tr>
+<tr>
+<td>3</td>
+<td align="left">HTML 实体解析器</td>
+<td align="left">5</td>
+</tr>
+<tr>
+<td>4</td>
+<td align="left">给 N x 3 网格图涂色的方案数</td>
+<td align="left">7</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h2 id="5380-数组中的字符串匹配"><a href="#5380-数组中的字符串匹配" class="headerlink" title="5380. 数组中的字符串匹配"></a>5380. 数组中的字符串匹配</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个字符串数组 <code>words</code> ，数组中的每个字符串都可以看作是一个单词。请你按 <strong>任意</strong> 顺序返回 <code>words</code> 中是其他单词的子字符串的所有单词。</p>
+<p>如果你可以删除 <code>words[j]</code> 最左侧和/或最右侧的若干字符得到 <code>word[i]</code> ，那么字符串 <code>words[i]</code> 就是 <code>words[j]</code> 的一个子字符串。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：words &#x3D; [&quot;mass&quot;,&quot;as&quot;,&quot;hero&quot;,&quot;superhero&quot;]</span><br><span class="line">输出：[&quot;as&quot;,&quot;hero&quot;]</span><br><span class="line">解释：&quot;as&quot; 是 &quot;mass&quot; 的子字符串，&quot;hero&quot; 是 &quot;superhero&quot; 的子字符串。</span><br><span class="line">[&quot;hero&quot;,&quot;as&quot;] 也是有效的答案。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：words &#x3D; [&quot;leetcode&quot;,&quot;et&quot;,&quot;code&quot;]</span><br><span class="line">输出：[&quot;et&quot;,&quot;code&quot;]</span><br><span class="line">解释：&quot;et&quot; 和 &quot;code&quot; 都是 &quot;leetcode&quot; 的子字符串。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：words &#x3D; [&quot;blue&quot;,&quot;green&quot;,&quot;bu&quot;]</span><br><span class="line">输出：[]</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= words.length &lt;= 100</code></li>
+<li><code>1 &lt;= words[i].length &lt;= 30</code></li>
+<li><code>words[i]</code> 仅包含小写英文字母。</li>
+<li>题目数据 <strong>保证</strong> 每个 <code>words[i]</code> 都是独一无二的。</li>
+</ul>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>暴力匹配</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">stringMatching</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        sort(words.<span class="built_in">begin</span>(),words.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;words.<span class="built_in">size</span>();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(j&lt;words.<span class="built_in">size</span>())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(i!=j&amp;&amp;words[j].<span class="built_in">find</span>(words[i])!=<span class="number">-1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    res.push_back(words[i]);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5381-查询带键的排列"><a href="#5381-查询带键的排列" class="headerlink" title="5381. 查询带键的排列"></a>5381. 查询带键的排列</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个待查数组 <code>queries</code> ，数组中的元素为 <code>1</code> 到 <code>m</code> 之间的正整数。 请你根据以下规则处理所有待查项 <code>queries[i]</code>（从 <code>i=0</code> 到 <code>i=queries.length-1</code>）：</p>
+<ul>
+<li>一开始，排列 <code>P=[1,2,3,...,m]</code>。</li>
+<li>对于当前的 <code>i</code> ，请你找出待查项 <code>queries[i]</code> 在排列 <code>P</code> 中的位置（<strong>下标从 0 开始</strong>），然后将其从原位置移动到排列 <code>P</code> 的起始位置（即下标为 0 处）。注意， <code>queries[i]</code> 在 <code>P</code> 中的位置就是 <code>queries[i]</code> 的查询结果。</li>
+</ul>
+<p>请你以数组形式返回待查数组 <code>queries</code> 的查询结果。</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：queries &#x3D; [3,1,2,1], m &#x3D; 5</span><br><span class="line">输出：[2,1,2,1] </span><br><span class="line">解释：待查数组 queries 处理如下：</span><br><span class="line">对于 i&#x3D;0: queries[i]&#x3D;3, P&#x3D;[1,2,3,4,5], 3 在 P 中的位置是 2，接着我们把 3 移动到 P 的起始位置，得到 P&#x3D;[3,1,2,4,5] 。</span><br><span class="line">对于 i&#x3D;1: queries[i]&#x3D;1, P&#x3D;[3,1,2,4,5], 1 在 P 中的位置是 1，接着我们把 1 移动到 P 的起始位置，得到 P&#x3D;[1,3,2,4,5] 。 </span><br><span class="line">对于 i&#x3D;2: queries[i]&#x3D;2, P&#x3D;[1,3,2,4,5], 2 在 P 中的位置是 2，接着我们把 2 移动到 P 的起始位置，得到 P&#x3D;[2,1,3,4,5] 。</span><br><span class="line">对于 i&#x3D;3: queries[i]&#x3D;1, P&#x3D;[2,1,3,4,5], 1 在 P 中的位置是 1，接着我们把 1 移动到 P 的起始位置，得到 P&#x3D;[1,2,3,4,5] 。 </span><br><span class="line">因此，返回的结果数组为 [2,1,2,1] 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：queries &#x3D; [4,1,2,2], m &#x3D; 4</span><br><span class="line">输出：[3,1,2,0]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3："><a href="#示例-3：" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：queries &#x3D; [7,5,5,8,3], m &#x3D; 8</span><br><span class="line">输出：[6,5,0,7,5]</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= m &lt;= 10^3</code></li>
+<li><code>1 &lt;= queries.length &lt;= m</code></li>
+<li><code>1 &lt;= queries[i] &lt;= m</code></li>
+</ul>
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><p>我的这个解法很不好；</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">processQueries</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; queries, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> s = queries.<span class="built_in">size</span>();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; P;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; l;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            P[i+<span class="number">1</span>]=i;</span><br><span class="line">            l[i]=i+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;s;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            res.push_back(P[queries[i]]);</span><br><span class="line">            <span class="keyword">int</span> val = queries[i]; <span class="comment">//值</span></span><br><span class="line">            <span class="keyword">int</span> loc = P[queries[i]]; <span class="comment">//位置</span></span><br><span class="line">            <span class="comment">//顺序移动到后边</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = loc<span class="number">-1</span>; j&gt;=<span class="number">0</span>; j--)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = P[l[j]];</span><br><span class="line">                P[l[j]] += <span class="number">1</span>;</span><br><span class="line">                l[j+<span class="number">1</span>] = l[j];</span><br><span class="line">            &#125;</span><br><span class="line">            P[val] = <span class="number">0</span>;</span><br><span class="line">            l[<span class="number">0</span>] = val;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5382-HTML-实体解析器"><a href="#5382-HTML-实体解析器" class="headerlink" title="5382. HTML 实体解析器"></a>5382. HTML 实体解析器</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>「HTML 实体解析器」 是一种特殊的解析器，它将 HTML 代码作为输入，并用字符本身替换掉所有这些特殊的字符实体。</p>
+<p>HTML 里这些特殊字符和它们对应的字符实体包括：</p>
+<ul>
+<li><strong>双引号：</strong>字符实体为 <code>&quot;</code> ，对应的字符是 <code>&quot;</code> 。</li>
+<li><strong>单引号：</strong>字符实体为 <code>&#39;</code> ，对应的字符是 <code>&#39;</code> 。</li>
+<li><strong>与符号：</strong>字符实体为 <code>&amp;</code> ，对应对的字符是 <code>&amp;</code> 。</li>
+<li><strong>大于号：</strong>字符实体为 <code>&gt;</code> ，对应的字符是 <code>&gt;</code> 。</li>
+<li><strong>小于号：</strong>字符实体为 <code>&lt;</code> ，对应的字符是 <code>&lt;</code> 。</li>
+<li><strong>斜线号：</strong>字符实体为 <code>⁄</code> ，对应的字符是 <code>/</code> 。</li>
+</ul>
+<p>给你输入字符串 <code>text</code> ，请你实现一个 HTML 实体解析器，返回解析器解析后的结果。</p>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：text &#x3D; &quot;&amp; is an HTML entity but &amp;ambassador; is not.&quot;</span><br><span class="line">输出：&quot;&amp; is an HTML entity but &amp;ambassador; is not.&quot;</span><br><span class="line">解释：解析器把字符实体 &amp; 用 &amp; 替换</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：text &#x3D; &quot;and I quote: &quot;...&quot;&quot;</span><br><span class="line">输出：&quot;and I quote: \&quot;...\&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：text &#x3D; &quot;Stay home! Practice on Leetcode :)&quot;</span><br><span class="line">输出：&quot;Stay home! Practice on Leetcode :)&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4："><a href="#示例-4：" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：text &#x3D; &quot;x &gt; y &amp;&amp; x &lt; y is always false&quot;</span><br><span class="line">输出：&quot;x &gt; y &amp;&amp; x &lt; y is always false&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-5："><a href="#示例-5：" class="headerlink" title="示例 5："></a><strong>示例 5：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：text &#x3D; &quot;leetcode.com&amp;frasl;problemset&amp;frasl;all&quot;</span><br><span class="line">输出：&quot;leetcode.com&#x2F;problemset&#x2F;all&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= text.length &lt;= 10^5</code></li>
+<li>字符串可能包含 256 个ASCII 字符中的任意字符。</li>
+</ul>
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">entityParser</span><span class="params">(<span class="built_in">string</span> <span class="built_in">text</span>)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="built_in">map</span>[<span class="string">"&amp;quot;"</span>]=<span class="string">"\""</span>;</span><br><span class="line">        <span class="built_in">map</span>[<span class="string">"&amp;apos;"</span>]=<span class="string">"'"</span>;</span><br><span class="line">        <span class="built_in">map</span>[<span class="string">"&amp;amp;"</span>]=<span class="string">"&amp;"</span>;</span><br><span class="line">        <span class="built_in">map</span>[<span class="string">"&amp;gt;"</span>]=<span class="string">"&gt;"</span>;</span><br><span class="line">        <span class="built_in">map</span>[<span class="string">"&amp;lt;"</span>]=<span class="string">"&lt;"</span>;</span><br><span class="line">        <span class="built_in">map</span>[<span class="string">"&amp;frasl;"</span>]=<span class="string">"/"</span>;</span><br><span class="line">        <span class="built_in">string</span> res=<span class="string">""</span>;</span><br><span class="line">        <span class="built_in">string</span> key=<span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> ch:<span class="built_in">text</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(ch==<span class="string">'&amp;'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                res+=key;</span><br><span class="line">                key = <span class="string">"&amp;"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(ch==<span class="string">';'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                key.append(<span class="number">1</span>,ch);</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">map</span>.<span class="built_in">find</span>(key)!=<span class="built_in">map</span>.<span class="built_in">end</span>())</span><br><span class="line">                &#123;</span><br><span class="line">                    res += <span class="built_in">map</span>[key];</span><br><span class="line">                    key = <span class="string">""</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                key.append(<span class="number">1</span>,ch);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!key.empty())</span><br><span class="line">            res+=key;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5383-给-N-x-3-网格图涂色的方案数"><a href="#5383-给-N-x-3-网格图涂色的方案数" class="headerlink" title="5383. 给 N x 3 网格图涂色的方案数"></a>5383. 给 N x 3 网格图涂色的方案数</h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>你有一个 <code>n x 3</code> 的网格图 <code>grid</code> ，你需要用 <strong>红，黄，绿</strong> 三种颜色之一给每一个格子上色，且确保相邻格子颜色不同（也就是有相同水平边或者垂直边的格子颜色不同）。</p>
+<p>给你网格图的行数 <code>n</code> 。</p>
+<p>请你返回给 <code>grid</code> 涂色的方案数。由于答案可能会非常大，请你返回答案对 <code>10^9 + 7</code> 取余的结果。</p>
+<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 1</span><br><span class="line">输出：12</span><br><span class="line">解释：总共有 12 种可行的方法：</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 2</span><br><span class="line">输出：54</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-2"><a href="#示例-3：-2" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 3</span><br><span class="line">输出：246</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4：-1"><a href="#示例-4：-1" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 7</span><br><span class="line">输出：106494</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-5：-1"><a href="#示例-5：-1" class="headerlink" title="示例 5："></a><strong>示例 5：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 5000</span><br><span class="line">输出：30228214</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>n == grid.length</code></li>
+<li><code>grid[i].length == 3</code></li>
+<li><code>1 &lt;= n &lt;= 5000</code></li>
+</ul>
+<h3 id="他人解法"><a href="#他人解法" class="headerlink" title="他人解法"></a>他人解法</h3><h4 id="1-状态压缩-递推。"><a href="#1-状态压缩-递推。" class="headerlink" title="1. 状态压缩 + 递推。"></a>1. 状态压缩 + 递推。</h4><p><strong>状态压缩</strong><br>用一个数字表示集合的一种状态。<br>在本题中，三个并列的格子可以看作是一个集合。我们用数字表示这个集合的状态，也就是染色方案。</p>
+<p><strong>具体的表示方法</strong>如下：<br>因为只有三种颜色，所以可以用三进制数字来表示染色方案。用 0，1，2 分别代表红黄绿。因为每个集合只有三个格子，所以只需要用三位数字。<br>比如21 = 0 + 31 + 92，代表第一个格子为红色，第二个格子为黄色，第三个格子为绿色。<br>我们可以把这个数字称为状态码。</p>
+<p>关于状态码的取值范围<br>当三个格子都染成红色时，状态码取得最小值即 0 + 03 + 09 = 0。<br>当三个格子都染成绿色时，状态码取得最大值即 2 + 23 + 29 = 26。<br>所以状态码的取值范围为[0,26]。</p>
+<p><strong>递归</strong><br>设 <code>dp[n][sc]</code> 为将前 n 层都染上颜色，且第n层的染色为 <code>sc</code>。<code>sc</code> 即上述的状态码。<br>当 n 等于 1时，<code>dp[n][sc]</code>很好计算，即判断<code>sc</code>代表的染色方案是否合法即可。<br>如果合法 <code>dp[1][sc] = 1</code>，否则 <code>dp[1][sc] = 0</code>。</p>
+<p>当 <code>n &gt; 1</code> 时，<code>dp[n][sc]</code>由 <code>dp[n-1][psc]</code>推导得出。<code>sc</code> 为第<code>n</code>行的染色方案，<code>psc</code>为 <code>n-1</code>行的染色方案。</p>
+<p>递推式子如下：</p>
+<p><code>dp[n][sc] += dp[n-1][psc] (0 &lt;= psc &lt; 27)</code>。</p>
+<p><strong>源代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">1000000007</span>;</span><br><span class="line">    <span class="keyword">int</span> dp[<span class="number">5001</span>][<span class="number">27</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">//根据每个格子的颜色获取状态码</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">sc</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i + j*<span class="number">3</span> + k *<span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//根据状态码获取每个格子的颜色</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">cs</span><span class="params">(<span class="keyword">int</span> statusCode, <span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b, <span class="keyword">int</span> &amp;c)</span> </span>&#123;</span><br><span class="line">        a = statusCode % <span class="number">3</span>;</span><br><span class="line">        b = (statusCode - a)%<span class="number">9</span>/<span class="number">3</span>;</span><br><span class="line">        c = statusCode/<span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numOfWays</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        初始化 n = <span class="number">1</span> 的方案数。</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">2</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= <span class="number">2</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt;= <span class="number">2</span>; k++) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(i != j &amp;&amp; j != k) &#123;</span><br><span class="line">                        dp[<span class="number">1</span>][sc(i,j,k)] = <span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//枚举行数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> level = <span class="number">2</span>; level &lt;= n; level++) &#123;</span><br><span class="line">            <span class="comment">//枚举前一行的染色方案</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> pre = <span class="number">0</span>; pre &lt; <span class="number">27</span>; ++pre) &#123;</span><br><span class="line">                <span class="keyword">int</span> a, b, c;</span><br><span class="line">                cs(pre, a, b, c);</span><br><span class="line">                <span class="keyword">if</span>(a == b || b == c) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//枚举当前行的染色方案</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">2</span>; i++) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(i == a) &#123; <span class="keyword">continue</span>; &#125; <span class="comment">//检查是否冲突</span></span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= <span class="number">2</span>; j++) &#123;</span><br><span class="line">                        <span class="keyword">if</span>(i == j || j == b) &#123; <span class="keyword">continue</span>; &#125; <span class="comment">//检查是否冲突</span></span><br><span class="line">                        <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt;= <span class="number">2</span>; k++) &#123;</span><br><span class="line">                            <span class="keyword">if</span>(j == k || k == c) &#123; <span class="keyword">continue</span>; &#125; <span class="comment">//检查是否冲突</span></span><br><span class="line">                            (dp[level][sc(i,j,k)] += dp[level<span class="number">-1</span>][pre]) %= mod; <span class="comment">//当前染色方案可行，累加方案数。</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">27</span>; i++) &#123;</span><br><span class="line">            (ans += dp[n][i]) %= mod; <span class="comment">//计算总的方案数。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="暴力枚举"><a href="#暴力枚举" class="headerlink" title="暴力枚举"></a>暴力枚举</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> f[<span class="number">5010</span>][<span class="number">3</span>][<span class="number">3</span>][<span class="number">3</span>];<span class="comment">//f[i][j][k][l]表示第i行涂的颜色为(j,k,l)时的涂色方案数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">numOfWays</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">3</span>; k++) <span class="keyword">if</span>(i!=j&amp;&amp;j!=k) f[<span class="number">1</span>][i][j][k] = <span class="number">1</span>; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i1 = <span class="number">0</span>; i1 &lt; <span class="number">3</span>; i1++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j1 = <span class="number">0</span>; j1 &lt; <span class="number">3</span>; j1++)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k1 = <span class="number">0</span>; k1 &lt; <span class="number">3</span>; k1++) </span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> i2 = <span class="number">0</span>; i2 &lt; <span class="number">3</span>; i2++)&#123;</span><br><span class="line">                        <span class="keyword">for</span>(<span class="keyword">int</span> j2 = <span class="number">0</span>; j2 &lt; <span class="number">3</span>; j2++)&#123;</span><br><span class="line">                            <span class="keyword">for</span>(<span class="keyword">int</span> k2 = <span class="number">0</span>; k2 &lt; <span class="number">3</span>; k2++)&#123;<span class="comment">//枚举相邻两行的状态 再判断是否符合条件即可</span></span><br><span class="line">                                <span class="keyword">if</span>(i2!=j2&amp;&amp;j2!=k2 &amp;&amp; i1!=i2&amp;&amp;j1!=j2&amp;&amp;k1!=k2)<span class="comment">//水平不同 垂直不同 </span></span><br><span class="line">                                    f[i][i2][j2][k2] = (f[i][i2][j2][k2] + f[i<span class="number">-1</span>][i1][j1][k1])%p;</span><br><span class="line">                            &#125; </span><br><span class="line"></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++)&#123;<span class="comment">//得出结果 即为最后一行所有不同涂色状态时的累加和</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">3</span>; k++) res = (res + f[n][i][j][k])%p; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/12/2020-04-12-LeeCode-CheckDaily-md/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag">周赛</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/04/10/2020-04-11-LeeCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">LeeCode 每日打卡4.11~12</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>
