@@ -212,30 +212,30 @@
 
 <h2 id="面试题-16-03-交点"><a href="#面试题-16-03-交点" class="headerlink" title="面试题 16.03. 交点"></a>面试题 16.03. 交点</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a><strong>题目描述</strong></h3><p>给定两条线段（表示为起点<code>start = {X1, Y1}</code>和终点<code>end = {X2, Y2}</code>），如果它们有交点，请计算其交点，没有交点则返回空值。</p>
 <p>要求浮点型误差不超过<code>10^-6</code>。若有多个交点（线段重叠）则返回 X 值最小的点，X 坐标相同则返回 Y 值最小的点。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 0&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;0, -1&#125;</span><br><span class="line">输出： &#123;0.5, 0&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 0&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;0, -1&#125;</span><br><span class="line">输出： &#123;0.5, 0&#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;3, 3&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;2, 2&#125;</span><br><span class="line">输出： &#123;1, 1&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;3, 3&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;2, 2&#125;</span><br><span class="line">输出： &#123;1, 1&#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 1&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 0&#125;, &#123;2, 1&#125;</span><br><span class="line">输出： &#123;&#125;，两条线段没有交点</span><br></pre></td></tr></table></figure>
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 1&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 0&#125;, &#123;2, 1&#125;</span><br><span class="line">输出： &#123;&#125;，两条线段没有交点</span><br></pre></td></tr></table></figure>
 
-
-
-<p><strong>提示：</strong></p>
-<ul>
+<h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
 <li>坐标绝对值不会超过 2^7</li>
 <li>输入的坐标均是有效的二维坐标</li>
 </ul>
+<h3 id="官方解法-1"><a href="#官方解法-1" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> Coor = <span class="built_in">vector</span> &lt;<span class="keyword">double</span>&gt;;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">double</span> EPS = <span class="number">1E-6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">intersection</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; start1, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; end1, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; start2, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; end2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ax = start1[<span class="number">0</span>], ay = start1[<span class="number">1</span>], bx = end1[<span class="number">0</span>], by = end1[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> cx = start2[<span class="number">0</span>], cy = start2[<span class="number">1</span>], dx = end2[<span class="number">0</span>], dy = end2[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> acx = cx - ax, acy = cy - ay, abx = bx - ax, aby = by - ay, adx = dx - ax, ady = dy - ay;</span><br><span class="line">        <span class="keyword">int</span> cax = ax - cx, cay = ay - cy, cbx = bx - cx, cby = by - cy, cdx = dx - cx, cdy = dy - cy;</span><br><span class="line">        <span class="comment">// 叉积运算</span></span><br><span class="line">        <span class="keyword">auto</span> cross = [] (<span class="keyword">int</span> ux, <span class="keyword">int</span> uy, <span class="keyword">int</span> vx, <span class="keyword">int</span> vy) &#123;</span><br><span class="line">            <span class="keyword">return</span> ux * vy - vx * uy;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 判断线段 (ux, uy) -- (vx, vy) 是否包含 (mx, my)  </span></span><br><span class="line">        <span class="keyword">auto</span> bothSide = [&amp;] (<span class="keyword">int</span> mx, <span class="keyword">int</span> my, <span class="keyword">int</span> ux, <span class="keyword">int</span> uy, <span class="keyword">int</span> vx, <span class="keyword">int</span> vy) &#123;</span><br><span class="line">            <span class="keyword">double</span> um = <span class="built_in">sqrt</span>((ux - mx) * (ux - mx) + (uy - my) * (uy - my));</span><br><span class="line">            <span class="keyword">double</span> vm = <span class="built_in">sqrt</span>((vx - mx) * (vx - mx) + (vy - my) * (vy - my));</span><br><span class="line">            <span class="keyword">double</span> uv = <span class="built_in">sqrt</span>((vx - ux) * (vx - ux) + (vy - uy) * (vy - uy));</span><br><span class="line">            <span class="keyword">return</span> (ux - mx) * (vx - mx) &lt;= <span class="number">0</span> &amp;&amp; (uy - my) * (vy - my) &lt;= <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 以 x 为第一关键字，y 为第二关键字比较两个点的大小</span></span><br><span class="line">        <span class="keyword">auto</span> cmp = [] (<span class="keyword">const</span> Coor&amp; u, <span class="keyword">const</span> Coor&amp; v) &#123;</span><br><span class="line">            <span class="keyword">if</span> (u.<span class="built_in">size</span>() == <span class="number">0</span> || v.<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> v.<span class="built_in">size</span>() == <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span> (u[<span class="number">0</span>] != v[<span class="number">0</span>]) ? (u[<span class="number">0</span>] &lt; v[<span class="number">0</span>]) : (u[<span class="number">1</span>] &lt; v[<span class="number">1</span>]);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 共线处理和 T 形处理</span></span><br><span class="line">        <span class="keyword">if</span> (cross(cax, cay, cbx, cby) == <span class="number">0</span> || cross(adx, ady, abx, aby) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">bool</span> aInCd = bothSide(ax, ay, cx, cy, dx, dy), bInCd = bothSide(bx, by, cx, cy, dx, dy);</span><br><span class="line">            <span class="keyword">bool</span> cInAb = bothSide(cx, cy, ax, ay, bx, by), dInAb = bothSide(dx, dy, ax, ay, bx, by);</span><br><span class="line">            Coor ans;</span><br><span class="line">            <span class="keyword">if</span> (aInCd) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)ax, (<span class="keyword">double</span>)ay&#125;), cmp) ;</span><br><span class="line">            <span class="keyword">if</span> (bInCd) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)bx, (<span class="keyword">double</span>)by&#125;), cmp);</span><br><span class="line">            <span class="keyword">if</span> (cInAb) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)cx, (<span class="keyword">double</span>)cy&#125;), cmp);</span><br><span class="line">            <span class="keyword">if</span> (dInAb) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)dx, (<span class="keyword">double</span>)dy&#125;), cmp);</span><br><span class="line">            <span class="keyword">return</span> ans;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 判断两条线段是否有公共点</span></span><br><span class="line">        <span class="keyword">auto</span> intersect = [&amp;] () &#123;</span><br><span class="line">            <span class="keyword">return</span> cross(acx, acy, abx, aby) * cross(adx, ady, abx, aby) &lt;= <span class="number">0</span> &amp;&amp; cross(cax, cay, cdx, cdy) * cross(cbx, cby, cdx, cdy) &lt;= <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">if</span> (!intersect()) &#123;</span><br><span class="line">            <span class="keyword">return</span> Coor();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 计算三角形 PQM 的面积</span></span><br><span class="line">        <span class="keyword">auto</span> getArea = [&amp;] (<span class="keyword">int</span> px, <span class="keyword">int</span> py, <span class="keyword">int</span> qx, <span class="keyword">int</span> qy, <span class="keyword">int</span> mx, <span class="keyword">int</span> my) -&gt; <span class="keyword">double</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> mpx = px - mx, mpy = py - my, mqx = qx - mx, mqy = qy - my;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">fabs</span>(<span class="keyword">double</span>(<span class="number">0.5</span>) * cross(mpx, mpy, mqx, mqy));</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 定比分点</span></span><br><span class="line">        <span class="keyword">double</span> ck = getArea(ax, ay, bx, by, cx, cy), dk = getArea(ax, ay, bx, by, dx, dy);</span><br><span class="line">        <span class="keyword">double</span> k = ck / dk;</span><br><span class="line">        <span class="keyword">double</span> rx = (cx + k * dx) / (<span class="number">1</span> + k), ry = (cy + k * dy) / (<span class="number">1</span> + k);</span><br><span class="line">        <span class="keyword">return</span> Coor(&#123;rx, ry&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在代码中「共线处理和 T 形处理」部分，为什么只判断了 ABCABC 共线或者 ABDABD 共线呢？</p>
+<p>如果 <code>ABC</code> 共线且 <code>ABD</code>共线，那么说明 <code>ABCD</code>共线<br>如果 <code>ABC</code>共线但 <code>ABD</code>不共线，那么说明<code>C</code>在「直线」<code>AB</code>上，如果 <code>C</code> 在「线段」<code>AB</code>上则形成一个 <code>T</code> 形结构<br>如果 <code>ABD</code>共线但是 ABCABC 不共线，那么说明 DD 在「直线」ABAB 上，如果 DD 在「线段」ABAB 上则形成一个 T 形结构<br>这里只能判断点是否在「直线」上，在 if 里面才可以判断点是否在线段上。这三种情况都能得到正确的结果，因为经过四个取 min 的操作（即方法一中的四个 update），所有「点 PP 在 MNMN 上」的情况可以被讨论出来，所以这里不仅处理的是共线的情况，还有四种 T 形的情况中的两种。思考：为什么不用处理剩下的两种呢？ 不判断 ACDACD 和 BCDBCD，因为后面定比分点用的是 ABCABC 和 ABDABD 的面积，前面 ABCABC 共线和 ABDABD 共线被处理掉之后，就不存在面积为 00 的状况，也就不会出现分母为 00。即使 ACDACD 和 BCDBCD 共线，ABCABC 和 ABDABD 的面积依然是大于 00 的，不影响定比分点。</p>
+<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：<code>O(1)</code>。</p>
+<p>空间复杂度：<code>O(1)</code>。</p>
 ]]></content>
       <categories>
         <category>刷题</category>
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -311,8 +311,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -376,8 +376,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -440,8 +440,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -785,8 +785,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -1019,8 +1019,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
         <tag>剑指offer</tag>
       </tags>
   </entry>
@@ -1264,8 +1264,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
         <tag>剑指offer</tag>
       </tags>
   </entry>
@@ -1322,8 +1322,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
         <tag>排序</tag>
       </tags>
   </entry>
@@ -1372,8 +1372,8 @@
       </categories>
       <tags>
         <tag>SLAM</tag>
-        <tag>优化</tag>
         <tag>BA</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -1425,8 +1425,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
         <tag>剑指offer</tag>
       </tags>
   </entry>
@@ -1519,8 +1519,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
         <tag>剑指offer</tag>
       </tags>
   </entry>
@@ -1797,8 +1797,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -1968,8 +1968,8 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>每日打卡</tag>
         <tag>刷题</tag>
+        <tag>每日打卡</tag>
       </tags>
   </entry>
   <entry>
@@ -2949,114 +2949,20 @@
       </categories>
       <tags>
         <tag>LeeCode</tag>
-        <tag>C++</tag>
         <tag>周赛</tag>
+        <tag>C++</tag>
         <tag>刷题</tag>
       </tags>
   </entry>
   <entry>
-    <title>Kalman滤波器学习</title>
-    <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
-    <content><![CDATA[<p>概率图+时间=动态系统</p>
-<p>​    对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
-<ol>
-<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
-<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
-<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
-</ol>
-<p>本节主要来介绍kalman滤波器。</p>
-<a id="more"></a>
-
-<h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>卡尔曼滤波器是由Swerling（1958）和Kalman（1960）作为线性高斯系统中的预测和滤波技术而发明的，使用矩来定义的。KF实现了对连续状态的置信度计算。KF用矩参数来表示置信度：在时刻k，置信度用均值$ \mu_k $（一阶矩）和方差$ \sum _{k-1} $（二阶矩）表达。</p>
-<p>卡尔曼滤波建立在线性代数和隐马尔可夫模型上。其基本动态系统可以用一个马尔可夫链来表示，该马尔可夫链建立在一个线性高斯系统上。系统的状态可以用一个元素为实数的向量表示。随着离散时间的每一个增加，这个线性算子就会作用在当前状态上，产生一个新的状态，并也会带入一些噪声，同时系统的一些已知的控制器的控制信息也会被加入。同时，另一个受噪声干扰的线性算子产生出这些隐含状态的可见输出。</p>
-<p>使后验为高斯分布的前提，同时也是KF的特性：<br>       （1）状态转移必须是带有随机高斯噪声的参数的线性函数。<br>       （2）测量也与带有高斯噪声的自变量呈线性关系。<br>       （3）初始置信度必须是正态分布的。</p>
-<p>这三个假设足以确保后验在任何时刻<code>t</code>总符合高斯分布。</p>
-<p>根据线性高斯系统可以得到<strong>卡尔曼滤波器</strong>。 </p>
-<p>卡尔曼滤波器的状态由以下两个变量表示：</p>
-<ol>
-<li>$\hat{x}_k$，在时刻k的状态的估计；</li>
-<li>$\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。</li>
-</ol>
-<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N\<br>z_k=C_kx_k+v_k<br>\end{cases}<br>$$<br><img src="/2020/03/14/2020-03-13-Kalman_Filter/C:%5CUsers%5C%E9%83%AD%E7%8A%87%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200330234714941.png" alt="image-20200330234714941"></p>
-<h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$<br>x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N<br>$$</p>
-<p>其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵/矢量）。</p>
-<p>$w_k$是过程噪声,满足$w_k\sim N(0,Q)$</p>
-<h4 id="观测模型"><a href="#观测模型" class="headerlink" title="观测模型"></a>观测模型</h4><p>$$<br>z_k = C_kx_k+v_k<br>$$</p>
-<p>其中$C_k$是观测模型，能把真实状态空间映射成观测空间。并假设了所有的状态和噪声均满足高斯分布。</p>
-<p>$v_k$观测噪声服从零均值高斯分布：即$.v_k\sim N(0,R)$。</p>
-<p><strong>线性</strong></p>
-<p>线性系统中的线性体现在以下两个方面:</p>
-<ol>
-<li>$X_k=A*X_{k-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
-<li>$Z_k=C*X_k+D+\delta,\epsilon \sim N(0,R)$</li>
-</ol>
-<p>两个条件服从高斯分布：<br>$$<br>P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)<br>$$</p>
-<p>$$<br>P(Z_k|X_k)\sim N(C*X_k+D,R)<br>$$</p>
-<p>可以系统的初始状态：<br>$$<br>X_1\sim N(\mu_1,\Sigma_1)<br>$$</p>
-<p>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{lr}<br>        P(X_k|X_{k-1})\sim N(A<em>X_{k-1}+B,Q)\<br>        P(Z_k|X_k)\sim N(C</em>X_k+D,R)\<br>        P(Z_1)=N(\mu_1,\Sigma_1)<br>    \end{array}<br>\right.<br>\end{equation}<br>$$<br>总共的参数表如下：</p>
-<p>$$<br>\theta = (A,B,C,D,Q,R,\mu_1,\Sigma_1)<br>$$</p>
-<p>卡尔曼滤波是一种递归的估计，即只要获知上一时刻状态的估计值以及当前状态的观测值就可以计算出当前状态的估计值，因此不需要记录观测或者估计的历史信息。卡尔曼滤波器与大多数滤波器不同之处，在于它是一种纯粹的时域滤波器，它不需要像低通滤波器等频域滤波器那样，需要在频域设计再转换到时域实现。</p>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>卡尔曼滤波器的操作包括两个阶段：<strong>预测</strong>与<strong>更新</strong>。</p>
-<ol>
-<li>预测阶段，滤波器使用上一状态的估计，做出对当前状态的预测。</li>
-<li>更新阶段，滤波器利用对当前状态的观测值优化在预测阶段获得的预测值，以获得一个更精确的新估计值。</li>
-</ol>
-<p><strong>输入：</strong>系统在<code>t-1</code>时刻状态的置信度（正态分布，均值和方差用$\mu_{t-1}$和$\Sigma_{t-1}$）; 输入的控制向量$u_t$和测量向量$z_t$。</p>
-<p><strong>输出：</strong>系统t时刻的状态的置信度$bel(x_t)$，均值向量$\mu_t$，方差$\Sigma_t$。</p>
-<p><strong>伪代码</strong></p>
-<p><strong>Algorithm Kalman_filter</strong> ($\mu_{t-1}$,$\Sigma_{t-1}$,$\mu_t$,$z_t$)</p>
-<ol>
-<li>$\hat\mu_t = A_t\mu_{t-1}+B_tu_t$</li>
-<li>$\hat\sum_t =A_t\sum_{t-1}A^T_t+R_t$</li>
-<li>$K_t=\hat\sum_tC^T_t(C_t\hat\sum_tC^T_t+Q_t)^{-1}$</li>
-<li>$\mu_t=\hat\mu_t+K_t(z_t-C_t\hat\mu_t)$</li>
-<li>$\sum_t=(I-K_tC_t)\hat\sum_t$</li>
-</ol>
-<p><strong>return</strong> $\mu_t$, $ \sum_t$</p>
-<h3 id="代码样例"><a href="#代码样例" class="headerlink" title="代码样例"></a>代码样例</h3><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[ predictx, predicty, state, param ]</span> = <span class="title">kalmanFilter</span><span class="params">( t, x, y, state, param, previous_t )</span></span></span><br><span class="line"><span class="comment">% 卡尔曼滤波器</span></span><br><span class="line"><span class="comment">% 输入：当前时间t，位置，状态，参数，前一帧的时间t-1</span></span><br><span class="line"><span class="comment">% UNTITLED Summary of this function goes here</span></span><br><span class="line"><span class="comment">%   假设状态为四维:[p_x,p_y,v_x,v_y]</span></span><br><span class="line"><span class="comment">%   Four dimensional state: position_x, position_y, velocity_x, velocity_y</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">%% Place parameters like covarainces, etc. here:</span></span><br><span class="line">    <span class="comment">% P = eye(4)</span></span><br><span class="line">    <span class="comment">% R = eye(2)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">% Check if the first time running this function</span></span><br><span class="line">    <span class="comment">% 初始化</span></span><br><span class="line">    <span class="keyword">if</span> previous_t&lt;<span class="number">0</span></span><br><span class="line">        state = [x, y, <span class="number">0</span>, <span class="number">0</span>];</span><br><span class="line">        param.P = <span class="number">0.1</span> * <span class="built_in">eye</span>(<span class="number">4</span>);</span><br><span class="line">        predictx = x;</span><br><span class="line">        predicty = y;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">%% Naive estimate 朴素估计</span></span><br><span class="line"><span class="comment">%     % As an example, here is a Naive estimate without a Kalman filter</span></span><br><span class="line"><span class="comment">%     % You should replace this code</span></span><br><span class="line"><span class="comment">%     vx = (x - state(1)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     vy = (y - state(2)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     % Predict 330ms into the future</span></span><br><span class="line"><span class="comment">%     predictx = x + vx * 0.330;</span></span><br><span class="line"><span class="comment">%     predicty = y + vy * 0.330;</span></span><br><span class="line"><span class="comment">%     % State is a four dimensional element</span></span><br><span class="line"><span class="comment">%     state = [x, y, vx, vy];</span></span><br><span class="line">    <span class="comment">%% <span class="doctag">TODO:</span> Add Kalman filter updates</span></span><br><span class="line">    <span class="comment">%% 当前目的：更新kalman滤波器</span></span><br><span class="line">    <span class="comment">% 1. 计算时间间隔</span></span><br><span class="line">    dt = t - previous_t; <span class="comment">% Time interval</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% PREDICT</span></span><br><span class="line">    <span class="comment">% 2. 预测</span></span><br><span class="line">    A = [<span class="number">1</span> <span class="number">0</span> dt <span class="number">0</span>; <span class="comment">% Transform matrix A</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> dt;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>  <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>  <span class="number">1</span>];</span><br><span class="line">     </span><br><span class="line">    C = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>; <span class="comment">% Observation matrix C</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line">     </span><br><span class="line">    z_t = [x, y]'; <span class="comment">% Measurement data</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Q = 0.005 * eye(4);</span></span><br><span class="line">    Q = [dt^<span class="number">2</span>  <span class="number">0</span>        <span class="number">0</span>       <span class="number">0</span>; <span class="comment">% System (Motion) noise covariance</span></span><br><span class="line">         <span class="number">0</span>        dt^<span class="number">2</span>  <span class="number">0</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">1</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>       <span class="number">1</span>];</span><br><span class="line">           </span><br><span class="line">    R = <span class="number">0.005</span> * <span class="built_in">eye</span>(<span class="number">2</span>); <span class="comment">% Measurement noise covariance</span></span><br><span class="line">    </span><br><span class="line">    P = A * param.P * transpose(A) + Q; <span class="comment">% Prior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% UPDATE</span></span><br><span class="line">    <span class="comment">% 3. 更新</span></span><br><span class="line">    K = P * transpose(C) * inv(R + C * P * transpose(C)); <span class="comment">% Kalman gain</span></span><br><span class="line">    state = (A * (state') + K * (z_t - C * A * (state')))'; <span class="comment">% Posterior state estimation</span></span><br><span class="line">    param.P = P - K * C * P; <span class="comment">% Posterior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Predict 330ms into the future</span></span><br><span class="line">    predictx = state(<span class="number">1</span>) + state(<span class="number">3</span>) * <span class="number">0.330</span>;</span><br><span class="line">    predicty = state(<span class="number">2</span>) + state(<span class="number">4</span>) * <span class="number">0.330</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="基于后验概率推导Kalman滤波器·"><a href="#基于后验概率推导Kalman滤波器·" class="headerlink" title="基于后验概率推导Kalman滤波器·"></a>基于后验概率推导Kalman滤波器·</h3><p>可以看作是一个Filter问题的求解过程<br>$$<br>P(X_t|z_1,z_2,…z_t)\propto P(z_1,z_2,…z_t,X_t)\=P(z_t|z_1,z_2,…z_{t-1},X_t)*P(z_1,z_2,…z_{t-1},X_t)\<br>=P(z_t|X_t)P(z_1,…,z_{t-1},X_t)\<br>=P(z_t|X_t)P(X_t|z_1,…,z_{t-1})P(z_1,…,z_{t-1})\<br>\propto P(z_t|X_t)P(X_t|z_1,…,z_{t-1})\<br>$$</p>
-<p>其中：<br>$$<br>P(X_t|z_1,…,z_{t-1})<br>=\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,…,z_{t-1})dz_{t-1}\<br>=\int_{X_{t-1}}P(X_t|X_{t-1},z_1,…,z_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>\=\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>$$</p>
-<p> 基于概率的推导步骤：</p>
-<ul>
-<li><p>t=1,<br>$$<br>\begin{equation}<br>\left {</p>
-<pre><code>\begin{array}{lr}
-P(X_1|z_1)\rarr update\\
-P(X_2|z_1)\rarr prediction
-\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
-</li>
-<li><p>t=2,<br>$$<br>\begin{equation}<br>\left {</p>
-<pre><code>\begin{array}{lr}
-P(X_2|z_1,z_2)\rarr update\\
-P(X_3|z_1,z_2)\rarr prediction
-\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
-</li>
-<li><p>t=T,<br>$$<br>\begin{equation}<br>\left {</p>
-<pre><code>\begin{array}{lr}
-P(X_T|z_1,z_2...z_T)\rarr update\\
-P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
-\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
-</li>
-</ul>
-<h3 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h3><p>本节<a href="https://www.cnblogs.com/pinking/p/9201405.html" target="_blank" rel="noopener">出处</a>。</p>
-<p>Kalman与HMM的关系，事实上，他们解决的问题模型都是如上图所示，只不过一个是利用最小均方误差准则进行估计，一个是利用最大后验进行估计。事实上，HMM的预测问题中，就是一个最大的后验概率作为其似然函数，然后通过viterbi算法解的这个似然函数。</p>
-<h2 id="拓展Kalman滤波器"><a href="#拓展Kalman滤波器" class="headerlink" title="拓展Kalman滤波器"></a>拓展Kalman滤波器</h2><p>核心思想：把卡尔曼滤波器的结果拓展到非线性系统中</p>
-<p>做法：在某个点附近考虑运动方程以及观测方程的一阶泰勒展开，只保留一阶项，即闲下来部分，然后按照线性系统进行推导。</p>
-<p>卡尔曼滤波器给出了在线性化之后，状态变量分布的变化过程。在线性系统和高斯噪声下，卡尔曼滤波器给出了无偏最优估计。而在SLAM 这种非线性的情况下，它给出了单次线性近似下最大后验估计（MAP）。</p>
-<h3 id="EKF的应用"><a href="#EKF的应用" class="headerlink" title="EKF的应用"></a>EKF的应用</h3><p>EKF在SLAM中有着广泛的应用</p>
-<h3 id="EKF的局限性"><a href="#EKF的局限性" class="headerlink" title="EKF的局限性"></a>EKF的局限性</h3><ol>
-<li>EKF假设了马尔可夫性，即k时刻的状态只与k-1时刻相关，而与k-1之前的状态和观测都无关。但在视觉里程计中，只考虑相邻两帧的关系会累积误差。如果有回环检测的，滤波器就很难处理这种情况。</li>
-<li>与非线性优化方法相比，EKF滤波器仅在$\hat{x}_{k-1}$处做了一次线性化，然后直接根据这次线性化结果计算后验概率。。这相当于在说，我们认为该点处的线性化近似，在后验概率处仍然是有效的。而实际上，当我们离开工作点较远的时候，一阶泰勒展开并不一定能够近似整个函数，这取决于运动模型和观测模型的非线性情况。如果它们有强烈的非线性，那线性近似就只在很小范围内成立，不能认为在<br>很远的地方仍能用线性来近似。这就是EKF 的非线性误差，是它的主要问题所在。在优化问题中，尽管我们也做一阶（最速下降）或二阶（G-N 或L-M）的近似，但每迭代一次，状态估计发生改变之后，我们会重新对新的估计点做泰勒展开，而不像EKF 那样只在固定点上做一次泰勒展开。这就导致优化方法适用范围更广，则在状态变化较大时亦能适用。</li>
-<li>从程序实现上来说，EKF 需要存储状态量的均值和方差，并对它们进行维护和更新。如果把路标也放进状态的话，由于视觉SLAM 中路标数量很大，这个存储量是相当可观的，且与状态量呈平方增长（因为要存储协方差矩阵）。因此，EKF-SLAM 普遍被认为不可适用于大型场景。</li>
-</ol>
-]]></content>
+    <title>粒子滤波器</title>
+    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+    <content><![CDATA[]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>Kalman滤波器</tag>
+        <tag>粒子滤波器</tag>
       </tags>
   </entry>
   <entry>
@@ -3167,6 +3073,111 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>Kalman滤波器学习</title>
+    <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
+    <content><![CDATA[<p>概率图+时间=动态系统</p>
+<p>​    对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
+<ol>
+<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
+<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
+<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
+</ol>
+<p>本节主要来介绍kalman滤波器。</p>
+<a id="more"></a>
+
+<h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>卡尔曼滤波器是由Swerling（1958）和Kalman（1960）作为线性高斯系统中的预测和滤波技术而发明的，使用矩来定义的。KF实现了对连续状态的置信度计算。KF用矩参数来表示置信度：在时刻k，置信度用均值$ \mu_k $（一阶矩）和方差$ \sum _{k-1} $（二阶矩）表达。</p>
+<p>卡尔曼滤波建立在线性代数和隐马尔可夫模型上。其基本动态系统可以用一个马尔可夫链来表示，该马尔可夫链建立在一个线性高斯系统上。系统的状态可以用一个元素为实数的向量表示。随着离散时间的每一个增加，这个线性算子就会作用在当前状态上，产生一个新的状态，并也会带入一些噪声，同时系统的一些已知的控制器的控制信息也会被加入。同时，另一个受噪声干扰的线性算子产生出这些隐含状态的可见输出。</p>
+<p>使后验为高斯分布的前提，同时也是KF的特性：<br>       （1）状态转移必须是带有随机高斯噪声的参数的线性函数。<br>       （2）测量也与带有高斯噪声的自变量呈线性关系。<br>       （3）初始置信度必须是正态分布的。</p>
+<p>这三个假设足以确保后验在任何时刻<code>t</code>总符合高斯分布。</p>
+<p>根据线性高斯系统可以得到<strong>卡尔曼滤波器</strong>。 </p>
+<p>卡尔曼滤波器的状态由以下两个变量表示：</p>
+<ol>
+<li>$\hat{x}_k$，在时刻k的状态的估计；</li>
+<li>$\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。</li>
+</ol>
+<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N\<br>z_k=C_kx_k+v_k<br>\end{cases}<br>$$<br><img src="/2020/03/14/2020-03-13-Kalman_Filter/C:%5CUsers%5C%E9%83%AD%E7%8A%87%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200330234714941.png" alt="image-20200330234714941"></p>
+<h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$<br>x_k=A_kx_{k-1}+u_k+w_k \quad k=1,…,N<br>$$</p>
+<p>其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵/矢量）。</p>
+<p>$w_k$是过程噪声,满足$w_k\sim N(0,Q)$</p>
+<h4 id="观测模型"><a href="#观测模型" class="headerlink" title="观测模型"></a>观测模型</h4><p>$$<br>z_k = C_kx_k+v_k<br>$$</p>
+<p>其中$C_k$是观测模型，能把真实状态空间映射成观测空间。并假设了所有的状态和噪声均满足高斯分布。</p>
+<p>$v_k$观测噪声服从零均值高斯分布：即$.v_k\sim N(0,R)$。</p>
+<p><strong>线性</strong></p>
+<p>线性系统中的线性体现在以下两个方面:</p>
+<ol>
+<li>$X_k=A*X_{k-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
+<li>$Z_k=C*X_k+D+\delta,\epsilon \sim N(0,R)$</li>
+</ol>
+<p>两个条件服从高斯分布：<br>$$<br>P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)<br>$$</p>
+<p>$$<br>P(Z_k|X_k)\sim N(C*X_k+D,R)<br>$$</p>
+<p>可以系统的初始状态：<br>$$<br>X_1\sim N(\mu_1,\Sigma_1)<br>$$</p>
+<p>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{lr}<br>        P(X_k|X_{k-1})\sim N(A<em>X_{k-1}+B,Q)\<br>        P(Z_k|X_k)\sim N(C</em>X_k+D,R)\<br>        P(Z_1)=N(\mu_1,\Sigma_1)<br>    \end{array}<br>\right.<br>\end{equation}<br>$$<br>总共的参数表如下：</p>
+<p>$$<br>\theta = (A,B,C,D,Q,R,\mu_1,\Sigma_1)<br>$$</p>
+<p>卡尔曼滤波是一种递归的估计，即只要获知上一时刻状态的估计值以及当前状态的观测值就可以计算出当前状态的估计值，因此不需要记录观测或者估计的历史信息。卡尔曼滤波器与大多数滤波器不同之处，在于它是一种纯粹的时域滤波器，它不需要像低通滤波器等频域滤波器那样，需要在频域设计再转换到时域实现。</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>卡尔曼滤波器的操作包括两个阶段：<strong>预测</strong>与<strong>更新</strong>。</p>
+<ol>
+<li>预测阶段，滤波器使用上一状态的估计，做出对当前状态的预测。</li>
+<li>更新阶段，滤波器利用对当前状态的观测值优化在预测阶段获得的预测值，以获得一个更精确的新估计值。</li>
+</ol>
+<p><strong>输入：</strong>系统在<code>t-1</code>时刻状态的置信度（正态分布，均值和方差用$\mu_{t-1}$和$\Sigma_{t-1}$）; 输入的控制向量$u_t$和测量向量$z_t$。</p>
+<p><strong>输出：</strong>系统t时刻的状态的置信度$bel(x_t)$，均值向量$\mu_t$，方差$\Sigma_t$。</p>
+<p><strong>伪代码</strong></p>
+<p><strong>Algorithm Kalman_filter</strong> ($\mu_{t-1}$,$\Sigma_{t-1}$,$\mu_t$,$z_t$)</p>
+<ol>
+<li>$\hat\mu_t = A_t\mu_{t-1}+B_tu_t$</li>
+<li>$\hat\sum_t =A_t\sum_{t-1}A^T_t+R_t$</li>
+<li>$K_t=\hat\sum_tC^T_t(C_t\hat\sum_tC^T_t+Q_t)^{-1}$</li>
+<li>$\mu_t=\hat\mu_t+K_t(z_t-C_t\hat\mu_t)$</li>
+<li>$\sum_t=(I-K_tC_t)\hat\sum_t$</li>
+</ol>
+<p><strong>return</strong> $\mu_t$, $ \sum_t$</p>
+<h3 id="代码样例"><a href="#代码样例" class="headerlink" title="代码样例"></a>代码样例</h3><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[ predictx, predicty, state, param ]</span> = <span class="title">kalmanFilter</span><span class="params">( t, x, y, state, param, previous_t )</span></span></span><br><span class="line"><span class="comment">% 卡尔曼滤波器</span></span><br><span class="line"><span class="comment">% 输入：当前时间t，位置，状态，参数，前一帧的时间t-1</span></span><br><span class="line"><span class="comment">% UNTITLED Summary of this function goes here</span></span><br><span class="line"><span class="comment">%   假设状态为四维:[p_x,p_y,v_x,v_y]</span></span><br><span class="line"><span class="comment">%   Four dimensional state: position_x, position_y, velocity_x, velocity_y</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">%% Place parameters like covarainces, etc. here:</span></span><br><span class="line">    <span class="comment">% P = eye(4)</span></span><br><span class="line">    <span class="comment">% R = eye(2)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">% Check if the first time running this function</span></span><br><span class="line">    <span class="comment">% 初始化</span></span><br><span class="line">    <span class="keyword">if</span> previous_t&lt;<span class="number">0</span></span><br><span class="line">        state = [x, y, <span class="number">0</span>, <span class="number">0</span>];</span><br><span class="line">        param.P = <span class="number">0.1</span> * <span class="built_in">eye</span>(<span class="number">4</span>);</span><br><span class="line">        predictx = x;</span><br><span class="line">        predicty = y;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">%% Naive estimate 朴素估计</span></span><br><span class="line"><span class="comment">%     % As an example, here is a Naive estimate without a Kalman filter</span></span><br><span class="line"><span class="comment">%     % You should replace this code</span></span><br><span class="line"><span class="comment">%     vx = (x - state(1)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     vy = (y - state(2)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     % Predict 330ms into the future</span></span><br><span class="line"><span class="comment">%     predictx = x + vx * 0.330;</span></span><br><span class="line"><span class="comment">%     predicty = y + vy * 0.330;</span></span><br><span class="line"><span class="comment">%     % State is a four dimensional element</span></span><br><span class="line"><span class="comment">%     state = [x, y, vx, vy];</span></span><br><span class="line">    <span class="comment">%% <span class="doctag">TODO:</span> Add Kalman filter updates</span></span><br><span class="line">    <span class="comment">%% 当前目的：更新kalman滤波器</span></span><br><span class="line">    <span class="comment">% 1. 计算时间间隔</span></span><br><span class="line">    dt = t - previous_t; <span class="comment">% Time interval</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% PREDICT</span></span><br><span class="line">    <span class="comment">% 2. 预测</span></span><br><span class="line">    A = [<span class="number">1</span> <span class="number">0</span> dt <span class="number">0</span>; <span class="comment">% Transform matrix A</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> dt;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>  <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>  <span class="number">1</span>];</span><br><span class="line">     </span><br><span class="line">    C = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>; <span class="comment">% Observation matrix C</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line">     </span><br><span class="line">    z_t = [x, y]'; <span class="comment">% Measurement data</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Q = 0.005 * eye(4);</span></span><br><span class="line">    Q = [dt^<span class="number">2</span>  <span class="number">0</span>        <span class="number">0</span>       <span class="number">0</span>; <span class="comment">% System (Motion) noise covariance</span></span><br><span class="line">         <span class="number">0</span>        dt^<span class="number">2</span>  <span class="number">0</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">1</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>       <span class="number">1</span>];</span><br><span class="line">           </span><br><span class="line">    R = <span class="number">0.005</span> * <span class="built_in">eye</span>(<span class="number">2</span>); <span class="comment">% Measurement noise covariance</span></span><br><span class="line">    </span><br><span class="line">    P = A * param.P * transpose(A) + Q; <span class="comment">% Prior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% UPDATE</span></span><br><span class="line">    <span class="comment">% 3. 更新</span></span><br><span class="line">    K = P * transpose(C) * inv(R + C * P * transpose(C)); <span class="comment">% Kalman gain</span></span><br><span class="line">    state = (A * (state') + K * (z_t - C * A * (state')))'; <span class="comment">% Posterior state estimation</span></span><br><span class="line">    param.P = P - K * C * P; <span class="comment">% Posterior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Predict 330ms into the future</span></span><br><span class="line">    predictx = state(<span class="number">1</span>) + state(<span class="number">3</span>) * <span class="number">0.330</span>;</span><br><span class="line">    predicty = state(<span class="number">2</span>) + state(<span class="number">4</span>) * <span class="number">0.330</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="基于后验概率推导Kalman滤波器·"><a href="#基于后验概率推导Kalman滤波器·" class="headerlink" title="基于后验概率推导Kalman滤波器·"></a>基于后验概率推导Kalman滤波器·</h3><p>可以看作是一个Filter问题的求解过程<br>$$<br>P(X_t|z_1,z_2,…z_t)\propto P(z_1,z_2,…z_t,X_t)\=P(z_t|z_1,z_2,…z_{t-1},X_t)*P(z_1,z_2,…z_{t-1},X_t)\<br>=P(z_t|X_t)P(z_1,…,z_{t-1},X_t)\<br>=P(z_t|X_t)P(X_t|z_1,…,z_{t-1})P(z_1,…,z_{t-1})\<br>\propto P(z_t|X_t)P(X_t|z_1,…,z_{t-1})\<br>$$</p>
+<p>其中：<br>$$<br>P(X_t|z_1,…,z_{t-1})<br>=\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,…,z_{t-1})dz_{t-1}\<br>=\int_{X_{t-1}}P(X_t|X_{t-1},z_1,…,z_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>\=\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>$$</p>
+<p> 基于概率的推导步骤：</p>
+<ul>
+<li><p>t=1,<br>$$<br>\begin{equation}<br>\left {</p>
+<pre><code>\begin{array}{lr}
+P(X_1|z_1)\rarr update\\
+P(X_2|z_1)\rarr prediction
+\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
+</li>
+<li><p>t=2,<br>$$<br>\begin{equation}<br>\left {</p>
+<pre><code>\begin{array}{lr}
+P(X_2|z_1,z_2)\rarr update\\
+P(X_3|z_1,z_2)\rarr prediction
+\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
+</li>
+<li><p>t=T,<br>$$<br>\begin{equation}<br>\left {</p>
+<pre><code>\begin{array}{lr}
+P(X_T|z_1,z_2...z_T)\rarr update\\
+P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
+\end{array}</code></pre><p>\right.<br>\end{equation}<br>$$</p>
+</li>
+</ul>
+<h3 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h3><p>本节<a href="https://www.cnblogs.com/pinking/p/9201405.html" target="_blank" rel="noopener">出处</a>。</p>
+<p>Kalman与HMM的关系，事实上，他们解决的问题模型都是如上图所示，只不过一个是利用最小均方误差准则进行估计，一个是利用最大后验进行估计。事实上，HMM的预测问题中，就是一个最大的后验概率作为其似然函数，然后通过viterbi算法解的这个似然函数。</p>
+<h2 id="拓展Kalman滤波器"><a href="#拓展Kalman滤波器" class="headerlink" title="拓展Kalman滤波器"></a>拓展Kalman滤波器</h2><p>核心思想：把卡尔曼滤波器的结果拓展到非线性系统中</p>
+<p>做法：在某个点附近考虑运动方程以及观测方程的一阶泰勒展开，只保留一阶项，即闲下来部分，然后按照线性系统进行推导。</p>
+<p>卡尔曼滤波器给出了在线性化之后，状态变量分布的变化过程。在线性系统和高斯噪声下，卡尔曼滤波器给出了无偏最优估计。而在SLAM 这种非线性的情况下，它给出了单次线性近似下最大后验估计（MAP）。</p>
+<h3 id="EKF的应用"><a href="#EKF的应用" class="headerlink" title="EKF的应用"></a>EKF的应用</h3><p>EKF在SLAM中有着广泛的应用</p>
+<h3 id="EKF的局限性"><a href="#EKF的局限性" class="headerlink" title="EKF的局限性"></a>EKF的局限性</h3><ol>
+<li>EKF假设了马尔可夫性，即k时刻的状态只与k-1时刻相关，而与k-1之前的状态和观测都无关。但在视觉里程计中，只考虑相邻两帧的关系会累积误差。如果有回环检测的，滤波器就很难处理这种情况。</li>
+<li>与非线性优化方法相比，EKF滤波器仅在$\hat{x}_{k-1}$处做了一次线性化，然后直接根据这次线性化结果计算后验概率。。这相当于在说，我们认为该点处的线性化近似，在后验概率处仍然是有效的。而实际上，当我们离开工作点较远的时候，一阶泰勒展开并不一定能够近似整个函数，这取决于运动模型和观测模型的非线性情况。如果它们有强烈的非线性，那线性近似就只在很小范围内成立，不能认为在<br>很远的地方仍能用线性来近似。这就是EKF 的非线性误差，是它的主要问题所在。在优化问题中，尽管我们也做一阶（最速下降）或二阶（G-N 或L-M）的近似，但每迭代一次，状态估计发生改变之后，我们会重新对新的估计点做泰勒展开，而不像EKF 那样只在固定点上做一次泰勒展开。这就导致优化方法适用范围更广，则在状态变化较大时亦能适用。</li>
+<li>从程序实现上来说，EKF 需要存储状态量的均值和方差，并对它们进行维护和更新。如果把路标也放进状态的话，由于视觉SLAM 中路标数量很大，这个存储量是相当可观的，且与状态量呈平方增长（因为要存储协方差矩阵）。因此，EKF-SLAM 普遍被认为不可适用于大型场景。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Kalman滤波器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>运动一致性判断</title>
     <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
     <content><![CDATA[<p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
@@ -3240,17 +3251,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>SLAM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>粒子滤波器</title>
-    <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>粒子滤波器</tag>
       </tags>
   </entry>
   <entry>
@@ -3357,90 +3357,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       <tags>
         <tag>VINS</tag>
         <tag>代码阅读</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>回环检测与DBoW2库</title>
-    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
-    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p>
-<ol>
-<li>回环检测</li>
-<li>DBOW2介绍</li>
-<li>DBOW3介绍</li>
-</ol>
-<a id="more"></a>
-
-<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
-<table>
-<thead>
-<tr>
-<th align="center">算法结果事实</th>
-<th align="center">是回环</th>
-<th align="center">不是回环</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">是回环</td>
-<td align="center">真阳性</td>
-<td align="center">假阳性</td>
-</tr>
-<tr>
-<td align="center">不是回环</td>
-<td align="center">假阴性</td>
-<td align="center">真阴性</td>
-</tr>
-</tbody></table>
-<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
-<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
-<p>准确率描述了检测到的回环中真回环的个数。</p>
-<p>Recall描述了真回环中有多少个被检测出来了。</p>
-<p>根据准确率和召回率可以得到ROC曲线.</p>
-<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
-<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p>
-<p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img"></p>
-<p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p>
-<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p>
-<h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p>
-<h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p>
-<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener">Github地址</a></p>
-<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p>
-<ul>
-<li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li>
-<li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li>
-<li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li>
-<li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li>
-<li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li>
-<li>出于性能原因，DBoW2不支持停用词。</li>
-</ul>
-<p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p>
-<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p>
-<h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p>
-<h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedVocabulary</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedDatabase</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p>
-<h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p>
-<h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener"><strong>Github地址</strong></a></p>
-<h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p>
-<ul>
-<li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li>
-<li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li>
-<li>DBoW3可以在linux和Windows中进行编译。</li>
-<li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li>
-<li>使用二进制文件的可能性。二进制文件的加载/保存速度比yml快4-5倍。同样，它们可以被压缩。</li>
-<li>兼容DBoW2 yml文件</li>
-</ul>
-<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p>
-<h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p>
-<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p>
-<h4 id="读取-存储-词汇"><a href="#读取-存储-词汇" class="headerlink" title="读取/存储 词汇"></a>读取/存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>DBoW2</tag>
-        <tag>回环检测</tag>
       </tags>
   </entry>
   <entry>
@@ -3564,6 +3480,90 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
+    <title>回环检测与DBoW2库</title>
+    <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+    <content><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p>
+<ol>
+<li>回环检测</li>
+<li>DBOW2介绍</li>
+<li>DBOW3介绍</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p>
+<table>
+<thead>
+<tr>
+<th align="center">算法结果事实</th>
+<th align="center">是回环</th>
+<th align="center">不是回环</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是回环</td>
+<td align="center">真阳性</td>
+<td align="center">假阳性</td>
+</tr>
+<tr>
+<td align="center">不是回环</td>
+<td align="center">假阴性</td>
+<td align="center">真阴性</td>
+</tr>
+</tbody></table>
+<p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$<br>准确率=N_{TP}/{N_{TP}+N_{FP}}<br>$$</p>
+<p>$$<br>Recall = N_{TP}/{N_{TP}+N_{FN}}<br>$$</p>
+<p>准确率描述了检测到的回环中真回环的个数。</p>
+<p>Recall描述了真回环中有多少个被检测出来了。</p>
+<p>根据准确率和召回率可以得到ROC曲线.</p>
+<p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
+<h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p>
+<p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img"></p>
+<p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p>
+<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p>
+<h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p>
+<h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p>
+<h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener">Github地址</a></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p>
+<ul>
+<li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li>
+<li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li>
+<li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li>
+<li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li>
+<li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li>
+<li>出于性能原因，DBoW2不支持停用词。</li>
+</ul>
+<p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p>
+<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p>
+<h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p>
+<h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedVocabulary</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">TDescriptor</span>, <span class="title">class</span> <span class="title">F</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TemplatedDatabase</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p>
+<h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p>
+<h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3" target="_blank" rel="noopener"><strong>Github地址</strong></a></p>
+<h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​        DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p>
+<ul>
+<li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li>
+<li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li>
+<li>DBoW3可以在linux和Windows中进行编译。</li>
+<li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li>
+<li>使用二进制文件的可能性。二进制文件的加载/保存速度比yml快4-5倍。同样，它们可以被压缩。</li>
+<li>兼容DBoW2 yml文件</li>
+</ul>
+<h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p>
+<h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p>
+<h4 id="读取-存储-词汇"><a href="#读取-存储-词汇" class="headerlink" title="读取/存储 词汇"></a>读取/存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>DBoW2</tag>
+        <tag>回环检测</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>隐马尔可夫模型</title>
     <url>/2020/03/10/2020-03-13-HMM_model/</url>
     <content><![CDATA[<p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
@@ -3673,54 +3673,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </tags>
   </entry>
   <entry>
-    <title>利用ROS标定相机步骤与方法</title>
-    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
-    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
-<a id="more"></a>
-
-<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
-<li>驱动USB摄像头</li>
-<li>利用camera_calibration标定相机</li>
-</ol>
-<p>执行命令为：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
-
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
-</li>
-<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>ROS</tag>
-        <tag>相机标定</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu1604连接蓝牙鼠标</title>
-    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
-    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
-
-<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>利用Kalibr标定双目相机与IMU</title>
     <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
     <content><![CDATA[<p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
@@ -3798,6 +3750,88 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
         <tag>ROS</tag>
         <tag>IMU</tag>
         <tag>Kalibr</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用ROS标定相机步骤与方法</title>
+    <url>/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/</url>
+    <content><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
+<a id="more"></a>
+
+<h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
+<li>驱动USB摄像头</li>
+<li>利用camera_calibration标定相机</li>
+</ol>
+<p>执行命令为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img"></p>
+</li>
+<li><p>畸变参数向量：[k1,k2,p1,p2]</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>ROS</tag>
+        <tag>相机标定</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu1604连接蓝牙鼠标</title>
+    <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+    <content><![CDATA[<p>打开命令行<br>$ sudo -i</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
+
+<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VINS系统解析</title>
+    <url>/2020/02/15/2020-02-15-VINS_Mono_System/</url>
+    <content><![CDATA[<h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
+<a id="more"></a>
+
+<p><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%B8%A7%E9%97%B4%E7%BA%A6%E6%9D%9F.png" alt="image-20191202163857217"></p>
+<blockquote>
+<ol>
+<li>黄色的是IMU的帧间约束（PVQBaBg 15*1）</li>
+<li>蓝色为视觉重投影误差约束（2*1）</li>
+<li>绿色为闭环帧，用来计算相对位资，用于闭环优化时使用</li>
+<li>红色的是IMU预计分步骤</li>
+</ol>
+</blockquote>
+<p>本文重点看IMU约束与视觉约束</p>
+<h4 id="前端使用光流跟踪"><a href="#前端使用光流跟踪" class="headerlink" title="前端使用光流跟踪"></a>前端使用光流跟踪</h4><ol>
+<li>cv::goodfeaturesToTrack检测Harris角点</li>
+<li>cv::CalcOpticalFlowPyrLK跟踪相邻帧的角点</li>
+<li>cv::findFundamentalMat 去除异常点</li>
+<li>统一的球面模型</li>
+</ol>
+<h4 id="关键帧选择机制"><a href="#关键帧选择机制" class="headerlink" title="关键帧选择机制"></a>关键帧选择机制</h4><ol>
+<li>平均视差大于某个阈值</li>
+<li>跟踪的特征点数量小于某个阈值</li>
+</ol>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>VINS</tag>
       </tags>
   </entry>
   <entry>
@@ -3949,42 +3983,8 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
 ]]></content>
       <tags>
+        <tag>VINS</tag>
         <tag>VIO</tag>
-        <tag>VINS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VINS系统解析</title>
-    <url>/2020/02/15/2020-02-15-VINS_Mono_System/</url>
-    <content><![CDATA[<h2 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h2><p>基本框架如下图所示<br><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B.png" alt="image-20191202164309191"></p>
-<a id="more"></a>
-
-<p><img src="/images/VINS%E8%A7%A3%E6%9E%90/VINS%E5%B8%A7%E9%97%B4%E7%BA%A6%E6%9D%9F.png" alt="image-20191202163857217"></p>
-<blockquote>
-<ol>
-<li>黄色的是IMU的帧间约束（PVQBaBg 15*1）</li>
-<li>蓝色为视觉重投影误差约束（2*1）</li>
-<li>绿色为闭环帧，用来计算相对位资，用于闭环优化时使用</li>
-<li>红色的是IMU预计分步骤</li>
-</ol>
-</blockquote>
-<p>本文重点看IMU约束与视觉约束</p>
-<h4 id="前端使用光流跟踪"><a href="#前端使用光流跟踪" class="headerlink" title="前端使用光流跟踪"></a>前端使用光流跟踪</h4><ol>
-<li>cv::goodfeaturesToTrack检测Harris角点</li>
-<li>cv::CalcOpticalFlowPyrLK跟踪相邻帧的角点</li>
-<li>cv::findFundamentalMat 去除异常点</li>
-<li>统一的球面模型</li>
-</ol>
-<h4 id="关键帧选择机制"><a href="#关键帧选择机制" class="headerlink" title="关键帧选择机制"></a>关键帧选择机制</h4><ol>
-<li>平均视差大于某个阈值</li>
-<li>跟踪的特征点数量小于某个阈值</li>
-</ol>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>VINS</tag>
       </tags>
   </entry>
   <entry>
@@ -4064,42 +4064,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
         <tag>SLAM</tag>
         <tag>VIO</tag>
         <tag>evo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SLAM各算法运行方法与过程</title>
-    <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
-    <content><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p>
-<p>主要包括以下五种算法:</p>
-<ol>
-<li>VINS_mono/fusion</li>
-<li>OKVIS</li>
-<li>ROVIO</li>
-<li>VI_ORB-SLAM</li>
-<li>MSCKF</li>
-</ol>
-<a id="more"></a>
-
-<h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr>
-<h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p>
-<hr>
-<h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：[该博客]<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html" target="_blank" rel="noopener">https://www.cnblogs.com/Jessica-jie/p/6607719.html</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE&#x3D;Release -DMAKE_SCENE&#x3D;ON</span><br></pre></td></tr></table></figure>
-
-<h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ source devel&#x2F;setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;&#x2F;home&#x2F;guoben&#x2F;Documents&#x2F;output&#x2F;vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB" target="_blank" rel="noopener"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc    </p>
-<hr>
-<h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~&#x2F;Project&#x2F;msckf_vio_workspace&#x2F;src&#x2F;msckf_vio&#x2F;rviz&#x2F;rviz_euroc_config.rviz   &#x2F;&#x2F;rviz显示模型</span><br><span class="line">  rosbag play &#x2F;home&#x2F;wj&#x2F;Downloads&#x2F;dataset&#x2F;EuRoC&#x2F;ROS_bag&#x2F;MH_05_difficult.bag</span><br></pre></td></tr></table></figure>
-
-<p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>
-]]></content>
-      <tags>
-        <tag>SLAM</tag>
       </tags>
   </entry>
   <entry>
@@ -4197,6 +4161,42 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SLAM各算法运行方法与过程</title>
+    <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
+    <content><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p>
+<p>主要包括以下五种算法:</p>
+<ol>
+<li>VINS_mono/fusion</li>
+<li>OKVIS</li>
+<li>ROVIO</li>
+<li>VI_ORB-SLAM</li>
+<li>MSCKF</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr>
+<h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p>
+<hr>
+<h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：[该博客]<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html" target="_blank" rel="noopener">https://www.cnblogs.com/Jessica-jie/p/6607719.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE&#x3D;Release -DMAKE_SCENE&#x3D;ON</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ source devel&#x2F;setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;&#x2F;home&#x2F;guoben&#x2F;Documents&#x2F;output&#x2F;vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB" target="_blank" rel="noopener"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc    </p>
+<hr>
+<h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~&#x2F;Project&#x2F;msckf_vio_workspace&#x2F;src&#x2F;msckf_vio&#x2F;rviz&#x2F;rviz_euroc_config.rviz   &#x2F;&#x2F;rviz显示模型</span><br><span class="line">  rosbag play &#x2F;home&#x2F;wj&#x2F;Downloads&#x2F;dataset&#x2F;EuRoC&#x2F;ROS_bag&#x2F;MH_05_difficult.bag</span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>
+]]></content>
+      <tags>
+        <tag>SLAM</tag>
       </tags>
   </entry>
   <entry>
