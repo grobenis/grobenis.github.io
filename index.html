@@ -72,6 +72,79 @@
     
     
     
+    <article id="post-2020-04-14-OPENCV-Function" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/04/14/2020-04-14-OPENCV-Function/"
+    >OPENCV重要函数</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/14/2020-04-14-OPENCV-Function/" class="article-date">
+  <time datetime="2020-04-14T12:43:39.000Z" itemprop="datePublished">2020-04-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节用来总结SLAM学习过程中，用到的重要的opencv函数</p>
+      
+      <a class="article-more-link" href="/2020/04/14/2020-04-14-OPENCV-Function/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/" rel="tag">opencv</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-2020-04-14-C-priority-queue" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -256,7 +329,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2020/04/13/2020-04-13-ORBSLAM2/"
-    >ORBSLAM2学习</a
+    >特征点法的巅峰之作——ORBSLAM2</a
   >
 </h2>
   
@@ -288,26 +361,10 @@
       
 
       
-      <a id="more"></a>
-
-<h2 id="ORBSLAM2的特点"><a href="#ORBSLAM2的特点" class="headerlink" title="ORBSLAM2的特点"></a>ORBSLAM2的特点</h2><ul>
-<li>首个支持单目，双目和RGBD相机的完整的开源SLAM方案，能够实现地图重用，回环检测和重新定位的功能</li>
-<li>能够在CPU上进行实时工作，比如手机、无人机、汽车。</li>
-<li>特征点法的巅峰之作，定位精度极高。</li>
-<li>能够实时计出相机的位姿，并生成场景的稀疏三维重建地图。</li>
-<li>代码非常整洁，包含很多实际应用中的技巧，非常实用。</li>
-<li>支持仅定位模式，该模式适用于轻量级以及在地图已知情况下长期运行，此时不使用局部建图和回环检测的线程。</li>
-<li>双目和RGBD相对单目相机的主要优势在于，可以直接获得深度信息，不需要像单目情况中那样做一个特定的SFM初始化</li>
-</ul>
-<h3 id="ORBSLAM系统框架"><a href="#ORBSLAM系统框架" class="headerlink" title="ORBSLAM系统框架"></a>ORBSLAM系统框架</h3><p><img src="/2020/04/13/2020-04-13-ORBSLAM2/image-20200413105119355.png" alt="image-20200413105119355"></p>
-<p>associate：深度图与彩色图之间不能超过0.02s。</p>
-<h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h3><ol>
-<li>TUM</li>
-<li>EuRoC</li>
-<li>KITTI</li>
-</ol>
-<p>红色点表示当前追踪的点，黑色点表示剩下的点。</p>
-
+      <p>ORB-SLAM 是西班牙 Zaragoza 大学的 Raúl Mur-Arta 编写的视觉 SLAM 系统。 它是一个完整的 SLAM 系统，包括视觉里程计、跟踪、回环检测，是一种完全基于稀疏特征点的单目 SLAM 系统，同时还有单目、双目、RGBD 相机的接口。其核心是使用 ORB (Orinted FAST and BRIEF) 作为整个视觉 SLAM 中的核心特征。</p>
+      
+      <a class="article-more-link" href="/2020/04/13/2020-04-13-ORBSLAM2/">阅读更多...</a>
+      
       
       <!-- reward -->
       
@@ -831,79 +888,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E5%91%A8%E8%B5%9B/" rel="tag">双周赛</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-04-SLAM-CV" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/04/2020-04-04-SLAM-CV/"
-    >SLAM岗位求职与简历书写</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/04/2020-04-04-SLAM-CV/" class="article-date">
-  <time datetime="2020-04-03T16:58:46.000Z" itemprop="datePublished">2020-04-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B1%82%E8%81%8C/">求职</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本文学习自B站计算机视觉Life的<a href="https://www.bilibili.com/video/BV1mE411t7rT?from=search&seid=15622956175563291600" target="_blank" rel="noopener">如何写简历</a>。</p>
-      
-      <a class="article-more-link" href="/2020/04/04/2020-04-04-SLAM-CV/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B1%82%E8%81%8C/" rel="tag">求职</a></li></ul>
 
 
     </footer>
