@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    LeetCode周赛182 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-03-28-LeetCode-Contest182" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  LeetCode周赛182
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/02/2020-03-28-LeetCode-Contest182/" class="article-date">
+  <time datetime="2020-04-02T05:29:25.000Z" itemprop="datePublished">2020-04-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.7k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">12分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>LeeCode第182场周赛题目如下:</p>
+<ol>
+<li>找出数组中的幸运数</li>
+<li>统计作战单位数</li>
+<li>设计地铁系统t</li>
+<li>找到所有好字符串</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="1394-找出数组中的幸运数"><a href="#1394-找出数组中的幸运数" class="headerlink" title="1394. 找出数组中的幸运数"></a>1394. 找出数组中的幸运数</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>在整数数组中，如果一个整数的出现频次和它的数值大小相等，我们就称这个整数为「幸运数」。</p>
+<p>给你一个整数数组 <code>arr</code>，请你从中找出并返回一个幸运数。</p>
+<ul>
+<li>如果数组中存在多个幸运数，只需返回 <strong>最大</strong> 的那个。</li>
+<li>如果数组中不含幸运数，则返回 <strong>-1</strong> 。</li>
+</ul>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [2,2,3,4]</span><br><span class="line">输出：2</span><br><span class="line">解释：数组中唯一的幸运数是 2 ，因为数值 2 的出现频次也是 2 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [1,2,2,3,3,3]</span><br><span class="line">输出：3</span><br><span class="line">解释：1、2 以及 3 都是幸运数，只需要返回其中最大的 3 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3"><a href="#示例-3" class="headerlink" title="示例 3"></a><strong>示例 3</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [2,2,2,3,3]</span><br><span class="line">输出：-1</span><br><span class="line">解释：数组中不存在幸运数。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4"><a href="#示例-4" class="headerlink" title="示例 4"></a><strong>示例 4</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [5]</span><br><span class="line">输出：-1</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-5"><a href="#示例-5" class="headerlink" title="示例 5"></a><strong>示例 5</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [7,7,7,7,7,7,7]</span><br><span class="line">输出：7</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= arr.length &lt;= 500</code></li>
+<li><code>1 &lt;= arr[i] &lt;= 500</code></li>
+</ul>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findLucky</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; <span class="built_in">set</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> n:arr)</span><br><span class="line">            <span class="built_in">set</span>[n]++;</span><br><span class="line">        <span class="keyword">int</span> maxnum = <span class="number">-1</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;::iterator iter;</span><br><span class="line">        <span class="keyword">for</span>(iter = <span class="built_in">set</span>.<span class="built_in">begin</span>();iter!=<span class="built_in">set</span>.<span class="built_in">end</span>();iter++)</span><br><span class="line">            <span class="keyword">if</span>(iter-&gt;first==iter-&gt;second)</span><br><span class="line">                maxnum = <span class="built_in">max</span>(maxnum,iter-&gt;first);</span><br><span class="line">        <span class="keyword">return</span> maxnum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1395-统计作战单位数"><a href="#1395-统计作战单位数" class="headerlink" title="1395. 统计作战单位数"></a>1395. 统计作战单位数</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p> <code>n</code> 名士兵站成一排。每个士兵都有一个 <strong>独一无二</strong> 的评分 <code>rating</code> 。</p>
+<p>每 <strong>3</strong> 个士兵可以组成一个作战单位，分组规则如下：</p>
+<ul>
+<li>从队伍中选出下标分别为 <code>i</code>、<code>j</code>、<code>k</code> 的 3 名士兵，他们的评分分别为 <code>rating[i]</code>、<code>rating[j]</code>、<code>rating[k]</code></li>
+<li>作战单位需满足： <code>rating[i] &lt; rating[j] &lt; rating[k]</code> 或者 <code>rating[i] &gt; rating[j] &gt; rating[k]</code> ，其中 <code>0 &lt;= i &lt; j &lt; k &lt; n</code></li>
+</ul>
+<p>请你返回按上述条件可以组建的作战单位数量。每个士兵都可以是多个作战单位的一部分。</p>
+<p><strong>示例 1</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：rating &#x3D; [2,5,3,4,1]</span><br><span class="line">输出：3</span><br><span class="line">解释：我们可以组建三个作战单位 (2,3,4)、(5,4,1)、(5,3,1) 。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：rating &#x3D; [2,1,3]</span><br><span class="line">输出：0</span><br><span class="line">解释：根据题目条件，我们无法组建作战单位。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：rating &#x3D; [1,2,3,4]</span><br><span class="line">输出：4</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numTeams</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; rating)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = rating.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> num1=<span class="number">0</span>;<span class="comment">// 顺序增大的个数</span></span><br><span class="line">        <span class="keyword">int</span> num2=<span class="number">0</span>;<span class="comment">// 顺序减小的个数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k=j+<span class="number">1</span>;k&lt;n;k++)</span><br><span class="line">                    <span class="keyword">if</span>(rating[i]&lt;rating[j]&amp;&amp;rating[j]&lt;rating[k])</span><br><span class="line">                        num1++;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span>(rating[i]&gt;rating[j]&amp;&amp;rating[j]&gt;rating[k])</span><br><span class="line">                        num2++;</span><br><span class="line">        <span class="keyword">return</span> num1+num2;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1396-设计地铁系统"><a href="#1396-设计地铁系统" class="headerlink" title="1396. 设计地铁系统"></a>1396. 设计地铁系统</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>请你实现一个类 <code>UndergroundSystem</code> ，它支持以下 3 种方法：</p>
+<p>1.<code>checkIn(int id, string stationName, int t)</code></p>
+<ul>
+<li>编号为 <code>id</code> 的乘客在 <code>t</code> 时刻进入地铁站 <code>stationName</code> 。</li>
+<li>一个乘客在同一时间只能在一个地铁站进入或者离开。</li>
+</ul>
+<p>2.<code>checkOut(int id, string stationName, int t)</code></p>
+<ul>
+<li>编号为 <code>id</code> 的乘客在 <code>t</code> 时刻离开地铁站 <code>stationName</code> 。</li>
+</ul>
+<p>3.<code>getAverageTime(string startStation, string endStation)</code> </p>
+<ul>
+<li>返回从地铁站 <code>startStation</code> 到地铁站 <code>endStation</code> 的平均花费时间。</li>
+<li>平均时间计算的行程包括当前为止所有从 <code>startStation</code> <strong>直接到达</strong> <code>endStation</code> 的行程。</li>
+<li>调用 <code>getAverageTime</code> 时，询问的路线至少包含一趟行程。</li>
+</ul>
+<p>你可以假设所有对 <code>checkIn</code> 和 <code>checkOut</code> 的调用都是符合逻辑的。也就是说，如果一个顾客在 <strong>t1</strong> 时刻到达某个地铁站，那么他离开的时间 <strong>t2</strong> 一定满足 <strong>t2 &gt; t1</strong> 。所有的事件都按时间顺序给出。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;UndergroundSystem&quot;,&quot;checkIn&quot;,&quot;checkIn&quot;,&quot;checkIn&quot;,&quot;checkOut&quot;,&quot;checkOut&quot;,&quot;checkOut&quot;,&quot;getAverageTime&quot;,&quot;getAverageTime&quot;,&quot;checkIn&quot;,&quot;getAverageTime&quot;,&quot;checkOut&quot;,&quot;getAverageTime&quot;]</span><br><span class="line">[[],[45,&quot;Leyton&quot;,3],[32,&quot;Paradise&quot;,8],[27,&quot;Leyton&quot;,10],[45,&quot;Waterloo&quot;,15],[27,&quot;Waterloo&quot;,20],[32,&quot;Cambridge&quot;,22],[&quot;Paradise&quot;,&quot;Cambridge&quot;],[&quot;Leyton&quot;,&quot;Waterloo&quot;],[10,&quot;Leyton&quot;,24],[&quot;Leyton&quot;,&quot;Waterloo&quot;],[10,&quot;Waterloo&quot;,38],[&quot;Leyton&quot;,&quot;Waterloo&quot;]]</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">[null,null,null,null,null,null,null,14.0,11.0,null,11.0,null,12.0]</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">UndergroundSystem undergroundSystem &#x3D; new UndergroundSystem();</span><br><span class="line">undergroundSystem.checkIn(45, &quot;Leyton&quot;, 3);</span><br><span class="line">undergroundSystem.checkIn(32, &quot;Paradise&quot;, 8);</span><br><span class="line">undergroundSystem.checkIn(27, &quot;Leyton&quot;, 10);</span><br><span class="line">undergroundSystem.checkOut(45, &quot;Waterloo&quot;, 15);</span><br><span class="line">undergroundSystem.checkOut(27, &quot;Waterloo&quot;, 20);</span><br><span class="line">undergroundSystem.checkOut(32, &quot;Cambridge&quot;, 22);</span><br><span class="line">undergroundSystem.getAverageTime(&quot;Paradise&quot;, &quot;Cambridge&quot;);       &#x2F;&#x2F; 返回 14.0。从 &quot;Paradise&quot;（时刻 8）到 &quot;Cambridge&quot;(时刻 22)的行程只有一趟</span><br><span class="line">undergroundSystem.getAverageTime(&quot;Leyton&quot;, &quot;Waterloo&quot;);          &#x2F;&#x2F; 返回 11.0。总共有 2 躺从 &quot;Leyton&quot; 到 &quot;Waterloo&quot; 的行程，编号为 id&#x3D;45 的乘客出发于 time&#x3D;3 到达于 time&#x3D;15，编号为 id&#x3D;27 的乘客于 time&#x3D;10 出发于 time&#x3D;20 到达。所以平均时间为 ( (15-3) + (20-10) ) &#x2F; 2 &#x3D; 11.0</span><br><span class="line">undergroundSystem.checkIn(10, &quot;Leyton&quot;, 24);</span><br><span class="line">undergroundSystem.getAverageTime(&quot;Leyton&quot;, &quot;Waterloo&quot;);          &#x2F;&#x2F; 返回 11.0</span><br><span class="line">undergroundSystem.checkOut(10, &quot;Waterloo&quot;, 38);</span><br><span class="line">undergroundSystem.getAverageTime(&quot;Leyton&quot;, &quot;Waterloo&quot;);          &#x2F;&#x2F; 返回 12.0</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li>总共最多有 <code>20000</code> 次操作。</li>
+<li><code>1 &lt;= id, t &lt;= 10^6</code></li>
+<li>所有的字符串包含大写字母，小写字母和数字。</li>
+<li><code>1 &lt;= stationName.length &lt;= 10</code></li>
+<li>与标准答案误差在 <code>10^-5</code> 以内的结果都视为正确结果。</li>
+</ul>
+<h3 id="其它解法"><a href="#其它解法" class="headerlink" title="其它解法"></a>其它解法</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>使用 checkRecord 根据 id 来保存上车 车站名字 和 时间<br>在下车车站，把乘车时间计算出来，按两个 车站名字 保存起来，同时还要保存 乘车次数<br>取得平均时间时，只需要查询两个车站，得到总时间，和总次数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UndergroundSystem</span> &#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, pair&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt;&gt; checkRecord;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, pair&lt;<span class="keyword">double</span>, <span class="keyword">int</span>&gt;&gt; count;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    UndergroundSystem() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">checkIn</span><span class="params">(<span class="keyword">int</span> id, <span class="built_in">string</span> stationName, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">        checkRecord[id] = &#123; stationName, t &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">checkOut</span><span class="params">(<span class="keyword">int</span> id, <span class="built_in">string</span> stationName, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> name = getStationName(checkRecord[id].first, stationName);</span><br><span class="line">        t -= checkRecord[id].second;</span><br><span class="line">        count[name].first += (<span class="keyword">double</span>)t;</span><br><span class="line">        count[name].second += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getAverageTime</span><span class="params">(<span class="built_in">string</span> startStation, <span class="built_in">string</span> endStation)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> name = getStationName(startStation, endStation);</span><br><span class="line">        <span class="keyword">double</span> ans = count[name].first / (<span class="keyword">double</span>)count[name].second;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getStationName</span><span class="params">(<span class="built_in">string</span> startStation, <span class="built_in">string</span> endStation)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> startStation + endStation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="1397-找到所有好字符串"><a href="#1397-找到所有好字符串" class="headerlink" title="1397. 找到所有好字符串"></a>1397. 找到所有好字符串</h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你两个长度为 <code>n</code> 的字符串 <code>s1</code> 和 <code>s2</code> ，以及一个字符串 <code>evil</code> 。请你返回 <strong>好字符串</strong> 的数目。</p>
+<p><strong>好字符串</strong> 的定义为：它的长度为 <code>n</code> ，字典序大于等于 <code>s1</code> ，字典序小于等于 <code>s2</code> ，且不包含 <code>evil</code> 为子字符串。</p>
+<p>由于答案可能很大，请你返回答案对 10^9 + 7 取余的结果。</p>
+<h4 id="示例-1-1"><a href="#示例-1-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 2, s1 &#x3D; &quot;aa&quot;, s2 &#x3D; &quot;da&quot;, evil &#x3D; &quot;b&quot;</span><br><span class="line">输出：51 </span><br><span class="line">解释：总共有 25 个以 &#39;a&#39; 开头的好字符串：&quot;aa&quot;，&quot;ac&quot;，&quot;ad&quot;，...，&quot;az&quot;。还有 25 个以 &#39;c&#39; 开头的好字符串：&quot;ca&quot;，&quot;cc&quot;，&quot;cd&quot;，...，&quot;cz&quot;。最后，还有一个以 &#39;d&#39; 开头的好字符串：&quot;da&quot;。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2-1"><a href="#示例-2-1" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, s1 &#x3D; &quot;leetcode&quot;, s2 &#x3D; &quot;leetgoes&quot;, evil &#x3D; &quot;leet&quot;</span><br><span class="line">输出：0 </span><br><span class="line">解释：所有字典序大于等于 s1 且小于等于 s2 的字符串都以 evil 字符串 &quot;leet&quot; 开头。所以没有好字符串。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3-1"><a href="#示例-3-1" class="headerlink" title="示例 3"></a><strong>示例 3</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 2, s1 &#x3D; &quot;gx&quot;, s2 &#x3D; &quot;gz&quot;, evil &#x3D; &quot;x&quot;</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ul>
+<li><code>s1.length == n</code></li>
+<li><code>s2.length == n</code></li>
+<li><code>s1 &lt;= s2</code></li>
+<li><code>1 &lt;= n &lt;= 500</code></li>
+<li><code>1 &lt;= evil.length &lt;= 50</code></li>
+<li>所有字符串都只包含小写英文字母。</li>
+</ul>
+<h3 id="其它解法-1"><a href="#其它解法-1" class="headerlink" title="其它解法"></a>其它解法</h3><h4 id="思路数位DP-前缀数组"><a href="#思路数位DP-前缀数组" class="headerlink" title="思路数位DP + 前缀数组"></a>思路数位DP + 前缀数组</h4><p>看到题目，很容易能够想到是动态规划问题来解决，接下来就是定义状态方程，该如何定义？</p>
+<p>从题目中我们知道判断某一位的状态取决于前面的字符匹配情况，有三种：</p>
+<p>s1为下限，s2为上限<br>s1为下限，s2无限制<br>s1无限制，s2为上限<br>s1和s2均无限制，即可以选任意小写字母<br>这种思想很容易联想到数位DP(数位DP不熟悉的可以查阅下相关资料)，那么在数位DP的基础上我们还要增加一个维度来解决不包含子串问题：</p>
+<p>那么增加的维度表示前面已经匹配的evil的长度, 想计算加入当前字符后最长匹配的evil长度是需要使用KMP算法的前缀数组来解决的，如果不是很熟悉这个算法参考下上周周赛的最后一题最长快乐前缀。</p>
+<p>因此一个维度表示遍历的索引，一个维度表示当前可选字符的限制，一个维度表示已经匹配的evil的长度，因此三维的状态就可以定义出来了，具体的可以看代码的注释。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">1000000007</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findGoodStrings</span><span class="params">(<span class="keyword">int</span> n, <span class="built_in">string</span> a, <span class="built_in">string</span> b, <span class="built_in">string</span> e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> en = e.length();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">fa</span><span class="params">(en+<span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = fa[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(; i&lt;en; i++, j++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(j&gt;=<span class="number">0</span> &amp;&amp; e[j]!=e[i])j=fa[j];</span><br><span class="line">            fa[i+<span class="number">1</span>]=j+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> plen = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a.substr(<span class="number">0</span>, i) == b.substr(<span class="number">0</span>, i))plen = i;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> now = <span class="number">0</span>, flag = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;plen; i++, now++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(now!=<span class="number">-1</span> &amp;&amp; a[i]!=e[now])&#123;</span><br><span class="line">                now=fa[now];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(now==en<span class="number">-1</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(plen == n)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">sc</span><span class="params">(en, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = a[plen]-<span class="string">'a'</span>+<span class="number">1</span>; i&lt;b[plen]-<span class="string">'a'</span>; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> noww = now;</span><br><span class="line">            <span class="keyword">while</span>(noww!=<span class="number">-1</span> &amp;&amp; i+<span class="string">'a'</span>!=e[noww])&#123;</span><br><span class="line">                noww=fa[noww];</span><br><span class="line">            &#125;noww++;</span><br><span class="line">            <span class="keyword">if</span>(noww&lt;en)sc[noww]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> nowa = now;</span><br><span class="line">        <span class="keyword">while</span>(nowa!=<span class="number">-1</span> &amp;&amp; a[plen]!=e[nowa])&#123;</span><br><span class="line">            nowa=fa[nowa];</span><br><span class="line">        &#125;nowa++;</span><br><span class="line">        <span class="keyword">int</span> nowb = now;</span><br><span class="line">        <span class="keyword">while</span>(nowb!=<span class="number">-1</span> &amp;&amp; b[plen]!=e[nowb])&#123;</span><br><span class="line">            nowb=fa[nowb];</span><br><span class="line">        &#125;nowb++;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> p=plen+<span class="number">1</span>; p&lt;n; p++)&#123;</span><br><span class="line">            <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">d</span><span class="params">(en, <span class="number">0</span>)</span></span>;</span><br><span class="line">            <span class="keyword">if</span>(nowa&lt;en)</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i=a[p]-<span class="string">'a'</span>+<span class="number">1</span>; i&lt;<span class="number">26</span>; i++)&#123;</span><br><span class="line">                    <span class="keyword">int</span> noww = nowa;</span><br><span class="line">                    <span class="keyword">while</span>(noww!=<span class="number">-1</span> &amp;&amp; i+<span class="string">'a'</span>!=e[noww])&#123;</span><br><span class="line">                        noww=fa[noww];</span><br><span class="line">                    &#125;noww++;</span><br><span class="line">                    <span class="keyword">if</span>(noww&lt;en)d[noww]++;</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">if</span>(nowb&lt;en)</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;b[p]-<span class="string">'a'</span>; i++)&#123;</span><br><span class="line">                    <span class="keyword">int</span> noww = nowb;</span><br><span class="line">                    <span class="keyword">while</span>(noww!=<span class="number">-1</span> &amp;&amp; i+<span class="string">'a'</span>!=e[noww])&#123;</span><br><span class="line">                        noww=fa[noww];</span><br><span class="line">                    &#125;noww++;</span><br><span class="line">                    <span class="keyword">if</span>(noww&lt;en)d[noww]++;</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> c=<span class="number">0</span>; c&lt;<span class="number">26</span>; c++)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> nn=<span class="number">0</span>; nn&lt;en; nn++)&#123;</span><br><span class="line">                    <span class="keyword">int</span> now = nn;</span><br><span class="line">                    <span class="keyword">while</span>(now!=<span class="number">-1</span> &amp;&amp; c+<span class="string">'a'</span>!=e[now])&#123;</span><br><span class="line">                        now=fa[now];</span><br><span class="line">                    &#125;now++;</span><br><span class="line">                    <span class="keyword">if</span>(now&lt;en)(d[now]+=sc[nn])%=mod;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            sc=d;</span><br><span class="line">            <span class="keyword">if</span>(nowa&lt;en)&#123;</span><br><span class="line">                <span class="keyword">while</span>(nowa!=<span class="number">-1</span> &amp;&amp; a[p]!=e[nowa])&#123;</span><br><span class="line">                    nowa=fa[nowa];</span><br><span class="line">                &#125;nowa++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(nowb&lt;en)&#123;</span><br><span class="line">                <span class="keyword">while</span>(nowb!=<span class="number">-1</span> &amp;&amp; b[p]!=e[nowb])&#123;</span><br><span class="line">                    nowb=fa[nowb];</span><br><span class="line">                &#125;nowb++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;en; j++)&#123;</span><br><span class="line">            ans=(ans+sc[j])%mod;</span><br><span class="line">        &#125;</span><br><span class="line">        ans+=(nowa&lt;en)+(nowb&lt;en);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/02/2020-03-28-LeetCode-Contest182/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag">周赛</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/04/03/2020-04-03-LeetCodeCheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            LeetCode 每日打卡4-3~6
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/04/02/2020-04-02-LeetCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">LeetCode 每日打卡4-2</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>

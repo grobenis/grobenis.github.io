@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    LeetCode 每日打卡4.11~12 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-04-11-LeetCode-CheckDaily" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  LeetCode 每日打卡4.11~12
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/10/2020-04-11-LeetCode-CheckDaily/" class="article-date">
+  <time datetime="2020-04-10T05:12:47.000Z" itemprop="datePublished">2020-04-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.3k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">18分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>今日打卡题目如下：</p>
+<ol>
+<li>[困难] 鸡蛋掉落 </li>
+<li>[简单] 二叉树的最近公共祖先</li>
+<li>[困难] 求两线段交点</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="887-鸡蛋掉落"><a href="#887-鸡蛋掉落" class="headerlink" title="887. 鸡蛋掉落"></a>887. 鸡蛋掉落</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>你将获得 <code>K</code> 个鸡蛋，并可以使用一栋从 <code>1</code> 到 <code>N</code> 共有 <code>N</code> 层楼的建筑。</p>
+<p>每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。</p>
+<p>你知道存在楼层 <code>F</code> ，满足 <code>0 &lt;= F &lt;= N</code> 任何从高于 <code>F</code> 的楼层落下的鸡蛋都会碎，从 <code>F</code> 楼层或比它低的楼层落下的鸡蛋都不会破。</p>
+<p>每次<em>移动</em>，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 <code>X</code> 扔下（满足 <code>1 &lt;= X &lt;= N</code>）。</p>
+<p>你的目标是<strong>确切地</strong>知道 <code>F</code> 的值是多少。</p>
+<p>无论 <code>F</code> 的初始值如何，你确定 <code>F</code> 的值的最小移动次数是多少？</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：K &#x3D; 1, N &#x3D; 2</span><br><span class="line">输出：2</span><br><span class="line">解释：</span><br><span class="line">鸡蛋从 1 楼掉落。如果它碎了，我们肯定知道 F &#x3D; 0 。</span><br><span class="line">否则，鸡蛋从 2 楼掉落。如果它碎了，我们肯定知道 F &#x3D; 1 。</span><br><span class="line">如果它没碎，那么我们肯定知道 F &#x3D; 2 。</span><br><span class="line">因此，在最坏的情况下我们需要移动 2 次以确定 F 是多少。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：K &#x3D; 2, N &#x3D; 6</span><br><span class="line">输出：3</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3："><a href="#示例-3：" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：K &#x3D; 3, N &#x3D; 14</span><br><span class="line">输出：4</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ol>
+<li><code>1 &lt;= K &lt;= 100</code></li>
+<li><code>1 &lt;= N &lt;= 10000</code></li>
+</ol>
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="背景资料"><a href="#背景资料" class="headerlink" title="背景资料"></a>背景资料</h4><p>本题是谷歌用于面试的一道经典面试题之一。由于本题过于经典，谷歌公司已经不再将这题作为面试的候选题目了。</p>
+<p>本题难度较高，要想通过本题，需要一定的动态规划优化或数学功底。本题的标准解法为动态规划，由于篇幅有限，不会叙述 动态规划的边界条件、自底向上的动态规划和自顶向下的动态规划分别怎么实现 等较为基础的知识，而是把重点放在推导动态规划状态转移方程的过程，以及优化的思路、证明以及方法。</p>
+<p>读者应当期望在阅读完本题解后，能够对方法一有一个大致的思路，并且可以在尝试中编写出代码。方法一已经是很优秀的解法，本题解也着重于此。而对于方法二和方法三，已经超过了面试难度，是竞赛中的考点，仅供读者挑战自我的极限。</p>
+<h4 id="方法一：动态规划-二分搜索"><a href="#方法一：动态规划-二分搜索" class="headerlink" title="方法一：动态规划 + 二分搜索"></a>方法一：动态规划 + 二分搜索</h4><h5 id="思路和算法"><a href="#思路和算法" class="headerlink" title="思路和算法"></a>思路和算法</h5><p>我们可以考虑使用动态规划来做这道题，状态可以表示成 <code>(K, N)</code>，其中 <code>K</code>为鸡蛋数，<code>N</code>为楼层数。当我们从第 XX 楼扔鸡蛋的时候：</p>
+<p>如果鸡蛋不碎，那么状态变成 <code>(K, N-X)</code>，即我们鸡蛋的数目不变，但答案只可能在上方的 <code>N-X</code>层楼了。也就是说，我们把原问题缩小成了一个规模为 <code>(K, N-X)</code>的子问题；</p>
+<p>如果鸡蛋碎了，那么状态变成 <code>(K-1, X-1)</code>，即我们少了一个鸡蛋，但我们知道答案只可能在第<code>X</code>楼下方的 <code>X-1</code>层楼中了。也就是说，我们把原问题缩小成了一个规模为 <code>(K-1, X-1)</code>的子问题。</p>
+<p>这样一来，我们定义 <code>dp(K, N)</code>为在状态 <code>(K, N)</code>下最少需要的步数。</p>
+<p>根据以上分析我们可以列出状态转移方程：<br>$$<br>dp(K, N) = 1 + \min\limits_{1 \leq X \leq N} \Big( \max(dp(K-1, X-1), dp(K, N-X)) \Big)\<br>dp(K,N)=1+1≤X≤N \min<br> (max(dp(K−1,X−1),dp(K,N−X)))<br>$$<br>这个状态转移方程是如何得来的呢？对于 <code>dp(K, N)</code>而言，我们像上面分析的那样，枚举第一个鸡蛋扔在的楼层数 <code>X</code>。由于我们并不知道真正的 <code>F</code>值，因此我们必须保证 鸡蛋碎了之后接下来需要的步数 和 鸡蛋没碎之后接下来需要的步数 二者的 最大值 最小，这样就保证了在 最坏情况下（也就是无论 <code>F</code> 的值如何） <code>dp(K, N)</code>的值最小。如果能理解这一点，也就能理解上面的状态转移方程。即最小化 $\max(dp(K-1, X-1), dp(K, N-X))$。</p>
+<p>如果我们直接暴力转移求解每个状态的<code>dp</code>值，时间复杂度是为 <code>O(KN^2)</code>，即一共有 <code>O(KN)</code>个状态，对于每个状态枚举扔鸡蛋的楼层 <code>X</code>,需要 <code>O(N)</code>的时间。这无疑在当前数据范围下是会超出时间限制的，因此我们需要想办法优化枚举的时间复杂度。</p>
+<p>我们观察到 <code>dp(K, N)</code>是一个关于 <code>N</code> 的单调递增函数，也就是说在鸡蛋数 <code>K</code>固定的情况下，楼层数 <code>N</code>越多，需要的步数一定不会变少。在上述的状态转移方程中，第一项$\mathcal{T_1}(X) = dp(K-1, X-1)$是一个随 <code>X</code>的增加而单调递增的函数，第二项 $\mathcal{T_2}(X) = dp(K, N-X)$是一个随着 <code>X</code>的增加而单调递减的函数。这如何帮助我们来优化这个问题呢？当X增加时，$\mathcal{T_1}(X)$单调递增。而$\mathcal{T_2}(X)$单调递减，我们可以想象在一个直角坐标系中，横坐标为 XX，纵坐标为 $\mathcal{T_1}(X)$ 和 $\mathcal{T_2}(X)$。当一个函数单调递增而另一个函数单调递减时，我们如何找到一个位置使得它们的最大值最小呢？</p>
+<p>如上图所示，如果这两个函数都是连续函数，那么我们只需要找出这两个函数的交点，在交点处就能保证这两个函数的最大值最小。但在本题中，$\mathcal{T_1}(X)$都是离散函数，也就是说，X的值只能取 <code>1,2,3</code> 等等。在这种情况下，我们需要找到最大的满足 $\mathcal{T_1}(X) &lt; \mathcal{T_2}(X)$ ，以及最小的满足 $\mathcal{T_1}(X) \geq \mathcal{T_2}(X)$，对应到上图中，就是离这两个函数（想象中的）交点左右两侧最近的整数。</p>
+<p>我们只需要比较在$X_0$ 和 $X_1$处两个函数的最大值，取一个最小的作为 <code>X</code> 即可。在数学上，我们可以证明出 $X_0$和 $X_1$相差1，这也是比较显然的，因为它们正好夹住了那个想象中的交点，并且相距尽可能地近。因此我们就可以使用二分查找的方法找出 $X_0$ ，再得到$X_1$</p>
+<p>我们在所有满足条件的 <code>X</code>X 上进行二分查找。对于状态 <code>(K, N)</code> 而言，<code>X</code>即为 <code>[1, N]</code>中的任一整数；</p>
+<p>在二分查找的过程中，假设当前这一步我们查找到了 $X_\textit{mid}$，如果 $\mathcal{T_1}(X_\textit{mid}) &gt; \mathcal{T_2}(X_\textit{mid})$ ,那么真正的 $X_0$  一定在 $X_\textit{mid}$  的左侧，否则真正的 $X_0$  在 $X_\textit{mid}$  的右侧。</p>
+<p>二分查找的写法因人而异，本质上我们就是需要找到最大的满足 $\mathcal{T_1}(X) &lt; \mathcal{T_2}(X)$ 的 $X_0$ ，根据 $X_\textit{mid}$  进行二分边界的调整。在得到了<code>X_0</code> 后，我们可以知道 $X_1$  即为 $X_0 + 1$，此时我们只需要比较 $\max(\mathcal{T_1}(X_0), \mathcal{T_2}(X_0))$和$\max(\mathcal{T_1}(X_1), \mathcal{T_2}(X_1))$，取较小的那个对应的位置作为 <code>X</code>即可。</p>
+<p>这样一来，对于给定的状态 <code>(K, N)</code>，我们只需要 <code>O(logN)</code> 的时间，通过二分查找就能得到最优的那个<code>X</code>，因此时间复杂度从 <code>O(KN^2)</code>降低至 <code>O(KN \log N)</code>，可以通过本题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; memo;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dp</span><span class="params">(<span class="keyword">int</span> K, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (memo.<span class="built_in">find</span>(N * <span class="number">100</span> + K) == memo.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> ans;</span><br><span class="line">            <span class="keyword">if</span> (N == <span class="number">0</span>) ans = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (K == <span class="number">1</span>) ans = N;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">int</span> lo = <span class="number">1</span>, hi = N;</span><br><span class="line">                <span class="keyword">while</span> (lo + <span class="number">1</span> &lt; hi) &#123;</span><br><span class="line">                    <span class="keyword">int</span> x = (lo + hi) / <span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">int</span> t1 = dp(K<span class="number">-1</span>, x<span class="number">-1</span>);</span><br><span class="line">                    <span class="keyword">int</span> t2 = dp(K, N-x);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (t1 &lt; t2) lo = x;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (t1 &gt; t2) hi = x;</span><br><span class="line">                    <span class="keyword">else</span> lo = hi = x;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                ans = <span class="number">1</span> + <span class="built_in">min</span>(<span class="built_in">max</span>(dp(K<span class="number">-1</span>, lo<span class="number">-1</span>), dp(K, N-lo)),</span><br><span class="line">                                   <span class="built_in">max</span>(dp(K<span class="number">-1</span>, hi<span class="number">-1</span>), dp(K, N-hi)));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            memo[N * <span class="number">100</span> + K] = ans;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> memo[N * <span class="number">100</span> + K];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">superEggDrop</span><span class="params">(<span class="keyword">int</span> K, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dp(K, N);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="面试题68-II-二叉树的最近公共祖先"><a href="#面试题68-II-二叉树的最近公共祖先" class="headerlink" title="面试题68 - II. 二叉树的最近公共祖先"></a>面试题68 - II. 二叉树的最近公共祖先</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p><a href="https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin" target="_blank" rel="noopener">百度百科</a>中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（<strong>一个节点也可以是它自己的祖先</strong>）。”</p>
+<p>例如，给定如下二叉树: root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png" alt="img"></p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1:"></a><strong>示例 1:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root &#x3D; [3,5,1,6,2,0,8,null,null,7,4], p &#x3D; 5, q &#x3D; 1</span><br><span class="line">输出: 3</span><br><span class="line">解释: 节点 5 和节点 1 的最近公共祖先是节点 3。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2:"></a><strong>示例 2:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root &#x3D; [3,5,1,6,2,0,8,null,null,7,4], p &#x3D; 5, q &#x3D; 4</span><br><span class="line">输出: 5</span><br><span class="line">解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">NULL</span>)<span class="keyword">return</span> <span class="literal">NULL</span>;        </span><br><span class="line">        <span class="keyword">if</span>(root == p||root == q)<span class="keyword">return</span> root;</span><br><span class="line">        TreeNode* left = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">        TreeNode* right = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">        <span class="keyword">if</span>(left &amp;&amp; right) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">return</span> left ? left : right; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面试题-16-03-交点"><a href="#面试题-16-03-交点" class="headerlink" title="面试题 16.03. 交点"></a>面试题 16.03. 交点</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a><strong>题目描述</strong></h3><p>给定两条线段（表示为起点<code>start = {X1, Y1}</code>和终点<code>end = {X2, Y2}</code>），如果它们有交点，请计算其交点，没有交点则返回空值。</p>
+<p>要求浮点型误差不超过<code>10^-6</code>。若有多个交点（线段重叠）则返回 X 值最小的点，X 坐标相同则返回 Y 值最小的点。</p>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 0&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;0, -1&#125;</span><br><span class="line">输出： &#123;0.5, 0&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;3, 3&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 1&#125;, &#123;2, 2&#125;</span><br><span class="line">输出： &#123;1, 1&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">line1 &#x3D; &#123;0, 0&#125;, &#123;1, 1&#125;</span><br><span class="line">line2 &#x3D; &#123;1, 0&#125;, &#123;2, 1&#125;</span><br><span class="line">输出： &#123;&#125;，两条线段没有交点</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li>坐标绝对值不会超过 2^7</li>
+<li>输入的坐标均是有效的二维坐标</li>
+</ul>
+<h3 id="官方解法-1"><a href="#官方解法-1" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="叉积法"><a href="#叉积法" class="headerlink" title="叉积法"></a>叉积法</h4><p>我们也可以不用表示出线段的方程，通过向量的基本运算来解决这个问题。这里引入一些向量运算的基本概念。</p>
+<p>向量叉积的模：对于向量 $\boldsymbol{a} = (x_1, y_1)$和 $\boldsymbol{b} = (x_2, y_2)$，定义向量的叉积的模为<br>$$<br>|\boldsymbol{c}| = |\boldsymbol{a} \times \boldsymbol{b}| = |\boldsymbol{a}||\boldsymbol{b}| \sin \langle \boldsymbol{a}, \boldsymbol{b} \rangle = x_1 y_2 - x_2 y_1<br>$$</p>
+<p>其中 $\langle \boldsymbol{a}, \boldsymbol{b} \rangle$表示 $\boldsymbol{a}$ 和 $\boldsymbol{b}$的夹角。这个模的正负性可以表示这两个向量的位置关系，如果 $\boldsymbol{a}$可以逆时针旋转与 $\boldsymbol{b}$共线，那么这个模大于 0；如果 $\boldsymbol{a}$可以顺时针旋转与 $\boldsymbol{b}$共线，那么这个模小于 0；如果已经共线，则等于 0。</p>
+<p>三角形的面积：有了叉积的定义，我们可以这样计算三角形 ABCABC 的面积<br>$$<br>S = \frac{|\boldsymbol{AB}\times \boldsymbol{AC}|}{2}<br>$$</p>
+<p>很好理解，画图可以看出 $\sin \langle \boldsymbol{a}, \boldsymbol{b}\rangle$ 相当于把一个向量投影成了另一个向量为底边的高。</p>
+<p>定比分点：若 P(x, y)P(x,y) 在线段 ABAB 上，端点坐标$A(x_1, y_2)，B(x_2, y_2)$，且 <code>AP</code>和 <code>BP</code>的长度之比为 $\lambda$，那么<br>$$<br>\left { \begin{aligned} x &amp;=&amp; \frac{x_1 + \lambda x_2}{1 + \lambda} \ y &amp;=&amp; \frac{y_1 + \lambda y_2}{1 + \lambda} \end{aligned} \right .<br>$$</p>
+<p><strong>说明</strong></p>
+<p>题目要求「如果有交点则计算交点，没有则返回空值」，并说明有多个交点的时候返回以 <code>x</code>为第一关键字，以 <code>y</code> 为第二关键字排序的最小点。</p>
+<p>首先我们要判断线段 <code>AB</code>和 <code>CD</code>是否存在交点，等价转换这个条件就是 <code>A</code>和 <code>B</code>位于<code>CD</code>的两侧并且 <code>C</code>和 <code>D</code> 位于 <code>AB</code>的两侧。那么如何判断「<code>P</code> 和<code>Q</code>位于<code>MN</code>的两侧」呢？我们可以连接<code>PM</code>和<code>QM</code>，如果能满足 $(\boldsymbol{MN} \times \boldsymbol{MP})(\boldsymbol{MN} \times \boldsymbol{MQ}) \leq 0$，即把 $\boldsymbol{MN}$ 向两个不同的方向旋转可以分别得到 $\boldsymbol{MP}$ 和 $\boldsymbol{MQ}$，则说明<code>P</code> 和<code>Q</code>位于 <code>MN</code>的两侧。考虑：什么时候等于 0？ 很明显当 <code>P</code> 或<code>Q</code>位于 <code>MN</code>上的时候，这个值等于 <code>0</code>。这里我们也可以先通过叉积的方法判断 $\boldsymbol{MN}$和$\boldsymbol{PQ}$是否共线，如果 $\boldsymbol{MN} \times \boldsymbol{MP}$和$ \boldsymbol{MN} \times \boldsymbol{MQ}$都为 <code>0</code>，则说明共线。对于共线的情况，我们可以根据方法一的做法做四个 <code>update</code>。</p>
+<p>当已经确定两个线段 <code>AB</code>和 <code>CD</code>是相交的时候，如何求解线段的交点呢？我们可以把 <code>AB</code>和 <code>CD</code> 看成一个四边形的两条对角线，它们相交于点 O。我们可以通过三角形面积公式求出 <code>ABC</code> 和 <code>ABD</code>的面积，它们的比值就是 <code>OC</code>和 <code>OD</code> 的比值，然后再用<strong>定比分点公式</strong>求出 <code>O</code> 的坐标。</p>
+<h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> Coor = <span class="built_in">vector</span> &lt;<span class="keyword">double</span>&gt;;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">double</span> EPS = <span class="number">1E-6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">intersection</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; start1, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; end1, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; start2, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; end2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ax = start1[<span class="number">0</span>], ay = start1[<span class="number">1</span>], bx = end1[<span class="number">0</span>], by = end1[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> cx = start2[<span class="number">0</span>], cy = start2[<span class="number">1</span>], dx = end2[<span class="number">0</span>], dy = end2[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> acx = cx - ax, acy = cy - ay, abx = bx - ax, aby = by - ay, adx = dx - ax, ady = dy - ay;</span><br><span class="line">        <span class="keyword">int</span> cax = ax - cx, cay = ay - cy, cbx = bx - cx, cby = by - cy, cdx = dx - cx, cdy = dy - cy;</span><br><span class="line">        <span class="comment">// 叉积运算</span></span><br><span class="line">        <span class="keyword">auto</span> cross = [] (<span class="keyword">int</span> ux, <span class="keyword">int</span> uy, <span class="keyword">int</span> vx, <span class="keyword">int</span> vy) &#123;</span><br><span class="line">            <span class="keyword">return</span> ux * vy - vx * uy;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 判断线段 (ux, uy) -- (vx, vy) 是否包含 (mx, my)  </span></span><br><span class="line">        <span class="keyword">auto</span> bothSide = [&amp;] (<span class="keyword">int</span> mx, <span class="keyword">int</span> my, <span class="keyword">int</span> ux, <span class="keyword">int</span> uy, <span class="keyword">int</span> vx, <span class="keyword">int</span> vy) &#123;</span><br><span class="line">            <span class="keyword">double</span> um = <span class="built_in">sqrt</span>((ux - mx) * (ux - mx) + (uy - my) * (uy - my));</span><br><span class="line">            <span class="keyword">double</span> vm = <span class="built_in">sqrt</span>((vx - mx) * (vx - mx) + (vy - my) * (vy - my));</span><br><span class="line">            <span class="keyword">double</span> uv = <span class="built_in">sqrt</span>((vx - ux) * (vx - ux) + (vy - uy) * (vy - uy));</span><br><span class="line">            <span class="keyword">return</span> (ux - mx) * (vx - mx) &lt;= <span class="number">0</span> &amp;&amp; (uy - my) * (vy - my) &lt;= <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 以 x 为第一关键字，y 为第二关键字比较两个点的大小</span></span><br><span class="line">        <span class="keyword">auto</span> cmp = [] (<span class="keyword">const</span> Coor&amp; u, <span class="keyword">const</span> Coor&amp; v) &#123;</span><br><span class="line">            <span class="keyword">if</span> (u.<span class="built_in">size</span>() == <span class="number">0</span> || v.<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> v.<span class="built_in">size</span>() == <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span> (u[<span class="number">0</span>] != v[<span class="number">0</span>]) ? (u[<span class="number">0</span>] &lt; v[<span class="number">0</span>]) : (u[<span class="number">1</span>] &lt; v[<span class="number">1</span>]);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 共线处理和 T 形处理</span></span><br><span class="line">        <span class="keyword">if</span> (cross(cax, cay, cbx, cby) == <span class="number">0</span> || cross(adx, ady, abx, aby) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">bool</span> aInCd = bothSide(ax, ay, cx, cy, dx, dy), bInCd = bothSide(bx, by, cx, cy, dx, dy);</span><br><span class="line">            <span class="keyword">bool</span> cInAb = bothSide(cx, cy, ax, ay, bx, by), dInAb = bothSide(dx, dy, ax, ay, bx, by);</span><br><span class="line">            Coor ans;</span><br><span class="line">            <span class="keyword">if</span> (aInCd) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)ax, (<span class="keyword">double</span>)ay&#125;), cmp) ;</span><br><span class="line">            <span class="keyword">if</span> (bInCd) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)bx, (<span class="keyword">double</span>)by&#125;), cmp);</span><br><span class="line">            <span class="keyword">if</span> (cInAb) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)cx, (<span class="keyword">double</span>)cy&#125;), cmp);</span><br><span class="line">            <span class="keyword">if</span> (dInAb) ans = <span class="built_in">min</span>(ans, Coor(&#123;(<span class="keyword">double</span>)dx, (<span class="keyword">double</span>)dy&#125;), cmp);</span><br><span class="line">            <span class="keyword">return</span> ans;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 判断两条线段是否有公共点</span></span><br><span class="line">        <span class="keyword">auto</span> intersect = [&amp;] () &#123;</span><br><span class="line">            <span class="keyword">return</span> cross(acx, acy, abx, aby) * cross(adx, ady, abx, aby) &lt;= <span class="number">0</span> &amp;&amp; cross(cax, cay, cdx, cdy) * cross(cbx, cby, cdx, cdy) &lt;= <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">if</span> (!intersect()) &#123;</span><br><span class="line">            <span class="keyword">return</span> Coor();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 计算三角形 PQM 的面积</span></span><br><span class="line">        <span class="keyword">auto</span> getArea = [&amp;] (<span class="keyword">int</span> px, <span class="keyword">int</span> py, <span class="keyword">int</span> qx, <span class="keyword">int</span> qy, <span class="keyword">int</span> mx, <span class="keyword">int</span> my) -&gt; <span class="keyword">double</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> mpx = px - mx, mpy = py - my, mqx = qx - mx, mqy = qy - my;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">fabs</span>(<span class="keyword">double</span>(<span class="number">0.5</span>) * cross(mpx, mpy, mqx, mqy));</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 定比分点</span></span><br><span class="line">        <span class="keyword">double</span> ck = getArea(ax, ay, bx, by, cx, cy), dk = getArea(ax, ay, bx, by, dx, dy);</span><br><span class="line">        <span class="keyword">double</span> k = ck / dk;</span><br><span class="line">        <span class="keyword">double</span> rx = (cx + k * dx) / (<span class="number">1</span> + k), ry = (cy + k * dy) / (<span class="number">1</span> + k);</span><br><span class="line">        <span class="keyword">return</span> Coor(&#123;rx, ry&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在代码中「共线处理和 T 形处理」部分，为什么只判断了 ABCABC 共线或者 ABDABD 共线呢？</p>
+<p>如果 <code>ABC</code> 共线且 <code>ABD</code>共线，那么说明 <code>ABCD</code>共线<br>如果 <code>ABC</code>共线但 <code>ABD</code>不共线，那么说明<code>C</code>在「直线」<code>AB</code>上，如果 <code>C</code> 在「线段」<code>AB</code>上则形成一个 <code>T</code> 形结构<br>如果 <code>ABD</code>共线但是 ABCABC 不共线，那么说明 DD 在「直线」ABAB 上，如果 DD 在「线段」ABAB 上则形成一个 T 形结构<br>这里只能判断点是否在「直线」上，在 if 里面才可以判断点是否在线段上。这三种情况都能得到正确的结果，因为经过四个取 min 的操作（即方法一中的四个 update），所有「点 PP 在 MNMN 上」的情况可以被讨论出来，所以这里不仅处理的是共线的情况，还有四种 T 形的情况中的两种。思考：为什么不用处理剩下的两种呢？ 不判断 ACDACD 和 BCDBCD，因为后面定比分点用的是 ABCABC 和 ABDABD 的面积，前面 ABCABC 共线和 ABDABD 共线被处理掉之后，就不存在面积为 00 的状况，也就不会出现分母为 00。即使 ACDACD 和 BCDBCD 共线，ABCABC 和 ABDABD 的面积依然是大于 00 的，不影响定比分点。</p>
+<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：<code>O(1)</code>。</p>
+<p>空间复杂度：<code>O(1)</code>。</p>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/10/2020-04-11-LeetCode-CheckDaily/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/04/12/2020-04-12-LeetCode-CheckDaily-md/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            LeetCode 周赛184
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/04/09/2020-04-09-LeetCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">LeetCode 每日打卡4-9</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>

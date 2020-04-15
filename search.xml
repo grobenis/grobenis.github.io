@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>LeetCode 每天打卡</title>
-    <url>/2020/04/15/2020-04-15-LeeCode-CheckDaily/</url>
+    <url>/2020/04/15/2020-04-15-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <table>
 <thead>
@@ -200,7 +200,7 @@
   </entry>
   <entry>
     <title>LeetCode每日打卡4-14</title>
-    <url>/2020/04/13/2020-04-13-LeeCode-CheckDaily/</url>
+    <url>/2020/04/13/2020-04-13-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下</p>
 <table>
 <thead>
@@ -248,7 +248,7 @@
 <h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="哈希表-链表"><a href="#哈希表-链表" class="headerlink" title="哈希表+链表"></a>哈希表+链表</h4><p>根据题意我们知道，对于每个推特用户，我们需要存储他关注的用户 Id，以及自己发的推文 Id 的集合，为了使每个操作的复杂度尽可能的低，我们需要根据操作来决定存储这些信息的数据结构。注意，由于题目中没有说明用户的 Id 是否连续，所以我们需要用一个以用户 Id 为索引的哈希表来存储用户的信息。</p>
 <p>对于操作 3 和操作 4，我们只需要用一个哈希表存储，即可实现插入和删除的时间复杂度都为 <code>O(1)</code>。</p>
 <p>对于操作 1 和操作 2，由于操作 2 要知道此用户关注的人和用户自己发出的最近十条推文，因此我们可以考虑对每个用户用链表存储发送的推文。每次创建推文的时候我们在链表头插入，这样能保证链表里存储的推文的时间是从最近到最久的。那么对于操作 2，问题其实就等价于有若干个有序的链表，我们需要找到它们合起来最近的十条推文。由于链表里存储的数据都是有序的，所以我们将这些链表进行线性归并即可得到最近的十条推文。这个操作与 23. 合并K个排序链表 基本等同。</p>
-<p><img src="/2020/04/13/2020-04-13-LeeCode-CheckDaily/355_fig1.png" alt="fig1"></p>
+<p><img src="/2020/04/13/2020-04-13-LeetCode-CheckDaily/355_fig1.png" alt="fig1"></p>
 <p>如果我们直接照搬「合并K个排序链表」的解法来进行合并，那么无疑会造成空间的部分浪费，因为这个题目不要求你展示用户的所有推文，所以我们只要动态维护用户的链表，存储最近的 recentMax 个推文 Id 即可（题目中的 recentMax 为 10）。那么对于操作 1，当发现链表的节点数等于 recentMax 时，我们按题意删除链表末尾的元素，再插入最新的推文 Id。对于操作 2，在两个链表进行线性归并的时候，只要已合并的数量等于 recentMax，代表已经找到这两个链表合起来后最近的 recentMax 条推文，直接结束合并即可。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Twitter</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">        <span class="comment">// 哈希表存储关注人的 Id</span></span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; followee;</span><br><span class="line">        <span class="comment">// 用链表存储 tweetId</span></span><br><span class="line">        <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; tweet;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// getNewsFeed 检索的推文的上限以及 tweetId 的时间戳</span></span><br><span class="line">    <span class="keyword">int</span> recentMax, time;</span><br><span class="line">    <span class="comment">// tweetId 对应发送的时间</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; tweetTime;</span><br><span class="line">    <span class="comment">// 每个用户存储的信息</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, Node&gt; user;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Twitter() &#123;</span><br><span class="line">        time = <span class="number">0</span>;</span><br><span class="line">        recentMax = <span class="number">10</span>;</span><br><span class="line">        user.<span class="built_in">clear</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line">        user[userId].followee.<span class="built_in">clear</span>();</span><br><span class="line">        user[userId].tweet.<span class="built_in">clear</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">postTweet</span><span class="params">(<span class="keyword">int</span> userId, <span class="keyword">int</span> tweetId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (user.<span class="built_in">find</span>(userId) == user.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            init(userId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 达到限制，剔除链表末尾元素</span></span><br><span class="line">        <span class="keyword">if</span> (user[userId].tweet.<span class="built_in">size</span>() == recentMax) &#123;</span><br><span class="line">            user[userId].tweet.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">        user[userId].tweet.push_front(tweetId);</span><br><span class="line">        tweetTime[tweetId] = ++time;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">getNewsFeed</span><span class="params">(<span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans; ans.<span class="built_in">clear</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator it = user[userId].tweet.<span class="built_in">begin</span>(); it != user[userId].tweet.<span class="built_in">end</span>(); ++it) &#123;</span><br><span class="line">            ans.emplace_back(*it);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> followeeId: user[userId].followee) &#123;</span><br><span class="line">            <span class="keyword">if</span> (followeeId == userId) <span class="keyword">continue</span>; <span class="comment">// 可能出现自己关注自己的情况</span></span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res; res.<span class="built_in">clear</span>();</span><br><span class="line">            <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator it = user[followeeId].tweet.<span class="built_in">begin</span>();</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">// 线性归并</span></span><br><span class="line">            <span class="keyword">while</span> (i &lt; (<span class="keyword">int</span>)ans.<span class="built_in">size</span>() &amp;&amp; it != user[followeeId].tweet.<span class="built_in">end</span>()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (tweetTime[(*it)] &gt; tweetTime[ans[i]]) &#123;</span><br><span class="line">                    res.emplace_back(*it);</span><br><span class="line">                    ++it;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    res.emplace_back(ans[i]);</span><br><span class="line">                    ++i;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 已经找到这两个链表合起来后最近的 recentMax 条推文</span></span><br><span class="line">                <span class="keyword">if</span> ((<span class="keyword">int</span>)res.<span class="built_in">size</span>() == recentMax) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (; i &lt; (<span class="keyword">int</span>)ans.<span class="built_in">size</span>() &amp;&amp; (<span class="keyword">int</span>)res.<span class="built_in">size</span>() &lt; recentMax; ++i) res.emplace_back(ans[i]);</span><br><span class="line">            <span class="keyword">for</span> (; it != user[followeeId].tweet.<span class="built_in">end</span>() &amp;&amp; (<span class="keyword">int</span>)res.<span class="built_in">size</span>() &lt; recentMax; ++it) res.emplace_back(*it);</span><br><span class="line">            ans.assign(res.<span class="built_in">begin</span>(),res.<span class="built_in">end</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">follow</span><span class="params">(<span class="keyword">int</span> followerId, <span class="keyword">int</span> followeeId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (user.<span class="built_in">find</span>(followerId) == user.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            init(followerId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (user.<span class="built_in">find</span>(followeeId) == user.<span class="built_in">end</span>()) &#123;</span><br><span class="line">            init(followeeId);</span><br><span class="line">        &#125;</span><br><span class="line">        user[followerId].followee.insert(followeeId);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unfollow</span><span class="params">(<span class="keyword">int</span> followerId, <span class="keyword">int</span> followeeId)</span> </span>&#123;</span><br><span class="line">        user[followerId].followee.erase(followeeId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -386,7 +386,7 @@
   </entry>
   <entry>
     <title>LeetCode 周赛184</title>
-    <url>/2020/04/12/2020-04-12-LeeCode-CheckDaily-md/</url>
+    <url>/2020/04/12/2020-04-12-LeetCode-CheckDaily-md/</url>
     <content><![CDATA[<p>本周周赛战况不佳，只做出前两个来，剩下的其实也很简单。</p>
 <table>
 <thead>
@@ -538,7 +538,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4.11~12</title>
-    <url>/2020/04/10/2020-04-11-LeeCode-CheckDaily/</url>
+    <url>/2020/04/10/2020-04-11-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>[困难] 鸡蛋掉落 </li>
@@ -634,7 +634,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4-9</title>
-    <url>/2020/04/09/2020-04-09-LeeCode-CheckDaily/</url>
+    <url>/2020/04/09/2020-04-09-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>括号生成</li>
@@ -691,7 +691,7 @@
 <p><strong>问题3：第二步骤不用加法如何得到相同结果？相与，左移一位</strong><br>如果一个位置上的数字相遇能得到1 ，那么表示，位置上的数字都是1，然后在往左移动一位，就是步骤二 进位得到的结果</p>
 <p>(1100 &amp; 1111) &lt;&lt; 1 = 11000</p>
 <p><strong>问题4：第三步骤不用加法如何得到相同结果？其实这是个套娃</strong><br>第三步不用加法实现最难，因为第三步是前两步的和，还是个加法；如果不用加法，就只能不断调用前两步的步骤。<br>我想用下面的一张图来说明：</p>
-<p><img src="/2020/04/09/2020-04-09-LeeCode-CheckDaily/0fdd8e927c61b5f70bdc3e7da0ac100dcd1e3b2f66de5bdf3ebcfb1f6a73c64f-image.png" alt="image.png"></p>
+<p><img src="/2020/04/09/2020-04-09-LeetCode-CheckDaily/0fdd8e927c61b5f70bdc3e7da0ac100dcd1e3b2f66de5bdf3ebcfb1f6a73c64f-image.png" alt="image.png"></p>
 <p>从上图，你大概可以看出，这个就是在不断重复第一，第二的步骤，那么退出条件是什么？<br>其实我们可以设想一个最坏的情况，那就是，这个循环到了一个情况，会在一直循环的情况，结果依然不变？<br>无疑，那就是，进位的结果为0的情况，所以，其实在不考虑溢位的情况下，其实最多最多就是循环32次就行,<br>所以，一下代码已经可以得到正确的结果了。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public int add(int a, int b) &#123;</span><br><span class="line">	for (int i &#x3D; 0; i &lt; 32; i++) &#123;</span><br><span class="line">		int tempSum &#x3D; a ^ b;</span><br><span class="line">		int carrySum &#x3D; (a &amp; b) &lt;&lt; 1;</span><br><span class="line">		a &#x3D; tempSum;</span><br><span class="line">		b &#x3D; carrySum;</span><br><span class="line">	&#125;</span><br><span class="line">	return a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -711,7 +711,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4-8</title>
-    <url>/2020/04/08/2020-04-08-LeeCode-CheckDaily/</url>
+    <url>/2020/04/08/2020-04-08-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>机器人的运动范围</li>
@@ -776,7 +776,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4-7</title>
-    <url>/2020/04/07/2020-04-07-LeeCode-CheckDaily/</url>
+    <url>/2020/04/07/2020-04-07-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>旋转矩阵</li>
@@ -840,7 +840,7 @@
   </entry>
   <entry>
     <title>LeetCode 第23场双周赛</title>
-    <url>/2020/04/06/2020-04-06-LeeCode-Double-Contest23/</url>
+    <url>/2020/04/06/2020-04-06-LeetCode-Double-Contest23/</url>
     <content><![CDATA[<p>这次参加了LeeCode双周赛，差了一分钟拿到四个pass，最后排名是585/2044；</p>
 <table>
 <thead>
@@ -1048,7 +1048,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4-3~6</title>
-    <url>/2020/04/03/2020-04-03-LeeCodeCheckDaily/</url>
+    <url>/2020/04/03/2020-04-03-LeetCodeCheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <p>日打卡题目如下：</p>
 <p>最近几日打卡题目如下：</p>
@@ -1185,7 +1185,7 @@
   </entry>
   <entry>
     <title>LeetCode周赛182</title>
-    <url>/2020/04/02/2020-03-28-LeeCode-Contest182/</url>
+    <url>/2020/04/02/2020-03-28-LeetCode-Contest182/</url>
     <content><![CDATA[<p>LeeCode第182场周赛题目如下:</p>
 <ol>
 <li>找出数组中的幸运数</li>
@@ -1306,7 +1306,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4-2</title>
-    <url>/2020/04/02/2020-04-02-LeeCode-CheckDaily/</url>
+    <url>/2020/04/02/2020-04-02-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下:</p>
 <ol>
 <li>289.生命游戏</li>
@@ -1581,7 +1581,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡4-1</title>
-    <url>/2020/04/01/2020-04-01-LeeCode-CheckDaily/</url>
+    <url>/2020/04/01/2020-04-01-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>1111.有效括号的嵌套深度</li>
@@ -1665,7 +1665,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-31</title>
-    <url>/2020/03/31/2020-03-31-LeeCode-CheckDaily/</url>
+    <url>/2020/03/31/2020-03-31-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>排序数组</li>
@@ -1700,7 +1700,7 @@
 <li><strong>非比较类排序</strong></li>
 </ul>
 <p>不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。 </p>
-<h3 id="各算法复杂度"><a href="#各算法复杂度" class="headerlink" title="各算法复杂度"></a>各算法复杂度</h3><p><img src="/2020/03/31/2020-03-31-LeeCode-CheckDaily/849589-20180402133438219-1946132192.png" alt="img"></p>
+<h3 id="各算法复杂度"><a href="#各算法复杂度" class="headerlink" title="各算法复杂度"></a>各算法复杂度</h3><p><img src="/2020/03/31/2020-03-31-LeetCode-CheckDaily/849589-20180402133438219-1946132192.png" alt="img"></p>
 <h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a><strong>相关概念</strong></h3><ul>
 <li><strong>稳定</strong>：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。</li>
 <li><strong>不稳定</strong>：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。</li>
@@ -1772,7 +1772,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-30</title>
-    <url>/2020/03/30/2020-03-30-LeeCode-CheckDaily/</url>
+    <url>/2020/03/30/2020-03-30-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>面试题62. 圆圈中最后t剩下的数字</li>
@@ -1826,7 +1826,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-29</title>
-    <url>/2020/03/29/2020-03-29-LeeCode-CheckDaily/</url>
+    <url>/2020/03/29/2020-03-29-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>1162.地图分析t</li>
@@ -1838,10 +1838,10 @@
 <h2 id="1162-地图分析"><a href="#1162-地图分析" class="headerlink" title="1162. 地图分析"></a>1162. 地图分析</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>你现在手里有一份大小为 N x N 的『地图』（网格） <code>grid</code>，上面的每个『区域』（单元格）都用 <code>0</code> 和 <code>1</code> 标记好了。其中 <code>0</code> 代表海洋，<code>1</code> 代表陆地，你知道距离陆地区域最远的海洋区域是是哪一个吗？请返回该海洋区域到离它最近的陆地区域的距离。</p>
 <p>我们这里说的距离是『曼哈顿距离』（ Manhattan Distance）：<code>(x0, y0)</code> 和 <code>(x1, y1)</code> 这两个区域之间的距离是 <code>|x0 - x1| + |y0 - y1|</code> 。</p>
 <p>如果我们的地图上只有陆地或者海洋，请返回 <code>-1</code>。</p>
-<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><p><strong><img src="/2020/03/29/2020-03-29-LeeCode-CheckDaily/1.jpeg" alt="img"></strong></p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1"></a><strong>示例 1</strong></h4><p><strong><img src="/2020/03/29/2020-03-29-LeetCode-CheckDaily/1.jpeg" alt="img"></strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[[1,0,1],[0,0,0],[1,0,1]]</span><br><span class="line">输出：2</span><br><span class="line">解释： </span><br><span class="line">海洋区域 (1, 1) 和所有陆地区域之间的距离都达到最大，最大距离为 2。</span><br></pre></td></tr></table></figure>
 
-<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><p><strong><img src="/2020/03/29/2020-03-29-LeeCode-CheckDaily/2.jpeg" alt="img"></strong></p>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2"></a><strong>示例 2</strong></h4><p><strong><img src="/2020/03/29/2020-03-29-LeetCode-CheckDaily/2.jpeg" alt="img"></strong></p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">输入：[[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line">输出：<span class="number">4</span></span><br><span class="line">解释： </span><br><span class="line">海洋区域 (<span class="number">2</span>, <span class="number">2</span>) 和所有陆地区域之间的距离都达到最大，最大距离为 <span class="number">4</span>。</span><br></pre></td></tr></table></figure>
 
 <p><strong>提示：</strong></p>
@@ -2078,7 +2078,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-28</title>
-    <url>/2020/03/28/2020-03-28-LeeCode-CheckDaily/</url>
+    <url>/2020/03/28/2020-03-28-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>820.单词的压缩编码</li>
@@ -2105,7 +2105,7 @@
 <h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="方法一：存储后缀"><a href="#方法一：存储后缀" class="headerlink" title="方法一：存储后缀"></a>方法一：存储后缀</h4><h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><p>如果单词 X 是 Y 的后缀，那么单词 X 就不需要考虑了，因为编码 Y 的时候就同时将 X 编码了。例如，如果 words 中同时有 “me” 和 “time”，我们就可以在不改变答案的情况下不考虑 “me”。</p>
 <p>如果单词 Y 不在任何别的单词 X 的后缀中出现，那么 Y 一定是编码字符串的一部分。</p>
 <p>因此，目标就是保留所有不是其他单词后缀的单词，最后的结果就是这些单词长度加一的总和，因为每个单词编码后后面还需要跟一个 # 符号。</p>
-<p><img src="/2020/03/28/2020-03-28-LeeCode-CheckDaily/820_1.gif" alt="fig1"></p>
+<p><img src="/2020/03/28/2020-03-28-LeetCode-CheckDaily/820_1.gif" alt="fig1"></p>
 <h5 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h5><p>由数据范围可知一个单词最多含有 7 个后缀，所以我们可以枚举单词所有的后缀。对于每个后缀，如果其存在 words 列表中，我们就将其从列表中删除。为了高效删除，我们将 words 用哈希集合（HashSet）来存储。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minimumLengthEncoding</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; <span class="title">set</span><span class="params">(words.<span class="built_in">begin</span>(), words.<span class="built_in">end</span>())</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> <span class="built_in">string</span>&amp; <span class="keyword">word</span>: words) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; <span class="keyword">word</span>.<span class="built_in">size</span>(); ++k) &#123;</span><br><span class="line">                <span class="built_in">set</span>.erase(<span class="keyword">word</span>.substr(k));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> <span class="built_in">string</span>&amp; <span class="keyword">word</span>: <span class="built_in">set</span>) &#123;</span><br><span class="line">            ans += <span class="keyword">word</span>.<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -2113,7 +2113,7 @@
 <p>空间复杂度：$O(\sum w_i)$，存储单词的空间开销。</p>
 <h4 id="方法二：字典树"><a href="#方法二：字典树" class="headerlink" title="方法二：字典树"></a>方法二：字典树</h4><h5 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h5><p>如方法一所说，目标就是保留所有不是其他单词后缀的单词。</p>
 <h5 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h5><p>去找到是否不同的单词具有相同的后缀，我们可以将其反序之后插入字典树中。例如，我们有 “time” 和 “me”，可以将 “emit” 和 “em” 插入字典树中。</p>
-<p><img src="/2020/03/28/2020-03-28-LeeCode-CheckDaily/820_2.jpg" alt="fig2"></p>
+<p><img src="/2020/03/28/2020-03-28-LeetCode-CheckDaily/820_2.jpg" alt="fig2"></p>
 <p>然后，字典树的叶子节点（没有孩子的节点）就代表没有后缀的单词，统计叶子节点代表的单词长度加一的和即为我们要的答案。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TrieNode</span>&#123;</span></span><br><span class="line">    TrieNode* children[<span class="number">26</span>];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line">    TrieNode() &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; ++i) children[i] = <span class="literal">NULL</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TrieNode* <span class="title">get</span><span class="params">(<span class="keyword">char</span> c)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (children[c - <span class="string">'a'</span>] == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            children[c - <span class="string">'a'</span>] = <span class="keyword">new</span> TrieNode();</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> children[c - <span class="string">'a'</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minimumLengthEncoding</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words)</span> </span>&#123;</span><br><span class="line">        TrieNode* trie = <span class="keyword">new</span> TrieNode();</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;TrieNode*, <span class="keyword">int</span>&gt; nodes;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)words.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="built_in">string</span> <span class="keyword">word</span> = words[i];</span><br><span class="line">            TrieNode* cur = trie;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="keyword">word</span>.length() - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j)</span><br><span class="line">                cur = cur-&gt;<span class="built_in">get</span>(<span class="keyword">word</span>[j]);</span><br><span class="line">            nodes[cur] = i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [node, idx] : nodes) &#123;</span><br><span class="line">            <span class="keyword">if</span> (node-&gt;count == <span class="number">0</span>) &#123;</span><br><span class="line">                ans += words[idx].length() + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -2197,7 +2197,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-27</title>
-    <url>/2020/03/27/2020-03-27-LeeCode-CheckDaily/</url>
+    <url>/2020/03/27/2020-03-27-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>914.卡牌分组</li>
@@ -2650,7 +2650,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-26</title>
-    <url>/2020/03/26/2020-03-26-LeeCode-CheckDaily/</url>
+    <url>/2020/03/26/2020-03-26-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>999.车的可用捕获量</li>
@@ -2663,7 +2663,7 @@
 <h2 id="999-车的可用捕获量"><a href="#999-车的可用捕获量" class="headerlink" title="999. 车的可用捕获量"></a>999. 车的可用捕获量</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>在一个 8 x 8 的棋盘上，有一个白色车（rook）。也可能有空方块，白色的象（bishop）和黑色的卒（pawn）。它们分别以字符 “R”，“.”，“B” 和 “p” 给出。大写字符表示白棋，小写字符表示黑棋。</p>
 <p>车按国际象棋中的规则移动：它选择四个基本方向中的一个（北，东，西和南），然后朝那个方向移动，直到它选择停止、到达棋盘的边缘或移动到同一方格来捕获该方格上颜色相反的卒。另外，车不能与其他友方（白色）象进入同一个方格。</p>
 <p>返回车能够在一次移动中捕获到的卒的数量。</p>
-<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><p><img src="/2020/03/26/2020-03-26-LeeCode-CheckDaily/1253_example_1_improved.PNG" alt="img"></p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><p><img src="/2020/03/26/2020-03-26-LeetCode-CheckDaily/1253_example_1_improved.PNG" alt="img"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;p&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;R&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;p&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;p&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;]]</span><br><span class="line">输出：3</span><br><span class="line">解释：</span><br><span class="line">在本例中，车能够捕获所有的卒。</span><br></pre></td></tr></table></figure>
 
 <h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>上下左右依次遍历</p>
@@ -2749,7 +2749,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-25</title>
-    <url>/2020/03/25/2020-03-25-LeeCode-CheckDaily/</url>
+    <url>/2020/03/25/2020-03-25-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li>三维形体的表面积t</li>
@@ -2823,7 +2823,7 @@
 
 <h3 id="筛法解法"><a href="#筛法解法" class="headerlink" title="筛法解法"></a>筛法解法</h3><p>素数筛法</p>
 <p>有一张很好理解的图</p>
-<p><img src="/2020/03/25/2020-03-25-LeeCode-CheckDaily/%E7%AD%9B%E6%B3%95.gif" alt="1.gif"></p>
+<p><img src="/2020/03/25/2020-03-25-LeetCode-CheckDaily/%E7%AD%9B%E6%B3%95.gif" alt="1.gif"></p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isHappy</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">10</span>)</span><br><span class="line">            <span class="keyword">if</span>(n==<span class="number">1</span>||n==<span class="number">7</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;         </span><br><span class="line">            </span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> i = n%<span class="number">10</span>;</span><br><span class="line">            sum+=i*i;</span><br><span class="line">            n/=<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum==<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> isHappy(sum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><strong>算法复杂度</strong>： <code>O(N * loglogN)</code></p>
@@ -2989,7 +2989,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-24</title>
-    <url>/2020/03/24/2020-03-24-LeeCode-CheckDaily/</url>
+    <url>/2020/03/24/2020-03-24-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li><p>面试题17.16、按摩师 【每日打卡24】</p>
@@ -3133,7 +3133,7 @@
   </entry>
   <entry>
     <title>LeetCode 每日打卡3-23</title>
-    <url>/2020/03/23/2020-03-23-LeeCode-CheckDaily/</url>
+    <url>/2020/03/23/2020-03-23-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>今日打卡题目如下：</p>
 <ol>
 <li><p>876、链表的中间结点 【每日打卡23】</p>
@@ -3256,7 +3256,7 @@
   </entry>
   <entry>
     <title>LeetCode第181场周赛</title>
-    <url>/2020/03/22/2020-03-20-LeeCode-Contest-181/</url>
+    <url>/2020/03/22/2020-03-20-LeetCode-Contest-181/</url>
     <content><![CDATA[<p>第 181 场周赛</p>
 <p>题目列表如下：</p>
 <ol>
@@ -3312,7 +3312,7 @@
 <h2 id="3-检查网格中是否存在有效路径"><a href="#3-检查网格中是否存在有效路径" class="headerlink" title="3. 检查网格中是否存在有效路径"></a>3. 检查网格中是否存在有效路径</h2><p><strong>题目</strong></p>
 <p>给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：</p>
 <p>1 表示连接左单元格和右单元格的街道。<br>2 表示连接上单元格和下单元格的街道。<br>3 表示连接左单元格和下单元格的街道。<br>4 表示连接右单元格和下单元格的街道。<br>5 表示连接左单元格和上单元格的街道。<br>6 表示连接右单元格和上单元格的街道。    </p>
-<p><img src="/2020/03/22/2020-03-20-LeeCode-Contest-181/3.png" alt="lee"></p>
+<p><img src="/2020/03/22/2020-03-20-LeetCode-Contest-181/3.png" alt="lee"></p>
 <h3 id="DFS解法"><a href="#DFS解法" class="headerlink" title="DFS解法"></a>DFS解法</h3><p>通过构建pipe数组，将每个拼图转化为四个方向上的移动限制图。<br>$pipe[3][2]=3$ ，代表三号拼图可以由向上的方向进入其中，并转向左方向继续前进。<br>$pipe[5][3]=-1$ ，代表五号拼图不可以由向左的方向进入其中。</p>
 <p>其中0代表向下、1代表向右、2代表向上、3代表向左、-1代表不可走</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> row,col;</span><br><span class="line">    <span class="keyword">int</span> dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;;<span class="comment">//0下、1右、2上、3左</span></span><br><span class="line">    <span class="keyword">int</span> pipe[<span class="number">7</span>][<span class="number">4</span>]=&#123;&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">3</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">2</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">3</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">2</span>&#125;&#125;;</span><br><span class="line">    <span class="comment">//记录各个拼图块路径的方向，0、1、2、3代表方向，-1代表不可走。</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> dir,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( x == row<span class="number">-1</span> &amp;&amp; y == col<span class="number">-1</span> ) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">//到达终点</span></span><br><span class="line">        <span class="keyword">int</span> nextx = x + dx[dir] ,nexty = y + dy[dir];</span><br><span class="line">        <span class="keyword">if</span>(nextx&lt;<span class="number">0</span> || nexty&lt;<span class="number">0</span> || nextx &gt;= row || nexty&gt;=col)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//越界</span></span><br><span class="line">        <span class="keyword">int</span> nxt=grid[nextx][nexty]; <span class="comment">//得到下一块拼图的编号</span></span><br><span class="line">        <span class="keyword">if</span>( pipe[nxt][dir]!= <span class="number">-1</span> )</span><br><span class="line">            <span class="keyword">return</span> dfs(nextx,nexty,pipe[nxt][dir],grid); <span class="comment">//如果当前方向可走，则方向改变，继续走。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasValidPath</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;    </span><br><span class="line">        row=grid.<span class="built_in">size</span>();</span><br><span class="line">        col=grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> sta=grid[<span class="number">0</span>][<span class="number">0</span>];<span class="comment">//起点的拼图编号</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;++i)<span class="comment">//朝着四个方向都试一下</span></span><br><span class="line">            <span class="keyword">if</span>(pipe[sta][i]!=<span class="number">-1</span>)<span class="comment">//当前方向可以走</span></span><br><span class="line">                <span class="keyword">if</span>(dfs(<span class="number">0</span>,<span class="number">0</span>,pipe[sta][i],grid))<span class="comment">//沿着当前方向搜索</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//拼图都有两个方向可以走，只要沿着一个初始方向走通就可以。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
