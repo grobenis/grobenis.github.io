@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">12字</span>
+            <span class="post-count">640字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">2分钟</span>
         </span>
     </span>
 </div>
@@ -84,6 +84,8 @@
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -97,7 +99,68 @@
 
       
       <p>本节主要学习C++中的位运算。</p>
+<p>位运算符列表如下：</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>功能</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>~</td>
+<td>位求反</td>
+<td>~expr</td>
+</tr>
+<tr>
+<td>&lt;&lt;</td>
+<td>左移</td>
+<td>expr1 &lt;&lt; expr2</td>
+</tr>
+<tr>
+<td>&gt;&gt;</td>
+<td>右移</td>
+<td>expr1 &gt;&gt; expr2</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>位与</td>
+<td>expr1 &amp; expr2</td>
+</tr>
+<tr>
+<td>^</td>
+<td>位异或</td>
+<td>expr1 ^ expr2</td>
+</tr>
+<tr>
+<td>|</td>
+<td>位或</td>
+<td>expr1 | expr2</td>
+</tr>
+</tbody></table>
 <a id="more"></a>
+
+<h2 id="C-位运算"><a href="#C-位运算" class="headerlink" title="C++ 位运算"></a>C++ 位运算</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>位是数据存储的最小单位。在 计算机中的二进制数系统中，位，简记为b,也称为比特，每个0或1就是一个位(bit)。</p>
+<h3 id="经典用法"><a href="#经典用法" class="headerlink" title="经典用法"></a>经典用法</h3><h4 id="1-求二进制中1的个数"><a href="#1-求二进制中1的个数" class="headerlink" title="1. 求二进制中1的个数"></a>1. 求二进制中1的个数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n&amp;n<span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-把-data上调至8-的倍数，同理，也可以改成16，32…的倍数。"><a href="#2-把-data上调至8-的倍数，同理，也可以改成16，32…的倍数。" class="headerlink" title="2. 把 data上调至8 的倍数，同理，也可以改成16，32…的倍数。"></a>2. 把 data上调至8 的倍数，同理，也可以改成16，32…的倍数。</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(data + <span class="number">8</span> - <span class="number">1</span>） &amp; (<span class="number">8</span> - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-取int的最值"><a href="#3-取int的最值" class="headerlink" title="3. 取int的最值"></a>3. 取int的最值</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>&lt;&lt;<span class="number">31</span>)<span class="number">-1</span>;<span class="comment">//int的最大值</span></span><br><span class="line">(<span class="number">1</span>&lt;&lt;<span class="number">31</span>);<span class="comment">//int的最小值</span></span><br><span class="line">((<span class="keyword">long</span> <span class="keyword">long</span>)<span class="number">1</span>&lt;&lt;<span class="number">63</span>)<span class="number">-1</span>;<span class="comment">//long long的最大值</span></span><br><span class="line">((<span class="keyword">long</span> <span class="keyword">long</span>)<span class="number">1</span>&lt;&lt;<span class="number">63</span>);<span class="comment">//long long的最小值</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-判断两个数符号是否相同"><a href="#4-判断两个数符号是否相同" class="headerlink" title="4. 判断两个数符号是否相同"></a>4. 判断两个数符号是否相同</h4><p>  这个也很简单，二进制第一位表示符号，所以符号相同就为0（正数），符号不同就为1（负数）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n^m&gt;=<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-判断正负"><a href="#5-判断正负" class="headerlink" title="5. 判断正负"></a>5. 判断正负</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n&gt;&gt;31</span><br></pre></td></tr></table></figure>
+
+<h3 id="特殊用法"><a href="#特殊用法" class="headerlink" title="特殊用法"></a>特殊用法</h3><h4 id="1-交换两个数"><a href="#1-交换两个数" class="headerlink" title="1. 交换两个数"></a>1. 交换两个数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a^=b;</span><br><span class="line">b^=a;</span><br><span class="line">a^=b;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-对这个数二进制的第m位进行处理（从低位到高位）"><a href="#2-对这个数二进制的第m位进行处理（从低位到高位）" class="headerlink" title="2. 对这个数二进制的第m位进行处理（从低位到高位）"></a>2. 对这个数二进制的第m位进行处理（从低位到高位）</h4><p>​    首先为了得到第m位的值，肯定是要将这个数右移(m-1)位，然后为了将其他多余的数清零，我们再进行&amp;1的操作，就可以将第m位提取出来了。如果是想改变第m位的值，那么就不能对这个数进行移动，因为这样会改变这个数的值。所以我们要对1向左移(m-1)位，然后再进行操作更改。如果要将第m位变成1，那么就n|(1&lt;&lt;(m-1))，这样就可以保证其余位不变改变第m位。如果要将第m位变为0，那么就n&amp;~(1&lt;&lt;(m-1))，因为取反后就能得到除了第m位为0其余位都为1的一个数，这样再进行按位与计算就可以只改变第m位的值了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(n&gt;&gt;(m<span class="number">-1</span>))&amp;<span class="number">1</span>;<span class="comment">//取n的二进制的第m位</span></span><br><span class="line">n|(<span class="number">1</span>&lt;&lt;(m<span class="number">-1</span>));<span class="comment">//将n的二进制的第m位改为1</span></span><br><span class="line">n&amp;~(<span class="number">1</span>&lt;&lt;(m<span class="number">-1</span>));<span class="comment">//将n的二进制的第m位改为0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-统计1的个数"><a href="#3-统计1的个数" class="headerlink" title="3. 统计1的个数"></a>3. 统计1的个数</h4><h5 id="1-普通算法"><a href="#1-普通算法" class="headerlink" title="1.普通算法"></a>1.普通算法</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bitcount1</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> cou=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> flag=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(flag)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(n&amp;flag)</span><br><span class="line">		&#123;</span><br><span class="line">			cou++;</span><br><span class="line">		&#125;</span><br><span class="line">		flag=flag&lt;&lt;<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cou;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-快速算法"><a href="#2-快速算法" class="headerlink" title="2. 快速算法"></a>2. 快速算法</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bitcount2</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> cou=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(n)</span><br><span class="line">	&#123;</span><br><span class="line">		n=n&amp;(n<span class="number">-1</span>);</span><br><span class="line">		cou++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cou;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       
@@ -183,6 +246,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/04/18/2020-04-18-LeetCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            LeetCode 每天打卡4-18
+          
+        </div>
+      </a>
     
     
       <a href="/2020/04/15/2020-04-15-LeetCode-CheckDaily/" class="article-nav-link">

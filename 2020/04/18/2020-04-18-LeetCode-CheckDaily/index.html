@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    LeetCode 每天打卡4-15~17 |  曾是少年
+    LeetCode 每天打卡4-18 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-2020-04-15-LeetCode-CheckDaily" class="article article-type-post" itemscope
+  <article id="post-2020-04-18-LeetCode-CheckDaily" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  LeetCode 每天打卡4-15~17
+  LeetCode 每天打卡4-18
 </h1>
   
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/04/15/2020-04-15-LeetCode-CheckDaily/" class="article-date">
-  <time datetime="2020-04-15T01:43:08.000Z" itemprop="datePublished">2020-04-15</time>
+      <a href="/2020/04/18/2020-04-18-LeetCode-CheckDaily/" class="article-date">
+  <time datetime="2020-04-18T02:03:08.000Z" itemprop="datePublished">2020-04-18</time>
 </a>
       
   <div class="article-category">
@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.8k字</span>
+            <span class="post-count">257字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">7分钟</span>
+            <span class="post-count">1分钟</span>
         </span>
     </span>
 </div>
@@ -129,84 +129,15 @@
 </tbody></table>
 <a id="more"></a>
 
-<h2 id="11-盛最多水的容器"><a href="#11-盛最多水的容器" class="headerlink" title="11. 盛最多水的容器"></a><a href="https://leetcode-cn.com/problems/container-with-most-water/" target="_blank" rel="noopener">11. 盛最多水的容器</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你 <em>n</em> 个非负整数 <em>a</em>1，<em>a</em>2，…，<em>a</em>n，每个数代表坐标中的一个点 (<em>i</em>, <em>ai</em>) 。在坐标内画 <em>n</em> 条垂直线，垂直线 <em>i</em> 的两个端点分别为 (<em>i</em>, <em>ai</em>) 和 (<em>i</em>, 0)。找出其中的两条线，使得它们与 <em>x</em> 轴共同构成的容器可以容纳最多的水。</p>
+<h2 id="11-盛最多水的容器"><a href="#11-盛最多水的容器" class="headerlink" title="11. 盛最多水的容器"></a>11. 盛最多水的容器</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你 <em>n</em> 个非负整数 <em>a</em>1，<em>a</em>2，…，<em>a</em>n，每个数代表坐标中的一个点 (<em>i</em>, <em>ai</em>) 。在坐标内画 <em>n</em> 条垂直线，垂直线 <em>i</em> 的两个端点分别为 (<em>i</em>, <em>ai</em>) 和 (<em>i</em>, 0)。找出其中的两条线，使得它们与 <em>x</em> 轴共同构成的容器可以容纳最多的水。</p>
 <p><strong>说明：</strong>你不能倾斜容器，且 <em>n</em> 的值至少为 2。</p>
-<p><img src="/2020/04/15/2020-04-15-LeetCode-CheckDaily/question_11.jpg" alt="img"></p>
+<p><img src="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/07/25/question_11.jpg" alt="img"></p>
 <p>图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。</p>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[1,8,6,2,5,4,8,3,7]</span><br><span class="line">输出：49</span><br></pre></td></tr></table></figure>
 
-<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="暴力法"><a href="#暴力法" class="headerlink" title="暴力法"></a>暴力法</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">height</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;<span class="built_in">height</span>.<span class="built_in">size</span>()<span class="number">-1</span>;i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>;j&lt;<span class="built_in">height</span>.<span class="built_in">size</span>();j++)</span><br><span class="line">                res=<span class="built_in">max</span>(res,(j-i)*<span class="built_in">min</span>(<span class="built_in">height</span>[i],<span class="built_in">height</span>[j]));</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">height</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="built_in">height</span>.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>,right = len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)</span><br><span class="line">        &#123;</span><br><span class="line">            res = <span class="built_in">max</span>(res,(right-left)*<span class="built_in">min</span>(<span class="built_in">height</span>[right],<span class="built_in">height</span>[left]));</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">height</span>[right]&gt;=<span class="built_in">height</span>[left])</span><br><span class="line">                left++;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                right--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>结果:会超时</p>
-<h4 id="双指针法"><a href="#双指针法" class="headerlink" title="双指针法"></a>双指针法</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">height</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="built_in">height</span>.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>,right = len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)</span><br><span class="line">        &#123;</span><br><span class="line">            res = <span class="built_in">max</span>(res,(right-left)*<span class="built_in">min</span>(<span class="built_in">height</span>[right],<span class="built_in">height</span>[left]));</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">height</span>[right]&gt;=<span class="built_in">height</span>[left])</span><br><span class="line">                left++;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                right--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><strong>复杂度分析</strong></p>
-<ul>
-<li>时间复杂度：O(N)，双指针总计最多遍历整个数组一次。</li>
-<li>空间复杂度：O(1)，只需要额外的常数级别的空间。</li>
-</ul>
-<h4 id="思路与解法"><a href="#思路与解法" class="headerlink" title="思路与解法"></a>思路与解法</h4><p><strong>说明</strong></p>
-<p>本题是一道经典的面试题，最优的做法是使用「双指针」。如果读者第一次看到这题，不一定能想出双指针的做法。</p>
-<p><strong>分析</strong></p>
-<p>我们先从题目中的示例开始，一步一步地解释双指针算法的过程。稍后再给出算法正确性的证明。</p>
-<p>题目中的示例为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 8, 6, 2, 5, 4, 8, 3, 7]</span><br><span class="line"> ^                       ^</span><br></pre></td></tr></table></figure>
-
-<p>在初始时，左右指针分别指向数组的左右两端，它们可以容纳的水量为 $\min(1, 7) * 8 = 8$。</p>
-<p>此时我们需要移动一个指针。移动哪一个呢？直觉告诉我们，应该移动对应数字较小的那个指针（即此时的左指针）。这是因为，由于容纳的水量是由</p>
-<p>两个指针指向的数字中较小值 * 指针之间的距离两个指针指向的数字中较小值∗指针之间的距离</p>
-<p>决定的。如果我们移动数字较大的那个指针，那么前者「两个指针指向的数字中较小值」不会增加，后者「指针之间的距离」会减小，那么这个乘积会减小。因此，我们移动数字较大的那个指针是不合理的。因此，我们移动 <strong>数字较小的那个指针</strong>。</p>
-<blockquote>
-<p>有读者可能会产生疑问：<strong>我们可不可以同时移动两个指针？</strong> 先别急，我们先假设 <strong>总是移动数字较小的那个指针</strong> 的思路是正确的，在走完流程之后，我们再去进行证明。</p>
-</blockquote>
-<p>所以，我们将左指针向右移动：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 8, 6, 2, 5, 4, 8, 3, 7]</span><br><span class="line">    ^                    ^</span><br></pre></td></tr></table></figure>
-
-<p>此时可以容纳的水量为 $\min(8, 7) * 7 = 49$。由于右指针对应的数字较小，我们移动右指针：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 8, 6, 2, 5, 4, 8, 3, 7]</span><br><span class="line">    ^                 ^</span><br></pre></td></tr></table></figure>
-
-<p>此时可以容纳的水量为 $\min(8, 3) * 6 = 18$。由于右指针对应的数字较小，我们移动右指针：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 8, 6, 2, 5, 4, 8, 3, 7]</span><br><span class="line">    ^              ^</span><br></pre></td></tr></table></figure>
-
-<p>此时可以容纳的水量为 $\min(8, 8) * 5 = 40$。两指针对应的数字相同，我们可以任意移动一个，例如左指针：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 8, 6, 2, 5, 4, 8, 3, 7]</span><br><span class="line">       ^           ^</span><br></pre></td></tr></table></figure>
-
-<p>此时可以容纳的水量为 $\min(6, 8) * 4 = 24$。由于左指针对应的数字较小，我们移动左指针，并且可以发现，在这之后左指针对应的数字总是较小，因此我们会一直移动左指针，直到两个指针重合。在这期间，对应的可以容纳的水量为：$\min(2, 8) * 3 = 6$，$\min(5, 8) * 2 = 10$，$\min(4, 8) * 1 = 4$。</p>
-<p>在我们移动指针的过程中，计算到的最多可以容纳的数量为 49，即为最终的答案。</p>
-<p>下面的动画也给出了这个示例的过程：</p>
-<p><img src="https://pic.leetcode-cn.com/Figures/11_Container_WaterSlide1.PNG" alt="img"></p>
-<p>1 / 8</p>
-<p><strong>证明</strong></p>
-<p>为什么双指针的做法是正确的？</p>
-<blockquote>
-<p>双指针代表了什么？</p>
-</blockquote>
-<p>双指针代表的是 <strong>可以作为容器边界的所有位置的范围</strong>。在一开始，双指针指向数组的左右边界，表示 <strong>数组中所有的位置都可以作为容器的边界</strong>，因为我们还没有进行过任何尝试。在这之后，我们每次将 <strong>对应的数字较小的那个指针</strong> 往 <strong>另一个指针</strong> 的方向移动一个位置，就表示我们认为 <strong>这个指针不可能再作为容器的边界了</strong>。</p>
-<blockquote>
-<p>为什么对应的数字较小的那个指针不可能再作为容器的边界了？</p>
-</blockquote>
-<p>在上面的分析部分，我们对这个问题有了一点初步的想法。这里我们定量地进行证明。</p>
-<p><strong>考虑第一步</strong>，假设当前左指针和右指针指向的数分别为 x<em>和 y</em>，不失一般性，我们假设 $x \leq y$。同时，两个指针之间的距离为 t。那么，它们组成的容器的容量为：</p>
-<p>$\min(x, y) * t = x * t$</p>
-<p>我们可以断定，<strong>如果我们保持左指针的位置不变，那么无论右指针在哪里，这个容器的容量都不会超过 x * t*x*∗*t* 了</strong>。注意这里右指针只能向左移动，因为 <strong>我们考虑的是第一步</strong>，也就是 <strong>指针还指向数组的左右边界的时候</strong>。</p>
-<p>我们任意向左移动右指针，指向的数为 $y_1$，两个指针之间的距离为 $t_1$，那么显然有 $t_1 &lt; t$，并且$ \min(x, y_1) \leq \min(x, y)$：</p>
-<ul>
-<li>如果 $y_1 \leq y$，那么 $\min(x, y_1) \leq \min(x, y)$；</li>
-<li>如果 $y_1 &gt; y$，那么 $\min(x, y_1) = x = \min(x, y)$。</li>
-</ul>
-<p>因此有：</p>
-<p>$\min(x, y_t) * t_1 &lt; \min(x, y) * t$</p>
-<p>即无论我们怎么移动右指针，得到的容器的容量都小于移动前容器的容量。也就是说，<strong>这个左指针对应的数不会作为容器的边界了</strong>，那么我们就可以丢弃这个位置，<strong>将左指针向右移动一个位置</strong>，此时新的左指针于原先的右指针之间的左右位置，才可能会作为容器的边界。</p>
-<p>这样以来，我们将问题的规模减小了 11，被我们丢弃的那个位置就相当于消失了。<strong>此时的左右指针，就指向了一个新的、规模减少了的问题的数组的左右边界</strong>，因此，我们可以继续像之前 <strong>考虑第一步</strong> 那样考虑这个问题：</p>
-<ul>
-<li>求出当前双指针对应的容器的容量；</li>
-<li>对应数字较小的那个指针以后不可能作为容器的边界了，将其丢弃，并移动对应的指针。</li>
-</ul>
-<blockquote>
-<p>最后的答案是什么？</p>
-</blockquote>
-<p>答案就是我们每次以双指针为左右边界（也就是「数组」的左右边界）计算出的容量中的最大值。</p>
 
       
       <!-- reward -->
@@ -276,7 +207,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/15/2020-04-15-LeetCode-CheckDaily/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/18/2020-04-18-LeetCode-CheckDaily/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -294,19 +225,10 @@
   
   <nav class="article-nav">
     
+    
       <a href="/2020/04/15/2020-04-15-Cpp-Bit/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            C++ 位运算
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2020/04/14/2020-04-14-OPENCV-Function/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">OPENCV重要函数</div>
+        <div class="article-nav-title">C++ 位运算</div>
       </a>
     
   </nav>
