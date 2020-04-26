@@ -113,48 +113,11 @@
       
 
       
-      <a id="more"></a>
-
-
-
-<h2 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>先来回顾一下<strong>队列</strong>，队列是一种先进先出（FIFO）的数据结构，它的本质是一个线性表，只能在表的一端插入值，在表的另一端删除值。</p>
-<ul>
-<li>队尾（rear）：允许插入的一端；</li>
-<li>队头（front）：允许删除的一端。<br><img src="https://pic.leetcode-cn.com/b625dfb997f7d1a45f3a060c4b1c90199fbea387702973e35bdd354fc12069f1-%E5%B9%BB%E7%81%AF%E7%89%871.JPG" alt="幻灯片1.JPG"></li>
-</ul>
-<p>优先队列也是一种队列，与队列不同的是，优先队列不再遵循先入先出的原则，而是分成了两种情况：</p>
-<ul>
-<li>最大优先队列，无论入队顺序，当前最大的元素优先出队。</li>
-<li>最小优先队列，无论入队顺序，当前最小的元素优先出队。</li>
-</ul>
-<p>对于最小优先队列，队列中的每个元素都有一个权值，权值小的优先出队。假如我们将自身的数值作为权值，那么最小优先队列中较小的数会排在队列的前面，当加入一个新值 <code>3</code> 时，<code>3</code> 会在队列中处于合适的位置。<br><img src="https://pic.leetcode-cn.com/9a5fe2634473a792d6644492a465905c041c156f1362624aea924958192d1991-%E6%9C%80%E5%A4%9A%E5%8F%AF%E4%BB%A5%E5%8F%82%E5%8A%A0%E7%9A%84%E4%BC%9A%E8%AE%AE.png" alt="最多可以参加的会议.png"></p>
-<p>当进行出队操作时，每次会从队首弹出队列中最小的元素：<br><img src="https://pic.leetcode-cn.com/1f0822918ada35f96954f49b074263c9747865409c466add72ab708b8e5d9258-%E5%B9%BB%E7%81%AF%E7%89%872.PNG" alt="幻灯片2.PNG"></p>
-<p>最大优先队列则与之相反，最先弹出队列中最大的元素。</p>
-<p>事实上，优先队列的本质上是一个堆，它是一棵完全二叉树，分为小顶堆和大顶堆：</p>
-<ul>
-<li>小顶堆是每一个根节点小于左右子节点的完全二叉树，堆顶元素最小，对应最小优先队列；</li>
-<li>大顶堆是每一个根节点大于左右子节点的完全二叉树，堆顶元素最大，对应最大优先队列；</li>
-</ul>
-<p>由于删除堆顶元素时的时间复杂度为 O(logN)<em>O</em>(<em>l<strong>o</strong>g**N</em>)，因此在优先队列中入队和出队操作的时间复杂度也是 O(logN)<em>O</em>(<em>l<strong>o</strong>g**N</em>)。</p>
-<h3 id="面试题41-数据流中的中位数"><a href="#面试题41-数据流中的中位数" class="headerlink" title="面试题41. 数据流中的中位数"></a><a href="https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/" target="_blank" rel="noopener">面试题41. 数据流中的中位数</a></h3><h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><p>如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。</p>
-<p>例如，</p>
-<p>[2,3,4] 的中位数是 3</p>
-<p>[2,3] 的中位数是 (2 + 3) / 2 = 2.5</p>
-<p>设计一个支持以下两种操作的数据结构：</p>
-<ul>
-<li>void addNum(int num) - 从数据流中添加一个整数到数据结构中。</li>
-<li>double findMedian() - 返回目前所有元素的中位数。</li>
-</ul>
-<h5 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;MedianFinder&quot;,&quot;addNum&quot;,&quot;addNum&quot;,&quot;findMedian&quot;,&quot;addNum&quot;,&quot;findMedian&quot;]</span><br><span class="line">[[],[1],[2],[],[3],[]]</span><br><span class="line">输出：[null,null,null,1.50000,null,2.00000]</span><br></pre></td></tr></table></figure>
-
-<h5 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;MedianFinder&quot;,&quot;addNum&quot;,&quot;findMedian&quot;,&quot;addNum&quot;,&quot;findMedian&quot;]</span><br><span class="line">[[],[2],[],[3],[]]</span><br><span class="line">输出：[null,null,2.00000,null,2.50000]</span><br></pre></td></tr></table></figure>
-
-<h4 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h4><p><strong>思路：使用堆和优先队列</strong></p>
-<p>我们将中位数左边的数保存在大顶堆中，右边的数保存在小顶堆中。这样我们可以在O(1) 时间内得到中位数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MedianFinder</span> &#123;</span></span><br><span class="line">    priority_queue&lt;<span class="keyword">int</span>&gt; lo;                              <span class="comment">// 大顶堆</span></span><br><span class="line">    priority_queue&lt;<span class="keyword">int</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt;&gt; hi;   <span class="comment">// 小顶堆</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// Adds a number into the data structure.</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addNum</span><span class="params">(<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        lo.push(num);                                    <span class="comment">// 加到大顶堆</span></span><br><span class="line"></span><br><span class="line">        hi.push(lo.top());                               <span class="comment">// 平衡</span></span><br><span class="line">        lo.pop();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (lo.<span class="built_in">size</span>() &lt; hi.<span class="built_in">size</span>()) &#123;                     <span class="comment">// 维护两个堆元素个数</span></span><br><span class="line">            lo.push(hi.top());</span><br><span class="line">            hi.pop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Returns the median of current data stream</span></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">findMedian</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lo.<span class="built_in">size</span>() &gt; hi.<span class="built_in">size</span>() ? (<span class="keyword">double</span>) lo.top() : (lo.top() + hi.top()) * <span class="number">0.5</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><p>时间复杂度：O(logn)。堆插入和删除需要O(logn)，查找中位数需要 O(1)。<br>空间复杂度：O(n)。</p>
-
+      <p>堆（heaps）是一种特殊的数据组织方式，<a href="http://c.biancheng.net/stl/" target="_blank" rel="noopener">STL</a> 中的 priority_queue 容器适配器底层就是采用堆来组织数据存储的。为了弄明白堆是什么，首先要搞清楚什么是树存储结构。</p>
+<p>本节就来学习C++中点的堆于优先队列。</p>
+      
+      <a class="article-more-link" href="/2020/04/23/2020-04-23-Cpp-heap/">阅读更多...</a>
+      
       
       <!-- reward -->
       
