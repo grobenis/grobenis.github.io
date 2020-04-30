@@ -1,6 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2020-04-30-LeetCode-CheckDaily</title>
+    <url>/2020/04/30/2020-04-30-LeetCode-CheckDaily/</url>
+    <content><![CDATA[<p>本周打卡题目如下：</p>
+<table>
+<thead>
+<tr>
+<th>题目</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/" target="_blank" rel="noopener">面试题56 - I. 数组中数字出现的次数</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/find-in-mountain-array/" target="_blank" rel="noopener">1095. 山脉数组中查找目标值</a></td>
+<td>困难</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/happy-number/" target="_blank" rel="noopener">202. 快乐数</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h2 id="33-搜索旋转排序数组"><a href="#33-搜索旋转排序数组" class="headerlink" title="33. 搜索旋转排序数组"></a><a href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array/" target="_blank" rel="noopener">33. 搜索旋转排序数组</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>假设按照升序排序的数组在预先未知的某个点上进行了旋转。</p>
+<p>( 例如，数组 <code>[0,1,2,4,5,6,7]</code> 可能变为 <code>[4,5,6,7,0,1,2]</code> )。</p>
+<p>搜索一个给定的目标值，如果数组中存在这个目标值，则返回它的索引，否则返回 <code>-1</code> 。</p>
+<p>你可以假设数组中不存在重复的元素。</p>
+<p>你的算法时间复杂度必须是 <em>O</em>(log <em>n</em>) 级别。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1:"></a><strong>示例 1:</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: nums &#x3D; [4,5,6,7,0,1,2], target &#x3D; 0</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2:"></a><strong>示例 2:</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: nums &#x3D; [4,5,6,7,0,1,2], target &#x3D; 3</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.<span class="built_in">size</span>()==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>,right = nums.<span class="built_in">size</span>()<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> helper(nums,left,right,target);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">helper</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;nums,<span class="keyword">int</span> left,<span class="keyword">int</span> right,<span class="keyword">int</span> target)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(left&gt;=right)</span><br><span class="line">            <span class="keyword">return</span> nums[left]==target?left:<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> mid = left+(right-left)/<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid]==target)</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">int</span> l = helper(nums,left,mid<span class="number">-1</span>,target);</span><br><span class="line">        <span class="keyword">return</span> l==<span class="number">-1</span>?helper(nums,mid+<span class="number">1</span>,right,target):l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="方法一：二分搜索"><a href="#方法一：二分搜索" class="headerlink" title="方法一：二分搜索"></a>方法一：二分搜索</h4><p><strong>思路和算法</strong></p>
+<p>题目要求算法时间复杂度必须是 $O(\log n)$的级别，这提示我们可以使用二分搜索的方法。但是数组本身不是有序的，进行旋转后只保证了数组的局部是有序的，这还能进行二分搜索吗？答案是可以的。可以发现的是，我们将数组从中间分开成左右两部分的时候，一定有一部分的数组是有序的。拿示例来看，我们从 <code>6</code> 这个位置分开以后数组变成了 <code>[4, 5, 6]</code> 和 <code>[7, 0, 1, 2]</code> 两个部分，其中左边 <code>[4, 5, 6]</code> 这个部分的数组是有序的，其他也是如此。这启示我们可以在常规二分搜索的时候查看当前 <code>mid</code> 为分割位置分割出来的两个部分 <code>[l, mid]</code> 和 <code>[mid + 1, r]</code> 哪个部分是有序的，并根据有序的那个部分确定我们该如何改变二分搜索的上下界，因为我们能够根据有序的那部分判断出 <code>target</code> 在不在这个部分：</p>
+<ul>
+<li>如果 <code>[l, mid - 1]</code> 是有序数组，且 <code>target</code> 的大小满足$ [\textit{nums}[l],\textit{nums}[mid]))$，则我们应该将搜索范围缩小至 <code>[l, mid - 1]</code>，否则在 <code>[mid + 1, r]</code> 中寻找。</li>
+<li>如果 <code>[mid, r]</code> 是有序数组，且 <code>target</code> 的大小满足 $(\textit{nums}[mid+1],\textit{nums}[r])$，则我们应该将搜索范围缩小至 <code>[mid + 1, r]</code>，否则在 <code>[l, mid - 1]</code> 中寻找。</li>
+</ul>
+<p><img src="/2020/04/30/2020-04-30-LeetCode-CheckDaily/33_fig1.png" alt="fig1"></p>
+<p>需要注意的是，二分的写法有很多种，所以在判断 <code>target</code> 大小与有序部分的关系的时候可能会出现细节上的差别。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = (<span class="keyword">int</span>)nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span> (!n) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> nums[<span class="number">0</span>] == target ? <span class="number">0</span> : <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (nums[mid] == target) <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="keyword">if</span> (nums[<span class="number">0</span>] &lt;= nums[mid]) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[<span class="number">0</span>] &lt;= target &amp;&amp; target &lt; nums[mid]) &#123;</span><br><span class="line">                    r = mid - <span class="number">1</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    l = mid + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[mid] &lt; target &amp;&amp; target &lt;= nums[n - <span class="number">1</span>]) &#123;</span><br><span class="line">                    l = mid + <span class="number">1</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    r = mid - <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度： $O(\log n)$，其中 n 为$ \textit{nums}[]$ 数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度 $O(\log n)$。</li>
+<li>空间复杂度： $O(1)$ 。我们只需要常数级别的空间存放变量。</li>
+</ul>
+<h2 id="面试题56-I-数组中数字出现的次数"><a href="#面试题56-I-数组中数字出现的次数" class="headerlink" title="面试题56 - I. 数组中数字出现的次数"></a><a href="https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/" target="_blank" rel="noopener">面试题56 - I. 数组中数字出现的次数</a></h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>一个整型数组 <code>nums</code> 里除两个数字之外，其他数字都出现了两次。请写程序找出这两个只出现一次的数字。要求时间复杂度是O(n)，空间复杂度是O(1)。</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [4,1,4,6]</span><br><span class="line">输出：[1,6] 或 [6,1]</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [1,2,10,4,1,4,3,3]</span><br><span class="line">输出：[2,10] 或 [10,2]</span><br></pre></td></tr></table></figure>
+
+<p> <strong>限制：</strong></p>
+<ul>
+<li><code>2 &lt;= nums &lt;= 10000</code></li>
+</ul>
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">singleNumbers</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">res</span><span class="params">(<span class="number">2</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> n : nums)</span><br><span class="line">            s ^= n;</span><br><span class="line">        <span class="keyword">int</span> k = s &amp; (-s);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> num : nums)&#123;</span><br><span class="line">            <span class="keyword">if</span>(num &amp; k)&#123;</span><br><span class="line">                res[<span class="number">0</span>]^=num;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                res[<span class="number">1</span>]^=num;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="1095-山脉数组中查找目标值"><a href="#1095-山脉数组中查找目标值" class="headerlink" title="1095. 山脉数组中查找目标值"></a><a href="https://leetcode-cn.com/problems/find-in-mountain-array/" target="_blank" rel="noopener">1095. 山脉数组中查找目标值</a></h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>（这是一个 <strong>交互式问题</strong> ）</p>
+<p>给你一个 <strong>山脉数组</strong> <code>mountainArr</code>，请你返回能够使得 <code>mountainArr.get(index)</code> <strong>等于</strong> <code>target</code> <strong>最小</strong> 的下标 <code>index</code> 值。如果不存在这样的下标 <code>index</code>，就请返回 <code>-1</code>。 </p>
+<p>何为山脉数组？如果数组 <code>A</code> 是一个山脉数组的话，那它满足如下条件：</p>
+<p><strong>首先</strong>，<code>A.length &gt;= 3</code></p>
+<p><strong>其次</strong>，在 <code>0 &lt; i &lt; A.length - 1</code> 条件下，存在 <code>i</code> 使得：</p>
+<ul>
+<li><p><code>A[0] &lt; A[1] &lt; ... A[i-1] &lt; A[i]</code></p>
+</li>
+<li><p><code>A[i] &gt; A[i+1] &gt; ... &gt; A[A.length - 1]</code></p>
+<p>你将 <strong>不能直接访问该山脉数组</strong>，必须通过 <code>MountainArray</code> 接口来获取数据：</p>
+</li>
+<li><p><code>MountainArray.get(k)</code> - 会返回数组中索引为<code>k</code> 的元素（下标从 0 开始）</p>
+</li>
+<li><p><code>MountainArray.length()</code> - 会返回该数组的长度</p>
+</li>
+</ul>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：array &#x3D; [1,2,3,4,5,3,1], target &#x3D; 3</span><br><span class="line">输出：2</span><br><span class="line">解释：3 在数组中出现了两次，下标分别为 2 和 5，我们返回最小的下标 2。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：array &#x3D; [0,1,2,4,2,1], target &#x3D; 3</span><br><span class="line">输出：-1</span><br><span class="line">解释：3 在数组中没有出现，返回 -1。</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>3 &lt;= mountain_arr.length() &lt;= 10000</code></li>
+<li><code>0 &lt;= target &lt;= 10^9</code></li>
+<li><code>0 &lt;= mountain_arr.get(index) &lt;= 10^9</code></li>
+</ul>
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="方法一：二分查找"><a href="#方法一：二分查找" class="headerlink" title="方法一：二分查找"></a>方法一：二分查找</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray &amp;mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = MountainArray.length()<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> <span class="built_in">peek</span> = findPeek(mountainArr,left,right);</span><br><span class="line">        <span class="keyword">return</span> helper(mountainArr,left,right,target);        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">helper</span><span class="params">(MountainArray &amp;mountainArr,<span class="keyword">int</span> left,<span class="keyword">int</span> right,<span class="keyword">int</span> target)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(left&gt;right)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span>(left=right)</span><br><span class="line">            <span class="keyword">return</span> mountainArr.<span class="built_in">get</span>(left)==target?left:<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> mid = (left+right)/<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> midval = mountainArr.<span class="built_in">get</span>(mid);</span><br><span class="line">        <span class="keyword">if</span>(midval==target)</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> leftval = mountainArr.<span class="built_in">get</span>(left);</span><br><span class="line">        <span class="keyword">if</span>(leftval==target)</span><br><span class="line">            <span class="keyword">return</span> left;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> rightval = mountainArr.<span class="built_in">get</span>(right);</span><br><span class="line">        <span class="keyword">if</span>(rightval==target)</span><br><span class="line">            <span class="keyword">return</span> right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findPeek</span><span class="params">(MountainArray &amp;mountainArr,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (left+right)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(m+<span class="number">1</span>&lt;= right &amp;&amp; mountainArr.<span class="built_in">get</span>(mid)&lt;mountainArr.<span class="built_in">get</span>(mid+<span class="number">1</span>))</span><br><span class="line">                l = m+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                r= m;</span><br><span class="line">            <span class="keyword">return</span> l;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="官方解法-1"><a href="#官方解法-1" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="方法一：二分查找-1"><a href="#方法一：二分查找-1" class="headerlink" title="方法一：二分查找"></a>方法一：二分查找</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">binary_search</span><span class="params">(MountainArray &amp;mountain, <span class="keyword">int</span> target, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> key(<span class="keyword">int</span>))</span> </span>&#123;</span><br><span class="line">        target = key(target);</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> cur = key(mountain.<span class="built_in">get</span>(mid));</span><br><span class="line">            <span class="keyword">if</span> (cur == target)</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cur &lt; target)</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                r = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray &amp;mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = mountainArr.length() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (mountainArr.<span class="built_in">get</span>(mid) &lt; mountainArr.<span class="built_in">get</span>(mid + <span class="number">1</span>))</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                r = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> peak = l;</span><br><span class="line">        <span class="keyword">int</span> index = binary_search(mountainArr, target, <span class="number">0</span>, peak, [](<span class="keyword">int</span> x) -&gt; <span class="keyword">int</span>&#123;<span class="keyword">return</span> x;&#125;);</span><br><span class="line">        <span class="keyword">if</span> (index != <span class="number">-1</span>)</span><br><span class="line">            <span class="keyword">return</span> index;</span><br><span class="line">        <span class="keyword">return</span> binary_search(mountainArr, target, peak + <span class="number">1</span>, mountainArr.length() - <span class="number">1</span>, [](<span class="keyword">int</span> x) -&gt; <span class="keyword">int</span>&#123;<span class="keyword">return</span> -x;&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="202-快乐数"><a href="#202-快乐数" class="headerlink" title="202. 快乐数"></a>202. 快乐数</h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>编写一个算法来判断一个数 <code>n</code> 是不是快乐数。</p>
+<p>「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 <strong>无限循环</strong> 但始终变不到 1。如果 <strong>可以变为</strong> 1，那么这个数就是快乐数。</p>
+<p>如果 <code>n</code> 是快乐数就返回 <code>True</code> ；不是，则返回 <code>False</code> 。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：19</span><br><span class="line">输出：true</span><br><span class="line">解释：</span><br><span class="line">12 + 92 &#x3D; 82</span><br><span class="line">82 + 22 &#x3D; 68</span><br><span class="line">62 + 82 &#x3D; 100</span><br><span class="line">12 + 02 + 02 &#x3D; 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="官方解法-2"><a href="#官方解法-2" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="方法一：用-HashSet-检测循环"><a href="#方法一：用-HashSet-检测循环" class="headerlink" title="方法一：用 HashSet 检测循环"></a>方法一：用 HashSet 检测循环</h4><p>我们可以先举几个例子。我们从 77 开始。则下一个数字是 4949（因为 7^2=4972=49），然后下一个数字是 9797（因为 4^2+9^2=9742+92=97）。我们可以不断重复该的过程，直到我们得到 11。因为我们得到了 11，我们知道 77 是一个快乐数，函数应该返回 <code>true</code>。</p>
+<p><img src="/2020/04/30/2020-04-30-LeetCode-CheckDaily/202_fig1.png" alt="fig1"></p>
+<p>再举一个例子，让我们从 116116 开始。通过反复通过平方和计算下一个数字，我们最终得到 5858，再继续计算之后，我们又回到 5858。由于我们回到了一个已经计算过的数字，可以知道有一个循环，因此不可能达到 11。所以对于 116116，函数应该返回 <code>false</code>。</p>
+<p><img src="/2020/04/30/2020-04-30-LeetCode-CheckDaily/202_fig2.png" alt="fig2"></p>
+<p>根据我们的探索，我们猜测会有以下三种可能。</p>
+<ol>
+<li>最终会得到 1。</li>
+<li>最终会进入循环。</li>
+<li>值会越来越大，最后接近无穷大。</li>
+</ol>
+<p>第三个情况比较难以检测和处理。我们怎么知道它会继续变大，而不是最终得到 11 呢？我们可以仔细想一想，每一位数的最大数字的下一位数是多少。</p>
+<table>
+<thead>
+<tr>
+<th>Digits</th>
+<th align="center">Largest</th>
+<th align="right">Next</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td align="center">9</td>
+<td align="right">81</td>
+</tr>
+<tr>
+<td>2</td>
+<td align="center">99</td>
+<td align="right">162</td>
+</tr>
+<tr>
+<td>3</td>
+<td align="center">999</td>
+<td align="right">243</td>
+</tr>
+<tr>
+<td>4</td>
+<td align="center">9999</td>
+<td align="right">324</td>
+</tr>
+<tr>
+<td>13</td>
+<td align="center">9999999999999</td>
+<td align="right">1053</td>
+</tr>
+</tbody></table>
+<p>对于 33 位数的数字，它不可能大于 243243。这意味着它要么被困在 243243 以下的循环内，要么跌到 11。44 位或 44 位以上的数字在每一步都会丢失一位，直到降到 33 位为止。所以我们知道，最坏的情况下，算法可能会在 243243 以下的所有数字上循环，然后回到它已经到过的一个循环或者回到 11。但它不会无限期地进行下去，所以我们排除第三种选择。</p>
+<p>即使在代码中你不需要处理第三种情况，你仍然需要理解为什么它永远不会发生，这样你就可以证明为什么你不处理它。</p>
+<p><strong>算法：</strong></p>
+<p>算法分为两部分，我们需要设计和编写代码。</p>
+<ol>
+<li>给一个数字 n，它的下一个数字是什么？</li>
+<li>按照一系列的数字来判断我们是否进入了一个循环。</li>
+</ol>
+<p>第 1 部分我们按照题目的要求做数位分离，求平方和。</p>
+<p>第 2 部分可以使用 HashSet 完成。每次生成链中的下一个数字时，我们都会检查它是否已经在 HashSet 中。</p>
+<ul>
+<li>如果它不在 HashSet 中，我们应该添加它。</li>
+<li>如果它在 HashSet 中，这意味着我们处于一个循环中，因此应该返回 <code>false</code>。</li>
+</ul>
+<p>我们使用 HashSet 而不是向量、列表或数组的原因是因为我们反复检查其中是否存在某数字。检查数字是否在哈希集中需要 O(1) 的时间，而对于其他数据结构，则需要 O(n)的时间。选择正确的数据结构是解决这些问题的关键部分。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    private int getNext(int n) &#123;</span><br><span class="line">        int totalSum &#x3D; 0;</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            int d &#x3D; n % 10;</span><br><span class="line">            n &#x3D; n &#x2F; 10;</span><br><span class="line">            totalSum +&#x3D; d * d;</span><br><span class="line">        &#125;</span><br><span class="line">        return totalSum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public bool IsHappy(int n) &#123;</span><br><span class="line">        HashSet &lt;int&gt; seen &#x3D; new HashSet&lt;int&gt;();</span><br><span class="line">        while (n !&#x3D; 1 &amp;&amp; !seen.Contains(n)) &#123;</span><br><span class="line">            seen.Add(n);</span><br><span class="line">            n &#x3D; getNext(n);</span><br><span class="line">        &#125;</span><br><span class="line">        return n &#x3D;&#x3D; 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<p>确定这个问题的时间复杂度对于一个 “简单” 级别的问题来说是一个挑战。如果您对这些问题还不熟悉，可以尝试只计算 <code>getNext(n)</code> 函数的时间复杂度。</p>
+<ul>
+<li><p>时间复杂度：</p>
+<p>$O(243 \cdot 3 + \log n + \log\log n + \log\log\log n)=O(\log n)$.</p>
+<ul>
+<li><p>查找给定数字的下一个值的成本为$O(\log n)$，因为我们正在处理数字中的每位数字，而数字中的位数由 $\log n$给定。</p>
+</li>
+<li><p>要计算出总的时间复杂度，我们需要仔细考虑循环中有多少个数字，它们有多大。</p>
+</li>
+<li><p>我们在上面确定，一旦一个数字低于 243，它就不可能回到 243 以上。因此，我们就可以用 243以下最长循环的长度来代替 243，不过，因为常数无论如何都无关紧要，所以我们不会担心它。</p>
+</li>
+<li><p>对于高于 243 的 n，我们需要考虑循环中每个数高于 243 的成本。通过数学运算，我们可以证明在最坏的情况下，这些成本将是 $O(\log n) + O(\log \log n) + O(\log \log \log n)$。幸运的是，$O(\log n)$ 是占主导地位的部分，而其他部分相比之下都很小（总的来说，它们的总和小于$\log n$），所以我们可以忽略它们。</p>
+</li>
+</ul>
+</li>
+<li><p>空间复杂度：$O(\log n)$。与时间复杂度密切相关的是衡量我们放入 HashSet 中的数字以及它们有多大的指标。对于足够大的 n，大部分空间将由 n 本身占用。我们可以很容易地优化到 $O(243 \cdot 3) = O(1)$，方法是只保存集合中小于 243 的数字，因为对于较高的数字，无论如何都不可能返回到它们。</p>
+</li>
+</ul>
+<h4 id="方法二：快慢指针法"><a href="#方法二：快慢指针法" class="headerlink" title="方法二：快慢指针法"></a>方法二：快慢指针法</h4><p>通过反复调用 <code>getNext(n)</code> 得到的链是一个隐式的链表。隐式意味着我们没有实际的链表节点和指针，但数据仍然形成链表结构。起始数字是链表的头 “节点”，链中的所有其他数字都是节点。<code>next</code> 指针是通过调用 <code>getNext(n)</code> 函数获得。</p>
+<p>意识到我们实际有个链表，那么这个问题就可以转换为检测一个链表是否有环。因此我们在这里可以使用弗洛伊德循环查找算法。这个算法是两个奔跑选手，一个跑的快，一个跑得慢。在龟兔赛跑的寓言中，跑的快的称为 “乌龟”，跑得快的称为 “兔子”。</p>
+<p>不管乌龟和兔子在循环中从哪里开始，它们最终都会相遇。这是因为兔子每走一步就向乌龟靠近一个节点（在它们的移动方向上）。</p>
+<p><img src="/2020/04/30/2020-04-30-LeetCode-CheckDaily/1.jpg" alt="img"><strong>算法：</strong></p>
+<p>我们不是只跟踪链表中的一个值，而是跟踪两个值，称为快跑者和慢跑者。在算法的每一步中，慢速在链表中前进 1 个节点，快跑者前进 2 个节点（对 <code>getNext(n)</code> 函数的嵌套调用）。如果 <code>n</code> 是一个快乐数，即没有循环，那么快跑者最终会比慢跑者先到达数字 1。如果 <code>n</code> 不是一个快乐的数字，那么最终快跑者和慢跑者将在同一个数字上相遇。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int getNext(int n) &#123;</span><br><span class="line">        int totalSum &#x3D; 0;</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            int d &#x3D; n % 10;</span><br><span class="line">            n &#x3D; n &#x2F; 10;</span><br><span class="line">            totalSum +&#x3D; d * d;</span><br><span class="line">        &#125;</span><br><span class="line">        return totalSum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public bool IsHappy(int n) &#123;</span><br><span class="line">        int slowRunner &#x3D; n;</span><br><span class="line">        int fastRunner &#x3D; getNext(n);</span><br><span class="line">        while (fastRunner !&#x3D; 1 &amp;&amp; slowRunner !&#x3D; fastRunner) &#123;</span><br><span class="line">            slowRunner &#x3D; getNext(slowRunner);</span><br><span class="line">            fastRunner &#x3D; getNext(getNext(fastRunner));</span><br><span class="line">        &#125;</span><br><span class="line">        return fastRunner &#x3D;&#x3D; 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(\log n)$，该分析建立在对前一种方法的分析的基础上，但是这次我们需要跟踪两个指针而不是一个指针来分析，以及在它们相遇前需要绕着这个循环走多少次。<ul>
+<li>如果没有循环，那么快跑者将先到达 1，慢跑者将到达链表中的一半。我们知道最坏的情况下，成本是 $O(2 \cdot \log n) = O(\log n)$。</li>
+<li>一旦两个指针都在循环中，在每个循环中，快跑者将离慢跑者更近一步。一旦快跑者落后慢跑者一步，他们就会在下一步相遇。假设循环中有 k个数字。如果他们的起点是相隔 k-1的位置（这是他们可以开始的最远的距离），那么快跑者需要 k-1步才能到达慢跑者，这对于我们的目的来说也是不变的。因此，主操作仍然在计算起始 n 的下一个值，即 $O(\log n)$。</li>
+</ul>
+</li>
+<li>空间复杂度：$O(1)$，对于这种方法，我们不需要哈希集来检测循环。指针需要常数的额外空间。</li>
+</ul>
+<h4 id="方法三：数学"><a href="#方法三：数学" class="headerlink" title="方法三：数学"></a>方法三：数学</h4><p>前两种方法是面试中应该想到的。第三种方法不是你在面试中会写的，而是针对对数学好奇的人，因为它很有趣。下一个值可能比自己大的最大数字是什么？根据我们之前的分析，我们知道它必须低于 243。因此，我们知道任何循环都必须包含小于 243 的数字，用这么小的数字，编写一个能找到所有周期的强力程序并不困难。如果这样做，您会发现只有一个循环：$4 \rightarrow 16 \rightarrow 37 \rightarrow 58 \rightarrow 89 \rightarrow 145 \rightarrow 42 \rightarrow 20 \rightarrow 4$。所有其他数字都在进入这个循环的链上，或者在进入 11 的链上。因此，我们可以硬编码一个包含这些数字的散列集，如果我们达到其中一个数字，那么我们就知道在循环中。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int getNext(int n) &#123;</span><br><span class="line">        int totalSum &#x3D; 0;</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            int d &#x3D; n % 10;</span><br><span class="line">            n &#x3D; n &#x2F; 10;</span><br><span class="line">            totalSum +&#x3D; d * d;</span><br><span class="line">        &#125;</span><br><span class="line">        return totalSum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public bool IsHappy(int n) &#123;</span><br><span class="line">        HashSet&lt;int&gt; cycleMembers &#x3D;</span><br><span class="line">            new HashSet&lt;int&gt;(new int[8] &#123;4, 16, 37, 58, 89, 145, 42, 20&#125;);</span><br><span class="line"></span><br><span class="line">        while (n !&#x3D; 1 &amp;&amp; !cycleMembers.Contains(n)) &#123;</span><br><span class="line">            n &#x3D; getNext(n);</span><br><span class="line">        &#125;</span><br><span class="line">        return n &#x3D;&#x3D; 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(\log n)$。</li>
+<li>空间复杂度：$O(1)$，我们没有保留我们所遇到的数字的历史记录。硬编码哈希集的大小是固定的。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>刷题</tag>
+        <tag>每日打卡</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>堆与优先队列</title>
     <url>/2020/04/23/2020-04-23-Cpp-heap/</url>
     <content><![CDATA[<p>堆（heaps）是一种特殊的数据组织方式，<a href="http://c.biancheng.net/stl/" target="_blank" rel="noopener">STL</a> 中的 priority_queue 容器适配器底层就是采用堆来组织数据存储的。为了弄明白堆是什么，首先要搞清楚什么是树存储结构。</p>
