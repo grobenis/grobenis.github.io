@@ -1,6 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>LeetCode 每日打卡5-4~10</title>
+    <url>/2020/05/04/2020-05-03-LeetCode-CheckDaily/</url>
+    <content><![CDATA[<p>本周打卡题目如下：</p>
+<table>
+<thead>
+<tr>
+<th>题目</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://leetcode-cn.com/problems/jump-game-ii/" target="_blank" rel="noopener">45. 跳跃游戏 II</a></td>
+<td>困难</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/validate-binary-search-tree/" target="_blank" rel="noopener">98. 验证二叉搜索树</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<a id="more"></a>w
+
+<h2 id="45-跳跃游戏-II"><a href="#45-跳跃游戏-II" class="headerlink" title="45. 跳跃游戏 II"></a><a href="https://leetcode-cn.com/problems/jump-game-ii/" target="_blank" rel="noopener">45. 跳跃游戏 II</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个非负整数数组，你最初位于数组的第一个位置。</p>
+<p>数组中的每个元素代表你在该位置可以跳跃的最大长度。</p>
+<p>你的目标是使用最少的跳跃次数到达数组的最后一个位置。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例:"></a><strong>示例:</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,3,1,1,4]</span><br><span class="line">输出: 2</span><br><span class="line">解释: 跳到最后一个位置的最小跳跃数是 2。</span><br><span class="line">     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明:</strong></p>
+<p>假设你总是可以到达数组的最后一个位置。</p>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(len == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">steps</span><span class="params">(len,INT_MAX)</span></span>;</span><br><span class="line">        steps[len<span class="number">-1</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = len<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">        &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j&lt;=nums[i]&amp;&amp;((i+j)&lt;len);j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(steps[i+j]!=INT_MAX)    </span><br><span class="line">                    steps[i] = <span class="built_in">min</span>(steps[i],steps[i+j]+<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> steps[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>会超时</p>
+<h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><p>时间复杂度：$O(n^2)$，其中 n 是数组长度。有两层嵌套循环，在最坏的情况下，例如数组中的所有元素都是 1，position 需要遍历数组中的每个位置，对于 position 的每个值都有一次循环。</p>
+<p>空间复杂度：$O(1)$。</p>
+<h3 id="方法二：正向查找可到达的最大位置"><a href="#方法二：正向查找可到达的最大位置" class="headerlink" title="方法二：正向查找可到达的最大位置"></a>方法二：正向查找可到达的最大位置</h3><p>方法一虽然直观，但是时间复杂度比较高，有没有办法降低时间复杂度呢？</p>
+<p>如果我们「贪心」地进行正向查找，每次找到可到达的最远位置，就可以在线性时间内得到最少的跳跃次数。</p>
+<p>例如，对于数组 [2,3,1,2,4,2,3]，初始位置是下标 0，从下标 0 出发，最远可到达下标 2。下标 0 可到达的位置中，下标 1 的值是 3，从下标 1 出发可以达到更远的位置，因此第一步到达下标 1。</p>
+<p>从下标 1 出发，最远可到达下标 4。下标 1 可到达的位置中，下标 4 的值是 4 ，从下标 4 出发可以达到更远的位置，因此第二步到达下标 4。</p>
+<p><img src="/2020/05/04/2020-05-03-LeetCode-CheckDaily/45_fig1.png" alt="x"></p>
+<p>在具体的实现中，我们维护当前能够到达的最大下标位置，记为边界。我们从左到右遍历数组，到达边界时，更新边界并将跳跃次数增加 1。</p>
+<p>在遍历数组时，我们不访问最后一个元素，这是因为在访问最后一个元素之前，我们的边界一定大于等于最后一个位置，否则就无法跳到最后一个位置了。如果访问最后一个元素，在边界正好为最后一个位置的情况下，我们会增加一次「不必要的跳跃次数」，因此我们不必访问最后一个元素。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxPos = <span class="number">0</span>, n = nums.<span class="built_in">size</span>(), <span class="built_in">end</span> = <span class="number">0</span>, <span class="built_in">step</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (maxPos &gt;= i) &#123;</span><br><span class="line">                maxPos = <span class="built_in">max</span>(maxPos, i + nums[i]);</span><br><span class="line">                <span class="keyword">if</span> (i == <span class="built_in">end</span>) &#123;</span><br><span class="line">                    <span class="built_in">end</span> = maxPos;</span><br><span class="line">                    ++<span class="built_in">step</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">step</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">作者：LeetCode-Solution</span><br><span class="line">链接：https:<span class="comment">//leetcode-cn.com/problems/jump-game-ii/solution/tiao-yue-you-xi-ii-by-leetcode-solution/</span></span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+<p>复杂度分析</p>
+<p>时间复杂度：O(n)，其中 n 是数组长度。</p>
+<p>空间复杂度：O(1)。</p>
+<h2 id="98-验证二叉搜索树"><a href="#98-验证二叉搜索树" class="headerlink" title="98. 验证二叉搜索树"></a><a href="https://leetcode-cn.com/problems/validate-binary-search-tree/" target="_blank" rel="noopener">98. 验证二叉搜索树</a></h2><h3 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h3><p>给定一个二叉树，判断其是否是一个有效的二叉搜索树。</p>
+<p>假设一个二叉搜索树具有如下特征：</p>
+<ul>
+<li>节点的左子树只包含<strong>小于</strong>当前节点的数。</li>
+<li>节点的右子树只包含<strong>大于</strong>当前节点的数。</li>
+<li>所有左子树和右子树自身必须也是二叉搜索树。</li>
+</ul>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例 1:"></a><strong>示例 1:</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入:</span><br><span class="line">    2</span><br><span class="line">   &#x2F; \</span><br><span class="line">  1   3</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例 2:"></a><strong>示例 2:</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入:</span><br><span class="line">    5</span><br><span class="line">   &#x2F; \</span><br><span class="line">  1   4</span><br><span class="line">     &#x2F; \</span><br><span class="line">    3   6</span><br><span class="line">输出: false</span><br><span class="line">解释: 输入为: [5,1,4,null,null,3,6]。</span><br><span class="line">     根节点的值为 5 ，但是其右子节点值为 4 。</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><p>思路：设置上界下界进行判断即可；需要注意的是，要对边界值的设置需要注意一点</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">bool</span> MINVAL_FLAG = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">bool</span> MAXVAL_FLAG = <span class="literal">true</span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;val==INT_MIN &amp;&amp; MINVAL_FLAG) MINVAL_FLAG = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;val==INT_MAX &amp;&amp; MAXVAL_FLAG) MAXVAL_FLAG = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> helper(root-&gt;left,INT_MIN,root-&gt;val)&amp;&amp; helper(root-&gt;right,root-&gt;val,INT_MAX);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root,<span class="keyword">int</span> minval,<span class="keyword">int</span> maxval)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;root-&gt;val&lt;&lt;<span class="string">' '</span>&lt;&lt;minval&lt;&lt;<span class="string">' '</span>&lt;&lt;maxval&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">if</span>(minval==root-&gt;val||maxval==root-&gt;val)</span><br><span class="line">            <span class="keyword">if</span>(root-&gt;val==INT_MIN &amp;&amp; MINVAL_FLAG&amp;&amp;root-&gt;val&lt;maxval)</span><br><span class="line">                    MINVAL_FLAG = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(root-&gt;val==INT_MAX &amp;&amp; MAXVAL_FLAG &amp;&amp;root-&gt;val &gt; minval)</span><br><span class="line">                    MAXVAL_FLAG = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(minval&gt;root-&gt;val||maxval&lt;root-&gt;val)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> helper(root-&gt;left,minval,<span class="built_in">min</span>(root-&gt;val,maxval))&amp;&amp;helper(root-&gt;right,<span class="built_in">max</span>(minval,root-&gt;val),maxval);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="keyword">long</span> <span class="keyword">long</span> lower, <span class="keyword">long</span> <span class="keyword">long</span> upper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">nullptr</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (root -&gt; val &lt;= lower || root -&gt; val &gt;= upper) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> helper(root -&gt; left, lower, root -&gt; val) &amp;&amp; helper(root -&gt; right, root -&gt; val, upper);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> helper(root, LONG_MIN, LONG_MAX);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方法二：中序遍历"><a href="#方法二：中序遍历" class="headerlink" title="方法二：中序遍历"></a>方法二：中序遍历</h4><p><strong>思路和算法</strong></p>
+<p>基于方法一中提及的性质，我们可以进一步知道二叉搜索树「中序遍历」得到的值构成的序列一定是升序的，这启示我们在中序遍历的时候实时检查当前节点的值是否大于前一个中序遍历到的节点的值即可。如果均大于说明这个序列是升序的，整棵树是二叉搜索树，否则不是，下面的代码我们使用栈来模拟中序遍历的过程。</p>
+<p>可能由读者不知道中序遍历是什么，我们这里简单提及一下，中序遍历是二叉树的一种遍历方式，它先遍历左子树，再遍历根节点，最后遍历右子树。而我们二叉搜索树保证了左子树的节点的值均小于根节点的值，根节点的值均小于右子树的值，因此中序遍历以后得到的序列一定是升序序列。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; <span class="built_in">stack</span>;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> inorder = (<span class="keyword">long</span> <span class="keyword">long</span>)INT_MIN - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!<span class="built_in">stack</span>.empty() || root != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span> (root != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="built_in">stack</span>.push(root);</span><br><span class="line">                root = root -&gt; left;</span><br><span class="line">            &#125;</span><br><span class="line">            root = <span class="built_in">stack</span>.top();</span><br><span class="line">            <span class="built_in">stack</span>.pop();</span><br><span class="line">            <span class="comment">// 如果中序遍历得到的节点的值小于等于前一个 inorder，说明不是二叉搜索树</span></span><br><span class="line">            <span class="keyword">if</span> (root -&gt; val &lt;= inorder) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            inorder = root -&gt; val;</span><br><span class="line">            root = root -&gt; right;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>刷题</tag>
+        <tag>每日打卡</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 第187场周赛</title>
+    <url>/2020/05/03/2020-05-03-LeetCode-Contest-187/</url>
+    <content><![CDATA[<p>本周参加周赛，战况不行，两题选手，排名<code>1084 / 3108</code></p>
+<table>
+<thead>
+<tr>
+<th>题目</th>
+<th align="center">分值</th>
+<th align="center">难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://leetcode-cn.com/problems/destination-city/" target="_blank" rel="noopener">5400. 旅行终点站</a></td>
+<td align="center">3</td>
+<td align="center">简单</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/check-if-all-1s-are-at-least-length-k-places-away/" target="_blank" rel="noopener">5401. 是否所有 1 都至少相隔 k 个元素</a></td>
+<td align="center">4</td>
+<td align="center">中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/" target="_blank" rel="noopener">5402. 绝对差不超过限制的最长连续子数组</a></td>
+<td align="center">5</td>
+<td align="center">中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/" target="_blank" rel="noopener">5403. 有序矩阵中的第 k 个最小数组和</a></td>
+<td align="center">7</td>
+<td align="center">困难</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h2 id="5400-旅行终点站"><a href="#5400-旅行终点站" class="headerlink" title="5400. 旅行终点站"></a><a href="https://leetcode-cn.com/problems/destination-city/" target="_blank" rel="noopener">5400. 旅行终点站</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一份旅游线路图，该线路图中的旅行线路用数组 <code>paths</code> 表示，其中 <code>paths[i] = [cityAi, cityBi]</code> 表示该线路将会从 <code>cityAi</code> 直接前往 <code>cityBi</code> 。请你找出这次旅行的终点站，即没有任何可以通往其他城市的线路的城市<em>。</em></p>
+<p>题目数据保证线路图会形成一条不存在循环的线路，因此只会有一个旅行终点站。</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：paths &#x3D; [[&quot;London&quot;,&quot;New York&quot;],[&quot;New York&quot;,&quot;Lima&quot;],[&quot;Lima&quot;,&quot;Sao Paulo&quot;]]</span><br><span class="line">输出：&quot;Sao Paulo&quot; </span><br><span class="line">解释：从 &quot;London&quot; 出发，最后抵达终点站 &quot;Sao Paulo&quot; 。本次旅行的路线是 &quot;London&quot; -&gt; &quot;New York&quot; -&gt; &quot;Lima&quot; -&gt; &quot;Sao Paulo&quot; 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：paths &#x3D; [[&quot;B&quot;,&quot;C&quot;],[&quot;D&quot;,&quot;B&quot;],[&quot;C&quot;,&quot;A&quot;]]</span><br><span class="line">输出：&quot;A&quot;</span><br><span class="line">解释：所有可能的线路是：</span><br><span class="line">&quot;D&quot; -&gt; &quot;B&quot; -&gt; &quot;C&quot; -&gt; &quot;A&quot;. </span><br><span class="line">&quot;B&quot; -&gt; &quot;C&quot; -&gt; &quot;A&quot;. </span><br><span class="line">&quot;C&quot; -&gt; &quot;A&quot;. </span><br><span class="line">&quot;A&quot;. </span><br><span class="line">显然，旅行终点站是 &quot;A&quot; 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3："><a href="#示例-3：" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：paths &#x3D; [[&quot;A&quot;,&quot;Z&quot;]]</span><br><span class="line">输出：&quot;Z&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>1 &lt;= paths.length &lt;= 100</code></li>
+<li><code>paths[i].length == 2</code></li>
+<li><code>1 &lt;= cityAi.length, cityBi.length &lt;= 10</code></li>
+<li><code>cityAi != cityBi</code></li>
+<li>所有字符串均由大小写英文字母和空格字符组成。</li>
+</ul>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><h4 id="思路：使用哈希表一直套娃，套完了就是终点"><a href="#思路：使用哈希表一直套娃，套完了就是终点" class="headerlink" title="思路：使用哈希表一直套娃，套完了就是终点"></a>思路：使用哈希表一直套娃，套完了就是终点</h4><h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">destCity</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;&amp; paths)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">set</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> p:paths)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">map</span>[p[<span class="number">0</span>]] = p[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">set</span>.<span class="built_in">find</span>(p[<span class="number">0</span>])==<span class="built_in">set</span>.<span class="built_in">end</span>()) <span class="built_in">set</span>.insert(p[<span class="number">0</span>]);</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">set</span>.<span class="built_in">find</span>(p[<span class="number">1</span>])==<span class="built_in">set</span>.<span class="built_in">end</span>()) <span class="built_in">set</span>.insert(p[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> v=<span class="built_in">set</span>.<span class="built_in">begin</span>();v!=<span class="built_in">set</span>.<span class="built_in">end</span>();v++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">map</span>.<span class="built_in">find</span>(*v)==<span class="built_in">map</span>.<span class="built_in">end</span>())</span><br><span class="line">                <span class="keyword">return</span> *v;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更优解法"><a href="#更优解法" class="headerlink" title="更优解法"></a>更优解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">destCity</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;&amp; paths)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">set</span>&lt;<span class="built_in">string</span>&gt; vis;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> p : paths)</span><br><span class="line">            vis.insert(p[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> p : paths)</span><br><span class="line">            <span class="keyword">if</span> (vis.<span class="built_in">find</span>(p[<span class="number">1</span>]) == vis.<span class="built_in">end</span>()) <span class="keyword">return</span> p[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"send me offer plz"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">作者：Gary_coding</span><br><span class="line">链接：https:<span class="comment">//leetcode-cn.com/problems/destination-city/solution/c-zhong-gui-zhong-ju-de-32msjie-fa-set-by-gary_cod/</span></span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5401-是否所有-1-都至少相隔-k-个元素"><a href="#5401-是否所有-1-都至少相隔-k-个元素" class="headerlink" title="5401. 是否所有 1 都至少相隔 k 个元素"></a><a href="https://leetcode-cn.com/problems/check-if-all-1s-are-at-least-length-k-places-away/" target="_blank" rel="noopener">5401. 是否所有 1 都至少相隔 k 个元素</a></h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个由若干 <code>0</code> 和 <code>1</code> 组成的数组 <code>nums</code> 以及整数 <code>k</code>。如果所有 <code>1</code> 都至少相隔 <code>k</code> 个元素，则返回 <code>True</code> ；否则，返回 <code>False</code> 。</p>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><p><img src="/2020/05/03/2020-05-03-LeetCode-Contest-187/sample_1_1791.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [1,0,0,0,1,0,0,1], k &#x3D; 2</span><br><span class="line">输出：true</span><br><span class="line">解释：每个 1 都至少相隔 2 个元素。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><p><strong><img src="/2020/05/03/2020-05-03-LeetCode-Contest-187/2020-05-03-LeetCode-Contest-187%5Csample_2_1791.png" alt="img"></strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [1,0,0,1,0,1], k &#x3D; 2</span><br><span class="line">输出：false</span><br><span class="line">解释：第二个 1 和第三个 1 之间只隔了 1 个元素。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [1,1,1,1,1], k &#x3D; 0</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4："><a href="#示例-4：" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [0,1,0,1], k &#x3D; 1</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示：-1"><a href="#提示：-1" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>1 &lt;= nums.length &lt;= 10^5</code></li>
+<li><code>0 &lt;= k &lt;= nums.length</code></li>
+<li><code>nums[i]</code> 的值为 <code>0</code> 或 <code>1</code></li>
+</ul>
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">kLengthApart</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> lastone = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ;i &lt;nums.<span class="built_in">size</span>();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i]==<span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(lastone&gt;=<span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span>(i-lastone&lt;=k)</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                lastone = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5402-绝对差不超过限制的最长连续子数组"><a href="#5402-绝对差不超过限制的最长连续子数组" class="headerlink" title="5402. 绝对差不超过限制的最长连续子数组"></a><a href="https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/" target="_blank" rel="noopener">5402. 绝对差不超过限制的最长连续子数组</a></h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个整数数组 <code>nums</code> ，和一个表示限制的整数 <code>limit</code>，请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 <code>limit</code> <em>。</em></p>
+<p>如果不存在满足条件的子数组，则返回 <code>0</code> 。</p>
+<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [8,2,4,7], limit &#x3D; 4</span><br><span class="line">输出：2 </span><br><span class="line">解释：所有子数组如下：</span><br><span class="line">[8] 最大绝对差 |8-8| &#x3D; 0 &lt;&#x3D; 4.</span><br><span class="line">[8,2] 最大绝对差 |8-2| &#x3D; 6 &gt; 4. </span><br><span class="line">[8,2,4] 最大绝对差 |8-2| &#x3D; 6 &gt; 4.</span><br><span class="line">[8,2,4,7] 最大绝对差 |8-2| &#x3D; 6 &gt; 4.</span><br><span class="line">[2] 最大绝对差 |2-2| &#x3D; 0 &lt;&#x3D; 4.</span><br><span class="line">[2,4] 最大绝对差 |2-4| &#x3D; 2 &lt;&#x3D; 4.</span><br><span class="line">[2,4,7] 最大绝对差 |2-7| &#x3D; 5 &gt; 4.</span><br><span class="line">[4] 最大绝对差 |4-4| &#x3D; 0 &lt;&#x3D; 4.</span><br><span class="line">[4,7] 最大绝对差 |4-7| &#x3D; 3 &lt;&#x3D; 4.</span><br><span class="line">[7] 最大绝对差 |7-7| &#x3D; 0 &lt;&#x3D; 4. </span><br><span class="line">因此，满足题意的最长子数组的长度为 2 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [10,1,2,4,7,2], limit &#x3D; 5</span><br><span class="line">输出：4 </span><br><span class="line">解释：满足题意的最长子数组是 [2,4,7,2]，其最大绝对差 |2-7| &#x3D; 5 &lt;&#x3D; 5 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-2"><a href="#示例-3：-2" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [4,2,2,2,4,4,2,2], limit &#x3D; 0</span><br><span class="line">输出：3</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示：-2"><a href="#提示：-2" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>1 &lt;= nums.length &lt;= 10^5</code></li>
+<li><code>1 &lt;= nums[i] &lt;= 10^9</code></li>
+<li><code>0 &lt;= limit &lt;= 10^9</code></li>
+</ul>
+<h3 id="我的解法-3"><a href="#我的解法-3" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestSubarray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> limit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> len = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+res;j&lt;len;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> a = getmax(nums,i,j);</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">abs</span>(a)&lt;=limit)</span><br><span class="line">                    res = <span class="built_in">max</span>(res,j-i+<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getmax</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l,<span class="keyword">int</span> r )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxn = nums[l];</span><br><span class="line">        <span class="keyword">int</span> minn = nums[l];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l+<span class="number">1</span>;i&lt;=r;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            maxn = <span class="built_in">max</span>(maxn,nums[i]);</span><br><span class="line">            minn = <span class="built_in">min</span>(minn,nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxn-minn;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>暴力解法 会超时</p>
+<h3 id="大佬优秀解法"><a href="#大佬优秀解法" class="headerlink" title="大佬优秀解法"></a>大佬优秀解法</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><ol>
+<li>使用滑动窗口保持符合条件的子数组，记录最长长度</li>
+<li>怎样确定子数组是否符合条件，需要知道两个关键数据<ol start="21">
+<li>子数组中的最大值</li>
+<li>子数组中的最小值</li>
+</ol>
+</li>
+<li>需要对滑入窗口的数据记录，滑出的数据删除，并且使这些记录方便的算出最大值和最小值<br>\31. 使用 <code>map</code> / <code>multiset</code> 可以在滑入滑出的时候方便的增减对应数据<br>\32. 同时 <code>map</code> / <code>multiset</code> 本身是有序的，可以方便的找出最大值最小值</li>
+</ol>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int longestSubarray(vector&lt;int&gt;&amp; nums, int limit) &#123;</span><br><span class="line">    map&lt;int, int&gt; m;</span><br><span class="line">    int ans &#x3D; 0;</span><br><span class="line">    int i &#x3D; 0;</span><br><span class="line">    for (int j &#x3D; 0; j &lt; nums.size(); j++) &#123;</span><br><span class="line">        m[nums[j]]++;</span><br><span class="line">        while (m.rbegin()-&gt;first - m.begin()-&gt;first &gt; limit) &#123;</span><br><span class="line">            m[nums[i]]--;</span><br><span class="line">            if (m[nums[i]] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                m.erase(nums[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        ans &#x3D; max(ans, j - i + 1);</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优化代码</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestSubarray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> limit)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">multiset</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; nums.<span class="built_in">size</span>(); j++) &#123;</span><br><span class="line">            s.insert(nums[j]);</span><br><span class="line">            <span class="keyword">while</span> (*s.rbegin() - *s.<span class="built_in">begin</span>() &gt; limit) &#123;</span><br><span class="line">                s.erase(s.<span class="built_in">find</span>(nums[i]));</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            ans = <span class="built_in">max</span>(ans, j - i + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">作者：ikaruga</span><br><span class="line">链接：https:<span class="comment">//leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/solution/longest-continuous-subarray-by-ikaruga/</span></span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+<h2 id="5403-有序矩阵中的第-k-个最小数组和"><a href="#5403-有序矩阵中的第-k-个最小数组和" class="headerlink" title="5403. 有序矩阵中的第 k 个最小数组和"></a><a href="https://leetcode-cn.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/" target="_blank" rel="noopener">5403. 有序矩阵中的第 k 个最小数组和</a></h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个 <code>m * n</code> 的矩阵 <code>mat</code>，以及一个整数 <code>k</code> ，矩阵中的每一行都以非递减的顺序排列。</p>
+<p>你可以从每一行中选出 1 个元素形成一个数组。返回所有可能数组中的第 k 个 <strong>最小</strong> 数组和。</p>
+<h4 id="示例-1：-3"><a href="#示例-1：-3" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：mat &#x3D; [[1,3,11],[2,4,6]], k &#x3D; 5</span><br><span class="line">输出：7</span><br><span class="line">解释：从每一行中选出一个元素，前 k 个和最小的数组分别是：</span><br><span class="line">[1,2], [1,4], [3,2], [3,4], [1,6]。其中第 5 个的和是 7 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-3"><a href="#示例-2：-3" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：mat &#x3D; [[1,3,11],[2,4,6]], k &#x3D; 9</span><br><span class="line">输出：17</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-3"><a href="#示例-3：-3" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：mat &#x3D; [[1,10,10],[1,4,5],[2,3,6]], k &#x3D; 7</span><br><span class="line">输出：9</span><br><span class="line">解释：从每一行中选出一个元素，前 k 个和最小的数组分别是：</span><br><span class="line">[1,1,2], [1,1,3], [1,4,2], [1,4,3], [1,1,6], [1,5,2], [1,5,3]。其中第 7 个的和是 9 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4：-1"><a href="#示例-4：-1" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：mat &#x3D; [[1,1,10],[2,2,9]], k &#x3D; 7</span><br><span class="line">输出：12</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示：-3"><a href="#提示：-3" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>m == mat.length</code></li>
+<li><code>n == mat.length[i]</code></li>
+<li><code>1 &lt;= m, n &lt;= 40</code></li>
+<li><code>1 &lt;= k &lt;= min(200, n ^ m)</code></li>
+<li><code>1 &lt;= mat[i][j] &lt;= 5000</code></li>
+<li><code>mat[i]</code> 是一个非递减数组</li>
+</ul>
+<h3 id="暴力解法"><a href="#暴力解法" class="headerlink" title="暴力解法"></a>暴力解法</h3><p>解题思路</p>
+<ul>
+<li>将“求前<code>m</code>行的第<code>k</code>个最小数组和”按动态规划的思路划分成子问题：已知前<code>m-1</code>行的最小数组和的<strong>列表</strong>，求前<code>m</code>行的第<code>k</code>个最小数组和。</li>
+<li>例如，<code>mat = [[1,10,10],[1,4,5],[2,3,6]]</code>，<code>k = 7</code>。已知前两行的最小数组和<code>last_row = [2,5,6,11,11,14,14,15,15]</code>。我们截取<code>last_row</code>的前<code>k</code>个元素（因为后面的元素不再有竞争力），<code>last_row = [2,5,6,11,11,14,14]</code>。然后遍历第三行的每个元素，与<code>last_row</code>的每个元素求和，排序+截取后得到<code>new_row = [4, 5, 7, 8, 8, 8, 9]</code>。返回第<code>k</code>个元素即可。</li>
+</ul>
+<p>复杂度分析</p>
+<ul>
+<li>时间复杂度：$O(m*max(n, klog(k))$。遍历每行，时间复杂度为$O(m)$。对于每一行，遍历每一列的元素为$O(n)$，对该行求出的数组和排序的复杂度为$O(klog(k))$。</li>
+<li>空间复杂度：$O(k)$。每行都要存储一个长度不超过<code>k</code>的”数组和”列表。</li>
+</ul>
+<h4 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span><span class="params">(self, mat: List[List[int]], k: int)</span> -&gt; int:</span></span><br><span class="line">        last_row = [<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(mat)):</span><br><span class="line">            new_row = [] </span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(len(mat[<span class="number">0</span>])):</span><br><span class="line">                <span class="keyword">for</span> p <span class="keyword">in</span> last_row:</span><br><span class="line">                    new_row.append(p + mat[i][j])</span><br><span class="line">            new_row.sort()</span><br><span class="line">            <span class="keyword">if</span> len(new_row) &gt; k:</span><br><span class="line">                last_row = new_row[ :k]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                last_row = new_row</span><br><span class="line">        <span class="keyword">return</span> last_row[k - <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="最小堆"><a href="#最小堆" class="headerlink" title="最小堆"></a>最小堆</h3><h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><ul>
+<li>可以先看下<a href="https://leetcode-cn.com/problems/ugly-number-ii/solution/1-zui-xiao-dui-2-dong-tai-gui-hua-san-zhi-zhen-pyt/" target="_blank" rel="noopener">264. 丑数 II</a>这道题。T264的最小堆解法：每次从堆中弹出最小的丑数，然后把该丑数能生成的新的丑数push入堆。</li>
+<li>本题也很相似，每次从堆中弹出最小的数组和<code>curr_sum</code>和对应的指针<code>pointers</code>，然后轮流将指针<code>pointers</code>的每个索引向后移动一位，生成新的<code>new_sum</code>，加入堆中。</li>
+</ul>
+<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><ul>
+<li>最小堆存储的是<code>[curr_sum, pointers]</code>二元组，<code>pointers</code>是指针数组，<code>curr_sum</code>是该<code>pointers</code>指向的元素的和。初始化<code>pointers</code>全为0，求出相应的<code>curr_sum</code>，并将其入堆。</li>
+<li>重复下列步骤k次<ul>
+<li>从堆中pop出<code>curr_sum</code>和<code>pointers</code>。</li>
+<li>遍历<code>pointers</code>的每个索引，将该索引加一，求出新的和，如果没有出现过，push入堆。</li>
+</ul>
+</li>
+</ul>
+<h4 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h4><ul>
+<li>以<code>mat = [[1,10,10],[1,4,5],[2,3,6]]</code>，<code>k = 7</code>为例，初始化<code>pointers = (0, 0, 0)</code>，<code>curr_sum = 4</code>，哈希表<code>seen</code>加入<code>(0, 0, 0)</code></li>
+<li>从堆中pop出最小和，<code>pointers = (0, 0, 0)</code>，<code>curr_sum = 4</code>。新生成<code>[13, (1, 0, 0)]</code>,<code>[7, (0, 1, 0)]</code>，<code>[5, (0, 0, 1)]</code>，在<code>seen</code>中做好标记，然后将三者入堆。重复该步骤<code>k</code>次。</li>
+</ul>
+<h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><ul>
+<li>时间复杂度：O(kmlog(k))<em>O</em>(<em>k<strong>m</strong>l<strong>o</strong>g</em>(<em>k</em>))。执行<code>k</code>次循环：每次循环时，出堆操作，是O(log(k)))<em>O</em>(<em>l<strong>o</strong>g</em>(<em>k</em>)))；每次出堆后，要生成<code>m</code>个新的数组和，是O(n)<em>O</em>(<em>n</em>)；将新生成的的数组和入队，是O(logk)<em>O</em>(<em>l<strong>o</strong>g**k</em>)。所以总的是O(k * (log(k) + m * log(k))) = O(kmlog(k)))<em>O</em>(<em>k</em>∗(<em>l<strong>o</strong>g</em>(<em>k</em>)+<em>m</em>∗<em>l<strong>o</strong>g</em>(<em>k</em>)))=<em>O</em>(<em>k<strong>m</strong>l<strong>o</strong>g</em>(<em>k</em>)))</li>
+<li>空间复杂度：O(km^2)<em>O</em>(<em>k*<em>m</em>2)。堆中的元素个数不会超过<code>km</code>个，每个的空间是O(m)*O</em>(<em>m</em>)</li>
+</ul>
+<h4 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span><span class="params">(self, mat, k: int)</span> -&gt; int:</span></span><br><span class="line">        m, n = len(mat), len(mat[<span class="number">0</span>])</span><br><span class="line">        <span class="comment"># 初始化指针</span></span><br><span class="line">        pointers = [<span class="number">0</span>] * m </span><br><span class="line">        <span class="comment"># 初始化heap</span></span><br><span class="line">        heap = []</span><br><span class="line">        curr_sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):</span><br><span class="line">            curr_sum += mat[i][<span class="number">0</span>]</span><br><span class="line">        heapq.heappush(heap, [curr_sum, tuple(pointers)])</span><br><span class="line">        <span class="comment"># 初始化seen</span></span><br><span class="line">        seen = set()</span><br><span class="line">        seen.add(tuple(pointers))</span><br><span class="line">        <span class="comment"># 执行k次</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(k):</span><br><span class="line">            <span class="comment"># 从堆中pop出curr_sum(最小数组和)和pointers(指针数组)</span></span><br><span class="line">            curr_sum, pointers = heapq.heappop(heap)</span><br><span class="line">            <span class="comment"># 每个指针轮流后移一位，将new_sum(新的数组和)和new_pointers(新的指针数组)push入堆</span></span><br><span class="line">            <span class="keyword">for</span> i, j <span class="keyword">in</span> enumerate(pointers):</span><br><span class="line">                <span class="keyword">if</span> j &lt; n - <span class="number">1</span>:</span><br><span class="line">                    new_pointers = list(pointers)</span><br><span class="line">                    new_pointers[i] = j + <span class="number">1</span></span><br><span class="line">                    new_pointers = tuple(new_pointers)</span><br><span class="line">                    <span class="keyword">if</span> new_pointers <span class="keyword">not</span> <span class="keyword">in</span> seen:</span><br><span class="line">                        new_sum = curr_sum + mat[i][j + <span class="number">1</span>]- mat[i][j]</span><br><span class="line">                        heapq.heappush(heap, [new_sum, new_pointers])</span><br><span class="line">                        seen.add(new_pointers)</span><br><span class="line">        <span class="keyword">return</span> curr_sum</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>周赛</tag>
+        <tag>刷题</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeetCode 第186场周赛</title>
     <url>/2020/05/03/2020-05-03-LeetCode-Contest-186/</url>
     <content><![CDATA[<p>上周参加周赛，战况还行，排名<code>367 / 3107</code></p>
