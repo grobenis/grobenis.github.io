@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++多线程编程</title>
+    <url>/2020/05/15/C-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<p>多线程是学习SLAM过程中不可缺少的一步，正确的使用多线程能使SLAM系统的运行速度提升很多，达到更高的精度和速度。本节就来学习SLAM中的多线程编程方法。</p>
+<a id="more"></a>
+
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>线程在Unix系统下，通常被称为轻量级的进程，线程虽然不是进程，但却可以看作是Unix进程的表亲，同一进程中的多条线程将<strong>共享该进程中的全部系统资源，如虚拟地址空间，文件描述符和信号处理等等</strong>。但同一进程中的多个线程<strong>有各自的调用栈(call stack)，自己的寄存器环境（register context)，自己的线程本地存储(thread-local storage)</strong>。 一个进程可以有很多线程，每条线程并行执行不同的任务。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>线程可以提高应用程序在多核环境下处理诸如文件I/O或者socket I/O等会产生堵塞的情况的表现性能。在Unix系统中，一个进程包含很多东西，包括可执行程序以及一大堆的诸如文件描述符地址空间等资源。在很多情况下，完成相关任务的不同代码间需要交换数据。如果采用多进程的方式，那么通信就需要在用户空间和内核空间进行频繁的切换，开销很大。但是如果使用多线程的方式，因为可以使用共享的全局变量，所以线程间的通信（数据交换）变得非常高效。</p>
+<h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><h4 id="一个简单的Demo"><a href="#一个简单的Demo" class="headerlink" title="一个简单的Demo"></a>一个简单的Demo</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">helloworld</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"hello world \n"</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="comment">//开启一个线程 </span></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::thread <span class="title">t</span><span class="params">(helloworld)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"hello world main thread\n"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//线程的终结</span></span><br><span class="line">    t.join(); </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="多线程库"><a href="#多线程库" class="headerlink" title="多线程库"></a>多线程库</h4><p><code>C++11</code>中终于提供了多线程的标准库，提供了线程管理、保护共享数据、线程间同步操作、原子操作等类。</p>
+<p>多线程库对应的头文件是<code>#include&lt;thread&gt;</code>，类名为<code>std::thread</code>。</p>
+<p>一个简单的串行程序如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"I'm function_1()"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    function_1();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个典型的单线程的单进程程序，任何程序都是一个进程，<code>main()</code>函数就是其中的主线程，单个线程都是顺序执行。</p>
+<p>将上面的程序改造成多线程程序其实很简单，让<code>function_1()</code>函数在另外的线程中执行：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"I'm function_1()"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::thread <span class="title">t1</span><span class="params">(function_1)</span></span>;</span><br><span class="line">    <span class="comment">// do other things</span></span><br><span class="line">    t1.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析：</p>
+<ol>
+<li>首先，构建一个<code>std::thread</code>对象<code>t1</code>，构造的时候传递了一个参数，这个参数是一个函数，这个函数就是这个线程的<strong>入口函数</strong>，函数执行完了，整个线程也就执行完了。</li>
+<li>线程创建成功后，就会<strong>立即启动</strong>，并没有一个类似<code>start</code>的函数来显式的启动线程。</li>
+<li>一旦线程开始运行， 就需要显式的决定是要等待它完成(join)，或者分离它让它自行运行(detach)。注意：只需要在<code>std::thread</code>对象<strong>被销毁之前</strong>做出这个决定。这个例子中，对象<code>t1</code>是栈上变量，在<code>main</code>函数执行结束后就会被销毁，所以需要在<code>main</code>函数结束之前做决定。</li>
+<li>这个例子中选择了使用<code>t1.join()</code>，主线程会一直阻塞着，直到子线程完成，<code>join()</code>函数的另一个任务是回收该线程中使用的资源。</li>
+</ol>
+<p><strong>线程对象和对象内部管理的线程的生命周期并不一样</strong>，如果线程执行的快，可能内部的线程已经结束了，但是线程对象还活着，也有可能线程对象已经被析构了，内部的线程还在运行。</p>
+<h4 id="线程创建"><a href="#线程创建" class="headerlink" title="线程创建"></a>线程创建</h4><p>下面的程序，我们可以用它来创建一个 POSIX 线程：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;pthread.h&gt;</span><br><span class="line">pthread_create (thread, attr, start_routine, arg)</span><br></pre></td></tr></table></figure>
+
+<p>在这里，<strong>pthread_create</strong> 创建一个新的线程，并让它可执行。下面是关于参数的说明：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">thread</td>
+<td align="left">指向线程标识符指针。</td>
+</tr>
+<tr>
+<td align="left">attr</td>
+<td align="left">一个不透明的属性对象，可以被用来设置线程属性。您可以指定线程属性对象，也可以使用默认值 NULL。</td>
+</tr>
+<tr>
+<td align="left">start_routine</td>
+<td align="left">线程运行函数起始地址，一旦线程被创建就会执行。</td>
+</tr>
+<tr>
+<td align="left">arg</td>
+<td align="left">运行函数的参数。它必须通过把引用作为指针强制转换为 void 类型进行传递。如果没有传递参数，则使用 NULL。</td>
+</tr>
+</tbody></table>
+<p>创建线程成功时，函数返回 0，若返回值不为 0 则说明创建线程失败。</p>
+<h4 id="终止线程"><a href="#终止线程" class="headerlink" title="终止线程"></a>终止线程</h4><p>使用下面的程序，我们可以用它来终止一个 POSIX 线程：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;pthread.h&gt;</span><br><span class="line">pthread_exit (status)</span><br></pre></td></tr></table></figure>
+
+<p>在这里，<strong>pthread_exit</strong> 用于显式地退出一个线程。通常情况下，pthread_exit() 函数是在线程完成工作后无需继续存在时被调用。</p>
+<p>如果 main() 是在它所创建的线程之前结束，并通过 pthread_exit() 退出，那么其他线程将继续执行。否则，它们将在 main() 结束时自动被终止。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>多线程</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeetCode每日打卡 5-11~17</title>
     <url>/2020/05/13/2020-05-11-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>本周打卡题目如下：</p>
