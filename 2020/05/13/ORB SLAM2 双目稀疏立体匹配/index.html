@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    ORB SLAM2 双目稀疏立体匹配 |  曾是少年
+    ORB_SLAM2 双目稀疏立体匹配算法 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  ORB SLAM2 双目稀疏立体匹配
+  ORB_SLAM2 双目稀疏立体匹配算法
 </h1>
   
 
@@ -49,10 +49,14 @@
 
     
     <div class="article-meta">
-      <a href="/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/" class="article-date">
-  <time datetime="2020-05-15T03:04:11.715Z" itemprop="datePublished">2020-05-15</time>
+      <a href="/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/" class="article-date">
+  <time datetime="2020-05-13T13:27:34.000Z" itemprop="datePublished">2020-05-13</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -60,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">509字</span>
+            <span class="post-count">521字</span>
         </span>
     </span>
 
@@ -94,7 +98,10 @@
       
 
       
-      <h1 id="ORB-SLAM2-双目稀疏立体匹配"><a href="#ORB-SLAM2-双目稀疏立体匹配" class="headerlink" title="ORB SLAM2 双目稀疏立体匹配"></a>ORB SLAM2 双目稀疏立体匹配</h1><p>主要在frame.cc文件中</p>
+      <p>本节主要学习ORB_SLAM2中的双目立体匹配算法的实现过程</p>
+<a id="more"></a>
+
+<p>主要在frame.cc文件中</p>
 <p>主要过程：</p>
 <ol>
 <li>ID自增</li>
@@ -128,7 +135,7 @@
 <ol start="6">
 <li>计算去畸变后边界</li>
 </ol>
-<h2 id="双目特征点匹配"><a href="#双目特征点匹配" class="headerlink" title="双目特征点匹配"></a>双目特征点匹配</h2><p><img src="/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E5%8F%8C%E7%9B%AE%E7%89%B9%E5%BE%81%E7%82%B9%E5%8C%B9%E9%85%8D.png" alt="image-20200515110530658"></p>
+<h2 id="双目特征点匹配"><a href="#双目特征点匹配" class="headerlink" title="双目特征点匹配"></a>双目特征点匹配</h2><p><img src="/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E5%8F%8C%E7%9B%AE%E7%89%B9%E5%BE%81%E7%82%B9%E5%8C%B9%E9%85%8D.png" alt="image-20200515110530658"></p>
 <p>主要对应函数<code>Frame::ComputeStereoMatches()</code>。<br><strong>输入</strong>：两帧立体矫正后的图像对应的ob特征点集<br><strong>过程</strong></p>
 <ol>
 <li>行特征点统计</li>
@@ -148,7 +155,7 @@
 
 
 <p>亚像素插值方法：</p>
-<p><img src="/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/D:%5CProject%5Cblog%5Csource_posts%5CImage-blog%5C%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
+<p><img src="/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/D:%5CProject%5Cblog%5Csource_posts%5CImage-blog%5C%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
 <p>亚像素的误差在一个像素以内，所以修正量大一1时鉴定为误匹配。</p>
 <ol start="5">
 <li>最优视差值。深度选择</li>
@@ -210,13 +217,15 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ORBSLAM/" rel="tag">ORBSLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
+
 
     </footer>
 
@@ -226,10 +235,19 @@
   
   <nav class="article-nav">
     
-    
       <a href="/2020/05/13/2020-05-11-LeetCode-CheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            LeetCode每日打卡 5-11~17
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/04/2020-05-03-LeetCode-CheckDaily/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">LeetCode每日打卡 5-11~17</div>
+        <div class="article-nav-title">LeetCode 每日打卡5-4~10</div>
       </a>
     
   </nav>

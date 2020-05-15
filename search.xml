@@ -1,73 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ORB SLAM2 双目稀疏立体匹配</title>
-    <url>/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/</url>
-    <content><![CDATA[<h1 id="ORB-SLAM2-双目稀疏立体匹配"><a href="#ORB-SLAM2-双目稀疏立体匹配" class="headerlink" title="ORB SLAM2 双目稀疏立体匹配"></a>ORB SLAM2 双目稀疏立体匹配</h1><p>主要在frame.cc文件中</p>
-<p>主要过程：</p>
-<ol>
-<li>ID自增</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">mnId=nNextId++;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>计算图像金字塔的参数</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">mnScaleLevels = mpORBextractorLeft-&gt;GetLevels();</span><br><span class="line">mfScaleFactor = mpORBextractorLeft-&gt;GetScaleFactor();    </span><br><span class="line">mfLogScaleFactor = <span class="built_in">log</span>(mfScaleFactor);</span><br><span class="line">mvScaleFactors = mpORBextractorLeft-&gt;GetScaleFactors();</span><br><span class="line">mvInvScaleFactors = mpORBextractorLeft-&gt;GetInverseScaleFactors();</span><br><span class="line">mvLevelSigma2 = mpORBextractorLeft-&gt;GetScaleSigmaSquares();</span><br><span class="line">mvInvLevelSigma2 = mpORBextractorLeft-&gt;GetInverseScaleSigmaSquares();</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="3">
-<li>对左右图像提取ORB特征点, 使用双线程进行提取</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">thread <span class="title">threadLeft</span><span class="params">(&amp;Frame::ExtractORB,<span class="keyword">this</span>,<span class="number">0</span>,imLeft)</span></span>;</span><br><span class="line"><span class="function">thread <span class="title">threadRight</span><span class="params">(&amp;Frame::ExtractORB,<span class="keyword">this</span>,<span class="number">1</span>,imRight)</span></span>;</span><br><span class="line">threadLeft.join();</span><br><span class="line">threadRight.join();</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>用opencv的矫正函数，内参对提取到的特征点进行矫正</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">UndisortKeyPoints();</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="5">
-<li><strong>计算双目见特征点的匹配</strong>，只有匹配成功的特征点才会计算深度，深度存放在mvDepth中;</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ComPuteStereoMatches();</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>计算去畸变后边界</li>
-</ol>
-<h2 id="双目特征点匹配"><a href="#双目特征点匹配" class="headerlink" title="双目特征点匹配"></a>双目特征点匹配</h2><p><img src="/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E5%8F%8C%E7%9B%AE%E7%89%B9%E5%BE%81%E7%82%B9%E5%8C%B9%E9%85%8D.png" alt="image-20200515110530658"></p>
-<p>主要对应函数<code>Frame::ComputeStereoMatches()</code>。<br><strong>输入</strong>：两帧立体矫正后的图像对应的ob特征点集<br><strong>过程</strong></p>
-<ol>
-<li>行特征点统计</li>
-<li>粗匹配</li>
-<li>精确匹配SAD.</li>
-<li>亚像素精度优化</li>
-<li>最有视差值/深度选择</li>
-<li>删除离群点（ outliers)</li>
-</ol>
-<p><strong>输出</strong>：稀疏特征点视差图/深度图和匹配结果</p>
-<p><strong>视差公式</strong></p>
-<p>z:深度 d:视差（disparity）f:焦距 b：(baseline) 基线</p>
-<p>$z=\frac{fb}{d},d=u_L-u_R$</p>
-<p>亚像素插值</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Sub-pixel match (Parabola fitting)</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> dist1 = vDists[L+bestincR<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> dist2 = vDists[L+bestincR];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> dist3 = vDists[L+bestincR+<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> deltaR = (dist1-dist3)/(<span class="number">2.0f</span>*(dist1+dist3<span class="number">-2.0f</span>*dist2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(deltaR&lt;<span class="number">-1</span> || deltaR&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>亚像素插值方法：</p>
-<p><img src="/2020/05/15/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/D:%5CProject%5Cblog%5Csource_posts%5CImage-blog%5C%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
-<p>亚像素的误差在一个像素以内，所以修正量大一1时鉴定为误匹配。</p>
-<ol start="5">
-<li>最优视差值。深度选择</li>
-<li>删除离群点（Outliers）</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 快匹配相似度阈值判断，快意话sad最小，不代表就是匹配的，比如光照变化，若纹理，无纹理都会造成误匹配</span></span><br><span class="line"><span class="comment">//误匹配判断条件 norm_sad &gt; 1.5*1.4*median</span></span><br><span class="line">sort(vDistIdx.<span class="built_in">begin</span>(),vDistIdx.<span class="built_in">end</span>()); <span class="comment">//对dist进行排序</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> median = vDistIdx[vDistIdx.<span class="built_in">size</span>()/<span class="number">2</span>].first; <span class="comment">//根据中值计算阈值</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> thDist = <span class="number">1.5f</span>*<span class="number">1.4f</span>*median;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=vDistIdx.<span class="built_in">size</span>()<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(vDistIdx[i].first&lt;thDist)</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        mvuRight[vDistIdx[i].second]=<span class="number">-1</span>;</span><br><span class="line">        mvDepth[vDistIdx[i].second]=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>LeetCode每日打卡 5-11~17</title>
     <url>/2020/05/13/2020-05-11-LeetCode-CheckDaily/</url>
     <content><![CDATA[<p>本周打卡题目如下：</p>
@@ -185,6 +118,84 @@
       <tags>
         <tag>刷题</tag>
         <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ORB_SLAM2 双目稀疏立体匹配算法</title>
+    <url>/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/</url>
+    <content><![CDATA[<p>本节主要学习ORB_SLAM2中的双目立体匹配算法的实现过程</p>
+<a id="more"></a>
+
+<p>主要在frame.cc文件中</p>
+<p>主要过程：</p>
+<ol>
+<li>ID自增</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">mnId=nNextId++;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>计算图像金字塔的参数</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">mnScaleLevels = mpORBextractorLeft-&gt;GetLevels();</span><br><span class="line">mfScaleFactor = mpORBextractorLeft-&gt;GetScaleFactor();    </span><br><span class="line">mfLogScaleFactor = <span class="built_in">log</span>(mfScaleFactor);</span><br><span class="line">mvScaleFactors = mpORBextractorLeft-&gt;GetScaleFactors();</span><br><span class="line">mvInvScaleFactors = mpORBextractorLeft-&gt;GetInverseScaleFactors();</span><br><span class="line">mvLevelSigma2 = mpORBextractorLeft-&gt;GetScaleSigmaSquares();</span><br><span class="line">mvInvLevelSigma2 = mpORBextractorLeft-&gt;GetInverseScaleSigmaSquares();</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>对左右图像提取ORB特征点, 使用双线程进行提取</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">thread <span class="title">threadLeft</span><span class="params">(&amp;Frame::ExtractORB,<span class="keyword">this</span>,<span class="number">0</span>,imLeft)</span></span>;</span><br><span class="line"><span class="function">thread <span class="title">threadRight</span><span class="params">(&amp;Frame::ExtractORB,<span class="keyword">this</span>,<span class="number">1</span>,imRight)</span></span>;</span><br><span class="line">threadLeft.join();</span><br><span class="line">threadRight.join();</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>用opencv的矫正函数，内参对提取到的特征点进行矫正</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">UndisortKeyPoints();</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="5">
+<li><strong>计算双目见特征点的匹配</strong>，只有匹配成功的特征点才会计算深度，深度存放在mvDepth中;</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ComPuteStereoMatches();</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>计算去畸变后边界</li>
+</ol>
+<h2 id="双目特征点匹配"><a href="#双目特征点匹配" class="headerlink" title="双目特征点匹配"></a>双目特征点匹配</h2><p><img src="/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E5%8F%8C%E7%9B%AE%E7%89%B9%E5%BE%81%E7%82%B9%E5%8C%B9%E9%85%8D.png" alt="image-20200515110530658"></p>
+<p>主要对应函数<code>Frame::ComputeStereoMatches()</code>。<br><strong>输入</strong>：两帧立体矫正后的图像对应的ob特征点集<br><strong>过程</strong></p>
+<ol>
+<li>行特征点统计</li>
+<li>粗匹配</li>
+<li>精确匹配SAD.</li>
+<li>亚像素精度优化</li>
+<li>最有视差值/深度选择</li>
+<li>删除离群点（ outliers)</li>
+</ol>
+<p><strong>输出</strong>：稀疏特征点视差图/深度图和匹配结果</p>
+<p><strong>视差公式</strong></p>
+<p>z:深度 d:视差（disparity）f:焦距 b：(baseline) 基线</p>
+<p>$z=\frac{fb}{d},d=u_L-u_R$</p>
+<p>亚像素插值</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Sub-pixel match (Parabola fitting)</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> dist1 = vDists[L+bestincR<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> dist2 = vDists[L+bestincR];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> dist3 = vDists[L+bestincR+<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> deltaR = (dist1-dist3)/(<span class="number">2.0f</span>*(dist1+dist3<span class="number">-2.0f</span>*dist2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(deltaR&lt;<span class="number">-1</span> || deltaR&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>亚像素插值方法：</p>
+<p><img src="/2020/05/13/ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/D:%5CProject%5Cblog%5Csource_posts%5CImage-blog%5C%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
+<p>亚像素的误差在一个像素以内，所以修正量大一1时鉴定为误匹配。</p>
+<ol start="5">
+<li>最优视差值。深度选择</li>
+<li>删除离群点（Outliers）</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 快匹配相似度阈值判断，快意话sad最小，不代表就是匹配的，比如光照变化，若纹理，无纹理都会造成误匹配</span></span><br><span class="line"><span class="comment">//误匹配判断条件 norm_sad &gt; 1.5*1.4*median</span></span><br><span class="line">sort(vDistIdx.<span class="built_in">begin</span>(),vDistIdx.<span class="built_in">end</span>()); <span class="comment">//对dist进行排序</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> median = vDistIdx[vDistIdx.<span class="built_in">size</span>()/<span class="number">2</span>].first; <span class="comment">//根据中值计算阈值</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> thDist = <span class="number">1.5f</span>*<span class="number">1.4f</span>*median;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=vDistIdx.<span class="built_in">size</span>()<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(vDistIdx[i].first&lt;thDist)</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        mvuRight[vDistIdx[i].second]=<span class="number">-1</span>;</span><br><span class="line">        mvDepth[vDistIdx[i].second]=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+        <tag>ORBSLAM</tag>
+        <tag>OpenCV</tag>
       </tags>
   </entry>
   <entry>
@@ -584,6 +595,135 @@
       <tags>
         <tag>周赛</tag>
         <tag>刷题</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode第25场双周赛</title>
+    <url>/2020/05/03/2020-05-03-LeetCode-Doubleuble-Contest-25/</url>
+    <content><![CDATA[<p>今日参加双周赛，战况不良 <code>661 / 1832</code></p>
+<table>
+<thead>
+<tr>
+<th>题目</th>
+<th align="center">分值</th>
+<th align="center">难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://leetcode-cn.com/problems/kids-with-the-greatest-number-of-candies/" target="_blank" rel="noopener">5384. 拥有最多糖果的孩子</a></td>
+<td align="center">3</td>
+<td align="center">简单</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/max-difference-you-can-get-from-changing-an-integer/" target="_blank" rel="noopener">5385. 改变一个整数能得到的最大差值</a></td>
+<td align="center">4</td>
+<td align="center">中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/check-if-a-string-can-break-another-string/" target="_blank" rel="noopener">5386. 检查一个字符串是否可以打破另一个字符串</a></td>
+<td align="center">5</td>
+<td align="center">中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/number-of-ways-to-wear-different-hats-to-each-other/" target="_blank" rel="noopener">5387. 每个人戴不同帽子的方案数</a></td>
+<td align="center">7</td>
+<td align="center">困难</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h2 id="5384-拥有最多糖果的孩子"><a href="#5384-拥有最多糖果的孩子" class="headerlink" title="5384. 拥有最多糖果的孩子"></a><a href="https://leetcode-cn.com/problems/kids-with-the-greatest-number-of-candies/" target="_blank" rel="noopener">5384. 拥有最多糖果的孩子</a></h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个数组 <code>candies</code> 和一个整数 <code>extraCandies</code> ，其中 <code>candies[i]</code> 代表第 <code>i</code> 个孩子拥有的糖果数目。</p>
+<p>对每一个孩子，检查是否存在一种方案，将额外的 <code>extraCandies</code> 个糖果分配给孩子们之后，此孩子有 <strong>最多</strong> 的糖果。注意，允许有多个孩子同时拥有 <strong>最多</strong> 的糖果数目。</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：candies &#x3D; [2,3,5,1,3], extraCandies &#x3D; 3</span><br><span class="line">输出：[true,true,true,false,true] </span><br><span class="line">解释：</span><br><span class="line">孩子 1 有 2 个糖果，如果他得到所有额外的糖果（3个），那么他总共有 5 个糖果，他将成为拥有最多糖果的孩子。</span><br><span class="line">孩子 2 有 3 个糖果，如果他得到至少 2 个额外糖果，那么他将成为拥有最多糖果的孩子。</span><br><span class="line">孩子 3 有 5 个糖果，他已经是拥有最多糖果的孩子。</span><br><span class="line">孩子 4 有 1 个糖果，即使他得到所有额外的糖果，他也只有 4 个糖果，无法成为拥有糖果最多的孩子。</span><br><span class="line">孩子 5 有 3 个糖果，如果他得到至少 2 个额外糖果，那么他将成为拥有最多糖果的孩子。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：candies &#x3D; [4,2,1,1,2], extraCandies &#x3D; 1</span><br><span class="line">输出：[true,false,false,false,false] </span><br><span class="line">解释：只有 1 个额外糖果，所以不管额外糖果给谁，只有孩子 1 可以成为拥有糖果最多的孩子。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3："><a href="#示例-3：" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：candies &#x3D; [12,1,12], extraCandies &#x3D; 10</span><br><span class="line">输出：[true,false,true]</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">kidsWithCandies</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; candies, <span class="keyword">int</span> extraCandies)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">res</span><span class="params">(candies.<span class="built_in">size</span>(),<span class="literal">false</span>)</span></span>;</span><br><span class="line">        <span class="keyword">int</span> maxnum = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> n:candies)</span><br><span class="line">            maxnum = <span class="built_in">max</span>(maxnum,n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;candies.<span class="built_in">size</span>();i++)</span><br><span class="line">            <span class="keyword">if</span>(candies[i]+extraCandies&gt;=maxnum)</span><br><span class="line">                res[i]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> res;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5385-改变一个整数能得到的最大差值"><a href="#5385-改变一个整数能得到的最大差值" class="headerlink" title="5385. 改变一个整数能得到的最大差值"></a><a href="https://leetcode-cn.com/problems/max-difference-you-can-get-from-changing-an-integer/" target="_blank" rel="noopener">5385. 改变一个整数能得到的最大差值</a></h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个整数 <code>num</code> 。你可以对它进行如下步骤恰好 <strong>两次</strong> ：</p>
+<ul>
+<li>选择一个数字 <code>x (0 &lt;= x &lt;= 9)</code>.</li>
+<li>选择另一个数字 <code>y (0 &lt;= y &lt;= 9)</code> 。数字 <code>y</code> 可以等于 <code>x</code> 。</li>
+<li>将 <code>num</code> 中所有出现 <code>x</code> 的数位都用 <code>y</code> 替换。</li>
+<li>得到的新的整数 <strong>不能</strong> 有前导 0 ，得到的新整数也 <strong>不能</strong> 是 0 。</li>
+</ul>
+<p>令两次对 <code>num</code> 的操作得到的结果分别为 <code>a</code> 和 <code>b</code> 。</p>
+<p>请你返回 <code>a</code> 和 <code>b</code> 的 <strong>最大差值</strong> 。 </p>
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：num &#x3D; 555</span><br><span class="line">输出：888</span><br><span class="line">解释：第一次选择 x &#x3D; 5 且 y &#x3D; 9 ，并把得到的新数字保存在 a 中。</span><br><span class="line">第二次选择 x &#x3D; 5 且 y &#x3D; 1 ，并把得到的新数字保存在 b 中。</span><br><span class="line">现在，我们有 a &#x3D; 999 和 b &#x3D; 111 ，最大差值为 888</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：num &#x3D; 9</span><br><span class="line">输出：8</span><br><span class="line">解释：第一次选择 x &#x3D; 9 且 y &#x3D; 9 ，并把得到的新数字保存在 a 中。</span><br><span class="line">第二次选择 x &#x3D; 9 且 y &#x3D; 1 ，并把得到的新数字保存在 b 中。</span><br><span class="line">现在，我们有 a &#x3D; 9 和 b &#x3D; 1 ，最大差值为 8</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-1"><a href="#示例-3：-1" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：num &#x3D; 123456</span><br><span class="line">输出：820000</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4："><a href="#示例-4：" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：num &#x3D; 10000</span><br><span class="line">输出：80000</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-5："><a href="#示例-5：" class="headerlink" title="示例 5："></a><strong>示例 5：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：num &#x3D; 9288</span><br><span class="line">输出：8700</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= num &lt;= 10^8</code></li>
+</ul>
+<h3 id="我的解法-1"><a href="#我的解法-1" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxDiff</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">string</span> numstr = to_string(num);</span><br><span class="line">        <span class="keyword">char</span> ch = <span class="string">'#'</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;numstr.length();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(numstr[i]!=<span class="string">'9'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                ch = numstr[i];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> maxnum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(ch!=<span class="string">'#'</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;numstr.length();i++)</span><br><span class="line">                <span class="keyword">if</span>(numstr[i]==ch)</span><br><span class="line">                    numstr[i]=<span class="string">'9'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        maxnum = ch==<span class="string">'#'</span>?num:stoi(numstr);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> minnum = <span class="number">0</span>;</span><br><span class="line">        numstr = to_string(num); </span><br><span class="line">        <span class="comment">//把第一个数字改成1</span></span><br><span class="line">        <span class="keyword">if</span>(numstr.length()==<span class="number">1</span>)</span><br><span class="line">            minnum = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(numstr[<span class="number">0</span>]!=<span class="string">'1'</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ch = numstr[<span class="number">0</span>];    </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;numstr.length();i++)</span><br><span class="line">                <span class="keyword">if</span>(numstr[i]==ch)</span><br><span class="line">                    numstr[i]=<span class="string">'1'</span>;            </span><br><span class="line">            minnum = stoi(numstr);      </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            ch = <span class="string">'#'</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i&lt;numstr.length();i++)</span><br><span class="line">                <span class="keyword">if</span>(numstr[i]!=<span class="string">'0'</span>&amp;&amp;numstr[i]!=<span class="string">'1'</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    ch = numstr[i];</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">if</span>(ch!=<span class="string">'#'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i&lt;numstr.length();i++)</span><br><span class="line">                    <span class="keyword">if</span>(numstr[i]==ch)</span><br><span class="line">                        numstr[i] = <span class="string">'0'</span>;</span><br><span class="line">                minnum = stoi(numstr);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                minnum = num;</span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxnum-minnum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5386-检查一个字符串是否可以打破另一个字符串"><a href="#5386-检查一个字符串是否可以打破另一个字符串" class="headerlink" title="5386. 检查一个字符串是否可以打破另一个字符串"></a><a href="https://leetcode-cn.com/problems/check-if-a-string-can-break-another-string/" target="_blank" rel="noopener">5386. 检查一个字符串是否可以打破另一个字符串</a></h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你两个字符串 <code>s1</code> 和 <code>s2</code> ，它们长度相等，请你检查是否存在一个 <code>s1</code> 的排列可以打破 <code>s2</code> 的一个排列，或者是否存在一个 <code>s2</code> 的排列可以打破 <code>s1</code> 的一个排列。</p>
+<p>字符串 <code>x</code> 可以打破字符串 <code>y</code> （两者长度都为 <code>n</code> ）需满足对于所有 <code>i</code>（在 <code>0</code> 到 <code>n - 1</code> 之间）都有 <code>x[i] &gt;= y[i]</code>（字典序意义下的顺序）。 </p>
+<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：s1 &#x3D; &quot;abc&quot;, s2 &#x3D; &quot;xya&quot;</span><br><span class="line">输出：true</span><br><span class="line">解释：&quot;ayx&quot; 是 s2&#x3D;&quot;xya&quot; 的一个排列，&quot;abc&quot; 是字符串 s1&#x3D;&quot;abc&quot; 的一个排列，且 &quot;ayx&quot; 可以打破 &quot;abc&quot; 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：s1 &#x3D; &quot;abe&quot;, s2 &#x3D; &quot;acd&quot;</span><br><span class="line">输出：false </span><br><span class="line">解释：s1&#x3D;&quot;abe&quot; 的所有排列包括：&quot;abe&quot;，&quot;aeb&quot;，&quot;bae&quot;，&quot;bea&quot;，&quot;eab&quot; 和 &quot;eba&quot; ，s2&#x3D;&quot;acd&quot; 的所有排列包括：&quot;acd&quot;，&quot;adc&quot;，&quot;cad&quot;，&quot;cda&quot;，&quot;dac&quot; 和 &quot;dca&quot;。然而没有任何 s1 的排列可以打破 s2 的排列。也没有 s2 的排列能打破 s1 的排列。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-2"><a href="#示例-3：-2" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：s1 &#x3D; &quot;leetcodee&quot;, s2 &#x3D; &quot;interview&quot;</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ul>
+<li><code>s1.length == n</code></li>
+<li><code>s2.length == n</code></li>
+<li><code>1 &lt;= n &lt;= 10^5</code></li>
+<li>所有字符串都只包含小写英文字母。</li>
+</ul>
+<h3 id="我的解法-2"><a href="#我的解法-2" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkIfCanBreak</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2)</span> </span>&#123;</span><br><span class="line">        sort(s1.<span class="built_in">begin</span>(),s1.<span class="built_in">end</span>());</span><br><span class="line">        sort(s2.<span class="built_in">begin</span>(),s2.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">bool</span> left = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">bool</span> right = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;s1.length();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            left= left&amp;&amp;(s1[i]&gt;=s2[i]);</span><br><span class="line">            right= right&amp;&amp;(s1[i]&lt;=s2[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left||right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5387-每个人戴不同帽子的方案数"><a href="#5387-每个人戴不同帽子的方案数" class="headerlink" title="5387. 每个人戴不同帽子的方案数"></a><a href="https://leetcode-cn.com/problems/number-of-ways-to-wear-different-hats-to-each-other/" target="_blank" rel="noopener">5387. 每个人戴不同帽子的方案数</a></h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>总共有 <code>n</code> 个人和 <code>40</code> 种不同的帽子，帽子编号从 <code>1</code> 到 <code>40</code> 。</p>
+<p>给你一个整数列表的列表 <code>hats</code> ，其中 <code>hats[i]</code> 是第 <code>i</code> 个人所有喜欢帽子的列表。</p>
+<p>请你给每个人安排一顶他喜欢的帽子，确保每个人戴的帽子跟别人都不一样，并返回方案数。</p>
+<p>由于答案可能很大，请返回它对 <code>10^9 + 7</code> 取余后的结果。 </p>
+<h4 id="示例-1：-3"><a href="#示例-1：-3" class="headerlink" title="示例 1："></a><strong>示例 1：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：hats &#x3D; [[3,4],[4,5],[5]]</span><br><span class="line">输出：1</span><br><span class="line">解释：给定条件下只有一种方法选择帽子。</span><br><span class="line">第一个人选择帽子 3，第二个人选择帽子 4，最后一个人选择帽子 5。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-3"><a href="#示例-2：-3" class="headerlink" title="示例 2："></a><strong>示例 2：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：hats &#x3D; [[3,5,1],[3,5]]</span><br><span class="line">输出：4</span><br><span class="line">解释：总共有 4 种安排帽子的方法：</span><br><span class="line">(3,5)，(5,3)，(1,3) 和 (1,5)</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-3：-3"><a href="#示例-3：-3" class="headerlink" title="示例 3："></a><strong>示例 3：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：hats &#x3D; [[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]</span><br><span class="line">输出：24</span><br><span class="line">解释：每个人都可以从编号为 1 到 4 的帽子中选。</span><br><span class="line">(1,2,3,4) 4 个帽子的排列方案数为 24 。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-4：-1"><a href="#示例-4：-1" class="headerlink" title="示例 4："></a><strong>示例 4：</strong></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：hats &#x3D; [[1,2,3],[2,3,5,6],[1,3,7,9],[1,8,9],[2,5,7]]</span><br><span class="line">输出：111</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a><strong>提示：</strong></h4><ul>
+<li><code>n == hats.length</code></li>
+<li><code>1 &lt;= n &lt;= 10</code></li>
+<li><code>1 &lt;= hats[i].length &lt;= 40</code></li>
+<li><code>1 &lt;= hats[i][j] &lt;= 40</code></li>
+<li><code>hats[i]</code> 包含一个数字互不相同的整数列表。</li>
+</ul>
+<h3 id="示例解法"><a href="#示例解法" class="headerlink" title="示例解法"></a>示例解法</h3><p><strong>大佬思路</strong></p>
+<p>LeetCode还真是喜欢出状压的题目。还是老套路，看到某一个维度特别小（本题是1\leq n\leq101≤<em>n</em>≤10），就尝试在这一维进行状态压缩。</p>
+<p>我们用一个n<em>n</em>位的二进制数记录每个人是否戴上了帽子。因为是对人进行了状压，所以我们需要把题目给的每个人可以戴的帽子先转换成每个帽子可以匹配的人。之后，我们就可以遍历所有帽子，对于每一顶帽子，我们尝试把它分配给一个当前还没有帽子，并且能够匹配这顶帽子的人，来更新状态。</p>
+<p>DP的转移方程为：</p>
+<p>$dp[state][i]=dp[state][i-1] + \sum dp[state - (1 &lt;&lt; k)][i-1]$</p>
+<p>其中state表示当前的戴帽子情况，i表示分配第i号帽子，k满足$k\in S(i)$也即第i号帽子可以分配给第k个人，且$(state - (1 &lt;&lt; k)) &amp; (1 &lt;&lt; k) = 0$，也即前一个状态中第k<em>k</em>个人还没有戴帽子。</p>
+<p>边界条件为：</p>
+<p>$dp[0][0]=1$</p>
+<p>也即所有人都还没戴上帽子，有1种方案。因为转移方程只涉及$i$和$i-1$，所以可以用滚动数组做成一维空间。</p>
+<p>总时间复杂度$O(nm2^n)$。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> ll MOD = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">numberWays</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; hats)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = hats.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;ll&gt; <span class="title">dp</span><span class="params">(<span class="number">1</span> &lt;&lt; n)</span></span>;</span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">s</span><span class="params">(<span class="number">41</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> hat : hats[i])</span><br><span class="line">        s[hat].insert(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">40</span>; ++i) &#123;</span><br><span class="line">      <span class="function"><span class="built_in">vector</span>&lt;ll&gt; <span class="title">ndp</span><span class="params">(dp)</span></span>;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> state = (<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>; state &gt;= <span class="number">0</span>; --state) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> person : s[i]) &#123;</span><br><span class="line">          <span class="keyword">if</span> (state &amp; (<span class="number">1</span> &lt;&lt; person))</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">          <span class="keyword">int</span> nxt = state + (<span class="number">1</span> &lt;&lt; person);</span><br><span class="line">          ndp[nxt] += dp[state];</span><br><span class="line">          ndp[nxt] %= MOD;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      swap(dp, ndp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[(<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 作者：lucifer1004</span></span><br><span class="line"><span class="comment">// 链接：https://leetcode-cn.com/problems/number-of-ways-to-wear-different-hats-to-each-//other/solution/zhuang-tai-ya-suo-ji-lu-mei-ge-ren-shi-fou-dai-sha/</span></span><br><span class="line"><span class="comment">// 来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>刷题</category>
+      </categories>
+      <tags>
+        <tag>周赛</tag>
+        <tag>刷题</tag>
+        <tag>双周赛</tag>
         <tag>LeetCode</tag>
       </tags>
   </entry>
