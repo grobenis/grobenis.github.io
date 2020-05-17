@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>视觉SLAM学习(第一期)</title>
-    <url>/2020/05/15/%E8%A7%86%E8%A7%89SLAM%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E6%9C%9F/</url>
-    <content><![CDATA[<a id="more"></a>]]></content>
-  </entry>
-  <entry>
     <title>C++多线程编程</title>
     <url>/2020/05/15/C-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<p>多线程是学习SLAM过程中不可缺少的一步，正确的使用多线程能使SLAM系统的运行速度提升很多，达到更高的精度和速度。本节就来学习SLAM中的多线程编程方法。</p>
