@@ -32,8 +32,8 @@
 <td>中等</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td><a href="https://leetcode-cn.com/problems/minimum-window-substring/" target="_blank" rel="noopener">76. 最小覆盖子串</a></td>
+<td>困难</td>
 </tr>
 <tr>
 <td></td>
@@ -172,6 +172,18 @@
 <p><strong>复杂度分析</strong></p>
 <p>时间复杂度：O(n)，其中 n是树中的节点个数。</p>
 <p>空间复杂度：O(n)，除去返回的答案需要的 O(n) 空间之外，我们还需要使用 O(h)（其中 h 是树的高度）的空间存储栈。这里 h &lt; n，所以（在最坏情况下）总空间复杂度为 O(n)。</p>
+<h2 id="76-最小覆盖子串"><a href="#76-最小覆盖子串" class="headerlink" title="76. 最小覆盖子串"></a><a href="https://leetcode-cn.com/problems/minimum-window-substring/" target="_blank" rel="noopener">76. 最小覆盖子串</a></h2><h3 id="题目描述-5"><a href="#题目描述-5" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字符的最小子串。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: S &#x3D; &quot;ADOBECODEBANC&quot;, T &#x3D; &quot;ABC&quot;</span><br><span class="line">输出: &quot;BANC&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明：</strong></p>
+<ul>
+<li>如果 S 中不存这样的子串，则返回空字符串 <code>&quot;&quot;</code>。</li>
+<li>如果 S 中存在这样的子串，我们保证它是唯一的答案。</li>
+</ul>
+<h3 id="我的解法：滑动窗口"><a href="#我的解法：滑动窗口" class="headerlink" title="我的解法：滑动窗口"></a>我的解法：滑动窗口</h3><p>思路：我们在 s 上滑动窗口，通过移动 r 指针不断扩张窗口。当窗口包含 t 全部所需的字符后，如果能收缩，我们就收缩窗口直到得到最小窗口。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; cntmap;</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">minWindow</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> ch:t) <span class="built_in">map</span>[ch]++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">string</span> res = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">if</span>(s.empty())</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        cntmap[s[l]]++;</span><br><span class="line">        <span class="keyword">while</span>(r&lt;s.length())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(check())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(res==<span class="string">""</span> || r-l+<span class="number">1</span>&lt;res.length())</span><br><span class="line">                &#123;</span><br><span class="line">                    res = s.substr(l,r-l+<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                cntmap[s[l]]--;</span><br><span class="line">                l++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                r++;</span><br><span class="line">                <span class="keyword">if</span>(r&gt;=s.length()) <span class="keyword">return</span> res;</span><br><span class="line">                cntmap[s[r]]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> iter = <span class="built_in">map</span>.<span class="built_in">begin</span>();iter!=<span class="built_in">map</span>.<span class="built_in">end</span>();iter++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(iter-&gt;second &gt; cntmap[iter-&gt;first])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>刷题</category>
