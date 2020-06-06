@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    LeetCode 每周打卡05~ |  曾是少年
+    LeetCode 每周打卡05~25-31 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  LeetCode 每周打卡05~
+  LeetCode 每周打卡05~25-31
 </h1>
   
 
@@ -53,6 +53,10 @@
   <time datetime="2020-05-27T13:27:13.000Z" itemprop="datePublished">2020-05-27</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -60,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">3.4k字</span>
+            <span class="post-count">6.4k字</span>
         </span>
     </span>
 
@@ -69,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">14分钟</span>
+            <span class="post-count">26分钟</span>
         </span>
     </span>
 </div>
@@ -118,16 +122,16 @@
 <td>中等</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td><a href="https://leetcode-cn.com/problems/house-robber/" target="_blank" rel="noopener">198. 打家劫舍</a></td>
+<td>简单</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td><a href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/" target="_blank" rel="noopener">84. 柱状图中最大的矩形</a></td>
+<td>困难</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td><a href="https://leetcode-cn.com/problems/symmetric-tree/" target="_blank" rel="noopener">101. 对称二叉树</a></td>
+<td>简单</td>
 </tr>
 </tbody></table>
 <a id="more"></a>
@@ -261,7 +265,105 @@
 
 <h3 id="我的解法：动态规划"><a href="#我的解法：动态规划" class="headerlink" title="我的解法：动态规划"></a>我的解法：动态规划</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.<span class="built_in">size</span>()==<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">money</span><span class="params">(nums.<span class="built_in">size</span>(),<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;nums.<span class="built_in">size</span>();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">                money[i] = nums[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">1</span>)</span><br><span class="line">                money[i] = <span class="built_in">max</span>(money[i<span class="number">-1</span>],nums[i]);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                money[i] = <span class="built_in">max</span>(money[i<span class="number">-1</span>],money[i<span class="number">-2</span>]+nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> money[nums.<span class="built_in">size</span>()<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<h2 id="198-打家劫舍-1"><a href="#198-打家劫舍-1" class="headerlink" title="198. 打家劫舍"></a><a href="https://leetcode-cn.com/problems/house-robber/" target="_blank" rel="noopener">198. 打家劫舍</a></h2><h3 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h3><p>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，<strong>如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警</strong>。</p>
+<p>给定一个代表每个房屋存放金额的非负整数数组，计算你 <strong>不触动警报装置的情况下</strong> ，一夜之内能够偷窃到的最高金额。</p>
+<h4 id="示例-1-2"><a href="#示例-1-2" class="headerlink" title="示例 1:"></a><strong>示例 1:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,1]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 偷窃 1 号房屋 (金额 &#x3D; 1) ，然后偷窃 3 号房屋 (金额 &#x3D; 3)。</span><br><span class="line">     偷窃到的最高金额 &#x3D; 1 + 3 &#x3D; 4 。</span><br></pre></td></tr></table></figure>
 
+<h4 id="示例-2-2"><a href="#示例-2-2" class="headerlink" title="示例 2:"></a><strong>示例 2:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,7,9,3,1]</span><br><span class="line">输出: 12</span><br><span class="line">解释: 偷窃 1 号房屋 (金额 &#x3D; 2), 偷窃 3 号房屋 (金额 &#x3D; 9)，接着偷窃 5 号房屋 (金额 &#x3D; 1)。</span><br><span class="line">     偷窃到的最高金额 &#x3D; 2 + 9 + 1 &#x3D; 12 。</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法：动态规划-1"><a href="#我的解法：动态规划-1" class="headerlink" title="我的解法：动态规划"></a>我的解法：动态规划</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.<span class="built_in">size</span>()==<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">money</span><span class="params">(nums.<span class="built_in">size</span>(),<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;nums.<span class="built_in">size</span>();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">                money[i] = nums[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">1</span>)</span><br><span class="line">                money[i] = <span class="built_in">max</span>(money[i<span class="number">-1</span>],nums[i]);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                money[i] = <span class="built_in">max</span>(money[i<span class="number">-1</span>],money[i<span class="number">-2</span>]+nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> money[nums.<span class="built_in">size</span>()<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="84-柱状图中最大的矩形"><a href="#84-柱状图中最大的矩形" class="headerlink" title="84. 柱状图中最大的矩形"></a><a href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/" target="_blank" rel="noopener">84. 柱状图中最大的矩形</a></h2><h3 id="题目描述-5"><a href="#题目描述-5" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定 <em>n</em> 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
+<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram.png" alt="img"></p>
+<p>以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 <code>[2,1,5,6,2,3]</code>。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram_area.png" alt="img"></p>
+<p>图中阴影部分为所能勾勒出的最大矩形面积，其面积为 <code>10</code> 个单位。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例:"></a><strong>示例:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,1,5,6,2,3]</span><br><span class="line">输出: 10</span><br></pre></td></tr></table></figure>
+
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我们需要在柱状图中找出最大的矩形，因此我们可以考虑枚举矩形的宽和高，其中「宽」表示矩形贴着柱状图底边的宽度，「高」表示矩形在柱状图上的高度。</p>
+<ul>
+<li><p>如果我们枚举「宽」，我们可以使用两重循环枚举矩形的左右边界以固定宽度 <code>w</code>，此时矩形的高度 <code>h</code>，就是所有包含在内的柱子的「最小高度」，对应的面积为 <code>w * h</code>。下面给出了这种方法的 <code>C++</code> 代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 枚举左边界</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> left = <span class="number">0</span>; left &lt; n; ++left) &#123;</span><br><span class="line">            <span class="keyword">int</span> minHeight = INT_MAX;</span><br><span class="line">            <span class="comment">// 枚举右边界</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> right = left; right &lt; n; ++right) &#123;</span><br><span class="line">                <span class="comment">// 确定高度</span></span><br><span class="line">                minHeight = <span class="built_in">min</span>(minHeight, heights[right]);</span><br><span class="line">                <span class="comment">// 计算面积</span></span><br><span class="line">                ans = <span class="built_in">max</span>(ans, (right - left + <span class="number">1</span>) * minHeight);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果我们枚举「高」，我们可以使用一重循环枚举某一根柱子，将其固定为矩形的高度 <code>h</code>。随后我们从这跟柱子开始向两侧延伸，直到遇到高度小于 <code>h</code> 的柱子，就确定了矩形的左右边界。如果左右边界之间的宽度为 <code>w</code>，那么对应的面积为 <code>w * h</code>。下面给出了这种方法的 <code>C++</code> 代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> mid = <span class="number">0</span>; mid &lt; n; ++mid) &#123;</span><br><span class="line">            <span class="comment">// 枚举高</span></span><br><span class="line">            <span class="keyword">int</span> <span class="built_in">height</span> = heights[mid];</span><br><span class="line">            <span class="keyword">int</span> left = mid, right = mid;</span><br><span class="line">            <span class="comment">// 确定左右边界</span></span><br><span class="line">            <span class="keyword">while</span> (left - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; heights[left - <span class="number">1</span>] &gt;= <span class="built_in">height</span>) &#123;</span><br><span class="line">                --left;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (right + <span class="number">1</span> &lt; n &amp;&amp; heights[right + <span class="number">1</span>] &gt;= <span class="built_in">height</span>) &#123;</span><br><span class="line">                ++right;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 计算面积</span></span><br><span class="line">            ans = <span class="built_in">max</span>(ans, (right - left + <span class="number">1</span>) * <span class="built_in">height</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>可以发现，这两种暴力方法的时间复杂度均为 <code>O(N^2)</code>，会超出时间限制，我们必须要进行优化。考虑到枚举「宽」的方法使用了两重循环，本身就已经需要 O(N^2)<em>O</em>(<em>N</em>2) 的时间复杂度，不容易优化，因此我们可以考虑优化只使用了一重循环的枚举「高」的方法。</p>
+<h4 id="方法一：单调栈"><a href="#方法一：单调栈" class="headerlink" title="方法一：单调栈"></a>方法一：单调栈</h4><p><strong>思路</strong></p>
+<p>我们归纳一下枚举「高」的方法：</p>
+<ul>
+<li>首先我们枚举某一根柱子 i 作为高 $h = \textit{heights}[i]$；</li>
+<li>随后我们需要进行向左右两边扩展，使得扩展到的柱子的高度均不小于 h。换句话说，我们需要找到<strong>左右两侧最近的高度小于 h 的柱子</strong>，这样这两根柱子之间（不包括其本身）的所有柱子高度均不小于 h，并且就是 i 能够扩展到的最远范围。</li>
+</ul>
+<p>那么我们先来看看如何求出<strong>一根柱子的左侧且最近的小于其高度的柱子</strong>。除了根据「前言」部分暴力地进行枚举之外，我们可以通过如下的一个结论来深入地进行思考：</p>
+<blockquote>
+<p>对于两根柱子 $j_0$以及 $j_1$，如果 $j_0 &lt; j_1$并且 $\textit{heights}[j_0] \geq \textit{heights}[j_1]$，那么<strong>对于任意的在它们之后出现的柱子 i（$j_1 &lt; i$），$j_0$ 一定不会是 $i$ 左侧且最近的小于其高度的柱子</strong>。</p>
+</blockquote>
+<p>换句话说，如果有两根柱子 $j_0$ 和 $j_1$，其中 $j_0$ 在 $j_1$ 的左侧，并且 $j_0$ 的高度大于等于 $j_1$，那么在后面的柱子 $i$ 向左找小于其高度的柱子时，$j_1$ 会「挡住」$j_0$，$j_0$ 就不会作为答案了。</p>
+<p>这样以来，我们可以对数组从左向右进行遍历，同时维护一个「可能作为答案」的数据结构，其中按照从小到大的顺序存放了一些 j 值。根据上面的结论，如果我们存放了 $j_0, j_1, \cdots, j_s$，那么一定有 $\textit{height}[j_0] &lt; \textit{height}[j_1] &lt; \cdots &lt; \textit{height}[j_s]$，因为如果有两个相邻的 j值对应的高度不满足 &lt; 关系，那么后者会「挡住」前者，前者就不可能作为答案了。</p>
+<p>当我们枚举到第 i<em>i</em> 根柱子时，我们的数据结构中存放了 j_0, j_1, \cdots, j_s<em>j</em>0,<em>j</em>1,⋯,<em>j*<em>s</em>，如果第 i*i</em> 根柱子左侧且最近的小于其高度的柱子为 j_i<em>j*</em>i<em>，那么必然有<br>$$<br>\textit{height}[j_0] &lt; \textit{height}[j_1] &lt; \cdots &lt; \textit{height}[j_i] &lt; \textit{height}[i] \leq \textit{height}[j_{i+1}] &lt; \cdots &lt; \textit{height}[j_s]<br>$$<br>这样我们就可以使用二分查找的方法找到 $i$对应的 $j_i$，*</em>但真的需要吗<strong>？当我们枚举到 $i+1$ 时，原来的 $i$ 也变成了 $j$ 值，因此 $i$ 会被放入数据结构。由于所有在数据结构中的 $j$ 值均小于 $i$，那么所有高度大于等于 $\textit{height}[i]$ 的 j 都不会作为答案，需要从数据结构中移除。而我们发现，这些被移除的 $j$ 值恰好就是<br>$$<br>j_{i+1}, \cdots, j_s<br>$$<br>这样我们在枚举到第 i 根柱子的时候，就可以先把所有高度大于等于 $\textit{height}[i]$ 的 $j$ 值全部移除，剩下的 $j$ 值中高度最高的即为答案。在这之后，我们将 i 放入数据结构中，开始接下来的枚举。此时，我们需要使用的数据结构也就呼之欲出了，它就是</strong>栈**。</p>
+<ul>
+<li>栈中存放了 j 值。从栈底到栈顶，j 的值严格单调递增，同时对应的高度值也严格单调递增；</li>
+<li>当我们枚举到第 i 根柱子时，我们从栈顶不断地移除 $\textit{height}[j] \geq \textit{height}[i]$ 的 j 值。在移除完毕后，栈顶的 j 值就一定满足 $\textit{height}[j] &lt; \textit{height}[i]$，此时 j 就是 i 左侧且最近的小于其高度的柱子。<ul>
+<li>这里会有一种特殊情况。如果我们移除了栈中所有的 j 值，那就说明 i 左侧所有柱子的高度都大于 $\textit{height}[i]$，那么我们可以认为 i左侧且最近的小于其高度的柱子在位置 $j=-1$，它是一根「虚拟」的、高度无限低的柱子。这样的定义不会对我们的答案产生任何的影响，我们也称这根「虚拟」的柱子为「哨兵」。</li>
+</ul>
+</li>
+<li>我们再将 i放入栈顶。</li>
+</ul>
+<p>栈中存放的元素具有单调性，这就是经典的数据结构「单调栈」了。</p>
+<p><strong>例子</strong></p>
+<p>我们用一个具体的例子 <code>[6, 7, 5, 2, 4, 5, 9, 3]</code>来帮助读者理解单调栈。我们需要求出每一根柱子的左侧且最近的小于其高度的柱子。初始时的栈为空。</p>
+<ul>
+<li>我们枚举 6，因为栈为空，所以 6 左侧的柱子是「哨兵」，位置为 -1。随后我们将 6 入栈。<ul>
+<li>栈：<code>[6(0)]</code>。（这里括号内的数字表示柱子在原数组中的位置）</li>
+</ul>
+</li>
+<li>我们枚举 7，由于 6&lt;7，因此不会移除栈顶元素，所以 7 左侧的柱子是 6，位置为 0。随后我们将 7 入栈。<ul>
+<li>栈：<code>[6(0), 7(1)]</code></li>
+</ul>
+</li>
+<li>我们枚举 5，由于 $7\geq 5$，因此移除栈顶元素 7。同样地，$6 \geq 5$,再移除栈顶元素 6。此时栈为空，所以 5 左侧的柱子是「哨兵」，位置为 -1。随后我们将 5 入栈。<ul>
+<li>栈：<code>[5(2)]</code></li>
+</ul>
+</li>
+<li>接下来的枚举过程也大同小异。我们枚举 2，移除栈顶元素 5，得到 2 左侧的柱子是「哨兵」，位置为 -1。将 2 入栈。<ul>
+<li>栈：<code>[2(3)]</code></li>
+</ul>
+</li>
+<li>我们枚举 4，5 和 9，都不会移除任何栈顶元素，得到它们左侧的柱子分别是 2，4 和 5，位置分别为 3，4 和 5。将它们入栈。<ul>
+<li>栈：<code>[2(3), 4(4), 5(5), 9(6)]</code></li>
+</ul>
+</li>
+<li>我们枚举 3，依次移除栈顶元素 9，5 和 4，得到 3 左侧的柱子是 2，位置为 3。将 3 入栈。<ul>
+<li>栈：<code>[2(3), 3(7)]</code></li>
+</ul>
+</li>
+</ul>
+<p>这样以来，我们得到它们左侧的柱子编号分别为 [-1, 0, -1, -1, 3, 4, 5, 3]。用相同的方法，我们从右向左进行遍历，也可以得到它们右侧的柱子编号分别为 [2, 2, 3, 8, 7, 7, 7, 8]，这里我们将位置 8 看作「哨兵」。</p>
+<p>在得到了左右两侧的柱子之后，我们就可以计算出每根柱子对应的左右边界，并求出答案了。</p>
+<p><strong>分析</strong></p>
+<p>单调栈的时间复杂度是多少？直接计算十分困难，但是我们可以发现：</p>
+<blockquote>
+<p>每一个位置只会入栈一次（在枚举到它时），并且最多出栈一次。</p>
+</blockquote>
+<p>因此当我们从左向右/总右向左遍历数组时，对栈的操作的次数就为 O(N)。所以单调栈的总时间复杂度为 O(N)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;int&gt; left(n), right(n);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; mono_stack;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!mono_stack.empty() &amp;&amp; heights[mono_stack.top()] &gt;= heights[i]) &#123;</span><br><span class="line">                mono_stack.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            left[i] = (mono_stack.empty() ? <span class="number">-1</span> : mono_stack.top());</span><br><span class="line">            mono_stack.push(i);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mono_stack = <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!mono_stack.empty() &amp;&amp; heights[mono_stack.top()] &gt;= heights[i]) &#123;</span><br><span class="line">                mono_stack.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            right[i] = (mono_stack.empty() ? n : mono_stack.top());</span><br><span class="line">            mono_stack.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            ans = <span class="built_in">max</span>(ans, (right[i] - left[i] - <span class="number">1</span>) * heights[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="101-对称二叉树"><a href="#101-对称二叉树" class="headerlink" title="101. 对称二叉树"></a><a href="https://leetcode-cn.com/problems/symmetric-tree/" target="_blank" rel="noopener">101. 对称二叉树</a></h2><h3 id="题目描述-6"><a href="#题目描述-6" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个二叉树，检查它是否是镜像对称的。 </p>
+<p>例如，二叉树 <code>[1,2,2,3,4,4,3]</code> 是对称的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  2   2</span><br><span class="line"> &#x2F; \ &#x2F; \</span><br><span class="line">3  4 4  3</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但是下面这个 <code>[1,2,2,null,3,null,3]</code> 则不是镜像对称的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  1</span><br><span class="line"> &#x2F; \</span><br><span class="line">2   2</span><br><span class="line"> \   \</span><br><span class="line"> 3    3</span><br></pre></td></tr></table></figure>
+
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; que;</span><br><span class="line">        que.push(root-&gt;left);</span><br><span class="line">        que.push(root-&gt;right);</span><br><span class="line">        <span class="keyword">while</span>(!que.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            TreeNode* l=que.front();</span><br><span class="line">            que.pop();</span><br><span class="line">            TreeNode* r=que.front();</span><br><span class="line">            que.pop();</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (l&amp;&amp;r&amp;&amp;l-&gt;val==r-&gt;val)</span><br><span class="line">            &#123;</span><br><span class="line">                que.push(l-&gt;left);</span><br><span class="line">                que.push(r-&gt;right);</span><br><span class="line">                que.push(l-&gt;right);</span><br><span class="line">                que.push(r-&gt;left);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(l==r&amp;&amp;l==<span class="literal">nullptr</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;            </span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">                        </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -339,6 +441,8 @@
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
+
 
     </footer>
 
