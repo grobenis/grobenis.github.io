@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    使用evo工具评测SLAM |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-EVO使用教程" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  使用evo工具评测SLAM
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/EVO%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.1k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">5分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
+<p><a href="https://github.com/MichaelGrupp/evo" target="_blank" rel="noopener">github地址</a></p>
+<a id="more"></a>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol>
+<li>使用pypi直接安装：</li>
+</ol>
+<figure class="highlight plain"><figcaption><span>install evo --upgrade --no-binary evo ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 本地编译安装</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96; pip install --editable . --upgrade --no-binary evo</span><br></pre></td></tr></table></figure>
+<p>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p>
+<ul>
+<li><code>evo_ape</code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；<br>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</li>
+<li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差=绝对误差/真值）</li>
+</ul>
+<p><strong>工具命令</strong></p>
+<ul>
+<li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p>
+</li>
+<li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p>
+</li>
+<li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p>
+</li>
+<li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p>
+</li>
+<li><p><code>-va</code> a 对齐轨迹</p>
+</li>
+</ul>
+<p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum/kitti/bag/euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li>对比/绘制VINS-mono/fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html" target="_blank" rel="noopener">该博客</a>.</li>
+</ul>
+<h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj euroc .&#x2F;groundtruth&#x2F;MH_01_data.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<p>画某一次结果的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum .&#x2F;result&#x2F;MH_01&#x2F;loop_result.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p>
+<h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p>
+<ul>
+<li><p>“vins_result_loop” : defined in [path to Vins folder]/pose_graph/src/pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p>
+</li>
+<li><p>“vins_result_no_loop”: defined in [path to Vins folder]/vins_estimator/src/utility/visualization.cpp in function pubOdometry(). </p>
+<p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p>
+</li>
+</ul>
+<p>代码修改过程：</p>
+<p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="keyword">double</span> turetime = header.stamp.toSec();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">      &lt;&lt; tmp_Q.w() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+
+<p>*<em>pose_graph.cpp *</em></p>
+<p>updatePath()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">"/home/guoben/Documents/output/loop_result.csv"</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="keyword">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.setf(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; P.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">            &lt;&lt; Q.w() &lt;&lt; <span class="built_in">endl</span>;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.setf(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; P.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; P.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.x() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.y() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.z() &lt;&lt; <span class="string">" "</span></span><br><span class="line">                 &lt;&lt; Q.w() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>画某一个结果的轨迹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum .&#x2F;loop_result.csv -p --plot_mode&#x3D;xyz</span><br></pre></td></tr></table></figure>
+
+<p>对比结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_rpe euroc .&#x2F;groundtruth&#x2F;MH_01_data.csv .&#x2F;result&#x2F;MH_01&#x2F;vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure>
+
+<p>MSCKF</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; ofstream foutC(&quot;&#x2F;home&#x2F;guoben&#x2F;Documents&#x2F;output&#x2F;result_vio.csv&quot;, ios::app);</span><br><span class="line">&#x2F;&#x2F; foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">&#x2F;&#x2F; foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">&#x2F;&#x2F;       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/02/15/EVO%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            使用evo工具评测SLAM
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/02/15/%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2021
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>

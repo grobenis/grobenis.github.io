@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Cmake指令手册 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-Cmake-技巧" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Cmake指令手册
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/30/Cmake-%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2020-07-30T13:40:48.000Z" itemprop="datePublished">2020-07-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a> / <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/C/">C++</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.2k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">8分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p> Cmake 是 kitware 公司以及一些开源开发者在开发几个工具套件(VTK)的过程中衍生品，最终形成体系，成为一个独立的开放源代码项目。</p>
+<p>本文主要记录书写Cmake的大致流程</p>
+<a id="more"></a>
+
+<h2 id="常见CMakeLists-txt中指令剖析"><a href="#常见CMakeLists-txt中指令剖析" class="headerlink" title="常见CMakeLists.txt中指令剖析"></a>常见<code>CMakeLists.txt</code>中指令剖析</h2><p>注意:Cmake的指令是大小写无关的,参数和变量是大小写相关的。</p>
+<h3 id="cmake-minimum-required-VERSION-2-6-命令"><a href="#cmake-minimum-required-VERSION-2-6-命令" class="headerlink" title="cmake_minimum_required(VERSION 2.6)命令"></a><strong>cmake_minimum_required(VERSION 2.6)命令</strong></h3><p>规定cmake软件的最低版本。这行命令是可选的，可以不写这句话，但在有些情况下，如果CMakeLists.txt文件中使用了一些高版本cmake特有的一些命令时，就需要加上这一行，提醒用户升级到该版本之后再执行cmake。</p>
+<h3 id="project-lt-projectname-gt-命令"><a href="#project-lt-projectname-gt-命令" class="headerlink" title="project(&lt;projectname&gt;)命令"></a><strong><code>project(&lt;projectname&gt;)</code>命令</strong></h3><p><strong>语法：</strong><code>project(projectname [cxx] [c] [java])</code><br>可以指定工程采用的语言，选项分别表示：C++, C, java， 如不指定默认支持所有语言。<br>指定项目的名称，在生成VS项目下即指明了生成的<code>.sln</code>项目的文件名。项目最终编译生成的<strong>可执行文件</strong>不一定是这个项目名称，而是由另一条命令(<code>add_executable</code>)指定的。</p>
+<p>通过<code>project</code>命令，为整个代码项目定义了一个管理架构，这点可以通过在VS下建立项目的结构层次来帮助理解。VS下所有的项目都是在解决方案（.sln文件）下进行管理的，一个解决方案可以包含多个项目。cmake中project命令正是定义了解决方案的名称，<code>add_executable</code>和<code>add_library</code>命令都会生成一个项目，cmake会自动为每个项目（包括生成可执行文件的项目和生成链接库的项目）创建对应的文件夹，存储编译中间文件。</p>
+<p>但是这个项目名称还是很必要的，在cmake中有两个预定义的变量：<code>&lt;projectname&gt;_BINARY_DIR</code> 和<code>&lt;projectname&gt;_SOURCE_DIR</code> ，即一旦使用了project指明了一个项目名称，则同时隐式定义了这两个预定义的变量。在内部编译情况下，这两个变量的含义相同，而在外部编译下，两者指代的内容会有所不同。要理解这两个变量的含义，我们首先需要了解什么是<strong>外部构建（out of source build）</strong>，下面会介绍什么叫外部构建。</p>
+<p>同时cmake还预定义了<code>PROJECT_BINARY_DIR</code>和<code>PROJECT_SOURCE_DIR</code>变量，其中<code>PROJECT_BINARY_DIR</code>就等同于<code>&lt;projectname&gt;_BINARY_DIR,PROJECT_SOURCE_DIR</code>等同于<code>&lt;projectname&gt;_SOURCE_DIR</code>。因此在实际应用中，强烈推荐使用<code>PROJECT_BINARY_DIR</code>和<code>PROJECT_SOURCE_DIR</code>变量，这样即使项目名称发生变化也不会影响CMakeLists.txt文件。</p>
+<p><strong>外部构建的含义：</strong><br>外部构建和内部构建最大的不同在于执行cmake的工作路径不同，在我们使用cmake构建项目时，首先要求指定<strong>“Where is the source code”</strong>，然后要求指定<strong>“Where to build the binaries”</strong>。此时如果这两个路径相同的话，cmake生成的所有中间文件和可执行文件都会存放在项目目录（即所谓的根目录）中；而如果我们在项目目录下先新建一个build文件夹，然后将<strong>“Where to build the binaries”</strong>指定为该build文件夹的路径，此时中间文件和可执行文件都会存放在<code>build</code>目录下。第二种方法的优点显而易见，它最大限度的保持了代码目录的整洁，同时由于第二种方法的生成、编译和安装时发生在不同于项目目录的其他目录中，所以第二种方法就叫做<strong>“外部构建”</strong>。<br>回到project命令下的问题，在外部构建的情况下，<code>PROJECT_SOURCE_DIR</code>指向 的目录同内部构建一样，仍然是项目目录，而<code>PROJECT_BINARY_DIR</code>则有所不同，指向的是&lt;项目目录&gt;/build目录。cmake强烈推荐使用外部构建的方法。</p>
+<h3 id="ADD-SUBDIRECTORY命令"><a href="#ADD-SUBDIRECTORY命令" class="headerlink" title="ADD_SUBDIRECTORY命令"></a><strong>ADD_SUBDIRECTORY命令</strong></h3><p><strong>语法：</strong> <code>ADD_SUBDIRECTORY(source_dir [binary_dir] [EXCLUDE_FROM_ALL])</code><br>该命令告诉CMake去<strong>子目录</strong>中查看可用的CMakeLists.txt文件<br>指令用于向当前工程添加存放源文件的子目录,并可以指定中间二进制和目标二进制存放的位置。 <code>EXCLUDE_FROM_ALL</code> 参数的含义是将这个目录从编译过程中排除。比如,工程的 example,可能就需要工程构建完成后,再进入 example 目录单独进行构建。<br>在我们的项目中，我们添加了src目录到项目中，而把对应于src目录生成的中间文件和目标文件存放到bin目录下，在上一节举例中“外部构建”的情况下，中间文件和目标文件将存放在build/srcobj目录下</p>
+<h3 id="ADD-EXECUTABLE命令"><a href="#ADD-EXECUTABLE命令" class="headerlink" title="ADD_EXECUTABLE命令"></a><strong>ADD_EXECUTABLE命令</strong></h3><p>告诉工程生成一个<strong>可执行文件</strong>。该命令定义了工程最终生成的可执行文件的文件名以及参与编译的头文件和cpp文件。<br>如果想指定生成的可执行文件的存放路径，可以设置cmake中预定义变量EXECUTABLE_OUTPUT_PATH 的值。例如，将生成的可执行文件放置在cmake编译路径的bin文件夹下可用：<code>SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)</code></p>
+<h3 id="ADD-LIBRARY命令"><a href="#ADD-LIBRARY命令" class="headerlink" title="ADD_LIBRARY命令"></a><strong>ADD_LIBRARY命令</strong></h3><p><strong>语法：</strong><code>ADD_LIBRARY(libname [SHARED|STATIC]</code><br>告诉工程生成一个库文件</p>
+<h3 id="FIND-LIBRARY命令"><a href="#FIND-LIBRARY命令" class="headerlink" title="FIND_LIBRARY命令"></a><strong>FIND_LIBRARY命令</strong></h3><p>查找库所在目录，语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">find_library (</span><br><span class="line">          &lt;VAR&gt;</span><br><span class="line">          name | NAMES name1 [name2 ...] [NAMES_PER_DIR]</span><br><span class="line">          [HINTS path1 [path2 ... ENV var]]</span><br><span class="line">          [PATHS path1 [path2 ... ENV var]]</span><br><span class="line">          [PATH_SUFFIXES suffix1 [suffix2 ...]]</span><br><span class="line">          [DOC &quot;cache documentation string&quot;]</span><br><span class="line">          [NO_DEFAULT_PATH]</span><br><span class="line">          [NO_CMAKE_ENVIRONMENT_PATH]</span><br><span class="line">          [NO_CMAKE_PATH]</span><br><span class="line">          [NO_SYSTEM_ENVIRONMENT_PATH]</span><br><span class="line">          [NO_CMAKE_SYSTEM_PATH]</span><br><span class="line">          [CMAKE_FIND_ROOT_PATH_BOTH |</span><br><span class="line">           ONLY_CMAKE_FIND_ROOT_PATH |</span><br><span class="line">           NO_CMAKE_FIND_ROOT_PATH]</span><br><span class="line">         )</span><br><span class="line">12345678910111213141516</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FIND_LIBRARY(RUNTIME_LIB rt &#x2F;usr&#x2F;lib  &#x2F;usr&#x2F;local&#x2F;lib NO_DEFAULT_PATH)</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>cmake会在目录中查找，如果所有目录中都没有，值<code>RUNTIME_LIB</code>就会被赋为<code>NO_DEFAULT_PATH</code></p>
+<h3 id="SET命令——用于设置变量，相当于为变量取别名"><a href="#SET命令——用于设置变量，相当于为变量取别名" class="headerlink" title="SET命令——用于设置变量，相当于为变量取别名"></a><strong>SET命令——用于设置变量，相当于为变量取别名</strong></h3><p><strong>SET(CMAKE_BUILE_TYPE DEBUG)</strong> 设置编译类型debug 或者release。 debug 版会生成相关调试信息，可以使用GDB 进行调试；release不会生成调试信息。当无法进行调试时查看此处是否设置为debug.<br>SET(CMAKE_C_FLAGS_DEBUG “-g -Wall”) 设置编译器的类型<br>CMAKE_C_FLAGS_DEBUG —- C 编译器<br>CMAKE_CXX_FLAGS_DEBUG —- C++ 编译器</p>
+<h3 id="CMAKE-MODULE-PATH变量——定义cmake模块所在路径"><a href="#CMAKE-MODULE-PATH变量——定义cmake模块所在路径" class="headerlink" title="CMAKE_MODULE_PATH变量——定义cmake模块所在路径"></a><strong>CMAKE_MODULE_PATH变量——定义cmake模块所在路径</strong></h3><p>如果你的工程比较复杂,有可能会自己编写一些 <strong>cmake 模块</strong>（所谓cmake模块指的是在该文件内部定义了一些变量，这些变量指明了一些头文件路径和库文件路径等有用信息）。这些 cmake 模块是随你的工程发布的,为了让 cmake 在处理CMakeLists.txt 时找到这些模块,你需要通过 SET 指令,将自己的 cmake 模块路径设置一下。<br>比如<br><code>SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)</code><br>这时候你就可以通过 INCLUDE 指令来调用自己的模块了</p>
+<h3 id="EXECUTABLE-OUTPUT-PATH和LIBRARY-OUTPUT-PATH变量"><a href="#EXECUTABLE-OUTPUT-PATH和LIBRARY-OUTPUT-PATH变量" class="headerlink" title="EXECUTABLE_OUTPUT_PATH和LIBRARY_OUTPUT_PATH变量"></a><strong>EXECUTABLE_OUTPUT_PATH和LIBRARY_OUTPUT_PATH变量</strong></h3><p>我们可以通过 <code>SET</code> 指令重新定义 <code>EXECUTABLE_OUTPUT_PATH</code> 和 <code>LIBRARY_OUTPUT_PATH</code> 变量来指定最终的目标二进制的位置(指最终生成的CRNode可执行文件或者最终的共享库，而不包含编译生成的中间文件)。<br>命令如下：<br><code>SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)</code><br><code>SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)</code><br>需要注意的是，在哪里 <code>ADD_EXECUTABLE</code> 或 <code>ADD_LIBRARY</code>,如果需要改变目标存放路径,就在哪里加入上述的定义。</p>
+<h2 id="CMake-基础模板"><a href="#CMake-基础模板" class="headerlink" title="CMake 基础模板"></a>CMake 基础模板</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## This is a standard CMakeLists.txt template, including</span></span><br><span class="line"><span class="comment">## how to enable C++11 compiler option and how to set 'Release'</span></span><br><span class="line"><span class="comment">## target compile option</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>)</span><br><span class="line"><span class="keyword">project</span>(cmake_template)</span><br><span class="line"></span><br><span class="line"><span class="comment">############# Use message function to print information ############</span></span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"CMake version: $&#123;CMAKE_VERSION&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">############ enable C++11 compiler###############</span></span><br><span class="line"><span class="comment">## Method 1</span></span><br><span class="line"><span class="keyword">include</span>(CheckCXXCompilerFlag)</span><br><span class="line">CHECK_CXX_COMPILER_FLAG(<span class="string">"-std=c++11"</span> COMPILER_SUPPORTS_CXX11)</span><br><span class="line">CHECK_CXX_COMPILER_FLAG(<span class="string">"-std=c++0x"</span> COMPILER_SUPPORTS_CXX0X)</span><br><span class="line"><span class="keyword">if</span>(COMPILER_SUPPORTS_CXX11)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">"$&#123;CMAKE_CXX_FLAGS&#125; -std=c++11"</span>)</span><br><span class="line"><span class="keyword">elseif</span>(COMPILER_SUPPORTS_CXX0X)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">"$&#123;CMAKE_CXX_FLAGS&#125; -std=c++0x"</span>)</span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">    <span class="keyword">message</span>(WARNING <span class="string">"The compiler $&#123;CMAKE_CXX_COMPILER&#125; has no C++11 support."</span>)</span><br><span class="line">    <span class="keyword">message</span>(STATUS <span class="string">"Please use a different C++ compiler."</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="comment">## Method 2</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">############ #enable warnings##################</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">"$&#123;CMAKE_CXX_FLAGS&#125; -fPIC -Wall"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#############Set cmake compiler options##############</span></span><br><span class="line"><span class="comment">## Method 1</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE <span class="string">"Release"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## Method 2</span></span><br><span class="line"><span class="keyword">IF</span>(<span class="keyword">NOT</span> CMAKE_BUILD_TYPE)</span><br><span class="line">  <span class="keyword">SET</span>(CMAKE_BUILD_TYPE RelWithDebInfo CACHE <span class="keyword">STRING</span></span><br><span class="line">      <span class="string">"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."</span></span><br><span class="line">      FORCE)</span><br><span class="line"><span class="keyword">ENDIF</span>(<span class="keyword">NOT</span> CMAKE_BUILD_TYPE)</span><br><span class="line"></span><br><span class="line"><span class="comment">################## Some useful arguments ##########################</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_INCLUDE_CURRENT_DIR <span class="keyword">ON</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">##########</span></span><br><span class="line"><span class="comment">##Build###</span></span><br><span class="line"><span class="comment">##########</span></span><br><span class="line"><span class="keyword">add_library</span>(lib hello.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(main <span class="variable">$&#123;LINK_LIBRARIES&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用变量列表"><a href="#常用变量列表" class="headerlink" title="常用变量列表"></a><strong>常用变量列表</strong></h2><table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PROJECT_NAME</strong></td>
+<td><code>project</code>命令中写的项目名</td>
+</tr>
+<tr>
+<td><strong>CMAKE_VERSION</strong></td>
+<td>当前使用CMake的版本</td>
+</tr>
+<tr>
+<td><strong>CMAKE_SOURCE_DIR</strong></td>
+<td>工程顶层目录，即入口CMakeLists文件所在路径</td>
+</tr>
+<tr>
+<td><strong>PROJECT_SOURCE_DIR</strong></td>
+<td>同<strong>CMAKE_SOURCE_DIR</strong></td>
+</tr>
+<tr>
+<td><strong>CMAKE_BINARY_DIR</strong></td>
+<td>工程编译发生的目录，即执行cmake命令进行项目配置的目录，一般为build</td>
+</tr>
+<tr>
+<td><strong>PROJECT_BINARY_DIR</strong></td>
+<td>同<strong>CMAKE_BINARY_DIR</strong></td>
+</tr>
+<tr>
+<td><strong>CMAKE_CURRENT_SOURCE_DIR</strong></td>
+<td>当前处理的CMakeLists.txt所在的路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_CURRRENT_BINARY_DIR</strong></td>
+<td>当前处理的CMakeLists.txt中生成目标文件所在编译目录</td>
+</tr>
+<tr>
+<td><strong>CMAKE_CURRENT_LIST_FILE</strong></td>
+<td>输出调用这个变量的CMakeLists.txt文件的完整路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_CURRENT_LIST_DIR</strong></td>
+<td>当前处理的CMakeLists.txt文件所在目录的路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
+<td>指定<code>make install</code>命令执行时包安装路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_MODULE_PATH</strong></td>
+<td><code>find_package</code>命令搜索包路径<strong>之一</strong>，默认为空</td>
+</tr>
+</tbody></table>
+<p><strong>编译配置相关变量：</strong></p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CMAKE_BUILD_TYPE</strong></td>
+<td>编译选项，Release或者Debug，如<code>set(CMAKE_BUILD_TYPE &quot;Release&quot;)</code></td>
+</tr>
+<tr>
+<td><strong>CMAKE_CXX_FLAGS</strong></td>
+<td>编译标志，设置C++11编译，<code>set(CMAKE_CXX_FLAGS &quot;${CMAKE_CXX_FLAGS} -std=c++11&quot;)</code></td>
+</tr>
+<tr>
+<td><strong>CMAKE_CXX_STANDARD</strong></td>
+<td>也可以设置C++11编译，<code>set(CMAKE_CXX_STANDARD 11)</code></td>
+</tr>
+</tbody></table>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/07/30/Cmake-%E6%8A%80%E5%B7%A7/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CMake/" rel="tag">CMake</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/08/02/C++%E6%A0%91/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            C++ 二叉树
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/27/2020-05-27-LeetCodeCheckDaily/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">LeetCode 每周打卡05~25-31</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2021
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>

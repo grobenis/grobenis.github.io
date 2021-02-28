@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    SLAM概述 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-SLAM概述" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  SLAM概述
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/" class="article-date">
+  <time datetime="2020-08-06T14:12:10.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.9k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">18分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>SLAM首先要解决自主运动的两大基本问题</p>
+<ol>
+<li>我在什么地方？——定位</li>
+<li>周围环境是什么子？——建图</li>
+</ol>
+<p>SLAM与定位与建图又有着联系：内外兼修 ；定位侧重对自身的了解，建图侧重对外在的了解；它与两者又相互关联；准确的定位需要精确的地图；精确的地图来自准确的定位。</p>
+<a id="more"></a>
+
+<h2 id="视觉SLAM框架"><a href="#视觉SLAM框架" class="headerlink" title="视觉SLAM框架"></a>视觉SLAM框架</h2><p>经典的视觉SLAM主要包含以下部分</p>
+<ol>
+<li>前端：Visual Odometry</li>
+<li>后端：Optimization</li>
+<li>回环：Loop Closing</li>
+<li>建图：Mapping</li>
+</ol>
+<p>其中，<strong>视觉里程计</strong>用来估计邻近时刻的相机运动。最简化的形式就是：估计两个图像的相对运动。采用的方法有特征点法和直接法两部分；<strong>后端</strong>则用来从带有噪声的数据中估计最优轨迹与地图，涉及到的最大后验概率估计部分可以分为滤波器和图优化两类。<strong>回环检测</strong>是用来检测相机是否到达过之前位置，主要通过计算图像间相似性来判断与之前位置的差异，需要用到词袋模型。<strong>建图</strong>涉及到导航、规划、通讯、交互、可视化等内容，最后需要构建度量地图、拓扑地图、稀疏地图、稠密地图等。度量地图强调精确地表示地图中物体的位置关系，通常用稀疏（Sparse）与稠密（Dense）对其分类。稀疏地图进行了一定程度的抽象，并不需要表达所有的物体。相对地，稠密地图着重于建模所有看到的东西。相比于度量地图的精确性，拓扑地图则更强调地图元素之间的关系。拓扑地图是一个图（Graph），由节点和边组成，只考虑节点间的连通性。</p>
+<h4 id="数学描述"><a href="#数学描述" class="headerlink" title="数学描述"></a>数学描述</h4><p>视觉SLAM可以通过以下两个方程进行数学描述：<br>运动方程：$x_{k+1}= f(x_k, u_k,w_k)$<br>观测方程：$z_{k,j} = h(x_k, y_j,w_{k,j})$</p>
+<p>为了解决这个问题，需要解决一下三个问题：</p>
+<ol>
+<li>位置是三维的，如何表述？一一第2、3次课</li>
+<li>观测模型如何表述？一一第4次课</li>
+<li>已知u,z时，如何推断x,y？一第5次课以后</li>
+</ol>
+<p>SLAM用到的<strong>传感器</strong>是机器人感知外界环境的手段。大致可以分为内质和外质两类。其中，内质传感器是用来感受机器人本体信息，比如：加速度计、陀螺仪、编码器等；外质传感器是用来感受测量外界的信息。比如：相机、激光、导轨、磁条等；环境限制了一些传感器的形式。比如 GPS：需要能接收到卫星信号的环境；Marker、导轨：需要环境允许安装 相比之下，激光、相机等携带式传感器更加自由。</p>
+<h4 id="相机"><a href="#相机" class="headerlink" title="相机"></a>相机</h4><p>概念：以一定速率采集图像、形成视频（24hz/30hz）<br>分类：相机的主要分类有：1. 单目相机 Monocular；2. 双目相机（立体相机） Stereo；3. 深度相机RGB-D ；4.其他全景相机、 Event Camera。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p>相机以二维投影形式记录了三维世界的信息。该过程丢掉了一个维度：距离。<br>各类相机的区别</p>
+<ol>
+<li>单目：无深度深度需要其他手段估计</li>
+<li>双目：通过视差计算深度</li>
+<li>RGB-D：通过物理方法测量深度</li>
+</ol>
+<p>当相机运动时，可通过视差确定深度，深度即第三维信息，对SLAM来说至关重要。</p>
+<h2 id="相关内容"><a href="#相关内容" class="headerlink" title="相关内容"></a>相关内容</h2><h3 id="一-熟悉Linux"><a href="#一-熟悉Linux" class="headerlink" title="一 熟悉Linux"></a>一 熟悉Linux</h3><h4 id="1-如何在Ubuntu-中安装软件（命令行界面）？它们通常被安装在什么地方？"><a href="#1-如何在Ubuntu-中安装软件（命令行界面）？它们通常被安装在什么地方？" class="headerlink" title="1. 如何在Ubuntu 中安装软件（命令行界面）？它们通常被安装在什么地方？"></a>1. 如何在Ubuntu 中安装软件（命令行界面）？它们通常被安装在什么地方？</h4><p>Ubuntu 可通过如下命令安装库</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install package</span><br></pre></td></tr></table></figure>
+
+<p>通过apt方式安装的库一般被安装在目录<code>usr/lib</code>或者<code>usr/include</code>中。</p>
+<p><em>补充：</em></p>
+<p>下载的软件存放位置: <code>/var/cache/apt/archives</code><br>安装后软件默认位置: <code>/usr/share</code><br>可执行文件位置: <code>/usr/bin</code><br>配置文件位置: <code>/etc</code><br>lib文件位置: <code>/usr/lib</code></p>
+<h4 id="2-linux-的环境变量是什么？我如何定义新的环境变量？"><a href="#2-linux-的环境变量是什么？我如何定义新的环境变量？" class="headerlink" title="2. linux 的环境变量是什么？我如何定义新的环境变量？"></a>2. linux 的环境变量是什么？我如何定义新的环境变量？</h4><p>环境变量用来定义每个用户的操作环境。linux环境变量和Windows的环境变量一样，分系统环境变量和用户环境变量，系统环境变量对所有用户有效，而用户环境变量只对当前用户有效。</p>
+<p>以路径<code>$PATH:/opt/au1200_rm/build_tools/bin</code>为例，定义环境变量的方法如下：</p>
+<p>方法一：<strong>用export命令，</strong></p>
+<ol>
+<li>输入<code>“export PATH=&quot;$PATH:/opt/au1200_rm/build_tools/bin”</code>。</li>
+</ol>
+<p>方法二：<strong>修改profile文件</strong>，</p>
+<ol>
+<li>输入<code>sudo gedit /etc/profile</code>，回车;</li>
+<li>再输入<code>“export PATH=&quot;$PATH:/opt/au1200_rm/build_tools/bin”</code>。</li>
+</ol>
+<p>方法三：<strong>修改.bashrc文件</strong>，</p>
+<ol>
+<li>输入<code>sudo gedit /root/.bashrc</code>，回车。</li>
+<li>再输入<code>“export PATH=&quot;$PATH:/opt/au1200_rm/build_tools/bin”</code>。</li>
+</ol>
+<p>​                </p>
+<h4 id="3-linux-根目录下面的目录结构是什么样的？至少说出3-个目录的用途"><a href="#3-linux-根目录下面的目录结构是什么样的？至少说出3-个目录的用途" class="headerlink" title="3. linux 根目录下面的目录结构是什么样的？至少说出3 个目录的用途"></a>3. linux 根目录下面的目录结构是什么样的？至少说出3 个目录的用途</h4><p>Linux根目录结构及用途</p>
+<ol>
+<li><strong>bin 目录</strong>：此目录存放所有二进制命令（用户）</li>
+<li><strong>boot目录</strong>：Linux内核及引导系统程序所需的目录</li>
+<li><strong>dev目录</strong>：所有设备文件的目录（如声卡、磁盘、光驱）</li>
+<li><strong>etc目录</strong>：二进制安装包（yum，rpm）配置文件默认路径，服务启动命令存放目录</li>
+<li><strong>lib目录</strong>：库文件存放目录</li>
+<li><strong>home目录</strong>：普通用户的家目录默认数据存放目录</li>
+<li><strong>opt目录</strong>：自定义软件安装存放目录，用户自行安装的软件包存放目录。</li>
+<li><strong>lost+found目录</strong>：在EXT3系统中，当系统意外崩溃或意外关机时，会产生一些碎片文件在这个目录下面，系统启动fcsk工具会检查这个目录，并修复已损坏的文件系统。</li>
+<li><strong>mnt目录</strong>：用于临时挂载存储设备，通常情况下可以挂载LINUX ISO光盘进行无网条件下的安装其他软件包</li>
+<li><strong>proc目录</strong>：进程及内核信息存放目录</li>
+<li><strong>root目录</strong>：管理的家目录 </li>
+<li><strong>sbin目录</strong>：系统管理员命令存放的目录（超级管理员使用的命令） </li>
+<li><strong>tmp目录</strong>：临时文件目录，程序运行时产生的临时文件存放目录</li>
+<li><strong>usr目录</strong>：系统存放程序的目录（命令和帮助文件）</li>
+</ol>
+<h4 id="4-假设我要给a-sh-加上可执行权限，该输入什么命令？"><a href="#4-假设我要给a-sh-加上可执行权限，该输入什么命令？" class="headerlink" title="4. 假设我要给a.sh 加上可执行权限，该输入什么命令？"></a>4. 假设我要给a.sh 加上可执行权限，该输入什么命令？</h4><p>为一个文件添加可执行权限</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x a.sh</span><br></pre></td></tr></table></figure>
+
+<p>*：为一个文件夹下的所有文件添加可执行权限</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x *</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-假设我要将a-sh文件的所有者改成xiang-xiang，该输入什么命令？"><a href="#5-假设我要将a-sh文件的所有者改成xiang-xiang，该输入什么命令？" class="headerlink" title="5. 假设我要将a.sh文件的所有者改成xiang:xiang，该输入什么命令？"></a>5. 假设我要将a.sh文件的所有者改成xiang:xiang，该输入什么命令？</h4><p>可利用如下命令：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R  username:groupname  filename</span><br></pre></td></tr></table></figure>
+
+<p><strong>解释</strong></p>
+<p>sudo：管理员权限</p>
+<p>chown ：修改文件所有者和组别</p>
+<p>-R ：递归文件夹内部的所有文件及文件夹</p>
+<p>username：目标所有者名称</p>
+<p>groupname：组名</p>
+<p>filename：文件或文件夹名称</p>
+<p><strong>答案：</strong></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R xiang:xiang a.sh</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二-SLAM综述文献阅读"><a href="#二-SLAM综述文献阅读" class="headerlink" title="二 SLAM综述文献阅读"></a>二 SLAM综述文献阅读</h3><h4 id="1-SLAM-会在哪些场合中用到？至少列举三个方向"><a href="#1-SLAM-会在哪些场合中用到？至少列举三个方向" class="headerlink" title="1. SLAM 会在哪些场合中用到？至少列举三个方向"></a>1. SLAM 会在哪些场合中用到？至少列举三个方向</h4><p>答：SLAM在以下方向可能会有非常大的用处</p>
+<ol>
+<li><strong>增强现实应用</strong>: AR通过电脑技术，将虚拟的信息应用到真实世界，真实的环境和虚拟的物体实时地叠加到了同一个画面或空间同时存在。这一画面的实现，离不开SLAM技术的实时定位。虽然在AR行业有很多可代替技术，但SLAM技术是最理想的定位导航技术。相较于SLAM在机器人、无人驾驶等领域的应用，在AR行业的应用则有很多不同点。<ul>
+<li>精度：AR一般更关注于局部精度，要求恢复的相机运动避免出现漂移、抖动，这样叠加的虚拟物体才能看起来与现实场景真实地融合在一起。但在机器人和无人驾驶领域则一般更关注全局精度，需要恢复的整条运动轨迹误差累积不能太大，循环回路要能闭合，而在某个局部的漂移、 抖动等问题往往对机器人应用来说影响不大。</li>
+<li>效率：AR需要在有限的计算资源下实时求解，人眼的刷新率为24帧，所以AR的计算效率通常需要到达30帧以上; 机器人本身运动就很慢，可以把帧率降低，所以对算法效率的要求相对较低。</li>
+<li>配置：AR对硬件的体积、功率、成本等问题比机器人更敏感，比如机器人上可以配置鱼眼、双目或深度摄像头、高性能CPU等硬件来降低SLAM的难度，而AR应用更倾向于采用更为高效、鲁棒的算法达到需求。</li>
+</ul>
+</li>
+<li><strong>无人机</strong>: 无人机在飞行的过程中需要知道哪里有障碍物，该怎么规避，怎么重新规划路线。显然，这是SLAM技术的应用。但无人机飞行的范围较大，所以对精度的要求不高，市面上其他的一些光流、超声波传感器可以作为辅助。</li>
+<li><strong>自动驾驶</strong>: 随着城市物联网和智能系统的完善，无人驾驶必是大势所趋。无人驾驶利用激光雷达传感器（Velodyne、IBEO等）作为工具，获取地图数据，并构建地图，规避路程中遇到的障碍物，实现路径规划。跟SLAM技术在机器人领域的应用类似，只是相比较于SLAM在机器人中的应用，无人驾驶的雷达要求和成本要明显高于机器人。</li>
+<li><strong>机器人:</strong> 激光+SLAM是目前机器人自主定位导航所使用的主流技术。激光测距相比较于图像和超声波测距，具有良好的指向性和高度聚焦性，是目前最可靠、稳定的定位技术。激光雷达传感器获取地图信息，构建地图，实现路径规划与导航。机器人可以应用的地方很多，比如配送机器人，探索机器人等。</li>
+<li>*<em>智能家居: *</em>近年来，智能家居的发展使得我们的居家生活变得更加充满乐趣与效率。对于智能清扫机器人这类室内移动型机器人而言，机器人自主定位和对周边环境的识别是其高效工作的根本。利用激光或相机进行SLAM在只能家居机器人上有很大的应用空间。</li>
+</ol>
+<h4 id="2-SLAM-中定位与建图是什么关系？为什么在定位的同时需要建图？"><a href="#2-SLAM-中定位与建图是什么关系？为什么在定位的同时需要建图？" class="headerlink" title="2. SLAM 中定位与建图是什么关系？为什么在定位的同时需要建图？"></a>2. SLAM 中定位与建图是什么关系？为什么在定位的同时需要建图？</h4><p>答：SLAM全称是simultaneous localization and mapping（即时定位与建图）。假设了机器人从未知环境中的未知地点出发，在运动过程中通过重复观测到的地图特征（比如，墙角，柱子等）定位自身位置和姿态，再根据自身位置增量式的构建地图，从而达到同时定位和地图构建的目的。</p>
+<p><strong>定位与建图的关系</strong></p>
+<p>整个SLAM过程中，移动机器人一方面要明白自身的状态（即定位），另一方面又需要了解外在的环境（即建图）。两者紧密相关。建图的准确性依赖于定位精度，而定位的实现又离不开精确的建图。</p>
+<p><strong>为什么定位的同时需要建图</strong></p>
+<p>答：SLAM强调在未知环境下进行整个过程，如果在未知环境下进行定位，首先需要能够识别并理解周围的环境。再利用环境中的外部信息作为定位的基准，所以需要对所处的环境进行建图。</p>
+<h4 id="3-SLAM-发展历史如何？我们可以将它划分成哪几个阶段？"><a href="#3-SLAM-发展历史如何？我们可以将它划分成哪几个阶段？" class="headerlink" title="3. SLAM 发展历史如何？我们可以将它划分成哪几个阶段？"></a>3. SLAM 发展历史如何？我们可以将它划分成哪几个阶段？</h4><p>答：<strong>SLAM发展历史</strong></p>
+<p>SLAM最早由Smith、Self和Cheeseman于1988年提出。 由于其重要的理论与应用价值，被很多学者认为是实现真正全自主移动机器人的关键。在文献2（Past, Present, and Future of Simultaneous Localization And Mapping: Towards the Robust-Perception Age）中，根据Durrant-Whyte和Bailey在两篇综述中对SLAM的前20年历史进行的详尽回顾。SLAM的发展可以大致分为三个阶段：</p>
+<ol>
+<li><p><strong>朴素时期：classical age</strong>（1986-2004）。classical age出现了SLAM最基本的概率公式，包括基于扩展卡尔曼滤波器(EKF)，Rao-Blackwellised粒子滤波器和最大似然估计的方法。此外，它还剔除了与效率以及鲁棒数据等相关的基本问题，这也是日后的发展方向。</p>
+</li>
+<li><p><strong>算法分析时期：algorithmic-analysis age</strong>（2004-2015），这一时期研究了SLAM的基本特性，包括可观察性，收敛性，一致性以及稀疏性对SLAM高效求解的关键作用，主要的开源SLAM库在这个时期得到了开发。</p>
+</li>
+<li><p><strong>鲁棒性-预测性时代: ** **robust-perception</strong>（2015-至今）：这一时期主要探索SLAM在位置环境中对鲁棒性、高级别的场景理解，计算资源优化，任务驱动的环境感知等。</p>
+<p>视觉SLAM是在传统SLAM的基础上发展起来的，早期的视觉SLAM多采用扩展卡尔曼滤波等手段来优化相机位姿的估计和地图构建的准确性，后期随着计算能力的提升及算法的改进，BA优化、位姿优化等手段逐渐成为主流。随着人工智能技术的普及，基于深度学习的SLAM越来越受到研究者的关注。</p>
+</li>
+</ol>
+<h4 id="4-列举三篇在SLAM-领域的经典文献。"><a href="#4-列举三篇在SLAM-领域的经典文献。" class="headerlink" title="4. 列举三篇在SLAM 领域的经典文献。"></a>4. 列举三篇在SLAM 领域的经典文献。</h4><ol start="0">
+<li><p>On the Representation and Estimation of Spatial Uncertainty[0]: 公认的SLAM开山之作</p>
+</li>
+<li><p>MonoSLAM[1]: real-time single camera SLAM[1]：第一个实时的单目视觉SLAM系统</p>
+</li>
+<li><p>ORB-SLAM2[2]: 当前应用最多基于优化的视觉SLAM方法，系统框架非常完善</p>
+</li>
+<li><p>MSCKF[3]: 基于滤波的视觉SLAM方法，由于优秀的计算量和精度得到了实际应用（AR Kit）</p>
+</li>
+</ol>
+<p>[0] Randall, C, Smith,等. On the Representation and Estimation of Spatial Uncertainty[J]. The International Journal of Robotics Research, 1986.</p>
+<p>[1] Davison A J , Reid I D , Molton N D , et al. MonoSLAM: real-time single camera SLAM[J]. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2007, 29(6):1052-1067.</p>
+<p>[2] Mur-Artal R , Tardos J D . ORB-SLAM2: an Open-Source SLAM System for Monocular, Stereo and RGB-D Cameras[J]. IEEE Transactions on Robotics, 2016, 33(5):1255-1262.</p>
+<p>[3]Mourikis, Anastasios /I, Roumeliotis, Stergios /I. A Multi-State Constraint Kalman Filter for Vision-aided Inertial Navigation[C]// IEEE International Conference on Robotics &amp; Automation. IEEE, 2007.</p>
+<h3 id="三-CMake-练习"><a href="#三-CMake-练习" class="headerlink" title="三. CMake 练习"></a>三. CMake 练习</h3><p>书写⼀个由 <code>cmake</code> 组织的 C++ ⼯程，要求如下：</p>
+<ol>
+<li>include/hello.h 和 src/hello.c 构成了 libhello.so 库。hello.c 中提供⼀个函数 sayHello()，调⽤此函数时往屏幕输出⼀⾏“Hello SLAM”。我们已经为你准备了 hello.h 和 hello.c 这两个⽂件，见“code/” ⽬录下。</li>
+<li>⽂件 useHello.c 中含有⼀个 main 函数，它可以编译成⼀个可执⾏⽂件，名为“sayhello”。</li>
+<li>默认⽤ Release 模式编译这个⼯程。</li>
+<li>如果⽤户使⽤ sudo make install，那么将 hello.h 放⾄/usr/local/include/下，将 libhello.so 放⾄/usr/local/lib/下。请按照上述要求组织源代码⽂件，并书写CMakeLists.txt。</li>
+</ol>
+<p>答：CMakeList内容如下</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.2</span>.<span class="number">0</span> )</span><br><span class="line"><span class="keyword">PROJECT</span>(HELLO )</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_BUILD_TYPE <span class="string">"Release"</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">"-std=c++11"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/bin)</span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">INCLUDE_DIRECTORIES</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="keyword">ADD_SUBDIRECTORY</span>(src)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(usehello useHello.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(usehello HELLO)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="五-理解ORB-SLAM2-框架"><a href="#五-理解ORB-SLAM2-框架" class="headerlink" title="五. 理解ORB-SLAM2 框架"></a>五. 理解ORB-SLAM2 框架</h3><h4 id="1-从github-com-下载ORB-SLAM2-的代码。"><a href="#1-从github-com-下载ORB-SLAM2-的代码。" class="headerlink" title="1. 从github.com 下载ORB-SLAM2 的代码。"></a>1. 从github.com 下载ORB-SLAM2 的代码。</h4><p>地址在：<a href="https://github.com/raulmur/ORB_SLAM2" target="_blank" rel="noopener">https://github.com/raulmur/ORB_SLAM2</a>.<br>提示：在安装git 之后，可以⽤git clone <a href="https://github.com/raulmur/ORB_SLAM2" target="_blank" rel="noopener">https://github.com/raulmur/ORB_SLAM2</a> 命令下载<br>ORB-SLAM2。下载完成后，请给出终端截图。</p>
+<p>![image-20200522170310934](D:\我的坚果云\视觉SLAM\第一节 概述与预备知识\image\下载ORBSLAM.png)</p>
+<h4 id="2-阅读ORB-SLAM2-代码目录下的CMakeLists-txt，回答问题："><a href="#2-阅读ORB-SLAM2-代码目录下的CMakeLists-txt，回答问题：" class="headerlink" title="2. 阅读ORB-SLAM2 代码目录下的CMakeLists.txt，回答问题："></a>2. 阅读ORB-SLAM2 代码目录下的CMakeLists.txt，回答问题：</h4><h5 id="a-ORB-SLAM2-将编译出什么结果？有几个库文件和可执行文件？"><a href="#a-ORB-SLAM2-将编译出什么结果？有几个库文件和可执行文件？" class="headerlink" title="(a) ORB-SLAM2 将编译出什么结果？有几个库文件和可执行文件？"></a>(a) ORB-SLAM2 将编译出什么结果？有几个库文件和可执行文件？</h5><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>(ORB_SLAM2)</span><br><span class="line"><span class="keyword">add_library</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> SHARED</span><br><span class="line">src/System.cc</span><br><span class="line">src/Tracking.cc</span><br><span class="line">src/LocalMapping.cc</span><br><span class="line">src/LoopClosing.cc</span><br><span class="line">src/ORBextractor.cc</span><br><span class="line">src/ORBmatcher.cc</span><br><span class="line">src/FrameDrawer.cc</span><br><span class="line">src/Converter.cc</span><br><span class="line">src/MapPoint.cc</span><br><span class="line">src/KeyFrame.cc</span><br><span class="line">src/Map.cc</span><br><span class="line">src/MapDrawer.cc</span><br><span class="line">src/Optimizer.cc</span><br><span class="line">src/PnPsolver.cc</span><br><span class="line">src/Frame.cc</span><br><span class="line">src/KeyFrameDatabase.cc</span><br><span class="line">src/Sim3Solver.cc</span><br><span class="line">src/Initializer.cc</span><br><span class="line">src/Viewer.cc</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>根据以上CMakeLists.txt的描述，ORBSLAM2编译将生成<code>libORB_SLAM2.so</code><strong>动态链接库</strong></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Build examples</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/Examples/RGB-D)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(rgbd_tum</span><br><span class="line">Examples/RGB-D/rgbd_tum.cc)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(rgbd_tum <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/Examples/Stereo)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(stereo_kitti</span><br><span class="line">Examples/Stereo/stereo_kitti.cc)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(stereo_kitti <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(stereo_euroc</span><br><span class="line">Examples/Stereo/stereo_euroc.cc)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(stereo_euroc <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/Examples/Monocular)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(mono_tum</span><br><span class="line">Examples/Monocular/mono_tum.cc)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(mono_tum <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(mono_kitti</span><br><span class="line">Examples/Monocular/mono_kitti.cc)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(mono_kitti <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(mono_euroc</span><br><span class="line">Examples/Monocular/mono_euroc.cc)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(mono_euroc <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>根据以上部分CMakeLists.txt的描述，ORBSLAM2还将生成<code>rgbd_tum</code>, <code>stereo_kitti</code>, <code>stereo_euroc</code>,  <code>mono_tum</code>, <code>mono_kitti</code>,<code>mono_euroc</code>共6个可执行的<strong>demo程序</strong>。</p>
+<p><strong>库文件</strong>有1个：指的是lib*.so文件</p>
+<p><strong>可执行文件</strong>有如下6个：</p>
+<ol>
+<li><code>rgbd_tum</code></li>
+<li><code>stereo_kitti</code></li>
+<li><code>stereo_euroc</code></li>
+<li><code>mono_tum</code></li>
+<li><code>mono_kitti</code></li>
+<li><code>mono_euroc</code></li>
+</ol>
+<h5 id="b-ORB-SLAM2-中的include-src-Examples-三个文件夹中都含有什么内容？"><a href="#b-ORB-SLAM2-中的include-src-Examples-三个文件夹中都含有什么内容？" class="headerlink" title="(b) ORB-SLAM2 中的include, src, Examples 三个文件夹中都含有什么内容？"></a>(b) ORB-SLAM2 中的include, src, Examples 三个文件夹中都含有什么内容？</h5><ul>
+<li><strong>include</strong>：存放头文件</li>
+<li><strong>src</strong>：用来存放<code>.cc</code>等库文件</li>
+<li><strong>Example</strong>：存放运行例子的可执行文件，包含了针对不同数据集的运行文件，：<ul>
+<li>基于TUM数据集的深度相机运行文件</li>
+<li>基于TUM数据集的单目相机运行例程</li>
+<li>基于EuRoc数据集的单目相机运行例程</li>
+<li>基于EuRoc数据集的双目相机运行例程</li>
+<li>基于KITTI数据集的单目相机运行例程</li>
+<li>基于KITTI数据集的双目相机运行例程</li>
+</ul>
+</li>
+</ul>
+<h5 id="c-ORB-SLAM2-中的可执行文件链接到了哪些库？它们的名字是什么？"><a href="#c-ORB-SLAM2-中的可执行文件链接到了哪些库？它们的名字是什么？" class="headerlink" title="(c) ORB-SLAM2 中的可执行文件链接到了哪些库？它们的名字是什么？"></a>(c) ORB-SLAM2 中的可执行文件链接到了哪些库？它们的名字是什么？</h5><p>ORBSLAM2中的可执行文件链接了五个第三方库：<code>OpenCV</code>、<code>EIGEN3</code>、<code>Pangolin</code>、<code>DBoW2</code>、<code>g2o</code>和一个生成库<code>libORB_SLAM2.so</code>。</p>
+<h3 id="六-使用摄像头或视频运行ORB-SLAM2"><a href="#六-使用摄像头或视频运行ORB-SLAM2" class="headerlink" title="六 使用摄像头或视频运行ORB-SLAM2"></a>六 使用摄像头或视频运行ORB-SLAM2</h3><h4 id="1-编译ORBSLAM2"><a href="#1-编译ORBSLAM2" class="headerlink" title="1. 编译ORBSLAM2"></a>1. 编译ORBSLAM2</h4><h4 id="2-修改工程"><a href="#2-修改工程" class="headerlink" title="2. 修改工程"></a>2. 修改工程</h4><p>注意到，ORB-SLAM2 提供了若⼲数据集中的运⾏⽰例，这可以作为我们运行自己摄像头程序的参考，因为它们很相似。对于数据集上的⽰例，ORB-SLAM2 会⾸先读取数据集中的图像，再放到SLAM 中处理。那么对于我们⾃⼰的摄像头，同样可以这样处理。所以最方便的方案是直接将我们的程序作为⼀个新的可执⾏程序，加入到ORB-SLAM2 ⼯程中。那么请问，如何将myslam.cpp或myvideo.cpp 加⼊到ORB-SLAM2 工程中？请给出你的CMakeLists.txt 修改⽅案。</p>
+<p>答：修改方案：修改ORBSLAM2的目录下CMakeLists</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/Examples/myvideo)</span><br><span class="line"><span class="keyword">add_executable</span>(myvideo</span><br><span class="line">Examples/myvideo/myvideo.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(myvideo <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-运行ORBSLAM"><a href="#3-运行ORBSLAM" class="headerlink" title="3. 运行ORBSLAM"></a>3. 运行ORBSLAM</h4><p>现在你的程序应该可以编译出结果了。但是我们现在还没有谈相机标定，所以你还没办法标定你的摄像头。我们可以用⼀个不那么好的标定参数，先来试一试效果（所幸 ORB-SLAM2对标定参数不太敏感）。我为你提供了⼀个<code>myslam.yaml（myvideo.yaml）</code>，这个文件是我们假想的标定参数。现在，用这个文件让 ORB-SLAM2 运行起来，看看 ORB-SLAM2 的实际效果吧。请给出运行截图，并谈谈你在运⾏过程中的体会。</p>
+<p><img src="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/ORBSLAM%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE.png" alt="ORBSLAM运行截图"></p>
+<p><img src="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/%E8%BF%90%E8%A1%8Cmyvideo.png" alt="运行myvideo"></p>
+<p><strong>体会</strong></p>
+<p>实验过程中，我使用的是虚拟机，运行内存为3G，ORBSLAM2在运行myvideo的过程中，能够保持24~40的关键帧，同时追踪200个特征点，可见其能在计算量有限的情况下仍能追踪到特征点，非常强大。</p>
+<p>对于一个不那么准确的标定文件，依然能展现出一定的结果，表明ORBSLAM具有对于标定过程具有一定的鲁棒性。我猜想这可能是因为单目相机的单一性，不需要考虑多个传感器之间的协同。在我测试VINS的过程中则发现运行效果对标定的依赖性非常大。</p>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/08/06/SLAM-%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            SLAM-三维空间刚体运动
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">处理H自由度的不同方法</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2021
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>

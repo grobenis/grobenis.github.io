@@ -72,7 +72,7 @@
     
     
     
-    <article id="post-2020-04-23-Cpp-heap" class="article article-type-post" itemscope
+    <article id="post-漫水填充法" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -80,8 +80,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/04/23/2020-04-23-Cpp-heap/"
-    >堆与优先队列</a
+  <a class="article-title" href="/2020/08/16/%E6%BC%AB%E6%B0%B4%E5%A1%AB%E5%85%85%E6%B3%95/"
+    >漫水填充法</a
   >
 </h2>
   
@@ -91,8 +91,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/04/23/2020-04-23-Cpp-heap/" class="article-date">
-  <time datetime="2020-04-22T16:15:18.000Z" itemprop="datePublished">2020-04-23</time>
+      <a href="/2020/08/16/%E6%BC%AB%E6%B0%B4%E5%A1%AB%E5%85%85%E6%B3%95/" class="article-date">
+  <time datetime="2020-08-16T05:18:22.000Z" itemprop="datePublished">2020-08-16</time>
 </a>
       
   <div class="article-category">
@@ -113,10 +113,9 @@
       
 
       
-      <p>堆（heaps）是一种特殊的数据组织方式，<a href="http://c.biancheng.net/stl/" target="_blank" rel="noopener">STL</a> 中的 priority_queue 容器适配器底层就是采用堆来组织数据存储的。为了弄明白堆是什么，首先要搞清楚什么是树存储结构。</p>
-<p>本节就来学习C++中点的堆于优先队列。</p>
+      <p>漫水填充法是一种用特定的颜色填充联通区域，通过设置可连通像素的上下限以及连通方式来达到不同的填充效果的方法。漫水填充经常被用来标记或分离图像的一部分以便对其进行进一步处理或分析，也可以用来从输入图像获取掩码区域，掩码会加速处理过程，或只处理掩码指定的像素点，操作的结果总是某个连续的区域。</p>
       
-      <a class="article-more-link" href="/2020/04/23/2020-04-23-Cpp-heap/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/08/16/%E6%BC%AB%E6%B0%B4%E5%A1%AB%E5%85%85%E6%B3%95/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -129,7 +128,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag">优先队列</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A0%86/" rel="tag">堆</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FloodFill/" rel="tag">FloodFill</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li></ul>
 
 
     </footer>
@@ -146,7 +145,7 @@
 
 </article>
     
-    <article id="post-2020-04-22-LeetCode-CheckDaily" class="article article-type-post" itemscope
+    <article id="post-相机标定原理" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -154,8 +153,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/04/22/2020-04-22-LeetCode-CheckDaily/"
-    >LeetCode 每日打卡 4-20~26</a
+  <a class="article-title" href="/2020/08/10/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/"
+    >相机标定原理</a
   >
 </h2>
   
@@ -165,8 +164,649 @@
 
     
     <div class="article-meta">
-      <a href="/2020/04/22/2020-04-22-LeetCode-CheckDaily/" class="article-date">
-  <time datetime="2020-04-22T08:26:14.000Z" itemprop="datePublished">2020-04-22</time>
+      <a href="/2020/08/10/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/" class="article-date">
+  <time datetime="2020-08-10T12:53:44.000Z" itemprop="datePublished">2020-08-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>相机标定原理</p>
+<p>  在图像测量过程以及机器视觉应用中，为确定空间物体表面某点的三维几何位置与其在图像中对应点之间的相互关系，必须建立相机成像的几何模型，这些几何模型参数就是相机参数。   </p>
+<p>本文转载自 <a href="https://blog.csdn.net/qq_37791134/article/details/80942171" target="_blank" rel="noopener">笔记总结-相机标定（Camera calibration）原理、步骤</a>。</p>
+<p>张正友标定算法原理详解(<a href="https://blog.csdn.net/u010128736/article/details/52860364" target="_blank" rel="noopener">https://blog.csdn.net/u010128736/article/details/52860364</a>)</p>
+      
+      <a class="article-more-link" href="/2020/08/10/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalirbr/" rel="tag">Kalirbr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA/" rel="tag">相机</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-SLAM面试题" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/06/SLAM%E9%9D%A2%E8%AF%95%E9%A2%98/"
+    >SLAM 面试题汇总</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/06/SLAM%E9%9D%A2%E8%AF%95%E9%A2%98/" class="article-date">
+  <time datetime="2020-08-06T14:44:39.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文总结面试SLAM中可能遇到的各种问题。</p>
+      
+      <a class="article-more-link" href="/2020/08/06/SLAM%E9%9D%A2%E8%AF%95%E9%A2%98/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-SLAM-三维空间刚体运动" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/06/SLAM-%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/"
+    >SLAM-三维空间刚体运动</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/06/SLAM-%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/" class="article-date">
+  <time datetime="2020-08-06T14:41:17.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <a id="more"></a>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8/" rel="tag">刚体运动</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%9B%E5%85%83%E6%95%B0/" rel="tag">四元数</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%8E%E7%BE%A4/" rel="tag">李群</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-SLAM概述" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/"
+    >SLAM概述</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/" class="article-date">
+  <time datetime="2020-08-06T14:12:10.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>SLAM首先要解决自主运动的两大基本问题</p>
+<ol>
+<li>我在什么地方？——定位</li>
+<li>周围环境是什么子？——建图</li>
+</ol>
+<p>SLAM与定位与建图又有着联系：内外兼修 ；定位侧重对自身的了解，建图侧重对外在的了解；它与两者又相互关联；准确的定位需要精确的地图；精确的地图来自准确的定位。</p>
+      
+      <a class="article-more-link" href="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-处理H自由度的不同方法" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/"
+    >处理H自由度的不同方法</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2020-08-06T12:45:22.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>视觉-惯性状态估计过程中有四个自由度需要进行额外处理，它们是一个平移变量（3个自由度）和绕重力轴方向的旋转（1个自由度）。</p>
+<p>视觉惯性状态估计最多可以达到四自由度的转换（围绕重力的旋转和平移），因此必须正确处理额外的自由度 。尽管在实践中使用了不同方法处理多余自由度，但没有任何研究来系统地分析它们的差异。本文介绍了在基于优化的视觉惯性状态估计中处理量测自由度的不同方法的对比分析。通过实验比较了三种常用方法：</p>
+<ol>
+<li>将不可观察的状态固定为给定值，</li>
+<li>在这些状态上设置先验</li>
+<li>在优化过程中让状态自由地优化。</li>
+</ol>
+<p>实验表明：</p>
+<ol>
+<li>三种方法的准确性和计算时间相似，自由量测方法稍快一些； </li>
+<li>自由优化法的协方差估计似乎有很大的不同，但实际上与其他方法紧密相关。</li>
+</ol>
+      
+      <a class="article-more-link" href="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-OpenCV-Function" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/04/OpenCV-Function/"
+    >OpenCV_Function</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/04/OpenCV-Function/" class="article-date">
+  <time datetime="2020-08-04T07:17:31.000Z" itemprop="datePublished">2020-08-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <a id="more"></a>
+
+<h2 id="图像操作"><a href="#图像操作" class="headerlink" title="图像操作"></a>图像操作</h2><h3 id="遍历图像的四种方式"><a href="#遍历图像的四种方式" class="headerlink" title="遍历图像的四种方式"></a>遍历图像的四种方式</h3><ol>
+<li><code>at&lt;typename&gt;(i,j)</code></li>
+</ol>
+<p>Mat类提供了一个at的方法用于取得图像上的点，它是一个模板函数，可以取到任何类型的图像上的点。下面我们通过一个图像处理中的实际来说明它的用法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">colorReduce</span><span class="params">(Mat&amp; <span class="built_in">image</span>,<span class="keyword">int</span> div)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">image</span>.rows;i++)&#123;</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">image</span>.cols;j++)&#123;</span><br><span class="line">           <span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">0</span>]=<span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">0</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">            <span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">1</span>]=<span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">1</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">           <span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">2</span>]=<span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">2</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>用指针来遍历图像</li>
+</ol>
+<p>我们实际喜欢把原图传进函数内，但是在函数内我们对原图像进行了修改，而将原图作为一个结果输出，很多时候我们需要保留原图，这样我们需要一个原图的副本。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="function"><span class="keyword">void</span> <span class="title">colorReduce</span><span class="params">(<span class="keyword">const</span> Mat&amp; <span class="built_in">image</span>,Mat&amp; outImage,<span class="keyword">int</span> div)</span></span></span><br><span class="line"><span class="function"> 2 </span>&#123;</span><br><span class="line"> <span class="number">3</span>     <span class="comment">// 创建与原图像等尺寸的图像</span></span><br><span class="line"> <span class="number">4</span>     outImage.create(<span class="built_in">image</span>.<span class="built_in">size</span>(),<span class="built_in">image</span>.type());</span><br><span class="line"> <span class="number">5</span>     <span class="keyword">int</span> nr=<span class="built_in">image</span>.rows;</span><br><span class="line"> <span class="number">6</span>     <span class="comment">// 将3通道转换为1通道</span></span><br><span class="line"> <span class="number">7</span>     <span class="keyword">int</span> nl=<span class="built_in">image</span>.cols*<span class="built_in">image</span>.channels();</span><br><span class="line"> <span class="number">8</span>     <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;nr;k++)&#123;</span><br><span class="line"><span class="number">10</span>         <span class="comment">// 每一行图像的指针</span></span><br><span class="line"><span class="number">11</span>         <span class="keyword">const</span> uchar* inData=<span class="built_in">image</span>.ptr&lt;uchar&gt;(k);</span><br><span class="line"><span class="number">12</span>         uchar* outData=outImage.ptr&lt;uchar&gt;(k);</span><br><span class="line"><span class="number">13</span>         <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nl;i++)&#123;</span><br><span class="line"><span class="number">15</span>             outData[i]=inData[i]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">16</span>         &#125;</span><br><span class="line"><span class="number">17</span>     &#125;</span><br><span class="line"><span class="number">18</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用迭代器来遍历图像</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="function"><span class="keyword">void</span> <span class="title">colorReduce</span><span class="params">(<span class="keyword">const</span> Mat&amp; <span class="built_in">image</span>,Mat&amp; outImage,<span class="keyword">int</span> div)</span></span></span><br><span class="line"><span class="function"> 2 </span>&#123;</span><br><span class="line"> <span class="number">3</span>     outImage.create(<span class="built_in">image</span>.<span class="built_in">size</span>(),<span class="built_in">image</span>.type());</span><br><span class="line"> <span class="number">4</span>     MatConstIterator_&lt;Vec3b&gt; it_in=<span class="built_in">image</span>.<span class="built_in">begin</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">5</span>     MatConstIterator_&lt;Vec3b&gt; itend_in=<span class="built_in">image</span>.<span class="built_in">end</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">6</span>     MatIterator_&lt;Vec3b&gt; it_out=outImage.<span class="built_in">begin</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">7</span>     MatIterator_&lt;Vec3b&gt; itend_out=outImage.<span class="built_in">end</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">8</span>     <span class="keyword">while</span>(it_in!=itend_in)</span><br><span class="line"> <span class="number">9</span>     &#123;</span><br><span class="line"><span class="number">10</span>         (*it_out)[<span class="number">0</span>]=(*it_in)[<span class="number">0</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">11</span>         (*it_out)[<span class="number">1</span>]=(*it_in)[<span class="number">1</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">12</span>         (*it_out)[<span class="number">2</span>]=(*it_in)[<span class="number">2</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">13</span>         it_in++;</span><br><span class="line"><span class="number">14</span>         it_out++;</span><br><span class="line"><span class="number">15</span>     &#125;</span><br><span class="line"><span class="number">16</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>最高效的方法</li>
+</ol>
+<p>当不对行进行填补的时候，图像可被视为一个长为W x H的一维数组。用isContinuous来判断是否对行进行的填补。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n1 = <span class="built_in">image</span>.rows;</span><br><span class="line"><span class="keyword">int</span> nc = <span class="built_in">image</span>.cols * <span class="built_in">image</span>.channels（）;</span><br><span class="line"><span class="keyword">if</span>（<span class="built_in">image</span>.isContinuous（））<span class="comment">//判断是否对行有额外的填补像素，返回值为真，则没有填补。</span></span><br><span class="line">&#123;</span><br><span class="line">    nc = nc * n1;</span><br><span class="line">    n1 = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>（<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;n1; i ++）<span class="comment">//若图像是连续的，则只循环一次</span></span><br><span class="line">&#123;</span><br><span class="line">    uchar * data = <span class="built_in">image</span>.ptr &lt;uchar&gt;（i）;</span><br><span class="line">    <span class="keyword">for</span>（<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;nc; j ++）</span><br><span class="line">    &#123;</span><br><span class="line">        data [j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F/" rel="tag">图像</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-C++树" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/02/C++%E6%A0%91/"
+    >C++ 二叉树</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/02/C++%E6%A0%91/" class="article-date">
+  <time datetime="2020-08-02T01:46:53.000Z" itemprop="datePublished">2020-08-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a> / <a class="article-category-link" href="/categories/%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a> / <a class="article-category-link" href="/categories/%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/">C++</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <a id="more"></a>
+
+<h2 id="一-树的概念"><a href="#一-树的概念" class="headerlink" title="一 树的概念"></a>一 树的概念</h2><h2 id="二-二叉树"><a href="#二-二叉树" class="headerlink" title="二 二叉树"></a>二 二叉树</h2><p>满二叉树：</p>
+<p>定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。</span><br><span class="line"></span><br><span class="line">国内教程定义：一个二叉树，如果每一个层的结点数都达到最大值，则这个二叉树就是满二叉树。也就是说，如果一个二叉树的层数为K，且结点总数是(2^k) -1 ，则它就是满二叉树。</span><br></pre></td></tr></table></figure>
+
+<p>最后一层的节点个数等于其他层数节点个数之和+1，假设第k层，最后一层的节点个数即2*（k-1）</p>
+<p>完全二叉树：</p>
+<p>定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边。</span><br><span class="line"></span><br><span class="line">完全二叉树是由满二叉树而引出来的。对于深度为K的，有n个结点的二叉树，当且仅当其每一个结点都与深度为K的满二叉树中编号从1至n的结点一一对应时称之为完全二叉树。</span><br></pre></td></tr></table></figure>
+
+<h3 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h3><h4 id="非递归写法"><a href="#非递归写法" class="headerlink" title="非递归写法"></a>非递归写法</h4><h4 id="前序遍历"><a href="#前序遍历" class="headerlink" title="前序遍历"></a>前序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; his;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        TreeNode *t = root, *dummy = <span class="keyword">new</span> TreeNode(<span class="number">0</span>);</span><br><span class="line">        his.push(dummy);</span><br><span class="line">        <span class="keyword">while</span>(!his.empty())&#123;</span><br><span class="line">            <span class="keyword">while</span>(t)&#123;</span><br><span class="line">                res.push_back(t-&gt;val);</span><br><span class="line">                his.push(t);</span><br><span class="line">                t = t-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            t = his.top()-&gt;right;</span><br><span class="line">            his.pop();  </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>容易理解的写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode *&gt; st;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        st.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!st.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            TreeNode* ptr = st.top();</span><br><span class="line">            res.push_back(ptr-&gt;val);</span><br><span class="line">            st.pop();</span><br><span class="line">            <span class="keyword">if</span>(ptr-&gt;right)</span><br><span class="line">                st.push(ptr-&gt;right);</span><br><span class="line">            <span class="keyword">if</span>(ptr-&gt;left)</span><br><span class="line">                st.push(ptr-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    def inorderTraversal(self, root: TreeNode) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        <span class="built_in">stack</span> = []</span><br><span class="line">        cur = root</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">stack</span> <span class="keyword">or</span> cur:</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                <span class="built_in">stack</span>.append(cur)</span><br><span class="line">                cur = cur.left</span><br><span class="line">            top = <span class="built_in">stack</span>.pop() #此时左子树遍历完成</span><br><span class="line">            res.append(top.val)  #将父节点加入列表</span><br><span class="line">            cur = top.right #遍历右子树</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h4 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    def postorderTraversal(self, root: TreeNode) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        <span class="built_in">stack</span> = []</span><br><span class="line">        cur = root</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">stack</span> <span class="keyword">or</span> cur:</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                res.append(cur.val)</span><br><span class="line">                <span class="built_in">stack</span>.append(cur)</span><br><span class="line">                cur = cur.right  #先将右节点压栈</span><br><span class="line">            top = <span class="built_in">stack</span>.pop()  #此时该节点的右子树已经全部遍历完</span><br><span class="line">            cur = top.left  #对左子树遍历</span><br><span class="line">        <span class="keyword">return</span> res[::<span class="number">-1</span>]  #结果翻转</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="统一形式"><a href="#统一形式" class="headerlink" title="统一形式"></a>统一形式</h3><h4 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;  <span class="comment">//保存结果</span></span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; st;  <span class="comment">//调用栈</span></span><br><span class="line">        <span class="keyword">if</span>(root!=<span class="literal">nullptr</span>) st.push(root);  <span class="comment">//首先介入root节点</span></span><br><span class="line">        <span class="keyword">while</span>(!st.empty())&#123;</span><br><span class="line">            TreeNode *t = st.top();</span><br><span class="line">            st.pop();  <span class="comment">//访问过的节点弹出</span></span><br><span class="line">            <span class="keyword">if</span>(t!=<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(t-&gt;right) st.push(t-&gt;right);  <span class="comment">//右节点先压栈，最后处理</span></span><br><span class="line">                <span class="keyword">if</span>(t-&gt;left) st.push(t-&gt;left);</span><br><span class="line">                st.push(t);  <span class="comment">//当前节点重新压栈（留着以后处理），因为先序遍历所以最后压栈</span></span><br><span class="line">                st.push(<span class="literal">nullptr</span>);  <span class="comment">//在当前节点之前加入一个空节点表示已经访问过了</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;  <span class="comment">//空节点表示之前已经访问过了，现在需要处理除了递归之外的内容</span></span><br><span class="line">                res.push_back(st.top()-&gt;val);  <span class="comment">//st.top()是nullptr之前压栈的一个节点，也就是上面st.push(t)中的那个t</span></span><br><span class="line">                st.pop();  <span class="comment">//处理完了，第二次弹出节点（彻底从栈中移除）</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-Cmake-技巧" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/07/30/Cmake-%E6%8A%80%E5%B7%A7/"
+    >Cmake指令手册</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/30/Cmake-%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2020-07-30T13:40:48.000Z" itemprop="datePublished">2020-07-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a> / <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/C/">C++</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p> Cmake 是 kitware 公司以及一些开源开发者在开发几个工具套件(VTK)的过程中衍生品，最终形成体系，成为一个独立的开放源代码项目。</p>
+<p>本文主要记录书写Cmake的大致流程</p>
+      
+      <a class="article-more-link" href="/2020/07/30/Cmake-%E6%8A%80%E5%B7%A7/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CMake/" rel="tag">CMake</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-05-27-LeetCodeCheckDaily" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/27/2020-05-27-LeetCodeCheckDaily/"
+    >LeetCode 每周打卡05~25-31</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/27/2020-05-27-LeetCodeCheckDaily/" class="article-date">
+  <time datetime="2020-05-27T13:27:13.000Z" itemprop="datePublished">2020-05-27</time>
 </a>
       
   <div class="article-category">
@@ -187,219 +827,7 @@
       
 
       
-      <p>本周打卡题目如下：</p>
-<table>
-<thead>
-<tr>
-<th>题目</th>
-<th align="center">难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://leetcode-cn.com/problems/number-of-islands/" target="_blank" rel="noopener">200. 岛屿数量</a></td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/" target="_blank" rel="noopener">1248. 统计「优美子数组」</a></td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/binary-tree-right-side-view/" target="_blank" rel="noopener">199. 二叉树的右视图</a></td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/coin-lcci/" target="_blank" rel="noopener">面试题 08.11. 硬币</a></td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/" target="_blank" rel="noopener">面试题51. 数组中的逆序对</a></td>
-<td align="center">困难</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/permutations/" target="_blank" rel="noopener">46. 全排列</a></td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/merge-k-sorted-lists/" target="_blank" rel="noopener">23. 合并K个排序链表</a></td>
-<td align="center">困难</td>
-</tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/04/22/2020-04-22-LeetCode-CheckDaily/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-19-LeetCode-Contest-185" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/19/2020-04-19-LeetCode-Contest-185/"
-    >LeetCode 第185场周赛</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/19/2020-04-19-LeetCode-Contest-185/" class="article-date">
-  <time datetime="2020-04-19T14:50:53.000Z" itemprop="datePublished">2020-04-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>今日参加周赛，战况惨烈，排名<code>1486 / 5002</code></p>
-<table>
-<thead>
-<tr>
-<th>题目</th>
-<th align="center">分值</th>
-<th align="center">难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://leetcode-cn.com/problems/reformat-the-string/" target="_blank" rel="noopener">5388. 重新格式化字符串</a></td>
-<td align="center">3</td>
-<td align="center">简单</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/display-table-of-food-orders-in-a-restaurant/" target="_blank" rel="noopener">5389. 点菜展示表</a></td>
-<td align="center">4</td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/minimum-number-of-frogs-croaking/" target="_blank" rel="noopener">5390. 数青蛙</a></td>
-<td align="center">5</td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/" target="_blank" rel="noopener">5391. 生成数组</a></td>
-<td align="center">6</td>
-<td align="center">困难</td>
-</tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/04/19/2020-04-19-LeetCode-Contest-185/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag">周赛</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-19-LeetCode-Double-Contest24" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/19/2020-04-19-LeetCode-Double-Contest24/"
-    >LeetCode 第24场双周赛</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/19/2020-04-19-LeetCode-Double-Contest24/" class="article-date">
-  <time datetime="2020-04-18T16:20:53.000Z" itemprop="datePublished">2020-04-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>LeetCode 第24场双周赛 战绩<code>616/1898</code></p>
-<table>
+      <table>
 <thead>
 <tr>
 <th>题目</th>
@@ -407,121 +835,36 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>5372. 逐步求和得到正数的最小值</td>
+<td><a href="https://leetcode-cn.com/problems/lru-cache/" target="_blank" rel="noopener">146. LRU缓存机制</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/find-the-duplicate-number/" target="_blank" rel="noopener">287. 寻找重复数</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/subarray-sums-divisible-by-k/" target="_blank" rel="noopener">974. 和可被 K 整除的子数组</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/decode-string/" target="_blank" rel="noopener">394. 字符串解码</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td><a href="https://leetcode-cn.com/problems/house-robber/" target="_blank" rel="noopener">198. 打家劫舍</a></td>
 <td>简单</td>
 </tr>
 <tr>
-<td>5373. 和为 K 的最少斐波那契数字数目</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>5374. 长度为 n 的开心字符串中字典序第 k 小的字符串</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>5375. 恢复数组</td>
+<td><a href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/" target="_blank" rel="noopener">84. 柱状图中最大的矩形</a></td>
 <td>困难</td>
 </tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/04/19/2020-04-19-LeetCode-Double-Contest24/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8C%E5%91%A8%E8%B5%9B/" rel="tag">双周赛</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag">周赛</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-18-LeetCode-CheckDaily" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/18/2020-04-18-LeetCode-CheckDaily/"
-    >LeetCode 每天打卡 4-18~21</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/18/2020-04-18-LeetCode-CheckDaily/" class="article-date">
-  <time datetime="2020-04-18T02:03:08.000Z" itemprop="datePublished">2020-04-18</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>最近今日打卡题目如下：</p>
-<table>
-<thead>
 <tr>
-<th>题目</th>
-<th>难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://leetcode-cn.com/problems/container-with-most-water/" target="_blank" rel="noopener">11. 盛最多水的容器</a></td>
-<td>中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/count-the-repetitions/" target="_blank" rel="noopener">466. 统计重复个数</a></td>
-<td>中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/number-of-islands/" target="_blank" rel="noopener">200. 岛屿数量</a></td>
-<td>中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/" target="_blank" rel="noopener">1248. 统计「优美子数组」</a></td>
-<td>中等</td>
+<td><a href="https://leetcode-cn.com/problems/symmetric-tree/" target="_blank" rel="noopener">101. 对称二叉树</a></td>
+<td>简单</td>
 </tr>
 </tbody></table>
       
-      <a class="article-more-link" href="/2020/04/18/2020-04-18-LeetCode-CheckDaily/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/05/27/2020-05-27-LeetCodeCheckDaily/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -535,460 +878,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-15-Cpp-Bit" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/15/2020-04-15-Cpp-Bit/"
-    >C++ 位运算</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/15/2020-04-15-Cpp-Bit/" class="article-date">
-  <time datetime="2020-04-15T10:40:00.000Z" itemprop="datePublished">2020-04-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本节主要学习C++中的位运算。</p>
-<p>位运算符列表如下：</p>
-<table>
-<thead>
-<tr>
-<th>操作符</th>
-<th>功能</th>
-<th>用法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>~</td>
-<td>位求反</td>
-<td>~expr</td>
-</tr>
-<tr>
-<td>&lt;&lt;</td>
-<td>左移</td>
-<td>expr1 &lt;&lt; expr2</td>
-</tr>
-<tr>
-<td>&gt;&gt;</td>
-<td>右移</td>
-<td>expr1 &gt;&gt; expr2</td>
-</tr>
-<tr>
-<td>&amp;</td>
-<td>位与</td>
-<td>expr1 &amp; expr2</td>
-</tr>
-<tr>
-<td>^</td>
-<td>位异或</td>
-<td>expr1 ^ expr2</td>
-</tr>
-<tr>
-<td>|</td>
-<td>位或</td>
-<td>expr1 | expr2</td>
-</tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/04/15/2020-04-15-Cpp-Bit/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="tag">位运算</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-15-LeetCode-CheckDaily" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/15/2020-04-15-LeetCode-CheckDaily/"
-    >LeetCode 每天打卡4-15~17</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/15/2020-04-15-LeetCode-CheckDaily/" class="article-date">
-  <time datetime="2020-04-15T01:43:08.000Z" itemprop="datePublished">2020-04-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>今日打卡题目如下：</p>
-<table>
-<thead>
-<tr>
-<th>题目</th>
-<th>难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://leetcode-cn.com/problems/01-matrix/" target="_blank" rel="noopener">542. 01 矩阵</a></td>
-<td>中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/merge-intervals/" target="_blank" rel="noopener">56. 合并区间</a></td>
-<td>中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/jump-game/" target="_blank" rel="noopener">55. 跳跃游戏</a></td>
-<td>中等</td>
-</tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/04/15/2020-04-15-LeetCode-CheckDaily/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-14-OPENCV-Function" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/14/2020-04-14-OPENCV-Function/"
-    >OPENCV重要函数</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/14/2020-04-14-OPENCV-Function/" class="article-date">
-  <time datetime="2020-04-14T12:43:39.000Z" itemprop="datePublished">2020-04-14</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本节用来总结SLAM学习过程中，用到的重要的opencv函数</p>
-      
-      <a class="article-more-link" href="/2020/04/14/2020-04-14-OPENCV-Function/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/" rel="tag">opencv</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-14-C-priority-queue" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/14/2020-04-14-C-priority-queue/"
-    >C++ 优先队列</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/14/2020-04-14-C-priority-queue/" class="article-date">
-  <time datetime="2020-04-14T02:15:06.000Z" itemprop="datePublished">2020-04-14</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, largest out）的行为特征。通常采用堆数据结构来实现。本节来介绍C++中的优先队列。</p>
-      
-      <a class="article-more-link" href="/2020/04/14/2020-04-14-C-priority-queue/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag">优先队列</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-04-13-LeetCode-CheckDaily" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/13/2020-04-13-LeetCode-CheckDaily/"
-    >LeetCode 每日打卡4-14</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/13/2020-04-13-LeetCode-CheckDaily/" class="article-date">
-  <time datetime="2020-04-13T02:35:39.000Z" itemprop="datePublished">2020-04-13</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>今日打卡题目如下</p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th>题目</th>
-<th>难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>355.设计推特</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>2</td>
-<td>面试题56 - II. 数组中数字出现的次数 II</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>3</td>
-<td>面试题64. 求1+2+…+n</td>
-<td>中等</td>
-</tr>
-<tr>
-<td>4</td>
-<td>两数相加</td>
-<td>中等</td>
-</tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/04/13/2020-04-13-LeetCode-CheckDaily/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeeCode/" rel="tag">LeeCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
 
 
     </footer>
@@ -1011,7 +900,7 @@
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
   </nav>
   
 </section>
@@ -1022,7 +911,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2020
+        2019-2021
         guoben
       </li>
       <li>
@@ -1080,19 +969,11 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="https://www.cnblogs.com/guoben/" target="_blank" rel="noopener">博客</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="https://blog.csdn.net/GuoBen_" target="_blank" rel="noopener">CSDN</a>
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
       <a class="nav-item-link" href="/about">关于</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/friends">友链</a>
     </li>
     
   </ul>

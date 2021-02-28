@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    处理H自由度的不同方法 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-处理H自由度的不同方法" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  处理H自由度的不同方法
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2020-08-06T12:45:22.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+      
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.9k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">10分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>视觉-惯性状态估计过程中有四个自由度需要进行额外处理，它们是一个平移变量（3个自由度）和绕重力轴方向的旋转（1个自由度）。</p>
+<p>视觉惯性状态估计最多可以达到四自由度的转换（围绕重力的旋转和平移），因此必须正确处理额外的自由度 。尽管在实践中使用了不同方法处理多余自由度，但没有任何研究来系统地分析它们的差异。本文介绍了在基于优化的视觉惯性状态估计中处理量测自由度的不同方法的对比分析。通过实验比较了三种常用方法：</p>
+<ol>
+<li>将不可观察的状态固定为给定值，</li>
+<li>在这些状态上设置先验</li>
+<li>在优化过程中让状态自由地优化。</li>
+</ol>
+<p>实验表明：</p>
+<ol>
+<li>三种方法的准确性和计算时间相似，自由量测方法稍快一些； </li>
+<li>自由优化法的协方差估计似乎有很大的不同，但实际上与其他方法紧密相关。</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在机器人视觉研究领域。 惯性传感器与相机融合是互补的[1]，两者的结合可提供可靠而准确的状态估计。 尽管关于VI融合的大多数研究都集中在基于滤波器的方法上[2]，[3]，[4]，但非线性优化在最近几年中变得越来越流行。 与基于滤波器的方法相比，基于非线性优化的方法受线性累积误差的影响较小。 它们的主要缺点即高计算成本，已通过硬件和理论的发展得到缓解[5]，[6]。 最近的工作[5]，[7]，[8]，[9]在使用非线性优化的挑战性环境中显示了令人印象深刻的实时VI状态估计结果。</p>
+<p>尽管这些工作具有相同的基本原理，即将状态估计作为非线性最小二乘优化问题求解，但它们使用不同的方法来处理VI系统中不可观察的自由度。众所周知，VI系统无法观察到全局位置和偏航[3]，[10]，在本文中，我们根据BA领域的惯例将其称为测量自由度[11]。给定这种测量自由度，获得唯一解决方案的自然方法是在优化中固定相应的状态（即参数）[12]。另一种可能性是将先验设置为不可观察状态，并且先验本质上在优化中充当虚拟度量[5]，[8]，[13]，[7]。最后，可以改为允许优化算法在迭代过程中自由更改不可观察的状态。尽管这三种方法在现有文献中都可以证明是可行的，但对VI状态估计的差异却没有进行比较研究：它们通常作为实现细节呈现，因此没有得到很好的研究和理解。此外，尽管已经研究了类似的仅视觉束调节问题（例如，在单目情况下具有7个不可观察的DoF的[11]，[14]），但据我们所知，此类研究尚未完成用于VI系统（具有4个不可观察的DoF）。</p>
+<p>本文所对比的三种方法包括：<strong>规范自由度固定法</strong>，<strong>规范自由度先验法</strong>和<strong>自由规范自由度</strong>法。在准确性，计算成本和估计的协方差（该指标是SLAM感兴趣的[16]）。虽然所有这些方法在估计误差方面具有相似的性能，但由于收敛所需的迭代次数较少，因此自由规范方法略快。我们还发现，正如[7]所述，在自由规范自由度方法中，由优化产生的协方差与任何特定的参考系都没有关联（与规范自由度固定方法相反），这使得解释不确定性的含义变得困难。然而，在这项工作中，我们进一步表明，通过应用协方差变换，自由规范自由度方法得到的协方差实际上与其他方法所得的密切相关（见图1）。</p>
+<table>
+<thead>
+<tr>
+<th align="center">章节</th>
+<th align="center">内容安排</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">二</td>
+<td align="center">介绍了基于优化的VI状态估计问题及其非唯一解</td>
+</tr>
+<tr>
+<td align="center">三</td>
+<td align="center">介绍了处理规范自由度的不同方法</td>
+</tr>
+<tr>
+<td align="center">四</td>
+<td align="center">描述了我们用于对比研究的仿真环境设置</td>
+</tr>
+<tr>
+<td align="center">五</td>
+<td align="center">精度/时间和协方差方面的详细比较</td>
+</tr>
+<tr>
+<td align="center">六</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">七</td>
+<td align="center">展示了真实世界数据集的实验结果。</td>
+</tr>
+</tbody></table>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>视觉惯性状态估计的问题包括推断<strong>相机-IMU组合传感器</strong>的运动以及传感器在场景中移动时摄像机看到的3D路标点的位置。 通过收集视觉测量（图像点）和惯性测量（加速度计和陀螺仪）的方程，可以将问题写为非线性最小二乘（NLLS）优化问题，其目的是最小化目标函数（ 例如，假设高斯误差）。<br>$$<br>J(\theta) = ||r^V(\theta)||^2_{\sum_V}+||r^I(\theta)||^2_{\sum_I}<br>$$<br>其中，$||r||^2_\Sigma = r^T\Sigma^{-1}r$ 是是残差向量<code>r</code>的平方<code>Mahalanobis</code>范数，$||r^I(\theta)||^2_{\Sigma_I}$是协方差矩阵，协方差矩阵用来加权。损失函数（1）可用在完全平滑[5]或固定滞后平滑[7]方法中。</p>
+<p>方程（1）中的<strong>视觉项</strong>，包括测量图像点$x_{ij}$与米制重建得到的预测点$\hat x_{ij}$间的重投影误差。假设有针孔摄像机模型，则x̂ij（θ）∝ Ki（R&gt; i | − Ri&gt; pi）（Xj&gt;，1）&gt;，其中（Ri，pi）是第i个摄像机的外部参数（i = 0 ，…，N-1）和Xj是第j个界标点（j = 0，…，K-1）的3D欧几里得坐标。 我们假设固有校准Ki是无噪声的。 （1）中的惯性项由惯性测量值和IMU轨迹模型所预测的值之间的误差组成。 例如，[17]考虑了原始加速度和角速度测量中的误差，而[5]考虑了等效的较低速率测量中的误差（以视觉数据的速率表示的惯性预积分项）。 在这项工作中，我们将考虑后一种配方，尽管大多数结果并不取决于配方的选择。</p>
+<p>假设有针孔摄像机模型，则$\hat{x̂}_{ij}（θ）∝ K——i（R&gt; i | − R_i&gt; p_i）（X_j^T，1）^T$，其中$（R_i，p_i）$是第i个摄像机的外部参数$（i = 0 ，…，N-1）$和$X_j$是第$j$个界标点$（j = 0，…，K-1）$的3D欧几里得坐标。 我们假设固有校准Ki是无噪声的。 （1）中的惯性项由惯性测量值和IMU轨迹模型所预测的值之间的误差组成。 例如，[17]考虑了原始加速度和角速度测量中的误差，而[5]考虑了等效的较低速率测量中的误差（以视觉数据的速率表示的惯性预积分项）。 在这项工作中，我们将考虑后一种描述，尽管大多数结果并不取决于描述方法的选择。</p>
+<p>问题的参数（也称为状态）如下：<br>$$<br>θ \dot{=} {p_i , R_i , v_i , X_j }<br>$$<br>包括相机参数（外参和线速度）和3D路标点。加速度计和陀螺仪的偏置通常表示在<code>IMU</code>框架中，不受坐标系的影响。 因此，我们从状态中排除了bias，并假设IMU测量值已被校正。 惯性和视觉测量模型的完整阐述不在本文的讨论范围内，有关详细信息，请读者参考[5]。</p>
+<p>由于VI状态估计问题的不确定性和不可观性，导致没有足够的方程来求解唯一解。</p>
+<p>A. 解歧义和几何等价</p>
+<p>当解决VI状态估计问题的时候，有必要确定目标函数来确定内参的变换，例如：<br>$$<br>J(\theta)=J(g(\theta))<br>$$<br>特别的，g 有本征矩阵的形式定义如下：</p>
+<p><img src="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/image-20200807193315625.png" alt="image-20200807193315625"></p>
+<p>是一个4自由度变换，由任意平移t∈R3和围绕重力轴ez =（0，0，1的任意角度（yaw）α∈（-π，π）旋转Rz = Exp（αez）组成 ）&gt;。 Exp（θ</p>
+<p>不变性（3）的主要结果是（1）没有唯一的最小值，因为有很多的组合可以得到相同的最小误差：轨道上的所有重构（6）的代价最小（见图2） ），仅区别于4自由度转换（4）。 因此，VI估计问题具有一些不确定性或不可观察的状态：没有足够的方程式来完全指定唯一的解。</p>
+<p><img src="/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/image-20200807193541351.png" alt="image-20200807193541351"></p>
+<p>图2：不同规范处理方法所采用的优化路径示意图。 量规固定方法始终在量规C上移动，因此满足了量规约束。 自由量规方法使用伪逆来选择给定成本降低的最小尺寸的参数步长，因此垂直于成本等值线（1）移动。 量规先验方法遵循量规固定和自由量规方法之间的路径。 它最大程度地减少了（11）所增加的成本，因此它可能无法完全落在最小视觉惯性成本（1）的轨道上。</p>
+<p>三种不同解决方法的对比</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">参数量</th>
+<th align="center">Hessian矩阵</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">固定规范</td>
+<td align="center">n-4</td>
+<td align="center">逆,(n-4)*(n-4)</td>
+</tr>
+<tr>
+<td align="center">规范先验</td>
+<td align="center">n</td>
+<td align="center">逆，n*n</td>
+</tr>
+<tr>
+<td align="center">自由规范</td>
+<td align="center">n</td>
+<td align="center">伪逆，,n×n</td>
+</tr>
+</tbody></table>
+<h2 id="三种处理方法"><a href="#三种处理方法" class="headerlink" title="三种处理方法"></a>三种处理方法</h2><p>一般在状态估计过程中，采用以下三种方法来处理这几个不可观状态：（1）将它们设置成固定值（固定值法）；（2）为它们设置一个先验值，然后在估计过程中进行优化；（3）不进行特殊处理，直接进行优化（自由优化法）。</p>
+<p>1.固定值法：在优化过程中，保持第一个相机位姿的平移变量（涉及三个维度）和旋转变量（李代数表示法）中的z分量不变。具体做法是：在优化过程中，设置<br>$$<br>p_0=p^0_0\Δϕ_{0_z}≐e_z^T Δϕ=0<br>$$<br>其中是第一个相机的初始位置。这样的设置也意味着Jacobi矩阵中，对上述变量的(导数）取值为0。</p>
+<p>2.先验值法：在优化的时候，给目标函数增加一个惩罚项：<br>$$<br>||r^P_0||^2_{\sum^P_0} \ where, r^P_0(\theta) \dot{=}[p_0-o_0]^0，\Delta\phi_0z]^T<br>$$<br>于是惩罚项。当时，效果接近于自由优化法，当时，效果基本上接近于固定值法。</p>
+<p>3.自由优化法：在优化的过程中，让变量随着优化的过程自行演化。为了避免<code>hessian</code>矩阵的奇异化，可以求矩阵的广义逆或者使用阻尼因子来保证优化过程有一个良好的迭代更新过程。 </p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>结果表明</p>
+<ul>
+<li>三种方法的数值精确度基本相同 先验值法需要选择合适的先验值权重以避免增加计算量</li>
+<li>在选择了合适的先验值的情况下，先验值法和固定值法的表现（精确度和计算成本）基本相同</li>
+<li>自由优化法比其他两种方法略微快一些，因为它用了更少的迭代来达到收敛</li>
+<li>自由优化法的另一个优点是它更通用一些，不需要对旋转进行特殊处理</li>
+</ul>
+<p>虽然可能可以修复不可观察的自由度（量身定制的参数化方法（9）来修复偏航自由度），但自由规范方法具有通用的额外优势，即不是VI特有的，因此 不需要对旋转参数化进行任何特殊处理。</p>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/08/06/%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/08/06/SLAM%E6%A6%82%E8%BF%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            SLAM概述
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/08/04/OpenCV-Function/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">OpenCV_Function</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2021
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>
