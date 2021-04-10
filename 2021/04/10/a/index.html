@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    基于GroundTruth轨迹生成IMU数据 |  曾是少年
+    a |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-Generate-Imu-Data-Based-on-GroundTruth" class="article article-type-post" itemscope
+  <article id="post-a" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  基于GroundTruth轨迹生成IMU数据
+  a
 </h1>
   
 
@@ -49,14 +49,10 @@
 
     
     <div class="article-meta">
-      <a href="/2020/09/19/Generate-Imu-Data-Based-on-GroundTruth/" class="article-date">
-  <time datetime="2020-09-19T15:36:55.000Z" itemprop="datePublished">2020-09-19</time>
+      <a href="/2021/04/10/a/" class="article-date">
+  <time datetime="2021-04-10T13:48:34.000Z" itemprop="datePublished">2021-04-10</time>
 </a>
       
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/SLAM/">SLAM</a>
-  </div>
-
       
       
 <div class="word_count">
@@ -64,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">900字</span>
+            <span class="post-count">0字</span>
         </span>
     </span>
 
@@ -73,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">1分钟</span>
         </span>
     </span>
 </div>
@@ -84,8 +80,6 @@
 
     
     
-    <div class="tocbot"></div>
-
 
 
 
@@ -98,39 +92,7 @@
       
 
       
-      <p>该文用来介绍仿真IMU数据的方法</p>
-<a id="more"></a>
-
-<h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><h3 id="1、定义相机变换矩阵"><a href="#1、定义相机变换矩阵" class="headerlink" title="1、定义相机变换矩阵"></a>1、定义相机变换矩阵</h3><p>首先使用4*4的变换矩阵来来表示相机之间的变换T：</p>
-<img src="/2020/09/19/Generate-Imu-Data-Based-on-GroundTruth/image-20200723220416181.png" alt="image-20200723220416181" style="zoom: 50%;">
-
-<p>​    使用$T_{b,a}$表示时间Δt内，帧$T_{w,a}$与帧$T_{w,b}$(其中w为世界坐标系)之间运动的速度（该速度恒定且包括角速度和线速度）可表示为矩阵形式：</p>
-<img src="/2020/09/19/Generate-Imu-Data-Based-on-GroundTruth/image-20200723220712114.png" alt="image-20200723220712114" style="zoom: 50%;">
-
-<p>​        其中log是矩阵对数。对于矩阵组SE3，对数映射和它的逆(指数映射)就可以在闭域内计算。</p>
-<h3 id="2、根据离散的点拟合连续的曲线"><a href="#2、根据离散的点拟合连续的曲线" class="headerlink" title="2、根据离散的点拟合连续的曲线"></a>2、根据离散的点拟合连续的曲线</h3><p>为了得到IMU数据，我们需要知晓轨迹的数学形式，为此，我们需要先根据离散的点轨迹拟合曲线，这个过程通过B样条插值来完成。</p>
-<p>曲线p(t)可以使用点$P_i$和基本方程$B_{i,k}(t)$来表示:<br>$$<br>p(t) = \sum^n_{i=0}p_iB_{i,k}(t)<br>$$<br>其中$p_i$表示控制点，$B_{i,k}(t)$是基础函数，可以使用De Boor-Cox递归公式进行计算得到。上式可以组织为如下形式：<br>$$<br>p(t)=p_0\tilde{B}<em>{0,k}(t)+\sum^{n}</em>{i=1}(p_i-p_{i-1})\tilde{B}<em>{i,k}(t)<br>$$<br>其中$\tilde{B}</em>{i,k}(t) = \sum^{n}<em>{j=i}B</em>{j,k}(t)$是累加的基础函数。利用对数和指数映射，把$p_0$映射到李代数上：$p_0 = \log(T_{w,0})$.</p>
-<p>将$p_i,p_{i-1}$两两个点之间的转移方程映射到李代数上，可表示为$\Omega_i = \log(T^{-1}<em>{w,i-1}T</em>{w,i})$.</p>
-<p>可以把由等式2描述的李群中的轨迹重写为如下形式。<br>$$<br>T_{w,s}(t) = \exp(\tilde{B_{0,k}(t)})\log(T_{w,0}))\prod^n_{i=1}\exp(\tilde{B}<em>{i,k}(t)\Omega_i)<br>$$<br>其中，$R</em>{w,s}(t)\in SE^3$是t可是沿着样条线的位姿。 $T_{w,s}(t)$ 可以看作是轨迹</p>
-<h3 id="3-根据曲线生成IMU的加速度和陀螺仪角速度数据"><a href="#3-根据曲线生成IMU的加速度和陀螺仪角速度数据" class="headerlink" title="3. 根据曲线生成IMU的加速度和陀螺仪角速度数据"></a>3. 根据曲线生成IMU的加速度和陀螺仪角速度数据</h3><p>​        累积的B样条参数化满足可求导性，因此可轻松地得到加速度计和陀螺仪的带误差的测量值。计算公式如下：</p>
-<p><img src="/2020/09/19/Generate-Imu-Data-Based-on-GroundTruth/image-20200723171456502.png" alt="image-20200723171456502"></p>
-<p>其中,$\dot{R}<em>{w,s}$和$\ddot{s}_w$分别是$\dot{T}</em>{w,s}$和$\ddot{T_{w,s}}$相应的子矩阵. $g_w$是世界坐标系下的重力加速度.</p>
-<p>其中，$T_{w,s}$表示s系中的点在w系中的变换，$R^T_{w,s}$是的子矩阵，表示纯旋转。$R_{w,s}$是的子矩阵，$s_w(u)$是$T_{w,s}$的子矩阵，代表平移，$g_w$是重力在w系中的加速度。</p>
-<h2 id="实践环节"><a href="#实践环节" class="headerlink" title="实践环节"></a>实践环节</h2><h3 id="TUM-GT2IMU"><a href="#TUM-GT2IMU" class="headerlink" title="TUM-GT2IMU"></a>TUM-GT2IMU</h3><p>程序语言 （Matlab）</p>
-<h4 id="文档目录结构"><a href="#文档目录结构" class="headerlink" title="文档目录结构"></a>文档目录结构</h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">(base) guoben@guoben-Ubuntu-<span class="number">1804</span>:~/Project/TUM-RGBD-GT2IMU$ <span class="built_in">tree</span>.</span><br><span class="line">├── GT2IMU.m</span><br><span class="line">├── IMUgenerate2.m</span><br><span class="line">├── IMUgenerate.m</span><br><span class="line">├── test1.m</span><br><span class="line">├── trajEst.m</span><br><span class="line">├── trajGenerate.m</span><br><span class="line">├── trajRead.m</span><br><span class="line">├── trajShow.m</span><br><span class="line">└── trajWrite.m</span><br><span class="line">├── tools</span><br><span class="line">│   ├── asm2v.m</span><br><span class="line">│   ├── c2q.m</span><br><span class="line">│   ├── pose2T.m</span><br><span class="line">│   ├── q2c.m</span><br><span class="line">│   ├── q4inv.m</span><br><span class="line">│   ├── q4mult.m</span><br><span class="line">│   ├── RK4.m</span><br><span class="line">│   ├── state_pro.m</span><br><span class="line">│   ├── T2J.m</span><br><span class="line">│   ├── v2asm.m</span><br><span class="line">│   └── zeta2J.m</span><br></pre></td></tr></table></figure>
-
-<h3 id="各文件函数与作用"><a href="#各文件函数与作用" class="headerlink" title="各文件函数与作用"></a>各文件函数与作用</h3><h4 id="1-GT2IMU-m：源文件，在这里设置轨迹文件作为输入，然后生成IMU轨迹"><a href="#1-GT2IMU-m：源文件，在这里设置轨迹文件作为输入，然后生成IMU轨迹" class="headerlink" title="1. GT2IMU.m：源文件，在这里设置轨迹文件作为输入，然后生成IMU轨迹"></a>1. GT2IMU.m：源文件，在这里设置轨迹文件作为输入，然后生成IMU轨迹</h4><h4 id="2-trajRead：读取轨迹文件"><a href="#2-trajRead：读取轨迹文件" class="headerlink" title="2. trajRead：读取轨迹文件"></a>2. trajRead：读取轨迹文件</h4><p>输入：<code>groundtruth.txt</code>文件</p>
-<p>输出：<code>GT</code>文件，<code>timestamp</code>文件，<code>pose</code>文件</p>
-<p>其中，时间戳文件是一维矩阵，pose文件是7维矩阵，格式：四元数+平移</p>
-<h4 id="3-trajEst：仿真轨迹估计"><a href="#3-trajEst：仿真轨迹估计" class="headerlink" title="3. trajEst：仿真轨迹估计"></a>3. trajEst：仿真轨迹估计</h4><p>读取<code>GT</code>文件，生成B样条插值函数</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save(<span class="string">'Bs'</span>,<span class="string">'kT'</span>,<span class="string">'Tk'</span>,<span class="string">'dT'</span>,<span class="string">'tIMU'</span>,<span class="string">'Te'</span>,<span class="string">'dt'</span>,<span class="string">'B0'</span>,<span class="string">'B1'</span>,<span class="string">'B2'</span>,<span class="string">'B3'</span>,<span class="string">'tl'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>生成仿真函数的过程</p>
-<ul>
-<li>统计节点Node个数 计算对应的时间</li>
-<li>最小化由实际观测值与预测观测值之差形成的目标函数，来批量或在窗口上求解样条曲线和摄像机参数。</li>
-</ul>
-
+      <a id="more"></a>
       
       <!-- reward -->
       
@@ -199,15 +161,13 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/09/19/Generate-Imu-Data-Based-on-GroundTruth/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2021/04/10/a/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li></ul>
-
 
     </footer>
 
@@ -217,19 +177,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2021/04/10/a/" class="article-nav-link">
+      <a href="/2021/04/10/2021_4_10_Introduction-of-various-features-in-the-field-of-smart-wear/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            a
+            Introduction_of_various_features_in_the_field_of_smart_wear
           
         </div>
       </a>
     
     
-      <a href="/2020/09/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/" class="article-nav-link">
+      <a href="/2020/09/19/Generate-Imu-Data-Based-on-GroundTruth/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">HTTP协议</div>
+        <div class="article-nav-title">基于GroundTruth轨迹生成IMU数据</div>
       </a>
     
   </nav>
