@@ -17,7 +17,8 @@
   <entry>
     <title>可穿戴设备中的各种特性综述</title>
     <url>/2021/04/10/2021_04_10_Introduction-of-various-features-in-the-field-of-smart-wear/</url>
-    <content><![CDATA[<pre><code>很早就想抽空写一篇关于智能穿戴中各种特性的综述文章。今天逼迫自己开个头。总体来说，在当前的智能穿戴领域，主要分为运动和健康两大块。</code></pre><a id="more"></a>
+    <content><![CDATA[<p>很早就想抽空写一篇关于智能穿戴中各种特性的综述文章。今天逼迫自己开个头。总体来说，在当前的智能穿戴领域，主要分为运动和健康两大块。</p>
+<a id="more"></a>
 
 <h2 id="一、可穿戴设备中的传感器"><a href="#一、可穿戴设备中的传感器" class="headerlink" title="一、可穿戴设备中的传感器"></a>一、可穿戴设备中的传感器</h2><h2 id="二、运动特性"><a href="#二、运动特性" class="headerlink" title="二、运动特性"></a>二、运动特性</h2><h3 id="1、运动监测、"><a href="#1、运动监测、" class="headerlink" title="1、运动监测、"></a>1、运动监测、</h3><h3 id="2、动作识别"><a href="#2、动作识别" class="headerlink" title="2、动作识别"></a>2、动作识别</h3><h4 id="3、室外定位"><a href="#3、室外定位" class="headerlink" title="3、室外定位"></a>3、室外定位</h4><h2 id="二、健康特性"><a href="#二、健康特性" class="headerlink" title="二、健康特性"></a>二、健康特性</h2><h3 id="1、睡眠分期"><a href="#1、睡眠分期" class="headerlink" title="1、睡眠分期"></a>1、睡眠分期</h3><p>睡眠分期主要是用来对睡眠过程进行监测，计算睡眠过程中各个期间的时长与周期。</p>
 <p>用于睡眠分期的信号主要包括如下信号：</p>
