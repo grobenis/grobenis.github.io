@@ -72,6 +72,102 @@
     
     
     
+    <article id="post-C++树" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/02/C++%E6%A0%91/"
+    >C++ 二叉树</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/02/C++%E6%A0%91/" class="article-date">
+  <time datetime="2020-08-02T01:46:53.000Z" itemprop="datePublished">2020-08-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a> / <a class="article-category-link" href="/categories/%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a> / <a class="article-category-link" href="/categories/%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/">C++</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <a id="more"></a>
+
+<h2 id="一-树的概念"><a href="#一-树的概念" class="headerlink" title="一 树的概念"></a>一 树的概念</h2><h2 id="二-二叉树"><a href="#二-二叉树" class="headerlink" title="二 二叉树"></a>二 二叉树</h2><p>满二叉树：</p>
+<p>定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。</span><br><span class="line"></span><br><span class="line">国内教程定义：一个二叉树，如果每一个层的结点数都达到最大值，则这个二叉树就是满二叉树。也就是说，如果一个二叉树的层数为K，且结点总数是(2^k) -1 ，则它就是满二叉树。</span><br></pre></td></tr></table></figure>
+
+<p>最后一层的节点个数等于其他层数节点个数之和+1，假设第k层，最后一层的节点个数即2*（k-1）</p>
+<p>完全二叉树：</p>
+<p>定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边。</span><br><span class="line"></span><br><span class="line">完全二叉树是由满二叉树而引出来的。对于深度为K的，有n个结点的二叉树，当且仅当其每一个结点都与深度为K的满二叉树中编号从1至n的结点一一对应时称之为完全二叉树。</span><br></pre></td></tr></table></figure>
+
+<h3 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h3><h4 id="非递归写法"><a href="#非递归写法" class="headerlink" title="非递归写法"></a>非递归写法</h4><h4 id="前序遍历"><a href="#前序遍历" class="headerlink" title="前序遍历"></a>前序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; his;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        TreeNode *t = root, *dummy = <span class="keyword">new</span> TreeNode(<span class="number">0</span>);</span><br><span class="line">        his.push(dummy);</span><br><span class="line">        <span class="keyword">while</span>(!his.empty())&#123;</span><br><span class="line">            <span class="keyword">while</span>(t)&#123;</span><br><span class="line">                res.push_back(t-&gt;val);</span><br><span class="line">                his.push(t);</span><br><span class="line">                t = t-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            t = his.top()-&gt;right;</span><br><span class="line">            his.pop();  </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>容易理解的写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode *&gt; st;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        st.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!st.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            TreeNode* ptr = st.top();</span><br><span class="line">            res.push_back(ptr-&gt;val);</span><br><span class="line">            st.pop();</span><br><span class="line">            <span class="keyword">if</span>(ptr-&gt;right)</span><br><span class="line">                st.push(ptr-&gt;right);</span><br><span class="line">            <span class="keyword">if</span>(ptr-&gt;left)</span><br><span class="line">                st.push(ptr-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    def inorderTraversal(self, root: TreeNode) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        <span class="built_in">stack</span> = []</span><br><span class="line">        cur = root</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">stack</span> <span class="keyword">or</span> cur:</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                <span class="built_in">stack</span>.append(cur)</span><br><span class="line">                cur = cur.left</span><br><span class="line">            top = <span class="built_in">stack</span>.pop() #此时左子树遍历完成</span><br><span class="line">            res.append(top.val)  #将父节点加入列表</span><br><span class="line">            cur = top.right #遍历右子树</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h4 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    def postorderTraversal(self, root: TreeNode) -&gt; List[int]:</span><br><span class="line">        res = []</span><br><span class="line">        <span class="built_in">stack</span> = []</span><br><span class="line">        cur = root</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">stack</span> <span class="keyword">or</span> cur:</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                res.append(cur.val)</span><br><span class="line">                <span class="built_in">stack</span>.append(cur)</span><br><span class="line">                cur = cur.right  #先将右节点压栈</span><br><span class="line">            top = <span class="built_in">stack</span>.pop()  #此时该节点的右子树已经全部遍历完</span><br><span class="line">            cur = top.left  #对左子树遍历</span><br><span class="line">        <span class="keyword">return</span> res[::<span class="number">-1</span>]  #结果翻转</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="统一形式"><a href="#统一形式" class="headerlink" title="统一形式"></a>统一形式</h3><h4 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;  <span class="comment">//保存结果</span></span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; st;  <span class="comment">//调用栈</span></span><br><span class="line">        <span class="keyword">if</span>(root!=<span class="literal">nullptr</span>) st.push(root);  <span class="comment">//首先介入root节点</span></span><br><span class="line">        <span class="keyword">while</span>(!st.empty())&#123;</span><br><span class="line">            TreeNode *t = st.top();</span><br><span class="line">            st.pop();  <span class="comment">//访问过的节点弹出</span></span><br><span class="line">            <span class="keyword">if</span>(t!=<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(t-&gt;right) st.push(t-&gt;right);  <span class="comment">//右节点先压栈，最后处理</span></span><br><span class="line">                <span class="keyword">if</span>(t-&gt;left) st.push(t-&gt;left);</span><br><span class="line">                st.push(t);  <span class="comment">//当前节点重新压栈（留着以后处理），因为先序遍历所以最后压栈</span></span><br><span class="line">                st.push(<span class="literal">nullptr</span>);  <span class="comment">//在当前节点之前加入一个空节点表示已经访问过了</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;  <span class="comment">//空节点表示之前已经访问过了，现在需要处理除了递归之外的内容</span></span><br><span class="line">                res.push_back(st.top()-&gt;val);  <span class="comment">//st.top()是nullptr之前压栈的一个节点，也就是上面st.push(t)中的那个t</span></span><br><span class="line">                st.pop();  <span class="comment">//处理完了，第二次弹出节点（彻底从栈中移除）</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Cmake-技巧" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -857,108 +953,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%8F%E6%97%A5%E6%89%93%E5%8D%A1/" rel="tag">每日打卡</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-05-03-LeetCode-Contest-187" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/03/2020-05-03-LeetCode-Contest-187/"
-    >LeetCode 第187场周赛</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/05/03/2020-05-03-LeetCode-Contest-187/" class="article-date">
-  <time datetime="2020-05-03T13:47:17.000Z" itemprop="datePublished">2020-05-03</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本周参加周赛，战况不行，两题选手，排名<code>1084 / 3108</code></p>
-<table>
-<thead>
-<tr>
-<th>题目</th>
-<th align="center">分值</th>
-<th align="center">难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><a href="https://leetcode-cn.com/problems/destination-city/" target="_blank" rel="noopener">5400. 旅行终点站</a></td>
-<td align="center">3</td>
-<td align="center">简单</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/check-if-all-1s-are-at-least-length-k-places-away/" target="_blank" rel="noopener">5401. 是否所有 1 都至少相隔 k 个元素</a></td>
-<td align="center">4</td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/" target="_blank" rel="noopener">5402. 绝对差不超过限制的最长连续子数组</a></td>
-<td align="center">5</td>
-<td align="center">中等</td>
-</tr>
-<tr>
-<td><a href="https://leetcode-cn.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/" target="_blank" rel="noopener">5403. 有序矩阵中的第 k 个最小数组和</a></td>
-<td align="center">7</td>
-<td align="center">困难</td>
-</tr>
-</tbody></table>
-      
-      <a class="article-more-link" href="/2020/05/03/2020-05-03-LeetCode-Contest-187/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag">周赛</a></li></ul>
 
 
     </footer>

@@ -10119,14 +10119,14 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
     <content><![CDATA[<p>本文旨在整理面试过程中经典的考题</p>
 <a id="more"></a>
 
-<h1 id="字符串操作"><a href="#字符串操作" class="headerlink" title="字符串操作"></a>字符串操作</h1><h3 id="1-字符串转数字-atoi-stoi"><a href="#1-字符串转数字-atoi-stoi" class="headerlink" title="1 字符串转数字(atoi/stoi)"></a>1 字符串转数字(atoi/stoi)</h3><blockquote>
+<h1 id="一、字符串操作"><a href="#一、字符串操作" class="headerlink" title="一、字符串操作"></a>一、字符串操作</h1><h3 id="1-字符串转数字-atoi-stoi"><a href="#1-字符串转数字-atoi-stoi" class="headerlink" title="1 字符串转数字(atoi/stoi)"></a>1 字符串转数字(atoi/stoi)</h3><blockquote>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrToInt</span><span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">int</span> len = str.length();</span><br><span class="line">     <span class="keyword">if</span> (len == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">while</span> (i &lt; len &amp;&amp; str[i] == <span class="string">' '</span>)  ++i;  <span class="comment">// 排除开头的空格</span></span><br><span class="line">     <span class="keyword">if</span> (i == len) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (!<span class="built_in">isdigit</span>(str[i]) &amp;&amp; str[i] != <span class="string">'+'</span> &amp;&amp; str[i] != <span class="string">'-'</span>) <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">//判断第一个符号</span></span><br><span class="line">     <span class="keyword">bool</span> neg = str[i]==<span class="string">'-'</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">     i = <span class="built_in">isdigit</span>(str[i]) ? i : i+<span class="number">1</span>;</span><br><span class="line">     <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0L</span>;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">while</span> (i &lt; len &amp;&amp; <span class="built_in">isdigit</span>(str[i])) &#123;</span><br><span class="line">         ans = ans * <span class="number">10</span> + (str[i++]-<span class="string">'0'</span>);</span><br><span class="line">         <span class="keyword">if</span> (!neg &amp;&amp; ans &gt; INT_MAX) &#123;</span><br><span class="line">             ans = INT_MAX;</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> (neg &amp;&amp; ans &gt; <span class="number">1L</span> + INT_MAX) &#123;</span><br><span class="line">             ans = <span class="number">1L</span> + INT_MAX;</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (i != len) <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// 不要此处，就是atoi()库函数的实现</span></span><br><span class="line">     <span class="keyword">return</span> !neg ? <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(ans) : <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(-ans);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h3 id="2-编程实现strcpy函数"><a href="#2-编程实现strcpy函数" class="headerlink" title="2 编程实现strcpy函数"></a>2 编程实现strcpy函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">strcpy</span><span class="params">(<span class="keyword">char</span>* dest_str,<span class="keyword">const</span> <span class="keyword">char</span> src_str)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(dest_str==<span class="literal">NULL</span>||src_str==<span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">char</span>* strdestCopy = dest_str;</span><br><span class="line">    <span class="keyword">while</span>((*dest_str++=*src_str++)!=<span class="string">'\0'</span>);</span><br><span class="line">    <span class="keyword">return</span> strdestCopy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><h2 id="2-求第k大的数的方法及各自的复杂度"><a href="#2-求第k大的数的方法及各自的复杂度" class="headerlink" title="2. 求第k大的数的方法及各自的复杂度"></a>2. 求第k大的数的方法及各自的复杂度</h2><blockquote>
+<h1 id="二、排序"><a href="#二、排序" class="headerlink" title="二、排序"></a>二、排序</h1><h2 id="2-求第k大的数的方法及各自的复杂度"><a href="#2-求第k大的数的方法及各自的复杂度" class="headerlink" title="2. 求第k大的数的方法及各自的复杂度"></a>2. 求第k大的数的方法及各自的复杂度</h2><blockquote>
 <p>1 首先使用<strong>快速排序算法</strong>将数组按照从大到小排序，然后取第k个，其时间复杂度最快为<code>O(nlogn)</code></p>
 <p>2 使用<strong>堆排序</strong>，建立最大堆，然后调整堆，知道获得第k个元素，其时间复杂度为<code>O(n+klogn)</code></p>
 <p>3 首先利用哈希表统计数组中个元素出现的次数，然后利用<strong>计数排序</strong>的思想，线性从大到小扫描过程中，前面有k-1个数则为第k大的数</p>
@@ -10155,7 +10155,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 
 
 
-<h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><h2 id="1-LRU缓存机制"><a href="#1-LRU缓存机制" class="headerlink" title="1. LRU缓存机制"></a>1. <a href="https://leetcode-cn.com/problems/lru-cache/" target="_blank" rel="noopener">LRU缓存机制</a></h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> capacity;</span><br><span class="line">    <span class="built_in">list</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; ls;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="built_in">list</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;::iterator&gt; key_add; <span class="comment">//获取数据需要用哈希表 // 见与链表中的地址</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    LRUCache(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;capacity = capacity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//如果要访问的节点不存在</span></span><br><span class="line">        <span class="keyword">if</span>(key_add.find(key)==key_add.end())</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="comment">// 把访问的节点移动到最前边的一个；</span></span><br><span class="line">        pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; kv = *key_add[key];</span><br><span class="line">        ls.erase(key_add[key]);</span><br><span class="line">        ls.push_front(kv);</span><br><span class="line">        key_add[key] = ls.begin();</span><br><span class="line">        <span class="keyword">return</span> kv.second;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(key_add.find(key)==key_add.end())&#123;</span><br><span class="line">            ls.push_front(&#123;key,value&#125;);</span><br><span class="line">            key_add[key] = ls.begin();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(ls.size()&gt;capacity)&#123;</span><br><span class="line">                <span class="keyword">int</span> lastkey = ls.back().first;</span><br><span class="line">                key_add.erase(lastkey);</span><br><span class="line">                ls.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            ls.erase(key_add[key]);</span><br><span class="line">            ls.push_front(&#123;key,value&#125;);</span><br><span class="line">            key_add[key] = ls.begin();</span><br><span class="line">        &#125;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="三、链表"><a href="#三、链表" class="headerlink" title="三、链表"></a>三、链表</h1><h2 id="1-LRU缓存机制"><a href="#1-LRU缓存机制" class="headerlink" title="1. LRU缓存机制"></a>1. <a href="https://leetcode-cn.com/problems/lru-cache/" target="_blank" rel="noopener">LRU缓存机制</a></h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> capacity;</span><br><span class="line">    <span class="built_in">list</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; ls;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="built_in">list</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;::iterator&gt; key_add; <span class="comment">//获取数据需要用哈希表 // 见与链表中的地址</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    LRUCache(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;capacity = capacity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//如果要访问的节点不存在</span></span><br><span class="line">        <span class="keyword">if</span>(key_add.find(key)==key_add.end())</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="comment">// 把访问的节点移动到最前边的一个；</span></span><br><span class="line">        pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; kv = *key_add[key];</span><br><span class="line">        ls.erase(key_add[key]);</span><br><span class="line">        ls.push_front(kv);</span><br><span class="line">        key_add[key] = ls.begin();</span><br><span class="line">        <span class="keyword">return</span> kv.second;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(key_add.find(key)==key_add.end())&#123;</span><br><span class="line">            ls.push_front(&#123;key,value&#125;);</span><br><span class="line">            key_add[key] = ls.begin();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(ls.size()&gt;capacity)&#123;</span><br><span class="line">                <span class="keyword">int</span> lastkey = ls.back().first;</span><br><span class="line">                key_add.erase(lastkey);</span><br><span class="line">                ls.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            ls.erase(key_add[key]);</span><br><span class="line">            ls.push_front(&#123;key,value&#125;);</span><br><span class="line">            key_add[key] = ls.begin();</span><br><span class="line">        &#125;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -10188,11 +10188,11 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 
 
 
-<h1 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h1><h2 id="1-N皇后问题"><a href="#1-N皇后问题" class="headerlink" title="1. N皇后问题"></a>1. N皇后问题</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; columns;</span><br><span class="line"><span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; diagonals1;</span><br><span class="line"><span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; diagonals2;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; solutions;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; <span class="title">solveNQueens</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> queens = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n, <span class="number">-1</span>);</span><br><span class="line">        backtrack(queens, n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> solutions;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;queens, <span class="keyword">int</span> n, <span class="keyword">int</span> row)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (row == n) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; board = generateBoard(queens, n);</span><br><span class="line">            solutions.push_back(board);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (columns.find(i) != columns.end()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> diagonal1 = row - i;</span><br><span class="line">                <span class="keyword">if</span> (diagonals1.find(diagonal1) != diagonals1.end()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> diagonal2 = row + i;</span><br><span class="line">                <span class="keyword">if</span> (diagonals2.find(diagonal2) != diagonals2.end()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                queens[row] = i;</span><br><span class="line">                columns.insert(i);</span><br><span class="line">                diagonals1.insert(diagonal1);</span><br><span class="line">                diagonals2.insert(diagonal2);</span><br><span class="line">                backtrack(queens, n, row + <span class="number">1</span>);</span><br><span class="line">                queens[row] = <span class="number">-1</span>;</span><br><span class="line">                columns.erase(i);</span><br><span class="line">                diagonals1.erase(diagonal1);</span><br><span class="line">                diagonals2.erase(diagonal2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">generateBoard</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;queens, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> board = <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="built_in">string</span> row = <span class="built_in">string</span>(n, <span class="string">'.'</span>);</span><br><span class="line">            row[queens[i]] = <span class="string">'Q'</span>;</span><br><span class="line">            board.push_back(row);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> board;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="四、回溯"><a href="#四、回溯" class="headerlink" title="四、回溯"></a>四、回溯</h1><h2 id="1-N皇后问题"><a href="#1-N皇后问题" class="headerlink" title="1. N皇后问题"></a>1. N皇后问题</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; columns;</span><br><span class="line"><span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; diagonals1;</span><br><span class="line"><span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; diagonals2;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; solutions;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; <span class="title">solveNQueens</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> queens = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n, <span class="number">-1</span>);</span><br><span class="line">        backtrack(queens, n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> solutions;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;queens, <span class="keyword">int</span> n, <span class="keyword">int</span> row)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (row == n) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; board = generateBoard(queens, n);</span><br><span class="line">            solutions.push_back(board);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (columns.find(i) != columns.end()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> diagonal1 = row - i;</span><br><span class="line">                <span class="keyword">if</span> (diagonals1.find(diagonal1) != diagonals1.end()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> diagonal2 = row + i;</span><br><span class="line">                <span class="keyword">if</span> (diagonals2.find(diagonal2) != diagonals2.end()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                queens[row] = i;</span><br><span class="line">                columns.insert(i);</span><br><span class="line">                diagonals1.insert(diagonal1);</span><br><span class="line">                diagonals2.insert(diagonal2);</span><br><span class="line">                backtrack(queens, n, row + <span class="number">1</span>);</span><br><span class="line">                queens[row] = <span class="number">-1</span>;</span><br><span class="line">                columns.erase(i);</span><br><span class="line">                diagonals1.erase(diagonal1);</span><br><span class="line">                diagonals2.erase(diagonal2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">generateBoard</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;queens, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> board = <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="built_in">string</span> row = <span class="built_in">string</span>(n, <span class="string">'.'</span>);</span><br><span class="line">            row[queens[i]] = <span class="string">'Q'</span>;</span><br><span class="line">            board.push_back(row);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> board;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
 
-<h1 id="数字游戏"><a href="#数字游戏" class="headerlink" title="数字游戏"></a>数字游戏</h1><h2 id="1-求平方和"><a href="#1-求平方和" class="headerlink" title="1 求平方和"></a>1 求平方和</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;=x;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> odd = <span class="number">2</span>*i+<span class="number">1</span>;</span><br><span class="line">        sum+=odd;</span><br><span class="line">        <span class="keyword">if</span>(sum&gt;x)&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="五、数字游戏"><a href="#五、数字游戏" class="headerlink" title="五、数字游戏"></a>五、数字游戏</h1><h2 id="1-求平方和"><a href="#1-求平方和" class="headerlink" title="1 求平方和"></a>1 求平方和</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;=x;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> odd = <span class="number">2</span>*i+<span class="number">1</span>;</span><br><span class="line">        sum+=odd;</span><br><span class="line">        <span class="keyword">if</span>(sum&gt;x)&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -10212,11 +10212,29 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>每次<em>移动</em>，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 <code>X</code> 扔下（满足 <code>1 &lt;= X &lt;= N</code>）。</p>
 <p>你的目标是<strong>确切地</strong>知道 <code>F</code> 的值是多少。</p>
 <p>无论 <code>F</code> 的初始值如何，你确定 <code>F</code> 的值的最小移动次数是多少？</p>
-<h1 id="计算几何"><a href="#计算几何" class="headerlink" title="计算几何"></a>计算几何</h1><h2 id="1-给定三角形ABC和一点P-x-y-z-，判断点P是否在ABC内"><a href="#1-给定三角形ABC和一点P-x-y-z-，判断点P是否在ABC内" class="headerlink" title="1. 给定三角形ABC和一点P(x,y,z)，判断点P是否在ABC内"></a>1. 给定三角形ABC和一点P(x,y,z)，判断点P是否在ABC内</h2><p>根据面积法，如果P在三角形ABC内，那么三角形ABP的面积+三角形BCP的面积+三角形ACP的面积应该等于三角形ABC的面积。算法如下：</p>
+<h1 id="六、计算几何"><a href="#六、计算几何" class="headerlink" title="六、计算几何"></a>六、计算几何</h1><h2 id="1-给定三角形ABC和一点P-x-y-z-，判断点P是否在ABC内"><a href="#1-给定三角形ABC和一点P-x-y-z-，判断点P是否在ABC内" class="headerlink" title="1. 给定三角形ABC和一点P(x,y,z)，判断点P是否在ABC内"></a>1. 给定三角形ABC和一点P(x,y,z)，判断点P是否在ABC内</h2><p>根据面积法，如果P在三角形ABC内，那么三角形ABP的面积+三角形BCP的面积+三角形ACP的面积应该等于三角形ABC的面积。算法如下：</p>
 <p>计算三角形面积</p>
 <blockquote>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ABS_FLOAT_0 0.0001</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point_float</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">float</span> x;</span><br><span class="line"><span class="keyword">float</span> y;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">GetTriangleSquar</span><span class="params">(<span class="keyword">const</span> point_float pt0, <span class="keyword">const</span> point_float pt1, <span class="keyword">const</span> point_float pt2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">point_float AB,   BC;</span><br><span class="line">AB.x = pt1.x - pt0.x;</span><br><span class="line">AB.y = pt1.y - pt0.y;</span><br><span class="line">BC.x = pt2.x - pt1.x;</span><br><span class="line">BC.y = pt2.y - pt1.y;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">fabs</span>((AB.x * BC.y - AB.y * BC.x)) / <span class="number">2.0f</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">IsInTriangle</span><span class="params">(<span class="keyword">const</span> point_float A, <span class="keyword">const</span> point_float B, <span class="keyword">const</span> point_float C, <span class="keyword">const</span> point_float D)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">float</span> SABC, SADB, SBDC, SADC;</span><br><span class="line">SABC = GetTriangleSquar(A, B, C);</span><br><span class="line">SADB = GetTriangleSquar(A, D, B);</span><br><span class="line">SBDC = GetTriangleSquar(B, D, C);</span><br><span class="line">SADC = GetTriangleSquar(A, D, C);</span><br><span class="line"><span class="keyword">float</span> SumSuqar = SADB + SBDC + SADC;</span><br><span class="line"><span class="keyword">return</span> ((-ABS_FLOAT_0 &lt; (SABC - SumSuqar)) &amp;&amp; ((SABC - SumSuqar) &lt; ABS_FLOAT_0))；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
+<h1 id="七、动态规划"><a href="#七、动态规划" class="headerlink" title="七、动态规划"></a>七、动态规划</h1><h4 id="474-一和零"><a href="#474-一和零" class="headerlink" title="474. 一和零"></a><a href="https://leetcode-cn.com/problems/ones-and-zeroes/" target="_blank" rel="noopener">474. 一和零</a></h4><p>给你一个二进制字符串数组 <code>strs</code> 和两个整数 <code>m</code> 和 <code>n</code> 。</p>
+<p>请你找出并返回 <code>strs</code> 的最大子集的大小，该子集中 <strong>最多</strong> 有 <code>m</code> 个 <code>0</code> 和 <code>n</code> 个 <code>1</code> 。</p>
+<p>如果 <code>x</code> 的所有元素也是 <code>y</code> 的元素，集合 <code>x</code> 是集合 <code>y</code> 的 <strong>子集</strong> 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：strs &#x3D; [&quot;10&quot;, &quot;0001&quot;, &quot;111001&quot;, &quot;1&quot;, &quot;0&quot;], m &#x3D; 5, n &#x3D; 3</span><br><span class="line">输出：4</span><br><span class="line">解释：最多有 5 个 0 和 3 个 1 的最大子集是 &#123;&quot;10&quot;,&quot;0001&quot;,&quot;1&quot;,&quot;0&quot;&#125; ，因此答案是 4 。</span><br><span class="line">其他满足题意但较小的子集包括 &#123;&quot;0001&quot;,&quot;1&quot;&#125; 和 &#123;&quot;10&quot;,&quot;1&quot;,&quot;0&quot;&#125; 。&#123;&quot;111001&quot;&#125; 不满足题意，因为它含 4 个 1 ，大于 n 的值 3 。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：strs &#x3D; [&quot;10&quot;, &quot;0&quot;, &quot;1&quot;], m &#x3D; 1, n &#x3D; 1</span><br><span class="line">输出：2</span><br><span class="line">解释：最大的子集是 &#123;&quot;0&quot;, &quot;1&quot;&#125; ，所以答案是 2 。</span><br></pre></td></tr></table></figure>
+
+<p> <strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= strs.length &lt;= 600</code></li>
+<li><code>1 &lt;= strs[i].length &lt;= 100</code></li>
+<li><code>strs[i]</code> 仅由 <code>&#39;0&#39;</code> 和 <code>&#39;1&#39;</code> 组成</li>
+<li><code>1 &lt;= m, n &lt;= 100</code></li>
+</ul>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findMaxForm</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; strs, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">dp</span><span class="params">(m+<span class="number">1</span>,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n+<span class="number">1</span>,<span class="number">0</span>))</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> str:strs)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> zero = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> one = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;str.length();i++)</span><br><span class="line">            &#123;</span><br><span class="line">                zero += str[i]==<span class="string">'0'</span>?<span class="number">1</span>:<span class="number">0</span>;</span><br><span class="line">                one  += str[i]==<span class="string">'1'</span>?<span class="number">1</span>:<span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = m;i&gt;=zero;i--)</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = n;j&gt;=one;j--)</span><br><span class="line">                &#123;</span><br><span class="line">                    dp[i][j] = <span class="built_in">max</span>(dp[i-zero][j-one]+<span class="number">1</span>,dp[i][j]);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>工作</category>
@@ -16159,6 +16177,454 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
       </categories>
       <tags>
         <tag>项目开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>可穿戴领域中的压力监测算法</title>
+    <url>/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/</url>
+    <content><![CDATA[<a id="more"></a>
+
+
+
+<h2 id="一-压力"><a href="#一-压力" class="headerlink" title="一 压力"></a>一 压力</h2><h3 id="1-1-压力"><a href="#1-1-压力" class="headerlink" title="1.1 压力"></a>1.1 压力</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>压力是压力源和压力反应共同构成的一种认知和行为体验过程。心理压力（Mental Stress）被定义为<strong>人们认为（评价）他们的需求超出其应付能力的程度</strong>。</p>
+<h4 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h4><p>从生理-社会-心理学取向的角度可以把压力理解为一种复杂的身心历程，它包含三大部分： </p>
+<ol>
+<li><strong>压力源</strong>（stressor）任何情境或刺激具有伤害或威胁个人的潜在因素，统称为压力源，即压力来源。</li>
+<li><strong>认知评估</strong>（cognitive appraisal） 当事人认为经历的刺激或情境，对于个人确实有所威胁时，此时即构成压力，但如果认为是种解脱或乐趣而不是威胁时，则不构成压力，此历程即为认知评估。</li>
+<li><strong>焦虑反应</strong>（anxiety reaction）当事人意识到他生理的健康、身体的安全、心理的安静、事业的成败或自尊的维护，甚至自己所关心的人等正处于危险的状况或受到威胁时所做的反应，即为焦虑反应。</li>
+</ol>
+<p>因此，压力产生的身心历程是：压力的来源-威胁的知觉-焦虑的反应。</p>
+<h4 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h4><p>压力是正常日常生活的一部分，在生理上表现为ANS系统的交感神经活动和副交感神经活动的减少。</p>
+<p><strong>正性压力</strong>是有益的压力，产生于个体被激发和鼓舞的情景中，当压力持续增加，正性压力会逐渐转化为负性压力，绩效或健康状况随之下降，生病的危险加大。</p>
+<p><strong>中性压力</strong>是一些不会引发后续效应的感官刺激，它们无所谓好坏。比如，看到一则关于遥远的城市发生火灾的新闻，或是听说某明星的婚姻出现危机……</p>
+<p><strong>负性压力</strong>是有害的压力，经常被简称为压力，比如险些发生交通事故、工作中频繁的加班、夜晚隔壁邻居家吵闹的音乐声等。负性压力又可以分为两类：急性压力和慢性压力，前者来势汹汹但迅速消退；后者出现的时候不甚强烈，但旷日持久。</p>
+<h2 id="二-压力评估方法"><a href="#二-压力评估方法" class="headerlink" title="二 压力评估方法"></a>二 压力评估方法</h2><p>在国内，大部分研究以心理学评估量表为准，而部分高校也开始了基于生理信号的心理压力评估的研究，并且取得了一定的进展。</p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210203150149633.png" alt="image-20210203150149633"></p>
+<h3 id="2-1-心理学评估量表"><a href="#2-1-心理学评估量表" class="headerlink" title="2.1 心理学评估量表"></a>2.1 心理学评估量表</h3><h5 id="量表的可信度分析。"><a href="#量表的可信度分析。" class="headerlink" title="量表的可信度分析。"></a>量表的可信度分析。</h5><p><strong>α信度</strong>：</p>
+<p>α信度是检视<a href="https://zh.wikipedia.org/wiki/信度" target="_blank" rel="noopener">信度</a>的一种方法，由<a href="https://zh.wikipedia.org/wiki/李·克隆巴赫" target="_blank" rel="noopener">李·克隆巴赫</a>在1951年提出。它克服了部分折半法的缺点，是目前<a href="https://zh.wikipedia.org/wiki/社会科学" target="_blank" rel="noopener">社会科学</a>研究最常使用的信度分析方法。也可表示内在一致性。</p>
+<table>
+<thead>
+<tr>
+<th align="center">Cronbach’s alpha</th>
+<th align="center">Internal consistency</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">α ≥ 0.9</td>
+<td align="center">Excellent</td>
+</tr>
+<tr>
+<td align="center">0.9 &gt; α ≥ 0.8</td>
+<td align="center">Good</td>
+</tr>
+<tr>
+<td align="center">0.8 &gt; α ≥ 0.7</td>
+<td align="center">Acceptable</td>
+</tr>
+<tr>
+<td align="center">0.7 &gt; α ≥ 0.6</td>
+<td align="center">Questionable</td>
+</tr>
+<tr>
+<td align="center">0.6 &gt; α ≥ 0.5</td>
+<td align="center">Poor</td>
+</tr>
+<tr>
+<td align="center">0.5 &gt; α</td>
+<td align="center">Unacceptable</td>
+</tr>
+</tbody></table>
+<h4 id="A-PSS知觉压力量表"><a href="#A-PSS知觉压力量表" class="headerlink" title="A PSS知觉压力量表"></a>A PSS知觉压力量表</h4><p><a href="https://www.psychspace.com/psych/action-tag-tagname-%D1%B9%C1%A6.html" target="_blank" rel="noopener">知觉压力量表</a> (Chinese 14-item PSS) (Perceived Stress Scale, PSS) (Cohen, Kamarck, &amp; Mermelstein, 1983)是1983并能提出的评估心理压力的量表。知觉压力量表（Perceived Stress Scale）可较好地衡量一个人在生活中所受到的压力情况。PSS已被广泛运用于测量知觉压力，评估情况压力，减压干预的有效性，以及心理压力与心理压力精神和身体失调等方面的研究。此量表已经证实信度和效度良好，其$\alpha$系数为0.78。量表的总分与各个项目之间的相关系数为0.37-0.53，表面的同质性与内部一致性比较高。本研究中失控感因子的信度为0.688，紧张感因子的信度为0.576。</p>
+<p>*PSS预测早期健康问题更为有效；另外实施PSS测量，还可以评估个人不良习惯造成的慢性压力。</p>
+<h5 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h5><p>该量表主要是询问您关于您上个月的感受和想法。在下面的每一种情况下，都需要您指出你感觉到或想到的频率。虽然有些问题是相似的，但它们之间也有一些区别，你应该把每一个问题作为单独的问题来对待，最好的方法是快速回答每个问题。也就是说，不要试图数出你觉得的某一种特定方式的次数，而是指出一个较为合理的近似估计。</p>
+<p>对于每个问题，请从以下选项中选择：0 从不 ；1几乎不 ；2有时；4 经常；5 总是</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">In the last month, how often have you been upset because of something that happened unexpectedly?</span><br><span class="line">In the last month, how often have you felt that you were unable to control the important things in your life?</span><br><span class="line">In the last month, how often have you felt nervous and &quot;stressed&quot;?</span><br><span class="line">In the last month, how often have you dealt successfully with irritating life hassles?</span><br><span class="line">In the last month, how often have you felt that you were effectively coping with important changes that were occurring in your life?</span><br><span class="line">In the last month, how often have you felt confident about your ability to handle your personal problems?</span><br><span class="line">In the last month, how often have you felt that things were going your way?</span><br><span class="line">In the last month, how often have you found that you could not cope with all the things that you had to do?</span><br><span class="line">In the last month, how often have you been able to control irritations in your life?</span><br><span class="line">In the last month, how often have you felt that you were on top of things?</span><br><span class="line">In the last month, how often have you been angered because of things that happened that were outside of your control?</span><br><span class="line">In the last month, how often have you found yourself thinking about things that you have to accomplish?</span><br><span class="line">In the last month, how often have you been able to control the way you spend your time?</span><br><span class="line">In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?</span><br></pre></td></tr></table></figure>
+
+<h5 id="评定标准"><a href="#评定标准" class="headerlink" title="评定标准"></a>评定标准</h5><table>
+<thead>
+<tr>
+<th>分数</th>
+<th>知觉压力程度</th>
+<th>分析</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>14-28</td>
+<td>较低</td>
+<td>你当前的压力处于低水平，<br>你对自己当前的生活有足够的掌控和控制，不会因为一些无法预期的事情发生而感到心烦意乱和惊慌失措。</td>
+</tr>
+<tr>
+<td>29-42</td>
+<td>适中</td>
+<td>这个分数指出你的生活中的兴奋与压力量也许是相当适中的。<br>偶尔会有一段时间压力太多，但你也许有能力去享受压力，并且很快地回到平静状态,<br>因此你面临的压力对你健康并不会造成威胁。<br>不过做一些松弛的练习仍是有益的。</td>
+</tr>
+<tr>
+<td>43-56</td>
+<td>较高</td>
+<td>你当前经历较高的压力，它可能已经对你的身心健康造成负面影响，需要你采取措施加以调节。</td>
+</tr>
+<tr>
+<td>57-70</td>
+<td>非常高</td>
+<td>你的压力过大，身体可能会有一些症状，急需减压，可以寻求专业人员的帮助。<br>你在面对那些模糊的、难以改变的、长期的压力问题就会显得更束手无策和焦灼不安。<br>这个分数表示你确实正以极度的压力反应在伤害你自己的心理健康。<br>你需要专业<a href="https://www.psychspace.com/psych/action-tag-tagname-%D0%C4%C0%ED%D7%C9%D1%AF.html" target="_blank" rel="noopener">心理咨询</a>师给予一些忠告，他可以帮助你消减你对于压力器的知觉，并帮助你改良生活的品质。</td>
+</tr>
+</tbody></table>
+<h4 id="B-PSTR心理压力测量表"><a href="#B-PSTR心理压力测量表" class="headerlink" title="B PSTR心理压力测量表"></a>B PSTR心理压力测量表</h4><p>PSTR心理压力量表由瑞士心理学家爱德沃兹于1983年编制，以德国心理学家穆瑞在1968年提出的心理压力因素理论为基础。</p>
+<p>对于每个问题，请从以下选项中选择：A(总是) 4分; B(经常) 3分; C(有时) 2分; D(很少) 1分; E(从未) 0分。</p>
+<h5 id="内容-1"><a href="#内容-1" class="headerlink" title="内容"></a>内容</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我受背疼之苦</span><br><span class="line">我的睡眠不足、且睡不安稳</span><br><span class="line">我有头疼</span><br><span class="line">我额部疼痛</span><br><span class="line">若须等候，我会不安</span><br><span class="line">我的后颈感到疼痛</span><br><span class="line">我比多数人更神经紧张</span><br><span class="line">我很难入睡</span><br><span class="line">我的头感到紧或疼</span><br><span class="line">我的胃有病</span><br><span class="line">我对自己没有信心</span><br><span class="line">我对自己说话</span><br><span class="line">我忧虑财务回题</span><br><span class="line">人见面时，我会窘怯</span><br><span class="line">我怕发生可怕的事</span><br><span class="line">白天我觉得累</span><br><span class="line">下午我感到喉咙痛，但并非由于染上感冒</span><br><span class="line">我心情不安，无法静坐</span><br><span class="line">我感到非常口</span><br><span class="line">我心脏有病</span><br><span class="line">我觉得自己不是很有用</span><br><span class="line">我吸烟</span><br><span class="line">我肚子不舒服</span><br><span class="line">我觉得不快乐</span><br><span class="line">我流汗</span><br><span class="line">我喝酒</span><br><span class="line">我很自觉</span><br><span class="line">我觉得自己像四分五裂</span><br><span class="line">我的眼睛又酸又累</span><br><span class="line">我的腿或脚抽筋</span><br><span class="line">我的心跳过速</span><br><span class="line">我怕结识人</span><br><span class="line">我手脚冰冷</span><br><span class="line">我患便秘</span><br><span class="line">我未经医师指示使用各种药</span><br><span class="line">我发现自己很容易哭</span><br><span class="line">我消化不良</span><br><span class="line">我咬指甲</span><br><span class="line">我耳中有嗡嗡声</span><br><span class="line">我小便频密</span><br><span class="line">我有胄溃疡</span><br><span class="line">我有皮肤方面的病</span><br><span class="line">我的咽喉很紧</span><br><span class="line">我有十二指肠溃疡病</span><br><span class="line">我担心我的工作</span><br><span class="line">我口腔溃烂</span><br><span class="line">我为琐事忧虑</span><br><span class="line">我呼吸浅促</span><br><span class="line">我觉得胸部紧迫</span><br><span class="line">我发现很难做诀定</span><br></pre></td></tr></table></figure>
+
+<h5 id="评定标准-1"><a href="#评定标准-1" class="headerlink" title="评定标准"></a><strong>评定标准</strong></h5><p>一般,43-65分,表示压力适中;低于43分,表示压力过小,需要适度增加压力;高于65分,表示压力过大,需要适当降低。</p>
+<h5 id="具体标准"><a href="#具体标准" class="headerlink" title="具体标准"></a>具体标准</h5><table>
+<thead>
+<tr>
+<th>分数</th>
+<th>分析</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>93以上</strong></td>
+<td>表示处于高度应激反应中,身心遭受压力伤害。<br>你需要专业心理治疗师给与一些忠告，它可以帮助你削减你对压力的知觉，并帮助你改良生活的品质。</td>
+</tr>
+<tr>
+<td><strong>82-92</strong></td>
+<td>这个分数表示是你正在经历太大的压力，身心健康正在受到损害，并令你的人际关系发生问题。你的行为会伤害自己，也会影响他人。<br>因此，对你来说，学会如何减除自己的压力反应是非常必要的。你可能必须花时间做练习，学习控制压力，也可以寻求专业的帮助。</td>
+</tr>
+<tr>
+<td><strong>71-81</strong></td>
+<td>这个分数显示你的压力程度中等，可能正开始对健康不利。<br>你可以仔细反省自己对压力器如何做出反应，并学习在压力器出现时，控制自己的肌肉紧张，已消除生理激活反应。</td>
+</tr>
+<tr>
+<td><strong>60-70</strong></td>
+<td>这个分数指出你生活中的兴奋与压力也许是相当适中的。<br>偶尔会有一段时间压力太大，但你也许有能力去享受压力，并且很快回到平衡状态，因此对你的健康不会造成威胁。</td>
+</tr>
+<tr>
+<td><strong>49-59</strong></td>
+<td>这个分数表示你能够控制你自己的压力反应，你是一个相当放松的人。<br>也许你对于所遇到的各种压力，并没有将他们解释为威胁，所以你很容易与人相处，可以毫无惧怕担任工作，也没有失去信心。</td>
+</tr>
+<tr>
+<td><strong>38-48：</strong></td>
+<td>这个分数表示你对所遭遇的压力很不易为所动，甚至不当一回事，好像并没有发生过一样。<br>这对你的健康不会有什么负面影响，但你的生活缺乏适度的兴奋，因此趣味也就有限。</td>
+</tr>
+<tr>
+<td><strong>27-37</strong></td>
+<td>这个分数表明你的生活可能是相当沉闷的，即使刺激或有趣的事情发生了，你也很少作反应。<br>可能你必须参加更多的社会活动或娱乐活动，以增加你的压力激活反应。</td>
+</tr>
+<tr>
+<td><strong>16-26：</strong></td>
+<td>如果你的分数值落在这个范围内，也许意味着你在生活中所经历的的压力经验不够，或是你没有正确地分析自己。<br>你最好更主动些，在工作、社交、娱乐等活动上多增加些刺激。</td>
+</tr>
+</tbody></table>
+<h4 id="C-DASS-21"><a href="#C-DASS-21" class="headerlink" title="C DASS-21"></a>C DASS-21</h4><h5 id="内容-2"><a href="#内容-2" class="headerlink" title="内容"></a>内容</h5><p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/c8382a0f-0954-4ea9-9372-d84afcc6ea4e1.gif" alt="情绪自评量表(DASS-21), 抑郁-焦虑-压力量表.doc_在线文库www.lddoc.cn-_在线文库www.lddoc.cn"></p>
+<h5 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h5><img src="http://www.lunwenstudy.com/uploads/allimg/200804/36-200P4141513348.jpg" alt="表1 DASS-C21各分量表分级标准（分）" style="zoom:67%;">
+
+<h3 id="2-2-其他压力评估方法"><a href="#2-2-其他压力评估方法" class="headerlink" title="2.2 其他压力评估方法"></a>2.2 其他压力评估方法</h3><p>基于GSR的压力监测</p>
+<p>基于GSR监测压力</p>
+<p>基于EEG的心理压力测量</p>
+<h2 id="三-基本原理"><a href="#三-基本原理" class="headerlink" title="三 基本原理"></a>三 基本原理</h2><p><strong>基本原理：</strong>人体心率变异性(Heart rate variability)曲线表示心率节奏的快慢随时间的变化，可以反应自主神经系统的活动。</p>
+<p>随着现代心理学和生理学的发展，人们已逐渐认识到，利用相应设备检测出的生理 数据，可以较为准确、客观地反映当事人的心理状态。心率变异性（HRV）是反映自主神经系统活性和定量评估心脏交感神经与迷走神经张力及其平衡性，从而判断其对心血管疾病的病情及预防，可能是预测心脏性猝死和心律失常性事件的一个有价值的指标。</p>
+<p>也就是说<strong>较低的HRV意味着更高的焦虑、抑郁发病率风险和心血管疾病死亡率。</strong> <strong>而拥有较高HRV的人，普遍具有更好的心血管功能和抗压能力。</strong></p>
+<p>简单地说，HRV越高，人的压力越小。</p>
+<h3 id="2-1-HRV"><a href="#2-1-HRV" class="headerlink" title="2.1 HRV"></a>2.1 HRV</h3><p>心率变异性（HRV）是连续心跳之间的时间间隔变化的生理现象。</p>
+<img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/hrv_20160426.png" alt="Heart rate variability graph" style="zoom:50%;">
+
+<p>心率变异性表示心跳的不规律性</p>
+<img src="https://pic1.zhimg.com/80/v2-e7aafc51ad03630fa6d8ec1f0b9fb01c_720w.jpg" alt="img" style="zoom:80%;">
+
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210203115052112.png" alt="image-20210203115052112"></p>
+<p>人的精神状态与HRV曲线之间的关系：<strong>HRV曲线的变化呈现规律的正弦形状时，人体多个器官的活动处于协调状态，此时自主神经系统达到平衡，即高协调状态。此时，人体的各项机能，包括生理、心理以及认知方面的表现，都有明显的提升。 相反，若处于相对紧张的压力下，HRV曲线则呈现不规则曲线。</strong></p>
+<img src="https://pic2.zhimg.com/80/v2-1a9fdd6627ba85745a0b0f4c7d8718e0_720w.jpg?source=1940ef5c" alt="img" style="zoom:80%;">
+
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/v2-88efc63ccc62a611e6e6cbec320e0df1_720w.jpg" alt="img"></p>
+<h3 id="2-2-HRV与自主神经系统"><a href="#2-2-HRV与自主神经系统" class="headerlink" title="2.2 HRV与自主神经系统"></a>2.2 HRV与自主神经系统</h3><p>自主神经系统（ANS）由交感神经（Sympathetic）和副交感神经（parasympathetic）分支组成，调节各种各样的生理功能。这些生理功能很少通过我们的意识的进行控制，但对于维持各种不同的生命和表现、活动和需求至关重要。其中，交感神经被认为是“战斗或逃跑”系统，使我们准备采取行动，作出反应和执行，而副交感神经系统通常被称为“休息和消化”系统。两种系统通常同时起作用，但彼此相反，从而激活或抑制特定的生理反应。（<em>来自于 FirstBeat 论文</em> [5] ）</p>
+<p>交感神经和副交感神经神经线始于中枢神经系统，并通向整个人体的不同目标器官。交感和副交感通常在彼此相对的同时起作用。<strong>副交感神经分裂主要涉及放松，帮助身体休息和恢复。交感神经通过加速身体机能使身体做好战斗准备，与压力有关。</strong></p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210201201730132.png" alt="image-20210201201730132"></p>
+<p>ANS系统对心脏的作用尤为明显。<strong>当身体面临压力时，ANS会通过刺激压力激素的产生以增加心脏的收缩率和收缩力（心输出量）</strong>。<strong>相反，在压力或运动时，副交感神经刺激会降低心率以恢复体内平衡</strong>。精确地测量心脏跳动能为我们提供了有关身体的大量信息。它通常被视为自主神经系统活动的非侵入性标记，并且是观察交感神经系统和副交感神经系统之间的活动水平和相互作用的有力工具。多种生理现象会影响HRV的水平。例如;吸入和呼气（一种症状，称为呼吸窦性心律失常：吸气时心率增加而HRV降低，而呼气时心率降低而HRV升高），激素反应，代谢过程，运动，运动，认知过程，压力和恢复（任务欧洲心脏病学会的力量，北美起搏电生理学会（1996年）。</p>
+<p><strong>在正常情况下，HRV应该在放松活动中自然增加，尤其是在副交感神经（迷走神经）激活增加的睡眠期间。</strong>另一方面，当有同情心的活动有助于身体满足需求时，HRV在压力下会降低。因此，当心脏缓慢跳动时，HRV通常较高，而当心脏开始跳动时，HRV通常较低。 HRV每天都会自然变化。根据活动水平和与工作有关的压力，例如，与工作有关的压力，但是如果一个人长期处于压力或超负荷状态（身体或精神上），则这两个系统之间的自然相互作用会被破坏，并且身体可以不断保持在充满同情心的战斗状态中，HRV较低。</p>
+<p>运动员由于训练太多或太过密集而与其他生活压力源之间的不平衡导致的长期超负荷与足够的康复被称为过度训练。研究表明，<strong>过度训练通常以增加心肺和交感神经系统的激活以及降低HRV为特征</strong>。除了超负荷和外部压力外，诸如<strong>营养不良，饮酒和各种疾病之类的内部压力因素也会降低HRV</strong>。遗传因素可解释总体HRV水平的30％，但通常认为较高的HRV可以指示心脏健康，而较高的HRV也可降低发病率和死亡率，降低心理健康，以及生活质量（。一个人可以通过改善整体健康状况和体质来增加个人的HRV水平。</p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210203115608438.png" alt="image-20210203115608438"></p>
+<p>图4 心率变异性（HRV）与活动性体位性任务在阻塞之前（无药物）以及副交感神经（阿托品）和交感神经（美托洛尔）自主神经阻滞后的时间成函数关系[16]。 该示例来自一个坐了5分钟，站起来并保持站立3分钟的对象。</p>
+<h3 id="2-3-HRV曲线波动的影响因素"><a href="#2-3-HRV曲线波动的影响因素" class="headerlink" title="2.3 HRV曲线波动的影响因素"></a>2.3 HRV曲线波动的影响因素</h3><p>影响因素包括：年龄、姿势、每天的时间和健康状况，情绪、身体压力和心理经历。</p>
+<p>一般来说，心率变异性高通常表示身体健康。HRV读数低则通常与压力有关。患有糖尿病、心脏病和胆固醇等疾病的人通常心率变异性较低。具体地，在心理健康方面，<strong>低心率变异</strong>与抑郁、社交孤立、丧亲、创伤后应激障碍和<strong>压抑</strong>的愤怒有关，抗抑郁药并不总是能改善心率变异，这可能部分地引起了心肌梗死后抑郁个体心脏死亡风险的显著增加。即使在其他的健康个体中，压力也被证明会改变短期的心率变异分布，例如，当外科医生进行高度压力的手术时，医生在打电话时和打电话后都会改变其心率变异的分布。<a href="https://www.zhihu.com/question/59539324/answer/1249671910" target="_blank" rel="noopener">知乎链接</a>。</p>
+<p>环境和工作相关因素也会影响心率变异，但大多数研究结果表明污染和烟草烟雾使心率变异恶化。暴露于工厂的有毒物质、工作压力和轮班工作都降低了心率变异，而改善工作环境和环境光改善了心率变异和皮质醇节律。令人不安的是，日本的一项研究表明，连续14周食用大眼金枪鱼和箭鱼的-甲基汞临时耐受周摄取量(PTWI) (3.4 mcg/kg/周)的人，其交感迷走神经失衡显著增加，15周后恢复正常；对照组没有变化。</p>
+<h3 id="2-4-HRV与压力的关系"><a href="#2-4-HRV与压力的关系" class="headerlink" title="2.4 HRV与压力的关系"></a>2.4 HRV与压力的关系</h3><p>HRV对与压力有关的ANS活性变化（即SNS和PNS中的变化）敏感。在大多数研究中，HRV变量随各种方法引起的压力而变化。与HRV变量变化相关的最常报告的因素是副交感活性低，其特征是HF降低和LF升高。 HRV可能与神经结构的灵活网络的活动相关，该神经网络是根据环境挑战而动态组织的。实际上，神经影像学研究表明，HRV可能与减少的威胁感知有关，这是由参与评估压力情况的皮质区域（例如，mPFC的腹侧）介导的。在临床情况下，HRV可被认为是反映心脏活动和整体自主神经健康的一种工具，比特定的精神疾病或疾病状态更为重要。因此，在评估压力与HRV之间的关系时，必须考虑整体自主神经环境以及患者的病历和心理史。</p>
+<p>对健康受试者的HRV对心理压力的反应性研究Sloan等人[35]分析了33名健康受试者的24小时心电图记录，以检查RR间隔，HRV反应与测量身体位置，负面影响的定期日记条目之间的关联，以及一天中的时间。正如预期的那样，他们的结果表明，压力增加与RR间隔的减少有关。此外，心理压力与LF / HF比值的升高显着相关，这表明在一天的压力时期SNS活动增加。35通过问卷调查和223名健康男性白领的短期HRV记录， Kageyama等人[36]研究了工作压力源的数量，自我报告的睡眠质量与白天自主活动之间的关系。他们发现HRV参数与五个工作压力或得分之间没有相关性。36但是，随后的研究报告说，一些HRV指标反映了心理压力。表3总结了健康人的研究，这些人研究了与心理压力状况相关的HRV变异。关于所使用的引起压力的任务类型和HRV反应性（即实验室环境任务）的研究之间存在异质性。或主观压力报告）。此外，HRV反应性研究是短期（5分钟）或连续的24小时研究。在大多数研究中，HRV变量会因各种方法引起的压力而变化。但是，HRV变量存在显着变化是不一致的。与HRV变量变化相关的最常报告的因素是副交感活性低，其特征是HF降低和LF升高。 Dimitriev等人[37]最近报道说，精神压力导致可预测性，RR间隔规律性和复杂性降低。这反映了在压力下朝向更稳定和周期性的HR行为的变化。降低的HRV和抑制的副交感神经激活增加了对未来压力的抵抗力。</p>
+<p>Hjortskov 等[11]的实验设计为电脑工作压力和休息两种对比状态。他们在实验室测试 12 名女性被试者在电脑工作压力和休息状态下的血压和脑电两种生理参数，通过数据分析，得出：(1)HRV 的高频部分降低，低频部分没有发生变化；(2) HRV 能很好地反映出人的心理压力变化。 </p>
+<h3 id="2-5-HRV度量特征-4"><a href="#2-5-HRV度量特征-4" class="headerlink" title="2.5 HRV度量特征[4]"></a>2.5 HRV度量特征[4]</h3><p>先介绍根据HRV可提取到的特征</p>
+<h4 id="时域特征"><a href="#时域特征" class="headerlink" title="时域特征"></a>时域特征</h4><p>时域上可定义许多HRV度量。 一些有希望的度量包括：平均RR间隔（mRR），平均心率（mHR），RR间隔标准差（SDRR），心率标准差（SDHR），RR间隔的方差系数（CVRR），均方根连续差（ RMSSD），与所有RR间隔（pRR20）相差超过20 ms的相邻RR间隔对的数量，以及与所有RR间隔（pRR50）相差50 ms以上的相邻RR间隔的对数量。 </p>
+<p>时域中的HRV特征的计算公式如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">No</th>
+<th align="center">特征</th>
+<th align="center">单位</th>
+<th align="center">公式</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">mRR</td>
+<td align="center">ms</td>
+<td align="center">$\frac{\sum^N_{i=1}(RR_i)}{N}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">mHR</td>
+<td align="center">bpm</td>
+<td align="center">$\frac{\sum^N_i=1(6000/RR_i)}{N}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">SDRR</td>
+<td align="center">ms</td>
+<td align="center">$\sqrt{\frac{\sum^N_{i=1}(RR_i-mRR)^2}{N-1}}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">SDHR</td>
+<td align="center">bpm</td>
+<td align="center">$\sqrt{\frac{\sum^N_{i=1}()(60000/RR_i))^2}{N-1}}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">CVRR</td>
+<td align="center"></td>
+<td align="center">$\frac{SDRR\times100}{mRR}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">RMSSD</td>
+<td align="center">ms</td>
+<td align="center">$\sqrt{mean</td>
+<td>(RR_{i+1}-RR_i)^2</td>
+<td>}$</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">pRR20</td>
+<td align="center">%</td>
+<td align="center">$\frac{Count(</td>
+<td>RR_{i+1}-RR_i</td>
+<td>)_{&gt;20ms}\times100}{N-1}$</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">pRR50</td>
+<td align="center">%</td>
+<td align="center">$\frac{Count(</td>
+<td>RR_{i+1}-RR_i</td>
+<td>)_{&gt;50ms}\times100}{N-1}$</td>
+</tr>
+</tbody></table>
+<h4 id="频域特征"><a href="#频域特征" class="headerlink" title="频域特征"></a>频域特征</h4><p>频域方法通常涉及对RR间隔信号的功率谱密度（PSD）的估计。 基本措施是极低频功率谱（VLF），低频功率谱（LF）和高频功率谱（HF）。 此外，我们还考虑了从基本量度得出的量度，例如归一化极低频频谱（nVLF），归一化低频频谱（nLF），归一化高频频谱（nHF），归一化低频频谱与归一化高频的差异 频谱（dLFHF），交感调制指数（SMI），迷走神经调制指数（VMI），交感卵平衡指数（SVI）[1]。 </p>
+<p>计算公式如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">No</th>
+<th align="center">特征</th>
+<th align="center">单位</th>
+<th align="center">公式</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">VLF</td>
+<td align="center">$ms^2$</td>
+<td align="center">从0.003到0.04hz的功率谱</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">LF</td>
+<td align="center">$ms^2$</td>
+<td align="center">从0.04到0.15hz的功率谱</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">HF</td>
+<td align="center">$ms^2$</td>
+<td align="center">从0.15到0.4hz的功率谱</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">nVLF</td>
+<td align="center">%</td>
+<td align="center">$VLF\times\frac{100}{VLF+HF+LF}$</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">nLF</td>
+<td align="center">%</td>
+<td align="center">$LF\times\frac{100}{VLF+HF+LF}$</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">nHF</td>
+<td align="center">%</td>
+<td align="center">$HF\times\frac{100}{VLF+HF+LF}$</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">dLHF</td>
+<td align="center">%</td>
+<td align="center">$</td>
+<td>nLF-nHF</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">SMI</td>
+<td align="center"></td>
+<td align="center">$\frac{LF}{LF+HF}$</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">VMI</td>
+<td align="center"></td>
+<td align="center">$\frac{HF}{LF+HF}$</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">SVI</td>
+<td align="center"></td>
+<td align="center">\frac{LF}{HF}</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="可表征压力的HRV特征"><a href="#可表征压力的HRV特征" class="headerlink" title="可表征压力的HRV特征"></a>可表征压力的HRV特征</h4><p>实验证明可用于表征压力的HRV特征包括：</p>
+<p>mRR、mHR、nLF、dLFHF、SVI</p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210202154337974.png" alt="image-20210202154337974"></p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210202154402852.png" alt="image-20210202154402852"></p>
+<h3 id="2-6-压力监测系统"><a href="#2-6-压力监测系统" class="headerlink" title="2.6 压力监测系统"></a>2.6 压力监测系统</h3><p>【FirstBeat算法】本节将更详细地描述用于分析不同生理状态的过程。下图阐明了用于检测压力，恢复和身体活动的分析程序。</p>
+<ol>
+<li>首先，收集并准备心跳频率数据。</li>
+<li>然后，计算用于状态检测所需的生理信息，包括HRV变量，呼吸速率，氧气消耗（VO2）和运动后多余的氧气消耗（EPOC）。</li>
+<li>此后，识别生理上的固定区段，并识别不同的状态。</li>
+</ol>
+<img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201203949490.png" alt="image-20210201203949490" style="zoom: 67%;">
+
+<h4 id="1-数据采集与预处理"><a href="#1-数据采集与预处理" class="headerlink" title="1 数据采集与预处理"></a>1 数据采集与预处理</h4><p>首先，利用可记录个人心跳的心率监视器在期望的时间段例如24-72小时内的心跳数据（RR间隔数据）。收集数据后，在开始分析过程之前。首先设置背景信息（年龄，性别，身高，体重和体育锻炼类别）。再根据这些信息，该方法可以估算出患者的最大（Heart Rate）HR（HRmax），最大呼吸频率和最大耗氧量（VO2max）。生理变量的各个范围是从RR间隔数据中获得的。这意味着例如如果分别观察到较低或较高的值，则静息HR和HRmax从记录的数据自动更新。</p>
+<p>通过人工监测滤波器扫描记录的动态RR间隔数据，以对错误检测，错过和过早的心跳进行初始校正[有关更多信息，请参阅37-38]。然后，通过使用线性插值以5 Hz的速率对连续的伪影校正的RR间隔进行重新采样，以获得等距采样的时间序列[有关更多详细信息，请参见[39]。从重新采样的数据中，该软件使用多项式滤波器和数字FIR带通（0.03–1.2 Hz）滤波器，去除了所关注频段上下的低频趋势和方差。</p>
+<h4 id="2-信号特征计算"><a href="#2-信号特征计算" class="headerlink" title="2 信号特征计算"></a>2 信号特征计算</h4><ol>
+<li>计算用于检测生理状态的不同变量的值。状态检测所需的HRV变量是时域和频域的HRV变量，例如连续RR间隔的均方根（RMSSD），高频功率（HFP，0.15–0.40 Hz），低频功率（LFP 0.04–0.15 Hz） ），以及呼吸窦性心律不齐的幅度。需要能够处理非平稳生理信号的灵活方法[39-41]。</li>
+<li>使用HRV变量和数据的神经网络建模，该软件将计算代表不同生理现象的值以及检测不同身体状态所需的值。这些现象是呼吸速率，氧气消耗（VO2）和运动后过量的氧气消耗（EPOC）。</li>
+<li>仅在RR间隔信息的基础上计算的上述生理参数的有效性和准确性已在几项研究中报告[42-48]。有关呼吸频率计算的详细说明，请参见“从心律周期测量中得出有关呼吸活动的可靠信息的程序[49]”文件。有关VO2和VO2得出的能源消耗计算的说明，请参见相关的Firstbeat白皮书[50-51]。有关EPOC的计算及其在运动训练中的使用的更多信息，请参见其他两份白皮书[52-53]。</li>
+<li>在检测不同状态之前，还必须将运动，身体活动的开始和姿势变化与影响心脏活动的其他非代谢因素区分开。这些计算中利用了站立时已知的HRV变化。</li>
+</ol>
+<h4 id="3-监测物理活动、恢复、压力"><a href="#3-监测物理活动、恢复、压力" class="headerlink" title="3 监测物理活动、恢复、压力"></a>3 监测物理活动、恢复、压力</h4><p>进一步的分析是基于通过使用神经网络建模和其他数学技术将每秒第二数据分割成各种固定段，即包括生理上一致的数据的段。然后使用逐步决策树对这些段进行分类，如图6所示。在这些阶段的每个阶段，都会评估RR间隔得出的数据的可靠性，以确保正确检测到不同的生理状态。</p>
+<h5 id="A-活动检测"><a href="#A-活动检测" class="headerlink" title="A 活动检测"></a>A 活动检测</h5><p>首先，检测与强度不同的体育活动有关的数据段，以及与从体育活动中恢复有关的数据段。 身体活动的检测基于耗氧量和加速度计数据。 耗氧是代谢的基本指标，也是衡量运动强度的黄金标准[54-55]。 如果计算出的VO2大于个人最大VO2max的30％，则该细分被确定为身体活动，如果VO2为最大VO2max的20-30％，则该状态被确定为每日身体活动。 加速度计数据进一步提高了该方法识别与体内激活水平提高有关的运动的能力。 如果EPOC已达到高于某个阈值（表明身体活动）的值，并且之后EPOC下降，则检测到从身体活动中恢复。</p>
+<h5 id="B-恢复检测"><a href="#B-恢复检测" class="headerlink" title="B 恢复检测"></a>B 恢复检测</h5><p>对于与运动无关的数据段，确定当身体处于恢复状态，压力状态或无法识别状态时的段。 恢复状态定义为ANS的副交感（迷走神经）优势状态。 因此，与ANS的副交感神经支配有关的变量用于检测恢复。 这些包括例如HFP和HR。 在恢复状态期间，HR个别较低，HRV较大且均匀。 康复通常发生在睡眠，放松，休息和/或安宁的工作中，这意味着身体的总体活化程度较低。</p>
+<h5 id="C-压力检测"><a href="#C-压力检测" class="headerlink" title="C 压力检测"></a>C 压力检测</h5><p>最后，如果该片段不对应于身体活动，从身体活动中恢复或恢复（放松），则该片段被确定为压力状态或无法识别的状态。应激状态被定义为当交感神经系统活动占主导并且副交感神经（迷走神经）活化较低时，体内激活的增加。与ANS的交感优势有关的变量用于压力检测。这些包括例如HFP，LFP，呼吸频率和HR。在压力状态下，相对于HR，个人HR升高，HRV从基本静止水平降低，呼吸频率低。最后，将未被识别为上述任何状态或伪影超过75％的数据段确定为无法识别（其他）状态。</p>
+<p>对于应力和恢复，该方法基于上述变量提供表示反应强度的绝对指数。 此外，该方法可以在估计所测时期内人体资源是否积累或消耗时，通过考虑反应强度和状态持续时间来评估压力与恢复之间的平衡（参见图7）。 </p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210202100037354.png" alt="image-20210202100037354"></p>
+<p>有关本文介绍的方法的更多信息，请参见专利申请（已授权）“通过分段检测压力并分析心跳信号的过程”。 [56]。</p>
+<p><strong>示例</strong></p>
+<p>某发明中的压力监测系统构成：</p>
+<img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201103913597.png" alt="image-20210201103913597" style="zoom: 80%;">
+
+<p>输入：信号传感器采集到的心率</p>
+<p>信号处理流程：</p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210201103948561.png" alt="image-20210201103948561"></p>
+<h2 id="四-市面相关产品"><a href="#四-市面相关产品" class="headerlink" title="四 市面相关产品"></a>四 市面相关产品</h2><h3 id="A-华为"><a href="#A-华为" class="headerlink" title="A 华为"></a>A 华为</h3><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201110407544.png" alt="image-20210201110407544" style="zoom:67%;">
+
+
+
+<img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201110607908.png" alt="image-20210201110607908" style="zoom:67%;">
+
+<p>华为的Watch GT2 Pro中采用的传感器一共有5个：加速度传感器、陀螺仪传感器、地磁传感器、光学心率传感器、气压传感器；</p>
+<p>压力监测功能一定是通过心率传感器做的。</p>
+<p><strong>操作方法</strong></p>
+<p>压力检测可分为单次压力检测和周期压力检测。</p>
+<ul>
+<li>单次压力检测：在华为运动健康App <strong>压力</strong> 卡片中点击 <strong>压力检测</strong> 按钮进行单次压力检测。初次使用压力检测功能，请根据华为运动健康App的提示进行压力校准。</li>
+<li>周期压力检测：在华为运动健康App的设备详情页，选择健康监测 &gt; 压力自动检测，打开压力自动检测开关并根据提示进行 <strong>压力校准</strong>，日常正确佩戴手表，周期性压力跟踪检测会自动进行。</li>
+</ul>
+<p>查看压力数据：</p>
+<ul>
+<li>手表上查看：点击手表上键进入应用列表，选择 <strong>压力</strong>，即可查看单日压力趋势情况，包含全天的压力柱状图、等级和压力占比。</li>
+<li>App上查看：打开华为运动健康App，在首页的 <strong>压力</strong> 卡片区域可以看到最近一次的压力分数和等级，点击可进入压力详情页面，查看日、周、月、年的压力曲线及对应建议。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">压力检测过程中请您正确佩戴手表并保持身体静止。处于运动状态或手腕活动频繁时，无法准确评估压力，该情况下手表不会进行压力跟踪检测。</span><br><span class="line">咖啡因、尼古丁、酒精及部分精神类药品的摄入会影响压力检测的准确性。此外，心脏病、哮喘、体育运动或佩戴位置的肢体压迫也会对压力检测结果产生影响。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>压力监测同样分为被动和主动两种方式，其中被动方式主要是设备（华为手环B6）间隔性采集数据并分析，主动方式则是通过APP主动发起监测后、设备采集心率信号、然再进行分析。</p>
+<img src="https://pic1.zhimg.com/v2-4dda6e3d712168fa6d937b9576b1574c_r.jpg" alt="preview" style="zoom: 25%;">
+
+<img src="https://exp-picture.cdn.bcebos.com/b955ead0b503c8d2f65f82fb498333bf3aef213b.jpg?x-bce-process=image%2Fresize%2Cm_lfit%2Cw_500%2Climit_1%2Fformat%2Cf_jpg%2Fquality%2Cq_80" alt="华为手表实时压力检测，全天候助您身心健康！" style="zoom: 50%;">
+
+<h3 id="B-苹果"><a href="#B-苹果" class="headerlink" title="B 苹果"></a>B 苹果</h3><p>苹果商店中有一个StressMonitor应用。</p>
+<p>在压力监测中，苹果的算法读取和处理了Apple Watch在Apple Health中记录的数据。Stress Monitor根据这些数据计算出多个HRV特征，如SDNN、RMSSD、SD1、pNN50等。进一步，这些数据被人工智能模型处理以检测压力。<a href="https://www.stress-radar.app/how-to-measure" target="_blank" rel="noopener">链接</a></p>
+<img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201113120625.png" alt="image-20210201113120625" style="zoom:80%;">
+
+<h6 id="操作方法"><a href="#操作方法" class="headerlink" title="操作方法"></a>操作方法</h6><ol>
+<li><p><strong>准备测量</strong>。进入舒适的位置，以记录您的测量结果。您可以站立或坐着-没关系。为了获得最佳结果，我们建议您将Apple Watch朝上进行测量时，将手臂放在桌子上或膝盖上。保持手腕平坦，并尽可能保持不动。如果在测量之前刚参加运动，请在测量前休息10分钟。</p>
+</li>
+<li><p>更好的配合意味着更好的读数。确保Apple Watch紧贴但手腕舒适。如果您的Apple Watch没有固定住，或者传感器无法读取您的心律，请稍微拉紧表带。 Apple Watch的背面需要触摸手腕。</p>
+</li>
+<li><p>在“呼吸”应用程序中呼吸2分钟。</p>
+<p>*按Digital Crown进入主屏幕，然后打开Breathe应用程序。<br>*旋转数字王冠以设置会话的长度。我们建议呼吸2分钟以达到最佳效果。<br>*准备好后，点击开始。正常呼吸，忽略说明。<br>*记住在呼吸时保持静止。如果呼吸时移动可能无法保存数据。<br>*等待会话结束，您的手表会轻按两次并发出提示音。完成后，您可以看到您的心律。</p>
+</li>
+<li><p>我们将尽快在Apple Health中提供您Apple Watch记录的数据，以显示压力结果。通常大约需要30秒才能获取数据。为了加快此过程，我们强烈建议您在呼吸结束后立即锁定和解锁iPhone屏幕。</p>
+</li>
+</ol>
+<blockquote>
+<ol>
+<li>Get ready for measurement.<br>Get into a comfortable position where you can record your measurement. You can stand or sit - it doesn’t matter. For the best result we recommend to rest your arms on a table or in your lap while you take a measurement with the Apple Watch facing up. Keep your wrist flat, and hold as still as you can.<br>If you were physically active just before the measurement, take a break for 10 minutes before the measurement. </li>
+<li>A better fit means better readings.<br>Make sure that your Apple Watch is snug but comfortable on your wrist. If your Apple Watch doesn’t stay in place, or the sensors aren’t reading your heart rate, tighten the band a bit. The back of your Apple Watch needs to be touching your wrist.  </li>
+<li>Breathe in Breathe app for 2 min. <ul>
+<li>Press the Digital Crown to go to the Home screen, then open the Breathe app.</li>
+<li>Turn the Digital Crown to set the session’s length. We recommend to breath for 2 min for the best result.</li>
+<li>Tap Start when you’re ready. Breath normally, ignoring the instructions.</li>
+<li>Remember to stay still while you breathe. The data may not be saved if you move while breathing.</li>
+<li>Wait until the session ends and your watch taps you twice and chimes. When you’re done, you can see your heart rate.</li>
+</ul>
+</li>
+<li>We’ll show your stress result as soon as the data, that your Apple Watch recordedbecomes available in Apple Health.<br>Usually it takes about 30 sec to get the data. To speed up the process we highly recommend to lock and unlock the screen of your iPhone right after you finish breathing. </li>
+</ol>
+</blockquote>
+<h3 id="C-小米"><a href="#C-小米" class="headerlink" title="C 小米"></a>C 小米</h3><p>小米手环5/小米手表</p>
+<p><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210203140823019.png" alt="image-20210203140823019" style="zoom:50%;"><img src="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/image-20210203141349290.png" alt="image-20210203141349290"></p>
+<h6 id="操作方法-1"><a href="#操作方法-1" class="headerlink" title="操作方法"></a>操作方法</h6><ol>
+<li>打开小米运动进入后，选择右下方我的选项。</li>
+<li>选择小米手环5的设备进入。</li>
+<li>向上滑动，点击心率监测的选项。</li>
+<li>选择压力监测选项后方的开关。</li>
+<li>点击将其打开后，手环在静止状态下，就会监测自己的压力。</li>
+</ol>
+<p>监测压力都需要处于静止状态下。</p>
+<h5 id="算法现状"><a href="#算法现状" class="headerlink" title="算法现状"></a>算法现状</h5><p>现有的手表/手环压力测试基本都是HRV心率变异性的。华为，华米，佳明等等绝大多数是用firstbeat的算法</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><p>[1] <a href="https://www.wareable.com/health-and-wellbeing/stress-monitoring-wearables-explained-7969" target="_blank" rel="noopener">可穿戴设备与压力监测</a></p>
+<p>[2] <a href="https://webs.wofford.edu/steinmetzkr/teaching/Psy150/Lecture%20PDFs/PSS.pdf" target="_blank" rel="noopener">A global measure of perceived stress</a></p>
+<p>[4] Comparison of Heart Rate Variability Measures for Mental Stress Detection</p>
+<p>[5] Stress and Recovery Analysis Method Based on 24-hour Heart Rate Variability（2014）</p>
+<p>[11] The  effect  of  mental  stress  on  heart  rate  variability  and blood pressure during computer work</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>可穿戴，算法</tag>
       </tags>
   </entry>
 </search>
