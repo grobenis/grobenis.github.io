@@ -72,6 +72,79 @@
     
     
     
+    <article id="post-redis" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/29/redis/"
+    >redis</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/29/redis/" class="article-date">
+  <time datetime="2020-08-29T12:12:48.000Z" itemprop="datePublished">2020-08-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文用来学习 redis</p>
+      
+      <a class="article-more-link" href="/2020/08/29/redis/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-C-开发面试题" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -732,101 +805,6 @@
     <footer class="article-footer">
       
       
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-OpenCV-Function" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/08/04/OpenCV-Function/"
-    >OpenCV_Function</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/08/04/OpenCV-Function/" class="article-date">
-  <time datetime="2020-08-04T07:17:31.000Z" itemprop="datePublished">2020-08-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <a id="more"></a>
-
-<h2 id="图像操作"><a href="#图像操作" class="headerlink" title="图像操作"></a>图像操作</h2><h3 id="遍历图像的四种方式"><a href="#遍历图像的四种方式" class="headerlink" title="遍历图像的四种方式"></a>遍历图像的四种方式</h3><ol>
-<li><code>at&lt;typename&gt;(i,j)</code></li>
-</ol>
-<p>Mat类提供了一个at的方法用于取得图像上的点，它是一个模板函数，可以取到任何类型的图像上的点。下面我们通过一个图像处理中的实际来说明它的用法。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">colorReduce</span><span class="params">(Mat&amp; <span class="built_in">image</span>,<span class="keyword">int</span> div)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="built_in">image</span>.rows;i++)&#123;</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="built_in">image</span>.cols;j++)&#123;</span><br><span class="line">           <span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">0</span>]=<span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">0</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">            <span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">1</span>]=<span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">1</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">           <span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">2</span>]=<span class="built_in">image</span>.at&lt;Vec3b&gt;(i,j)[<span class="number">2</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>用指针来遍历图像</li>
-</ol>
-<p>我们实际喜欢把原图传进函数内，但是在函数内我们对原图像进行了修改，而将原图作为一个结果输出，很多时候我们需要保留原图，这样我们需要一个原图的副本。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="function"><span class="keyword">void</span> <span class="title">colorReduce</span><span class="params">(<span class="keyword">const</span> Mat&amp; <span class="built_in">image</span>,Mat&amp; outImage,<span class="keyword">int</span> div)</span></span></span><br><span class="line"><span class="function"> 2 </span>&#123;</span><br><span class="line"> <span class="number">3</span>     <span class="comment">// 创建与原图像等尺寸的图像</span></span><br><span class="line"> <span class="number">4</span>     outImage.create(<span class="built_in">image</span>.<span class="built_in">size</span>(),<span class="built_in">image</span>.type());</span><br><span class="line"> <span class="number">5</span>     <span class="keyword">int</span> nr=<span class="built_in">image</span>.rows;</span><br><span class="line"> <span class="number">6</span>     <span class="comment">// 将3通道转换为1通道</span></span><br><span class="line"> <span class="number">7</span>     <span class="keyword">int</span> nl=<span class="built_in">image</span>.cols*<span class="built_in">image</span>.channels();</span><br><span class="line"> <span class="number">8</span>     <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;nr;k++)&#123;</span><br><span class="line"><span class="number">10</span>         <span class="comment">// 每一行图像的指针</span></span><br><span class="line"><span class="number">11</span>         <span class="keyword">const</span> uchar* inData=<span class="built_in">image</span>.ptr&lt;uchar&gt;(k);</span><br><span class="line"><span class="number">12</span>         uchar* outData=outImage.ptr&lt;uchar&gt;(k);</span><br><span class="line"><span class="number">13</span>         <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nl;i++)&#123;</span><br><span class="line"><span class="number">15</span>             outData[i]=inData[i]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">16</span>         &#125;</span><br><span class="line"><span class="number">17</span>     &#125;</span><br><span class="line"><span class="number">18</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>使用迭代器来遍历图像</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="function"><span class="keyword">void</span> <span class="title">colorReduce</span><span class="params">(<span class="keyword">const</span> Mat&amp; <span class="built_in">image</span>,Mat&amp; outImage,<span class="keyword">int</span> div)</span></span></span><br><span class="line"><span class="function"> 2 </span>&#123;</span><br><span class="line"> <span class="number">3</span>     outImage.create(<span class="built_in">image</span>.<span class="built_in">size</span>(),<span class="built_in">image</span>.type());</span><br><span class="line"> <span class="number">4</span>     MatConstIterator_&lt;Vec3b&gt; it_in=<span class="built_in">image</span>.<span class="built_in">begin</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">5</span>     MatConstIterator_&lt;Vec3b&gt; itend_in=<span class="built_in">image</span>.<span class="built_in">end</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">6</span>     MatIterator_&lt;Vec3b&gt; it_out=outImage.<span class="built_in">begin</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">7</span>     MatIterator_&lt;Vec3b&gt; itend_out=outImage.<span class="built_in">end</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">8</span>     <span class="keyword">while</span>(it_in!=itend_in)</span><br><span class="line"> <span class="number">9</span>     &#123;</span><br><span class="line"><span class="number">10</span>         (*it_out)[<span class="number">0</span>]=(*it_in)[<span class="number">0</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">11</span>         (*it_out)[<span class="number">1</span>]=(*it_in)[<span class="number">1</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">12</span>         (*it_out)[<span class="number">2</span>]=(*it_in)[<span class="number">2</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">13</span>         it_in++;</span><br><span class="line"><span class="number">14</span>         it_out++;</span><br><span class="line"><span class="number">15</span>     &#125;</span><br><span class="line"><span class="number">16</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>最高效的方法</li>
-</ol>
-<p>当不对行进行填补的时候，图像可被视为一个长为W x H的一维数组。用isContinuous来判断是否对行进行的填补。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n1 = <span class="built_in">image</span>.rows;</span><br><span class="line"><span class="keyword">int</span> nc = <span class="built_in">image</span>.cols * <span class="built_in">image</span>.channels（）;</span><br><span class="line"><span class="keyword">if</span>（<span class="built_in">image</span>.isContinuous（））<span class="comment">//判断是否对行有额外的填补像素，返回值为真，则没有填补。</span></span><br><span class="line">&#123;</span><br><span class="line">    nc = nc * n1;</span><br><span class="line">    n1 = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>（<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;n1; i ++）<span class="comment">//若图像是连续的，则只循环一次</span></span><br><span class="line">&#123;</span><br><span class="line">    uchar * data = <span class="built_in">image</span>.ptr &lt;uchar&gt;（i）;</span><br><span class="line">    <span class="keyword">for</span>（<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;nc; j ++）</span><br><span class="line">    &#123;</span><br><span class="line">        data [j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/" rel="tag">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F/" rel="tag">图像</a></li></ul>
-
 
     </footer>
 
