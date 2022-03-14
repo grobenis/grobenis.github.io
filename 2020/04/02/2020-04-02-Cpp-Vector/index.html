@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    C++ 简析容器Vector |  曾是少年
+    C++ 容器Vector |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  C++ 简析容器Vector
+  C++ 容器Vector
 </h1>
   
 
@@ -119,10 +119,20 @@
 <li>iterator insert(iterator it,const_iterator first,const_iterator last):向量中迭代器指向元素前插入另一个相同类型向量的[first,last)间的数据</li>
 </ul>
 <h3 id="3-删除函数"><a href="#3-删除函数" class="headerlink" title="3.删除函数"></a>3.删除函数</h3><ul>
-<li>iterator erase(iterator it):删除向量中迭代器指向元素</li>
-<li>iterator erase(iterator first,iterator last):删除向量中[first,last)中元素</li>
-<li>void pop_back():删除向量中最后一个元素</li>
-<li>void clear():清空向量中所有元素</li>
+<li><p>iterator erase(iterator it):删除向量中迭代器指向元素</p>
+</li>
+<li><p>iterator erase(iterator first,iterator last):删除向量中[first,last)中元素</p>
+</li>
+<li><p>void pop_back():删除向量中最后一个元素</p>
+</li>
+<li><p>void clear():清空向量中所有元素</p>
+</li>
+<li><p>也可以使用swap()函数与空向量进行交换，不但可以改变size还可以改变容量（cap）；</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;().swap(a);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
 </ul>
 <h3 id="4-遍历函数"><a href="#4-遍历函数" class="headerlink" title="4.遍历函数"></a>4.遍历函数</h3><ul>
 <li>reference at(int pos):返回pos位置元素的引用</li>
@@ -319,19 +329,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/04/02/2020-04-02-LeetCode-CheckDaily/" class="article-nav-link">
+      <a href="/2020/04/04/2020-04-04-SLAM-CV/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            LeetCode 每日打卡4-2
+            SLAM 岗位求职与简历书写
           
         </div>
       </a>
     
     
-      <a href="/2020/04/02/C++%E5%AE%B9%E5%99%A8/" class="article-nav-link">
+      <a href="/2020/03/31/2020-03-31-%E5%90%84%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">C++ 简析容器Vector</div>
+        <div class="article-nav-title">C++ 排序算法</div>
       </a>
     
   </nav>
@@ -404,7 +414,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2021
+        2019-2022
         guoben
       </li>
       <li>

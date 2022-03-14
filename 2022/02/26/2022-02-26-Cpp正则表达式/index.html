@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    C++正则表达式 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2022-02-26-Cpp正则表达式" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  C++正则表达式
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-date">
+  <time datetime="2022-02-26T04:59:41.000Z" itemprop="datePublished">2022-02-26</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/C/">C++</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.9k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">8分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>在实际应用中，有效得利用正则表达式可以极大地提高工作效率。借着LeetCode每日一题，今天学习一下C++语言中的正则表达式。</p>
+<p>学习自：</p>
+<ol>
+<li><a href="https://www.cnblogs.com/jerrywossion/p/10086051.html" target="_blank" rel="noopener">C++正则表达式</a></li>
+<li><a href="https://leetcode-cn.com/problems/complex-number-multiplication/" target="_blank" rel="noopener">LeetCode复数乘法</a></li>
+</ol>
+<a id="more"></a>
+
+<h2 id="C-正则表达式"><a href="#C-正则表达式" class="headerlink" title="C++正则表达式"></a>C++正则表达式</h2><h3 id="一-简介"><a href="#一-简介" class="headerlink" title="一 简介"></a>一 简介</h3><p>​        C++ 中的regex 库提供了用于表示正则表达式和匹配结果的基本类型，以及搜寻、匹配、替换等函数。使用正则表达式处理字符串的流程包括：</p>
+<ol>
+<li>用正则表达式定义要匹配的字符串的<strong>规则</strong>；</li>
+<li>然后对目标字符串进行<strong>匹配</strong>；</li>
+<li>最后对匹配到的<strong>结果</strong>进行操作。</li>
+</ol>
+<h3 id="二-基本类型"><a href="#二-基本类型" class="headerlink" title="二 基本类型"></a>二 基本类型</h3><h4 id="2-1-basic-regex-及其实例化类型-regex、wregex"><a href="#2-1-basic-regex-及其实例化类型-regex、wregex" class="headerlink" title="2.1 basic_regex 及其实例化类型 regex、wregex"></a>2.1 <code>basic_regex</code> 及其实例化类型 <code>regex</code>、<code>wregex</code></h4><p>模板类型 <code>basic_regex</code> 用于表示正则表达式对象，<code>&lt;regex&gt;</code> 库提供了它的两种实例化类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Copytypedef basic_regex&lt;<span class="keyword">char</span>&gt;     regex;</span><br><span class="line"><span class="keyword">typedef</span> basic_regex&lt;<span class="keyword">wchar_t</span>&gt;  wregex;</span><br></pre></td></tr></table></figure>
+
+<p>构造函数一般接受一个字符串作为参数，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Copystd::regex <span class="title">reg</span> <span class="params">(<span class="string">"[0-9A-Z]+"</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>构造函数中还有一个默认参数flags，默认值为 <code>std::regex::ECMAScript</code>，该参数可以用来设置正则表达式所采用的语法，如 <code>std::regex::grep, std::regex::awk</code> 等，也可以设置 case insensitive。flags 的多个值用比特位 OR 操作<code>|</code>连接，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Copystd::regex <span class="title">ninth</span> <span class="params">(<span class="string">"\\bd\\w+"</span>, ECMAScript | icase )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>但是正则语法的flag只能设置一种。</p>
+<p>具体的构造函数声明及fags值的定义参考<a href="http://www.cplusplus.com/reference/regex/basic_regex/basic_regex/" target="_blank" rel="noopener">basic_regex::basic_regex - C++ Reference</a>。</p>
+<h4 id="2-2-match-results、sub-match-及其实例化类型"><a href="#2-2-match-results、sub-match-及其实例化类型" class="headerlink" title="2.2 match_results、sub_match 及其实例化类型"></a>2.2 <code>match_results</code>、<code>sub_match</code> 及其实例化类型</h4><p><code>match_results</code> 是一种 container-like 的模板类，用于存放对目标串执行完 regex matching 操作后匹配到的结果，其中的每个元素（即每个匹配结果）是一个 <code>sub_match</code> 的实例化对象。</p>
+<p><code>match_results</code> 的实例类型有下列四种：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Copytypedef match_results&lt;<span class="keyword">const</span> <span class="keyword">char</span>*&gt; cmatch;</span><br><span class="line"><span class="keyword">typedef</span> match_results&lt;<span class="keyword">const</span> <span class="keyword">wchar_t</span>*&gt; wcmatch;</span><br><span class="line"><span class="keyword">typedef</span> match_results&lt;<span class="built_in">string</span>::const_iterator&gt; smatch;</span><br><span class="line"><span class="keyword">typedef</span> match_results&lt;<span class="built_in">wstring</span>::const_iterator&gt; wsmatch;</span><br></pre></td></tr></table></figure>
+
+<p>与 <code>match_results</code> 相似，<code>sub_match</code> 的实例化类型也有四种：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Copytypedef sub_match&lt;<span class="keyword">const</span> <span class="keyword">char</span>*&gt; csub_match;</span><br><span class="line"><span class="keyword">typedef</span> sub_match&lt;<span class="keyword">const</span> <span class="keyword">wchar_t</span>*&gt; wcsub_match;</span><br><span class="line"><span class="keyword">typedef</span> sub_match&lt;<span class="built_in">string</span>::const_iterator&gt; ssub_match;</span><br><span class="line"><span class="keyword">typedef</span> sub_match&lt;<span class="built_in">wstring</span>::const_iterator&gt; wssub_match;</span><br></pre></td></tr></table></figure>
+
+<p><code>sub_match</code> 对象存储的不是匹配到的字符串本身，而是指向这个串开始（initial）和结束后一个字符（past-the-end）的 <code>bidirectional iterators</code>，但是它们表现起来类似于一个字符串：</p>
+<ul>
+<li>成员函数 <code>length</code> 返回字符串长度；</li>
+<li><code>compare</code> 用于和一个字符串或另一个 <code>sub_match</code> 对象比较，相等则返回0，不等则：若它比参数小（字典序）返回一个负值，否则返回一个正值；</li>
+<li><code>str</code> 返回对应的字符串。</li>
+</ul>
+<p>根据一次匹配的结果，<code>match_results</code> 可能为空也可能不空，使用 <code>match_results::empty()</code> 来判空，使用 <code>match_results::size()</code> 来获取元素个数。对于一个不空的 <code>match_results</code> 对象，其第一个 <code>sub_match</code> 元素（<code>[0]</code>）对应着整个<strong>完整匹配</strong>，后续的元素对应着正则表达式中的 sub-match（即用<code>()</code>括起来的各个分组匹配），未匹配的部分可以通过 <code>prefix</code> 和 <code>suffix</code> 来获取。下面是一个简单的例子，参考自 <a href="https://www.boost.org/doc/libs/1_46_1/libs/regex/doc/html/boost_regex/captures.html" target="_blank" rel="noopener">boost的文档</a>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;regex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> target = <span class="string">"@abc def--"</span>;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::regex <span class="title">e</span><span class="params">(<span class="string">"(\\w+)\\W+(\\w+)"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::smatch sm; </span><br><span class="line">    <span class="built_in">std</span>::regex_search(target, sm, e); </span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sm.prefix: "</span> &lt;&lt; sm.prefix() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sm.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sm["</span> &lt;&lt; i &lt;&lt; <span class="string">"]: "</span> &lt;&lt; sm[i] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sm.suffix: "</span> &lt;&lt; sm.suffix() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">CopyOutput:</span><br><span class="line">======================================</span><br><span class="line">sm.prefix: @</span><br><span class="line">sm[<span class="number">0</span>]: abc def</span><br><span class="line">sm[<span class="number">1</span>]: abc</span><br><span class="line">sm[<span class="number">2</span>]: def</span><br><span class="line">sm.suffix: --</span><br></pre></td></tr></table></figure>
+
+<h3 id="三-正则操作"><a href="#三-正则操作" class="headerlink" title="三 正则操作"></a>三 正则操作</h3><h4 id="3-1-regex-match"><a href="#3-1-regex-match" class="headerlink" title="3.1 regex_match"></a>3.1 <code>regex_match</code></h4><p>用于将目标串和正则表达式匹配，返回一个 bool 值，<code>true</code> 为匹配，<code>false</code> 为不匹配。匹配的含义是目标字符串必须<strong>完全</strong>和正则表达式相匹配，不能有多余的字符，如果需要部分匹配则应使用<code>regex_search</code>。函数签名有很多，详见<a href="http://www.cplusplus.com/reference/regex/regex_match/" target="_blank" rel="noopener">cplusplus.com</a>。</p>
+<p>构造函数分成两种：</p>
+<ul>
+<li>一种接受一个 <code>match_results</code> 作为对象，参数顺序为：<br>- 待匹配的字符串，<br>- <code>match_results</code> 对象，<br>- 正则表达式对象；</li>
+<li>另一种没有 <code>match_results</code>，参数顺序为：<br>- 待匹配的字符串，<br>- 正则表达式对象。<br>此外，构造函数还接受一个可选的 <code>flags</code> 参数，用于控制匹配选项，详见上述链接。</li>
+</ul>
+<h4 id="3-2-regex-search"><a href="#3-2-regex-search" class="headerlink" title="3.2 regex_search"></a>3.2 <code>regex_search</code></h4><p>只要目标字串中有一个字串（无论该子串在字符串中什么位置）能和正则表达式相匹配就返回<code>true</code>。函数签名同<code>regex_match</code>相似。</p>
+<h4 id="3-3-regex-replace"><a href="#3-3-regex-replace" class="headerlink" title="3.3 regex_replace"></a>3.3 <code>regex_replace</code></h4><p>该函数有多个重载版本，常用的版本中参数顺序基本上为 <code>s</code>，<code>rgx</code>，<code>fmt</code>，<code>flags</code>，其中：</p>
+<ul>
+<li><code>s</code> 为要处理的字符串，</li>
+<li><code>rgx</code> 为要匹配的正则表达式，</li>
+<li><code>fmt</code> 为要替换的字符串，其中可以包含格式化字符，</li>
+<li><code>flags</code>为可选的参数，用于设置一些选项。</li>
+</ul>
+<p>参数 <code>fmt</code> 中可以包含下列格式化字符：</p>
+<table>
+<thead>
+<tr>
+<th align="center">characters</th>
+<th>replacement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$n</td>
+<td>表示第n组匹配，n大于0</td>
+</tr>
+<tr>
+<td align="center">$&amp;</td>
+<td>表示整个匹配</td>
+</tr>
+<tr>
+<td align="center">$`</td>
+<td>prefix</td>
+</tr>
+<tr>
+<td align="center">$´</td>
+<td>suffix</td>
+</tr>
+<tr>
+<td align="center">$$</td>
+<td>表示<code>$</code>这个字符本身</td>
+</tr>
+</tbody></table>
+<p>在替换时，会先将参数 <code>fmt</code> 中的格式化字符替换成相应的内容，然后再将这个字符串替换掉目标字符串中的完整匹配（相当于 <code>$&amp;</code> 或 <code>match_results[0]</code>）。</p>
+<hr>
+<h3 id="LeetCode例题-复数乘法"><a href="#LeetCode例题-复数乘法" class="headerlink" title="LeetCode例题 : 复数乘法"></a>LeetCode例题 : <strong>复数乘法</strong></h3><p>题目：复数 可以用字符串表示，遵循 “实部+虚部i” 的形式，并满足下述条件：</p>
+<ul>
+<li>实部是一个整数，取值范围是 [-100, 100]</li>
+<li>虚部也是一个整数，取值范围是 [-100, 100]</li>
+<li>$i^2 == -1$</li>
+</ul>
+<p>给你两个字符串表示的复数 num1 和 num2 ，请你遵循复数表示形式，返回表示它们乘积的字符串。 </p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：num1 &#x3D; &quot;1+1i&quot;, num2 &#x3D; &quot;1+1i&quot;</span><br><span class="line">输出：&quot;0+2i&quot;</span><br><span class="line">解释：(1 + i) * (1 + i) &#x3D; 1 + i2 + 2 * i &#x3D; 2i ，你需要将它转换为 0+2i 的形式。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：num1 &#x3D; &quot;1+-1i&quot;, num2 &#x3D; &quot;1+-1i&quot;</span><br><span class="line">输出：&quot;0+-2i&quot;</span><br><span class="line">解释：(1 - i) * (1 - i) &#x3D; 1 + i2 - 2 * i &#x3D; -2i ，你需要将它转换为 0+-2i 的形式。</span><br></pre></td></tr></table></figure>
+
+<p>自己写的不用正则表达式的笨办法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">complexNumberMultiply</span><span class="params">(<span class="built_in">string</span> num1, <span class="built_in">string</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> a1 = <span class="number">0</span>, b1 = <span class="number">0</span>, a2 = <span class="number">0</span>,b2 = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">string</span> temp_num_str = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">bool</span> aflag = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">int</span> temp_num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> temp_flag = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num1.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(num1[i]==<span class="string">'-'</span>)&#123;</span><br><span class="line">                temp_num_str = <span class="string">""</span>;</span><br><span class="line">                temp_flag = <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(num1[i]==<span class="string">'i'</span>)&#123;</span><br><span class="line">                temp_num = stoi(temp_num_str);</span><br><span class="line">                temp_num_str = <span class="string">""</span>;</span><br><span class="line">                b1 = temp_flag * temp_num;</span><br><span class="line">                temp_flag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(num1[i]==<span class="string">'+'</span>)&#123;</span><br><span class="line">                temp_num = stoi(temp_num_str);</span><br><span class="line">                temp_num_str = <span class="string">""</span>;</span><br><span class="line">                a1 = temp_flag * temp_num;</span><br><span class="line">                temp_flag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                temp_num_str+=num1[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        temp_num_str = <span class="string">""</span>;</span><br><span class="line">        aflag = <span class="literal">false</span>;</span><br><span class="line">        temp_num = <span class="number">0</span>;</span><br><span class="line">        temp_flag = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num2.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(num2[i]==<span class="string">'-'</span>)&#123;</span><br><span class="line">                temp_num_str = <span class="string">""</span>;</span><br><span class="line">                temp_flag = <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(num2[i]==<span class="string">'i'</span>)&#123;</span><br><span class="line">                <span class="built_in">cout</span>&lt;&lt;temp_num_str&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">                temp_num = stoi(temp_num_str);</span><br><span class="line">                temp_num_str = <span class="string">""</span>;</span><br><span class="line">                b2 = temp_flag*temp_num;</span><br><span class="line">                temp_flag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(num2[i]==<span class="string">'+'</span>)&#123;</span><br><span class="line">                <span class="built_in">cout</span>&lt;&lt;temp_num_str&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">                temp_num = stoi(temp_num_str);</span><br><span class="line">                temp_num_str = <span class="string">""</span>;</span><br><span class="line">                a2 = temp_flag*temp_num;</span><br><span class="line">                temp_flag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                temp_num_str+=num2[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">string</span> ret = to_string(a1*a2-b1*b2) + <span class="string">"+"</span> + to_string(b1*a2+a1*b2) + <span class="string">'i'</span>;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这样的代码，真可谓是又臭又长；接下来看一下LeetCode官方给出的解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">complexNumberMultiply</span><span class="params">(<span class="built_in">string</span> num1, <span class="built_in">string</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="function">regex <span class="title">re</span><span class="params">(<span class="string">"\\+|i"</span>)</span></span>; </span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">complex1</span><span class="params">(sregex_token_iterator(num1.<span class="built_in">begin</span>(), num1.<span class="built_in">end</span>(), re, <span class="number">-1</span>), <span class="built_in">std</span>::sregex_token_iterator())</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">complex2</span><span class="params">(sregex_token_iterator(num2.<span class="built_in">begin</span>(), num2.<span class="built_in">end</span>(), re, <span class="number">-1</span>), <span class="built_in">std</span>::sregex_token_iterator())</span></span>;</span><br><span class="line">        <span class="keyword">int</span> real1 = stoi(complex1[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">int</span> imag1 = stoi(complex1[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">int</span> real2 = stoi(complex2[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">int</span> imag2 = stoi(complex2[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">return</span> to_string(real1 * real2 - imag1 * imag2) + <span class="string">"+"</span> + to_string(real1 * imag2 + imag1 * real2) + <span class="string">"i"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>官方题解使用了正则表达式，代码简洁高效。</p>
+<h3 id="取巧解法"><a href="#取巧解法" class="headerlink" title="取巧解法"></a>取巧解法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">complexNumberMultiply</span><span class="params">(<span class="built_in">string</span> a, <span class="built_in">string</span> b)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> a1, b1, a2, b2;</span><br><span class="line">        <span class="built_in">sscanf</span>(a.c_str(), <span class="string">"%d+%di"</span>, &amp;a1, &amp;b1);</span><br><span class="line">        <span class="built_in">sscanf</span>(b.c_str(), <span class="string">"%d+%di"</span>, &amp;a2, &amp;b2);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> aa = a1 * a2 - b1 * b2;</span><br><span class="line">        <span class="keyword">int</span> bb = a1 * b2 + a2 * b1;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">string</span>(to_string(aa) + <span class="string">"+"</span> + to_string(bb) + <span class="string">"i"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag">正则表达式</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2022/03/01/2022-03-01-VINS-mono/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            2020-03-01_VINS_mono
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/02/19/2022-02-19-SoftWare-Contest-springlinking/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">软件大赛：小米手表智控电视</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2022
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+  </div>
+</body>
+
+</html>
