@@ -72,71 +72,6 @@
     
     
     
-    <article id="post-2022-03-16-Cpp-List" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/03/16/2022-03-16-Cpp-List/"
-    >2022-03-16-Cpp_List</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2022/03/16/2022-03-16-Cpp-List/" class="article-date">
-  <time datetime="2022-03-16T15:00:15.000Z" itemprop="datePublished">2022-03-16</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <a id="more"></a>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
     <article id="post-2022-03-16-Souce_static_in_project" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -178,7 +113,12 @@
       
 
       
-      <p>简尔言之：<br>RAM: valgrind –tool=massif –stacks=yes –time-unit=B –alloc-fn=generic_malloc  ./demo<br>ROM: arm-none-eabi-size -t *.a</p>
+      <p>简尔言之：</p>
+<ol>
+<li>RAM: valgrind –tool=massif –stacks=yes –time-unit=B –alloc-fn=generic_malloc  ./demo</li>
+<li>ROM: arm-none-eabi-size -t *.a</li>
+<li>检查内存泄漏：valgrind –tool=memcheck –leak-check=full –show-reachable=yes –trace-children=yes build_linux-x86_64/main</li>
+</ol>
       
       <a class="article-more-link" href="/2022/03/16/2022-03-16-Souce_static_in_project/">阅读更多...</a>
       
@@ -219,7 +159,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2022/03/01/2022-03-01-VINS-mono/"
-    >2020-03-01_VINS_mono</a
+    >VINS_mono详解</a
   >
 </h2>
   
@@ -784,6 +724,79 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-09-14-计算机网络应用层HTTP协议" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/"
+    >HTTP协议</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/" class="article-date">
+  <time datetime="2020-09-14T02:22:42.000Z" itemprop="datePublished">2020-09-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文学习自《图解HTTP》，目的是为了系统的学习这个协议</p>
+      
+      <a class="article-more-link" href="/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/" rel="tag">HTTPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
 
 
     </footer>

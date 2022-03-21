@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">259字</span>
+            <span class="post-count">281字</span>
         </span>
     </span>
 
@@ -98,20 +98,25 @@
       
 
       
-      <p>简尔言之：<br>RAM: valgrind –tool=massif –stacks=yes –time-unit=B –alloc-fn=generic_malloc  ./demo<br>ROM: arm-none-eabi-size -t *.a</p>
+      <p>简尔言之：</p>
+<ol>
+<li>RAM: valgrind –tool=massif –stacks=yes –time-unit=B –alloc-fn=generic_malloc  ./demo</li>
+<li>ROM: arm-none-eabi-size -t *.a</li>
+<li>检查内存泄漏：valgrind –tool=memcheck –leak-check=full –show-reachable=yes –trace-children=yes build_linux-x86_64/main</li>
+</ol>
 <a id="more"></a>
 
 <h2 id="RAM统计"><a href="#RAM统计" class="headerlink" title="RAM统计"></a>RAM统计</h2><p>统计工具Valgrind<br>统计内存占用可以用下valgrind的工具  ubuntu可以使用apt直接安装的   使用的方法是写一个demo  调用算法的接口   编译成可执行文件    然后通过valgrind执行它。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">valgrind --tool&#x3D;massif --stacks&#x3D;yes --time-unit&#x3D;B --alloc-fn&#x3D;generic_malloc  .&#x2F;swimming_analyzer_demo</span><br></pre></td></tr></table></figure>
 <p>然后在当前目录会生成一个文件  比如：massif.out.1250590    后面的数字是个id<br>再安装一个软件  <code>massif-visualizer</code>,  使用这个软件打开生成的这个文件massif.out.<id>.</id></p>
-<p><img src="/2022/03/16/2022-03-16-Souce_static_in_project/image-20220316163119363.png" alt="image-20220316163119363"></p>
+<p><img src="images/2022-03-16-Souce_static_in_project/image-20220316163119363.png" alt="image-20220316163119363"></p>
 <p>也可以辅助分析它的内存RAM消耗。</p>
 <h2 id="ROM统计"><a href="#ROM统计" class="headerlink" title="ROM统计"></a>ROM统计</h2><p>关于程序占用ROM的计算借助arm交叉编译器实现</p>
 <p>可以通过以下命令查看文件占用flash和ram的大小。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arm-none-eabi-size -t *.a</span><br></pre></td></tr></table></figure>
 
 <p>显示结果如下：</p>
-<p><img src="/2022/03/16/2022-03-16-Souce_static_in_project/image-20220318103734602.png" alt="image-20220318103734602"></p>
+<p><img src="images/2022-03-16-Souce_static_in_project/image-20220318103734602.png" alt="/image-20220318103734602"></p>
 <p>上图中，TOTALS所在的dec指示的数字即是占用ROM空间的情况，单位为字节（Byte）。上图中占用为4863/1024 =4.74KB。</p>
 
       
@@ -200,19 +205,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2022/03/16/2022-03-16-Cpp-List/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            2022-03-16-Cpp_List
-          
-        </div>
-      </a>
-    
     
       <a href="/2022/03/01/2022-03-01-VINS-mono/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">2020-03-01_VINS_mono</div>
+        <div class="article-nav-title">VINS_mono详解</div>
       </a>
     
   </nav>
