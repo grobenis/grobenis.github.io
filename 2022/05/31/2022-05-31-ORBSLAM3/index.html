@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    移动端性能优化 |  曾是少年
+    2022-05-31-ORBSLAM3 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-移动端性能优化" class="article article-type-post" itemscope
+  <article id="post-2022-05-31-ORBSLAM3" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  移动端性能优化
+  2022-05-31-ORBSLAM3
 </h1>
   
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2022/04/05/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2022-04-05T15:55:50.000Z" itemprop="datePublished">2022-04-05</time>
+      <a href="/2022/05/31/2022-05-31-ORBSLAM3/" class="article-date">
+  <time datetime="2022-05-31T09:57:26.000Z" itemprop="datePublished">2022-05-31</time>
 </a>
       
       
@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">0字</span>
+            <span class="post-count">604字</span>
         </span>
     </span>
 
@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">2分钟</span>
         </span>
     </span>
 </div>
@@ -80,6 +80,8 @@
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -92,7 +94,19 @@
       
 
       
-      <a id="more"></a>
+      <p>原文链接：<a href="https://arxiv.org/abs/2007.11898" target="_blank" rel="noopener">https://arxiv.org/abs/2007.11898</a></p>
+<p>参考翻译文章：<a href="https://zhuanlan.zhihu.com/p/403299796" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/403299796</a></p>
+<a id="more"></a>
+
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>本文提出的ORBSLAM3，采用<strong>针孔相机和鱼眼镜头模型</strong>，<strong>第一个在单目、双目以及RGBD相机上都能执行纯视觉、视觉-惯性以及多地图的SLAM系统</strong>。</p>
+<ol>
+<li>第一个主要的创新点是<strong>基于特征的紧耦合视觉惯性SLAM系统</strong>，<strong>完全依赖于最大后验估计MAP算法</strong>，甚至在IMU初始化阶段期间。这个SLAM系统，<strong>在实时的、小型或大型、室内或室外环境中，都能鲁棒地运行系统</strong>，并且<strong>要比之前的方法精确2到5倍</strong>。</li>
+<li>第二个主要的创新点是<strong>多地图系统</strong>，依赖于一个提升召回率的新的位置识别算法。基于此，ORB-SLAM3在长期缺乏视觉信息的情况下依旧能够运行：当特征跟踪丢失时，它将会开启一个新地图，遇到建图过的区域将会无缝合并之前的地图。与那些只是用前几秒信息的视觉里程计系统相比，ORBSLAM3系统是第一个，能在每个算法阶段，复用之前的所有信息。这个允许包括在光束平差法共视关键帧阶段，其提供提升精度的高视差观测，即使在时间序列上是分隔的，或者他们来自之前的建图会话Session。</li>
+</ol>
+<p>我们的实验显示，在所有的传感器配置中，ORBSLAM3和已有文献中最好的系统一样鲁棒，并且要更加精确。注意的是，我们的双目-惯性SLAM在EuRoC飞行器数据集上达到了平均3.6cm的精度，在TUM-VI（AR/VR场景代表）快速手持运动环境的室内数据集中达到了平均9mm的精度。为了社区的明天，本文开源了代码。</p>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>表1给出了最具代表的视觉和视觉-惯性系统的总结，显示了用于估计和数据关联的主要技术。定性的精度对比和鲁棒性评级包括在表中，对于现代SLAM系统主要基于第7小节中介绍的对比方法，而针对经典的系统，主要基于文献【2】【52】中先前的比较。</p>
+<p>不同SLAM系统之间的相同点与不通电</p>
+<p><img src="/2022/05/31/2022-05-31-ORBSLAM3/image-20220531180642864.png" alt="image-20220531180642864"></p>
 
       
       <!-- reward -->
@@ -162,7 +176,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2022/04/05/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2022/05/31/2022-05-31-ORBSLAM3/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -178,19 +192,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2022/05/31/2022-05-31-ORBSLAM3/" class="article-nav-link">
+      <a href="/2022/05/31/2022-05-31-SLAM_Feature_detecter/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            2022-05-31-ORBSLAM3
+            SLAM中常用的角点检测算法
           
         </div>
       </a>
     
     
-      <a href="/2022/04/05/%E5%AE%89%E5%8D%93%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/" class="article-nav-link">
+      <a href="/2022/04/05/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">安卓面试题汇总</div>
+        <div class="article-nav-title">移动端性能优化</div>
       </a>
     
   </nav>

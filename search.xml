@@ -2920,9 +2920,9 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>多线程程序包含可以同时运行的两个或多个部分。这样的程序中的每个部分称为一个线程，每个线程定义了一个单独的执行路径。</p>
 <h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>线程在Unix系统下，通常被称为轻量级的进程，线程虽然不是进程，但却可以看作是Unix进程的表亲，同一进程中的多条线程将<strong>共享该进程中的全部系统资源，如虚拟地址空间，文件描述符和信号处理等等</strong>。但同一进程中的多个线程<strong>有各自的调用栈(call stack)，自己的寄存器环境（register context)，自己的线程本地存储(thread-local storage)</strong>。 一个进程可以有很多线程，每条线程并行执行不同的任务。</p>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>线程可以提高应用程序在多核环境下处理诸如文件I/O或者socket I/O等会产生堵塞的情况的表现性能。在Unix系统中，一个进程包含很多东西，包括可执行程序以及一大堆的诸如文件描述符地址空间等资源。在很多情况下，完成相关任务的不同代码间需要交换数据。如果采用多进程的方式，那么通信就需要在用户空间和内核空间进行频繁的切换，开销很大。但是如果使用多线程的方式，因为可以使用共享的全局变量，所以线程间的通信（数据交换）变得非常高效。</p>
-<h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><h4 id="一个简单的Demo"><a href="#一个简单的Demo" class="headerlink" title="一个简单的Demo"></a>一个简单的Demo</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">helloworld</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"hello world \n"</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="comment">//开启一个线程 </span></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::thread <span class="title">t</span><span class="params">(helloworld)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"hello world main thread\n"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//线程的终结</span></span><br><span class="line">    t.join(); </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><h3 id="一个简单的Demo"><a href="#一个简单的Demo" class="headerlink" title="一个简单的Demo"></a>一个简单的Demo</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">helloworld</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"hello world \n"</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="comment">//开启一个线程 </span></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::thread <span class="title">t</span><span class="params">(helloworld)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"hello world main thread\n"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//线程的终结</span></span><br><span class="line">    t.join(); </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="多线程库"><a href="#多线程库" class="headerlink" title="多线程库"></a>多线程库</h4><p><code>C++11</code>中终于提供了多线程的标准库，提供了线程管理、保护共享数据、线程间同步操作、原子操作等类。</p>
+<h3 id="多线程库"><a href="#多线程库" class="headerlink" title="多线程库"></a>多线程库</h3><p><code>C++11</code>中终于提供了多线程的标准库，提供了线程管理、保护共享数据、线程间同步操作、原子操作等类。</p>
 <p>多线程库对应的头文件是<code>#include&lt;thread&gt;</code>，类名为<code>std::thread</code>。</p>
 <p>一个简单的串行程序如下：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"I'm function_1()"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    function_1();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2939,7 +2939,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <li>这个例子中选择了使用<code>t1.join()</code>，主线程会一直阻塞着，直到子线程完成，<code>join()</code>函数的另一个任务是回收该线程中使用的资源。</li>
 </ol>
 <p><strong>线程对象和对象内部管理的线程的生命周期并不一样</strong>，如果线程执行的快，可能内部的线程已经结束了，但是线程对象还活着，也有可能线程对象已经被析构了，内部的线程还在运行。</p>
-<h4 id="线程创建"><a href="#线程创建" class="headerlink" title="线程创建"></a>线程创建</h4><p>下面的程序，我们可以用它来创建一个 POSIX 线程：</p>
+<h3 id="线程创建"><a href="#线程创建" class="headerlink" title="线程创建"></a>线程创建</h3><p>下面的程序，我们可以用它来创建一个 POSIX 线程：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;pthread.h&gt;</span><br><span class="line">pthread_create (thread, attr, start_routine, arg)</span><br></pre></td></tr></table></figure>
 
 <p>在这里，<strong>pthread_create</strong> 创建一个新的线程，并让它可执行。下面是关于参数的说明：</p>
@@ -2968,12 +2968,39 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 </tr>
 </tbody></table>
 <p>创建线程成功时，函数返回 0，若返回值不为 0 则说明创建线程失败。</p>
-<h4 id="终止线程"><a href="#终止线程" class="headerlink" title="终止线程"></a>终止线程</h4><p>使用下面的程序，我们可以用它来终止一个 POSIX 线程：</p>
+<h3 id="终止线程"><a href="#终止线程" class="headerlink" title="终止线程"></a>终止线程</h3><p>使用下面的程序，我们可以用它来终止一个 POSIX 线程：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;pthread.h&gt;</span><br><span class="line">pthread_exit (status)</span><br></pre></td></tr></table></figure>
 
 <p>在这里，<strong>pthread_exit</strong> 用于显式地退出一个线程。通常情况下，pthread_exit() 函数是在线程完成工作后无需继续存在时被调用。</p>
 <p>如果 main() 是在它所创建的线程之前结束，并通过 pthread_exit() 退出，那么其他线程将继续执行。否则，它们将在 main() 结束时自动被终止。</p>
-<h2 id="信号量机制"><a href="#信号量机制" class="headerlink" title="信号量机制"></a>信号量机制</h2><h3 id="0-C-中信号量的使用"><a href="#0-C-中信号量的使用" class="headerlink" title="0 C++中信号量的使用"></a>0 C<a href="https://www.jianshu.com/p/4fdad407068b" target="_blank" rel="noopener">++中信号量的使用</a></h3><h4 id="1、sem-init函数"><a href="#1、sem-init函数" class="headerlink" title="1、sem_init函数"></a>1、sem_init函数</h4><p>sem_init函数是Posix信号量操作中的函数。sem_init() 初始化一个定位在 sem 的匿名信号量。value 参数指定信号量的初始值。 pshared 参数指明信号量是由进程内线程共享，还是由进程之间共享。如果 pshared 的值为 0，那么信号量将被进程内的线程共享，并且应该放置在这个进程的所有线程都可见的地址上(如全局变量，或者堆上动态分配的变量)。</p>
+<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><h3 id="lock-guard-和-unique-lock-的简单使用"><a href="#lock-guard-和-unique-lock-的简单使用" class="headerlink" title="lock_guard 和 unique_lock 的简单使用"></a>lock_guard 和 unique_lock 的简单使用</h3><p>   在 C++1x 之后，我们编写多线程可以直接使用标准库里的函数，不必根据平台的不同使用 posix_thread 之类的库了，这样就实现了跨平台的编程。</p>
+<h4 id="一、std-lock-guard-的介绍"><a href="#一、std-lock-guard-的介绍" class="headerlink" title="一、std::lock_guard 的介绍"></a>一、std::lock_guard 的介绍</h4><p>​    std::lock_guard 的原型是一个模板类，定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Mutex</span>&gt; <span class="title">class</span> <span class="title">lock_guard</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    lock_guard 通常用来管理一个 std::mutex 类型的对象，通过定义一个 lock_guard 一个对象来管理 std::mutex 的上锁和解锁。在 lock_guard 初始化的时候进行上锁，然后在 lock_guard 析构的时候进行解锁。这样避免了我们对 std::mutex 的上锁和解锁的管理。注意，lock_guard 并不管理 std::mutex 对象的声明周期，也就是说在使用 lock_guard 的过程中，如果 std::mutex 的对象被释放了，那么在 lock_guard 析构的时候进行解锁就会出现空指针错误之类。</p>
+<h4 id="二、std-unique-lock-的介绍"><a href="#二、std-unique-lock-的介绍" class="headerlink" title="二、std::unique_lock 的介绍"></a>二、std::unique_lock 的介绍</h4><p>​    unique_lock 和 lock_guard 一样，对 std::mutex 类型的互斥量的上锁和解锁进行管理，一样也不管理 std::mutex 类型的互斥量的声明周期。但是它的使用更加的灵活，支持的构造函数如下：</p>
+<p><img src="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/image-20220626225902414.png" alt="image-20220626225902414"></p>
+<ol>
+<li><p>默认构造函数，新创建的 unique_lock 对象不管理任何 Mutex 对象。</p>
+</li>
+<li><p>locking 初始化，新创建的 unique_lock 对象管理 Mutex 对象 m，并尝试调用 m.lock() 对 Mutex 对象进行上锁，如果此时另外某个 unique_lock 对象已经管理了该 Mutex 对象 m，则当前线程将会被阻塞。 </p>
+</li>
+<li><p>try-locking 初始化，新创建的 unique_lock 对象管理 Mutex 对象 m，并尝试调用 m.try_lock() 对 Mutex 对象进行上锁，但如果上锁不成功，并不会阻塞当前线程。</p>
+</li>
+<li><p>deferred 初始化，新创建的 unique_lock 对象管理 Mutex 对象 m，但是在初始化的时候并不锁住 Mutex 对象。 m 应该是一个没有当前线程锁住的 Mutex 对象。</p>
+</li>
+<li><p>adopting 初始化，新创建的 unique_lock 对象管理 Mutex 对象 m， m 应该是一个已经被当前线程锁住的 Mutex 对象。(并且当前新创建的 unique_lock 对象拥有对锁(Lock)的所有权)。 </p>
+</li>
+<li><p>locking，一段时间(duration) 新创建的 unique_lock 对象管理 Mutex 对象 m，并试图通过调用 m.try_lock_for(rel_time) 来锁住 Mutex 对象一段时间(rel_time)。</p>
+</li>
+<li><p>locking，直到某个时间点(time point) 新创建的 unique_lock 对象管理 Mutex 对象m，并试图通过调用 m.try_lock_until(abs_time) 来在某个时间点(abs_time)之前锁住 Mutex 对象。</p>
+</li>
+<li><p>拷贝构造 [被禁用]，unique_lock 对象不能被拷贝构造。 </p>
+</li>
+<li><p>移动(move)构造，新创建的 unique_lock 对象获得了由 x 所管理的 Mutex 对象的所有权(包括当前 Mutex 的状态)。调用 move 构造之后， x 对象如同通过默认构造函数所创建的，就不再管理任何 Mutex 对象了。</p>
+</li>
+</ol>
+<h4 id="std-unique-lock和std-lock-guard类的区别"><a href="#std-unique-lock和std-lock-guard类的区别" class="headerlink" title="std::unique_lock和std::lock_guard类的区别"></a>std::unique_lock和std::lock_guard类的区别</h4><pre><code>std::unique_lock 与std::lock_guard都能实现自动加锁与解锁功能，但是std::unique_lock要比std::lock_guard更灵活，但是更灵活的代价是占用空间相对更大一点且相对更慢一点。</code></pre><h2 id="信号量机制"><a href="#信号量机制" class="headerlink" title="信号量机制"></a>信号量机制</h2><h3 id="0-C-中信号量的使用"><a href="#0-C-中信号量的使用" class="headerlink" title="0 C++中信号量的使用"></a>0 C<a href="https://www.jianshu.com/p/4fdad407068b" target="_blank" rel="noopener">++中信号量的使用</a></h3><h4 id="1、sem-init函数"><a href="#1、sem-init函数" class="headerlink" title="1、sem_init函数"></a>1、sem_init函数</h4><p>sem_init函数是Posix信号量操作中的函数。sem_init() 初始化一个定位在 sem 的匿名信号量。value 参数指定信号量的初始值。 pshared 参数指明信号量是由进程内线程共享，还是由进程之间共享。如果 pshared 的值为 0，那么信号量将被进程内的线程共享，并且应该放置在这个进程的所有线程都可见的地址上(如全局变量，或者堆上动态分配的变量)。</p>
 <p>如果 pshared 是非零值，那么信号量将在进程之间共享，并且应该定位共享内存区域(见 shm_open(3)、mmap(2) 和 shmget(2))。因为通过 fork(2) 创建的孩子继承其父亲的内存映射，因此它也可以见到这个信号量。所有可以访问共享内存区域的进程都可以用 sem_post(3)、sem_wait(3) 等等操作信号量。初始化一个已经初始的信号量其结果未定义。</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_init</span><span class="params">(<span class="keyword">sem_t</span> *sem,<span class="keyword">int</span> pshared,<span class="keyword">unsigned</span> <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
 
@@ -6049,6 +6076,35 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
     <title>安卓面试题汇总</title>
     <url>/2022/04/05/%E5%AE%89%E5%8D%93%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/</url>
     <content><![CDATA[<a id="more"></a>
+
+<h2 id="安卓四大组件"><a href="#安卓四大组件" class="headerlink" title="安卓四大组件"></a>安卓四大组件</h2><p>Android四大组件分别为activity、service、content provider、broadcast receiver。</p>
+<h3 id="一、android四大组件详解"><a href="#一、android四大组件详解" class="headerlink" title="一、android四大组件详解"></a>一、android四大组件详解</h3><h4 id="1、activity"><a href="#1、activity" class="headerlink" title="1、activity"></a>1、activity</h4><p>（1）一个Activity通常就是一个单独的屏幕（窗口）。</p>
+<p>（2）Activity之间通过Intent进行通信。</p>
+<p>（3）android应用中每一个Activity都必须要在AndroidManifest.xml配置文件中声明，否则系统将不识别也不执行该Activity。</p>
+<h4 id="2、service"><a href="#2、service" class="headerlink" title="2、service"></a>2、service</h4><p>（1）service用于在后台完成用户指定的操作。service分为两种：</p>
+<p>（a）started（启动）：当应用程序组件（如activity）调用startService()方法启动服务时，服务处于started状态。</p>
+<p>（b）bound（绑定）：当应用程序组件调用bindService()方法绑定到服务时，服务处于bound状态。</p>
+<p>（2）startService()与bindService()区别：</p>
+<p>（a）started service（启动服务）是由其他组件调用startService()方法启动的，这导致服务的onStartCommand()方法被调用。当服务是started状态时，其生命周期与启动它的组件无关，并且可以在后台无限期运行，即使启动服务的组件已经被销毁。因此，服务需要在完成任务后调用stopSelf()方法停止，或者由其他组件调用stopService()方法停止。</p>
+<p>（b）使用bindService()方法启用服务，调用者与服务绑定在了一起，调用者一旦退出，服务也就终止，大有“不求同时生，必须同时死”的特点。</p>
+<p>（3）开发人员需要在应用程序配置文件中声明全部的service，使用<service></service>标签。</p>
+<p>（4）Service通常位于后台运行，它一般不需要与用户交互，因此Service组件没有图形用户界面。Service组件需要继承Service基类。Service组件通常用于为其他组件提供后台服务或监控其他组件的运行状态。</p>
+<h4 id="3、content-provider"><a href="#3、content-provider" class="headerlink" title="3、content provider"></a>3、content provider</h4><p>（1）android平台提供了Content Provider使一个应用程序的指定数据集提供给其他应用程序。其他应用可以通过ContentResolver类从该内容提供者中获取或存入数据。</p>
+<p>（2）只有需要在多个应用程序间共享数据是才需要内容提供者。例如，通讯录数据被多个应用程序使用，且必须存储在一个内容提供者中。它的好处是统一数据访问方式。</p>
+<p>（3）ContentProvider实现数据共享。ContentProvider用于保存和获取数据，并使其对所有应用程序可见。这是不同应用程序间共享数据的唯一方式，因为android没有提供所有应用共同访问的公共存储区。</p>
+<p>（4）开发人员不会直接使用ContentProvider类的对象，大多数是通过ContentResolver对象实现对ContentProvider的操作。</p>
+<p>（5）ContentProvider使用URI来唯一标识其数据集，这里的URI以content://作为前缀，表示该数据由ContentProvider来管理。</p>
+<h3 id="4、broadcast-receiver"><a href="#4、broadcast-receiver" class="headerlink" title="4、broadcast receiver"></a>4、broadcast receiver</h3><p>（1）你的应用可以使用它对外部事件进行过滤，只对感兴趣的外部事件(如当电话呼入时，或者数据网络可用时)进行接收并做出响应。广播接收器没有用户界面。然而，它们可以启动一个activity或serice来响应它们收到的信息，或者用NotificationManager来通知用户。通知可以用很多种方式来吸引用户的注意力，例如闪动背灯、震动、播放声音等。一般来说是在状态栏上放一个持久的图标，用户可以打开它并获取消息。</p>
+<p>（2）广播接收者的注册有两种方法，分别是程序动态注册和AndroidManifest文件中进行静态注册。</p>
+<p>（3）动态注册广播接收器特点是当用来注册的Activity关掉后，广播也就失效了。静态注册无需担忧广播接收器是否被关闭，只要设备是开启状态，广播接收器也是打开着的。也就是说哪怕app本身未启动，该app订阅的广播在触发时也会对它起作用。</p>
+<h3 id="二、android四大组件总结"><a href="#二、android四大组件总结" class="headerlink" title="二、android四大组件总结"></a>二、android四大组件总结</h3><blockquote>
+<h4 id="（1）4大组件的注册"><a href="#（1）4大组件的注册" class="headerlink" title="（1）4大组件的注册"></a>（1）4大组件的注册</h4><p>4大基本组件都需要注册才能使用，每个Activity、service、Content Provider都需要在AndroidManifest文件中进行配置。AndroidManifest文件中未进行声明的activity、服务以及内容提供者将不为系统所见，从而也就不可用。而broadcast receiver广播接收者的注册分静态注册（在AndroidManifest文件中进行配置）和通过代码动态创建并以调用Context.registerReceiver()的方式注册至系统。需要注意的是在AndroidManifest文件中进行配置的广播接收者会随系统的启动而一直处于活跃状态，只要接收到感兴趣的广播就会触发（即使程序未运行）。</p>
+<h4 id="（2）4大组件的激活"><a href="#（2）4大组件的激活" class="headerlink" title="（2）4大组件的激活"></a>（2）4大组件的激活</h4><p>内容提供者的激活：当接收到ContentResolver发出的请求后，内容提供者被激活。而其它三种组件activity、服务和广播接收器被一种叫做intent的异步消息所激活。</p>
+<h4 id="（3）4大组件的关闭"><a href="#（3）4大组件的关闭" class="headerlink" title="（3）4大组件的关闭"></a>（3）4大组件的关闭</h4><p>内容提供者仅在响应ContentResolver提出请求的时候激活。而一个广播接收器仅在响应广播信息的时候激活。所以，没有必要去显式的关闭这些组件。Activity关闭：可以通过调用它的finish()方法来关闭一个activity。服务关闭：对于通过startService()方法启动的服务要调用Context.stopService()方法关闭服务，使用bindService()方法启动的服务要调用Contex.unbindService()方法关闭服务。</p>
+<h4 id="（4）android中的任务（activity栈）"><a href="#（4）android中的任务（activity栈）" class="headerlink" title="（4）android中的任务（activity栈）"></a>（4）android中的任务（activity栈）</h4><p>（a）任务其实就是activity的栈，它由一个或多个Activity组成，共同完成一个完整的用户体验。栈底的是启动整个任务的Activity，栈顶的是当前运行的用户可以交互的Activity，当一个activity启动另外一个的时候，新的activity就被压入栈，并成为当前运行的activity。而前一个activity仍保持在栈之中。当用户按下BACK键的时候，当前activity出栈，而前一个恢复为当前运行的activity。栈中保存的其实是对象，栈中的Activity永远不会重排，只会压入或弹出。</p>
+<p>（b）任务中的所有activity是作为一个整体进行移动的。整个的任务（即activity栈）可以移到前台，或退至后台。</p>
+<p>（c）Android系统是一个多任务(Multi-Task)的操作系统，可以在用手机听音乐的同时，也执行其他多个程序。每多执行一个应用程序，就会多耗费一些系统内存，当同时执行的程序过多，或是关闭的程序没有正确释放掉内存，系统就会觉得越来越慢，甚至不稳定。为了解决这个问题，Android引入了一个新的机制，即生命周期(Life Cycle)。</p>
+</blockquote>
 ]]></content>
   </entry>
   <entry>
@@ -6065,7 +6121,33 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 
 
 
-<h1 id="零-数学基础"><a href="#零-数学基础" class="headerlink" title="零  数学基础"></a>零  数学基础</h1><h2 id="一-李群和李代数"><a href="#一-李群和李代数" class="headerlink" title="一 李群和李代数"></a>一 李群和李代数</h2><h4 id="1-李群和李代数的关系"><a href="#1-李群和李代数的关系" class="headerlink" title="1. 李群和李代数的关系"></a>1. 李群和李代数的关系</h4><h4 id="2-雅克比求导"><a href="#2-雅克比求导" class="headerlink" title="2. 雅克比求导"></a>2. 雅克比求导</h4><h4 id="3-双线性差值如何去做，写公式"><a href="#3-双线性差值如何去做，写公式" class="headerlink" title="3. 双线性差值如何去做，写公式"></a>3. 双线性差值如何去做，写公式</h4><h4 id="4-为什么要引入李群李代数"><a href="#4-为什么要引入李群李代数" class="headerlink" title="4. 为什么要引入李群李代数"></a>4. 为什么要引入李群李代数</h4><blockquote>
+<h1 id="零-数学基础"><a href="#零-数学基础" class="headerlink" title="零  数学基础"></a>零  数学基础</h1><h2 id="一-李群和李代数"><a href="#一-李群和李代数" class="headerlink" title="一 李群和李代数"></a>一 李群和李代数</h2><h4 id="1-李群和李代数的关系"><a href="#1-李群和李代数的关系" class="headerlink" title="1. 李群和李代数的关系"></a>1. 李群和李代数的关系</h4><p>李群</p>
+<blockquote>
+<p>三维旋转矩阵构成了特殊正交群SO(3)；<br>$$<br>SO(3)= {R\in\R^{3\cross3|RR^T=I,det(R)=1} }<br>$$<br>变换矩阵构成了特殊欧式群SE(3)<br>$$<br>SE(3)={T= [R,t;o^T,1] \in\R^{4\cross4|R\in SO(3),det(R)=1} }<br>$$<br>相对于旋转矩阵和变换矩阵，李群中的矩阵对加法封闭。</p>
+<p>李群是指具有连续（光滑）性质的群。像整数群 Z 那样离散的群没有连续性质，所以不是李群。而 <em>SO</em>(<em>n</em>) 和 <em>SE</em>(<em>n</em>)，它们在实数空间上是连续的。我们能够直观地想象一个刚体能够连续地在空间中运动，所以它们都是李群。</p>
+</blockquote>
+<p>李代数</p>
+<blockquote>
+</blockquote>
+<p>李群和李代数的关系</p>
+<blockquote>
+<p>每个李群都有与之对应的李代数。李代数描述了李群的局部性质。通用的李代数的定义如下：</p>
+<p>李代数由一个集合 V，一个数域 F 和一个二元运算 [<em>,</em> ] 组成。如果它们满足以下几条性质，称 (V<em>,</em> F<em>,</em> [<em>,</em> ]) 为一个李代数，记作 g。</p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220705234523865.png" alt="image-20220705234523865"></p>
+</blockquote>
+<p><strong>李群和李代数的作用</strong></p>
+<blockquote>
+<p>通过李群——李代数间的转换关系，我们希望把位姿估计变成无约束的优化问题</p>
+</blockquote>
+<h4 id="2-雅克比求导"><a href="#2-雅克比求导" class="headerlink" title="2. 雅克比求导"></a>2. 雅克比求导</h4><blockquote>
+<p>李代数求导</p>
+</blockquote>
+<p>利用扰动方程求导</p>
+<blockquote>
+</blockquote>
+<h4 id="3-双线性差值如何去做，写公式"><a href="#3-双线性差值如何去做，写公式" class="headerlink" title="3. 双线性差值如何去做，写公式"></a>3. 双线性差值如何去做，写公式</h4><blockquote>
+</blockquote>
+<h4 id="4-为什么要引入李群李代数"><a href="#4-为什么要引入李群李代数" class="headerlink" title="4. 为什么要引入李群李代数"></a>4. 为什么要引入李群李代数</h4><blockquote>
 <p>旋转矩阵自身是带有约束的，正交且行列式为1，他们作为优化变量时，会引入额外的约束，导致优化变的困难，通过李群李代数的转换关系，把位姿估计变成无约束的优化问题。优化过程求极值，由求导数的定义式，可以知道矩阵对于加法不封闭，对于乘法封闭；我们可以看错把李群就是变换矩阵的集合，但是用李代数的形式去表示变换矩阵，与李群的变换对应关系恰好是与指数相乘的关系，用求导的定义式子就可以求解优化问题了。</p>
 </blockquote>
 <h2 id="二-刚体运动的表示"><a href="#二-刚体运动的表示" class="headerlink" title="二 刚体运动的表示"></a>二 刚体运动的表示</h2><h3 id="1-说一下3D空间的位姿如何去表达"><a href="#1-说一下3D空间的位姿如何去表达" class="headerlink" title="1. 说一下3D空间的位姿如何去表达?"></a>1. 说一下3D空间的位姿如何去表达?</h3><blockquote>
@@ -6074,12 +6156,14 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>平移可以：向量描述</p>
 <p>结合起来可以李代数矩阵描述。</p>
 </blockquote>
-<h3 id="2-机器人学中表示旋转的方式有哪些？区别是什么？"><a href="#2-机器人学中表示旋转的方式有哪些？区别是什么？" class="headerlink" title="2. 机器人学中表示旋转的方式有哪些？区别是什么？"></a>2. 机器人学中表示旋转的方式有哪些？区别是什么？</h3><p>表示旋转的方式有4种：旋转矩阵、旋转向量、欧拉角、四元数；</p>
+<h3 id="2-机器人学中表示旋转的方式有哪些？区别是什么？"><a href="#2-机器人学中表示旋转的方式有哪些？区别是什么？" class="headerlink" title="2. 机器人学中表示旋转的方式有哪些？区别是什么？"></a>2. 机器人学中表示旋转的方式有哪些？区别是什么？</h3><blockquote>
+<p>表示旋转的方式有4种：旋转矩阵、旋转向量、欧拉角、四元数；</p>
 <p><strong>区别</strong></p>
 <p><strong>旋转矩阵</strong>：用9个变量描述3个自由度，具有冗余，不够紧凑</p>
 <p><strong>旋转向量</strong>：3维，使用向量描述旋转，向量的方向与旋转轴一致、向量长度等于旋转角，即李代数。</p>
 <p><strong>欧拉角</strong>：3维，比较直观，将一个旋转拆分成了绕3个坐标轴的旋转，如RPY指横滚、俯仰、偏航角度，指绕固定轴XYZ、绕旋转之后的轴：ZYX。</p>
 <p><strong>四元数</strong>：4维，旋转向量与欧拉角虽然紧凑但具有奇异性，四元数紧凑、没有奇异性；使用1个实部、3个虚部表示。</p>
+</blockquote>
 <h3 id="3-四元数"><a href="#3-四元数" class="headerlink" title="3. 四元数"></a>3. 四元数</h3><p>假设某个旋转是绕单位向量$n = [n_x; n_y; n_z]^T $进行了角度为$\theta$ 的旋转，那么这个旋转的四元数形式为：<br>$$</p>
 <p>$$</p>
 <h2 id="三-坐标系变换"><a href="#三-坐标系变换" class="headerlink" title="三 坐标系变换"></a>三 坐标系变换</h2><blockquote>
@@ -6092,6 +6176,10 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <li>pixel —— camera：$u=f_x * X_c / Z_c+C_x ; \quad v=f_y * Y_c / Z_c+C_y$</li>
 <li>camera —— pixel：$X_{c}=(u-C_x) * Z_c / f_x ; \quad Y c=(v-C y) * Z_c / f_y$</li>
 </ul>
+</blockquote>
+<h2 id="四-SLAM方案评价指标"><a href="#四-SLAM方案评价指标" class="headerlink" title="四 SLAM方案评价指标"></a>四 SLAM方案评价指标</h2><blockquote>
+<p>精度、鲁棒性、效率（实时性）。</p>
+<p>感觉你问的时关于精度，一般都用轨迹的ATE或RPE的大小来评估，因为轨迹和地图是相伴相生的，所以轨迹的精度是能够代表SLAM的精度的，具体原理见 SLAM14讲第二版 P89。也可以看看论文的实验部分，作者往往拿自己的工作和其他工作比较，你可以看看比较哪几个方面。</p>
 </blockquote>
 <h1 id="一-相机模型"><a href="#一-相机模型" class="headerlink" title="一 相机模型"></a>一 相机模型</h1><h2 id="零-图像"><a href="#零-图像" class="headerlink" title="零 图像"></a>零 图像</h2><h3 id="1-图像遍历"><a href="#1-图像遍历" class="headerlink" title="1. 图像遍历"></a>1. 图像遍历</h3><h4 id="1-一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？"><a href="#1-一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？" class="headerlink" title="1. 一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？"></a>1. 一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？</h4><blockquote>
 <p>提示：跟缓存还有关系~</p>
@@ -6411,7 +6499,50 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p> ORB-SLAM提取ORB特征时采用了8层金字塔，尺寸因子为1.2。对于像素为512<em>384到752</em>480的图片，提取1000个FAST角点，对于更高的分辨率，提取2000个FAST角点就可以了。</p>
 <p>至此，得到当前帧ORB特征点<code>mvKeys</code>和描述子<code>mDescriptors</code>，均是<code>Frame</code>类对象<code>mCurrentFrame</code>的成员变量。提取出特征点后，需要对其去失真<code>UndistortKeyPoints();</code>。同时需要将图片分割为64*48大小的栅格，并将关键点按照位置分配到相应栅格中，从而降低匹配时的复杂度，实现函数为<code>AssignFeaturesToGrid();</code> 。</p>
 <p><strong>特征均匀化</strong></p>
-<h2 id="二-特征匹配"><a href="#二-特征匹配" class="headerlink" title="二 特征匹配"></a>二 特征匹配</h2><h3 id="1-快速最近邻算法（FLANN）"><a href="#1-快速最近邻算法（FLANN）" class="headerlink" title="1 快速最近邻算法（FLANN）"></a>1 快速最近邻算法（FLANN）</h3><h3 id="2-外点去除"><a href="#2-外点去除" class="headerlink" title="2 外点去除"></a>2 外点去除</h3><h4 id="A-RANSAC算法"><a href="#A-RANSAC算法" class="headerlink" title="A. RANSAC算法"></a>A. RANSAC算法</h4><blockquote>
+<h2 id="二-特征匹配"><a href="#二-特征匹配" class="headerlink" title="二 特征匹配"></a>二 特征匹配</h2><h3 id="1-暴力匹配"><a href="#1-暴力匹配" class="headerlink" title="1 暴力匹配"></a>1 暴力匹配</h3><blockquote>
+<p>执行步骤如下：</p>
+<ol>
+<li>利用特征提取算法计算关键点和描述符</li>
+<li>创建特征匹配器，选择距离计算方法以及计算方式</li>
+<li>计算匹配对并进行筛选</li>
+<li>绘制匹配对</li>
+</ol>
+<p>cv2.BFMatcher参数说明：</p>
+<ul>
+<li>normType：它是用来指定要使用的距离测试类型。默认值为cv2.Norm_L2。这很适合SIFT和SURF等（c2.NORM_L1也可）。对于使用二进制描述符的ORB、BRIEF和BRISK算法等，要使用cv2.NORM_HAMMING，这样就会返回两个测试对象之间的汉明距离。如果ORB算法的参数设置为WTA_K==3或4，normType就应该设置成cv2.NORM_HAMMING2。</li>
+<li>crossCheck：使用交叉匹配的方法来滤除错误匹配，默认值为False。若设置为True，匹配条件就会更加严格，只有到图片A中的第i个特征点与图片B中的第j个特征点距离最近，反过来，还要图片B中的第j个特征点到图片A中的第i个特征点也是最近，才会认为他们是最佳匹配(i,j)并返回，即：这两个特征点要互相匹配才行。（你喜欢我，我也喜欢你，单恋可不行…）</li>
+</ul>
+<p>暴力匹配器BFMatcher有两个重要的方法，分别是BFMatcher.match() 和BFMatcher.knnMatch()。送入查询图片A和目标图片B</p>
+<p>match() 方法会为图片A从图片B中找到最佳的单个匹配点；</p>
+<p>而knnMatch()方法会为图片A从图片B中找到最佳的前k个匹配点，k值由用户指定。当我们需要做一些额外的工作时，这种方法会很有用。</p>
+</blockquote>
+<h3 id="2-快速最近邻算法（FLANN）"><a href="#2-快速最近邻算法（FLANN）" class="headerlink" title="2 快速最近邻算法（FLANN）"></a>2 快速最近邻算法（FLANN）</h3><blockquote>
+<p><strong>Lowe’s算法</strong>：为了进一步筛选匹配点，获取优秀的匹配点，即“去粗取精”。为了排除因为图像遮挡和背景混乱而产生的无匹配关系的关键点，SIFT的作者Lowe提出了比较最近邻距离与次近邻距离的SIFT匹配方式：</p>
+<p><strong>原理</strong>：取一幅图像中的一个SIFT关键点，并找出其与另一幅图像中欧式距离最近的前两个关键点，在这两个关键点中，如果最近的距离除以次近的距离得到的比率ratio少于某个阈值T，则接受这一对匹配点。因为对于错误匹配，由于特征空间的高维性，相似的距离可能有大量其他的错误匹配，从而它的ratio值比较高。显然降低这个比例阈值T，SIFT匹配点数目会减少，但更加稳定，反之亦然。<br>  Lowe推荐ratio的阈值为0.8；</p>
+<p>有网友对大量存在任意尺度、旋转和亮度变化的两幅图片进行匹配，结果表明ratio取值在0. 4~0. 6 之间最佳，小于0. 4的很少有匹配点，大于0. 6的则存在大量错误匹配点，所以建议ratio的取值原则如下（仅供参考）:</p>
+<ul>
+<li>ratio=0. 4：对于准确度要求高的匹配；</li>
+<li>ratio=0. 6：对于匹配点数目要求比较多的匹配；</li>
+<li>ratio=0. 5：一般情况下。</li>
+</ul>
+<h5 id="Python版本"><a href="#Python版本" class="headerlink" title="Python版本"></a>Python版本</h5><p>FLANN，Fast Library for Approximate Nearest Neighbors. 其是针对大规模高维数据集进行快速最近邻搜索的优化算法库.</p>
+<p>FLANN Matcher 需要设定两个字典参数，以指定算法和对应的参数，分别为 <code>IndexParams</code> 和 <code>SearchParams</code>.</p>
+<ol>
+<li><strong>IndexParams</strong></li>
+</ol>
+<p>使用 SIFT、SURF等描述子，可以传递如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用 ORB 描述子是，可以传递如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">index_params= dict(algorithm = FLANN_INDEX_LSH,</span><br><span class="line">                   table_number = <span class="number">6</span>, <span class="comment"># 12</span></span><br><span class="line">                   key_size = <span class="number">12</span>,     <span class="comment"># 20</span></span><br><span class="line">                   multi_probe_level = <span class="number">1</span>) <span class="comment">#2</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>SearchParams</strong></li>
+</ol>
+<p>参数指定了索引里的树应该被递归遍历的次数，值越高准确度越高，但计算耗时也更久.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">search_params = dict(checks=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="3-外点去除"><a href="#3-外点去除" class="headerlink" title="3 外点去除"></a>3 外点去除</h3><h4 id="A-RANSAC算法"><a href="#A-RANSAC算法" class="headerlink" title="A. RANSAC算法"></a>A. RANSAC算法</h4><blockquote>
 <p>RANSAC算法的<strong>基本假设</strong>是样本中包含正确数据(inliers，可以被模型描述的数据)，也包含异常数据(outliers，偏离正常范围很远、无法适应数学模型的数据)，即数据集中含有噪声。这些异常数据可能是由于错误的测量、错误的假设、错误的计算等产生的。同时RANSAC也假设，给定一组正确的数据，存在可以计算出符合这些数据的模型参数的方法。</p>
 <p><strong>优缺点</strong></p>
 <p>​    RANSAC算法的优点是能鲁棒的估计模型参数。例如，他能从包含大量局外点的数据集中估计出高精度的参数。缺点是它计算参数的迭代次数没有上限，如果设置迭代次数的上限，得到的结果可能不是最优的结果，甚至可能得到错误的结果。RANSAC只有一定的概率得到的可信的模型，概率与迭代次数成正比。另一个缺点是它要求设置跟问题相关的阈值，RANSAC只能从特定的数据集中估计出一个模型，如果存在两个（或多个）模型，RANSAC不能找到别的模型。</p>
@@ -6441,7 +6572,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p><img src="https://img-blog.csdnimg.cn/20190930092025127.png#pic_center" alt="在这里插入图片描述"></p>
 <p><img src="https://img-blog.csdnimg.cn/20190930092033897.png#pic_center" alt="在这里插入图片描述"></p>
 </blockquote>
-<h3 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h3><h4 id="1-如何对匹配好的点做进一步的处理，更好保证匹配效果"><a href="#1-如何对匹配好的点做进一步的处理，更好保证匹配效果" class="headerlink" title="1 如何对匹配好的点做进一步的处理，更好保证匹配效果"></a>1 如何对匹配好的点做进一步的处理，更好保证匹配效果</h4><blockquote>
+<h3 id="4-问题"><a href="#4-问题" class="headerlink" title="4 问题"></a>4 问题</h3><h4 id="1-如何对匹配好的点做进一步的处理，更好保证匹配效果"><a href="#1-如何对匹配好的点做进一步的处理，更好保证匹配效果" class="headerlink" title="1 如何对匹配好的点做进一步的处理，更好保证匹配效果"></a>1 如何对匹配好的点做进一步的处理，更好保证匹配效果</h4><blockquote>
 <p>（1）确定匹配最大距离，汉明距离小于最小距离的两倍<br>（2）使用KNN-matching算法，令K=2。则每个match得到两个最接近的descriptor，然后计算最接近距离和次接近距离之间的比值，当比值大于既定值时，才作为最终match。<br>（3）RANSAC（使用RANSAC找到最佳单应性矩阵。由于这个函数使用的特征点同时包含正确和错误匹配点，因此计算的单应性矩阵依赖于二次投影的准确性）<br>（4）交叉匹配。针对暴力匹配，可以使用交叉匹配的方法来过滤错误的匹配。交叉过滤的思想很简单，再进行一次匹配，反过来使用被匹配到的点进行匹配，如果匹配到的仍然是第一次匹配的点的话，就认为这是一个正确的匹配。举例来说就是，假如第一次特征点A使用暴力匹配的方法，匹配到的特征点是特征点B；反过来，使用特征点B进行匹配，如果匹配到的仍然是特征点A，则就认为这是一个正确的匹配，否则就是一个错误的匹配。OpenCV中BFMatcher已经封装了该方法，创建BFMatcher的实例时，第二个参数传入true即可，BFMatcher bfMatcher(NORM_HAMMING,true)。</p>
 </blockquote>
 <h4 id="2-如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？"><a href="#2-如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？" class="headerlink" title="2 如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？"></a>2 如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？</h4><blockquote>
@@ -6475,10 +6606,10 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 </tr>
 </tbody></table>
 </blockquote>
-<h2 id="三-相机运动求解"><a href="#三-相机运动求解" class="headerlink" title="三 相机运动求解"></a>三 相机运动求解</h2><h3 id="一-极线约束（2D-2D）"><a href="#一-极线约束（2D-2D）" class="headerlink" title="一 极线约束（2D-2D）"></a>一 极线约束（2D-2D）</h3><p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812162637025.png" alt="image-20200812162637025"><br>$$<br>x^T_2t^{\wedge}R x_1 = 0<br>$$</p>
+<h2 id="三-相机运动求解"><a href="#三-相机运动求解" class="headerlink" title="三 相机运动求解"></a>三 相机运动求解</h2><h3 id="一-极线约束（2D-2D）"><a href="#一-极线约束（2D-2D）" class="headerlink" title="一 极线约束（2D-2D）"></a>一 极线约束（2D-2D）</h3><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812162637025.png" alt="image-20200812162637025"><br>$$<br>x^T_2t^{\wedge}R x_1 = 0<br>$$</p>
 <h4 id="1-按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？"><a href="#1-按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？" class="headerlink" title="1. 按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？"></a>1. 按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？</h4><blockquote>
 <p>所谓极线约束就是说同一个点在两幅图像上的映射，已知左图映射点<code>p1</code>，那么右图映射点<code>p2</code>一定在相对于p1的极线上，这样可以减少待匹配的点数量。（画图解释）</p>
-<p>极线约束的好处：从上面的描述我们可以看到，我们在做特征点匹配时，左图成像点p1的待匹配点p2一定在相对于p1的极线上，那么我们在做搜索时就可以在极线附近（考虑实际可能 会有一点误差）进行搜索，相对暴力匹配极大减少待匹配的点的数量。</p>
+<p>极线约束的好处：从上面的描述我们可以看到，我们在做特征点匹配时，左图成像点<code>p1</code>的待匹配点<code>p2</code>一定在相对于<code>p1</code>的极线上，那么我们在做搜索时就可以在极线附近（考虑实际可能 会有一点误差）进行搜索，相对暴力匹配极大减少待匹配的点的数量。</p>
 <p>可以画图解释，注意成像平面、特征点、极点、极线、极平面、相机光心等概念。</p>
 </blockquote>
 <h4 id="2-本质矩阵E、基本矩阵F、单应性矩阵H区别？"><a href="#2-本质矩阵E、基本矩阵F、单应性矩阵H区别？" class="headerlink" title="2 本质矩阵E、基本矩阵F、单应性矩阵H区别？"></a>2 本质矩阵E、基本矩阵F、单应性矩阵H区别？</h4><blockquote>
@@ -6487,7 +6618,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p><strong>单应性矩阵</strong>：在相机只有旋转而没有平移的情况，此时t为0，E也将为0，导致无法求解R，这时可以使用单应矩阵H求旋转，但仅有旋转，无法三角化求深度。</p>
 </blockquote>
 <h4 id="3-根据基础矩阵E如何求解相机运动R，t"><a href="#3-根据基础矩阵E如何求解相机运动R，t" class="headerlink" title="3 根据基础矩阵E如何求解相机运动R，t?"></a>3 根据基础矩阵E如何求解相机运动R，t?</h4><p>答：SVD分解</p>
-<p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815164626728.png" alt="image-20200815164626728"></p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815164626728.png" alt="image-20200815164626728"></p>
 <p>其中的R矩阵怎么定义</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//SVD分解</span></span><br><span class="line"><span class="function">Eigen::JacobiSVD&lt;Eigen::Matrix3d&gt; <span class="title">svd</span><span class="params">(E,ComputeThinU|ComputeThinV)</span></span>;</span><br><span class="line">Matrix3d V=svd.matrixV(),U=svd.matrixU();</span><br><span class="line">Matrix3d un_S=U.inverse()* E*V.transpose().inverse(); <span class="comment">//类型不要搞混</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//计算后的Sigma矩阵</span></span><br><span class="line"><span class="comment">//调整奇异值矩阵 调成E的解析格式，否则可能补满足E内在形式</span></span><br><span class="line"><span class="keyword">double</span> delta_1=un_S(<span class="number">0</span>,<span class="number">0</span>),delta_2=un_S(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">Matrix3d S = Matrix3d::Zero();</span><br><span class="line">S(<span class="number">0</span>,<span class="number">0</span>)=(delta_1+delta_2)/<span class="number">2</span>;</span><br><span class="line">S(<span class="number">1</span>,<span class="number">1</span>)=(delta_1+delta_2)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// set t1, t2, R1, R2 </span></span><br><span class="line">Matrix3d t_wedge1, t_wedge2;</span><br><span class="line">Matrix3d R1, R2;</span><br><span class="line"><span class="comment">// 中间旋转矩阵的定义</span></span><br><span class="line"><span class="function">AngleAxisd <span class="title">V1</span><span class="params">(M_PI / <span class="number">2</span>, Vector3d(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>))</span></span>;</span><br><span class="line"><span class="function">AngleAxisd <span class="title">V2</span><span class="params">(- M_PI / <span class="number">2</span>, Vector3d(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>))</span></span>;</span><br><span class="line"></span><br><span class="line">Matrix3d Rz_pos = V1.toRotationMatrix();</span><br><span class="line">Matrix3d Rz_neg = V2.toRotationMatrix();</span><br><span class="line">t_wedge1 = U*Rz_pos*S*U.transpose();</span><br><span class="line">t_wedge2 = U*Rz_neg*S*U.transpose();</span><br><span class="line">R1 = U*Rz_pos*V.transpose();</span><br><span class="line">R2 = U*Rz_neg*V.transpose();</span><br></pre></td></tr></table></figure>
 
@@ -6603,7 +6734,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>首先计算以下三个量<br>$$<br>\tilde{y}<em>k = z_k - H_k \hat{x</em>{k|k-1}} （测量物质）\<br>S_k = H_k P_{k|k-1}H^T_k + R_K （测量残差协方差）\<br>K_k = P_{k|k-1}H^T_kS^{-1}<em>k<br>$$<br>用上述三个量来更新滤波器变量x与P<br>$$<br>\hat{x}</em>{k|k} = \hat{x}<em>{k|k-1} + K_k \tilde{y}_k\<br>P</em>{k|k} = (I-K_kH_k)P_{k|k-1}<br>$$<br>先更新状态估计，再更新写方法估计</p>
 <p><em>上述方法仅在计算最优卡尔曼增益的时候有效。</em></p>
 <p>拓展卡尔曼滤波器与卡尔曼滤波器的算法结构与步骤；</p>
-<p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/819141-20160411151442613-1081631484.jpg" alt="img"></p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/819141-20160411151442613-1081631484.jpg" alt="img"></p>
 <h4 id="1-卡尔曼滤波增益推导"><a href="#1-卡尔曼滤波增益推导" class="headerlink" title="1. 卡尔曼滤波增益推导"></a>1. 卡尔曼滤波增益推导</h4><blockquote>
 <p>答：<a href="https://zhuanlan.zhihu.com/p/165570020" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/165570020</a></p>
 </blockquote>
@@ -6709,11 +6840,11 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>L-M的好处就在于：如果下降的太快，使用较小的λ，如果下降的太慢，使用较大的λ</p>
 </blockquote>
 <h3 id="5-Dog-Leg算法"><a href="#5-Dog-Leg算法" class="headerlink" title="5 Dog-Leg算法"></a>5 Dog-Leg算法</h3><h4 id="5-1-DogLeg算法基本介绍"><a href="#5-1-DogLeg算法基本介绍" class="headerlink" title="5.1. DogLeg算法基本介绍"></a>5.1. DogLeg算法基本介绍</h4><blockquote>
-<p>L-M法是G-N法与最速下降法的混合形式，通过调整阻尼因子<img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex" alt="\mu">来在这两种方法之间切换。</p>
+<p>L-M法是G-N法与最速下降法的混合形式，通过调整阻尼因子<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex" alt="\mu">来在这两种方法之间切换。</p>
 <p>狗腿法则通过改变信赖域来实现的。主要引申出以下问题：</p>
 <ol>
 <li>如何判断是使用G-N法还是最速下降法的增量？<br>1. </li>
-<li>如果确定了是使用哪个方法，那么它对应的增量<img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex" alt="\Delta x_{k}">是多少？<br>1. </li>
+<li>如果确定了是使用哪个方法，那么它对应的增量<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex" alt="\Delta x_{k}">是多少？<br>1. </li>
 <li>狗腿法的增量为多少？</li>
 </ol>
 </blockquote>
@@ -6895,10 +7026,9 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 </ul>
 <h4 id="给一组点云，从中提取平面。"><a href="#给一组点云，从中提取平面。" class="headerlink" title="给一组点云，从中提取平面。"></a>给一组点云，从中提取平面。</h4><h1 id="七-SLAM方案"><a href="#七-SLAM方案" class="headerlink" title="七 SLAM方案"></a>七 SLAM方案</h1><ol>
 <li>你认为室内SLAM与自动驾驶SLAM有什么区别？</li>
-<li>读Maplab，设计室内服务机器人地图更新的方法、流程。</li>
 </ol>
 <h2 id="一-时间戳"><a href="#一-时间戳" class="headerlink" title="一 时间戳"></a>一 时间戳</h2><p>工程目录下有<code>GPS</code>保存的坐标文件<code>gps.txt</code>和激光雷达保存的坐标文件<code>laser.txt</code>两个文件，两个文件的第一列为记录当前数据的时间戳，后两列为坐标。由于GPS每隔500时间单位保存一次数据，激光雷达每隔300时间单位保存一次数据，因此，一段时间内激光雷达保存的数据比<code>GPS</code>保存的数据要多。现在想取出两个文件中时间戳最接近的数据，并分别存放在<code>gps2.txt</code>和<code>laser2.txt</code>中，编写程序实现。（不知道哪位大神能讲下这道题。。。）</p>
-<p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812100331825.png" alt="image-20200812100331825"></p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812100331825.png" alt="image-20200812100331825"></p>
 <h2 id="二-关键帧"><a href="#二-关键帧" class="headerlink" title="二 关键帧"></a>二 关键帧</h2><h3 id="关键帧的概念"><a href="#关键帧的概念" class="headerlink" title="关键帧的概念"></a>关键帧的概念</h3><blockquote>
 <p><strong>关键帧</strong>目前是一种非常常用的方法，可以减少待优化的帧数，并且可以代表其附近的帧。可以理解为一个学校里有100个班级，每个班的班长就是一个关键帧，他可以代表他班里的人，那么如何选取关键帧呢？</p>
 <p><strong>关键帧作用</strong>：图像插入频率过高会导致信息冗余度快速增加，而这些冗余的信息对系统的精度提升却十分有限，甚至没有提高，反而消耗了更多的计算资源。关键帧的目的在于，适当地降低信息冗余度，减少计算机资源的损耗，保证系统的平稳运行。</p>
@@ -6952,12 +7082,22 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <h3 id="2-测量模型与运动模型"><a href="#2-测量模型与运动模型" class="headerlink" title="2. 测量模型与运动模型"></a>2. 测量模型与运动模型</h3><blockquote>
 <p>东北天坐标系()</p>
 </blockquote>
+<h4 id="VIO中的IMU模型"><a href="#VIO中的IMU模型" class="headerlink" title="VIO中的IMU模型"></a>VIO中的IMU模型</h4><p>忽略 scale 的影响，只考虑白噪声和 bias 随机游走：</p>
+<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220626234856004.png" alt="image-20220626234856004" style="zoom:80%;">
+
+<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220626234942297.png" alt="image-20220626234942297" style="zoom:80%;">
+
+<p>根据上面的导数关系，可以从第 i 时刻的 PVQ，通过对 IMU 的测量值进行积分，得到第 j 时刻的 PVQ:</p>
+<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220626235243569.png" alt="image-20220626235243569" style="zoom:80%;">
+
+
+
 <h3 id="3-IMU的优点"><a href="#3-IMU的优点" class="headerlink" title="3. IMU的优点"></a>3. IMU的优点</h3><blockquote>
 <p>IMU能帮助单目确定尺度，；<br>IMU能测量快速的运动；<br>IMU在相机被遮挡时亦能提供短时间的位姿估计；<br>视觉SLAM相邻两帧之间没有约束关系，优化误差函数是重投影误差；IMU增加了相邻帧之间的约束关系。</p>
 </blockquote>
 <h3 id="4-IMU参数标定"><a href="#4-IMU参数标定" class="headerlink" title="4. IMU参数标定"></a>4. IMU参数标定</h3><blockquote>
 </blockquote>
-<h3 id="5-IMU与相机之间的联合标定"><a href="#5-IMU与相机之间的联合标定" class="headerlink" title="5.IMU与相机之间的联合标定"></a>5.IMU与相机之间的联合标定</h3><h4 id="如何标定IMU与相机之间的外参数？"><a href="#如何标定IMU与相机之间的外参数？" class="headerlink" title="如何标定IMU与相机之间的外参数？"></a>如何标定IMU与相机之间的外参数？</h4><h1 id="九-其它传感器"><a href="#九-其它传感器" class="headerlink" title="九 其它传感器"></a>九 其它传感器</h1><h2 id="一-GPS"><a href="#一-GPS" class="headerlink" title="一 GPS"></a>一 GPS</h2><h3 id="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"><a href="#1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。" class="headerlink" title="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"></a>1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。</h3><p>在给定一些有噪声的GPS信号的时候如何去精准的定位？</p>
+<h3 id="5-IMU与相机之间的联合标定"><a href="#5-IMU与相机之间的联合标定" class="headerlink" title="5.IMU与相机之间的联合标定"></a>5.IMU与相机之间的联合标定</h3><h4 id="如何标定IMU与相机之间的外参数？"><a href="#如何标定IMU与相机之间的外参数？" class="headerlink" title="如何标定IMU与相机之间的外参数？"></a>如何标定IMU与相机之间的外参数？</h4><h4 id="-3"><a href="#-3" class="headerlink" title></a></h4><h1 id="九-其它传感器"><a href="#九-其它传感器" class="headerlink" title="九 其它传感器"></a>九 其它传感器</h1><h2 id="一-GPS"><a href="#一-GPS" class="headerlink" title="一 GPS"></a>一 GPS</h2><h3 id="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"><a href="#1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。" class="headerlink" title="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"></a>1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。</h3><p>在给定一些有噪声的GPS信号的时候如何去精准的定位？</p>
 <h2 id="二-其它"><a href="#二-其它" class="headerlink" title="二 其它"></a>二 其它</h2><p>一 除了视觉传感，还用过其他传感吗？比如GPS，激光雷达。</p>
 <h1 id="十-通用库"><a href="#十-通用库" class="headerlink" title="十 通用库"></a>十 通用库</h1><h2 id="一-Eigen"><a href="#一-Eigen" class="headerlink" title="一 Eigen"></a>一 Eigen</h2><h3 id="矩阵赋值"><a href="#矩阵赋值" class="headerlink" title="矩阵赋值"></a>矩阵赋值</h3><p>按块赋值</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Dense&gt;</span></span></span><br><span class="line">Eigen::Matrix&lt;<span class="keyword">double</span>, <span class="number">3</span>, <span class="number">4</span>&gt; P;</span><br><span class="line">P.block(<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">3</span>) = camera_pose[<span class="number">0</span>].Rwc;</span><br><span class="line"><span class="comment">// 前面两个数值是起点，后面两个数值是块的大小，此处是将3*3的Rwc赋值给P的前三列</span></span><br></pre></td></tr></table></figure>
@@ -7008,7 +7148,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <td>各种顶点和边，很重要！我们用户在构建图优化问题时，先要想好自己的顶点和边是否已经提供了定义。如果没有，要自己实现。如果有，就用g2o提供的即可。</td>
 </tr>
 </tbody></table>
-<h3 id="1-G2O的类结构"><a href="#1-G2O的类结构" class="headerlink" title="1 G2O的类结构"></a>1 G2O的类结构</h3><p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815142336116.png" alt="image-20200815142336116"></p>
+<h3 id="1-G2O的类结构"><a href="#1-G2O的类结构" class="headerlink" title="1 G2O的类结构"></a>1 G2O的类结构</h3><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815142336116.png" alt="image-20200815142336116"></p>
 <p>​        先看上半部分。SparseOptimizer 是我们最终要维护的东东。它是一个Optimizable Graph，从而也是一个Hyper Graph（超图）。一个 SparseOptimizer 含有很多个顶点 （都继承自 Base Vertex）和很多个边（继承自 BaseUnaryEdge, BaseBinaryEdge或BaseMultiEdge）。这些 Base Vertex 和 Base Edge 都是抽象的基类，而实际用的顶点和边，都是它们的派生类。我们用 SparseOptimizer.addVertex 和 SparseOptimizer.addEdge 向一个图中添加顶点和边，最后调用 SparseOptimizer.optimize 完成优化。</p>
 <p>　　在优化之前，需要指定我们用的求解器和迭代算法。从图中下半部分可以看到，一个 SparseOptimizer 拥有一个 Optimization Algorithm，继承自Gauss-Newton, Levernberg-Marquardt, Powell’s dogleg 三者之一（我们常用的是GN或LM）。同时，这个 Optimization Algorithm 拥有一个Solver，它含有两个部分。一个是 SparseBlockMatrix ，用于计算稀疏的雅可比和海塞； 一个是用于计算迭代过程中最关键的一步<br>$$<br>HΔx=−b<br>$$<br>这就需要一个线性方程的求解器。而这个求解器，可以从 PCG, CSparse, Choldmod 三者选一。</p>
 <h3 id="2-G2O-优化方法的选择步骤："><a href="#2-G2O-优化方法的选择步骤：" class="headerlink" title="2 G2O 优化方法的选择步骤："></a>2 G2O 优化方法的选择步骤：</h3><ol>
@@ -7038,20 +7178,15 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <li>给定几个连续帧的带有位姿的帧，如何去测量车道线相对于世界坐标系的坐标。</li>
 <li>给一张图片，知道相机与地面之间的相对关系，计算出图的俯视图。</li>
 </ol>
-<h3 id="2-说一个自己熟悉的SLAM算法，Lidar-Visual-slam，说优缺点。"><a href="#2-说一个自己熟悉的SLAM算法，Lidar-Visual-slam，说优缺点。" class="headerlink" title="2. 说一个自己熟悉的SLAM算法，Lidar/Visual slam，说优缺点。"></a>2. 说一个自己熟悉的SLAM算法，Lidar/Visual slam，说优缺点。</h3><h3 id="3-说一下VINS-Mono的优缺点"><a href="#3-说一下VINS-Mono的优缺点" class="headerlink" title="3. 说一下VINS-Mono的优缺点"></a>3. 说一下VINS-Mono的优缺点</h3><h3 id="4-其他"><a href="#4-其他" class="headerlink" title="4. 其他"></a>4. 其他</h3><h2 id="二-设计系统"><a href="#二-设计系统" class="headerlink" title="二 设计系统"></a>二 设计系统</h2><p>机器人从超市门口出发，前往3公里外的小区送货。请你设计一个定位系统，包括传感器的配置、算法的流程，用伪代码写出来。</p>
-<h2 id="三-其他问题"><a href="#三-其他问题" class="headerlink" title="三 其他问题"></a>三 其他问题</h2><h3 id="你还有什么问题？"><a href="#你还有什么问题？" class="headerlink" title="你还有什么问题？"></a>你还有什么问题？</h3><p>可以从以下方面进行提问：(1) 部门(2) 业务范围(3) 培养方式(4) 工作模式(5) 后续通知时间</p>
-<h4 id="你的缺点"><a href="#你的缺点" class="headerlink" title="你的缺点"></a>你的缺点</h4><ol>
-<li>喜欢熬夜</li>
-</ol>
-<h2 id="四-SLAM行业相关问题"><a href="#四-SLAM行业相关问题" class="headerlink" title="四 SLAM行业相关问题"></a>四 SLAM行业相关问题</h2><h4 id="1-大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？"><a href="#1-大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？" class="headerlink" title="1. 大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？"></a>1. 大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？</h4><h4 id="2-讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？"><a href="#2-讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？" class="headerlink" title="2. 讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？"></a>2. 讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？</h4><h1 id="十二-笔试"><a href="#十二-笔试" class="headerlink" title="十二 笔试"></a>十二 笔试</h1><h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><ol>
+<h3 id="3-说一下VINS-Mono的优缺点"><a href="#3-说一下VINS-Mono的优缺点" class="headerlink" title="3. 说一下VINS-Mono的优缺点"></a>3. 说一下VINS-Mono的优缺点</h3><h3 id="4-其他"><a href="#4-其他" class="headerlink" title="4. 其他"></a>4. 其他</h3><h1 id="十二-笔试"><a href="#十二-笔试" class="headerlink" title="十二 笔试"></a>十二 笔试</h1><h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><ol>
 <li><p>以下哪一种情况，可以认为双目视觉系统内参和双目间的相对旋转标定正确</p>
 <p>A. 计算标定时采集的pattern重投影误差，数值相对较小</p>
 <p>B. 使用双目拍摄远处的雪山，无论怎么移动相机，在recify图像上，雪山在左右成像位置相同，但亮度差异较大</p>
 <p>C. 使用双目拍摄远处的车辆，无论怎么移动相机，在recify图像上，车辆在左右成像尽在x方向有disparity；</p>
 <p>D. 使用双目拍摄远处的彩虹，无论怎么移动相机，在recify图像上，彩虹在左右成像的亮度没有差异</p>
+<p>答：C</p>
 </li>
 </ol>
-<p>   答：C</p>
 <ol start="2">
 <li><p>以下哪些相机模型不适用与FOV约180度鱼眼相机投影关系（r为像高，f为焦距，$\theta$为光线到光心的理想入射角）</p>
 <p>A.  针孔相机模型 像高表示为$r=f\tan(\theta)$</p>
@@ -7059,17 +7194,6 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>C.  等立体角投影 像高表示为$r=2 f\sin(\theta)$</p>
 <p>D.  正交投影模型 像高表示为$r=f\sin(\theta)$</p>
 </li>
-</ol>
-<ol start="3">
-<li><p>以下哪些做法有助于神经网络过拟合</p>
-<p>A. 使用更深的网络以提升泛华性</p>
-<p>B. 进行数据增强以增加数据的多样性</p>
-<p>C. 加入dropout模块以增加训练过程的随机性</p>
-<p>D. 使用leaky relu 取代relu避免特征损失过多</p>
-<p>答：BCD </p>
-</li>
-</ol>
-<ol start="4">
 <li><p>以下哪些手段可以提升重复纹理环境的定位感知能力</p>
 <p>A.  调整SGBM的参数，增大平滑项的权重</p>
 <p>B.  VIO后端增加robust norm 降低feature误匹配带来的误差</p>
@@ -7088,13 +7212,12 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <li><p>牛顿迭代法的基本思想是使用泰勒技术展开式去近似地代替非线性回归函数，然后通过多次迭代，多次修正回归系数，使回归系数不断逼近非线性回归模型的最佳系数，最后使原模型的残差平方和达到最小（）</p>
 </li>
 </ol>
-<h2 id="简答题"><a href="#简答题" class="headerlink" title="简答题"></a>简答题</h2><p>一：</p>
-<p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000618164.png" alt="image-20200818000618164"></p>
-<p>二： 卡尔曼滤波</p>
-<p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000645583.png" alt="image-20200818000645583"></p>
-<p>三 </p>
-<p><img src="images/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000939557.png" alt="image-20200818000939557"></p>
-<h1 id="面试"><a href="#面试" class="headerlink" title="面试"></a>面试</h1><h3 id="一-美团"><a href="#一-美团" class="headerlink" title="一 美团"></a>一 美团</h3>]]></content>
+<h2 id="简答题"><a href="#简答题" class="headerlink" title="简答题"></a>简答题</h2><h4 id="一"><a href="#一" class="headerlink" title="一"></a>一</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000618164.png" alt="image-20200818000618164"></p>
+<h4 id="二-卡尔曼滤波"><a href="#二-卡尔曼滤波" class="headerlink" title="二 卡尔曼滤波"></a>二 卡尔曼滤波</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000645583.png" alt="image-20200818000645583"></p>
+<h4 id="三"><a href="#三" class="headerlink" title="三"></a>三</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000939557.png" alt="image-20200818000939557"></p>
+<h3 id="二-设计系统"><a href="#二-设计系统" class="headerlink" title="二 设计系统"></a>二 设计系统</h3><p>机器人从超市门口出发，前往3公里外的小区送货。请你设计一个定位系统，包括传感器的配置、算法的流程，用</p>
+<p>伪代码写出来。</p>
+]]></content>
       <categories>
         <category>学习</category>
       </categories>
@@ -7527,7 +7650,7 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>weak_ptr只是提供了对管理对象的一个访问手段。</p>
 <p>weak_ptr设计的目的是为配合 shared_ptr 而引入的一种智能指针来协助 shared_ptr 工作, 它只可以从一个 shared_ptr 或另一个 weak_ptr 对象构造, 它的构造和析构不会引起引用记数的增加或减少。weak_ptr是用来解决shared_ptr相互引用时的死锁问题,如果说两个shared_ptr相互引用,那么这两个指针的引用计数永远不可能下降为0,资源永远不会释放。</p>
 <p>它是对对象的一种弱引用，不会增加对象的引用计数，和shared_ptr之间可以相互转化，shared_ptr可以直接赋值给它，它可以通过调用lock函数来获得shared_ptr。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">      <span class="built_in">shared_ptr</span>&lt;B&gt; pb_;</span><br><span class="line">      ~A()&#123;</span><br><span class="line">          <span class="built_in">cout</span>&lt;&lt;<span class="string">"A delete\n"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">shared_ptr</span>&lt;A&gt; pa_;</span><br><span class="line">	~B()&#123;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;<span class="string">"B delete\n"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="built_in">shared_ptr</span>&lt;B&gt; <span class="title">pb</span><span class="params">(<span class="keyword">new</span> B())</span></span>;</span><br><span class="line">      <span class="function"><span class="built_in">shared_ptr</span>&lt;A&gt; <span class="title">pa</span><span class="params">(<span class="keyword">new</span> A())</span></span>;</span><br><span class="line">      pb-&gt;pa_ = pa;</span><br><span class="line">      pa-&gt;pb_ = pb;</span><br><span class="line">      <span class="built_in">cout</span>&lt;&lt;pb.use_count()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">      <span class="built_in">cout</span>&lt;&lt;pa.use_count()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    fun();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">      <span class="built_in">shared_ptr</span>&lt;B&gt; pb_;</span><br><span class="line">      ~A()&#123;</span><br><span class="line">          <span class="built_in">cout</span>&lt;&lt;<span class="string">"A delete\n"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">shared_ptr</span>&lt;A&gt; pa_;</span><br><span class="line">	~B()&#123;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;<span class="string">"B delete\n"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">       <span class="function"><span class="built_in">shared_ptr</span>&lt;B&gt; <span class="title">pb</span><span class="params">(<span class="keyword">new</span> B())</span></span>;</span><br><span class="line">       <span class="function"><span class="built_in">shared_ptr</span>&lt;A&gt; <span class="title">pa</span><span class="params">(<span class="keyword">new</span> A())</span></span>;</span><br><span class="line">       pb-&gt;pa_ = pa;</span><br><span class="line">       pa-&gt;pb_ = pb;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;pb.use_count()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;pa.use_count()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    fun();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以看到fun函数中pa ，pb之间互相引用，两个资源的引用计数为2，当要跳出函数时，智能指针pa，pb析构时两个资源引用计数会减一，但是两者引用计数还是为1，导致跳出函数时资源没有被释放（A B的析构函数没有被调用），如果把其中一个改为weak_ptr就可以了，我们把类A里面的shared_ptr pb； 改为<code>weak_ptr pb;</code> 这样的话，资源B的引用开始就只有1，当pb析构时，B的计数变为0，B得到释放，B释放的同时也会使A的计数减一，同时pa析构时使A的计数减一，那么A的计数为0，A得到释放。</p>
 <p>注意的是我们<strong>不能通过weak_ptr直接访问对象的方法</strong>，比如B对象中有一个方法print(),我们不能这样访问，pa-&gt;pb_-&gt;print(); 英文pb_是一个weak_ptr，应该先把它转化为shared_ptr,如：shared_ptr p = pa-&gt;pb_.lock(); p-&gt;print();</p>
@@ -7537,13 +7660,13 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
 <p>为了解决循环引用导致的内存泄漏，引入了weak_ptr弱指针，weak_ptr的构造函数不会修改引用计数的值，从而不会对对象的内存进行管理，其类似一个普通指针，但不指向引用计数的共享内存，但是其可以检测到所管理的对象是否已经被释放，从而避免非法访问。</p>
 </blockquote>
 <blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Child&gt; ChildPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">setPartent</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Child&gt; Child)</span></span>&#123;</span><br><span class="line">     <span class="keyword">this</span>-&gt;ChildPtr = Child;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">dosomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(<span class="keyword">this</span>-&gt;ChildPtr.use_count)&#123;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> ~Parent()&#123;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; ParentPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">setPartent</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; parent)</span></span>&#123;</span><br><span class="line">     <span class="keyword">this</span>-&gt;ParentPtr = parent;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">dosomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(<span class="keyword">this</span>-&gt;ParentPtr.use_count)&#123;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> ~Child()&#123;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::weak_ptr&lt;Parent&gt; wpp;</span><br><span class="line">  <span class="built_in">std</span>::weak_ptr&lt;Child&gt; wpc;</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="function"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> Parent)</span></span>;</span><br><span class="line">      <span class="function"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; <span class="title">c</span><span class="params">(<span class="keyword">new</span> Child)</span></span>;</span><br><span class="line">      p-&gt;setChild(c);</span><br><span class="line">      p-&gt;setParent(p);</span><br><span class="line">      wpp = p;</span><br><span class="line">      wpc = c;</span><br><span class="line">      <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;p.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">      <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;c.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;wpp.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;wpc.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span>&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Child&gt; ChildPtr;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setChild</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Child&gt; Child)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ChildPtr = Child;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dosomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>-&gt;ChildPtr.use_count)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ~Parent()&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; ParentPtr;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setPartent</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; parent)</span></span>&#123;</span><br><span class="line">      	<span class="keyword">this</span>-&gt;ParentPtr = parent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dosomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(<span class="keyword">this</span>-&gt;ParentPtr.use_count)&#123;</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ~Child()&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::weak_ptr&lt;Parent&gt; wpp;</span><br><span class="line">    <span class="built_in">std</span>::weak_ptr&lt;Child&gt; wpc;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> Parent)</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Parent&gt; <span class="title">c</span><span class="params">(<span class="keyword">new</span> Child)</span></span>;</span><br><span class="line">        p-&gt;setChild(c);</span><br><span class="line">        c-&gt;setParent(p);</span><br><span class="line">        wpp = p;</span><br><span class="line">        wpc = c;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;p.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;c.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;wpp.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt;wpc.use_count() &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>上述代码中，parent有一个shared_ptr类型的成员指向孩子，而child也有一个shared_ptr类型的成员指向父亲。然后在创建孩子和父亲对象时也使用了智能指针c和p，随后将c和p分别又赋值给child的智能指针成员parent和parent的智能指针成员child。从而形成了一个循环引用：</p>
 </blockquote>
 <h4 id="3-智能指针shared-ptr的实现"><a href="#3-智能指针shared-ptr的实现" class="headerlink" title="3. 智能指针shared_ptr的实现"></a>3. 智能指针<code>shared_ptr</code>的实现</h4><p>核心：要理解引用计数，什么时候销毁底层指针，还有赋值，拷贝构造时候的引用计数的变化，析构的时候要判断底层指针的引用计数为0了才能真正释放底层指针的内存</p>
 <blockquote>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmartPtr</span>&#123;</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">     T *ptr;    <span class="comment">//底层真实的指针</span></span><br><span class="line">     <span class="keyword">int</span> *use_count;<span class="comment">//保存当前对象被多少指针引用计数</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">     SmartPtr(T *p); <span class="comment">//SmartPtr&lt;int&gt;p(new int(2));</span></span><br><span class="line">     SmartPtr(<span class="keyword">const</span> SmartPtr&lt;T&gt;&amp;orig);<span class="comment">//SmartPtr&lt;int&gt;q(p);</span></span><br><span class="line">     SmartPtr&lt;T&gt;&amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPtr&lt;T&gt; &amp;rhs);<span class="comment">//q=p</span></span><br><span class="line">     ~SmartPtr();</span><br><span class="line">     T <span class="keyword">operator</span>*();  <span class="comment">//为了能把智能指针当成普通指针操作定义解引用操作</span></span><br><span class="line">     T*<span class="keyword">operator</span>-&gt;();  <span class="comment">//定义取成员操作</span></span><br><span class="line">     T* <span class="keyword">operator</span>+(<span class="keyword">int</span> i);<span class="comment">//定义指针加一个常数</span></span><br><span class="line">     <span class="keyword">int</span> <span class="keyword">operator</span>-(SmartPtr&lt;T&gt;&amp;t1,SmartPtr&lt;T&gt;&amp;t2);<span class="comment">//定义两个指针相减</span></span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">getcount</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> *use_count &#125; </span><br><span class="line">&#125;; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">int</span> SmartPtr&lt;T&gt;::<span class="keyword">operator</span>-(SmartPtr&lt;T&gt; &amp;t1, SmartPtr&lt;T&gt; &amp;t2) &#123; <span class="keyword">return</span> t1.ptr-t2.ptr; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;::SmartPtr(T *p) &#123; </span><br><span class="line">     ptr=p; </span><br><span class="line">     <span class="keyword">try</span> &#123; </span><br><span class="line">         use_count=<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1</span>); </span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">         <span class="keyword">delete</span> ptr;    <span class="comment">//申请失败释放真实指针和引用计数的内存</span></span><br><span class="line">         ptr= <span class="literal">nullptr</span>; <span class="keyword">delete</span> use_count; use_count= <span class="literal">nullptr</span>; </span><br><span class="line">     &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;::SmartPtr(<span class="keyword">const</span> SmartPtr&lt;T&gt; &amp;orig)&#123;<span class="comment">//复制构造函数</span></span><br><span class="line">     use_count=orig.use_count;<span class="comment">//引用计数保存在一块内存，所有的SmarPtr对象的引用计数都指向这里</span></span><br><span class="line">     <span class="keyword">this</span>-&gt;ptr=orig.ptr;</span><br><span class="line">     ++(*use_count);<span class="comment">//当前对象的引用计数加1</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;&amp; SmartPtr&lt;T&gt;::<span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPtr&lt;T&gt; &amp;rhs) &#123;</span><br><span class="line">    <span class="comment">//重载=运算符，例如SmartPtr&lt;int&gt;p,q; p=q;这个语句中，首先给q指向的对象的引用计数加1，因为p重新指向了q所指的对象，所以p需要先给原来的对象的引用计数减1，如果减一后为0，先释放掉p原来指向的内存，然后讲q指向的对象的引用计数加1后赋值给p</span></span><br><span class="line">     ++*(rhs.use_count); </span><br><span class="line">     <span class="keyword">if</span>((--*(use_count))==<span class="number">0</span>) &#123; </span><br><span class="line">         <span class="keyword">delete</span> ptr; </span><br><span class="line">         ptr= <span class="literal">nullptr</span>; </span><br><span class="line">         <span class="keyword">delete</span> use_count; </span><br><span class="line">         use_count= <span class="literal">nullptr</span>; </span><br><span class="line">     &#125; </span><br><span class="line"> 	<span class="comment">//SmartPtr的对象会在其生命周期结束的时候调用其析构函数，在析构函数中检测当前对象的引用计数是不是只有正在结束生命周期的这个SmartPtr引用，如果是，就释放掉，如果不是，就还有其他的SmartPtr引用当前对象，就等待其他的SmartPtr对象在其生命周期结束的时候调用析构函数释放掉</span></span><br><span class="line">     ptr=rhs.ptr; </span><br><span class="line">     *use_count=*(rhs.use_count); </span><br><span class="line">     <span class="keyword">return</span> *<span class="keyword">this</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;::~SmartPtr() &#123; </span><br><span class="line">     getcount(); </span><br><span class="line">     <span class="keyword">delete</span> ptr;</span><br><span class="line">     ptr= <span class="literal">nullptr</span>;</span><br><span class="line">     <span class="keyword">delete</span> use_count;</span><br><span class="line">     use_count=<span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;T SmartPtr&lt;T&gt;::<span class="keyword">operator</span>*()&#123;</span><br><span class="line">	<span class="keyword">return</span> *ptr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;T*  SmartPtr&lt;T&gt;::<span class="keyword">operator</span>-&gt;()&#123;</span><br><span class="line">	<span class="keyword">return</span> ptr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; T* SmartPtr&lt;T&gt;::<span class="keyword">operator</span>+(<span class="keyword">int</span> i)&#123;</span><br><span class="line">     T *temp=ptr+i;</span><br><span class="line">     <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmartPtr</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T *ptr;    <span class="comment">//底层真实的指针</span></span><br><span class="line">    <span class="keyword">int</span> *use_count;<span class="comment">//保存当前对象被多少指针引用计数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SmartPtr(T *p); <span class="comment">//SmartPtr&lt;int&gt;p(new int(2));</span></span><br><span class="line">    SmartPtr(<span class="keyword">const</span> SmartPtr&lt;T&gt;&amp;orig);<span class="comment">//SmartPtr&lt;int&gt;q(p);</span></span><br><span class="line">    SmartPtr&lt;T&gt;&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPtr&lt;T&gt; &amp;rhs);<span class="comment">//q=p</span></span><br><span class="line">    ~SmartPtr(); SmartPtr&lt;T&gt;::<span class="keyword">operator</span></span><br><span class="line">    T <span class="keyword">operator</span>*();  <span class="comment">//为了能把智能指针当成普通指针操作定义解引用操作</span></span><br><span class="line">    T* <span class="keyword">operator</span>-&gt;();  <span class="comment">//定义取成员操作</span></span><br><span class="line">    T* <span class="keyword">operator</span>+(<span class="keyword">int</span> i);<span class="comment">//定义指针加一个常数</span></span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>-(SmartPtr&lt;T&gt;&amp;t1,SmartPtr&lt;T&gt;&amp;t2);<span class="comment">//定义两个指针相减</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getcount</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> *use_count &#125; </span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">int</span> SmartPtr&lt;T&gt;::<span class="keyword">operator</span>-(SmartPtr&lt;T&gt; &amp;t1, SmartPtr&lt;T&gt; &amp;t2) &#123; <span class="keyword">return</span> t1.ptr-t2.ptr; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;::SmartPtr(T *p) &#123; </span><br><span class="line">    ptr=p; </span><br><span class="line">    <span class="keyword">try</span> &#123; </span><br><span class="line">        use_count=<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">        <span class="keyword">delete</span> ptr;    <span class="comment">//申请失败释放真实指针和引用计数的内存</span></span><br><span class="line">        ptr= <span class="literal">nullptr</span>; <span class="keyword">delete</span> use_count; use_count= <span class="literal">nullptr</span>; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;::SmartPtr(<span class="keyword">const</span> SmartPtr&lt;T&gt; &amp;orig)&#123;<span class="comment">//复制构造函数</span></span><br><span class="line">    use_count=orig.use_count;<span class="comment">//引用计数保存在一块内存，所有的SmarPtr对象的引用计数都指向这里</span></span><br><span class="line">    <span class="keyword">this</span>-&gt;ptr=orig.ptr;</span><br><span class="line">    ++(*use_count);<span class="comment">//当前对象的引用计数加1</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;&amp; SmartPtr&lt;T&gt;::<span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPtr&lt;T&gt; &amp;rhs) &#123;</span><br><span class="line">    <span class="comment">//重载=运算符，例如SmartPtr&lt;int&gt;p,q; p=q;这个语句中，首先给q指向的对象的引用计数加1，因为p重新指向了q所指的对象，所以p需要先给原来的对象的引用计数减1，如果减一后为0，先释放掉p原来指向的内存，然后讲q指向的对象的引用计数加1后赋值给p</span></span><br><span class="line">    ++*(rhs.use_count); </span><br><span class="line">    <span class="keyword">if</span>((--*(use_count))==<span class="number">0</span>) &#123; </span><br><span class="line">        <span class="keyword">delete</span> ptr; </span><br><span class="line">        ptr= <span class="literal">nullptr</span>; </span><br><span class="line">        <span class="keyword">delete</span> use_count; </span><br><span class="line">        use_count= <span class="literal">nullptr</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="comment">//SmartPtr的对象会在其生命周期结束的时候调用其析构函数，在析构函数中检测当前对象的引用计数是不是只有正在结束生命周期的这个SmartPtr引用，如果是，就释放掉，如果不是，就还有其他的SmartPtr引用当前对象，就等待其他的SmartPtr对象在其生命周期结束的时候调用析构函数释放掉</span></span><br><span class="line">    ptr=rhs.ptr; </span><br><span class="line">    *use_count=*(rhs.use_count); </span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; SmartPtr&lt;T&gt;::~SmartPtr() &#123; </span><br><span class="line">    getcount(); </span><br><span class="line">    <span class="keyword">delete</span> ptr;</span><br><span class="line">    ptr= <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">delete</span> use_count;</span><br><span class="line">    use_count=<span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;T SmartPtr&lt;T&gt;::<span class="keyword">operator</span>*()&#123;</span><br><span class="line">    <span class="keyword">return</span> *ptr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;T*  SmartPtr&lt;T&gt;::<span class="keyword">operator</span>-&gt;()&#123;</span><br><span class="line">	<span class="keyword">return</span> ptr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; T* SmartPtr&lt;T&gt;::<span class="keyword">operator</span>+(<span class="keyword">int</span> i)&#123;</span><br><span class="line">    T *temp=ptr+i;</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h3 id="四-表达式与函数"><a href="#四-表达式与函数" class="headerlink" title="四 表达式与函数"></a>四 表达式与函数</h3><h4 id="1-fork函数"><a href="#1-fork函数" class="headerlink" title="1. fork函数"></a>1. fork函数</h4><blockquote>
 <p>Fork：创建一个和当前进程映像一样的进程可以通过fork( )系统调用：</p>
@@ -12158,5 +12281,125 @@ P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
         <tag>操作系统</tag>
         <tag>设计模式</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>SLAM中常用的角点检测算法</title>
+    <url>/2022/05/31/2022-05-31-SLAM_Feature_detecter/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<h3 id="特征点"><a href="#特征点" class="headerlink" title="特征点"></a>特征点</h3><p>人工设计的特征点该具有的特性</p>
+<blockquote>
+<ol>
+<li>可重复性（Repeatability）：相同的“区域”可以在不同的图像中被找到。</li>
+<li>可区别性（Distinctiveness）：不同的“区域”有不同的表达。</li>
+<li>高效率（Efficiency）：同一图像中，特征点的数量应远小于像素的数量。</li>
+<li>本地性（Locality）：特征仅与一小片图像区域相关。</li>
+</ol>
+</blockquote>
+<h4 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h4><ol>
+<li><p>关键点</p>
+</li>
+<li><p>描述子</p>
+<p>描述子设计原则：外观相似的特征应该又相似的描述子；</p>
+</li>
+</ol>
+<h3 id="常用角点检测算法"><a href="#常用角点检测算法" class="headerlink" title="常用角点检测算法"></a>常用角点检测算法</h3><p>SLAM中常用的角点检测算法整理如下：</p>
+<p>本文根据ORBSLAM3中的综述表格进行总结：</p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png" alt="image-20220531214022010"></p>
+<h2 id><a href="#" class="headerlink" title></a></h2><h4 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h4><ol>
+<li><p>单纯的FAST关键点，没有描述子</p>
+</li>
+<li><p>FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思<br>想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）：</p>
+<img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855" style="zoom:50%;">
+
+<ol>
+<li>在图像中选取像素p，假设它的亮度为$I_p$。</li>
+<li>设置一个阈值T(比如$I_p$ 的20%)。</li>
+<li>以像素p 为中心, 选取半径为3 的圆上的16 个像素点。</li>
+<li>假如选取的圆上，有连续的N 个点的亮度大于Ip + T 或小于Ip - T，那么像素p可以被认为是特征点(N 通常取12，即为FAST-12。其它常用的N 取值为9 和11，他们分别被称为FAST-9，FAST-11)。</li>
+<li>循环以上四步，对每一个像素执行相同的操作。</li>
+</ol>
+</li>
+</ol>
+<p>在FAST-12 算法中，为了更高效，可以添加一项预测试操作，以快速地排除绝大多数不是角点的像素。具体操作为，对于每个像素，直接检测邻域圆上的第1，5，9，13 个像素的亮度。只有当这四个像素中有三个同时大于Ip + T 或小于Ip 􀀀 T 时，当前像素才有可能是一个角点，否则应该直接排除。这样的预测试操作大大加速了角点检测。此外，原始的FAST 角点经常出现“扎堆”的现象。所以在第一遍检测之后，还需要用非极大值抑制（Non-maximal suppression），在一定区域内仅保留响应极大值的角点，避免角点集中的问题。</p>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><p>FAST 特征点的计算仅仅是比较像素间亮度的差异，速度非常快，但它也有一些问题。</p>
+<ul>
+<li>首先，FAST 特征点数量很大且不确定，而我们往往希望对图像提取固定数量的特征。因此，在ORB 中，对原始的FAST 算法进行了改进。我们可以指定最终要提取的角点数量N，对原始FAST 角点分别计算Harris 响应值，然后选取前N 个具有最大响应值的角点，<br>作为最终的角点集合。</li>
+<li>其次，FAST 角点不具有方向信息。而且，由于它固定取半径为3 的圆，存在尺度问题：远处看着像是角点的地方，接近后看可能就不是角点了。</li>
+</ul>
+<h4 id="Harris特征点"><a href="#Harris特征点" class="headerlink" title="Harris特征点"></a>Harris特征点</h4><p>OPENCV描述：In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by <strong>Chris Harris &amp; Mike Stephens</strong> in their paper <strong>A Combined Corner and Edge Detector</strong> in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. </p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png" alt="image-20220615153225850"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png" alt="image-20220615154043028"></p>
+<blockquote>
+<p><a href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html" target="_blank" rel="noopener">openCV链接</a></p>
+</blockquote>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png" alt="image-20220615154149887"></p>
+<h4 id="Shi-Tomas特征点"><a href="#Shi-Tomas特征点" class="headerlink" title="Shi-Tomas特征点"></a>Shi-Tomas特征点</h4><blockquote>
+<p>Harris 和 Shi-Tomasi 都是基于梯度计算的角点检测方法，Shi-Tomasi 的效果要好一些。</p>
+<ul>
+<li>基于梯度的检测方法有一些缺点: 计算复杂度高，图像中的噪声可以阻碍梯度计算。</li>
+</ul>
+<p>想要提高检测速度的话，可以考虑基于模板的方法：FAST角点检测算法。该算法原理比较简单，但实时性很强。</p>
+<p>Harris 角点检测中每个窗口的分数公式是将矩阵 M 的行列式与 M 的迹相减：</p>
+<p><img src="https://www.zhihu.com/equation?tex=R+%3D+%CE%BB_1%CE%BB_2+%E2%88%92+k+%28%CE%BB_1+%2B+%CE%BB_2%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>由于 Harris 角点检测算法的稳定性和 k 值有关，而 k 是个经验值，不好设定最佳值。</p>
+<p>Shi-Tomasi 发现，角点的稳定性其实和矩阵 M 的较小特征值有关，于是直接用较小的那个特征值作为分数。这样就不用调整k值了。</p>
+<p>所以 Shi-Tomasi 将分数公式改为如下形式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=R+%3D+min+%28%CE%BB_1%2C+%CE%BB_2%29+%5C%5C" alt="[公式]"></p>
+<p>和 Harris 一样，如果该分数大于设定的阈值，我们就认为它是一个角点。</p>
+<p>我们可以把它绘制到 λ1 ～ λ2 空间中，就会得到下图：</p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg" alt="img"></p>
+</blockquote>
+<h4 id="ORB特征点"><a href="#ORB特征点" class="headerlink" title="ORB特征点"></a>ORB特征点</h4><ol>
+<li>改进了FAST关键点;</li>
+<li>ORB特征点有方向，采用BRIEF描述子进行描述；</li>
+<li>具有旋转和尺度不变性，速度快；</li>
+</ol>
+<h5 id="改进FAST关键点"><a href="#改进FAST关键点" class="headerlink" title="改进FAST关键点"></a>改进FAST关键点</h5><p>针对FAST 角点不具有方向性和尺度的弱点，ORB 添加了尺度和旋转的描述。尺度不变性由构建图像金字塔¬，并在金字塔的每一层上检测角点来实现。而特征的旋转是由灰度质心法（Intensity Centroid）实现的。我们稍微介绍一下。质心是指以图像块灰度值作为权重的中心。其具体操作步骤如下[35]：</p>
+<ol>
+<li><p>在一个小的图像块B 中，定义图像块的矩为：<br>$$<br>m_{pq} = \sum_{x;y\in \Beta} x^py^qI(x; y); p,q = {0,1}<br>$$</p>
+</li>
+<li><p>通过矩可以找到图像块的质心：<br>$$<br>C = (\frac{m_{10}}{m_{00}}，\frac{m_{10}}{m_{00}})<br>$$<br>连接图像块的几何中心O 与质心C，得到一个方向向量$OC$,于是特征点的方向可以定义为$\theta = \arctan{\frac{m01}{m10}}$。</p>
+</li>
+</ol>
+<p>通过以上方法，FAST 角点便具有了尺度与旋转的描述，大大提升了它们在不同图像之间表述的鲁棒性。所以在ORB 中，把这种改进后的FAST 称为Oriented FAST。</p>
+<h5 id="BRIEF-描述子"><a href="#BRIEF-描述子" class="headerlink" title="BRIEF 描述子"></a>BRIEF 描述子</h5><p>​    BRIEF 是一种二进制描述子，它的描述向量由许多个0 和1 组成，这里的0 和1 编码了关键点附近两个像素（比如说p 和q）的大小关系：如果p 比q 大，则取1，反之就取0。如果我们取了128 个这样的p; q，最后就得到128 维由0，1 组成的向量。那么，p和q 如何选取呢？在作者原始的论文中给出了若干种挑选方法，大体上都是按照某种概率分布，随机地挑选p 和q 的位置，读者可以阅读BRIEF 论文或OpenCV 源码以查看它的具体实现[34]。BRIEF 使用了随机选点的比较，速度非常快，而且由于使用了二进制表达，存储起来也十分方便，适用于实时的图像匹配。原始的BRIEF 描述子不具有旋转不变性的，因此在图像发生旋转时容易丢失。而ORB 在FAST 特征点提取阶段计算了关键点的方向，所以可以利用方向信息，计算了旋转之后的“Steer BRIEF”特征，使ORB 的描述子具有较好的旋转不变性。<br>由于考虑到了旋转和缩放，使得ORB 在平移、旋转、缩放的变换下仍有良好的表现。同时，FAST 和BRIEF 的组合也非常的高效，使得ORB 特征在实时SLAM 中非常受欢迎。</p>
+<h4 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h4><blockquote>
+<p>SIFT(Scale-Invariant Feature Transform)特征，即尺度不变特征变换，是一种计算机视觉的特征提取算法，用来侦测与描述图像中的局部性特征。</p>
+<p>实质上，它是在不同的尺度空间上查找关键点(特征点)，并计算出关键点的方向。SIFT所查找到的关键点是一些十分突出、不会因光照、仿射变换和噪音等因素而变化的点，如角点、边缘点、暗区的亮点及亮区的暗点等。</p>
+<ol>
+<li>具有尺度不变性，充分考虑了图像变换过程中出现的光照，尺度，旋转等变化；计算量较大；</li>
+<li>无法实时计算SIFT特征，无法用在定位与建图中；</li>
+</ol>
+</blockquote>
+<h4 id="SURF"><a href="#SURF" class="headerlink" title="SURF"></a>SURF</h4><blockquote>
+<p>SIFT和SURF由于计算复杂度的原因在SLAM中应用较少</p>
+<p>链接：<a href="https://www.cnblogs.com/multhree/p/11296945.html" target="_blank" rel="noopener">https://www.cnblogs.com/multhree/p/11296945.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>SLAM</category>
+      </categories>
+      <tags>
+        <tag>角点检测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2022-05-31-ORBSLAM3</title>
+    <url>/2022/05/31/2022-05-31-ORBSLAM3/</url>
+    <content><![CDATA[<p>原文链接：<a href="https://arxiv.org/abs/2007.11898" target="_blank" rel="noopener">https://arxiv.org/abs/2007.11898</a></p>
+<p>参考翻译文章：<a href="https://zhuanlan.zhihu.com/p/403299796" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/403299796</a></p>
+<a id="more"></a>
+
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>本文提出的ORBSLAM3，采用<strong>针孔相机和鱼眼镜头模型</strong>，<strong>第一个在单目、双目以及RGBD相机上都能执行纯视觉、视觉-惯性以及多地图的SLAM系统</strong>。</p>
+<ol>
+<li>第一个主要的创新点是<strong>基于特征的紧耦合视觉惯性SLAM系统</strong>，<strong>完全依赖于最大后验估计MAP算法</strong>，甚至在IMU初始化阶段期间。这个SLAM系统，<strong>在实时的、小型或大型、室内或室外环境中，都能鲁棒地运行系统</strong>，并且<strong>要比之前的方法精确2到5倍</strong>。</li>
+<li>第二个主要的创新点是<strong>多地图系统</strong>，依赖于一个提升召回率的新的位置识别算法。基于此，ORB-SLAM3在长期缺乏视觉信息的情况下依旧能够运行：当特征跟踪丢失时，它将会开启一个新地图，遇到建图过的区域将会无缝合并之前的地图。与那些只是用前几秒信息的视觉里程计系统相比，ORBSLAM3系统是第一个，能在每个算法阶段，复用之前的所有信息。这个允许包括在光束平差法共视关键帧阶段，其提供提升精度的高视差观测，即使在时间序列上是分隔的，或者他们来自之前的建图会话Session。</li>
+</ol>
+<p>我们的实验显示，在所有的传感器配置中，ORBSLAM3和已有文献中最好的系统一样鲁棒，并且要更加精确。注意的是，我们的双目-惯性SLAM在EuRoC飞行器数据集上达到了平均3.6cm的精度，在TUM-VI（AR/VR场景代表）快速手持运动环境的室内数据集中达到了平均9mm的精度。为了社区的明天，本文开源了代码。</p>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>表1给出了最具代表的视觉和视觉-惯性系统的总结，显示了用于估计和数据关联的主要技术。定性的精度对比和鲁棒性评级包括在表中，对于现代SLAM系统主要基于第7小节中介绍的对比方法，而针对经典的系统，主要基于文献【2】【52】中先前的比较。</p>
+<p>不同SLAM系统之间的相同点与不通电</p>
+<p><img src="/2022/05/31/2022-05-31-ORBSLAM3/image-20220531180642864.png" alt="image-20220531180642864"></p>
+]]></content>
   </entry>
 </search>

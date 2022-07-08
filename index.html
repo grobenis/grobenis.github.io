@@ -72,6 +72,235 @@
     
     
     
+    <article id="post-2022-05-31-SLAM_Feature_detecter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/05/31/2022-05-31-SLAM_Feature_detecter/"
+    >SLAM中常用的角点检测算法</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/05/31/2022-05-31-SLAM_Feature_detecter/" class="article-date">
+  <time datetime="2022-05-31T13:38:32.000Z" itemprop="datePublished">2022-05-31</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SLAM/">SLAM</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <a id="more"></a>
+
+<h3 id="特征点"><a href="#特征点" class="headerlink" title="特征点"></a>特征点</h3><p>人工设计的特征点该具有的特性</p>
+<blockquote>
+<ol>
+<li>可重复性（Repeatability）：相同的“区域”可以在不同的图像中被找到。</li>
+<li>可区别性（Distinctiveness）：不同的“区域”有不同的表达。</li>
+<li>高效率（Efficiency）：同一图像中，特征点的数量应远小于像素的数量。</li>
+<li>本地性（Locality）：特征仅与一小片图像区域相关。</li>
+</ol>
+</blockquote>
+<h4 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h4><ol>
+<li><p>关键点</p>
+</li>
+<li><p>描述子</p>
+<p>描述子设计原则：外观相似的特征应该又相似的描述子；</p>
+</li>
+</ol>
+<h3 id="常用角点检测算法"><a href="#常用角点检测算法" class="headerlink" title="常用角点检测算法"></a>常用角点检测算法</h3><p>SLAM中常用的角点检测算法整理如下：</p>
+<p>本文根据ORBSLAM3中的综述表格进行总结：</p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png" alt="image-20220531214022010"></p>
+<h2 id><a href="#" class="headerlink" title></a></h2><h4 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h4><ol>
+<li><p>单纯的FAST关键点，没有描述子</p>
+</li>
+<li><p>FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思<br>想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）：</p>
+<img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855" style="zoom:50%;">
+
+<ol>
+<li>在图像中选取像素p，假设它的亮度为$I_p$。</li>
+<li>设置一个阈值T(比如$I_p$ 的20%)。</li>
+<li>以像素p 为中心, 选取半径为3 的圆上的16 个像素点。</li>
+<li>假如选取的圆上，有连续的N 个点的亮度大于Ip + T 或小于Ip - T，那么像素p可以被认为是特征点(N 通常取12，即为FAST-12。其它常用的N 取值为9 和11，他们分别被称为FAST-9，FAST-11)。</li>
+<li>循环以上四步，对每一个像素执行相同的操作。</li>
+</ol>
+</li>
+</ol>
+<p>在FAST-12 算法中，为了更高效，可以添加一项预测试操作，以快速地排除绝大多数不是角点的像素。具体操作为，对于每个像素，直接检测邻域圆上的第1，5，9，13 个像素的亮度。只有当这四个像素中有三个同时大于Ip + T 或小于Ip 􀀀 T 时，当前像素才有可能是一个角点，否则应该直接排除。这样的预测试操作大大加速了角点检测。此外，原始的FAST 角点经常出现“扎堆”的现象。所以在第一遍检测之后，还需要用非极大值抑制（Non-maximal suppression），在一定区域内仅保留响应极大值的角点，避免角点集中的问题。</p>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><p>FAST 特征点的计算仅仅是比较像素间亮度的差异，速度非常快，但它也有一些问题。</p>
+<ul>
+<li>首先，FAST 特征点数量很大且不确定，而我们往往希望对图像提取固定数量的特征。因此，在ORB 中，对原始的FAST 算法进行了改进。我们可以指定最终要提取的角点数量N，对原始FAST 角点分别计算Harris 响应值，然后选取前N 个具有最大响应值的角点，<br>作为最终的角点集合。</li>
+<li>其次，FAST 角点不具有方向信息。而且，由于它固定取半径为3 的圆，存在尺度问题：远处看着像是角点的地方，接近后看可能就不是角点了。</li>
+</ul>
+<h4 id="Harris特征点"><a href="#Harris特征点" class="headerlink" title="Harris特征点"></a>Harris特征点</h4><p>OPENCV描述：In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by <strong>Chris Harris &amp; Mike Stephens</strong> in their paper <strong>A Combined Corner and Edge Detector</strong> in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. </p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png" alt="image-20220615153225850"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png" alt="image-20220615154043028"></p>
+<blockquote>
+<p><a href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html" target="_blank" rel="noopener">openCV链接</a></p>
+</blockquote>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png" alt="image-20220615154149887"></p>
+<h4 id="Shi-Tomas特征点"><a href="#Shi-Tomas特征点" class="headerlink" title="Shi-Tomas特征点"></a>Shi-Tomas特征点</h4><blockquote>
+<p>Harris 和 Shi-Tomasi 都是基于梯度计算的角点检测方法，Shi-Tomasi 的效果要好一些。</p>
+<ul>
+<li>基于梯度的检测方法有一些缺点: 计算复杂度高，图像中的噪声可以阻碍梯度计算。</li>
+</ul>
+<p>想要提高检测速度的话，可以考虑基于模板的方法：FAST角点检测算法。该算法原理比较简单，但实时性很强。</p>
+<p>Harris 角点检测中每个窗口的分数公式是将矩阵 M 的行列式与 M 的迹相减：</p>
+<p><img src="https://www.zhihu.com/equation?tex=R+%3D+%CE%BB_1%CE%BB_2+%E2%88%92+k+%28%CE%BB_1+%2B+%CE%BB_2%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>由于 Harris 角点检测算法的稳定性和 k 值有关，而 k 是个经验值，不好设定最佳值。</p>
+<p>Shi-Tomasi 发现，角点的稳定性其实和矩阵 M 的较小特征值有关，于是直接用较小的那个特征值作为分数。这样就不用调整k值了。</p>
+<p>所以 Shi-Tomasi 将分数公式改为如下形式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=R+%3D+min+%28%CE%BB_1%2C+%CE%BB_2%29+%5C%5C" alt="[公式]"></p>
+<p>和 Harris 一样，如果该分数大于设定的阈值，我们就认为它是一个角点。</p>
+<p>我们可以把它绘制到 λ1 ～ λ2 空间中，就会得到下图：</p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg" alt="img"></p>
+</blockquote>
+<h4 id="ORB特征点"><a href="#ORB特征点" class="headerlink" title="ORB特征点"></a>ORB特征点</h4><ol>
+<li>改进了FAST关键点;</li>
+<li>ORB特征点有方向，采用BRIEF描述子进行描述；</li>
+<li>具有旋转和尺度不变性，速度快；</li>
+</ol>
+<h5 id="改进FAST关键点"><a href="#改进FAST关键点" class="headerlink" title="改进FAST关键点"></a>改进FAST关键点</h5><p>针对FAST 角点不具有方向性和尺度的弱点，ORB 添加了尺度和旋转的描述。尺度不变性由构建图像金字塔¬，并在金字塔的每一层上检测角点来实现。而特征的旋转是由灰度质心法（Intensity Centroid）实现的。我们稍微介绍一下。质心是指以图像块灰度值作为权重的中心。其具体操作步骤如下[35]：</p>
+<ol>
+<li><p>在一个小的图像块B 中，定义图像块的矩为：<br>$$<br>m_{pq} = \sum_{x;y\in \Beta} x^py^qI(x; y); p,q = {0,1}<br>$$</p>
+</li>
+<li><p>通过矩可以找到图像块的质心：<br>$$<br>C = (\frac{m_{10}}{m_{00}}，\frac{m_{10}}{m_{00}})<br>$$<br>连接图像块的几何中心O 与质心C，得到一个方向向量$OC$,于是特征点的方向可以定义为$\theta = \arctan{\frac{m01}{m10}}$。</p>
+</li>
+</ol>
+<p>通过以上方法，FAST 角点便具有了尺度与旋转的描述，大大提升了它们在不同图像之间表述的鲁棒性。所以在ORB 中，把这种改进后的FAST 称为Oriented FAST。</p>
+<h5 id="BRIEF-描述子"><a href="#BRIEF-描述子" class="headerlink" title="BRIEF 描述子"></a>BRIEF 描述子</h5><p>​    BRIEF 是一种二进制描述子，它的描述向量由许多个0 和1 组成，这里的0 和1 编码了关键点附近两个像素（比如说p 和q）的大小关系：如果p 比q 大，则取1，反之就取0。如果我们取了128 个这样的p; q，最后就得到128 维由0，1 组成的向量。那么，p和q 如何选取呢？在作者原始的论文中给出了若干种挑选方法，大体上都是按照某种概率分布，随机地挑选p 和q 的位置，读者可以阅读BRIEF 论文或OpenCV 源码以查看它的具体实现[34]。BRIEF 使用了随机选点的比较，速度非常快，而且由于使用了二进制表达，存储起来也十分方便，适用于实时的图像匹配。原始的BRIEF 描述子不具有旋转不变性的，因此在图像发生旋转时容易丢失。而ORB 在FAST 特征点提取阶段计算了关键点的方向，所以可以利用方向信息，计算了旋转之后的“Steer BRIEF”特征，使ORB 的描述子具有较好的旋转不变性。<br>由于考虑到了旋转和缩放，使得ORB 在平移、旋转、缩放的变换下仍有良好的表现。同时，FAST 和BRIEF 的组合也非常的高效，使得ORB 特征在实时SLAM 中非常受欢迎。</p>
+<h4 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h4><blockquote>
+<p>SIFT(Scale-Invariant Feature Transform)特征，即尺度不变特征变换，是一种计算机视觉的特征提取算法，用来侦测与描述图像中的局部性特征。</p>
+<p>实质上，它是在不同的尺度空间上查找关键点(特征点)，并计算出关键点的方向。SIFT所查找到的关键点是一些十分突出、不会因光照、仿射变换和噪音等因素而变化的点，如角点、边缘点、暗区的亮点及亮区的暗点等。</p>
+<ol>
+<li>具有尺度不变性，充分考虑了图像变换过程中出现的光照，尺度，旋转等变化；计算量较大；</li>
+<li>无法实时计算SIFT特征，无法用在定位与建图中；</li>
+</ol>
+</blockquote>
+<h4 id="SURF"><a href="#SURF" class="headerlink" title="SURF"></a>SURF</h4><blockquote>
+<p>SIFT和SURF由于计算复杂度的原因在SLAM中应用较少</p>
+<p>链接：<a href="https://www.cnblogs.com/multhree/p/11296945.html" target="_blank" rel="noopener">https://www.cnblogs.com/multhree/p/11296945.html</a></p>
+</blockquote>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%92%E7%82%B9%E6%A3%80%E6%B5%8B/" rel="tag">角点检测</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2022-05-31-ORBSLAM3" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/05/31/2022-05-31-ORBSLAM3/"
+    >2022-05-31-ORBSLAM3</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/05/31/2022-05-31-ORBSLAM3/" class="article-date">
+  <time datetime="2022-05-31T09:57:26.000Z" itemprop="datePublished">2022-05-31</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>原文链接：<a href="https://arxiv.org/abs/2007.11898" target="_blank" rel="noopener">https://arxiv.org/abs/2007.11898</a></p>
+<p>参考翻译文章：<a href="https://zhuanlan.zhihu.com/p/403299796" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/403299796</a></p>
+      
+      <a class="article-more-link" href="/2022/05/31/2022-05-31-ORBSLAM3/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-移动端性能优化" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -175,6 +404,35 @@
 
       
       <a id="more"></a>
+
+<h2 id="安卓四大组件"><a href="#安卓四大组件" class="headerlink" title="安卓四大组件"></a>安卓四大组件</h2><p>Android四大组件分别为activity、service、content provider、broadcast receiver。</p>
+<h3 id="一、android四大组件详解"><a href="#一、android四大组件详解" class="headerlink" title="一、android四大组件详解"></a>一、android四大组件详解</h3><h4 id="1、activity"><a href="#1、activity" class="headerlink" title="1、activity"></a>1、activity</h4><p>（1）一个Activity通常就是一个单独的屏幕（窗口）。</p>
+<p>（2）Activity之间通过Intent进行通信。</p>
+<p>（3）android应用中每一个Activity都必须要在AndroidManifest.xml配置文件中声明，否则系统将不识别也不执行该Activity。</p>
+<h4 id="2、service"><a href="#2、service" class="headerlink" title="2、service"></a>2、service</h4><p>（1）service用于在后台完成用户指定的操作。service分为两种：</p>
+<p>（a）started（启动）：当应用程序组件（如activity）调用startService()方法启动服务时，服务处于started状态。</p>
+<p>（b）bound（绑定）：当应用程序组件调用bindService()方法绑定到服务时，服务处于bound状态。</p>
+<p>（2）startService()与bindService()区别：</p>
+<p>（a）started service（启动服务）是由其他组件调用startService()方法启动的，这导致服务的onStartCommand()方法被调用。当服务是started状态时，其生命周期与启动它的组件无关，并且可以在后台无限期运行，即使启动服务的组件已经被销毁。因此，服务需要在完成任务后调用stopSelf()方法停止，或者由其他组件调用stopService()方法停止。</p>
+<p>（b）使用bindService()方法启用服务，调用者与服务绑定在了一起，调用者一旦退出，服务也就终止，大有“不求同时生，必须同时死”的特点。</p>
+<p>（3）开发人员需要在应用程序配置文件中声明全部的service，使用<service></service>标签。</p>
+<p>（4）Service通常位于后台运行，它一般不需要与用户交互，因此Service组件没有图形用户界面。Service组件需要继承Service基类。Service组件通常用于为其他组件提供后台服务或监控其他组件的运行状态。</p>
+<h4 id="3、content-provider"><a href="#3、content-provider" class="headerlink" title="3、content provider"></a>3、content provider</h4><p>（1）android平台提供了Content Provider使一个应用程序的指定数据集提供给其他应用程序。其他应用可以通过ContentResolver类从该内容提供者中获取或存入数据。</p>
+<p>（2）只有需要在多个应用程序间共享数据是才需要内容提供者。例如，通讯录数据被多个应用程序使用，且必须存储在一个内容提供者中。它的好处是统一数据访问方式。</p>
+<p>（3）ContentProvider实现数据共享。ContentProvider用于保存和获取数据，并使其对所有应用程序可见。这是不同应用程序间共享数据的唯一方式，因为android没有提供所有应用共同访问的公共存储区。</p>
+<p>（4）开发人员不会直接使用ContentProvider类的对象，大多数是通过ContentResolver对象实现对ContentProvider的操作。</p>
+<p>（5）ContentProvider使用URI来唯一标识其数据集，这里的URI以content://作为前缀，表示该数据由ContentProvider来管理。</p>
+<h3 id="4、broadcast-receiver"><a href="#4、broadcast-receiver" class="headerlink" title="4、broadcast receiver"></a>4、broadcast receiver</h3><p>（1）你的应用可以使用它对外部事件进行过滤，只对感兴趣的外部事件(如当电话呼入时，或者数据网络可用时)进行接收并做出响应。广播接收器没有用户界面。然而，它们可以启动一个activity或serice来响应它们收到的信息，或者用NotificationManager来通知用户。通知可以用很多种方式来吸引用户的注意力，例如闪动背灯、震动、播放声音等。一般来说是在状态栏上放一个持久的图标，用户可以打开它并获取消息。</p>
+<p>（2）广播接收者的注册有两种方法，分别是程序动态注册和AndroidManifest文件中进行静态注册。</p>
+<p>（3）动态注册广播接收器特点是当用来注册的Activity关掉后，广播也就失效了。静态注册无需担忧广播接收器是否被关闭，只要设备是开启状态，广播接收器也是打开着的。也就是说哪怕app本身未启动，该app订阅的广播在触发时也会对它起作用。</p>
+<h3 id="二、android四大组件总结"><a href="#二、android四大组件总结" class="headerlink" title="二、android四大组件总结"></a>二、android四大组件总结</h3><blockquote>
+<h4 id="（1）4大组件的注册"><a href="#（1）4大组件的注册" class="headerlink" title="（1）4大组件的注册"></a>（1）4大组件的注册</h4><p>4大基本组件都需要注册才能使用，每个Activity、service、Content Provider都需要在AndroidManifest文件中进行配置。AndroidManifest文件中未进行声明的activity、服务以及内容提供者将不为系统所见，从而也就不可用。而broadcast receiver广播接收者的注册分静态注册（在AndroidManifest文件中进行配置）和通过代码动态创建并以调用Context.registerReceiver()的方式注册至系统。需要注意的是在AndroidManifest文件中进行配置的广播接收者会随系统的启动而一直处于活跃状态，只要接收到感兴趣的广播就会触发（即使程序未运行）。</p>
+<h4 id="（2）4大组件的激活"><a href="#（2）4大组件的激活" class="headerlink" title="（2）4大组件的激活"></a>（2）4大组件的激活</h4><p>内容提供者的激活：当接收到ContentResolver发出的请求后，内容提供者被激活。而其它三种组件activity、服务和广播接收器被一种叫做intent的异步消息所激活。</p>
+<h4 id="（3）4大组件的关闭"><a href="#（3）4大组件的关闭" class="headerlink" title="（3）4大组件的关闭"></a>（3）4大组件的关闭</h4><p>内容提供者仅在响应ContentResolver提出请求的时候激活。而一个广播接收器仅在响应广播信息的时候激活。所以，没有必要去显式的关闭这些组件。Activity关闭：可以通过调用它的finish()方法来关闭一个activity。服务关闭：对于通过startService()方法启动的服务要调用Context.stopService()方法关闭服务，使用bindService()方法启动的服务要调用Contex.unbindService()方法关闭服务。</p>
+<h4 id="（4）android中的任务（activity栈）"><a href="#（4）android中的任务（activity栈）" class="headerlink" title="（4）android中的任务（activity栈）"></a>（4）android中的任务（activity栈）</h4><p>（a）任务其实就是activity的栈，它由一个或多个Activity组成，共同完成一个完整的用户体验。栈底的是启动整个任务的Activity，栈顶的是当前运行的用户可以交互的Activity，当一个activity启动另外一个的时候，新的activity就被压入栈，并成为当前运行的activity。而前一个activity仍保持在栈之中。当用户按下BACK键的时候，当前activity出栈，而前一个恢复为当前运行的activity。栈中保存的其实是对象，栈中的Activity永远不会重排，只会压入或弹出。</p>
+<p>（b）任务中的所有activity是作为一个整体进行移动的。整个的任务（即activity栈）可以移到前台，或退至后台。</p>
+<p>（c）Android系统是一个多任务(Multi-Task)的操作系统，可以在用手机听音乐的同时，也执行其他多个程序。每多执行一个应用程序，就会多耗费一些系统内存，当同时执行的程序过多，或是关闭的程序没有正确释放掉内存，系统就会觉得越来越慢，甚至不稳定。为了解决这个问题，Android引入了一个新的机制，即生命周期(Life Cycle)。</p>
+</blockquote>
 
       
       <!-- reward -->
@@ -634,153 +892,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2021-07-04-通过ndkd打包aar格式的SDK" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/"
-    >通过NDK打包aar格式的SDK</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/" class="article-date">
-  <time datetime="2021-07-04T05:06:09.000Z" itemprop="datePublished">2021-07-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。</p>
-<p>本文将学习制作SDK的流程。</p>
-      
-      <a class="article-more-link" href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91/" rel="tag">开发</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2021-06-19-可穿戴算法中的压力监测" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/"
-    >可穿戴领域中的压力监测算法</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/" class="article-date">
-  <time datetime="2021-06-19T14:58:33.000Z" itemprop="datePublished">2021-06-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>​    以后要坚持每周更新一篇博客，所以今天先记载一下自己调研的可穿戴算法中的压力监测算法。</p>
-      
-      <a class="article-more-link" href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%AF%E7%A9%BF%E6%88%B4/" rel="tag">可穿戴</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
 
 
     </footer>
