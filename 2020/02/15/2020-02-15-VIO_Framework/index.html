@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k字</span>
+            <span class="post-count">1.5k字</span>
         </span>
     </span>
 
@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -95,24 +95,37 @@
 
       
       <p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297" target="_blank" rel="noopener">B站</a>。</p>
+<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
 <a id="more"></a>
 
-<h2 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h2><p>误差项:<br>$$<br>e(x+\Delta x)=e(x)+J(x)\Delta x<br>$$</p>
-<ol>
-<li>一次观测</li>
-<li>多次观测</li>
-<li>逆深度 + VIO</li>
-</ol>
-<h2 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h2><ol>
+<h2 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h2><p>定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心；</p>
+<p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p>
+<p><strong>核心</strong>：误差项、优化变量、协方差</p>
+<p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p>
+<h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933"></p>
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：<br>$$<br>\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)<br>$$<br>误差项:<br>$$<br>e(x+\Delta x)=e(x)+J(x)\Delta x<br>$$</p>
+<p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：<br>$$<br>J^T P^{-1}\Delta x = -J^TP^{-1}e<br>$$</p>
+<h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498"></p>
+<p>其Jacobian矩阵如下：</p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322"></p>
+<p>得到相应的Hession矩阵如下所示：</p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060"></p>
+<h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397"></p>
+<h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622"></p>
+<p>举例，其中一个T1T1的小块的数学形式如下所示：</p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614"></p>
+<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。 </p>
+<h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013"></p>
+<h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol>
 <li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li>
 <li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li>
 </ol>
-<h2 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h2><ol>
+<h4 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h4><ol>
 <li>积分下一个时刻的PVQ作为视觉初始值</li>
 <li>预计分相邻帧的PVQ变化量，作为IMU的约束</li>
 <li>计算IMU误差的协方差和jacobian</li>
 </ol>
-<p><img src="/images/photo/image-20191202112248399.png" alt="image-20191202112248399"></p>
+<p><img src="./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399"></p>
 <h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol>
 <li><p>将视觉约束就加到联合优化是紧耦合</p>
 </li>
@@ -183,14 +196,6 @@
 <p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085"></p>
 <p>因子图如下</p>
 <p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998"></p>
-<h3 id="VINS"><a href="#VINS" class="headerlink" title="VINS"></a>VINS</h3><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote>
-<p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p>
-</blockquote>
-<p>$$<br>X=[x_0,x_1,…x_n,x_c^b,\lambda_0,\lambda_1,…\lambda_m]<br>$$</p>
-<p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170"></p>
-<blockquote>
-<p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p>
-</blockquote>
 <h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722"></p>
 <p>Tracklocal map：仅优化当前帧</p>
 <p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305"></p>
@@ -206,6 +211,22 @@
 <li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li>
 </ol>
 <p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
+<h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p> <img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464"></p>
+<ol>
+<li>黄色为IMU帧间约束（PVQBaBg 15×1）</li>
+<li>蓝色为视觉重投影误差约束（2×1）</li>
+<li>绿色为闭环帧，用来计算相对位姿，用于闭环优化时使用</li>
+</ol>
+<p>VINS在前端通过光流法进行跟踪，首先检测Harris角点，跟踪相邻帧的角点，</p>
+<h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote>
+<p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p>
+</blockquote>
+<p>$$<br>X=[x_0,x_1,…x_n,x_c^b,\lambda_0,\lambda_1,…\lambda_m]<br>$$</p>
+<p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170"></p>
+<blockquote>
+<p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p>
+</blockquote>
 
       
       <!-- reward -->

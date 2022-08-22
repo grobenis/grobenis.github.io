@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">27.7k字</span>
+            <span class="post-count">29k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">102分钟</span>
+            <span class="post-count">107分钟</span>
         </span>
     </span>
 </div>
@@ -103,34 +103,16 @@
 
 
 
-<h1 id="零-数学基础"><a href="#零-数学基础" class="headerlink" title="零  数学基础"></a>零  数学基础</h1><h2 id="一-李群和李代数"><a href="#一-李群和李代数" class="headerlink" title="一 李群和李代数"></a>一 李群和李代数</h2><h4 id="1-李群和李代数的关系"><a href="#1-李群和李代数的关系" class="headerlink" title="1. 李群和李代数的关系"></a>1. 李群和李代数的关系</h4><p>李群</p>
-<blockquote>
-<p>三维旋转矩阵构成了特殊正交群SO(3)；<br>$$<br>SO(3)= {R\in\R^{3\cross3|RR^T=I,det(R)=1} }<br>$$<br>变换矩阵构成了特殊欧式群SE(3)<br>$$<br>SE(3)={T= [R,t;o^T,1] \in\R^{4\cross4|R\in SO(3),det(R)=1} }<br>$$<br>相对于旋转矩阵和变换矩阵，李群中的矩阵对加法封闭。</p>
-<p>李群是指具有连续（光滑）性质的群。像整数群 Z 那样离散的群没有连续性质，所以不是李群。而 <em>SO</em>(<em>n</em>) 和 <em>SE</em>(<em>n</em>)，它们在实数空间上是连续的。我们能够直观地想象一个刚体能够连续地在空间中运动，所以它们都是李群。</p>
-</blockquote>
-<p>李代数</p>
-<blockquote>
-</blockquote>
-<p>李群和李代数的关系</p>
-<blockquote>
-<p>每个李群都有与之对应的李代数。李代数描述了李群的局部性质。通用的李代数的定义如下：</p>
-<p>李代数由一个集合 V，一个数域 F 和一个二元运算 [<em>,</em> ] 组成。如果它们满足以下几条性质，称 (V<em>,</em> F<em>,</em> [<em>,</em> ]) 为一个李代数，记作 g。</p>
-<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220705234523865.png" alt="image-20220705234523865"></p>
-</blockquote>
-<p><strong>李群和李代数的作用</strong></p>
-<blockquote>
-<p>通过李群——李代数间的转换关系，我们希望把位姿估计变成无约束的优化问题</p>
-</blockquote>
-<h4 id="2-雅克比求导"><a href="#2-雅克比求导" class="headerlink" title="2. 雅克比求导"></a>2. 雅克比求导</h4><blockquote>
-<p>李代数求导</p>
-</blockquote>
-<p>利用扰动方程求导</p>
-<blockquote>
-</blockquote>
-<h4 id="3-双线性差值如何去做，写公式"><a href="#3-双线性差值如何去做，写公式" class="headerlink" title="3. 双线性差值如何去做，写公式"></a>3. 双线性差值如何去做，写公式</h4><blockquote>
-</blockquote>
-<h4 id="4-为什么要引入李群李代数"><a href="#4-为什么要引入李群李代数" class="headerlink" title="4. 为什么要引入李群李代数"></a>4. 为什么要引入李群李代数</h4><blockquote>
+<h1 id="零-数学基础"><a href="#零-数学基础" class="headerlink" title="零  数学基础"></a>零  数学基础</h1><h2 id="一-李群和李代数"><a href="#一-李群和李代数" class="headerlink" title="一 李群和李代数"></a>一 李群和李代数</h2><h4 id="1-李群和李代数的关系"><a href="#1-李群和李代数的关系" class="headerlink" title="1. 李群和李代数的关系"></a>1. 李群和李代数的关系</h4><h4 id="2-雅克比求导"><a href="#2-雅克比求导" class="headerlink" title="2. 雅克比求导"></a>2. 雅克比求导</h4><h4 id="3-双线性差值如何去做，写公式"><a href="#3-双线性差值如何去做，写公式" class="headerlink" title="3. 双线性差值如何去做，写公式"></a>3. 双线性差值如何去做，写公式</h4><h4 id="4-为什么要引入李群李代数"><a href="#4-为什么要引入李群李代数" class="headerlink" title="4. 为什么要引入李群李代数"></a>4. 为什么要引入李群李代数</h4><blockquote>
 <p>旋转矩阵自身是带有约束的，正交且行列式为1，他们作为优化变量时，会引入额外的约束，导致优化变的困难，通过李群李代数的转换关系，把位姿估计变成无约束的优化问题。优化过程求极值，由求导数的定义式，可以知道矩阵对于加法不封闭，对于乘法封闭；我们可以看错把李群就是变换矩阵的集合，但是用李代数的形式去表示变换矩阵，与李群的变换对应关系恰好是与指数相乘的关系，用求导的定义式子就可以求解优化问题了。</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p>在SLAM 中，除了要对三维世界中刚体运动进行旋转表示之外，还要对它们进行估计和优化。在SLAM 中位姿往往是未知的，而我们需要解决在什么样的相机位姿下最符合当前观测数据这样的问题。一种典型的方式是把它构建成一个优化问题，求解最优的 $R,t$ 使得误差最小化。</p>
+</li>
+<li><p>而旋转矩阵自身是带有约束的（正交且行列式为1）。它们作为优化变量时，会引入额外的约束，使优化变得困难。通过李群–李代数间的转换关系，我们可以把位姿估计变成无约束的优化问题，简化求解方式。</p>
+</li>
+</ul>
 </blockquote>
 <h2 id="二-刚体运动的表示"><a href="#二-刚体运动的表示" class="headerlink" title="二 刚体运动的表示"></a>二 刚体运动的表示</h2><h3 id="1-说一下3D空间的位姿如何去表达"><a href="#1-说一下3D空间的位姿如何去表达" class="headerlink" title="1. 说一下3D空间的位姿如何去表达?"></a>1. 说一下3D空间的位姿如何去表达?</h3><blockquote>
 <p>描述3D空间位姿态需要描述旋转和平移；</p>
@@ -146,7 +128,10 @@
 <p><strong>欧拉角</strong>：3维，比较直观，将一个旋转拆分成了绕3个坐标轴的旋转，如RPY指横滚、俯仰、偏航角度，指绕固定轴XYZ、绕旋转之后的轴：ZYX。</p>
 <p><strong>四元数</strong>：4维，旋转向量与欧拉角虽然紧凑但具有奇异性，四元数紧凑、没有奇异性；使用1个实部、3个虚部表示。</p>
 </blockquote>
-<h3 id="3-四元数"><a href="#3-四元数" class="headerlink" title="3. 四元数"></a>3. 四元数</h3><p>假设某个旋转是绕单位向量$n = [n_x; n_y; n_z]^T $进行了角度为$\theta$ 的旋转，那么这个旋转的四元数形式为：<br>$$</p>
+<h3 id="3-四元数"><a href="#3-四元数" class="headerlink" title="3. 四元数"></a>3. 四元数</h3><blockquote>
+<p>假设某个旋转是绕单位向量$n = [n_x; n_y; n_z]^T $进行了角度为$\theta$ 的旋转，那么这个旋转的四元数形式为：</p>
+</blockquote>
+<p>$$</p>
 <p>$$</p>
 <h2 id="三-坐标系变换"><a href="#三-坐标系变换" class="headerlink" title="三 坐标系变换"></a>三 坐标系变换</h2><blockquote>
 <p>世界坐标系（world） 相机坐标（camera） 像素坐标（pixel）</p>
@@ -158,10 +143,6 @@
 <li>pixel —— camera：$u=f_x * X_c / Z_c+C_x ; \quad v=f_y * Y_c / Z_c+C_y$</li>
 <li>camera —— pixel：$X_{c}=(u-C_x) * Z_c / f_x ; \quad Y c=(v-C y) * Z_c / f_y$</li>
 </ul>
-</blockquote>
-<h2 id="四-SLAM方案评价指标"><a href="#四-SLAM方案评价指标" class="headerlink" title="四 SLAM方案评价指标"></a>四 SLAM方案评价指标</h2><blockquote>
-<p>精度、鲁棒性、效率（实时性）。</p>
-<p>感觉你问的时关于精度，一般都用轨迹的ATE或RPE的大小来评估，因为轨迹和地图是相伴相生的，所以轨迹的精度是能够代表SLAM的精度的，具体原理见 SLAM14讲第二版 P89。也可以看看论文的实验部分，作者往往拿自己的工作和其他工作比较，你可以看看比较哪几个方面。</p>
 </blockquote>
 <h1 id="一-相机模型"><a href="#一-相机模型" class="headerlink" title="一 相机模型"></a>一 相机模型</h1><h2 id="零-图像"><a href="#零-图像" class="headerlink" title="零 图像"></a>零 图像</h2><h3 id="1-图像遍历"><a href="#1-图像遍历" class="headerlink" title="1. 图像遍历"></a>1. 图像遍历</h3><h4 id="1-一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？"><a href="#1-一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？" class="headerlink" title="1. 一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？"></a>1. 一个H高W宽的图像或者matrix，如何去访问每一个元素，先访问行还是列？</h4><blockquote>
 <p>提示：跟缓存还有关系~</p>
@@ -219,6 +200,30 @@
 <ol>
 <li>双边滤波的改进就在于在采样时不仅考虑像素在空间距离上的关系，同时加入了像素间的相似程度考虑。双边滤波器比高斯滤波多了一个高斯方差sigma－d，它是基于空间分布的高斯滤波函数，所以在边缘附近，离的较远的像素不会太多影响到边缘上的像素值，这样就保证了边缘附近像素值的保存。但是由于保存了过多的高频信息，对于彩色图像里的高频噪声，双边滤波器不能够干净的滤掉，只能够对于低频信息进行较好的滤波。对于脉冲噪声，双边滤波会把它当成边缘从而不能去除。</li>
 </ol>
+</blockquote>
+<h4 id="3-常用边缘检测算子和优缺点"><a href="#3-常用边缘检测算子和优缺点" class="headerlink" title="3. 常用边缘检测算子和优缺点"></a>3. 常用边缘检测算子和优缺点</h4><blockquote>
+<p>边缘检测一般分为三步，分别是滤波、增强、检测。</p>
+<p>基本原理都是用高斯滤波器进行去噪，之后在用卷积内核寻找像素梯度。常用的三种算法：<code>canny</code>算子，<code>sobel</code>算子，<code>laplacian</code>算子。</p>
+<table>
+<thead>
+<tr>
+<th>算子</th>
+<th>方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>scanny 算子</td>
+<td>一种完善的边缘检测算法，抗噪能力强，用高斯滤波平滑图像，用一阶偏导的有限差分计算梯度的幅值和方向，<br>对梯度幅值进行非极大值抑制，采用双阈值检测和连接边缘。</td>
+</tr>
+<tr>
+<td>sobel 算子</td>
+<td>一阶导数算子，引入局部平均运算，对噪声具有平滑作用，抗噪声能力强，计算量较大，<br>但定位精度不高，得到的边缘比较粗，适用于精度要求不高的场合。</td>
+</tr>
+<tr>
+<td>laplacian 算子</td>
+<td>二阶微分算子，具有旋转不变性，容易受噪声影响，不能检测边缘的方向，<br>一般不直接用于检测边缘，而是判断明暗变化。</td>
+</tr>
+</tbody></table>
 </blockquote>
 <h2 id="一-相机"><a href="#一-相机" class="headerlink" title="一 相机"></a>一 相机</h2><h3 id="1-单目相机"><a href="#1-单目相机" class="headerlink" title="1 单目相机"></a>1 <strong>单目相机</strong></h3><table>
 <thead>
@@ -410,7 +415,7 @@
 <p>与上边问题相同，fx，fy将不会变化，cx,cy变为原来的两倍</p>
 <p>k1变为原来的1/2，k2变为1/16；</p>
 </blockquote>
-<h4 id><a href="#" class="headerlink" title></a></h4><h2 id="四-相机标定"><a href="#四-相机标定" class="headerlink" title="四 相机标定"></a>四 相机标定</h2><h3 id="一-相机如何标定"><a href="#一-相机如何标定" class="headerlink" title="一 相机如何标定"></a>一 相机如何标定</h3><blockquote>
+<h2 id="四-相机标定"><a href="#四-相机标定" class="headerlink" title="四 相机标定"></a>四 相机标定</h2><h4 id="1-相机如何标定"><a href="#1-相机如何标定" class="headerlink" title="1. 相机如何标定"></a>1. 相机如何标定</h4><blockquote>
 <p>针孔相机一般是通过棋盘格进行标定</p>
 <ul>
 <li>检测每张图片中的棋盘图案的角点；</li>
@@ -419,10 +424,16 @@
 <li>通过非线性优化，提高K，R，t矩阵的精度。</li>
 </ul>
 </blockquote>
-<h3 id="二-RGB-D相机是如何标定的？需要标定哪些参数"><a href="#二-RGB-D相机是如何标定的？需要标定哪些参数" class="headerlink" title="二 RGB-D相机是如何标定的？需要标定哪些参数"></a>二 RGB-D相机是如何标定的？需要标定哪些参数</h3><blockquote>
+<h4 id="2-RGB-D相机是如何标定的？需要标定哪些参数"><a href="#2-RGB-D相机是如何标定的？需要标定哪些参数" class="headerlink" title="2. RGB-D相机是如何标定的？需要标定哪些参数"></a>2. RGB-D相机是如何标定的？需要标定哪些参数</h4><blockquote>
 <p>参考链接：<a href="https://www.cnblogs.com/cv-pr/p/5769617.html" target="_blank" rel="noopener">https://www.cnblogs.com/cv-pr/p/5769617.html</a></p>
 <p>机器视觉中，3D相机产生的深度图像（depth image）通常需要配准（registration），以生成配准深度图像（registed depth image）。实际上配准的目的就是想让深度图和彩色图重合在一起，即是将深度图像的图像坐标系转换到彩色图像的图像坐标系下。</p>
 <p>已知彩色图像的像素表示为$=(uR,vR,zR)⊤$，$uR,vR,zR$分别表示彩色图像的横坐标，纵坐标和相机坐标系下的深度值（z方向上的值，非两点的距离）；同样地，深度图像的像素为$(uL,vL,zL)⊤$，$uL,vL,zL$分别表示深度图像的横坐标，纵坐标和相机坐标系下的深度值（z方向上的值，非两点的距离）。注意为了方便表示，本文中下标的R,L分别表示Right,Left的意思。那么深度图配准到彩色图的过程就是找到如下公式中的变换矩阵W′：<br>$$<br>\begin{bmatrix} u_{R}\  v_{R}\  1 \end{bmatrix} =W^{‘} \begin{bmatrix} u_{L}\  v_{L}\  1 \end{bmatrix}<br>$$</p>
+</blockquote>
+<h4 id="3-如果一个电线杆上有两个摄像头，给定内参的情况下，如果标定外参？"><a href="#3-如果一个电线杆上有两个摄像头，给定内参的情况下，如果标定外参？" class="headerlink" title="3. 如果一个电线杆上有两个摄像头，给定内参的情况下，如果标定外参？"></a>3. 如果一个电线杆上有两个摄像头，给定内参的情况下，如果标定外参？</h4><blockquote>
+<ol>
+<li>利用摄像头做两个纯视觉的Sfm，然后进行一个对齐就可以得出；</li>
+<li>利用标定板得到</li>
+</ol>
 </blockquote>
 <h1 id="二-视觉前端"><a href="#二-视觉前端" class="headerlink" title="二 视觉前端"></a>二 视觉前端</h1><h2 id="零-特征点"><a href="#零-特征点" class="headerlink" title="零 特征点"></a>零 特征点</h2><p>特征点由关键点和描述子两部分构成。</p>
 <p>我们在阅读文献或者代码中误差相关时，经常可以看到一个概念，叫逆深度（inverse depth）。也就是深度的倒数，那么同学们有没有想过，为什么使用逆深度误差而不是深度误差？</p>
@@ -524,7 +535,7 @@
 <p>参数指定了索引里的树应该被递归遍历的次数，值越高准确度越高，但计算耗时也更久.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_params = dict(checks=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h3 id="3-外点去除"><a href="#3-外点去除" class="headerlink" title="3 外点去除"></a>3 外点去除</h3><h4 id="A-RANSAC算法"><a href="#A-RANSAC算法" class="headerlink" title="A. RANSAC算法"></a>A. RANSAC算法</h4><blockquote>
+<h3 id="2-外点去除"><a href="#2-外点去除" class="headerlink" title="2 外点去除"></a>2 外点去除</h3><h4 id="A-RANSAC算法"><a href="#A-RANSAC算法" class="headerlink" title="A. RANSAC算法"></a>A. RANSAC算法</h4><blockquote>
 <p>RANSAC算法的<strong>基本假设</strong>是样本中包含正确数据(inliers，可以被模型描述的数据)，也包含异常数据(outliers，偏离正常范围很远、无法适应数学模型的数据)，即数据集中含有噪声。这些异常数据可能是由于错误的测量、错误的假设、错误的计算等产生的。同时RANSAC也假设，给定一组正确的数据，存在可以计算出符合这些数据的模型参数的方法。</p>
 <p><strong>优缺点</strong></p>
 <p>​    RANSAC算法的优点是能鲁棒的估计模型参数。例如，他能从包含大量局外点的数据集中估计出高精度的参数。缺点是它计算参数的迭代次数没有上限，如果设置迭代次数的上限，得到的结果可能不是最优的结果，甚至可能得到错误的结果。RANSAC只有一定的概率得到的可信的模型，概率与迭代次数成正比。另一个缺点是它要求设置跟问题相关的阈值，RANSAC只能从特定的数据集中估计出一个模型，如果存在两个（或多个）模型，RANSAC不能找到别的模型。</p>
@@ -554,7 +565,7 @@
 <p><img src="https://img-blog.csdnimg.cn/20190930092025127.png#pic_center" alt="在这里插入图片描述"></p>
 <p><img src="https://img-blog.csdnimg.cn/20190930092033897.png#pic_center" alt="在这里插入图片描述"></p>
 </blockquote>
-<h3 id="4-问题"><a href="#4-问题" class="headerlink" title="4 问题"></a>4 问题</h3><h4 id="1-如何对匹配好的点做进一步的处理，更好保证匹配效果"><a href="#1-如何对匹配好的点做进一步的处理，更好保证匹配效果" class="headerlink" title="1 如何对匹配好的点做进一步的处理，更好保证匹配效果"></a>1 如何对匹配好的点做进一步的处理，更好保证匹配效果</h4><blockquote>
+<h3 id="3-问题"><a href="#3-问题" class="headerlink" title="3 问题"></a>3 问题</h3><h4 id="1-如何对匹配好的点做进一步的处理，更好保证匹配效果"><a href="#1-如何对匹配好的点做进一步的处理，更好保证匹配效果" class="headerlink" title="1 如何对匹配好的点做进一步的处理，更好保证匹配效果"></a>1 如何对匹配好的点做进一步的处理，更好保证匹配效果</h4><blockquote>
 <p>（1）确定匹配最大距离，汉明距离小于最小距离的两倍<br>（2）使用KNN-matching算法，令K=2。则每个match得到两个最接近的descriptor，然后计算最接近距离和次接近距离之间的比值，当比值大于既定值时，才作为最终match。<br>（3）RANSAC（使用RANSAC找到最佳单应性矩阵。由于这个函数使用的特征点同时包含正确和错误匹配点，因此计算的单应性矩阵依赖于二次投影的准确性）<br>（4）交叉匹配。针对暴力匹配，可以使用交叉匹配的方法来过滤错误的匹配。交叉过滤的思想很简单，再进行一次匹配，反过来使用被匹配到的点进行匹配，如果匹配到的仍然是第一次匹配的点的话，就认为这是一个正确的匹配。举例来说就是，假如第一次特征点A使用暴力匹配的方法，匹配到的特征点是特征点B；反过来，使用特征点B进行匹配，如果匹配到的仍然是特征点A，则就认为这是一个正确的匹配，否则就是一个错误的匹配。OpenCV中BFMatcher已经封装了该方法，创建BFMatcher的实例时，第二个参数传入true即可，BFMatcher bfMatcher(NORM_HAMMING,true)。</p>
 </blockquote>
 <h4 id="2-如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？"><a href="#2-如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？" class="headerlink" title="2 如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？"></a>2 如果对于一个3D点，我们在连续帧之间形成了2D特征点之间的匹配，但是这个匹配中可能存在错误的匹配。请问你如何去构建3D点？除了RANSAC之外，还有什么鲁棒估计的方法？</h4><blockquote>
@@ -564,34 +575,20 @@
 <p>图优化模型将路标点和相机位姿作为两个节点，观测模型作为边，同时优化两个变量，SLAM中常用L-M求解。</p>
 <p>如果误匹配误差很大可以考虑用核函数（Huber），核函数可以减小误匹配对整个方法的影响。</p>
 </blockquote>
-<h4 id="4-RANSAC在选择最佳模型的时候用的metric是什么？"><a href="#4-RANSAC在选择最佳模型的时候用的metric是什么？" class="headerlink" title="4  RANSAC在选择最佳模型的时候用的metric是什么？"></a>4  RANSAC在选择最佳模型的时候用的metric是什么？</h4><h3 id="3-常用边缘检测算子和优缺点"><a href="#3-常用边缘检测算子和优缺点" class="headerlink" title="3. 常用边缘检测算子和优缺点"></a>3. 常用边缘检测算子和优缺点</h3><blockquote>
-<p>边缘检测一般分为三步，分别是滤波、增强、检测。</p>
-<p>基本原理都是用高斯滤波器进行去噪，之后在用卷积内核寻找像素梯度。常用的三种算法：<code>canny</code>算子，<code>sobel</code>算子，<code>laplacian</code>算子。</p>
-<table>
-<thead>
-<tr>
-<th>算子</th>
-<th>方法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>scanny 算子</td>
-<td>一种完善的边缘检测算法，抗噪能力强，用高斯滤波平滑图像，用一阶偏导的有限差分计算梯度的幅值和方向，<br>对梯度幅值进行非极大值抑制，采用双阈值检测和连接边缘。</td>
-</tr>
-<tr>
-<td>sobel 算子</td>
-<td>一阶导数算子，引入局部平均运算，对噪声具有平滑作用，抗噪声能力强，计算量较大，<br>但定位精度不高，得到的边缘比较粗，适用于精度要求不高的场合。</td>
-</tr>
-<tr>
-<td>laplacian 算子</td>
-<td>二阶微分算子，具有旋转不变性，容易受噪声影响，不能检测边缘的方向，<br>一般不直接用于检测边缘，而是判断明暗变化。</td>
-</tr>
-</tbody></table>
+<h4 id="4-RANSAC在选择最佳模型的时候用的metric是什么？"><a href="#4-RANSAC在选择最佳模型的时候用的metric是什么？" class="headerlink" title="4  RANSAC在选择最佳模型的时候用的metric是什么？"></a>4  RANSAC在选择最佳模型的时候用的metric是什么？</h4><h4 id="5-描述子距离的匹配方法，除了暴力匹配还有什么？"><a href="#5-描述子距离的匹配方法，除了暴力匹配还有什么？" class="headerlink" title="5. 描述子距离的匹配方法，除了暴力匹配还有什么？"></a>5. 描述子距离的匹配方法，除了暴力匹配还有什么？</h4><blockquote>
+<ol>
+<li>基于阈值: 如何描述子之间的距离小于某个阈值，则认为他们相互匹配.由于大小阈值的的描述子可能有很多个，因此该方法可能会得到多个与之匹配的描述子。 if |Da-Db|&lt;t then matches else dismatch </li>
+<li>基于最近邻 : 如果Db就Da的最近邻，并且 距离小于某个阈值，则认为他们相互匹配。该方法得到唯一的匹配 </li>
+<li>基于距离比率（distance ratio）的最近邻: 该方法与最近邻类似，不同的是其对最近邻与次近邻间的distance ratio应用阈值处理.即：if ||Da-Db||/||Da-Dc||&lt;T then matched (Db,Dc分别是最近邻与次近邻) 该方法保证与Da匹配的描述子只有一个，其它的与其相差较大。这在描述子评价中有非常重要的作用，如果一种描述子能保证上述条件，那么该描述子优于其它描述子。</li>
+<li>FLANN近似最近邻 </li>
+<li>使用词袋模型进行初步筛选再进行匹配 </li>
+<li>重投影匹配</li>
+</ol>
 </blockquote>
 <h2 id="三-相机运动求解"><a href="#三-相机运动求解" class="headerlink" title="三 相机运动求解"></a>三 相机运动求解</h2><h3 id="一-极线约束（2D-2D）"><a href="#一-极线约束（2D-2D）" class="headerlink" title="一 极线约束（2D-2D）"></a>一 极线约束（2D-2D）</h3><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812162637025.png" alt="image-20200812162637025"><br>$$<br>x^T_2t^{\wedge}R x_1 = 0<br>$$</p>
 <h4 id="1-按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？"><a href="#1-按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？" class="headerlink" title="1. 按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？"></a>1. 按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？</h4><blockquote>
 <p>所谓极线约束就是说同一个点在两幅图像上的映射，已知左图映射点<code>p1</code>，那么右图映射点<code>p2</code>一定在相对于p1的极线上，这样可以减少待匹配的点数量。（画图解释）</p>
-<p>极线约束的好处：从上面的描述我们可以看到，我们在做特征点匹配时，左图成像点<code>p1</code>的待匹配点<code>p2</code>一定在相对于<code>p1</code>的极线上，那么我们在做搜索时就可以在极线附近（考虑实际可能 会有一点误差）进行搜索，相对暴力匹配极大减少待匹配的点的数量。</p>
+<p>极线约束的好处：从上面的描述我们可以看到，我们在做特征点匹配时，左图成像点p1的待匹配点p2一定在相对于p1的极线上，那么我们在做搜索时就可以在极线附近（考虑实际可能 会有一点误差）进行搜索，相对暴力匹配极大减少待匹配的点的数量。</p>
 <p>可以画图解释，注意成像平面、特征点、极点、极线、极平面、相机光心等概念。</p>
 </blockquote>
 <h4 id="2-本质矩阵E、基本矩阵F、单应性矩阵H区别？"><a href="#2-本质矩阵E、基本矩阵F、单应性矩阵H区别？" class="headerlink" title="2 本质矩阵E、基本矩阵F、单应性矩阵H区别？"></a>2 本质矩阵E、基本矩阵F、单应性矩阵H区别？</h4><blockquote>
@@ -608,7 +605,13 @@
 
 <h3 id="2-ICP（3D-3D）"><a href="#2-ICP（3D-3D）" class="headerlink" title="2 ICP（3D-3D）"></a>2 ICP（3D-3D）</h3><p>迭代最近邻估计</p>
 <h3 id="3-PnP（2D-3D"><a href="#3-PnP（2D-3D" class="headerlink" title="3 PnP（2D-3D)"></a>3 PnP（2D-3D)</h3><h4 id="1-什么是PnP算法？请用你的语言描述一下原理，它一般用在什么场景，解决什么问题？"><a href="#1-什么是PnP算法？请用你的语言描述一下原理，它一般用在什么场景，解决什么问题？" class="headerlink" title="1. 什么是PnP算法？请用你的语言描述一下原理，它一般用在什么场景，解决什么问题？"></a>1. 什么是PnP算法？请用你的语言描述一下原理，它一般用在什么场景，解决什么问题？</h4><p>Perspective-n-Points, PnP(P3P)提供了一种解决方案，它是一种由3D-2D的位姿求解方式，即需要已知匹配的3D点和图像2D点。目前遇到的场景主要就是SLAM算法中估计相机位姿时通常需要PnP给出相机初始位姿,第一帧图像中的3D点以及对应到第二帧图像中的2D点，通过相机成像模型，将3D点投影到二维平面，通过构建误差目标函数通过优化调整位姿的方法使得误差目标函数达到最小，所以它求得的是当前帧相对于上一帧的位姿变换，都是基于已知3D点和对应的图像2D点求解相机运动的过程。</p>
-<h2 id="-1"><a href="#-1" class="headerlink" title></a></h2><h2 id="四-利用三角化求特征点位置"><a href="#四-利用三角化求特征点位置" class="headerlink" title="四 利用三角化求特征点位置"></a>四 利用三角化求特征点位置</h2><h2 id="六-2D-光流"><a href="#六-2D-光流" class="headerlink" title="六 2D 光流"></a>六 2D 光流</h2><h2 id="七-直接法"><a href="#七-直接法" class="headerlink" title="七 直接法"></a>七 直接法</h2><p>直接法估计相机位姿时，并不需要 提取特征点，而是通过优化匹配点的像素值误差（也称光度误差）估计位姿，但也会面临快速运动，光照变化等的挑战，如果让你改善该问题，你会采用哪些方法来提高跟踪质量(精度，速度，鲁棒性等)？</p>
+<h4 id="2-PNP求解最少需要几个点-只有一个点的自由度是多少-两个呢"><a href="#2-PNP求解最少需要几个点-只有一个点的自由度是多少-两个呢" class="headerlink" title="2. PNP求解最少需要几个点?只有一个点的自由度是多少?两个呢?"></a>2. PNP求解最少需要几个点?只有一个点的自由度是多少?两个呢?</h4><ul>
+<li>PnP(Perspective-n-point):多点透视成像,描述了当知道n个3D空间点及其投影位置时,如何估计相机的位姿. </li>
+<li>PnP求解最少需要三个点对:P3P </li>
+<li>只有一个点对的自由度是4</li>
+<li>两个点对的自由度是2</li>
+</ul>
+<h2 id="四-利用三角化求特征点位置"><a href="#四-利用三角化求特征点位置" class="headerlink" title="四 利用三角化求特征点位置"></a>四 利用三角化求特征点位置</h2><h2 id="六-2D-光流"><a href="#六-2D-光流" class="headerlink" title="六 2D 光流"></a>六 2D 光流</h2><h2 id="七-直接法"><a href="#七-直接法" class="headerlink" title="七 直接法"></a>七 直接法</h2><p>直接法估计相机位姿时，并不需要 提取特征点，而是通过优化匹配点的像素值误差（也称光度误差）估计位姿，但也会面临快速运动，光照变化等的挑战，如果让你改善该问题，你会采用哪些方法来提高跟踪质量(精度，速度，鲁棒性等)？</p>
 <h2 id="八-方法对比"><a href="#八-方法对比" class="headerlink" title="八 方法对比"></a>八 方法对比</h2><h3 id="零-特征点法"><a href="#零-特征点法" class="headerlink" title="零 特征点法"></a><strong>零 特征点法</strong></h3><p>特征点法通过特征匹配得出2D-2D匹配点，使用对极几何即可计算相机位姿R、t，进一步通过最小化重投影误差优化R、t，得出最优的相机位姿。<strong>不同与直接法的地方</strong>在于，特征点法使用对极几何(或PnP、ICP)计算出的R、t作为位姿初值，最小化重投影误差进行优化，而直接法则使用经验值设定的R、t作为初值，使用最小化灰度误差进行优化。</p>
 <h3 id="一-特征点法与直接法"><a href="#一-特征点法与直接法" class="headerlink" title="一 特征点法与直接法"></a>一 特征点法与直接法</h3><p><strong>特征点法</strong></p>
 <table>
@@ -723,7 +726,7 @@
 <h4 id="2-描述（扩展）卡尔曼滤波与粒子滤波，你自己在用卡尔曼滤波时遇到什么问题没有？"><a href="#2-描述（扩展）卡尔曼滤波与粒子滤波，你自己在用卡尔曼滤波时遇到什么问题没有？" class="headerlink" title="2. 描述（扩展）卡尔曼滤波与粒子滤波，你自己在用卡尔曼滤波时遇到什么问题没有？"></a>2. 描述（扩展）卡尔曼滤波与粒子滤波，你自己在用卡尔曼滤波时遇到什么问题没有？</h4><blockquote>
 <p>卡尔曼滤波是一种利用<a href="https://so.csdn.net/so/search?q=线性&spm=1001.2101.3001.7020" target="_blank" rel="noopener">线性</a>系统状态方程，通过系统输入输出观测数据，对系统状态进行最优估计的算法。因为观测数据中包括系统中的噪声和干扰的影响，因此最优估计也可以当作是滤波的过程。（顺便复习粒子滤波！）</p>
 </blockquote>
-<h3 id="二-常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）"><a href="#二-常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）" class="headerlink" title="二. 常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）"></a>二. 常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）</h3><h2 id="二-非线性优化"><a href="#二-非线性优化" class="headerlink" title="二 非线性优化"></a>二 非线性优化</h2><p>最小化重投影误差问题（Minimization of Reprojection error）是个非线性，非凸的优化问题，这意味着我们不一定能求解它，也不一定能找到全局最优的解。在实际操作中，我们实际上是在调整每个$X_j$，使得它们更符合每一次观测$z_j$，也就是使每个误差项都尽量的小。由于这个原因，它也叫做捆集调整（Bundle Adjustment）。</p>
+<h4 id="3-常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）"><a href="#3-常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）" class="headerlink" title="3. 常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）"></a>3. 常见滤波方法的对比（KF、EKF、IEKF、UKF、PF）</h4><h2 id="二-非线性优化"><a href="#二-非线性优化" class="headerlink" title="二 非线性优化"></a>二 非线性优化</h2><p>最小化重投影误差问题（Minimization of Reprojection error）是个非线性，非凸的优化问题，这意味着我们不一定能求解它，也不一定能找到全局最优的解。在实际操作中，我们实际上是在调整每个$X_j$，使得它们更符合每一次观测$z_j$，也就是使每个误差项都尽量的小。由于这个原因，它也叫做捆集调整（Bundle Adjustment）。</p>
 <h3 id="0-重投影误差"><a href="#0-重投影误差" class="headerlink" title="0 重投影误差"></a>0 重投影误差</h3><h4 id="1-重投影误差的表达式，误差关于位姿的偏导数怎么算？误差关于空间点的偏导数怎么计算？"><a href="#1-重投影误差的表达式，误差关于位姿的偏导数怎么算？误差关于空间点的偏导数怎么计算？" class="headerlink" title="1. 重投影误差的表达式，误差关于位姿的偏导数怎么算？误差关于空间点的偏导数怎么计算？"></a>1. 重投影误差的表达式，误差关于位姿的偏导数怎么算？误差关于空间点的偏导数怎么计算？</h4><h3 id="1-最小二乘法"><a href="#1-最小二乘法" class="headerlink" title="1 最小二乘法"></a>1 最小二乘法</h3><blockquote>
 <p>对于一个最小二乘问题：<br>$$<br>\min_{x}F(x) = \frac{1}{2} ||f(x)||2_2<br>$$<br>最小二乘法即使用迭代的方式，从一个初始值出发，不断更新优化变量，使得目标函数下降。</p>
 <p>具体步骤如下：</p>
@@ -735,7 +738,7 @@
 </ol>
 </blockquote>
 <h3 id="2-增量-Delta-x-k-的确定—一阶二阶梯度法"><a href="#2-增量-Delta-x-k-的确定—一阶二阶梯度法" class="headerlink" title="2 增量$\Delta x_k$的确定—一阶二阶梯度法"></a>2 增量$\Delta x_k$的确定—一阶二阶梯度法</h3><blockquote>
-<p>将目标函数在x附近进行泰勒展开<br>$$<br>||f(x+\Delta x)||^2_2 \simeq ||f(x)||^2_2 + J(x)\Delta x +\frac{1}{2}\Delta x^T H\Delta x<br>$$<br>其中，J表示雅可比矩阵，H为海塞矩阵。</p>
+<p>将目标函数在<code>x</code>附近进行泰勒展开<br>$$<br>||f(x+\Delta x)||^2_2 \simeq ||f(x)||^2_2 + J(x)\Delta x +\frac{1}{2}\Delta x^T H\Delta x<br>$$<br>其中，J表示雅可比矩阵，H为海塞矩阵。</p>
 </blockquote>
 <h4 id="2-1-一阶梯度法（最速下降法）"><a href="#2-1-一阶梯度法（最速下降法）" class="headerlink" title="2.1 一阶梯度法（最速下降法）"></a>2.1 一阶梯度法（最速下降法）</h4><blockquote>
 <p>增量的方向为<br>$$<br>\Delta x^* = -J^T(x)<br>$$<br>步长$\lambda$需要自己确定</p>
@@ -906,13 +909,13 @@
 </blockquote>
 <h3 id="其它优化问题"><a href="#其它优化问题" class="headerlink" title="其它优化问题"></a>其它优化问题</h3><h4 id="5-给你m相机n个点的bundle-adjustment。当我们在仿真的时候，在迭代的时候，相机的位姿会很快的接近真值。而地图点却不能很快的收敛这是为什么呢？"><a href="#5-给你m相机n个点的bundle-adjustment。当我们在仿真的时候，在迭代的时候，相机的位姿会很快的接近真值。而地图点却不能很快的收敛这是为什么呢？" class="headerlink" title="5. 给你m相机n个点的bundle adjustment。当我们在仿真的时候，在迭代的时候，相机的位姿会很快的接近真值。而地图点却不能很快的收敛这是为什么呢？"></a>5. 给你m相机n个点的bundle adjustment。当我们在仿真的时候，在迭代的时候，相机的位姿会很快的接近真值。而地图点却不能很快的收敛这是为什么呢？</h4><blockquote>
 </blockquote>
-<h1 id="五-闭环检测与重定位"><a href="#五-闭环检测与重定位" class="headerlink" title="五 闭环检测与重定位"></a>五 闭环检测与重定位</h1><h2 id="一-闭环检测"><a href="#一-闭环检测" class="headerlink" title="一 闭环检测"></a>一 闭环检测</h2><h3 id="1-什么是闭环检测？"><a href="#1-什么是闭环检测？" class="headerlink" title="1 什么是闭环检测？"></a>1 什么是闭环检测？</h3><blockquote>
+<h1 id="五-闭环检测与重定位"><a href="#五-闭环检测与重定位" class="headerlink" title="五 闭环检测与重定位"></a>五 闭环检测与重定位</h1><h2 id="一-闭环检测"><a href="#一-闭环检测" class="headerlink" title="一 闭环检测"></a>一 闭环检测</h2><h4 id="1-什么是闭环检测？"><a href="#1-什么是闭环检测？" class="headerlink" title="1 什么是闭环检测？"></a>1 什么是闭环检测？</h4><blockquote>
 <p>在视觉SLAM问题中，位姿的估计往往是由上一帧位姿解算当前帧位姿，这么递增求解，因此相邻两帧之间的误差就会产生累计。如我们在求解第五帧位姿的时候，一般是根据第四帧计算的，但是如果我们发现第5帧还可以由第2帧计算出来，就减少了误差的累计。<strong>这种与之前的某一帧（非相邻帧）建立位姿约束关系就叫做回环</strong>。找到可以建立这种位姿约束的历史帧，就是<strong>回环检测</strong>。</p>
 </blockquote>
 <h4 id="a-什么要进行回环检测？"><a href="#a-什么要进行回环检测？" class="headerlink" title="a 什么要进行回环检测？"></a>a 什么要进行回环检测？</h4><blockquote>
 <p>回环通过减少约束数，起到了减小累计误差的作用。</p>
 </blockquote>
-<h3 id="2-闭环检测有哪些方法-最常用的方法有哪些？"><a href="#2-闭环检测有哪些方法-最常用的方法有哪些？" class="headerlink" title="2 闭环检测有哪些方法? 最常用的方法有哪些？"></a>2 闭环检测有哪些方法? 最常用的方法有哪些？</h3><blockquote>
+<h4 id="2-闭环检测有哪些方法-最常用的方法有哪些？"><a href="#2-闭环检测有哪些方法-最常用的方法有哪些？" class="headerlink" title="2 闭环检测有哪些方法? 最常用的方法有哪些？"></a>2 闭环检测有哪些方法? 最常用的方法有哪些？</h4><blockquote>
 <h5 id="朴素方法"><a href="#朴素方法" class="headerlink" title="朴素方法"></a><strong>朴素方法</strong></h5><ol>
 <li>对任意两张图像都做一遍特征匹配，根据正确匹配的数量确定哪两个图像存在关联。（这是 O(N2) 的复杂度，随着轨迹变长增长太快，在实时系统中不实用）</li>
 <li>随机抽取历史数据并进行回环检测，比如说在n 帧当中随机抽 5 帧与当前帧比较。（盲目试探方法在帧数 N 增长时，抽到回环的几率又大幅下降，使得检测效率不高）</li>
@@ -924,7 +927,7 @@
 <p>它和前端后端的估计都无关，仅根据两张图像的相似性确定回环检测关系。核心问题是如何计算图像间的相似性。</p>
 <p>方法：特征匹配，提取当前帧与过去所有帧的特征，并进行匹配，这种方式假设了过去所有帧都有可能出现回环，匹配十分耗时、计算量大。基于词袋模型，词袋模型就是把特征看成是一个个单词，通过比较两张图片中单词的一致性，来判断两张图片是否属于同一场景。词袋模型需要训练字典(K-means聚类)，但通常字典内单词数量巨大，在确定某个特征时需要与字典内每个单词进行匹配，效率低下。为提高匹配效率，字典在训练的过程中构建了一个有k个分支，深度为d的树(K叉树)，类似于层次聚类，可容纳$k^d$个单词，保证了对数级别的查找效率。</p>
 </blockquote>
-<h3 id="3-闭环检测的评价方法"><a href="#3-闭环检测的评价方法" class="headerlink" title="3 闭环检测的评价方法"></a>3 闭环检测的评价方法</h3><p>表 12-1 回环检测的结果分类</p>
+<h4 id="3-闭环检测的评价方法"><a href="#3-闭环检测的评价方法" class="headerlink" title="3 闭环检测的评价方法"></a>3 闭环检测的评价方法</h4><p>表 12-1 回环检测的结果分类</p>
 <table>
 <thead>
 <tr>
@@ -944,10 +947,13 @@
 <td>真阴性(<strong>T</strong>rue <strong>N</strong>egative)</td>
 </tr>
 </tbody></table>
-<h4 id="准确率-False-Positive"><a href="#准确率-False-Positive" class="headerlink" title="准确率 (False Positive)"></a>准确率 (False Positive)</h4><p>准确率描述的是,算法提取的所有回环中,确实是真实回环的概率。<br>$$<br>Precision = T P /(T P + F P ),<br>$$</p>
-<h4 id="召回率-Precision-amp-Recall"><a href="#召回率-Precision-amp-Recall" class="headerlink" title="召回率 (Precision &amp; Recall)"></a>召回率 (Precision &amp; Recall)</h4><p>召回率则是说,在所有真实回环中,被正确检测出来的概率<br>$$<br>Recall = T P /(T P + F N ).<br>$$<br>在 SLAM 中,我们对准确率要求更高,而对召回率则相对宽容一些。</p>
-<h4 id="PR曲线"><a href="#PR曲线" class="headerlink" title="PR曲线"></a>PR曲线</h4><p>测试回环检测在各种配置下的 P 和 R 值,然后做出一条Precision-Recall 曲线。当用召回率为横轴,用准确率为纵轴时,我们会关心整条曲线偏向右上方的程度、100% 准确率下的召回率,或者 50% 召回率时候的准确率,作为评价算法的指标。</p>
-<h3 id="4-词袋模型"><a href="#4-词袋模型" class="headerlink" title="4 词袋模型"></a>4 词袋模型</h3><p>词袋,也就是 Bag-of-Words(BoW) ,目的是用“图像上有哪几种特征”来描述一个图像。</p>
+<p>准确率 (False Positive)</p>
+<p>准确率描述的是,算法提取的所有回环中,确实是真实回环的概率。<br>$$<br>Precision = T P /(T P + F P ),<br>$$</p>
+<p>召回率 (Precision &amp; Recall)</p>
+<p>召回率则是说,在所有真实回环中,被正确检测出来的概率<br>$$<br>Recall = T P /(T P + F N ).<br>$$<br>在 SLAM 中,我们对准确率要求更高,而对召回率则相对宽容一些。</p>
+<p>PR曲线</p>
+<p>测试回环检测在各种配置下的 P 和 R 值,然后做出一条Precision-Recall 曲线。当用召回率为横轴,用准确率为纵轴时,我们会关心整条曲线偏向右上方的程度、100% 准确率下的召回率,或者 50% 召回率时候的准确率,作为评价算法的指标。</p>
+<h4 id="4-词袋模型"><a href="#4-词袋模型" class="headerlink" title="4 词袋模型"></a>4 词袋模型</h4><p>词袋,也就是 Bag-of-Words(BoW) ,目的是用“图像上有哪几种特征”来描述一个图像。</p>
 <p>词袋模型的简明流程：</p>
 <ol>
 <li>提取单词，组成字典；</li>
@@ -978,7 +984,7 @@
 <li><strong>时间上的一致性检测</strong>。设立回环的缓存机制,认为单次检测到的回环并不足以构成良好的约束,而在一段时间中一直检测到的回环,才认为是正确的回环。</li>
 <li><strong>空间上的一致性检测</strong>。即是对回环检测到的两个帧进行特征匹配,估计相机的运动。然后,再把运动放到之前的 Pose Graph 中,检查与之前的估计是否有很大的出入。总之,验证部分通常是必须的,但如何实现却是见仁见智的问题。</li>
 </ol>
-<h3 id="6-你用的哪种方法？有没有创新？"><a href="#6-你用的哪种方法？有没有创新？" class="headerlink" title="6. 你用的哪种方法？有没有创新？"></a>6. 你用的哪种方法？有没有创新？</h3><h3 id="7-闭环检测成功之后有什么操作？"><a href="#7-闭环检测成功之后有什么操作？" class="headerlink" title="7. 闭环检测成功之后有什么操作？"></a>7. 闭环检测成功之后有什么操作？</h3><ol>
+<h4 id="6-闭环检测成功之后有什么操作？"><a href="#6-闭环检测成功之后有什么操作？" class="headerlink" title="6. 闭环检测成功之后有什么操作？"></a>6. 闭环检测成功之后有什么操作？</h4><ol>
 <li><p>根据PnP等算法计算运动关系</p>
 </li>
 <li><p>根据重投影关系验证回环是否成立</p>
@@ -987,14 +993,14 @@
 </li>
 </ol>
 <h2 id="二-重定位"><a href="#二-重定位" class="headerlink" title="二 重定位"></a>二 重定位</h2><p>绑架问题就是重定位，是指机器人在缺少之前位置信息的情况下，或跟踪丢失的情况下，如何进行重新定位、确定当前位姿。例如当机器人被安置在一个已经构建好地图的环境中，但是并不知道它在地图中的相对位置，或者在移动过程中，由于传感器的暂时性功能故障或相机的快速移动，都导致机器人先前的位置信息的丢失，在这种情况下如何重新确定自己的位置。</p>
-<h4 id="我们在看SLAM相关论文的时候，会遇到一个词“kidnap”，-直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？"><a href="#我们在看SLAM相关论文的时候，会遇到一个词“kidnap”，-直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？" class="headerlink" title="我们在看SLAM相关论文的时候，会遇到一个词“kidnap”， 直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？"></a>我们在看SLAM相关论文的时候，会遇到一个词“kidnap”， 直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？</h4><h2 id="三-对比-1"><a href="#三-对比-1" class="headerlink" title="三 对比"></a>三 对比</h2><h3 id="1-重定位与闭环检测的区别"><a href="#1-重定位与闭环检测的区别" class="headerlink" title="1 重定位与闭环检测的区别"></a>1 重定位与闭环检测的区别</h3><p><strong>重定位</strong> 指的是当跟丢之后重新找回当前的姿态，通过当前帧与关键帧的特征匹配，定位当前帧的相机位姿。顾名思义，这是“ 重新”定位，当前图像因为和最近的图像或者局部地图之间缺乏足够的匹配，导致机器人无法确定自己的位姿，此时处于当前状态的机器人不再知道其在地图中的位置，也叫做机器人被“绑架”，就说的是人质被蒙上双眼带到未知地方，蒙罩去掉后完全不知道自己在哪里，这时候就需要充分利用之前建好的地图或者存好的数据库。此时机器人需要观察周围环境，并且从已有地图中寻找可靠的匹配关系（一般是关键帧信息），这样就可以根据已有信息“ 重新 ”估计机器人的姿态。</p>
+<h4 id="我们在看SLAM相关论文的时候，会遇到一个词“kidnap”，-直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？"><a href="#我们在看SLAM相关论文的时候，会遇到一个词“kidnap”，-直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？" class="headerlink" title="我们在看SLAM相关论文的时候，会遇到一个词“kidnap”， 直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？"></a>我们在看SLAM相关论文的时候，会遇到一个词“kidnap”， 直译过来就是“绑架”，不了解的同学可能感觉怪怪的。你知道这个“绑架”是什么意思吗？可以用哪些方法解决这样的问题？</h4><h2 id="三-对比-1"><a href="#三-对比-1" class="headerlink" title="三 对比"></a>三 对比</h2><h4 id="1-重定位与闭环检测的区别"><a href="#1-重定位与闭环检测的区别" class="headerlink" title="1 重定位与闭环检测的区别"></a>1 重定位与闭环检测的区别</h4><p><strong>重定位</strong> 指的是当跟丢之后重新找回当前的姿态，通过当前帧与关键帧的特征匹配，定位当前帧的相机位姿。顾名思义，这是“ 重新”定位，当前图像因为和最近的图像或者局部地图之间缺乏足够的匹配，导致机器人无法确定自己的位姿，此时处于当前状态的机器人不再知道其在地图中的位置，也叫做机器人被“绑架”，就说的是人质被蒙上双眼带到未知地方，蒙罩去掉后完全不知道自己在哪里，这时候就需要充分利用之前建好的地图或者存好的数据库。此时机器人需要观察周围环境，并且从已有地图中寻找可靠的匹配关系（一般是关键帧信息），这样就可以根据已有信息“ 重新 ”估计机器人的姿态。</p>
 <p><strong>回环检测</strong> 是为了解决解决位置估计随时间漂移的问题。主要是通过识别曾经到过的场景，将其与当前帧对应，优化整个地图信息，包括3D路标点、及相机位姿、相对尺度信息.<br>回环的主要目的是降低机器人随时间增加，轨迹中累积的漂移，一般发生在建图过程中。这是因为基于运动传感器或者视觉信息的里程计容易出错，使估计的轨迹偏离其实际真实的情况。通过回环，优化整个地图信息，包括3D路标点、及相机位姿、相对尺度信息。回环检测提供了回环帧与所有历史帧的关系，可以极大减小误差。</p>
 <p><strong>联系</strong>：回环主要是纠正机器人/相机轨迹，而重新定位在从未知状态找回姿态。两者都需要当前图像预先访问过之前的位置附近，本质上都是一个图像识别问题。</p>
 <p><strong>区别</strong>：二者目的不同，重定位主要为了恢复姿态估计，而回环为了解决飘移，提高全局精度。之所以容易混淆，可能是因为重定位通常也需要找到与之前帧的对应关系来解出姿态，而这可以通过回环检测来完成。也就是说，二者在匹配帧上可以共享一些算法。然后是第一个问题。专门研究重定位的论文很多，实际在单目VSLAM算法用的比较多的还是基于BoW的匹配方案（ORB-SLAM，VINS等），也有基于机器学习匹配patch的方法（PTAM）。同时也有一些简单粗暴的解决方案，比如单独开线程暴力匹配之前所有关键帧（LSD），或者只扰动初始值不断与上一个关键帧进行匹配（DSO）。</p>
-<h3 id="2-词袋模型可以用于回环检测，也可以用于重定位，有什么区别"><a href="#2-词袋模型可以用于回环检测，也可以用于重定位，有什么区别" class="headerlink" title="2 词袋模型可以用于回环检测，也可以用于重定位，有什么区别"></a>2 词袋模型可以用于回环检测，也可以用于重定位，有什么区别</h3><p>词袋模型在SLAM中的应用：当前帧与关键帧的特征匹配、重定位的特征匹配、回环检测的特征匹配；（第一个是后两个的基本原理，后两个是应用场景）。连续帧间特征匹配采用的并不是词袋模型。</p>
+<h4 id="2-词袋模型可以用于回环检测，也可以用于重定位，有什么区别"><a href="#2-词袋模型可以用于回环检测，也可以用于重定位，有什么区别" class="headerlink" title="2 词袋模型可以用于回环检测，也可以用于重定位，有什么区别"></a>2 词袋模型可以用于回环检测，也可以用于重定位，有什么区别</h4><p>词袋模型在SLAM中的应用：当前帧与关键帧的特征匹配、重定位的特征匹配、回环检测的特征匹配；（第一个是后两个的基本原理，后两个是应用场景）。连续帧间特征匹配采用的并不是词袋模型。</p>
 <p>a) 重定位：主要是通过当前帧与关键帧的特征匹配，定位当前帧的相机位姿。<br>b) 回环检测：优化整个地图信息，包括3D路标点、及相机位姿、相对尺度信息。回环检测提供了当前帧与所有历史帧的关系，</p>
 <h1 id="六-建图"><a href="#六-建图" class="headerlink" title="六 建图"></a>六 建图</h1><h2 id="地图点"><a href="#地图点" class="headerlink" title="地图点"></a>地图点</h2><h3 id="3D地图点是怎么存储的？表达方式？"><a href="#3D地图点是怎么存储的？表达方式？" class="headerlink" title="3D地图点是怎么存储的？表达方式？"></a>3D地图点是怎么存储的？表达方式？</h3><p>a) 地图点构建：单目：可以通过关键帧匹配构造、也可以通过普通帧构造（临时被Tracking用来追踪的）；双目：立体匹配、块匹配；RGBD：彩色深度图对齐得到深度d，再根据彩色(u，v)坐标根据相机投影公式计算3D点坐标。<br>b) 3D地图点存储方式：Vector3f<br>c) 地图主要包含关键帧、3D地图点、BoW向量、共视图、生长树等：关键帧(包括特征点、描述符、当前帧的相机位姿，BoW向量无法保存，可在加载关键帧后重新计算)、3D地图点、共视图、<br>d) <a href="https://www.cnblogs.com/mafuqiang/p/6972342.html" target="_blank" rel="noopener">参考</a></p>
-<h3 id="-2"><a href="#-2" class="headerlink" title></a></h3><h2 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h2><h4 id="不同的需求需要什么样的地图"><a href="#不同的需求需要什么样的地图" class="headerlink" title="不同的需求需要什么样的地图"></a>不同的需求需要什么样的地图</h4><ul>
+<h3 id><a href="#" class="headerlink" title></a></h3><h2 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h2><h4 id="不同的需求需要什么样的地图"><a href="#不同的需求需要什么样的地图" class="headerlink" title="不同的需求需要什么样的地图"></a>不同的需求需要什么样的地图</h4><ul>
 <li>定位仅需匹配特征点</li>
 <li>导航和避障需要稠密障碍物信息</li>
 <li>交互需要稠密的物体表面信息</li>
@@ -1008,6 +1014,7 @@
 </ul>
 <h4 id="给一组点云，从中提取平面。"><a href="#给一组点云，从中提取平面。" class="headerlink" title="给一组点云，从中提取平面。"></a>给一组点云，从中提取平面。</h4><h1 id="七-SLAM方案"><a href="#七-SLAM方案" class="headerlink" title="七 SLAM方案"></a>七 SLAM方案</h1><ol>
 <li>你认为室内SLAM与自动驾驶SLAM有什么区别？</li>
+<li>读Maplab，设计室内服务机器人地图更新的方法、流程。</li>
 </ol>
 <h2 id="一-时间戳"><a href="#一-时间戳" class="headerlink" title="一 时间戳"></a>一 时间戳</h2><p>工程目录下有<code>GPS</code>保存的坐标文件<code>gps.txt</code>和激光雷达保存的坐标文件<code>laser.txt</code>两个文件，两个文件的第一列为记录当前数据的时间戳，后两列为坐标。由于GPS每隔500时间单位保存一次数据，激光雷达每隔300时间单位保存一次数据，因此，一段时间内激光雷达保存的数据比<code>GPS</code>保存的数据要多。现在想取出两个文件中时间戳最接近的数据，并分别存放在<code>gps2.txt</code>和<code>laser2.txt</code>中，编写程序实现。（不知道哪位大神能讲下这道题。。。）</p>
 <p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812100331825.png" alt="image-20200812100331825"></p>
@@ -1046,9 +1053,36 @@
 <p>在关键帧的运用上，我认为orbslam做的非常好，尤其是在回环检测中使用了以关键帧为代表的帧“簇”的概念，回环筛选中有一步将关键帧前后10帧为一组，计算组内总分，以最高分的组的0.75为阈值，滤除一些组，再在剩下的组内各自找最高分的一帧作为备选帧，这个方法非常好地诠释了“关键帧代表局部”的这个理念。</p>
 </blockquote>
 <h2 id="三-初始化"><a href="#三-初始化" class="headerlink" title="三 初始化"></a>三 初始化</h2><p>初始化的意义是求取两个图像间的<strong>运动</strong>和特征点<strong>距离</strong>，初始化之后的运动都以初始化时的平移作为单位1，这称为单目的不确定性问题（Scale Ambiguity）。且在初始化时，要保证两帧图片之间的运动必须包括平移（不能只旋转），否则将导致求得的本质矩阵E为0，也就无法分解得到相机位姿。</p>
-<h3 id="1-ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？"><a href="#1-ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？" class="headerlink" title="1. ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？"></a>1. ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？</h3><p>当特征点共面或相机间发生了纯旋转时，基础矩阵自由度下降，即发生了所谓的退化，此时如果仍采用八点法估算F矩阵，基础矩阵多出来的自由度将会由噪声决定，对结果造成极大误差。为避免退化现象造成的影响，通常会同时估计基础矩阵F和单应矩阵H，选择重投影误差较小的那个作为最终的运动估计矩阵。</p>
+<h4 id="1-ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？"><a href="#1-ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？" class="headerlink" title="1. ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？"></a>1. ORB-SLAM初始化的时候为什么要同时计算H矩阵和F矩阵？</h4><p>当特征点共面或相机间发生了纯旋转时，基础矩阵自由度下降，即发生了所谓的退化，此时如果仍采用八点法估算F矩阵，基础矩阵多出来的自由度将会由噪声决定，对结果造成极大误差。为避免退化现象造成的影响，通常会同时估计基础矩阵F和单应矩阵H，选择重投影误差较小的那个作为最终的运动估计矩阵。</p>
+<h4 id="2-纯旋转的图像帧可以实现ORB－SLAM的初始化吗？"><a href="#2-纯旋转的图像帧可以实现ORB－SLAM的初始化吗？" class="headerlink" title="2. 纯旋转的图像帧可以实现ORB－SLAM的初始化吗？"></a>2. 纯旋转的图像帧可以实现ORB－SLAM的初始化吗？</h4><p>可以的.</p>
+<ul>
+<li><p>ORB的初始化主要分为以下步骤: </p>
+<ul>
+<li>step1 : 创建单目初始化器 </li>
+<li>step2 : 确保连续两帧的特征点数都大于100,否则重新构建初始化器 </li>
+<li>step3 : 在mInitialFrame与mCurrentFrame中找匹配的特征点对 </li>
+<li>step4 : 验证匹配结果，如果初始化的两帧之间的匹配点太少，重新初始化 </li>
+<li>step5 : 通过H模型或F模型进行单目初始化，得到两帧间相对运动、初始MapPoints </li>
+<li>step6 : 初始化成功后，删除那些无法进行三角化的匹配点 </li>
+<li>step7 : 将初始化的第一帧作为世界坐标系 step8 : 创建初始化地图点MapPoints </li>
+</ul>
+</li>
+<li><p>初始化的关键步骤主要在于step5: </p>
+<p>当系统纯旋转时,由于F矩阵$t=t^ R$,所以当t=0时会发生退化,而H矩阵不会受到纯旋转的影响,此时可以依靠单应矩阵初始化系统</p>
+</li>
+</ul>
 <h2 id="四-重定位"><a href="#四-重定位" class="headerlink" title="四 重定位"></a>四 重定位</h2><p>绑架问题就是<strong>重定位</strong>，是指机器人在缺少之前位置信息的情况下，如何去确定当前位姿。例如当机器人被安置在一个已经构建好地图的环境中，但是并不知道它在地图中的相对位置，或者在移动过程中，由<strong>于传感器的暂时性功能故障或相机的快速移动</strong>，都导致机器人先前的位置信息的丢失，在这种情况下如何重新确定自己的位置。</p>
-<h2 id="五-ORB-SLAM2"><a href="#五-ORB-SLAM2" class="headerlink" title="五 ORB-SLAM2"></a>五 ORB-SLAM2</h2><h3 id="1-ORB-SLAM中的特征是如何提取的？如何均匀化的？"><a href="#1-ORB-SLAM中的特征是如何提取的？如何均匀化的？" class="headerlink" title="1. ORB-SLAM中的特征是如何提取的？如何均匀化的？"></a>1. ORB-SLAM中的特征是如何提取的？如何均匀化的？</h3><h3 id="2-ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？"><a href="#2-ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？" class="headerlink" title="2. ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？"></a>2. ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？</h3><p>当特征点共面或相机间发生了纯旋转时，基础矩阵自由度下降，即发生了所谓的退化，此时如果仍采用八点法估算F矩阵，基础矩阵多出来的自由度将会由噪声决定，对结果造成极大误差。为避免退化现象造成的影响，通常会同时估计基础矩阵F和单应矩阵H，选择重投影误差较小的那个作为最终的运动估计矩阵。</p>
+<h2 id="五-ORB-SLAM2"><a href="#五-ORB-SLAM2" class="headerlink" title="五 ORB-SLAM2"></a>五 ORB-SLAM2</h2><h4 id="1-ORB-SLAM中的特征是如何提取的？如何均匀化的？"><a href="#1-ORB-SLAM中的特征是如何提取的？如何均匀化的？" class="headerlink" title="1. ORB-SLAM中的特征是如何提取的？如何均匀化的？"></a>1. ORB-SLAM中的特征是如何提取的？如何均匀化的？</h4><h4 id="2-ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？"><a href="#2-ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？" class="headerlink" title="2. ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？"></a>2. ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？</h4><p>当特征点共面或相机间发生了纯旋转时，基础矩阵自由度下降，即发生了所谓的退化，此时如果仍采用八点法估算F矩阵，基础矩阵多出来的自由度将会由噪声决定，对结果造成极大误差。为避免退化现象造成的影响，通常会同时估计基础矩阵F和单应矩阵H，选择重投影误差较小的那个作为最终的运动估计矩阵。</p>
+<h4 id="3-ORBSLAM整体流程"><a href="#3-ORBSLAM整体流程" class="headerlink" title="3. ORBSLAM整体流程"></a>3. ORBSLAM整体流程</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/1&e=1661961599&token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zDmtaS-3ndq2Gz-2Zb9sgAodStHuw=.png" alt="img"></p>
+<h4 id="4-ORB与VINS的区别"><a href="#4-ORB与VINS的区别" class="headerlink" title="4. ORB与VINS的区别"></a>4. ORB与VINS的区别</h4><p><strong>前端：</strong></p>
+<p> ORB-SLAM：构建图像金字塔，对每一层提取Fast特征点，使用四叉树进行均匀化。对每一层图像进行高斯模糊，然后提取BRIEF描述子。再恢复到第0层并使用opencv自带函数进行图像去畸变；初始化过程通过计算H和F矩阵得分恢复初始化位姿和地图点；没有运动模型时先使用关键帧追踪，之后主要使用恒速运动模型追踪 </p>
+<p>VINS：对图像使用KLT角点检测算法，对角点使用LK光流（在金字塔上逐层进行）追踪。均匀化操作是对检测出的特征点进行排序，以特征点为中心画圈，在圈中不允许再有其他的特征点存在。提取完特征点后要去畸变，去畸变使用了一个trick：逐渐逼近式去畸变。通过对极约束求一个本质矩阵，使用RANSAC选取一个置信度最高的本质矩阵，对outlier（不符合对极约束的点）进行筛查。</p>
+<p>另外vins涉及到了IMU，需要进行IMU的预积分和初始化 </p>
+<p><strong>后端：</strong> </p>
+<p>ORB：主要基于共视关键帧，优化变量：地图点坐标，关键帧和一级相邻关键帧的位姿，残差：视觉残差 </p>
+<p>VINS：基于滑动窗口，优化变量为： 相机到IMU的外参，滑窗中地图点的逆深度，滑窗中所有IMU的状态（P,V,Q,ba,bw），残差：边缘化先验残差，IMU残差，视觉残差；对移除滑窗图像帧信息进行边缘化，将丢弃的信息保留下来继续约束剩余变量。 </p>
+<p>回环： 两个方法的回环都利用了词袋，vins对角点额外计算了BRIEF描述子。 </p>
+<p>另外VINs对外参3自由度的平移和1自由度的yaw角进行优化。</p>
 <h2 id="六-视觉SLAM的问题"><a href="#六-视觉SLAM的问题" class="headerlink" title="六 视觉SLAM的问题"></a>六 视觉SLAM的问题</h2><h3 id="1-视觉SLAM存在的问题"><a href="#1-视觉SLAM存在的问题" class="headerlink" title="1. 视觉SLAM存在的问题"></a>1. 视觉SLAM存在的问题</h3><p>虽然双目和RGBD不存在初始化化和尺度漂移问题，但是视觉SLAM仍然存在很多共性问题。相机运动太快会导致图像模糊、相机视野不够会导致匹配特征点少、计算量太大（特征提取和匹配）、遮挡、特征缺失、动态物体或光源干扰等。</p>
 <h3 id="2-尺度漂移问题"><a href="#2-尺度漂移问题" class="headerlink" title="2 尺度漂移问题"></a>2 尺度漂移问题</h3><p><strong>根本原因</strong>：单目slam产生尺度漂移的根本原因是单目相机无法根据一张图片得出图中物体的大小，这是尺度漂移的根源；在使用单目估计相机位姿和3D点坐标时，需要通过对极几何、三角化进行估计，在这个过程中会产生误差（特征点精度误差、计算误差），这些误差经过多帧累积后会变得特别大，进而导致尺度的不一致性，造成尺度漂移。<br><strong>解决办法</strong>：1、视觉与IMU融合，借助IMU测得的高帧率的角速度、加速度对视觉进行修正、补充；后端优化时，把尺度作为一个优化变量进行优化，可以减小尺度漂移问题。<br><strong>补充</strong>：由于初始化时存在尺度不确定性，因此单目相机估计的目标物体距离与真实世界里的距离存在比例上的差异，这个比例被称作尺度。而且，受到噪声的影响，导致这个尺度会逐渐漂移、改变，这被称为单目SLAM的尺度漂移问题。从理论上来说，只靠单目相机（不借助其他传感器）是无法确定这个尺度具体是多少的，比较好的解决方法是使用回环检测，但是要求相机的整个运动过程存在回环。</p>
 <h4 id="单目视觉slam中尺寸漂移是怎么产生的"><a href="#单目视觉slam中尺寸漂移是怎么产生的" class="headerlink" title="单目视觉slam中尺寸漂移是怎么产生的"></a>单目视觉slam中尺寸漂移是怎么产生的</h4><p>单目相机根据一张图片<strong>无法得出一张图片中物体的实际大小</strong>，同理也就<strong>无法得出运动的尺度大小</strong>，这是产生尺度漂移的根源。而在优化过程中，单目相机使用对极几何中的三角测量原理求解深度信息，而三角测量中，<strong>极小的角度误差在累积之后深度不确定都会变得很大</strong>，从而无法保证尺度一致性。</p>
@@ -1064,22 +1098,12 @@
 <h3 id="2-测量模型与运动模型"><a href="#2-测量模型与运动模型" class="headerlink" title="2. 测量模型与运动模型"></a>2. 测量模型与运动模型</h3><blockquote>
 <p>东北天坐标系()</p>
 </blockquote>
-<h4 id="VIO中的IMU模型"><a href="#VIO中的IMU模型" class="headerlink" title="VIO中的IMU模型"></a>VIO中的IMU模型</h4><p>忽略 scale 的影响，只考虑白噪声和 bias 随机游走：</p>
-<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220626234856004.png" alt="image-20220626234856004" style="zoom:80%;">
-
-<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220626234942297.png" alt="image-20220626234942297" style="zoom:80%;">
-
-<p>根据上面的导数关系，可以从第 i 时刻的 PVQ，通过对 IMU 的测量值进行积分，得到第 j 时刻的 PVQ:</p>
-<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20220626235243569.png" alt="image-20220626235243569" style="zoom:80%;">
-
-
-
 <h3 id="3-IMU的优点"><a href="#3-IMU的优点" class="headerlink" title="3. IMU的优点"></a>3. IMU的优点</h3><blockquote>
 <p>IMU能帮助单目确定尺度，；<br>IMU能测量快速的运动；<br>IMU在相机被遮挡时亦能提供短时间的位姿估计；<br>视觉SLAM相邻两帧之间没有约束关系，优化误差函数是重投影误差；IMU增加了相邻帧之间的约束关系。</p>
 </blockquote>
 <h3 id="4-IMU参数标定"><a href="#4-IMU参数标定" class="headerlink" title="4. IMU参数标定"></a>4. IMU参数标定</h3><blockquote>
 </blockquote>
-<h3 id="5-IMU与相机之间的联合标定"><a href="#5-IMU与相机之间的联合标定" class="headerlink" title="5.IMU与相机之间的联合标定"></a>5.IMU与相机之间的联合标定</h3><h4 id="如何标定IMU与相机之间的外参数？"><a href="#如何标定IMU与相机之间的外参数？" class="headerlink" title="如何标定IMU与相机之间的外参数？"></a>如何标定IMU与相机之间的外参数？</h4><h4 id="-3"><a href="#-3" class="headerlink" title></a></h4><h1 id="九-其它传感器"><a href="#九-其它传感器" class="headerlink" title="九 其它传感器"></a>九 其它传感器</h1><h2 id="一-GPS"><a href="#一-GPS" class="headerlink" title="一 GPS"></a>一 GPS</h2><h3 id="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"><a href="#1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。" class="headerlink" title="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"></a>1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。</h3><p>在给定一些有噪声的GPS信号的时候如何去精准的定位？</p>
+<h3 id="5-IMU与相机之间的联合标定"><a href="#5-IMU与相机之间的联合标定" class="headerlink" title="5.IMU与相机之间的联合标定"></a>5.IMU与相机之间的联合标定</h3><h4 id="如何标定IMU与相机之间的外参数？"><a href="#如何标定IMU与相机之间的外参数？" class="headerlink" title="如何标定IMU与相机之间的外参数？"></a>如何标定IMU与相机之间的外参数？</h4><h1 id="九-其它传感器"><a href="#九-其它传感器" class="headerlink" title="九 其它传感器"></a>九 其它传感器</h1><h2 id="一-GPS"><a href="#一-GPS" class="headerlink" title="一 GPS"></a>一 GPS</h2><h3 id="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"><a href="#1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。" class="headerlink" title="1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。"></a>1、给你xx误差的GPS，给你xx误差的惯导你怎么得到一个cm级别的地图。</h3><p>在给定一些有噪声的GPS信号的时候如何去精准的定位？</p>
 <h2 id="二-其它"><a href="#二-其它" class="headerlink" title="二 其它"></a>二 其它</h2><p>一 除了视觉传感，还用过其他传感吗？比如GPS，激光雷达。</p>
 <h1 id="十-通用库"><a href="#十-通用库" class="headerlink" title="十 通用库"></a>十 通用库</h1><h2 id="一-Eigen"><a href="#一-Eigen" class="headerlink" title="一 Eigen"></a>一 Eigen</h2><h3 id="矩阵赋值"><a href="#矩阵赋值" class="headerlink" title="矩阵赋值"></a>矩阵赋值</h3><p>按块赋值</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Dense&gt;</span></span></span><br><span class="line">Eigen::Matrix&lt;<span class="keyword">double</span>, <span class="number">3</span>, <span class="number">4</span>&gt; P;</span><br><span class="line">P.block(<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">3</span>) = camera_pose[<span class="number">0</span>].Rwc;</span><br><span class="line"><span class="comment">// 前面两个数值是起点，后面两个数值是块的大小，此处是将3*3的Rwc赋值给P的前三列</span></span><br></pre></td></tr></table></figure>
@@ -1152,7 +1176,26 @@
 
 
 
-<h2 id="四-Ceres"><a href="#四-Ceres" class="headerlink" title="四 Ceres"></a>四 Ceres</h2><h2 id="五-ROS"><a href="#五-ROS" class="headerlink" title="五 ROS"></a>五 ROS</h2><h2 id="六-DBOW"><a href="#六-DBOW" class="headerlink" title="六 DBOW"></a>六 DBOW</h2><h3 id="训练字典"><a href="#训练字典" class="headerlink" title="训练字典"></a>训练字典</h3><p>实际 BoW 使用时,字典往往是从更大的数据集中生成的,而且最好是来自目标应该环境类似的地方。我们通常使用较大规模的字典——越大代表字典单词量越丰富,容易找到与当前图像对应的单词,但也不能大到超过我们计算能力和内存。</p>
+<h2 id="四-Ceres"><a href="#四-Ceres" class="headerlink" title="四 Ceres"></a>四 Ceres</h2><h2 id="五-ROS"><a href="#五-ROS" class="headerlink" title="五 ROS"></a>五 ROS</h2><p><strong>ROS系统的缺点</strong></p>
+<ol>
+<li><p>数据copy次数过多</p>
+<ol>
+<li>节点到用户态内存copy</li>
+<li>发送方到内核态copy</li>
+<li>tcp链接后从内核态到接受节点copy</li>
+<li>接受节点反序列化乘结构化消息copy</li>
+</ol>
+<p>改进</p>
+<ul>
+<li>共享内存通信<ul>
+<li>发送节点序列化乘流失数据copy</li>
+<li>接受节点直接把共享内存数据反序列化copy</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="六-DBOW"><a href="#六-DBOW" class="headerlink" title="六 DBOW"></a>六 DBOW</h2><h3 id="训练字典"><a href="#训练字典" class="headerlink" title="训练字典"></a>训练字典</h3><p>实际 BoW 使用时,字典往往是从更大的数据集中生成的,而且最好是来自目标应该环境类似的地方。我们通常使用较大规模的字典——越大代表字典单词量越丰富,容易找到与当前图像对应的单词,但也不能大到超过我们计算能力和内存。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">int</span> argc, <span class="keyword">char</span>** argv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// read the image</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"reading images... "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Mat&gt; images;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="built_in">string</span> path = <span class="string">"./data/"</span>+to_string(i+<span class="number">1</span>)+<span class="string">".png"</span>;</span><br><span class="line">    images.push_back( imread(path) );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// detect ORB features</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"detecting ORB features ... "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    Ptr&lt; Feature2D &gt; detector = ORB::create();</span><br><span class="line">    <span class="built_in">vector</span>&lt;Mat&gt; descriptors;</span><br><span class="line">    <span class="keyword">for</span> ( Mat&amp; <span class="built_in">image</span>:images )</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints;</span><br><span class="line">    Mat descriptor;</span><br><span class="line">    detector-&gt;detectAndCompute( <span class="built_in">image</span>, Mat(), keypoints, descriptor );</span><br><span class="line">    descriptors.push_back( descriptor );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// create vocabulary</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"creating vocabulary ... "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    DBoW3::Vocabulary vocab;</span><br><span class="line">    vocab.create( descriptors );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"vocabulary info: "</span>&lt;&lt;vocab&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    vocab.save( <span class="string">"vocabulary.yml.gz"</span> );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"done"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>DBoW3 的使用方式非常容易。我们对十张目标图像提取 ORB 特征并存放至 vector容器中,然后调用 DBoW3 的字典生成接口即可。在 DBoW3::Vocabulary 对象的构造函数中,我们能够指定树的分叉数量以及深度,不过这里使用了默认构造函数,也就是 k =10, d = 5。这是一个小规模的字典,最大能容纳 10000 个单词。对于图像特征,我们亦使用默认参数,即每张图像 500 个特征点。最后我们把字典存储为一个压缩文件。</p>
@@ -1160,15 +1203,20 @@
 <li>给定几个连续帧的带有位姿的帧，如何去测量车道线相对于世界坐标系的坐标。</li>
 <li>给一张图片，知道相机与地面之间的相对关系，计算出图的俯视图。</li>
 </ol>
-<h3 id="3-说一下VINS-Mono的优缺点"><a href="#3-说一下VINS-Mono的优缺点" class="headerlink" title="3. 说一下VINS-Mono的优缺点"></a>3. 说一下VINS-Mono的优缺点</h3><h3 id="4-其他"><a href="#4-其他" class="headerlink" title="4. 其他"></a>4. 其他</h3><h1 id="十二-笔试"><a href="#十二-笔试" class="headerlink" title="十二 笔试"></a>十二 笔试</h1><h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><ol>
+<h3 id="2-说一个自己熟悉的SLAM算法，Lidar-Visual-slam，说优缺点。"><a href="#2-说一个自己熟悉的SLAM算法，Lidar-Visual-slam，说优缺点。" class="headerlink" title="2. 说一个自己熟悉的SLAM算法，Lidar/Visual slam，说优缺点。"></a>2. 说一个自己熟悉的SLAM算法，Lidar/Visual slam，说优缺点。</h3><h3 id="3-说一下VINS-Mono的优缺点"><a href="#3-说一下VINS-Mono的优缺点" class="headerlink" title="3. 说一下VINS-Mono的优缺点"></a>3. 说一下VINS-Mono的优缺点</h3><h3 id="4-其他"><a href="#4-其他" class="headerlink" title="4. 其他"></a>4. 其他</h3><h2 id="二-设计系统"><a href="#二-设计系统" class="headerlink" title="二 设计系统"></a>二 设计系统</h2><p>机器人从超市门口出发，前往3公里外的小区送货。请你设计一个定位系统，包括传感器的配置、算法的流程，用伪代码写出来。</p>
+<h2 id="三-其他问题"><a href="#三-其他问题" class="headerlink" title="三 其他问题"></a>三 其他问题</h2><h3 id="你还有什么问题？"><a href="#你还有什么问题？" class="headerlink" title="你还有什么问题？"></a>你还有什么问题？</h3><p>可以从以下方面进行提问：(1) 部门(2) 业务范围(3) 培养方式(4) 工作模式(5) 后续通知时间</p>
+<h4 id="你的缺点"><a href="#你的缺点" class="headerlink" title="你的缺点"></a>你的缺点</h4><ol>
+<li>喜欢熬夜</li>
+</ol>
+<h2 id="四-SLAM行业相关问题"><a href="#四-SLAM行业相关问题" class="headerlink" title="四 SLAM行业相关问题"></a>四 SLAM行业相关问题</h2><h4 id="1-大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？"><a href="#1-大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？" class="headerlink" title="1. 大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？"></a>1. 大家都是SLAM方向的研究者，不管是学生还是已经工作，以后都面临找（换）工作的问题，那么你知道哪些做SLAM技术的公司？</h4><h4 id="2-讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？"><a href="#2-讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？" class="headerlink" title="2. 讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？"></a>2. 讨论一下SLAM应用场景及落地的问题。大家觉得SLAM技术最适合的应用场景是什么？在哪个场景能够最快技术落地呢？</h4><h1 id="十二-笔试"><a href="#十二-笔试" class="headerlink" title="十二 笔试"></a>十二 笔试</h1><h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><ol>
 <li><p>以下哪一种情况，可以认为双目视觉系统内参和双目间的相对旋转标定正确</p>
 <p>A. 计算标定时采集的pattern重投影误差，数值相对较小</p>
 <p>B. 使用双目拍摄远处的雪山，无论怎么移动相机，在recify图像上，雪山在左右成像位置相同，但亮度差异较大</p>
 <p>C. 使用双目拍摄远处的车辆，无论怎么移动相机，在recify图像上，车辆在左右成像尽在x方向有disparity；</p>
 <p>D. 使用双目拍摄远处的彩虹，无论怎么移动相机，在recify图像上，彩虹在左右成像的亮度没有差异</p>
-<p>答：C</p>
 </li>
 </ol>
+<p>   答：C</p>
 <ol start="2">
 <li><p>以下哪些相机模型不适用与FOV约180度鱼眼相机投影关系（r为像高，f为焦距，$\theta$为光线到光心的理想入射角）</p>
 <p>A.  针孔相机模型 像高表示为$r=f\tan(\theta)$</p>
@@ -1176,6 +1224,17 @@
 <p>C.  等立体角投影 像高表示为$r=2 f\sin(\theta)$</p>
 <p>D.  正交投影模型 像高表示为$r=f\sin(\theta)$</p>
 </li>
+</ol>
+<ol start="3">
+<li><p>以下哪些做法有助于神经网络过拟合</p>
+<p>A. 使用更深的网络以提升泛华性</p>
+<p>B. 进行数据增强以增加数据的多样性</p>
+<p>C. 加入dropout模块以增加训练过程的随机性</p>
+<p>D. 使用leaky relu 取代relu避免特征损失过多</p>
+<p>答：BCD </p>
+</li>
+</ol>
+<ol start="4">
 <li><p>以下哪些手段可以提升重复纹理环境的定位感知能力</p>
 <p>A.  调整SGBM的参数，增大平滑项的权重</p>
 <p>B.  VIO后端增加robust norm 降低feature误匹配带来的误差</p>
@@ -1194,12 +1253,13 @@
 <li><p>牛顿迭代法的基本思想是使用泰勒技术展开式去近似地代替非线性回归函数，然后通过多次迭代，多次修正回归系数，使回归系数不断逼近非线性回归模型的最佳系数，最后使原模型的残差平方和达到最小（）</p>
 </li>
 </ol>
-<h2 id="简答题"><a href="#简答题" class="headerlink" title="简答题"></a>简答题</h2><h4 id="一"><a href="#一" class="headerlink" title="一"></a>一</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000618164.png" alt="image-20200818000618164"></p>
-<h4 id="二-卡尔曼滤波"><a href="#二-卡尔曼滤波" class="headerlink" title="二 卡尔曼滤波"></a>二 卡尔曼滤波</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000645583.png" alt="image-20200818000645583"></p>
-<h4 id="三"><a href="#三" class="headerlink" title="三"></a>三</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000939557.png" alt="image-20200818000939557"></p>
-<h3 id="二-设计系统"><a href="#二-设计系统" class="headerlink" title="二 设计系统"></a>二 设计系统</h3><p>机器人从超市门口出发，前往3公里外的小区送货。请你设计一个定位系统，包括传感器的配置、算法的流程，用</p>
-<p>伪代码写出来。</p>
-
+<h2 id="简答题"><a href="#简答题" class="headerlink" title="简答题"></a>简答题</h2><p>一：</p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000618164.png" alt="image-20200818000618164"></p>
+<p>二： 卡尔曼滤波</p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000645583.png" alt="image-20200818000645583"></p>
+<p>三 </p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000939557.png" alt="image-20200818000939557"></p>
+<h1 id="面试"><a href="#面试" class="headerlink" title="面试"></a>面试</h1><h3 id="一-美团"><a href="#一-美团" class="headerlink" title="一 美团"></a>一 美团</h3>
       
       <!-- reward -->
       
@@ -1286,11 +1346,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/08/10/2020-08-10-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/" class="article-nav-link">
+      <a href="/2020/08/16/2020-08-16-%E6%BC%AB%E6%B0%B4%E5%A1%AB%E5%85%85%E6%B3%95/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            相机标定原理
+            漫水填充法
           
         </div>
       </a>
