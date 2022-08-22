@@ -298,7 +298,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title>安卓面试题汇总</title>
+    <title>安卓基础</title>
     <url>/2022/04/05/%E5%AE%89%E5%8D%93%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/</url>
     <content><![CDATA[<a id="more"></a>
 
@@ -331,6 +331,12 @@
 <p>（c）Android系统是一个多任务(Multi-Task)的操作系统，可以在用手机听音乐的同时，也执行其他多个程序。每多执行一个应用程序，就会多耗费一些系统内存，当同时执行的程序过多，或是关闭的程序没有正确释放掉内存，系统就会觉得越来越慢，甚至不稳定。为了解决这个问题，Android引入了一个新的机制，即生命周期(Life Cycle)。</p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>Androd</tag>
+      </tags>
   </entry>
   <entry>
     <title>大数据简述</title>
