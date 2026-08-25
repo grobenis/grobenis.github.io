@@ -72,60 +72,6 @@
     
     
     
-    <article id="post-2025-03-04-激光SLAM综述" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-
-    
-    <div class="article-meta">
-      <a href="/2025/03/04/2025-03-04-%E6%BF%80%E5%85%89SLAM%E7%BB%BC%E8%BF%B0/" class="article-date">
-  <time datetime="2025-03-04T00:30:11.369Z" itemprop="datePublished">2025-03-04</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p><img src="/2025-03-04-%E6%BF%80%E5%85%89SLAM%E7%BB%BC%E8%BF%B0/image-20250304083428632.png" alt="image-20250304083428632"></p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
     <article id="post-2022-10-20-Online_Extrinsic_Camera_Calibration" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -872,6 +818,84 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2022-03-16-Souce_static_in_project" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/16/2022-03-16-Souce_static_in_project/"
+    >在工程中统计资源占用情况</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/03/16/2022-03-16-Souce_static_in_project/" class="article-date">
+  <time datetime="2022-03-16T08:28:29.000Z" itemprop="datePublished">2022-03-16</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SLAM/">SLAM</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>简尔言之：</p>
+<ol>
+<li>RAM: valgrind –tool&#x3D;massif –stacks&#x3D;yes –time-unit&#x3D;B –alloc-fn&#x3D;generic_malloc  .&#x2F;demo</li>
+<li>ROM: arm-none-eabi-size -t *.a</li>
+<li>检查内存泄漏：valgrind –tool&#x3D;memcheck –leak-check&#x3D;full –show-reachable&#x3D;yes –trace-children&#x3D;yes build_linux-x86_64&#x2F;main</li>
+</ol>
+      
+      <a class="article-more-link" href="/2022/03/16/2022-03-16-Souce_static_in_project/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Work/" rel="tag">Work</a></li></ul>
 
 
     </footer>
