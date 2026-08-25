@@ -102,7 +102,7 @@
 
       
       <p>概率图+时间&#x3D;动态系统</p>
-<p>​    对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
+<p>​	对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
 <ol>
 <li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
 <li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
@@ -125,26 +125,52 @@
 <li>$\hat{x}_k$，在时刻k的状态的估计；</li>
 <li>$\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。</li>
 </ol>
-<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k&#x3D;A_kx_{k-1}+u_k+w_k \quad k&#x3D;1,…,N\<br>z_k&#x3D;C_kx_k+v_k<br>\end{cases}<br>$$</p>
+<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$
+\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,...,N\\
+z_k=C_kx_k+v_k
+\end{cases}
+$$</p>
 <!-- 本地 Typora 路径源文件缺失，已注释 -->
 
-<h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$<br>x_k&#x3D;A_kx_{k-1}+u_k+w_k \quad k&#x3D;1,…,N<br>$$</p>
+<h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$
+x_k=A_kx_{k-1}+u_k+w_k \quad k=1,...,N
+$$</p>
 <p>其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵&#x2F;矢量）。</p>
 <p>$w_k$是过程噪声,满足$w_k\sim N(0,Q)$</p>
-<h4 id="观测模型"><a href="#观测模型" class="headerlink" title="观测模型"></a>观测模型</h4><p>$$<br>z_k &#x3D; C_kx_k+v_k<br>$$</p>
+<h4 id="观测模型"><a href="#观测模型" class="headerlink" title="观测模型"></a>观测模型</h4><p>$$
+z_k = C_kx_k+v_k
+$$</p>
 <p>其中$C_k$是观测模型，能把真实状态空间映射成观测空间。并假设了所有的状态和噪声均满足高斯分布。</p>
 <p>$v_k$观测噪声服从零均值高斯分布：即$.v_k\sim N(0,R)$。</p>
 <p><strong>线性</strong></p>
 <p>线性系统中的线性体现在以下两个方面:</p>
 <ol>
-<li>$X_k&#x3D;A*X_{k-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
-<li>$Z_k&#x3D;C*X_k+D+\delta,\epsilon \sim N(0,R)$</li>
+<li>$X_k=A*X_{k-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
+<li>$Z_k=C*X_k+D+\delta,\epsilon \sim N(0,R)$</li>
 </ol>
-<p>两个条件服从高斯分布：<br>$$<br>P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)<br>$$</p>
-<p>$$<br>P(Z_k|X_k)\sim N(C*X_k+D,R)<br>$$</p>
-<p>可以系统的初始状态：<br>$$<br>X_1\sim N(\mu_1,\Sigma_1)<br>$$</p>
-<p>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{lr}<br>        P(X_k|X_{k-1})\sim N(A<em>X_{k-1}+B,Q)\<br>        P(Z_k|X_k)\sim N(C</em>X_k+D,R)\<br>        P(Z_1)&#x3D;N(\mu_1,\Sigma_1)<br>    \end{array}<br>\right.<br>\end{equation}<br>$$<br>总共的参数表如下：</p>
-<p>$$<br>\theta &#x3D; (A,B,C,D,Q,R,\mu_1,\Sigma_1)<br>$$</p>
+<p>两个条件服从高斯分布：<br>$$
+P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)
+$$</p>
+<p>$$
+P(Z_k|X_k)\sim N(C*X_k+D,R)
+$$</p>
+<p>可以系统的初始状态：<br>$$
+X_1\sim N(\mu_1,\Sigma_1)
+$$</p>
+<p>$$
+\begin{equation}
+\left\{
+	\begin{array}{lr}
+		P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)\\
+		P(Z_k|X_k)\sim N(C*X_k+D,R)\\
+		P(Z_1)=N(\mu_1,\Sigma_1)
+	\end{array}
+\right.
+\end{equation}
+$$<br>总共的参数表如下：</p>
+<p>$$
+\theta = (A,B,C,D,Q,R,\mu_1,\Sigma_1)
+$$</p>
 <p>卡尔曼滤波是一种递归的估计，即只要获知上一时刻状态的估计值以及当前状态的观测值就可以计算出当前状态的估计值，因此不需要记录观测或者估计的历史信息。卡尔曼滤波器与大多数滤波器不同之处，在于它是一种纯粹的时域滤波器，它不需要像低通滤波器等频域滤波器那样，需要在频域设计再转换到时域实现。</p>
 <h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>卡尔曼滤波器的操作包括两个阶段：<strong>预测</strong>与<strong>更新</strong>。</p>
 <ol>
@@ -156,26 +182,63 @@
 <p><strong>伪代码</strong></p>
 <p><strong>Algorithm Kalman_filter</strong> ($\mu_{t-1}$,$\Sigma_{t-1}$,$\mu_t$,$z_t$)</p>
 <ol>
-<li>$\hat\mu_t &#x3D; A_t\mu_{t-1}+B_tu_t$</li>
-<li>$\hat\sum_t &#x3D;A_t\sum_{t-1}A^T_t+R_t$</li>
-<li>$K_t&#x3D;\hat\sum_tC^T_t(C_t\hat\sum_tC^T_t+Q_t)^{-1}$</li>
-<li>$\mu_t&#x3D;\hat\mu_t+K_t(z_t-C_t\hat\mu_t)$</li>
-<li>$\sum_t&#x3D;(I-K_tC_t)\hat\sum_t$</li>
+<li>$\hat\mu_t = A_t\mu_{t-1}+B_tu_t$</li>
+<li>$\hat\sum_t =A_t\sum_{t-1}A^T_t+R_t$</li>
+<li>$K_t=\hat\sum_tC^T_t(C_t\hat\sum_tC^T_t+Q_t)^{-1}$</li>
+<li>$\mu_t=\hat\mu_t+K_t(z_t-C_t\hat\mu_t)$</li>
+<li>$\sum_t=(I-K_tC_t)\hat\sum_t$</li>
 </ol>
 <p><strong>return</strong> $\mu_t$, $ \sum_t$</p>
 <h3 id="代码样例"><a href="#代码样例" class="headerlink" title="代码样例"></a>代码样例</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[ predictx, predicty, state, param ]</span> = <span class="title">kalmanFilter</span><span class="params">( t, x, y, state, param, previous_t )</span></span></span><br><span class="line"><span class="comment">% 卡尔曼滤波器</span></span><br><span class="line"><span class="comment">% 输入：当前时间t，位置，状态，参数，前一帧的时间t-1</span></span><br><span class="line"><span class="comment">% UNTITLED Summary of this function goes here</span></span><br><span class="line"><span class="comment">%   假设状态为四维:[p_x,p_y,v_x,v_y]</span></span><br><span class="line"><span class="comment">%   Four dimensional state: position_x, position_y, velocity_x, velocity_y</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">%% Place parameters like covarainces, etc. here:</span></span><br><span class="line">    <span class="comment">% P = eye(4)</span></span><br><span class="line">    <span class="comment">% R = eye(2)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">% Check if the first time running this function</span></span><br><span class="line">    <span class="comment">% 初始化</span></span><br><span class="line">    <span class="keyword">if</span> previous_t&lt;<span class="number">0</span></span><br><span class="line">        state = [x, y, <span class="number">0</span>, <span class="number">0</span>];</span><br><span class="line">        param.P = <span class="number">0.1</span> * <span class="built_in">eye</span>(<span class="number">4</span>);</span><br><span class="line">        predictx = x;</span><br><span class="line">        predicty = y;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">%% Naive estimate 朴素估计</span></span><br><span class="line"><span class="comment">%     % As an example, here is a Naive estimate without a Kalman filter</span></span><br><span class="line"><span class="comment">%     % You should replace this code</span></span><br><span class="line"><span class="comment">%     vx = (x - state(1)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     vy = (y - state(2)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     % Predict 330ms into the future</span></span><br><span class="line"><span class="comment">%     predictx = x + vx * 0.330;</span></span><br><span class="line"><span class="comment">%     predicty = y + vy * 0.330;</span></span><br><span class="line"><span class="comment">%     % State is a four dimensional element</span></span><br><span class="line"><span class="comment">%     state = [x, y, vx, vy];</span></span><br><span class="line">    <span class="comment">%% <span class="doctag">TODO:</span> Add Kalman filter updates</span></span><br><span class="line">    <span class="comment">%% 当前目的：更新kalman滤波器</span></span><br><span class="line">    <span class="comment">% 1. 计算时间间隔</span></span><br><span class="line">    dt = t - previous_t; <span class="comment">% Time interval</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% PREDICT</span></span><br><span class="line">    <span class="comment">% 2. 预测</span></span><br><span class="line">    A = [<span class="number">1</span> <span class="number">0</span> dt <span class="number">0</span>; <span class="comment">% Transform matrix A</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> dt;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>  <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>  <span class="number">1</span>];</span><br><span class="line">     </span><br><span class="line">    C = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>; <span class="comment">% Observation matrix C</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line">     </span><br><span class="line">    z_t = [x, y]&#x27;; <span class="comment">% Measurement data</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Q = 0.005 * eye(4);</span></span><br><span class="line">    Q = [dt^<span class="number">2</span>  <span class="number">0</span>        <span class="number">0</span>       <span class="number">0</span>; <span class="comment">% System (Motion) noise covariance</span></span><br><span class="line">         <span class="number">0</span>        dt^<span class="number">2</span>  <span class="number">0</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">1</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>       <span class="number">1</span>];</span><br><span class="line">           </span><br><span class="line">    R = <span class="number">0.005</span> * <span class="built_in">eye</span>(<span class="number">2</span>); <span class="comment">% Measurement noise covariance</span></span><br><span class="line">    </span><br><span class="line">    P = A * param.P * transpose(A) + Q; <span class="comment">% Prior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% UPDATE</span></span><br><span class="line">    <span class="comment">% 3. 更新</span></span><br><span class="line">    K = P * transpose(C) * inv(R + C * P * transpose(C)); <span class="comment">% Kalman gain</span></span><br><span class="line">    state = (A * (state&#x27;) + K * (z_t - C * A * (state&#x27;)))&#x27;; <span class="comment">% Posterior state estimation</span></span><br><span class="line">    param.P = P - K * C * P; <span class="comment">% Posterior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Predict 330ms into the future</span></span><br><span class="line">    predictx = state(<span class="number">1</span>) + state(<span class="number">3</span>) * <span class="number">0.330</span>;</span><br><span class="line">    predicty = state(<span class="number">2</span>) + state(<span class="number">4</span>) * <span class="number">0.330</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="基于后验概率推导Kalman滤波器·"><a href="#基于后验概率推导Kalman滤波器·" class="headerlink" title="基于后验概率推导Kalman滤波器·"></a>基于后验概率推导Kalman滤波器·</h3><p>可以看作是一个Filter问题的求解过程<br>$$<br>P(X_t|z_1,z_2,…z_t)\propto P(z_1,z_2,…z_t,X_t)\&#x3D;P(z_t|z_1,z_2,…z_{t-1},X_t)*P(z_1,z_2,…z_{t-1},X_t)\<br>&#x3D;P(z_t|X_t)P(z_1,…,z_{t-1},X_t)\<br>&#x3D;P(z_t|X_t)P(X_t|z_1,…,z_{t-1})P(z_1,…,z_{t-1})\<br>\propto P(z_t|X_t)P(X_t|z_1,…,z_{t-1})\<br>$$</p>
-<p>其中：<br>$$<br>P(X_t|z_1,…,z_{t-1})<br>&#x3D;\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,…,z_{t-1})dz_{t-1}\<br>&#x3D;\int_{X_{t-1}}P(X_t|X_{t-1},z_1,…,z_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>\&#x3D;\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,…,z_{t-1})dz_{t-1}<br>$$</p>
+<h3 id="基于后验概率推导Kalman滤波器·"><a href="#基于后验概率推导Kalman滤波器·" class="headerlink" title="基于后验概率推导Kalman滤波器·"></a>基于后验概率推导Kalman滤波器·</h3><p>可以看作是一个Filter问题的求解过程<br>$$
+P(X_t|z_1,z_2,...z_t)\propto P(z_1,z_2,...z_t,X_t)\\=P(z_t|z_1,z_2,...z_{t-1},X_t)*P(z_1,z_2,...z_{t-1},X_t)\\
+=P(z_t|X_t)P(z_1,...,z_{t-1},X_t)\\
+=P(z_t|X_t)P(X_t|z_1,...,z_{t-1})P(z_1,...,z_{t-1})\\
+\propto P(z_t|X_t)P(X_t|z_1,...,z_{t-1})\\
+$$</p>
+<p>其中：<br>$$
+P(X_t|z_1,...,z_{t-1})
+=\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,...,z_{t-1})dz_{t-1}\\
+=\int_{X_{t-1}}P(X_t|X_{t-1},z_1,...,z_{t-1})P(X_{t-1}|z_1,...,z_{t-1})dz_{t-1}
+\\=\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,...,z_{t-1})dz_{t-1}
+$$</p>
 <p> 基于概率的推导步骤：</p>
 <ul>
-<li><p>t&#x3D;1,<br>$$<br>\begin{equation}<br>\left {<br>\begin{array}{lr}<br>P(X_1|z_1)\rarr update\<br>P(X_2|z_1)\rarr prediction<br>\end{array}<br>\right.<br>\end{equation}<br>$$</p>
+<li><p>t&#x3D;1,<br>$$
+  \begin{equation}
+  \left \{
+  	\begin{array}{lr}
+  	P(X_1|z_1)\rarr update\\
+  	P(X_2|z_1)\rarr prediction
+  	\end{array}
+  \right.
+  \end{equation}
+  $$</p>
 </li>
-<li><p>t&#x3D;2,<br>$$<br>\begin{equation}<br>\left {<br>\begin{array}{lr}<br>P(X_2|z_1,z_2)\rarr update\<br>P(X_3|z_1,z_2)\rarr prediction<br>\end{array}<br>\right.<br>\end{equation}<br>$$</p>
+<li><p>t&#x3D;2,<br>$$
+  \begin{equation}
+  \left \{
+  	\begin{array}{lr}
+  	P(X_2|z_1,z_2)\rarr update\\
+  	P(X_3|z_1,z_2)\rarr prediction
+  	\end{array}
+  \right.
+  \end{equation}
+  $$</p>
 </li>
-<li><p>t&#x3D;T,<br>$$<br>\begin{equation}<br>\left {<br>\begin{array}{lr}<br>P(X_T|z_1,z_2…z_T)\rarr update\<br>P(X_{T+1}|z_1,z_2,…,z_T)\rarr prediction<br>\end{array}<br>\right.<br>\end{equation}<br>$$</p>
+<li><p>t&#x3D;T,<br>$$
+  \begin{equation}
+  \left \{
+  	\begin{array}{lr}
+  	P(X_T|z_1,z_2...z_T)\rarr update\\
+  	P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
+  	\end{array}
+  \right.
+  \end{equation}
+  $$</p>
 </li>
 </ul>
 <h3 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h3><p>本节<a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinking/p/9201405.html">出处</a>。</p>
@@ -271,9 +334,9 @@
       </a>
     
     
-      <a href="/2020/03/14/2020-03-14-Probability_graph_model/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-14-GMM/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">概率图模型</div>
+        <div class="article-nav-title">高斯混合模型</div>
       </a>
     
   </nav>

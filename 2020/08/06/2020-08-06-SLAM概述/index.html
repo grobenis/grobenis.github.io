@@ -121,7 +121,7 @@
 <li>建图：Mapping</li>
 </ol>
 <p>其中，<strong>视觉里程计</strong>用来估计邻近时刻的相机运动。最简化的形式就是：估计两个图像的相对运动。采用的方法有特征点法和直接法两部分；<strong>后端</strong>则用来从带有噪声的数据中估计最优轨迹与地图，涉及到的最大后验概率估计部分可以分为滤波器和图优化两类。<strong>回环检测</strong>是用来检测相机是否到达过之前位置，主要通过计算图像间相似性来判断与之前位置的差异，需要用到词袋模型。<strong>建图</strong>涉及到导航、规划、通讯、交互、可视化等内容，最后需要构建度量地图、拓扑地图、稀疏地图、稠密地图等。度量地图强调精确地表示地图中物体的位置关系，通常用稀疏（Sparse）与稠密（Dense）对其分类。稀疏地图进行了一定程度的抽象，并不需要表达所有的物体。相对地，稠密地图着重于建模所有看到的东西。相比于度量地图的精确性，拓扑地图则更强调地图元素之间的关系。拓扑地图是一个图（Graph），由节点和边组成，只考虑节点间的连通性。</p>
-<h3 id="数学描述"><a href="#数学描述" class="headerlink" title="数学描述"></a>数学描述</h3><p>视觉SLAM可以通过以下两个方程进行数学描述：<br>运动方程：$x_{k+1}&#x3D; f(x_k, u_k,w_k)$<br>观测方程：$z_{k,j} &#x3D; h(x_k, y_j,w_{k,j})$</p>
+<h3 id="数学描述"><a href="#数学描述" class="headerlink" title="数学描述"></a>数学描述</h3><p>视觉SLAM可以通过以下两个方程进行数学描述：<br>运动方程：$x_{k+1}= f(x_k, u_k,w_k)$<br>观测方程：$z_{k,j} = h(x_k, y_j,w_{k,j})$</p>
 <p>为了解决这个问题，需要解决一下三个问题：</p>
 <ol>
 <li>位置是三维的，如何表述？一一第2、3次课</li>
@@ -159,7 +159,7 @@
 <li>输入<code>sudo gedit /root/.bashrc</code>，回车。</li>
 <li>再输入<code>“export PATH=&quot;$PATH:/opt/au1200_rm/build_tools/bin”</code>。</li>
 </ol>
-<p>​                </p>
+<p>​				</p>
 <h4 id="3-linux-根目录下面的目录结构是什么样的？至少说出3-个目录的用途"><a href="#3-linux-根目录下面的目录结构是什么样的？至少说出3-个目录的用途" class="headerlink" title="3. linux 根目录下面的目录结构是什么样的？至少说出3 个目录的用途"></a>3. linux 根目录下面的目录结构是什么样的？至少说出3 个目录的用途</h4><p>Linux根目录结构及用途</p>
 <ol>
 <li><strong>bin 目录</strong>：此目录存放所有二进制命令（用户）</li>
@@ -245,10 +245,10 @@
 <p>[3]Mourikis, Anastasios &#x2F;I, Roumeliotis, Stergios &#x2F;I. A Multi-State Constraint Kalman Filter for Vision-aided Inertial Navigation[C]&#x2F;&#x2F; IEEE International Conference on Robotics &amp; Automation. IEEE, 2007.</p>
 <h3 id="三-CMake-练习"><a href="#三-CMake-练习" class="headerlink" title="三. CMake 练习"></a>三. CMake 练习</h3><p>书写⼀个由 <code>cmake</code> 组织的 C++ ⼯程，要求如下：</p>
 <ol>
-<li>include&#x2F;hello.h 和 src&#x2F;hello.c 构成了 libhello.so 库。hello.c 中提供⼀个函数 sayHello()，调⽤此函数时往屏幕输出⼀⾏“Hello SLAM”。我们已经为你准备了 hello.h 和 hello.c 这两个⽂件，见“code&#x2F;” ⽬录下。</li>
-<li>⽂件 useHello.c 中含有⼀个 main 函数，它可以编译成⼀个可执⾏⽂件，名为“sayhello”。</li>
-<li>默认⽤ Release 模式编译这个⼯程。</li>
-<li>如果⽤户使⽤ sudo make install，那么将 hello.h 放⾄&#x2F;usr&#x2F;local&#x2F;include&#x2F;下，将 libhello.so 放⾄&#x2F;usr&#x2F;local&#x2F;lib&#x2F;下。请按照上述要求组织源代码⽂件，并书写CMakeLists.txt。</li>
+<li>   include&#x2F;hello.h 和 src&#x2F;hello.c 构成了 libhello.so 库。hello.c 中提供⼀个函数 sayHello()，调⽤此函数时往屏幕输出⼀⾏“Hello SLAM”。我们已经为你准备了 hello.h 和 hello.c 这两个⽂件，见“code&#x2F;” ⽬录下。</li>
+<li>   ⽂件 useHello.c 中含有⼀个 main 函数，它可以编译成⼀个可执⾏⽂件，名为“sayhello”。</li>
+<li>   默认⽤ Release 模式编译这个⼯程。</li>
+<li>   如果⽤户使⽤ sudo make install，那么将 hello.h 放⾄&#x2F;usr&#x2F;local&#x2F;include&#x2F;下，将 libhello.so 放⾄&#x2F;usr&#x2F;local&#x2F;lib&#x2F;下。请按照上述要求组织源代码⽂件，并书写CMakeLists.txt。</li>
 </ol>
 <p>答：CMakeList内容如下</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.2</span>.<span class="number">0</span> )</span><br><span class="line"><span class="keyword">PROJECT</span>(HELLO )</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_BUILD_TYPE <span class="string">&quot;Release&quot;</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">&quot;-std=c++11&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/bin)</span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">INCLUDE_DIRECTORIES</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="keyword">ADD_SUBDIRECTORY</span>(src)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(usehello useHello.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(usehello HELLO)</span><br></pre></td></tr></table></figure>

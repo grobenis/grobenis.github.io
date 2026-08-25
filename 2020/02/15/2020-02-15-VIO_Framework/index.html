@@ -112,8 +112,14 @@
 <p><strong>核心</strong>：误差项、优化变量、协方差</p>
 <p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p>
 <h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933"></p>
-<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：<br>$$<br>\Delta x* &#x3D; \arg\min_x||e(x+\Delta x||^2_P\&#x3D;\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)<br>$$<br>误差项:<br>$$<br>e(x+\Delta x)&#x3D;e(x)+J(x)\Delta x<br>$$</p>
-<p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：<br>$$<br>J^T P^{-1}\Delta x &#x3D; -J^TP^{-1}e<br>$$</p>
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：<br>$$
+\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)
+$$<br>误差项:<br>$$
+e(x+\Delta x)=e(x)+J(x)\Delta x
+$$</p>
+<p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：<br>$$
+J^T P^{-1}\Delta x = -J^TP^{-1}e
+$$</p>
 <h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498"></p>
 <p>其Jacobian矩阵如下：</p>
 <p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322"></p>
@@ -153,8 +159,12 @@
 <li>剔除老帧</li>
 </ol>
 <p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678"></p>
-<p>误差状态向量<br>$$<br>\hat{X_k}^{(15+6N)\times1} &#x3D; [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}<em>{C_1} …\ce{^{G}\hat{p}</em>{c_N} \ce{G}\hat{p}_{C_N}}]<br>$$</p>
-<p>$$<br>\hat{X}_{IMU}_k^{15\times1}&#x3D;[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T<br>$$</p>
+<p>误差状态向量<br>$$
+\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce{^{G}\hat{p}_{c_N} \ce{G}\hat{p}_{C_N}}]
+$$</p>
+<p>$$
+\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T
+$$</p>
 <blockquote>
 <p>每得到一个新图像以后需要对协方差矩阵做一个增广</p>
 </blockquote>
@@ -172,8 +182,12 @@
 <p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717"></p>
 <p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060"></p>
 <p>路标点边缘化完后就可以了</p>
-<p><strong>第j个路标点的所有视觉误差为</strong><br>$$<br>r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}<br>$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897"></p>
-<p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。<br>$$<br>r_0^(2M-3M_L)\times1&#x3D;A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)<br>$$</p>
+<p><strong>第j个路标点的所有视觉误差为</strong><br>$$
+r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}
+$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897"></p>
+<p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。<br>$$
+r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)
+$$</p>
 <h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote>
 <p>复杂 不常用</p>
 </blockquote>
@@ -233,7 +247,9 @@
 <h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote>
 <p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p>
 </blockquote>
-<p>$$<br>X&#x3D;[x_0,x_1,…x_n,x_c^b,\lambda_0,\lambda_1,…\lambda_m]<br>$$</p>
+<p>$$
+X=[x_0\,x_1\,...x_n,x_c^b,\lambda_0,\lambda_1,...\lambda_m]
+$$</p>
 <p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170"></p>
 <blockquote>
 <p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p>
@@ -310,11 +326,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            发布IMU信息到ROS系统中
+            Ubuntu 连接蓝牙鼠标
           
         </div>
       </a>

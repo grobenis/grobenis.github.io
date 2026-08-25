@@ -112,7 +112,7 @@
 <h2 id="贝叶斯滤波框架"><a href="#贝叶斯滤波框架" class="headerlink" title="贝叶斯滤波框架"></a>贝叶斯滤波框架</h2><p>状态估计可以统一在贝叶斯滤波框架下。设系统状态为 $x_k$，观测为 $z_k$，则递推估计分为两步：</p>
 <ol>
 <li><p><strong>预测</strong>：利用运动模型 $p(x_k|x_{k-1})$ 由上一时刻的后验 $p(x_{k-1}|z_{1:k-1})$ 推得先验：</p>
-<p>$$p(x_k|z_{1:k-1}) &#x3D; \int p(x_k|x_{k-1}) p(x_{k-1}|z_{1:k-1}) dx_{k-1}$$</p>
+<p>$$p(x_k|z_{1:k-1}) = \int p(x_k|x_{k-1}) p(x_{k-1}|z_{1:k-1}) dx_{k-1}$$</p>
 </li>
 <li><p><strong>更新</strong>：利用观测模型 $p(z_k|x_k)$ 修正先验得到后验：</p>
 <p>$$p(x_k|z_{1:k}) \propto p(z_k|x_k) p(x_k|z_{1:k-1})$$</p>
@@ -125,14 +125,14 @@
 <p>$$w_k^{(i)} \propto w_{k-1}^{(i)} \frac{p(z_k|x_k^{(i)}) p(x_k^{(i)}|x_{k-1}^{(i)})}{q(x_k^{(i)}|x_{k-1}^{(i)}, z_k)}$$</p>
 <p>即每来一个新观测，只需利用运动模型与观测模型更新粒子权重，而无需重新采样所有历史粒子。</p>
 <h2 id="粒子退化与重采样"><a href="#粒子退化与重采样" class="headerlink" title="粒子退化与重采样"></a>粒子退化与重采样</h2><p>SIS 存在一个严重问题——<strong>粒子退化</strong>：经过若干次递推后，大部分粒子的权重趋近于 0，只剩少数粒子携带有效信息，浪费大量计算资源。</p>
-<p>衡量退化程度的指标是有效粒子数 $N_{eff} &#x3D; 1 &#x2F; \sum_i (w^{(i)})^2$。当 $N_{eff}$ 低于阈值时，需要进行<strong>重采样</strong>：按照权重大小从旧粒子集中重新抽取 $N$ 个粒子，权重大的粒子被复制、权重小的被淘汰，之后所有粒子权重重新设为 $1&#x2F;N$。</p>
+<p>衡量退化程度的指标是有效粒子数 $N_{eff} = 1 / \sum_i (w^{(i)})^2$。当 $N_{eff}$ 低于阈值时，需要进行<strong>重采样</strong>：按照权重大小从旧粒子集中重新抽取 $N$ 个粒子，权重大的粒子被复制、权重小的被淘汰，之后所有粒子权重重新设为 $1/N$。</p>
 <p>常用重采样方法包括：多项式重采样、系统重采样、残差重采样等。重采样以损失粒子多样性为代价换取粒子有效性，因此实际中常结合二者（如 Sampling Importance Resampling）。</p>
 <h2 id="标准粒子滤波算法流程"><a href="#标准粒子滤波算法流程" class="headerlink" title="标准粒子滤波算法流程"></a>标准粒子滤波算法流程</h2><ol>
-<li><strong>初始化</strong>：从先验分布 $p(x_0)$ 采样 $N$ 个粒子 ${x_0^{(i)}}_{i&#x3D;1}^N$，权重均设为 $1&#x2F;N$。</li>
+<li><strong>初始化</strong>：从先验分布 $p(x_0)$ 采样 $N$ 个粒子 $\{x_0^{(i)}\}_{i=1}^N$，权重均设为 $1/N$。</li>
 <li><strong>预测</strong>：按运动模型 $x_k^{(i)} \sim p(x_k|x_{k-1}^{(i)})$ 递推每个粒子。</li>
-<li><strong>更新</strong>：按观测似然更新权重 $w_k^{(i)} &#x3D; w_{k-1}^{(i)} p(z_k|x_k^{(i)})$，并归一化。</li>
+<li><strong>更新</strong>：按观测似然更新权重 $w_k^{(i)} = w_{k-1}^{(i)} p(z_k|x_k^{(i)})$，并归一化。</li>
 <li><strong>重采样</strong>：若 $N_{eff} &lt; N_{th}$，进行重采样。</li>
-<li><strong>输出估计</strong>：$\hat{x}_k &#x3D; \sum_i w_k^{(i)} x_k^{(i)}$，回到第 2 步循环。</li>
+<li><strong>输出估计</strong>：$\hat{x}_k = \sum_i w_k^{(i)} x_k^{(i)}$，回到第 2 步循环。</li>
 </ol>
 <h2 id="与其他滤波方法的对比"><a href="#与其他滤波方法的对比" class="headerlink" title="与其他滤波方法的对比"></a>与其他滤波方法的对比</h2><table>
 <thead>
@@ -247,19 +247,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/14/2020-03-14-GMM/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            高斯混合模型
+            运动一致性判断
           
         </div>
       </a>
     
     
-      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-10-Read-VINS-Fusion/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">运动一致性判断</div>
+        <div class="article-nav-title">VINS-Fusion代码阅读</div>
       </a>
     
   </nav>

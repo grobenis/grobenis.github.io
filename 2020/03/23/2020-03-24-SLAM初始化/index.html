@@ -113,23 +113,23 @@
 </blockquote>
 <span id="more"></span>
 
-<h2 id="初始化的目的"><a href="#初始化的目的" class="headerlink" title="初始化的目的"></a>初始化的目的</h2><p>​        单目SLAM初始化的目的是 &#x3D;&#x3D;<strong>构建初始的三维点云地图（空间点）并为之后的计算提供初始值</strong>&#x3D;&#x3D;。</p>
-<p>​        由于仅从单帧的图像不能得到深度信息，因此需要从图像序列中选取两帧以上的图像以估计相机机姿态并重建出初始的三维点云。</p>
-<h2 id="常见的方法"><a href="#常见的方法" class="headerlink" title="常见的方法"></a>常见的方法</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>​        追踪一个已知物体。单帧图像的每一个点都对应于空间的一条射线。通过不同角度不同位置扫描同一个物体，期望能够将三维点的不确定性缩小到可接受的范围。</p>
-<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>​        基于假设空间存在一个平面物体，选取两帧不同位置的图像，通过计算<strong>单应矩阵</strong>来估计位姿。这类方法在视差较小或者平面上的点靠近某个主点时效果不好。</p>
-<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>​        根据两帧之间的特征点匹配计算<strong>基础矩阵</strong>，进一步估计位姿。这种方法要求存在不共面的特征点。</p>
+<h2 id="初始化的目的"><a href="#初始化的目的" class="headerlink" title="初始化的目的"></a>初始化的目的</h2><p>​		单目SLAM初始化的目的是 &#x3D;&#x3D;<strong>构建初始的三维点云地图（空间点）并为之后的计算提供初始值</strong>&#x3D;&#x3D;。</p>
+<p>​		由于仅从单帧的图像不能得到深度信息，因此需要从图像序列中选取两帧以上的图像以估计相机机姿态并重建出初始的三维点云。</p>
+<h2 id="常见的方法"><a href="#常见的方法" class="headerlink" title="常见的方法"></a>常见的方法</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>​		追踪一个已知物体。单帧图像的每一个点都对应于空间的一条射线。通过不同角度不同位置扫描同一个物体，期望能够将三维点的不确定性缩小到可接受的范围。</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>​		基于假设空间存在一个平面物体，选取两帧不同位置的图像，通过计算<strong>单应矩阵</strong>来估计位姿。这类方法在视差较小或者平面上的点靠近某个主点时效果不好。</p>
+<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>​		根据两帧之间的特征点匹配计算<strong>基础矩阵</strong>，进一步估计位姿。这种方法要求存在不共面的特征点。</p>
 <h2 id="单目初始化"><a href="#单目初始化" class="headerlink" title="单目初始化"></a>单目初始化</h2><h3 id="方法流程"><a href="#方法流程" class="headerlink" title="方法流程"></a>方法流程</h3><ol>
 <li>匹配初始帧；</li>
 <li>位姿计算；</li>
 <li>三角测量和地图创建；</li>
 <li>BA优化。</li>
 </ol>
-<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><h4 id="1-匹配初始帧"><a href="#1-匹配初始帧" class="headerlink" title="1. 匹配初始帧"></a>1. 匹配初始帧</h4><p>​        该阶段工作是，根据连续两帧图片中能够匹配的特征点数量来判断其是否可以作为初始帧，即只有连续两帧中能够匹配的特征点的数量大于某个值时才认为该帧（前一帧）为初始帧；<br>​        在ORM-SLAM2中认为连续帧匹配点的数量大于100时可以将前一帧作为初始帧并记录两帧的匹配关系；<br>​        以下是在ORB-SLAM2中相关部分的代码，功能为对两帧图片进行ORB特征点提取并进行匹配，当匹配的点的数量大于100时认为前一帧可以作为初始帧；可以通过修改代码中的参数来调整判断是否能够作为初始帧的条件。</p>
+<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><h4 id="1-匹配初始帧"><a href="#1-匹配初始帧" class="headerlink" title="1. 匹配初始帧"></a>1. 匹配初始帧</h4><p>​		该阶段工作是，根据连续两帧图片中能够匹配的特征点数量来判断其是否可以作为初始帧，即只有连续两帧中能够匹配的特征点的数量大于某个值时才认为该帧（前一帧）为初始帧；<br>​		在ORM-SLAM2中认为连续帧匹配点的数量大于100时可以将前一帧作为初始帧并记录两帧的匹配关系；<br>​		以下是在ORB-SLAM2中相关部分的代码，功能为对两帧图片进行ORB特征点提取并进行匹配，当匹配的点的数量大于100时认为前一帧可以作为初始帧；可以通过修改代码中的参数来调整判断是否能够作为初始帧的条件。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> nmatches = matcher.<span class="built_in">SearchForInitialization</span>(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 
 
 
-<h4 id="2-位姿计算"><a href="#2-位姿计算" class="headerlink" title="2. 位姿计算"></a>2. 位姿计算</h4><p>​        得到超过100对匹配点后，ORB-SLAM2同时计算适用于平面场景的单应矩阵H和适用于普通场景的基础矩阵F;<br>方法是：首先由抽样点计算出单次抽样的H（四对点）和F矩阵（八点法）,通过若干次RANSAC抽样计算出最优的H和F矩阵；然后选择最合适的结果作为相机的初始位姿。</p>
+<h4 id="2-位姿计算"><a href="#2-位姿计算" class="headerlink" title="2. 位姿计算"></a>2. 位姿计算</h4><p>​		得到超过100对匹配点后，ORB-SLAM2同时计算适用于平面场景的单应矩阵H和适用于普通场景的基础矩阵F;<br>方法是：首先由抽样点计算出单次抽样的H（四对点）和F矩阵（八点法）,通过若干次RANSAC抽样计算出最优的H和F矩阵；然后选择最合适的结果作为相机的初始位姿。</p>
 <h5 id="2-1-八点法"><a href="#2-1-八点法" class="headerlink" title="2.1. 八点法"></a>2.1. 八点法</h5><p>相机位姿估计问题是为了求解本质矩阵E或者基础矩阵F，然后求解旋转R和平移t。<br> 对于E矩阵认为是一个3*3的矩阵，因为任意常数乘以E不变，所以E矩阵的自由度是8。实际上E矩阵的自由度是5（反对称），但是对于SLAM运算中八点法和五点法区别不大且会增加麻烦所以我们只考虑E矩阵的尺度等价性用八点法来计算），从上式可以看出一对点可以确定一个关于E矩阵的方程，8个自由度就需要8对点来求解E矩阵，这就是八点法。</p>
 <h5 id="2-2-计算位姿"><a href="#2-2-计算位姿" class="headerlink" title="2.2 计算位姿"></a>2.2 计算位姿</h5><p>在同时计算单应矩阵和基础矩阵后对两个模型进行打分选择得分高的那个模型用来位姿计算，打分是用求得的E矩阵和F矩阵将前一帧上的特征点投影到下一帧并将下一帧的特征点投影到前一帧来计算重投影误差的和，代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cv::Mat Hn = <span class="built_in">ComputeH21</span>(vPn1i,vPn2i); <span class="comment">//计算单应矩阵        </span></span><br><span class="line">currentScore = <span class="built_in">CheckHomography</span>(H21i, H12i, vbCurrentInliers, mSigma); <span class="comment">//进行评分</span></span><br></pre></td></tr></table></figure>
@@ -140,7 +140,9 @@
 
 <p>在计算完E矩阵和F矩阵并确定模型后，如果是本质矩阵E，进行SVD分解会得到4组可能的R，t，对这些解进行检查求出唯一真正的解；如果是单应矩阵进行分解（数值法、解析法）得到4组解，利用先验信息进行排除得到唯一解。</p>
 <h4 id="3-三角测量和地图创建"><a href="#3-三角测量和地图创建" class="headerlink" title="3. 三角测量和地图创建"></a>3. 三角测量和地图创建</h4><p>已知位姿后通过三角测量可以计算出特征点对应的深度从而生成点云；并以第一帧为世界坐标系创建地图并进行数据关联。</p>
-<p>三角测量是指通过在两处观察同一个点的夹角从而确定该点的距离。数学上可以从上式进行求解，设$x_1$,$x_2$是两个特征点的归一化坐标，那么存在<br>$$<br>s_1x_1&#x3D;s_2Rx_2+t<br>$$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1$^:</p>
+<p>三角测量是指通过在两处观察同一个点的夹角从而确定该点的距离。数学上可以从上式进行求解，设$x_1$,$x_2$是两个特征点的归一化坐标，那么存在<br>$$
+s_1x_1=s_2Rx_2+t
+$$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1$^:</p>
 <p><img src="/2020/03/23/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/image-20200323214017168.png"></p>
 <h5 id="数据关联"><a href="#数据关联" class="headerlink" title="数据关联"></a>数据关联</h5><ol>
 <li><strong>地图点与关键帧关联</strong></li>

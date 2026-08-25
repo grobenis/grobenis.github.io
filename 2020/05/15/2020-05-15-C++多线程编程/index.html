@@ -170,11 +170,11 @@
 <p>在这里，<strong>pthread_exit</strong> 用于显式地退出一个线程。通常情况下，pthread_exit() 函数是在线程完成工作后无需继续存在时被调用。</p>
 <p>如果 main() 是在它所创建的线程之前结束，并通过 pthread_exit() 退出，那么其他线程将继续执行。否则，它们将在 main() 结束时自动被终止。</p>
 <h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><h3 id="lock-guard-和-unique-lock-的简单使用"><a href="#lock-guard-和-unique-lock-的简单使用" class="headerlink" title="lock_guard 和 unique_lock 的简单使用"></a>lock_guard 和 unique_lock 的简单使用</h3><p>   在 C++1x 之后，我们编写多线程可以直接使用标准库里的函数，不必根据平台的不同使用 posix_thread 之类的库了，这样就实现了跨平台的编程。</p>
-<h4 id="一、std-lock-guard-的介绍"><a href="#一、std-lock-guard-的介绍" class="headerlink" title="一、std::lock_guard 的介绍"></a>一、std::lock_guard 的介绍</h4><p>​    std::lock_guard 的原型是一个模板类，定义如下：</p>
+<h4 id="一、std-lock-guard-的介绍"><a href="#一、std-lock-guard-的介绍" class="headerlink" title="一、std::lock_guard 的介绍"></a>一、std::lock_guard 的介绍</h4><p>​	std::lock_guard 的原型是一个模板类，定义如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Mutex</span>&gt; <span class="keyword">class</span> <span class="title class_">lock_guard</span>;</span><br></pre></td></tr></table></figure>
 
 <p>​    lock_guard 通常用来管理一个 std::mutex 类型的对象，通过定义一个 lock_guard 一个对象来管理 std::mutex 的上锁和解锁。在 lock_guard 初始化的时候进行上锁，然后在 lock_guard 析构的时候进行解锁。这样避免了我们对 std::mutex 的上锁和解锁的管理。注意，lock_guard 并不管理 std::mutex 对象的声明周期，也就是说在使用 lock_guard 的过程中，如果 std::mutex 的对象被释放了，那么在 lock_guard 析构的时候进行解锁就会出现空指针错误之类。</p>
-<h4 id="二、std-unique-lock-的介绍"><a href="#二、std-unique-lock-的介绍" class="headerlink" title="二、std::unique_lock 的介绍"></a>二、std::unique_lock 的介绍</h4><p>​    unique_lock 和 lock_guard 一样，对 std::mutex 类型的互斥量的上锁和解锁进行管理，一样也不管理 std::mutex 类型的互斥量的声明周期。但是它的使用更加的灵活，支持的构造函数如下：</p>
+<h4 id="二、std-unique-lock-的介绍"><a href="#二、std-unique-lock-的介绍" class="headerlink" title="二、std::unique_lock 的介绍"></a>二、std::unique_lock 的介绍</h4><p>​	unique_lock 和 lock_guard 一样，对 std::mutex 类型的互斥量的上锁和解锁进行管理，一样也不管理 std::mutex 类型的互斥量的声明周期。但是它的使用更加的灵活，支持的构造函数如下：</p>
 <p><img src="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/image-20220626225902414.png"></p>
 <ol>
 <li><p>默认构造函数，新创建的 unique_lock 对象不管理任何 Mutex 对象。</p>

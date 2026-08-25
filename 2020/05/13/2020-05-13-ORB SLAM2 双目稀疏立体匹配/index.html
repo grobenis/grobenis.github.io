@@ -67,7 +67,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">616字</span>
+            <span class="post-count">614字</span>
         </span>
     </span>
 
@@ -151,9 +151,9 @@
 <p><strong>输出</strong>：稀疏特征点视差图&#x2F;深度图和匹配结果</p>
 <p><strong>视差公式</strong></p>
 <p>z:深度 d:视差（disparity）f:焦距 b：(baseline) 基线</p>
-<p>$z&#x3D;\frac{fb}{d},d&#x3D;u_L-u_R$</p>
+<p>$z=\frac{fb}{d},d=u_L-u_R$</p>
 <p>亚像素插值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Sub-pixel match (Parabola fitting)</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist1 = vDists[L+bestincR<span class="number">-1</span>];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist2 = vDists[L+bestincR];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist3 = vDists[L+bestincR+<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> deltaR = (dist1-dist3)/(<span class="number">2.0f</span>*(dist1+dist3<span class="number">-2.0f</span>*dist2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(deltaR&lt;<span class="number">-1</span> || deltaR&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Sub-pixel match (Parabola fitting)</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist1 = vDists[L+bestincR<span class="number">-1</span>];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist2 = vDists[L+bestincR];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist3 = vDists[L+bestincR<span class="number">+1</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> deltaR = (dist1-dist3)/(<span class="number">2.0f</span>*(dist1+dist3<span class="number">-2.0f</span>*dist2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(deltaR&lt;<span class="number">-1</span> || deltaR&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
 
 <p>亚像素插值方法：</p>
 <p><img src="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
