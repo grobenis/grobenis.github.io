@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    VINS_mono |  曾是少年
+    VINS-mono 学习笔记 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  VINS_mono
+  VINS-mono 学习笔记
 </h1>
   
 
@@ -118,7 +118,7 @@
 <p>符号定义：我们将 $(·)^w$ 视为世界坐标系，其中重力矢量的方向与其 z 轴对齐。 $(·)^b$ 是与 IMU 框架对齐的主体框架。$ (·)^c$ 是相机框架。我们同时使用 R 和四元数 q 来表示旋转矩阵。四元数对应于汉密尔顿符号。我们主要在状态向量中使用四元数，但旋转矩阵也用于 3-D 向量的方便旋转。 $q^w_b$ , $p^w_b$ 是从body坐标系到世界坐标系的旋转和平移。 $b_k$ 是拍摄第 k 张图像时的身体帧。 $c_k$ 是拍摄第 k 张图像时的相机帧。 ⊗ 是两个四元数的乘法运算。 $g^w &#x3D; [0, 0, g]^T$ 是世界坐标系中的重力矢量。</p>
 <h3 id="II-测量预处理"><a href="#II-测量预处理" class="headerlink" title="II 测量预处理"></a>II 测量预处理</h3><p>我们在本节中预处理视觉和惯性测量。</p>
 <ul>
-<li>对于视觉测量，我们跟踪连续帧之间的特征并检测最新帧中的新特征。 </li>
+<li>对于视觉测量，我们跟踪连续帧之间的特征并检测最新帧中的新特征。</li>
 <li>对于 IMU 测量，我们将它们在两个连续帧之间进行预积分。</li>
 </ul>
 <p>请注意，IMU 测量受偏差和噪声的影响。 因此，我们在 IMU 预集成和优化部分特别考虑了偏差，这对于低成本 IMU 芯片至关重要。</p>
@@ -129,36 +129,52 @@
 <li>另一个标准是跟踪质量。如果跟踪特征的数量低于某个阈值，我们也将此帧视为关键帧。</li>
 </ol>
 <h4 id="B-IMU预积分"><a href="#B-IMU预积分" class="headerlink" title="B. IMU预积分"></a>B. IMU预积分</h4><p>我们通过结合 IMU 偏差校正 [28] 扩展了我们之前的工作 [7] 中提出的 IMU 预积分。 与[28]积分，我们推导出连续时间动态中的噪声传播。 此外，IMU 预积分结果也用于初始化过程以校准初始状态。</p>
-<p>1）IMU噪声与偏差<br>$$<br>\hat{a}<em>t &#x3D; a_t + b</em>{a_t} +R^t_w g^w +n_a<br>$$</p>
+<p>1）IMU噪声与偏差</p>
+<p>$$<br>\hat{a}<em>t &#x3D; a_t + b</em>{a_t} +R^t_w g^w +n_a<br>$$</p>
 <p>$$<br>\hat{w}<em>t &#x3D; w_t + b</em>{w_t} +n_w<br>$$</p>
 <p>我们假设加速度和角速度测量中的额外的噪声都是高斯白噪声，$n_a\sim \mathcal{N}(0, \sigma^2_a)$, $n_w\sim\mathcal{N}(0,\sigma_w^2)$</p>
-<p>加速度偏差和陀螺仪偏差被建模为随机游走，其导数是高斯白噪声，$n_{b_a}\sim \mathcal{N}(0, \sigma^2_{b_a})$, $n_{b_w}\sim \mathcal{N}(0, \sigma^2_{b_w})$<br>$$<br>\dot{b}<em>{a_t} &#x3D; n</em>{b_a}\<br>\dot{b}<em>{w_t} &#x3D; n</em>{b_w}<br>$$<br>2)预积分，给定对应于图像帧$b_k$ 和 $b_{k+1}$ 的两个时刻，状态变量受时间间隔 $[k, k + 1]$ 期间的惯性测量约束：<br>$$<br>p^w_{b_{l+1}} &#x3D; p^w_{b_k} +v^w_{b_k}\Delta t_k + \int\int_{t\in[k, k+1]}(R^w_t(\hat{a}<em>t - b</em>{a_t})-g^w)dt^2<br>$$</p>
+<p>加速度偏差和陀螺仪偏差被建模为随机游走，其导数是高斯白噪声，$n_{b_a}\sim \mathcal{N}(0, \sigma^2_{b_a})$, $n_{b_w}\sim \mathcal{N}(0, \sigma^2_{b_w})$</p>
+<p>$$<br>\dot{b}<em>{a_t} &#x3D; n</em>{b_a}\<br>\dot{b}<em>{w_t} &#x3D; n</em>{b_w}<br>$$</p>
+<p>2)预积分，给定对应于图像帧$b_k$ 和 $b_{k+1}$ 的两个时刻，状态变量受时间间隔 $[k, k + 1]$ 期间的惯性测量约束：</p>
+<p>$$<br>p^w_{b_{l+1}} &#x3D; p^w_{b_k} +v^w_{b_k}\Delta t_k + \int\int_{t\in[k, k+1]}(R^w_t(\hat{a}<em>t - b</em>{a_t})-g^w)dt^2<br>$$</p>
 <p>$$<br>v^w_{b_{k+1}} &#x3D; v^w_{b_k} + \int_{t\in[k,t+1]}(R^w_t(\hat{a}<em>t-b</em>{a_t})-g^w)dt<br>$$</p>
 <p>$$<br>q^w_{b_{k+1}} &#x3D; q^w_{b_k} \otimes\int_{t \in [k, k+1]}\frac{1}{2}\Omega(\hat{w}<em>t - b</em>{w_t})q^{b_k}_t dt<br>$$</p>
-<p>其中：<br>$$<br>\Omega (w) &#x3D; \begin{bmatrix} -\lfloor w \rfloor_{\times}  &amp; w \ -w^T &amp; 0 \end{bmatrix}<br>$$</p>
+<p>其中：</p>
+<p>$$<br>\Omega (w) &#x3D; \begin{bmatrix} -\lfloor w \rfloor_{\times}  &amp; w \ -w^T &amp; 0 \end{bmatrix}<br>$$</p>
 <p>$$<br>\lfloor w \rfloor _ \times &#x3D;<br>\begin{bmatrix} -\lfloor 0 &amp; - w_z  &amp; w_y \ w_z &amp; 0 &amp; -w_x \ - w_y &amp; w_x &amp; 0 \end{bmatrix}<br>$$</p>
 <p>$\Delta t_x$ 是时间间隔$[k ,k+1]$的持续时间， $\hat{w}_t$, $\hat{a}_t$是原始的IMU测量。它在相机坐标系下，并且被加速度偏差$b_a$, 加速度偏差$b_\omega$ 以及噪声影响。</p>
 <p>可以看出，IMU 状态传播需要帧 $b_k$ 的旋转、位置和速度。 当这些起始状态发生变化时，我们需要重新传播 IMU 测量值。 特别是在基于优化的算法中，每次调整姿势时，我们都需要在它们之间重新传播 IMU 测量值。 这种传播策略是计算消耗的。 为了避免重复传播，我们采用预积分算法。</p>
-<p>将 IMU 传播的参考坐标系改为局部坐标系 $b_k$ 后，我们只能对与线加速度 $\hat{a}$ 和角速度$\hat{\omega}$ 相关的部分进行预积分，如下所示：<br>$$<br>R^{b_k}<em>\omega p^w</em>{b_{k+1}} &#x3D; R.b<br>$$</p>
+<p>将 IMU 传播的参考坐标系改为局部坐标系 $b_k$ 后，我们只能对与线加速度 $\hat{a}$ 和角速度$\hat{\omega}$ 相关的部分进行预积分，如下所示：</p>
+<p>$$<br>R^{b_k}<em>\omega p^w</em>{b_{k+1}} &#x3D; R.b<br>$$</p>
 <p>3） 误差校准：</p>
-<p>如果偏差的估计变化很小，我们通过它们关于偏差的一阶近似值进行调整$\alpha^{b_k}<em>{b</em>{k+1}}$,$\beta^{b_k}<em>{b</em>{k+1}}$, $\gamma^{b_k}<em>{b</em>{k+1}}$，<br>$$<br>\alpha^{b_k}<em>{b</em>{k+1}} \simeq \hat{\alpha}^{b_k}<em>{b</em>{k+1}} + J^\alpha_{b_a} \delta b_{a_k} + J^\alpha_{b_w} \delta b_{w_k}<br>$$</p>
+<p>如果偏差的估计变化很小，我们通过它们关于偏差的一阶近似值进行调整$\alpha^{b_k}<em>{b</em>{k+1}}$,$\beta^{b_k}<em>{b</em>{k+1}}$, $\gamma^{b_k}<em>{b</em>{k+1}}$，</p>
+<p>$$<br>\alpha^{b_k}<em>{b</em>{k+1}} \simeq \hat{\alpha}^{b_k}<em>{b</em>{k+1}} + J^\alpha_{b_a} \delta b_{a_k} + J^\alpha_{b_w} \delta b_{w_k}<br>$$</p>
 <p>$$<br>\beta^{b_k}<em>{b</em>{k+1}} \simeq \hat{\beta}^{b_k}<em>{b</em>{k+1}} + J^\beta_{b_a} \delta b_{a_k} + J^\beta_{b_w} \delta b_{w_k}<br>$$</p>
 <p>$$<br>\gamma^{b_k}<em>{b</em>{k+1}} \simeq \hat{\gamma}^{b_k}<em>{b</em>{k+1}} \otimes<br>\begin{bmatrix}<br>1 \ \frac{1}{2}J^\gamma_{b_w} \delta b_{w_k}<br>\end{bmatrix}<br>$$</p>
 <p>否则，当偏差的估计发生显著变化时，我们会在新的偏差估计下进行重新传播。 这种策略为基于优化的算法节省了大量的计算资源，因为我们不需要重复传播 IMU 测量。</p>
 <h3 id="V-估计初始化"><a href="#V-估计初始化" class="headerlink" title="V 估计初始化"></a>V 估计初始化</h3><p>单目紧耦合VIO是一个高度非线性的系统，因此在一开始就需要一个准确的初始估计。本文则通过松耦合的IMU与积分与基于视觉重建进行对齐。</p>
 <h4 id="A-滑动窗口中纯视觉的SFM"><a href="#A-滑动窗口中纯视觉的SFM" class="headerlink" title="A 滑动窗口中纯视觉的SFM"></a>A 滑动窗口中纯视觉的SFM</h4><p>初始化过程从纯视觉 SfM 开始，以估计最大比例的相机姿势和特征位置图。<br>我们在一个滑动窗口中维护几个帧，以实现有限的计算复杂度。首先，我们检查最新帧和所有先前帧之间的特征对应关系。如果我们能在滑动窗口中找到最新帧与任何其他帧之间的稳定特征跟踪（超过 30 个跟踪特征）和足够的视差（超过 20 个像素）。我们使用五点算法 [34] 恢复这两个帧之间的相对旋转和按比例平移。然后，我们任意设置比例并对这两帧中观察到的所有特征进行三角测量。基于这些三角特征，执行透视点（PnP）方法[35]来估计窗口中所有其他帧的姿势。最后，应用全局全束调整 [36] 以最小化所有特征观察的总重投影误差。</p>
 <p>由于我们还没有关于世界坐标系的任何知识，我们将第一个相机坐标系 $(·)^{c_0}$ 设置为 SfM 的参考坐标系。</p>
-<p>所有帧的位置$(\bar{p}^{c_0}<em>{c_k},q^{c_0}</em>{c_k})$和特征位置都通过与$(·)^{c_0}$。给定相机与IMU之间的外参，我们即可把坐标从相机坐标系转换到体坐标系:<br>$$<br>a^{c_0}<em>{b_k} &#x3D; q^{c_0}</em>{c_k} \otimes(q^b_c)^{-1}\<br>s \bar{p}^{c_0}<em>{b_k} &#x3D;s \bar{p}^{c_0}</em>{c_k} - R^{C_0}_{b_K}p^b_c<br>$$<br>其中s是位置的尺度参数，将会在接下来的章节中解决。</p>
+<p>所有帧的位置$(\bar{p}^{c_0}<em>{c_k},q^{c_0}</em>{c_k})$和特征位置都通过与$(·)^{c_0}$。给定相机与IMU之间的外参，我们即可把坐标从相机坐标系转换到体坐标系:</p>
+<p>$$<br>a^{c_0}<em>{b_k} &#x3D; q^{c_0}</em>{c_k} \otimes(q^b_c)^{-1}\<br>s \bar{p}^{c_0}<em>{b_k} &#x3D;s \bar{p}^{c_0}</em>{c_k} - R^{C_0}_{b_K}p^b_c<br>$$</p>
+<p>其中s是位置的尺度参数，将会在接下来的章节中解决。</p>
 <h4 id="B-视觉-惯性对齐"><a href="#B-视觉-惯性对齐" class="headerlink" title="B 视觉-惯性对齐"></a>B 视觉-惯性对齐</h4><p>视觉惯性对其的示意图如下图所示。主要的目的就是对其带尺度的IMU预积分信息与视觉架构信息。</p>
-<p>1） 陀螺仪误差校准：考虑窗口中的两个连续帧$b_k$和$b_{k+1}$，我们从视觉SfM得到旋转$q^{c_0}<em>{b_k}$和$q^{c_0}</em>{b_{k+1}}$，以及从IMU预积分得到相对约束$y^{b_k}<em>{b</em>{k+1}}$。 我们将 IMU 预积分项相对于陀螺仪偏差线性化，并最小化以下损失函数：<br>$$<br>\min_{\delta b_w} \sum_{k\in\mathcal{B}}||{q^{c_0}<em>{b</em>{k+1}}}^{-1}\otimes q^{c_0}<em>{b_k} \otimes \gamma ^{b_k}</em>{b_{k+1}}||^2<br>$$</p>
+<p>1） 陀螺仪误差校准：考虑窗口中的两个连续帧$b_k$和$b_{k+1}$，我们从视觉SfM得到旋转$q^{c_0}<em>{b_k}$和$q^{c_0}</em>{b_{k+1}}$，以及从IMU预积分得到相对约束$y^{b_k}<em>{b</em>{k+1}}$。 我们将 IMU 预积分项相对于陀螺仪偏差线性化，并最小化以下损失函数：</p>
+<p>$$<br>\min_{\delta b_w} \sum_{k\in\mathcal{B}}||{q^{c_0}<em>{b</em>{k+1}}}^{-1}\otimes q^{c_0}<em>{b_k} \otimes \gamma ^{b_k}</em>{b_{k+1}}||^2<br>$$</p>
 <p>$$<br>\gamma^{b_k}<em>{b</em>{k+1}} \approx \hat{\gamma}^{b_k}<em>{b</em>{k+1}} \otimes<br>\begin{bmatrix}<br>1 \ \frac{1}{2}J^\gamma_{b_w} \delta b_{w_k}<br>\end{bmatrix}<br>$$</p>
 <p>其中，$\mathcal{B}$ 表示窗口中所有的帧数，通过这种方法，我们获得了陀螺仪偏差的初始标定值$b_w$, 之后，我们通过新的陀螺仪误差重新传播了所有的预积分项$\hat{\alpha}^{b_k}<em>{b</em>{k+1}}$， $\hat{\beta}^{b_k}<em>{b</em>{k+1}}$, 以及$\gamma^{b_k}<em>{b</em>{k+1}}$。</p>
 <p>2）速度，重力矢量，矩阵尺度因子初始化</p>
-<p>陀螺仪偏差初始化后，我们继续初始化导航的其他基本状态，即速度、重力矢量和度量尺度<br>$$<br>\chi_I  &#x3D; [v^{b_0}<em>{b_0},v^{b_1}</em>{b_1},v^{b_n}<em>{b_n}, g^{c_0}, s]<br>$$<br>其中$v^{b_k}</em>{b_{k}}$是拍摄第k张图像时身体帧中的速度，$g^{c_0}$是$c_0$帧中的重力向量，并将单目SfM缩放为公制单位。</p>
-<p>考虑窗口中连续的两个帧$b_k$和$b_{k+1}$，我们有以下等式：<br>$$<br>α^{b_k}<em>{b</em>{k+1}}&#x3D;R^{b_k}<em>{c_0}(s(\bar{p}^{c_0}</em>{b_{k+1}}−\bar{p}^{c_0}<em>{b_k})+\frac{1}{2}g^{c_0}Δt^2_k−R^{c_0}</em>{b_k}v^{b_k}<em>{b_k}Δt_k) \<br>β^{b_k}</em>{b_{k+1}}&#x3D;R^{b_k}<em>{c_0}(R^{c_0}</em>{b_{k+1}}v^{b_{k+1}}<em>{b</em>{k+1}}+g^{c_0}Δt_k−R^{c_0}<em>{b_k}v^{b_k}</em>{b_k})<br>$$<br>我们可以将(6)和(9)组合成以下线性测量模型：</p>
+<p>陀螺仪偏差初始化后，我们继续初始化导航的其他基本状态，即速度、重力矢量和度量尺度</p>
+<p>$$<br>\chi_I  &#x3D; [v^{b_0}<em>{b_0},v^{b_1}</em>{b_1},v^{b_n}_{b_n}, g^{c_0}, s]<br>$$</p>
+<p>其中$v^{b_k}<em>{b</em>{k}}$是拍摄第k张图像时身体帧中的速度，$g^{c_0}$是$c_0$帧中的重力向量，并将单目SfM缩放为公制单位。</p>
+<p>考虑窗口中连续的两个帧$b_k$和$b_{k+1}$，我们有以下等式：</p>
+<p>$$<br>α^{b_k}<em>{b</em>{k+1}}&#x3D;R^{b_k}<em>{c_0}(s(\bar{p}^{c_0}</em>{b_{k+1}}−\bar{p}^{c_0}<em>{b_k})+\frac{1}{2}g^{c_0}Δt^2_k−R^{c_0}</em>{b_k}v^{b_k}<em>{b_k}Δt_k) \<br>β^{b_k}</em>{b_{k+1}}&#x3D;R^{b_k}<em>{c_0}(R^{c_0}</em>{b_{k+1}}v^{b_{k+1}}<em>{b</em>{k+1}}+g^{c_0}Δt_k−R^{c_0}<em>{b_k}v^{b_k}</em>{b_k})<br>$$</p>
+<p>我们可以将(6)和(9)组合成以下线性测量模型：</p>
 <p><img src="/2022/03/01/2022-03-01-VINS-mono/image-20220510000932239.png" alt="image-20220510000932239"></p>
 <p>可以看出，$R^{c_0}<em>{b_k}$、$R^{c_0}</em>{b_{k+1}}$、$\bar{p}^{c_0}<em>{c_k}$、$\bar{p}^{c_0}</em>{c_{k+1}}$是从up-to-scale单目视觉SfM得到的。Δtki是两个连续帧之间的时间间隔。</p>
-<p>通过求解这个线性最小二乘问题:<br>$$<br>\min_{\chi_I}∑_{k∈B}||\hat{z}^{b_k}<em>{b</em>{k+1}}−H^{b_k}<em>{b</em>{k+1}}\chi_I||^2<br>$$<br>我们可以得到窗口中每一帧的体帧速度，视觉参考帧中的重力向量( ·)c0，以及比例参数。</p>
+<p>通过求解这个线性最小二乘问题:</p>
+<p>$$<br>\min_{\chi_I}∑_{k∈B}||\hat{z}^{b_k}<em>{b</em>{k+1}}−H^{b_k}<em>{b</em>{k+1}}\chi_I||^2<br>$$</p>
+<p>我们可以得到窗口中每一帧的体帧速度，视觉参考帧中的重力向量( ·)c0，以及比例参数。</p>
 <p>3)尺度优化，从前面的线性初始化步骤获得的重力矢量可以通过限制大小来细化。在大多数情况下，重力矢量的大小是已知的。这导致重力矢量只剩下 2个自由度。因此，我们在其切线空间上使用两个变量来扰动重力，从而保留 2-DOF。我们的重力向量受到$\mathcal{g}(\bar{\hat{\mathcal{g}}}+δg)$的扰动，$δg&#x3D;w_1b_1+w_2b_2$，其中g是已知的重力大小，$\hat{\bar{g}}$是表示重力方向的单位向量。$b_1$和$b_2$是跨越切平面的两个正交基，如图图 4.$w_1$ 和 $w_2$ 分别是对 $b_1$ 和 $b_2$ 的二维扰动。我们可以任意找到$b_1$和$b_2$的任意集合旋转切线空间。然后，我们将(9)代入$\mathcal{g}(\bar{\hat{\mathcal{g}}}+δg)$，并与其他状态变量一起求解2-Dδg。这个过程反复多次，直到 g 收敛。</p>
 <p><img src="/2022/03/01/2022-03-01-VINS-mono/image-20220510105935314.png" alt="image-20220510105935314"></p>
 <p>4）完成初始化：对重力向量进行细化后，我们可以通过将重力旋转到z轴得到世界坐标系和相机坐标系$c_0$之间的旋转$q^w_{c_0}$。然后我们将所有变量从参考坐标系(·)c0 旋转到世界坐标系(·)w。身体坐标系速度也将旋转到世界坐标系。来自视觉 SfM 的平移分量将被缩放为公制单位。至此，初始化过程完成，所有这些度量值将被馈送到紧密耦合的单目 VIO。</p>
@@ -181,7 +197,7 @@
 <ul>
 <li>零偏在质量不好的IMU下，变化比较快</li>
 </ul>
-<h4 id="C-视觉测量残差"><a href="#C-视觉测量残差" class="headerlink" title="C. 视觉测量残差"></a>C. 视觉测量残差</h4><p>与在广义图像平面上定义重投影误差的传统针孔相机模型相比，我们在单位球面上定义相机测量残差。 几乎所有类型相机的光学器件，包括广角相机、鱼眼相机或全向相机，都可以建模为连接单位球体表面的单位射线。 </p>
+<h4 id="C-视觉测量残差"><a href="#C-视觉测量残差" class="headerlink" title="C. 视觉测量残差"></a>C. 视觉测量残差</h4><p>与在广义图像平面上定义重投影误差的传统针孔相机模型相比，我们在单位球面上定义相机测量残差。 几乎所有类型相机的光学器件，包括广角相机、鱼眼相机或全向相机，都可以建模为连接单位球体表面的单位射线。</p>
 <p>考虑在第 i 个图像中首先观察到的第 l 个特征，在第 j 个图像中的特征观察的残差定义为：</p>
 <p><img src="/2022/03/01/2022-03-01-VINS-mono/image-20220510115512351.png" alt="image-20220510115512351"></p>
 <p>其中$[\hat{u}^{c_i}_l,\hat{v}^{c_i}_l]$是第l个特征发生在第i个图像中的第$l$个观测值。$[\hat{u}^{c_j}_l,\hat{v}^{c_j}_l]$是第j个图像中相同特征的观测值。$π^{−1}_c$是反投影函数，它将像素位置转换为 使用相机内在参数的单位向量。 由于视觉残差的自由度为 2，我们将残差向量投影到切平面上。$b_1$ 和 $b_2$ 是两个任意选择的正交基，它们跨越$\hat{\bar{\mathcal{P}}}^{c_j}_l$ 的切平面，如图 6 所示。方差 $P^{c_j}_l$，如 (14) 中使用的 , 也从像素坐标传播到单位球体上。</p>
@@ -273,13 +289,11 @@
 <li>IMU传播的雅可比是关于bias的一个雅克比矩阵；</li>
 </ul>
 </blockquote>
-<h3 id="3-初始化"><a href="#3-初始化" class="headerlink" title="3.  初始化"></a>3.  初始化</h3><blockquote>
+<h3 id="3-初始化"><a href="#3-初始化" class="headerlink" title="3. 初始化"></a>3. 初始化</h3><blockquote>
 <p><strong>VINS的初始化过程</strong></p>
 <ol>
-<li><p>先做一个纯视觉的SfM，计算初始位置，然后通过三角化恢复出初始位姿</p>
-</li>
-<li><p>IMU与单目要进行对齐，在滑动窗口计算出初始值（尺度，速度，位移，零偏，外参）</p>
-</li>
+<li>先做一个纯视觉的SfM，计算初始位置，然后通过三角化恢复出初始位姿</li>
+<li>IMU与单目要进行对齐，在滑动窗口计算出初始值（尺度，速度，位移，零偏，外参）</li>
 </ol>
 </blockquote>
 <h3 id="4-回环检测"><a href="#4-回环检测" class="headerlink" title="4. 回环检测"></a>4. 回环检测</h3><blockquote>
@@ -288,7 +302,7 @@
 <li>像素差（归一化像素平面的像素差）</li>
 <li>需要保证两帧间的视差，避免纯旋转；</li>
 </ol>
-<p>关键帧需要回环检测，四自由度的位姿图优化 </p>
+<p>关键帧需要回环检测，四自由度的位姿图优化</p>
 </blockquote>
 <h4 id="5-后端优化"><a href="#5-后端优化" class="headerlink" title="5. 后端优化"></a>5. 后端优化</h4><blockquote>
 <p>四自由度的因子图优化；</p>
@@ -310,9 +324,9 @@
 <li>IMU硬件同步；</li>
 <li>相机畸变对相机影响；</li>
 </ol>
-<p><strong>1. 无人机飞的很高时，vinsmono的尺度无法恢复， 原因?</strong> </p>
-<p>答：近点特征点对三角化得到的三维点坐标比较准确，可以提供旋转、平移。 远点特征点，由于视差过小而不能可靠得到深度的点，无法提供比较准确的尺度和平移信息。仅能够提供相对准确的旋转信息。 </p>
-<p><strong>2. imu,轮速计，相机三个传感器，在二维场景下，传感器丢掉了什么约束，需要如何互补？</strong> 不是很会 </p>
+<p><strong>1. 无人机飞的很高时，vinsmono的尺度无法恢复， 原因?</strong></p>
+<p>答：近点特征点对三角化得到的三维点坐标比较准确，可以提供旋转、平移。 远点特征点，由于视差过小而不能可靠得到深度的点，无法提供比较准确的尺度和平移信息。仅能够提供相对准确的旋转信息。</p>
+<p><strong>2. imu,轮速计，相机三个传感器，在二维场景下，传感器丢掉了什么约束，需要如何互补？</strong> 不是很会</p>
 <p><strong>3.利用视觉和IMU估计外参的时候没有估计平移量是为什么？</strong></p>
 <p>答：因为视觉尺度是不确定的，一般经过仪器测量得到， 如果需要估计，必须是估计尺度之后，在对外参的平移量进行估计。</p>
 <p><strong>4. 买了一个imu，跑了一下Vins，发现acc_n和gyr_n设置这么大的时候，程序才不会跑飞，这是什么原因？谢谢</strong></p>

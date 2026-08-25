@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    OpenCV_Function |  曾是少年
+    OpenCV 图像像素遍历方法 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  OpenCV_Function
+  OpenCV 图像像素遍历方法
 </h1>
   
 
@@ -126,7 +126,6 @@
 </ol>
 <p>当不对行进行填补的时候，图像可被视为一个长为W x H的一维数组。用isContinuous来判断是否对行进行的填补。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n1 = image.rows;</span><br><span class="line"><span class="type">int</span> nc = image.cols * image.channels（）;</span><br><span class="line"><span class="keyword">if</span>（image.isContinuous（））<span class="comment">//判断是否对行有额外的填补像素，返回值为真，则没有填补。</span></span><br><span class="line">&#123;</span><br><span class="line">    nc = nc * n1;</span><br><span class="line">    n1 = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>（<span class="type">int</span> i = <span class="number">0</span>; i &lt;n1; i ++）<span class="comment">//若图像是连续的，则只循环一次</span></span><br><span class="line">&#123;</span><br><span class="line">    uchar * data = image.ptr &lt;uchar&gt;（i）;</span><br><span class="line">    <span class="keyword">for</span>（<span class="type">int</span> j = <span class="number">0</span>; j &lt;nc; j ++）</span><br><span class="line">    &#123;</span><br><span class="line">        data [j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
       
       <!-- reward -->

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    ORB_SLAM2 双目稀疏立体匹配算法 |  曾是少年
+    ORB-SLAM2 双目立体匹配 |  曾是少年
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  ORB_SLAM2 双目稀疏立体匹配算法
+  ORB-SLAM2 双目立体匹配
 </h1>
   
 
@@ -115,7 +115,7 @@
 <ol start="2">
 <li>计算图像金字塔的参数</li>
 </ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mnScaleLevels = mpORBextractorLeft-&gt;<span class="built_in">GetLevels</span>();</span><br><span class="line">mfScaleFactor = mpORBextractorLeft-&gt;<span class="built_in">GetScaleFactor</span>();    </span><br><span class="line">mfLogScaleFactor = <span class="built_in">log</span>(mfScaleFactor);</span><br><span class="line">mvScaleFactors = mpORBextractorLeft-&gt;<span class="built_in">GetScaleFactors</span>();</span><br><span class="line">mvInvScaleFactors = mpORBextractorLeft-&gt;<span class="built_in">GetInverseScaleFactors</span>();</span><br><span class="line">mvLevelSigma2 = mpORBextractorLeft-&gt;<span class="built_in">GetScaleSigmaSquares</span>();</span><br><span class="line">mvInvLevelSigma2 = mpORBextractorLeft-&gt;<span class="built_in">GetInverseScaleSigmaSquares</span>();</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mnScaleLevels = mpORBextractorLeft-&gt;<span class="built_in">GetLevels</span>();</span><br><span class="line">mfScaleFactor = mpORBextractorLeft-&gt;<span class="built_in">GetScaleFactor</span>();</span><br><span class="line">mfLogScaleFactor = <span class="built_in">log</span>(mfScaleFactor);</span><br><span class="line">mvScaleFactors = mpORBextractorLeft-&gt;<span class="built_in">GetScaleFactors</span>();</span><br><span class="line">mvInvScaleFactors = mpORBextractorLeft-&gt;<span class="built_in">GetInverseScaleFactors</span>();</span><br><span class="line">mvLevelSigma2 = mpORBextractorLeft-&gt;<span class="built_in">GetScaleSigmaSquares</span>();</span><br><span class="line">mvInvLevelSigma2 = mpORBextractorLeft-&gt;<span class="built_in">GetInverseScaleSigmaSquares</span>();</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
 <li>对左右图像提取ORB特征点, 使用双线程进行提取</li>
@@ -152,8 +152,6 @@
 <p>亚像素插值</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Sub-pixel match (Parabola fitting)</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist1 = vDists[L+bestincR<span class="number">-1</span>];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist2 = vDists[L+bestincR];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist3 = vDists[L+bestincR+<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> deltaR = (dist1-dist3)/(<span class="number">2.0f</span>*(dist1+dist3<span class="number">-2.0f</span>*dist2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(deltaR&lt;<span class="number">-1</span> || deltaR&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
 
-
-
 <p>亚像素插值方法：</p>
 <p><img src="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
 <p>亚像素的误差在一个像素以内，所以修正量大一1时鉴定为误匹配。</p>
@@ -162,7 +160,6 @@
 <li>删除离群点（Outliers）</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 快匹配相似度阈值判断，快意话sad最小，不代表就是匹配的，比如光照变化，若纹理，无纹理都会造成误匹配</span></span><br><span class="line"><span class="comment">//误匹配判断条件 norm_sad &gt; 1.5*1.4*median</span></span><br><span class="line"><span class="built_in">sort</span>(vDistIdx.<span class="built_in">begin</span>(),vDistIdx.<span class="built_in">end</span>()); <span class="comment">//对dist进行排序</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> median = vDistIdx[vDistIdx.<span class="built_in">size</span>()/<span class="number">2</span>].first; <span class="comment">//根据中值计算阈值</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> thDist = <span class="number">1.5f</span>*<span class="number">1.4f</span>*median;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=vDistIdx.<span class="built_in">size</span>()<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(vDistIdx[i].first&lt;thDist)</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        mvuRight[vDistIdx[i].second]=<span class="number">-1</span>;</span><br><span class="line">        mvDepth[vDistIdx[i].second]=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
       
       <!-- reward -->
