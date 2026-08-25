@@ -74,14 +74,49 @@ git push origin source
 
 期望：`source -> source` 或 `Everything up-to-date`。失败立即停止。
 
-### 7. 验证线上
+### 7. 在 Trae 中打开本地预览（供用户判断本次改动是否生效）
 
-等待 60 秒让 GitHub Pages CDN 刷新，然后用 `Invoke-WebRequest` 抓首页：
+本地预览是 `hexo server` 实时渲染（`http://localhost:4000`），比线上 CDN 刷新快。
 
-- `https://grobenis.github.io/` 返回 HTTP 200
-- 若本次提交涉及删除某篇文章，首页 HTML 中**不应包含**该文章标题或 URL
+```powershell
+# 7a. 检查本地 4000 端口是否已被 hexo server 占用
+$already = Test-NetConnection 127.0.0.1 -Port 4000 -InformationLevel Quiet -WarningAction SilentlyContinue
+if (-not $already) {
+    # 7b. 启动 hexo server（后台运行，会自动 generate + watch）
+    # 注意：必须用 --port 指定端口，并把命令作为独立进程启动
+    npx hexo server --port 4000
+}
+```
 
-把验证结果原样回显给用户。
+**7c. 在 Trae 内弹本地预览**（用户无需切浏览器）：
+
+调用 `OpenPreview` 工具，把 `preview_url` 设为 `http://localhost:4000/`，`command_id` 设为：
+
+- 若 7b 启动了新 server → 用新命令的 command_id
+- 若 7a 发现 server 已在跑 → 用一个**最近一次**运行过的 `hexo server` 命令的 command_id（可由用户事先告知，或本次会话开头启动的那个）
+
+预览页面打开后用户的实时反馈比 HTTP 抓取更直观。
+
+### 8. 验证线上（异步后台）
+
+不需要等，立刻发起但**不阻塞**用户：
+
+```powershell
+# 8a. 等待 60 秒让 GitHub Pages CDN 刷新
+Start-Sleep -Seconds 60
+
+# 8b. 抓首页确认
+$h = Invoke-WebRequest -Uri "https://grobenis.github.io/" -UseBasicParsing -TimeoutSec 30
+"线上首页 HTTP " + $h.StatusCode
+
+# 8c. 若本次涉及删除某篇文章，确认首页 HTML 不再含该标题
+if ($删除的文章标题) {
+    $utf8 = [System.Text.Encoding]::UTF8.GetString($h.RawContentStream.ToArray())
+    "首页含 '<标题>': " + $utf8.Contains("<标题>")
+}
+```
+
+把验证结果原样回显给用户；若失败，提示手动刷浏览器（CDN 缓存可能持续 5-10 分钟）。
 
 ## 输出格式
 
