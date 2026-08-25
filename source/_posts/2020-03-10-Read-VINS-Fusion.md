@@ -9,6 +9,10 @@ comments: true
 toc: true
 ---
 
+本文记录 VINS-Fusion 源码阅读笔记，重点分析 vins_estimator 节点的程序入口 rosNodeTest.cpp 与 Estimator 类，梳理话题订阅、数据同步线程、滑窗处理及非线性优化等核心流程。
+
+> **读懂源码，方知系统运转之妙**
+
 <!-- more -->
 
 

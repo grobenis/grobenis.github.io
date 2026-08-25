@@ -13,6 +13,10 @@ evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功�
 
 [github地址](https://github.com/MichaelGrupp/evo)
 
+本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。
+
+> **轨迹评估有据，SLAM 精度了然**
+
 <!-- more -->
 
 ## 安装

@@ -18,6 +18,10 @@ toc: true
 4. VI_ORB-SLAM
 5. MSCKF
 
+本文介绍 VINS_mono/fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。
+
+> **跑通五种算法，间接法体系尽收眼底**
+
 <!-- more -->
 
 

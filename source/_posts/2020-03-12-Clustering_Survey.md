@@ -17,6 +17,10 @@ toc: true
 5. Turbopixel算法
 6. SLIC算法
 
+本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。
+
+> **物以类聚，算法以分见真章**
+
 <!-- more -->
 
 

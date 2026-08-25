@@ -15,6 +15,10 @@ toc: true
 2. DBOW2介绍
 3. DBOW3介绍
 
+本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。
+
+> **视觉词袋，让回环检测又快又准**
+
 <!-- more -->
 
 

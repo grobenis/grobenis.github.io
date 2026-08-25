@@ -8,6 +8,10 @@ tags: [opencv,SLAM]
 
 本节用来总结SLAM学习过程中，用到的重要的opencv函数
 
+本文总结 SLAM 学习中常用的 OpenCV 函数，重点介绍 calcOpticalFlowPyrLK 金字塔 LK 光流函数的参数含义与用法，并补充 circle 画圆与 goodFeaturesToTrack 角点检测函数的参数说明及 VINS-Fusion 应用示例。
+
+> **熟悉参数含义，SLAM 开发得心应手**
+
 <!--More-->
 
 ### CalcopticalFlowPyrLK()

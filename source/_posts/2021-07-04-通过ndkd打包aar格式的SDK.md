@@ -12,6 +12,10 @@ tags: [安卓, 开发]
 
 本文将学习制作SDK的流程。
 
+本文完整演示如何用 NDK/JNI 将纯 C 模块打包成 aar 格式的 Android SDK：从认识 AAR 与 NDK 入手，依次经历创建 Library 模块、javah 生成 JNI 头文件、实现 C 接口函数、配置 Android.mk 与 build.gradle、ndk-build 编译 so 并打包 aar，最后将 aar 导入工程中通过 gradle 依赖使用。
+
+> **写好 JNI 接口，C 库即可服务安卓世界**
+
 <!--More-->
 
 ## 目标
@@ -58,8 +62,6 @@ char* count_mean(float *a ,int num){
 }
 ```
 
-
-
 下面用实例一步一步介绍这个过程。
 
 ## 一 认识AAR
@@ -71,17 +73,11 @@ Android 库的结构与 Android 应用模块的结构相同。它可以提供构
 - AAR 文件可以包含多项 Android 资源和一个清单文件，让您除了能够在 Java 类和方法中进行捆绑以外，还能够在布局和可绘制对象等共享资源中进行捆绑。
 - AAR 文件可以[包含 C/C++ 库](https://developer.android.com/studio/build/native-dependencies?hl=zh-cn)，供应用模块的 C/C++ 代码使用。
 
-
-
-*.aar，AAR（Android Archive）包是一个Android库项目的二进制归档文件。我们随便找一个aar文件，然后修改后缀名为‘zip’或者‘rar’格式，然后解压该文件，打开解压后的文件夹，截图如下所示：（每个aar解压后的内容可能不完全一样，但是都会包含AndroidManifest.xml，classes.jar，res，R.txt）。
+\*.aar，AAR（Android Archive）包是一个Android库项目的二进制归档文件。我们随便找一个aar文件，然后修改后缀名为‘zip’或者‘rar’格式，然后解压该文件，打开解压后的文件夹，截图如下所示：（每个aar解压后的内容可能不完全一样，但是都会包含AndroidManifest.xml，classes.jar，res，R.txt）。
 
 ![](image-20210330150317969.png)
 
-
-
-*.aar文件中包含所有资源，class以及res资源文件。
-
-
+\*.aar文件中包含所有资源，class以及res资源文件。
 
 ## 二 NDK
 
@@ -93,8 +89,6 @@ Android 库的结构与 Android 应用模块的结构相同。它可以提供构
 - 重复使用现有库，或者提供其自己的库供重复使用。
 - 在某些情况下提高性能，特别是像游戏这种计算密集型应用。
 
-
-
 **Application.mk**文件
 
 不一定要有，可以用来配置编译平台相关内容，常用的估计只是APP_ABI字段，它用来指定我们需要基于哪些CPU架构的.so文件，当然你可以配置多个平台（如果ndk-build 没有指定 Application.mk，则默认编译出所有平台的.so文件）：
@@ -104,10 +98,6 @@ Android 库的结构与 Android 应用模块的结构相同。它可以提供构
 这个文件还可以配置Android.mk文件
 
 > APP_BUILD_SCRIPT := Android.mk
-
-
-
-
 
 ## 三 利用Android Studio生成aar文件
 
@@ -177,8 +167,6 @@ Android 库的结构与 Android 应用模块的结构相同。它可以提供构
 
 ![](image-20210401172919207.png)
 
-
-
 内容长这样：
 
 ![](image-20210401173031982.png)
@@ -189,7 +177,7 @@ Android 库的结构与 Android 应用模块的结构相同。它可以提供构
 
 ![](image-20210401173247121.png)
 
-#### 2 建立main.c文件 
+#### 2 建立main.c文件
 
 main.c文件将实现前文中文件中的方法。作为JAVA转C的接口。
 
@@ -271,7 +259,7 @@ LOCAL_SRC_FILES += my_lib.c
 include $(BUILD_SHARED_LIBRARY)
 ```
 
-其中，LOCAL_MODULE  := mysdklibrary，这里的定义，最终生成的so文件是 libMySDK.so。
+其中，LOCAL_MODULE := mysdklibrary，这里的定义，最终生成的so文件是 libMySDK.so。
 
 此外可以加上以下语句，用于生成最终的log。
 
@@ -287,17 +275,13 @@ LOCAL_LDLIBS :=-llog
 
 其中，moduleName对应的是 SDK的名字。cFlags表示C语言对应的标准。
 
-sourceSets设置中。jni.srcDirs指的是我们放置C语言源代码的目录。 
+sourceSets设置中。jni.srcDirs指的是我们放置C语言源代码的目录。
 
 jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不是用来指示生成的位置，只是为后续打包aar时找到so库用的）。
 
 到这里，jni部分的工作基本完成了。
 
-
-
 #### 6 调用ndk-build生成so库。
-
-
 
 ![](image-20210401193741347.png)
 
@@ -305,17 +289,11 @@ jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不
 
 ![](image-20210402191907379.png)
 
-
-
-
-
 ### 3.5 把源代码和so库一并打包到aar文件中
 
 我们可以直接利用AS自带的右方的gradle按钮。按照如图的目录找到assembleRelease
 
 ![](image-20210402192057568.png)
-
-
 
 运行结束之后，我们就可以在MyDemo/MySDK/build/outputs/aar/目录中找到MySDK-release.aar文件。
 
@@ -331,11 +309,9 @@ jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不
 
 至此，**打包成功！**。
 
-
-
 ## 四 将.aar导入项目中进行使用
 
-下面主要看看在Android Studio中如何加载本地的*.aar文件。
+下面主要看看在Android Studio中如何加载本地的\*.aar文件。
 
 1. 把aar文件放在一个文件目录内，比如就放在libs目录内；
 
@@ -346,7 +322,7 @@ jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不
    ```java
    repositories {
        flatDir {
-           dirs 'libs' 
+           dirs 'libs'
        }
    }
    ```
@@ -358,26 +334,24 @@ jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不
        implementation 'androidx.appcompat:appcompat:1.2.0'
        implementation 'com.google.android.material:material:1.3.0'
        implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-   
+
    	//添加以下这句
-       implementation fileTree(dir: 'libs', include: ['*.aar']) 
-   
+       implementation fileTree(dir: 'libs', include: ['*.aar'])
+
        testImplementation 'junit:junit:4.+'
        androidTestImplementation 'androidx.test.ext:junit:1.1.2'
        androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
    }
    ```
 
-   
-
-   至此，在Android Studio中加载本地的*.aar文件就结束。
+   至此，在Android Studio中加载本地的\*.aar文件就结束。
 
 4. 修改主活动
 
    ```java
    public class MainActivity extends AppCompatActivity {
        private static final String TAG = "AppCompatActivity";
-   
+
        @Override
        protected void onCreate(Bundle savedInstanceState) {
            super.onCreate(savedInstanceState);
@@ -394,18 +368,11 @@ jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不
    }
    ```
 
-   
-
 5. 运行程序得到正确结果
 
    ![](image-20210419201234352.png)
-
-
 
 ## 注意事项
 
 1. jni接口文件的编写是能否成功的关键，考验编程能力
 2. 为了便于调试，建议先在将主程序与module连接起来调试通，最后再生成aar形式的SDK；
-
-
-

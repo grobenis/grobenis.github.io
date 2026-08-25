@@ -14,6 +14,10 @@ tags: [SLAM,  C, Work]
 2. ROM: arm-none-eabi-size -t *.a
 3. 检查内存泄漏：valgrind --tool=memcheck --leak-check=full --show-reachable=yes --trace-children=yes build_linux-x86_64/main
 
+本文整理工程中统计资源占用的实用方法：用 Valgrind Massif 统计程序 RAM 峰值与栈占用，配合 massif-visualizer 可视化分析；用 arm-none-eabi-size 查看静态库的 ROM 占用；用 Valgrind Memcheck 检查内存泄漏。
+
+> **资源占用可量化，内存问题无处藏**
+
 <!--More-->
 
 ## RAM统计
