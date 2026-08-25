@@ -58,4 +58,4 @@ toc: true
 
 因子图把因子引入图里边。
 
-![factor_graph](2020-03-14-Probability_graph_model/因子图.png)
+![factor_graph](因子图.png)

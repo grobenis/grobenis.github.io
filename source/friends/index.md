@@ -5,4 +5,4 @@ type: friends
 layout: "friends"
 ---
 
-[![仔仔的博客](仔仔.jpg)](https://cparadox.github.io/)
+[![仔仔的博客](/friends/仔仔.jpg)](https://cparadox.github.io/)

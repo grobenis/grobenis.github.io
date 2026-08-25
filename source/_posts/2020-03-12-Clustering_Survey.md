@@ -42,7 +42,7 @@ toc: true
 
    下图演示了均值漂移聚类的计算步骤：
 
-   ![Meanshift算法](..\images\聚类\Meanshift算法.gif)
+   ![Meanshift算法](/images/聚类/Meanshift算法.gif)
 
 **算法评价**
 
@@ -71,7 +71,7 @@ toc: true
 
 下图演示了k均值聚类的过程：
 
-![](..\images\聚类\k均值聚类.gif)
+![](/images/聚类/k均值聚类.gif)
 
 ## Fuzzy C-means算法
 

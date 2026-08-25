@@ -51,7 +51,7 @@ $$
 z_k=C_kx_k+v_k
 \end{cases}
 $$
-![image-20200330234714941](C:\Users\郭犇\AppData\Roaming\Typora\typora-user-images\image-20200330234714941.png)
+<!-- 本地 Typora 路径源文件缺失，已注释 -->
 
 #### 系统模型
 

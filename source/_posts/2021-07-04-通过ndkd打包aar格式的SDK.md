@@ -121,7 +121,7 @@ Android 库的结构与 Android 应用模块的结构相同。它可以提供构
 
 #### 2 配置项目
 
-<!-- <img src="2021-07-04-通过ndkd打包aar格式的SDK/image-20210401170459101.png" alt="image-20210401170459101" style="zoom: 67%;" /> 图片源文件已丢失 -->
+<!-- <img src="image-20210401170459101.png" alt="image-20210401170459101" style="zoom: 67%;" /> 图片源文件已丢失 -->
 
 点finish结束即可。
 
