@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">320字</span>
+            <span class="post-count">1.6k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -105,7 +105,23 @@
 </blockquote>
 <span id="more"></span>
 
-<h2 id="一、可穿戴设备中的传感器"><a href="#一、可穿戴设备中的传感器" class="headerlink" title="一、可穿戴设备中的传感器"></a>一、可穿戴设备中的传感器</h2><h2 id="二、运动特性"><a href="#二、运动特性" class="headerlink" title="二、运动特性"></a>二、运动特性</h2><h3 id="1、运动监测、"><a href="#1、运动监测、" class="headerlink" title="1、运动监测、"></a>1、运动监测、</h3><h3 id="2、动作识别"><a href="#2、动作识别" class="headerlink" title="2、动作识别"></a>2、动作识别</h3><h3 id="3、室外定位"><a href="#3、室外定位" class="headerlink" title="3、室外定位"></a>3、室外定位</h3><h2 id="二、健康特性"><a href="#二、健康特性" class="headerlink" title="二、健康特性"></a>二、健康特性</h2><h3 id="1、睡眠分期"><a href="#1、睡眠分期" class="headerlink" title="1、睡眠分期"></a>1、睡眠分期</h3><p>睡眠分期主要是用来对睡眠过程进行监测，计算睡眠过程中各个期间的时长与周期。</p>
+<h2 id="一、可穿戴设备中的传感器"><a href="#一、可穿戴设备中的传感器" class="headerlink" title="一、可穿戴设备中的传感器"></a>一、可穿戴设备中的传感器</h2><p>可穿戴设备的功能特性建立在传感器硬件之上，常见传感器包括：</p>
+<ol>
+<li><strong>惯性传感器（IMU）</strong>：加速度计、陀螺仪、磁力计，用于运动监测、姿态解算与动作识别；</li>
+<li><strong>光学心率传感器（PPG）</strong>：通过绿光&#x2F;红光照射皮肤，利用光电容积脉搏波描记法获取心率、血氧等生理参数；</li>
+<li><strong>心电电极（ECG）</strong>：采集单导联或多导联心电信号，用于心脏健康监测；</li>
+<li><strong>温度传感器</strong>：测量皮肤温度，辅助发热预警与睡眠监测；</li>
+<li><strong>定位模块</strong>：GPS 用于室外运动轨迹记录与定位。</li>
+</ol>
+<h2 id="二、运动特性"><a href="#二、运动特性" class="headerlink" title="二、运动特性"></a>二、运动特性</h2><h3 id="1、运动监测"><a href="#1、运动监测" class="headerlink" title="1、运动监测"></a>1、运动监测</h3><p>运动监测是可穿戴设备最基础的功能，主要包括：</p>
+<ul>
+<li><strong>计步与距离</strong>：基于加速度计的周期性步态检测，结合步幅估算距离；</li>
+<li><strong>卡路里消耗</strong>：综合步数、心率与运动类型估算能耗；</li>
+<li><strong>运动类型识别</strong>：自动区分走路、跑步、骑行、游泳、爬楼等运动，游泳场景还会结合气压计判断泳姿与趟数。</li>
+</ul>
+<h3 id="2、动作识别"><a href="#2、动作识别" class="headerlink" title="2、动作识别"></a>2、动作识别</h3><p>动作识别利用 IMU 的加速度、角速度时序数据，通过特征提取（时域、频域特征）与机器学习分类器（SVM、决策树、神经网络）识别特定动作，如跌倒检测、挥拍动作、健身动作计数等。相比单纯的计步，动作识别需要更精细的信号处理与模型训练。</p>
+<h3 id="3、室外定位"><a href="#3、室外定位" class="headerlink" title="3、室外定位"></a>3、室外定位</h3><p>室外运动（跑步、骑行、登山）依赖 GPS 进行定位与轨迹记录，核心指标包括定位精度、冷启动时间与功耗。部分设备支持北斗、GLONASS、Galileo 多系统联合定位以提升精度；室内场景则借助 Wi-Fi、蓝牙定位作为补充。</p>
+<h2 id="三、健康特性"><a href="#三、健康特性" class="headerlink" title="三、健康特性"></a>三、健康特性</h2><h3 id="1、睡眠分期"><a href="#1、睡眠分期" class="headerlink" title="1、睡眠分期"></a>1、睡眠分期</h3><p>睡眠分期主要是用来对睡眠过程进行监测，计算睡眠过程中各个期间的时长与周期。</p>
 <p>用于睡眠分期的信号主要包括如下信号：</p>
 <ol>
 <li>单通道脑电（electroencephalogram，EEG）；</li>
@@ -116,7 +132,16 @@
 <li>呼吸等生理信号。</li>
 <li>体动传感器，如acc、陀螺仪</li>
 </ol>
-<h3 id="2、压力检测"><a href="#2、压力检测" class="headerlink" title="2、压力检测"></a>2、压力检测</h3><h3 id="3、血氧检测"><a href="#3、血氧检测" class="headerlink" title="3、血氧检测"></a>3、血氧检测</h3><h3 id="4、血糖检测"><a href="#4、血糖检测" class="headerlink" title="4、血糖检测"></a>4、血糖检测</h3><h3 id="5、血脂检测"><a href="#5、血脂检测" class="headerlink" title="5、血脂检测"></a>5、血脂检测</h3><h3 id="6、血压监测"><a href="#6、血压监测" class="headerlink" title="6、血压监测"></a>6、血压监测</h3><h3 id="6、心脏健康"><a href="#6、心脏健康" class="headerlink" title="6、心脏健康"></a>6、心脏健康</h3><h3 id="7、心率监测"><a href="#7、心率监测" class="headerlink" title="7、心率监测"></a>7、心率监测</h3>
+<p>消费级可穿戴设备通常无法佩戴脑电电极，因此多采用<strong>体动信号 + 心率（PPG）</strong>的组合来估计睡眠分期：通过整夜的体动剧烈程度与心率变化趋势，将睡眠划分为清醒、浅睡、深睡、快速眼动（REM）等阶段。</p>
+<h3 id="2、压力检测"><a href="#2、压力检测" class="headerlink" title="2、压力检测"></a>2、压力检测</h3><p>压力检测主要依赖<strong>心率变异性（HRV）</strong>分析：当人处于压力状态时，交感神经兴奋，HRV 的时域指标（如 RMSSD）与频域指标（如 LF&#x2F;HF 比值）会发生可观测的变化。设备通过长时间佩戴连续采集 PPG 或 ECG 信号，结合量表（如 PSS）校准，给出压力等级评估。</p>
+<h3 id="3、血氧检测"><a href="#3、血氧检测" class="headerlink" title="3、血氧检测"></a>3、血氧检测</h3><p>血氧饱和度（SpO2）通过 PPG 双波长原理测量：氧合血红蛋白与还原血红蛋白对不同波长光（红光 660nm、红外光 940nm）的吸收率不同，通过两者光强的比值即可估算 SpO2。该功能常用于高原旅行、睡眠呼吸暂停辅助筛查与高强度运动监测。</p>
+<h3 id="4、血糖检测"><a href="#4、血糖检测" class="headerlink" title="4、血糖检测"></a>4、血糖检测</h3><p>血糖检测是智能穿戴领域的难点。目前主流技术方向为<strong>非侵入式</strong>血糖监测，包括近红外光谱、拉曼光谱、射频阻抗等方案，但受汗液、肤色、温度等干扰因素影响，精度尚未达到医疗级标准，市面产品多为辅助参考性质。侵入式或微创方案（连续血糖监测 CGM）则是医疗领域的主流。</p>
+<h3 id="5、血脂检测"><a href="#5、血脂检测" class="headerlink" title="5、血脂检测"></a>5、血脂检测</h3><p>血脂（胆固醇、甘油三酯等）目前没有成熟的可穿戴检测方案，主要依赖抽血化验。部分研究尝试通过光学或生化传感器实现长期趋势监测，但均处于实验室阶段，短期内难以落地。</p>
+<h3 id="6、血压监测"><a href="#6、血压监测" class="headerlink" title="6、血压监测"></a>6、血压监测</h3><p>血压监测有两种路线：一是传统的<strong>示波法</strong>，通过充气袖带测量，精度高但体积大、难以连续佩戴；二是基于 <strong>PPG 脉搏波传导时间（PTT）</strong>的估测方法，无需袖带、可连续测量，但需要定期校准且精度受运动干扰影响较大。当前消费级手表多采用后者，作为健康参考而非医疗诊断依据。</p>
+<h3 id="7、心脏健康"><a href="#7、心脏健康" class="headerlink" title="7、心脏健康"></a>7、心脏健康</h3><p>心脏健康监测通过单导联 ECG 电极采集心电信号，可进行<strong>房颤（AFib）筛查</strong>、早搏检测与心率变异性分析。配合算法，设备能识别不规则心律并在异常时提醒用户及时就医。部分高端设备已获得医疗器械认证，具备临床参考价值。</p>
+<h3 id="8、心率监测"><a href="#8、心率监测" class="headerlink" title="8、心率监测"></a>8、心率监测</h3><p>心率监测是可穿戴设备最成熟、最核心的健康功能，基于 PPG 光电容积脉搏波原理，通过分析皮肤下毛细血管血流体积变化推算瞬时心率。除实时心率外，还衍生出静息心率、运动心率区间（燃脂&#x2F;有氧&#x2F;无氧）、最大摄氧量（VO2max）等指标，为运动训练提供指导。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>智能穿戴设备以传感器为硬件基础，运动侧围绕 IMU 与 GPS 构建监测、识别、定位能力，健康侧围绕 PPG、ECG 构建睡眠、压力、血氧、心率等监测能力。血糖、血脂等生化指标的连续无创监测仍是行业待突破的方向。</p>
+
       
       <!-- reward -->
       
@@ -203,11 +228,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2021/06/03/2021-06-03-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E6%B1%87%E6%80%BB/" class="article-nav-link">
+      <a href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            项目开发经验汇总
+            可穿戴领域中的压力监测算法
           
         </div>
       </a>

@@ -797,7 +797,7 @@
       
       <p>简尔言之：</p>
 <ol>
-<li>RAM: valgrind –tool&#x3D;massif –stacks&#x3D;yes –time-unit&#x3D;B –alloc-fn&#x3D;generic_malloc  .&#x2F;demo</li>
+<li>RAM: valgrind –tool&#x3D;massif –stacks&#x3D;yes –time-unit&#x3D;B –alloc-fn&#x3D;generic_malloc .&#x2F;demo</li>
 <li>ROM: arm-none-eabi-size -t *.a</li>
 <li>检查内存泄漏：valgrind –tool&#x3D;memcheck –leak-check&#x3D;full –show-reachable&#x3D;yes –trace-children&#x3D;yes build_linux-x86_64&#x2F;main</li>
 </ol>
