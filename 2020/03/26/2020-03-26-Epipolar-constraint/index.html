@@ -109,14 +109,14 @@
 <span id="more"></span>
 
 <h2 id="对极约束"><a href="#对极约束" class="headerlink" title="对极约束"></a>对极约束</h2><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>在已知 2D像素坐标的前提下，根据两幅图像间多组2D像素点对来估计相机的运动。</p>
-<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h3><p><img src="/2020-03-26-Epipolar-constraint/image-20200326152746588.png" alt="image-20200326152746588"></p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h3 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h3><p><img src="/2020/03/26/2020-03-26-Epipolar-constraint/image-20200326152746588.png"></p>
 <p>如上图所示，我们希望求取两帧图像 $I_1$,$ I_2$ 之间的运动，设第一帧到第二帧的运动为 $R$，$t$。两个相机中心分别为 $O_1$,$O_2$。现在，考虑 $I_1$ 中有一个特征点 $p_1$，它在 $I_2$ 中对应着特征点 $p_2$。我们知道两者是通过特征匹配得到的。首先，连线 $O_2P$与$O_1P$ 在三维空间中会相交于点 P。由$O_1$, $O_2$, $P$ 三点确定的平面为<strong>极平面</strong>（<code>Epipolar plane</code>）。$O_1O_2$ 连线与像平面 $I_1$, $I_2$ 的交点$e_1$, $e_2$ 称为<strong>极点</strong>（<code>Epipoles</code>），$O_1O_2$ 被称为<strong>基线</strong>（<code>Baseline</code>）。我们称极平面与两个像平面 $I_1$, $I_2$ 之间的相交线 $l_1$, $l_2$ 为<strong>极线</strong>（<code>Epipolar line</code>）。</p>
 <p>设P的空间位置为 $P&#x3D;[X,Y,Z]^T$。则根据针孔模型，两个像素点$p_1,p_2$的像素位置为:<br>$$<br>s_1p_1&#x3D;KP,s_2p_2&#x3D;K(RP+t)<br>$$<br>其中，K为相机内参矩阵，R，t为两个坐标系的相机运动。具体来说，计算的是$R_{21}$，$t_{21}$，因为他们把第一个坐标系下的坐标转换到了第二个坐标系下。其也可写作是李代数形式。</p>
 <p>尺度意义下相等记作：$sp\simeq p$，可表示投影关系。</p>
 <p>因此有:<br>$$<br>x_1&#x3D;K^{-1}p_1, x_2&#x3D;K^{-1}p_2<br>$$<br>其中，$x_1$,$x_2$表示像素点在归一化平面上的坐标。代入上式，得：<br>$$<br>x_2\simeq Rx_1+t<br>$$<br>两边同时左乘<code>t^</code>。因此得到:<br>$$<br>t^{.}x_2\simeq t^{.}Rx_1<br>$$<br>然后同时左乘<code>x2^</code>，得到</p>
-<p><img src="/2020-03-26-Epipolar-constraint/image-20200326155950749.png" alt="image-20200326155950749"></p>
+<p><img src="/2020/03/26/2020-03-26-Epipolar-constraint/image-20200326155950749.png"></p>
 <p>重新带入$p_1,p_2$有:</p>
-<p><img src="/2020-03-26-Epipolar-constraint/image-20200326160100489.png" alt="image-20200326160100489"></p>
+<p><img src="/2020/03/26/2020-03-26-Epipolar-constraint/image-20200326160100489.png"></p>
 <p>上述两式称为<strong>对极约束</strong>。</p>
 <p><strong>几何意义</strong>:    $O_1,P,O_2$三者共面。</p>
 <p>把中间部分记作两个矩阵，基础矩阵F和本质矩阵E，可进一步检核对极约束：<code>E=t^R</code>，$F&#x3D;K^{-T}EK^{-1}$，$x^T_2Ex^1&#x3D;p^T_2Fp_1&#x3D;0$。</p>

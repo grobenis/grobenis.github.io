@@ -102,10 +102,10 @@
 <span id="more"></span>
 
 <h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><h3 id="1、定义相机变换矩阵"><a href="#1、定义相机变换矩阵" class="headerlink" title="1、定义相机变换矩阵"></a>1、定义相机变换矩阵</h3><p>首先使用4*4的变换矩阵来来表示相机之间的变换T：</p>
-<img src="Generate-Imu-Data-Based-on-GroundTruth/image-20200723220416181.png" alt="image-20200723220416181" style="zoom: 50%;" />
+<img src="image-20200723220416181.png" alt="image-20200723220416181" style="zoom: 50%;" />
 
 <p>​    使用$T_{b,a}$表示时间Δt内，帧$T_{w,a}$与帧$T_{w,b}$(其中w为世界坐标系)之间运动的速度（该速度恒定且包括角速度和线速度）可表示为矩阵形式：</p>
-<img src="Generate-Imu-Data-Based-on-GroundTruth/image-20200723220712114.png" alt="image-20200723220712114" style="zoom: 50%;" />
+<img src="image-20200723220712114.png" alt="image-20200723220712114" style="zoom: 50%;" />
 
 <p>​        其中log是矩阵对数。对于矩阵组SE3，对数映射和它的逆(指数映射)就可以在闭域内计算。</p>
 <h3 id="2、根据离散的点拟合连续的曲线"><a href="#2、根据离散的点拟合连续的曲线" class="headerlink" title="2、根据离散的点拟合连续的曲线"></a>2、根据离散的点拟合连续的曲线</h3><p>为了得到IMU数据，我们需要知晓轨迹的数学形式，为此，我们需要先根据离散的点轨迹拟合曲线，这个过程通过B样条插值来完成。</p>
@@ -113,7 +113,7 @@
 <p>将$p_i,p_{i-1}$两两个点之间的转移方程映射到李代数上，可表示为$\Omega_i &#x3D; \log(T^{-1}<em>{w,i-1}T</em>{w,i})$.</p>
 <p>可以把由等式2描述的李群中的轨迹重写为如下形式。<br>$$<br>T_{w,s}(t) &#x3D; \exp(\tilde{B_{0,k}(t)})\log(T_{w,0}))\prod^n_{i&#x3D;1}\exp(\tilde{B}<em>{i,k}(t)\Omega_i)<br>$$<br>其中，$R</em>{w,s}(t)\in SE^3$是t可是沿着样条线的位姿。 $T_{w,s}(t)$ 可以看作是轨迹</p>
 <h3 id="3-根据曲线生成IMU的加速度和陀螺仪角速度数据"><a href="#3-根据曲线生成IMU的加速度和陀螺仪角速度数据" class="headerlink" title="3. 根据曲线生成IMU的加速度和陀螺仪角速度数据"></a>3. 根据曲线生成IMU的加速度和陀螺仪角速度数据</h3><p>​        累积的B样条参数化满足可求导性，因此可轻松地得到加速度计和陀螺仪的带误差的测量值。计算公式如下：</p>
-<p><img src="/Generate-Imu-Data-Based-on-GroundTruth/image-20200723171456502.png" alt="image-20200723171456502"></p>
+<p><img src="/2020/09/19/2020-09-19-Generate-Imu-Data-Based-on-GroundTruth/image-20200723171456502.png"></p>
 <p>其中,$\dot{R}<em>{w,s}$和$\ddot{s}<em>w$分别是$\dot{T}</em>{w,s}$和$\ddot{T</em>{w,s}}$相应的子矩阵. $g_w$是世界坐标系下的重力加速度.</p>
 <p>其中，$T_{w,s}$表示s系中的点在w系中的变换，$R^T_{w,s}$是的子矩阵，表示纯旋转。$R_{w,s}$是的子矩阵，$s_w(u)$是$T_{w,s}$的子矩阵，代表平移，$g_w$是重力在w系中的加速度。</p>
 <h2 id="实践环节"><a href="#实践环节" class="headerlink" title="实践环节"></a>实践环节</h2><h3 id="TUM-GT2IMU"><a href="#TUM-GT2IMU" class="headerlink" title="TUM-GT2IMU"></a>TUM-GT2IMU</h3><p>程序语言 （Matlab）</p>

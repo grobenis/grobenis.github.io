@@ -116,7 +116,7 @@
 </blockquote>
 <blockquote>
 <p>目前的理解：对于一个最小二乘问题</p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/v2-8818fb35618ab5a7cecdcbfaef99e8ef_1440w.png" alt="img"></p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/v2-8818fb35618ab5a7cecdcbfaef99e8ef_1440w.png"></p>
 <p>Z为观测的像素坐标，T为Tcw，p为世界坐标系下的某一个点，求解该问题时，需要对变量T进行迭代更新，主要的方式是求得沿J的负梯度方向的dT对T进行更新，但由于变换矩阵对于加法不封闭（T1+T2不再具有变换的物理意义），需要通过李群和李代数之间的映射，借助李代数对于加法的封闭性，完成对变量的更新。</p>
 </blockquote>
 <h2 id="二-刚体运动的表示"><a href="#二-刚体运动的表示" class="headerlink" title="二 刚体运动的表示"></a>二 刚体运动的表示</h2><h3 id="1-说一下3D空间的位姿如何去表达"><a href="#1-说一下3D空间的位姿如何去表达" class="headerlink" title="1. 说一下3D空间的位姿如何去表达?"></a>1. 说一下3D空间的位姿如何去表达?</h3><blockquote>
@@ -586,7 +586,7 @@
 <li>重投影匹配</li>
 </ol>
 </blockquote>
-<h2 id="三-相机运动求解"><a href="#三-相机运动求解" class="headerlink" title="三 相机运动求解"></a>三 相机运动求解</h2><h3 id="一-极线约束（2D-2D）"><a href="#一-极线约束（2D-2D）" class="headerlink" title="一 极线约束（2D-2D）"></a>一 极线约束（2D-2D）</h3><p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812162637025.png" alt="image-20200812162637025"><br>$$<br>x^T_2t^{\wedge}R x_1 &#x3D; 0<br>$$</p>
+<h2 id="三-相机运动求解"><a href="#三-相机运动求解" class="headerlink" title="三 相机运动求解"></a>三 相机运动求解</h2><h3 id="一-极线约束（2D-2D）"><a href="#一-极线约束（2D-2D）" class="headerlink" title="一 极线约束（2D-2D）"></a>一 极线约束（2D-2D）</h3><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812162637025.png"><br>$$<br>x^T_2t^{\wedge}R x_1 &#x3D; 0<br>$$</p>
 <h4 id="1-按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？"><a href="#1-按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？" class="headerlink" title="1. 按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？"></a>1. 按照你的理解讲解一下什么是极线约束？这个约束能带来什么好处？</h4><blockquote>
 <p>所谓极线约束就是说同一个点在两幅图像上的映射，已知左图映射点<code>p1</code>，那么右图映射点<code>p2</code>一定在相对于p1的极线上，这样可以减少待匹配的点数量。（画图解释）</p>
 <p>极线约束的好处：从上面的描述我们可以看到，我们在做特征点匹配时，左图成像点p1的待匹配点p2一定在相对于p1的极线上，那么我们在做搜索时就可以在极线附近（考虑实际可能 会有一点误差）进行搜索，相对暴力匹配极大减少待匹配的点的数量。</p>
@@ -598,7 +598,7 @@
 <p><strong>单应性矩阵</strong>：在相机只有旋转而没有平移的情况，此时t为0，E也将为0，导致无法求解R，这时可以使用单应矩阵H求旋转，但仅有旋转，无法三角化求深度。</p>
 </blockquote>
 <h4 id="3-根据基础矩阵E如何求解相机运动R，t"><a href="#3-根据基础矩阵E如何求解相机运动R，t" class="headerlink" title="3 根据基础矩阵E如何求解相机运动R，t?"></a>3 根据基础矩阵E如何求解相机运动R，t?</h4><p>答：SVD分解</p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815164626728.png" alt="image-20200815164626728"></p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815164626728.png"></p>
 <p>其中的R矩阵怎么定义</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//SVD分解</span></span><br><span class="line"><span class="function">Eigen::JacobiSVD&lt;Eigen::Matrix3d&gt; <span class="title">svd</span><span class="params">(E,ComputeThinU|ComputeThinV)</span></span>;</span><br><span class="line">Matrix3d V=svd.<span class="built_in">matrixV</span>(),U=svd.<span class="built_in">matrixU</span>();</span><br><span class="line">Matrix3d un_S=U.<span class="built_in">inverse</span>()* E*V.<span class="built_in">transpose</span>().<span class="built_in">inverse</span>(); <span class="comment">//类型不要搞混</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//计算后的Sigma矩阵</span></span><br><span class="line"><span class="comment">//调整奇异值矩阵 调成E的解析格式，否则可能补满足E内在形式</span></span><br><span class="line"><span class="type">double</span> delta_1=<span class="built_in">un_S</span>(<span class="number">0</span>,<span class="number">0</span>),delta_2=<span class="built_in">un_S</span>(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">Matrix3d S = Matrix3d::<span class="built_in">Zero</span>();</span><br><span class="line"><span class="built_in">S</span>(<span class="number">0</span>,<span class="number">0</span>)=(delta_1+delta_2)/<span class="number">2</span>;</span><br><span class="line"><span class="built_in">S</span>(<span class="number">1</span>,<span class="number">1</span>)=(delta_1+delta_2)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// set t1, t2, R1, R2 </span></span><br><span class="line">Matrix3d t_wedge1, t_wedge2;</span><br><span class="line">Matrix3d R1, R2;</span><br><span class="line"><span class="comment">// 中间旋转矩阵的定义</span></span><br><span class="line"><span class="function">AngleAxisd <span class="title">V1</span><span class="params">(M_PI / <span class="number">2</span>, Vector3d(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>))</span></span>;</span><br><span class="line"><span class="function">AngleAxisd <span class="title">V2</span><span class="params">(- M_PI / <span class="number">2</span>, Vector3d(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>))</span></span>;</span><br><span class="line"></span><br><span class="line">Matrix3d Rz_pos = V1.<span class="built_in">toRotationMatrix</span>();</span><br><span class="line">Matrix3d Rz_neg = V2.<span class="built_in">toRotationMatrix</span>();</span><br><span class="line">t_wedge1 = U*Rz_pos*S*U.<span class="built_in">transpose</span>();</span><br><span class="line">t_wedge2 = U*Rz_neg*S*U.<span class="built_in">transpose</span>();</span><br><span class="line">R1 = U*Rz_pos*V.<span class="built_in">transpose</span>();</span><br><span class="line">R2 = U*Rz_neg*V.<span class="built_in">transpose</span>();</span><br></pre></td></tr></table></figure>
 
@@ -720,7 +720,7 @@
 <p>首先计算以下三个量<br>$$<br>\tilde{y}<em>k &#x3D; z_k - H_k \hat{x</em>{k|k-1}} （测量物质）\<br>S_k &#x3D; H_k P_{k|k-1}H^T_k + R_K （测量残差协方差）\<br>K_k &#x3D; P_{k|k-1}H^T_kS^{-1}<em>k<br>$$<br>用上述三个量来更新滤波器变量x与P<br>$$<br>\hat{x}</em>{k|k} &#x3D; \hat{x}<em>{k|k-1} + K_k \tilde{y}<em>k\<br>P</em>{k|k} &#x3D; (I-K_kH_k)P</em>{k|k-1}<br>$$<br>先更新状态估计，再更新写方法估计</p>
 <p><em>上述方法仅在计算最优卡尔曼增益的时候有效。</em></p>
 <p>拓展卡尔曼滤波器与卡尔曼滤波器的算法结构与步骤；</p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/819141-20160411151442613-1081631484.jpg" alt="img"></p>
+<p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/819141-20160411151442613-1081631484.jpg"></p>
 <h4 id="1-卡尔曼滤波增益推导"><a href="#1-卡尔曼滤波增益推导" class="headerlink" title="1. 卡尔曼滤波增益推导"></a>1. 卡尔曼滤波增益推导</h4><blockquote>
 <p>答：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/165570020">https://zhuanlan.zhihu.com/p/165570020</a></p>
 </blockquote>
@@ -826,11 +826,11 @@
 <p>L-M的好处就在于：如果下降的太快，使用较小的λ，如果下降的太慢，使用较大的λ</p>
 </blockquote>
 <h3 id="5-Dog-Leg算法"><a href="#5-Dog-Leg算法" class="headerlink" title="5 Dog-Leg算法"></a>5 Dog-Leg算法</h3><h4 id="5-1-DogLeg算法基本介绍"><a href="#5-1-DogLeg算法基本介绍" class="headerlink" title="5.1. DogLeg算法基本介绍"></a>5.1. DogLeg算法基本介绍</h4><blockquote>
-<p>L-M法是G-N法与最速下降法的混合形式，通过调整阻尼因子<img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex" alt="\mu">来在这两种方法之间切换。</p>
+<p>L-M法是G-N法与最速下降法的混合形式，通过调整阻尼因子<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex">来在这两种方法之间切换。</p>
 <p>狗腿法则通过改变信赖域来实现的。主要引申出以下问题：</p>
 <ol>
 <li>如何判断是使用G-N法还是最速下降法的增量？<br>1. </li>
-<li>如果确定了是使用哪个方法，那么它对应的增量<img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex" alt="\Delta x_{k}">是多少？<br>1. </li>
+<li>如果确定了是使用哪个方法，那么它对应的增量<img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/gif.latex">是多少？<br>1. </li>
 <li>狗腿法的增量为多少？</li>
 </ol>
 </blockquote>
@@ -1018,7 +1018,7 @@
 <li>读Maplab，设计室内服务机器人地图更新的方法、流程。</li>
 </ol>
 <h2 id="一-时间戳"><a href="#一-时间戳" class="headerlink" title="一 时间戳"></a>一 时间戳</h2><p>工程目录下有<code>GPS</code>保存的坐标文件<code>gps.txt</code>和激光雷达保存的坐标文件<code>laser.txt</code>两个文件，两个文件的第一列为记录当前数据的时间戳，后两列为坐标。由于GPS每隔500时间单位保存一次数据，激光雷达每隔300时间单位保存一次数据，因此，一段时间内激光雷达保存的数据比<code>GPS</code>保存的数据要多。现在想取出两个文件中时间戳最接近的数据，并分别存放在<code>gps2.txt</code>和<code>laser2.txt</code>中，编写程序实现。（不知道哪位大神能讲下这道题。。。）</p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200812100331825.png" alt="image-20200812100331825"></p>
+<p><img src="/assets/image-20200812100331825.png"></p>
 <h2 id="二-关键帧"><a href="#二-关键帧" class="headerlink" title="二 关键帧"></a>二 关键帧</h2><h3 id="关键帧的概念"><a href="#关键帧的概念" class="headerlink" title="关键帧的概念"></a>关键帧的概念</h3><blockquote>
 <p><strong>关键帧</strong>目前是一种非常常用的方法，可以减少待优化的帧数，并且可以代表其附近的帧。可以理解为一个学校里有100个班级，每个班的班长就是一个关键帧，他可以代表他班里的人，那么如何选取关键帧呢？</p>
 <p><strong>关键帧作用</strong>：图像插入频率过高会导致信息冗余度快速增加，而这些冗余的信息对系统的精度提升却十分有限，甚至没有提高，反而消耗了更多的计算资源。关键帧的目的在于，适当地降低信息冗余度，减少计算机资源的损耗，保证系统的平稳运行。</p>
@@ -1074,7 +1074,7 @@
 </ul>
 <h2 id="四-重定位"><a href="#四-重定位" class="headerlink" title="四 重定位"></a>四 重定位</h2><p>绑架问题就是<strong>重定位</strong>，是指机器人在缺少之前位置信息的情况下，如何去确定当前位姿。例如当机器人被安置在一个已经构建好地图的环境中，但是并不知道它在地图中的相对位置，或者在移动过程中，由<strong>于传感器的暂时性功能故障或相机的快速移动</strong>，都导致机器人先前的位置信息的丢失，在这种情况下如何重新确定自己的位置。</p>
 <h2 id="五-ORB-SLAM2"><a href="#五-ORB-SLAM2" class="headerlink" title="五 ORB-SLAM2"></a>五 ORB-SLAM2</h2><h4 id="1-ORB-SLAM中的特征是如何提取的？如何均匀化的？"><a href="#1-ORB-SLAM中的特征是如何提取的？如何均匀化的？" class="headerlink" title="1. ORB-SLAM中的特征是如何提取的？如何均匀化的？"></a>1. ORB-SLAM中的特征是如何提取的？如何均匀化的？</h4><h4 id="2-ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？"><a href="#2-ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？" class="headerlink" title="2. ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？"></a>2. ORB-SLAM在估计相机位姿时，为什么同时计算基础矩阵F和单应性矩阵H？</h4><p>当特征点共面或相机间发生了纯旋转时，基础矩阵自由度下降，即发生了所谓的退化，此时如果仍采用八点法估算F矩阵，基础矩阵多出来的自由度将会由噪声决定，对结果造成极大误差。为避免退化现象造成的影响，通常会同时估计基础矩阵F和单应矩阵H，选择重投影误差较小的那个作为最终的运动估计矩阵。</p>
-<h4 id="3-ORBSLAM整体流程"><a href="#3-ORBSLAM整体流程" class="headerlink" title="3. ORBSLAM整体流程"></a>3. ORBSLAM整体流程</h4><p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/1&e=1661961599&token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zDmtaS-3ndq2Gz-2Zb9sgAodStHuw=.png" alt="img"></p>
+<h4 id="3-ORBSLAM整体流程"><a href="#3-ORBSLAM整体流程" class="headerlink" title="3. ORBSLAM整体流程"></a>3. ORBSLAM整体流程</h4><p><img src="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/1&e=1661961599&token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zDmtaS-3ndq2Gz-2Zb9sgAodStHuw=.png"></p>
 <h4 id="4-ORB与VINS的区别"><a href="#4-ORB与VINS的区别" class="headerlink" title="4. ORB与VINS的区别"></a>4. ORB与VINS的区别</h4><p><strong>前端：</strong></p>
 <p> ORB-SLAM：构建图像金字塔，对每一层提取Fast特征点，使用四叉树进行均匀化。对每一层图像进行高斯模糊，然后提取BRIEF描述子。再恢复到第0层并使用opencv自带函数进行图像去畸变；初始化过程通过计算H和F矩阵得分恢复初始化位姿和地图点；没有运动模型时先使用关键帧追踪，之后主要使用恒速运动模型追踪 </p>
 <p>VINS：对图像使用KLT角点检测算法，对角点使用LK光流（在金字塔上逐层进行）追踪。均匀化操作是对检测出的特征点进行排序，以特征点为中心画圈，在圈中不允许再有其他的特征点存在。提取完特征点后要去畸变，去畸变使用了一个trick：逐渐逼近式去畸变。通过对极约束求一个本质矩阵，使用RANSAC选取一个置信度最高的本质矩阵，对outlier（不符合对极约束的点）进行筛查。</p>
@@ -1155,7 +1155,7 @@
 <td>各种顶点和边，很重要！我们用户在构建图优化问题时，先要想好自己的顶点和边是否已经提供了定义。如果没有，要自己实现。如果有，就用g2o提供的即可。</td>
 </tr>
 </tbody></table>
-<h3 id="1-G2O的类结构"><a href="#1-G2O的类结构" class="headerlink" title="1 G2O的类结构"></a>1 G2O的类结构</h3><p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200815142336116.png" alt="image-20200815142336116"></p>
+<h3 id="1-G2O的类结构"><a href="#1-G2O的类结构" class="headerlink" title="1 G2O的类结构"></a>1 G2O的类结构</h3><p><img src="/assets/image-20200815142336116.png"></p>
 <p>​        先看上半部分。SparseOptimizer 是我们最终要维护的东东。它是一个Optimizable Graph，从而也是一个Hyper Graph（超图）。一个 SparseOptimizer 含有很多个顶点 （都继承自 Base Vertex）和很多个边（继承自 BaseUnaryEdge, BaseBinaryEdge或BaseMultiEdge）。这些 Base Vertex 和 Base Edge 都是抽象的基类，而实际用的顶点和边，都是它们的派生类。我们用 SparseOptimizer.addVertex 和 SparseOptimizer.addEdge 向一个图中添加顶点和边，最后调用 SparseOptimizer.optimize 完成优化。</p>
 <p>　　在优化之前，需要指定我们用的求解器和迭代算法。从图中下半部分可以看到，一个 SparseOptimizer 拥有一个 Optimization Algorithm，继承自Gauss-Newton, Levernberg-Marquardt, Powell’s dogleg 三者之一（我们常用的是GN或LM）。同时，这个 Optimization Algorithm 拥有一个Solver，它含有两个部分。一个是 SparseBlockMatrix ，用于计算稀疏的雅可比和海塞； 一个是用于计算迭代过程中最关键的一步<br>$$<br>HΔx&#x3D;−b<br>$$<br>这就需要一个线性方程的求解器。而这个求解器，可以从 PCG, CSparse, Choldmod 三者选一。</p>
 <h3 id="2-G2O-优化方法的选择步骤："><a href="#2-G2O-优化方法的选择步骤：" class="headerlink" title="2 G2O 优化方法的选择步骤："></a>2 G2O 优化方法的选择步骤：</h3><ol>
@@ -1240,11 +1240,11 @@
 </li>
 </ol>
 <h2 id="简答题"><a href="#简答题" class="headerlink" title="简答题"></a>简答题</h2><p>一：</p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000618164.png" alt="image-20200818000618164"></p>
+<p><img src="/assets/image-20200818000618164.png"></p>
 <p>二： 卡尔曼滤波</p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000645583.png" alt="image-20200818000645583"></p>
+<p><img src="/assets/image-20200818000645583.png"></p>
 <p>三 </p>
-<p><img src="/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/image-20200818000939557.png" alt="image-20200818000939557"></p>
+<p><img src="/assets/image-20200818000939557.png"></p>
 
       
       <!-- reward -->

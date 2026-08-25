@@ -118,7 +118,7 @@
 <li>支持仅定位模式，该模式适用于轻量级以及在地图已知情况下长期运行，此时不使用局部建图和回环检测的线程。</li>
 <li>双目和RGBD相对单目相机的主要优势在于，可以直接获得深度信息，不需要像单目情况中那样做一个特定的SFM初始化</li>
 </ul>
-<h3 id="系统框架"><a href="#系统框架" class="headerlink" title="系统框架"></a>系统框架</h3><p><img src="/images/2020-04-13-ORBSLAM2/image-20200413105119355.png" alt="image-20200413105119355"></p>
+<h3 id="系统框架"><a href="#系统框架" class="headerlink" title="系统框架"></a>系统框架</h3><p><img src="/2020/04/13/2020-04-13-ORBSLAM2/image-20200413105119355.png"></p>
 <p>ORB-SLAM 它是由三大块、三个流程同时运行的。第一块是跟踪，第二块是建图，第三块是闭环检测。</p>
 <h4 id="1-跟踪（Tracking）"><a href="#1-跟踪（Tracking）" class="headerlink" title="1. 跟踪（Tracking）"></a>1. 跟踪（Tracking）</h4><p>这一部分主要工作是从图像中提取 ORB 特征，根据上一帧进行姿态估计，或者进行通过全局重定位初始化位姿，然后跟踪已经重建的局部地图，优化位姿，再根据一些规则确定新关键帧。</p>
 <h4 id="2-建图（LocalMapping）"><a href="#2-建图（LocalMapping）" class="headerlink" title="2. 建图（LocalMapping）"></a>2. 建图（LocalMapping）</h4><p>这一部分主要完成局部地图构建。包括对关键帧的插入，验证最近生成的地图点并进行筛选，然后生成新的地图点，使用局部捆集调整（Local BA），最后再对插入的关键帧进行筛选，去除多余的关键帧。</p>
