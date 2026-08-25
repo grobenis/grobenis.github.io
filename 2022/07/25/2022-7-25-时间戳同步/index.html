@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k字</span>
+            <span class="post-count">1.2k字</span>
         </span>
     </span>
 
@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -95,6 +95,10 @@
 
       
       <p>参考链接 : <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/q6oJrPlzx2l4OihTGW50hw">从零开始一起学习SLAM | 用四元数插值来对齐IMU和图像帧</a></p>
+<p>本文介绍 IMU 与相机帧之间的时间戳同步方法，针对 IMU 帧率远高于图像帧率的问题，讲解四元数线性插值（Nlerp）与球面线性插值（Slerp）的原理、差异及实现注意事项。文章还给出将 IMU 四元数对齐到图像帧时间戳的编程示例与完整 C++ 代码。</p>
+<blockquote>
+<p><strong>插值对齐时间戳，多传感器步调一致</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <p>IMU与相机帧的互补</p>

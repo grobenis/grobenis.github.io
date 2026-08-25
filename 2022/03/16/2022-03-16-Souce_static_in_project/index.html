@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">315字</span>
+            <span class="post-count">393字</span>
         </span>
     </span>
 
@@ -104,6 +104,10 @@
 <li>ROM: arm-none-eabi-size -t *.a</li>
 <li>检查内存泄漏：valgrind –tool&#x3D;memcheck –leak-check&#x3D;full –show-reachable&#x3D;yes –trace-children&#x3D;yes build_linux-x86_64&#x2F;main</li>
 </ol>
+<p>本文整理工程中统计资源占用的实用方法：用 Valgrind Massif 统计程序 RAM 峰值与栈占用，配合 massif-visualizer 可视化分析；用 arm-none-eabi-size 查看静态库的 ROM 占用；用 Valgrind Memcheck 检查内存泄漏。</p>
+<blockquote>
+<p><strong>资源占用可量化，内存问题无处藏</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="RAM统计"><a href="#RAM统计" class="headerlink" title="RAM统计"></a>RAM统计</h2><p>统计工具Valgrind<br>统计内存占用可以用下valgrind的工具  ubuntu可以使用apt直接安装的   使用的方法是写一个demo  调用算法的接口   编译成可执行文件    然后通过valgrind执行它。</p>

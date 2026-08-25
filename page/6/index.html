@@ -114,6 +114,10 @@
 
       
       <p>KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。</p>
+<p>本文讲解 KMP 字符串匹配算法的原理与实现，从暴力匹配的回溯缺陷出发，引入 next 数组记录模式串前缀后缀的最长公共长度，将时间复杂度从 O(nm) 优化到 O(m+n)，并给出完整的 next 数组构造与匹配源代码。</p>
+<blockquote>
+<p><strong>利用失配信息，让匹配不再回溯</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/03/22/2020-03-22-KMP-Algorithm/">阅读更多...</a>
       
@@ -129,149 +133,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KMP/" rel="tag">KMP</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-03-15-Motion_consistency" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-15-Motion_consistency/"
-    >运动一致性判断</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-date">
-  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
-      
-      <a class="article-more-link" href="/2020/03/14/2020-03-15-Motion_consistency/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-03-15-Particle_Filter" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-15-Particle_Filter/"
-    >粒子滤波器</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-date">
-  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <span id="more"></span>
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">粒子滤波器</a></li></ul>
 
 
     </footer>
@@ -337,6 +198,10 @@
 <li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
 </ol>
 <p>本节主要来介绍kalman滤波器。</p>
+<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
+<blockquote>
+<p><strong>预测加修正，噪声终让路</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/03/14/2020-03-13-Kalman_Filter/">阅读更多...</a>
       
@@ -410,6 +275,10 @@
 
       
       <p>高斯混合模型</p>
+<p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p>
+<blockquote>
+<p><strong>简单分布叠加，拟合复杂世界</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/03/14/2020-03-14-GMM/">阅读更多...</a>
       
@@ -484,6 +353,10 @@
       
       <p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
 <p>本节将用来介绍概率图模型。</p>
+<p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p>
+<blockquote>
+<p><strong>用图言变量，依赖一目了然</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/03/14/2020-03-14-Probability_graph_model/">阅读更多...</a>
       
@@ -499,6 +372,159 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-15-Motion_consistency" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/14/2020-03-15-Motion_consistency/"
+    >运动一致性判断</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-date">
+  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
+<p>本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。</p>
+<blockquote>
+<p><strong>动静分离，方能求得位姿真值</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Motion_consistency/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-15-Particle_Filter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/14/2020-03-15-Particle_Filter/"
+    >粒子滤波器</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-date">
+  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文为粒子滤波器的占位文章，目前仅有标题与文章框架，正文内容待后续补充。粒子滤波通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计。</p>
+<blockquote>
+<p><strong>以粒子之众，逼近状态之真</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Particle_Filter/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">粒子滤波器</a></li></ul>
 
 
     </footer>
@@ -556,103 +582,13 @@
       
 
       
-      <span id="more"></span>
-
-
-<!--more-->
-
-<h2 id="Loop-Fusion"><a href="#Loop-Fusion" class="headerlink" title="Loop Fusion"></a>Loop Fusion</h2><p>Loop Fusion结点包括：</p>
-<h2 id="VINS-estimator"><a href="#VINS-estimator" class="headerlink" title="VINS_estimator"></a>VINS_estimator</h2><p>VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。</p>
-<h3 id="rosNodeTest-cpp"><a href="#rosNodeTest-cpp" class="headerlink" title="rosNodeTest.cpp"></a>rosNodeTest.cpp</h3><p>rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。</p>
-<p>主程序包含以下流程：</p>
-<ol>
-<li><p>读取配置文件参数 readParameter()</p>
-</li>
-<li><p>订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理</p>
-</li>
-<li><p>开启一个新线程sync_process。</p>
-<p>该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。</p>
-</li>
-</ol>
-<h3 id="estimator"><a href="#estimator" class="headerlink" title="estimator"></a>estimator</h3><p>VIO系统的整个程序从Estimator estimator开启。</p>
-<p>estimator类的定义由estimator.h和estimator.cpp两个文件完成。</p>
-<p>包含以下重要的自定义成员：</p>
-<table>
-<thead>
-<tr>
-<th align="center">成员</th>
-<th align="center">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">Feature_Tracker featureTracker</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">FeatureManager f_manager</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-<p>estimator类中包含两类成员函数：</p>
-<ol>
-<li><p>接口函数</p>
-<p>包括以下8个函数：</p>
-<table>
-<thead>
-<tr>
-<th align="center">函数</th>
-<th align="left">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">initFirstPose()</td>
-<td align="left">初始化初始位姿</td>
-</tr>
-<tr>
-<td align="center">inputIMU()</td>
-<td align="left">输入IMU数据</td>
-</tr>
-<tr>
-<td align="center">inputImage()</td>
-<td align="left">输入图片数据</td>
-</tr>
-<tr>
-<td align="center">inputFeature()</td>
-<td align="left">输入特征</td>
-</tr>
-<tr>
-<td align="center">ProcessIMU()</td>
-<td align="left">处理IMU数据，对IMU进行预积分；</td>
-</tr>
-<tr>
-<td align="center">ProcessImage()</td>
-<td align="left">处理相机数据；<br />1. 基于特征点的视差来判断当前帧是否属于关键帧；<br />2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃；<br />3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。<br />4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃，比如非线性求解器中的解有大跳动，求解出相机IMU的外参矩阵或IMU偏移等等，系统挂掉就清空状态，重新初始化。</td>
-</tr>
-<tr>
-<td align="center">ProcessMeasurements()</td>
-<td align="left">处理测量值；处理各buffer里的数据，当featureBuf不等于空时，开始进行以下处理（为什么是featureBuf，因为当有图像buffer数据的时候，才会有featuretracker.push(make_pair(t,featureFrame))，即有图像数据后，程序才发给跟踪器叫他产生feature，因此当featureBuf不等于空，所有的buffer，包括imu,图像，都不为空）：</td>
-</tr>
-<tr>
-<td align="center">changeSensrType</td>
-<td align="left">改变传感器类型，用于确定是否使用IMU，使用单目相机还是双目相机</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>内部函数</p>
-</li>
-</ol>
-<p>类的初始化函数Estimator()，由于Estimator类成员内部有两个比较重要的自定义类成员：<br>（1）Feature_Tracker featuretracker;（以前vins-mono这部分是作为一个独立的Node存在）:<br>用来对原始图像进行畸变校正，特征点采集，光流跟踪<br>（2）FeatureManager f_manager;<br>用来对滑动窗口内所有特征点的管理。<br>简单设置了一些参数后，系统进入main()。</p>
-<p>接着main()与Estimator estimator两者开始发生联系：<br>main()中estimator.setParameter()开启了滑动窗口估计的一个新线程<br>由于我们在配置文件中 多线程MULTIPLE_THREAD设置为1，因此当setParameter()时候，就开启了一个Estimator类内的新线程：processMeasurements();</p>
-<p>pub VIO的各种话题，包括里程计信息，tf变换，相机姿态，点云信息，并且发布关键帧。</p>
-
+      <p>本文记录 VINS-Fusion 源码阅读笔记，重点分析 vins_estimator 节点的程序入口 rosNodeTest.cpp 与 Estimator 类，梳理话题订阅、数据同步线程、滑窗处理及非线性优化等核心流程。</p>
+<blockquote>
+<p><strong>读懂源码，方知系统运转之妙</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/10/2020-03-10-Read-VINS-Fusion/">阅读更多...</a>
+      
       
       <!-- reward -->
       
@@ -665,6 +601,88 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB/" rel="tag">代码阅读</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-10-Use_DBoW2_to_Loop_Detection" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"
+    >回环检测与DBoW2库</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-date">
+  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p>
+<ol>
+<li>回环检测</li>
+<li>DBOW2介绍</li>
+<li>DBOW3介绍</li>
+</ol>
+<p>本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。</p>
+<blockquote>
+<p><strong>视觉词袋，让回环检测又快又准</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DBoW2/" rel="tag">DBoW2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/" rel="tag">回环检测</a></li></ul>
 
 
     </footer>
@@ -731,6 +749,10 @@
 <li>Turbopixel算法</li>
 <li>SLIC算法</li>
 </ol>
+<p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p>
+<blockquote>
+<p><strong>物以类聚，算法以分见真章</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/03/10/2020-03-12-Clustering_Survey/">阅读更多...</a>
       
@@ -806,6 +828,10 @@
       <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
 <p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
 <p>来源：李航的《统计学习方法》</p>
+<p>本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。</p>
+<blockquote>
+<p><strong>看不见的状态，可观测的序列</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/03/10/2020-03-13-HMM_model/">阅读更多...</a>
       
@@ -821,84 +847,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-03-10-Use_DBoW2_to_Loop_Detection" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"
-    >回环检测与DBoW2库</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-date">
-  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p>
-<ol>
-<li>回环检测</li>
-<li>DBOW2介绍</li>
-<li>DBOW3介绍</li>
-</ol>
-      
-      <a class="article-more-link" href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DBoW2/" rel="tag">DBoW2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/" rel="tag">回环检测</a></li></ul>
 
 
     </footer>

@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.3k字</span>
+            <span class="post-count">1.4k字</span>
         </span>
     </span>
 
@@ -99,6 +99,10 @@
 
       
       <p>漫水填充法是一种用特定的颜色填充联通区域，通过设置可连通像素的上下限以及连通方式来达到不同的填充效果的方法。漫水填充经常被用来标记或分离图像的一部分以便对其进行进一步处理或分析，也可以用来从输入图像获取掩码区域，掩码会加速处理过程，或只处理掩码指定的像素点，操作的结果总是某个连续的区域。</p>
+<p>本文讲解漫水填充法的原理与 OpenCV 实现，介绍如何借助种子点、连通方式和像素上下限来标记与分离连通区域，并给出图像渲染（洪水填充）题目的广度优先与深度优先两种解法及完整代码。</p>
+<blockquote>
+<p><strong>从种子点出发，点亮整片连通区域</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="漫水填充算法"><a href="#漫水填充算法" class="headerlink" title="漫水填充算法"></a>漫水填充算法</h2><h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><p>漫水填充算法是用来标记一片区域的：设置一个种子点，然后种子点附近的相似点都被填充同一种颜色。该算法应用性很广，比如目标识别，photoshop 的魔术棒功能等等，是填充类算法中应用最为广泛的一个算法。</p>

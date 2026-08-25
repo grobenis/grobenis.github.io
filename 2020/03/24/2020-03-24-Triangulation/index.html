@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.5k字</span>
+            <span class="post-count">1.6k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">6分钟</span>
+            <span class="post-count">7分钟</span>
         </span>
     </span>
 </div>
@@ -106,6 +106,10 @@
 <li>三角测量有哪些不确定性</li>
 <li>如何提高三角测量的精度</li>
 </ol>
+<p>本文学习 SLAM 中的三角测量，即已知相机运动 R、t 后，利用两帧特征点的归一化坐标求解地图点的深度与空间位置。文章给出三角化的数学推导与基于 OpenCV 的代码实现，并分析了三角化的不确定性来源以及提高精度的措施。</p>
+<blockquote>
+<p><strong>三角测量，由视差求深度</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><p>在SLAM中，利用对极几何约束估计相机运动之后，我们还需要通过三角测量来估计地图点的深度。三角测量（三角化）指的是，通过在两处观测同一个点的夹角，从而确定该点的距离。</p>

@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.3k字</span>
+            <span class="post-count">2.4k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">7分钟</span>
+            <span class="post-count">8分钟</span>
         </span>
     </span>
 </div>
@@ -104,6 +104,10 @@
 <li>初始化的两种方法</li>
 <li>初始化过程</li>
 </ol>
+<p>本文学习 SLAM 初始化，阐明单目初始化构建初始三维点云并为后续估计提供初始值的目的，介绍了追踪已知物体、计算单应矩阵与基础矩阵三种常用方法。文章重点梳理 ORB-SLAM2 单目初始化的完整流程——初始帧匹配、位姿计算（八点法与 RANSAC 模型选择）、三角测量与地图创建、BA 优化，并简述双目与 RGB-D 的初始化。</p>
+<blockquote>
+<p><strong>初始化定根基，后续估计方有所依</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="初始化的目的"><a href="#初始化的目的" class="headerlink" title="初始化的目的"></a>初始化的目的</h2><p>​        单目SLAM初始化的目的是 &#x3D;&#x3D;<strong>构建初始的三维点云地图（空间点）并为之后的计算提供初始值</strong>&#x3D;&#x3D;。</p>

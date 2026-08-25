@@ -114,6 +114,10 @@
 
       
       <p>本章想要抽空把之前的VINS_mono系统地学习一下。</p>
+<p>本文是对 VINS-mono 的系统学习笔记，梳理这一单目视觉惯性系统的完整框架：前端通过 KLT 光流跟踪特征并对 IMU 测量做预积分，初始化恢复位姿、速度与重力矢量初值，滑动窗口内联合优化视觉与惯性测量，最后经闭环检测与四自由度位姿图优化消除累积漂移。</p>
+<blockquote>
+<p><strong>视觉惯性紧耦合，小代价换高精度</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2022/03/01/2022-03-01-VINS-mono/">阅读更多...</a>
       
@@ -192,6 +196,10 @@
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jerrywossion/p/10086051.html">C++正则表达式</a></li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/complex-number-multiplication/">LeetCode复数乘法</a></li>
 </ol>
+<p>本文借 LeetCode 复数乘法一题学习 C++ 的正则表达式，介绍 regex 库的基本类型以及 regex_match、regex_search、regex_replace 三大操作，并通过手工解析与正则解法的对比展示正则的高效简洁。</p>
+<blockquote>
+<p><strong>正则一行，胜过代码百行</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">阅读更多...</a>
       
@@ -265,6 +273,10 @@
 
       
       <p>简介：前段时间参加了小米手机部软件大赛，做了基于手表APP智能控制小米电视的应用；</p>
+<p>本文记录参加小米手机部软件大赛的经历，介绍基于手表 App 智能控制小米电视的应用，其整体架构分为数据采集、控制与算法三个部分。</p>
+<blockquote>
+<p><strong>腕表轻点，电视应声而动</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2022/02/19/2022-02-19-SoftWare-Contest-springlinking/">阅读更多...</a>
       
@@ -339,6 +351,10 @@
       
       <p>根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。</p>
 <p>本文将学习制作SDK的流程。</p>
+<p>本文完整演示如何用 NDK&#x2F;JNI 将纯 C 模块打包成 aar 格式的 Android SDK：从认识 AAR 与 NDK 入手，依次经历创建 Library 模块、javah 生成 JNI 头文件、实现 C 接口函数、配置 Android.mk 与 build.gradle、ndk-build 编译 so 并打包 aar，最后将 aar 导入工程中通过 gradle 依赖使用。</p>
+<blockquote>
+<p><strong>写好 JNI 接口，C 库即可服务安卓世界</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/">阅读更多...</a>
       
@@ -412,6 +428,10 @@
 
       
       <p>​ 以后要坚持每周更新一篇博客，所以今天先记载一下自己调研的可穿戴算法中的压力监测算法。</p>
+<p>本文调研可穿戴设备中的压力监测算法，先介绍压力的心理学定义、组成与 PSS、PSTR、DASS-21 等评估量表。文章重点讲解基于心率变异性（HRV）的时域、频域特征及其与压力的关系，并梳理 FirstBeat 压力监测系统的检测流程，最后对比了华为、苹果、小米等市面产品的实现方案。</p>
+<blockquote>
+<p><strong>心率变异性，映射身心压力状态</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/">阅读更多...</a>
       
@@ -484,10 +504,13 @@
       
 
       
-      <span id="more"></span>
-
-<h2 id="1-Debug模式"><a href="#1-Debug模式" class="headerlink" title="1. Debug模式"></a>1. Debug模式</h2><p>在项目的开发过程中，可以考虑加入Debug模式以便于后续的问题修复。</p>
-
+      <p>本文汇总项目开发中的实践经验，首条经验建议在开发过程中引入 Debug 模式，以便于后续问题的定位与修复。</p>
+<blockquote>
+<p><strong>Debug 模式在手，问题无所遁形</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2021/06/03/2021-06-03-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E6%B1%87%E6%80%BB/">阅读更多...</a>
+      
       
       <!-- reward -->
       
@@ -558,6 +581,10 @@
 
       
       <p>很早就想抽空写一篇关于智能穿戴中各种特性的综述文章。今天逼迫自己开个头。总体来说，在当前的智能穿戴领域，主要分为运动和健康两大块。</p>
+<p>本文综述智能穿戴设备领域的功能特性，将其划分为运动与健康两大板块，运动侧涵盖监测、动作识别与定位，健康侧重点讲解睡眠分期依赖的多种生理信号，并列举压力、血氧、心率等监测方向。</p>
+<blockquote>
+<p><strong>腕间方寸，洞察健康全局</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2021/04/10/2021_04_10_Introduction-of-various-features-in-the-field-of-smart-wear/">阅读更多...</a>
       
@@ -631,6 +658,10 @@
 
       
       <p>该文用来介绍仿真IMU数据的方法</p>
+<p>本文介绍基于 GroundTruth 轨迹仿真生成 IMU 数据的方法，先利用矩阵对数与指数映射描述相机位姿变换，再通过 B 样条插值将离散轨迹拟合成连续曲线。在此基础上对曲线求导，即可得到带误差的加速度计与陀螺仪测量值，文章最后给出了 TUM-GT2IMU 工具的目录结构与各文件作用。</p>
+<blockquote>
+<p><strong>由轨迹拟合曲线，从曲线求导得 IMU</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/09/19/2020-09-19-Generate-Imu-Data-Based-on-GroundTruth/">阅读更多...</a>
       
@@ -704,6 +735,10 @@
 
       
       <p>本文学习自《图解HTTP》，目的是为了系统的学习这个协议</p>
+<p>本文系统学习 HTTP 协议，从 TCP&#x2F;IP 分层模型与 URI、URL 概念入手，讲解请求与响应报文结构、无状态特性，以及 GET、POST、PUT 等八种请求方法。文章还覆盖持久连接与管线化、Cookie 状态管理，并延伸至 HTTP 报文、状态码、首部字段与 HTTPS 的加密认证机制。</p>
+<blockquote>
+<p><strong>无状态协议，用 Cookie 记住你</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/">阅读更多...</a>
       
@@ -777,6 +812,10 @@
 
       
       <p>本文旨在整理面试过程中经典的考题</p>
+<p>本文整理面试中高频的经典代码题，覆盖字符串操作、排序与 Top K、链表、回溯、数字游戏、计算几何与动态规划等类别，每题附核心思路与参考实现，是面试前查漏补缺的实用清单。</p>
+<blockquote>
+<p><strong>经典题在手，面试心不慌</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/09/11/2020-09-11-%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%85%B8%E4%BB%A3%E7%A0%81%E9%A2%98/">阅读更多...</a>
       

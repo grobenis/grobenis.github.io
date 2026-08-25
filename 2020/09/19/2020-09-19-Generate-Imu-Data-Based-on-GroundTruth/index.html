@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">934字</span>
+            <span class="post-count">1.1k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -99,6 +99,10 @@
 
       
       <p>该文用来介绍仿真IMU数据的方法</p>
+<p>本文介绍基于 GroundTruth 轨迹仿真生成 IMU 数据的方法，先利用矩阵对数与指数映射描述相机位姿变换，再通过 B 样条插值将离散轨迹拟合成连续曲线。在此基础上对曲线求导，即可得到带误差的加速度计与陀螺仪测量值，文章最后给出了 TUM-GT2IMU 工具的目录结构与各文件作用。</p>
+<blockquote>
+<p><strong>由轨迹拟合曲线，从曲线求导得 IMU</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><h3 id="1、定义相机变换矩阵"><a href="#1、定义相机变换矩阵" class="headerlink" title="1、定义相机变换矩阵"></a>1、定义相机变换矩阵</h3><p>首先使用4*4的变换矩阵来来表示相机之间的变换T：</p>

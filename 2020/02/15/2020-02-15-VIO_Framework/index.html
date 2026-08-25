@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.6k字</span>
+            <span class="post-count">1.7k字</span>
         </span>
     </span>
 
@@ -96,6 +96,10 @@
       
       <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
 <p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
+<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
+<blockquote>
+<p><strong>视觉惯性融合，约束决定精度</strong></p>
+</blockquote>
 <span id="more"></span>
 
 
@@ -304,19 +308,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            利用ROS标定相机步骤与方法
+            Ubuntu1604连接蓝牙鼠标
           
         </div>
       </a>
     
     
-      <a href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">SLAM各算法运行方法与过程</div>
+        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
       </a>
     
   </nav>

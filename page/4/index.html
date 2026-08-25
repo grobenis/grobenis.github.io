@@ -113,32 +113,13 @@
       
 
       
-      <span id="more"></span>
-
-<h2 id="图像操作"><a href="#图像操作" class="headerlink" title="图像操作"></a>图像操作</h2><h3 id="遍历图像的四种方式"><a href="#遍历图像的四种方式" class="headerlink" title="遍历图像的四种方式"></a>遍历图像的四种方式</h3><ol>
-<li><code>at&lt;typename&gt;(i,j)</code></li>
-</ol>
-<p>Mat类提供了一个at的方法用于取得图像上的点，它是一个模板函数，可以取到任何类型的图像上的点。下面我们通过一个图像处理中的实际来说明它的用法。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">colorReduce</span><span class="params">(Mat&amp; image,<span class="type">int</span> div)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;image.rows;i++)&#123;</span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;image.cols;j++)&#123;</span><br><span class="line">           image.<span class="built_in">at</span>&lt;Vec3b&gt;(i,j)[<span class="number">0</span>]=image.<span class="built_in">at</span>&lt;Vec3b&gt;(i,j)[<span class="number">0</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">            image.<span class="built_in">at</span>&lt;Vec3b&gt;(i,j)[<span class="number">1</span>]=image.<span class="built_in">at</span>&lt;Vec3b&gt;(i,j)[<span class="number">1</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">           image.<span class="built_in">at</span>&lt;Vec3b&gt;(i,j)[<span class="number">2</span>]=image.<span class="built_in">at</span>&lt;Vec3b&gt;(i,j)[<span class="number">2</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>用指针来遍历图像</li>
-</ol>
-<p>我们实际喜欢把原图传进函数内，但是在函数内我们对原图像进行了修改，而将原图作为一个结果输出，很多时候我们需要保留原图，这样我们需要一个原图的副本。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="function"><span class="type">void</span> <span class="title">colorReduce</span><span class="params">(<span class="type">const</span> Mat&amp; image,Mat&amp; outImage,<span class="type">int</span> div)</span></span></span><br><span class="line"><span class="function"> 2 </span>&#123;</span><br><span class="line"> <span class="number">3</span>     <span class="comment">// 创建与原图像等尺寸的图像</span></span><br><span class="line"> <span class="number">4</span>     outImage.<span class="built_in">create</span>(image.<span class="built_in">size</span>(),image.<span class="built_in">type</span>());</span><br><span class="line"> <span class="number">5</span>     <span class="type">int</span> nr=image.rows;</span><br><span class="line"> <span class="number">6</span>     <span class="comment">// 将3通道转换为1通道</span></span><br><span class="line"> <span class="number">7</span>     <span class="type">int</span> nl=image.cols*image.<span class="built_in">channels</span>();</span><br><span class="line"> <span class="number">8</span>     <span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;nr;k++)&#123;</span><br><span class="line"><span class="number">10</span>         <span class="comment">// 每一行图像的指针</span></span><br><span class="line"><span class="number">11</span>         <span class="type">const</span> uchar* inData=image.<span class="built_in">ptr</span>&lt;uchar&gt;(k);</span><br><span class="line"><span class="number">12</span>         uchar* outData=outImage.<span class="built_in">ptr</span>&lt;uchar&gt;(k);</span><br><span class="line"><span class="number">13</span>         <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nl;i++)&#123;</span><br><span class="line"><span class="number">15</span>             outData[i]=inData[i]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">16</span>         &#125;</span><br><span class="line"><span class="number">17</span>     &#125;</span><br><span class="line"><span class="number">18</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>使用迭代器来遍历图像</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="function"><span class="type">void</span> <span class="title">colorReduce</span><span class="params">(<span class="type">const</span> Mat&amp; image,Mat&amp; outImage,<span class="type">int</span> div)</span></span></span><br><span class="line"><span class="function"> 2 </span>&#123;</span><br><span class="line"> <span class="number">3</span>     outImage.<span class="built_in">create</span>(image.<span class="built_in">size</span>(),image.<span class="built_in">type</span>());</span><br><span class="line"> <span class="number">4</span>     MatConstIterator_&lt;Vec3b&gt; it_in=image.<span class="built_in">begin</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">5</span>     MatConstIterator_&lt;Vec3b&gt; itend_in=image.<span class="built_in">end</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">6</span>     MatIterator_&lt;Vec3b&gt; it_out=outImage.<span class="built_in">begin</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">7</span>     MatIterator_&lt;Vec3b&gt; itend_out=outImage.<span class="built_in">end</span>&lt;Vec3b&gt;();</span><br><span class="line"> <span class="number">8</span>     <span class="keyword">while</span>(it_in!=itend_in)</span><br><span class="line"> <span class="number">9</span>     &#123;</span><br><span class="line"><span class="number">10</span>         (*it_out)[<span class="number">0</span>]=(*it_in)[<span class="number">0</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">11</span>         (*it_out)[<span class="number">1</span>]=(*it_in)[<span class="number">1</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">12</span>         (*it_out)[<span class="number">2</span>]=(*it_in)[<span class="number">2</span>]/div*div+div/<span class="number">2</span>;</span><br><span class="line"><span class="number">13</span>         it_in++;</span><br><span class="line"><span class="number">14</span>         it_out++;</span><br><span class="line"><span class="number">15</span>     &#125;</span><br><span class="line"><span class="number">16</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>最高效的方法</li>
-</ol>
-<p>当不对行进行填补的时候，图像可被视为一个长为W x H的一维数组。用isContinuous来判断是否对行进行的填补。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n1 = image.rows;</span><br><span class="line"><span class="type">int</span> nc = image.cols * image.channels（）;</span><br><span class="line"><span class="keyword">if</span>（image.isContinuous（））<span class="comment">//判断是否对行有额外的填补像素，返回值为真，则没有填补。</span></span><br><span class="line">&#123;</span><br><span class="line">    nc = nc * n1;</span><br><span class="line">    n1 = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>（<span class="type">int</span> i = <span class="number">0</span>; i &lt;n1; i ++）<span class="comment">//若图像是连续的，则只循环一次</span></span><br><span class="line">&#123;</span><br><span class="line">    uchar * data = image.ptr &lt;uchar&gt;（i）;</span><br><span class="line">    <span class="keyword">for</span>（<span class="type">int</span> j = <span class="number">0</span>; j &lt;nc; j ++）</span><br><span class="line">    &#123;</span><br><span class="line">        data [j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+      <p>本文总结 OpenCV 遍历图像像素的四种方式：at 模板函数、指针、迭代器与基于 isContinuous 的高效一维遍历，每种方式均配以 colorReduce 颜色缩减实例代码，便于按性能需求选型。</p>
+<blockquote>
+<p><strong>选对遍历方式，图像处理事半功倍</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/08/04/2020-08-04-OpenCV-Function/">阅读更多...</a>
+      
       
       <!-- reward -->
       
@@ -208,33 +189,13 @@
       
 
       
-      <span id="more"></span>
-
-<h2 id="一-树的概念"><a href="#一-树的概念" class="headerlink" title="一 树的概念"></a>一 树的概念</h2><h2 id="二-二叉树"><a href="#二-二叉树" class="headerlink" title="二 二叉树"></a>二 二叉树</h2><p>满二叉树：</p>
-<p>定义：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。</span><br><span class="line"></span><br><span class="line">国内教程定义：一个二叉树，如果每一个层的结点数都达到最大值，则这个二叉树就是满二叉树。也就是说，如果一个二叉树的层数为K，且结点总数是(2^k) -1 ，则它就是满二叉树。</span><br></pre></td></tr></table></figure>
-
-<p>最后一层的节点个数等于其他层数节点个数之和+1，假设第k层，最后一层的节点个数即2*（k-1）</p>
-<p>完全二叉树：</p>
-<p>定义：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边。</span><br><span class="line"></span><br><span class="line">完全二叉树是由满二叉树而引出来的。对于深度为K的，有n个结点的二叉树，当且仅当其每一个结点都与深度为K的满二叉树中编号从1至n的结点一一对应时称之为完全二叉树。</span><br></pre></td></tr></table></figure>
-
-<h3 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h3><h4 id="非递归写法"><a href="#非递归写法" class="headerlink" title="非递归写法"></a>非递归写法</h4><h4 id="前序遍历"><a href="#前序遍历" class="headerlink" title="前序遍历"></a>前序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        stack&lt;TreeNode*&gt; his;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        TreeNode *t = root, *dummy = <span class="keyword">new</span> <span class="built_in">TreeNode</span>(<span class="number">0</span>);</span><br><span class="line">        his.<span class="built_in">push</span>(dummy);</span><br><span class="line">        <span class="keyword">while</span>(!his.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="keyword">while</span>(t)&#123;</span><br><span class="line">                res.<span class="built_in">push_back</span>(t-&gt;val);</span><br><span class="line">                his.<span class="built_in">push</span>(t);</span><br><span class="line">                t = t-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            t = his.<span class="built_in">top</span>()-&gt;right;</span><br><span class="line">            his.<span class="built_in">pop</span>();  </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>容易理解的写法</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        stack&lt;TreeNode *&gt; st;</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        st.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span>(!st.<span class="built_in">empty</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            TreeNode* ptr = st.<span class="built_in">top</span>();</span><br><span class="line">            res.<span class="built_in">push_back</span>(ptr-&gt;val);</span><br><span class="line">            st.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">if</span>(ptr-&gt;right)</span><br><span class="line">                st.<span class="built_in">push</span>(ptr-&gt;right);</span><br><span class="line">            <span class="keyword">if</span>(ptr-&gt;left)</span><br><span class="line">                st.<span class="built_in">push</span>(ptr-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="function">def <span class="title">inorderTraversal</span><span class="params">(self, root: TreeNode)</span> -&gt; List[<span class="type">int</span>]:</span></span><br><span class="line"><span class="function">        res =</span> []</span><br><span class="line">        stack = []</span><br><span class="line">        cur = root</span><br><span class="line">        <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                stack.<span class="built_in">append</span>(cur)</span><br><span class="line">                cur = cur.left</span><br><span class="line">            top = stack.<span class="built_in">pop</span>() #此时左子树遍历完成</span><br><span class="line">            res.<span class="built_in">append</span>(top.val)  #将父节点加入列表</span><br><span class="line">            cur = top.right #遍历右子树</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-
-<h4 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="function">def <span class="title">postorderTraversal</span><span class="params">(self, root: TreeNode)</span> -&gt; List[<span class="type">int</span>]:</span></span><br><span class="line"><span class="function">        res =</span> []</span><br><span class="line">        stack = []</span><br><span class="line">        cur = root</span><br><span class="line">        <span class="keyword">while</span> stack <span class="keyword">or</span> cur:</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                res.<span class="built_in">append</span>(cur.val)</span><br><span class="line">                stack.<span class="built_in">append</span>(cur)</span><br><span class="line">                cur = cur.right  #先将右节点压栈</span><br><span class="line">            top = stack.<span class="built_in">pop</span>()  #此时该节点的右子树已经全部遍历完</span><br><span class="line">            cur = top.left  #对左子树遍历</span><br><span class="line">        <span class="keyword">return</span> res[::<span class="number">-1</span>]  #结果翻转</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="统一形式"><a href="#统一形式" class="headerlink" title="统一形式"></a>统一形式</h3><h4 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preorderTraversal</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;  <span class="comment">//保存结果</span></span><br><span class="line">        stack&lt;TreeNode*&gt; st;  <span class="comment">//调用栈</span></span><br><span class="line">        <span class="keyword">if</span>(root!=<span class="literal">nullptr</span>) st.<span class="built_in">push</span>(root);  <span class="comment">//首先介入root节点</span></span><br><span class="line">        <span class="keyword">while</span>(!st.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            TreeNode *t = st.<span class="built_in">top</span>();</span><br><span class="line">            st.<span class="built_in">pop</span>();  <span class="comment">//访问过的节点弹出</span></span><br><span class="line">            <span class="keyword">if</span>(t!=<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(t-&gt;right) st.<span class="built_in">push</span>(t-&gt;right);  <span class="comment">//右节点先压栈，最后处理</span></span><br><span class="line">                <span class="keyword">if</span>(t-&gt;left) st.<span class="built_in">push</span>(t-&gt;left);</span><br><span class="line">                st.<span class="built_in">push</span>(t);  <span class="comment">//当前节点重新压栈（留着以后处理），因为先序遍历所以最后压栈</span></span><br><span class="line">                st.<span class="built_in">push</span>(<span class="literal">nullptr</span>);  <span class="comment">//在当前节点之前加入一个空节点表示已经访问过了</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;  <span class="comment">//空节点表示之前已经访问过了，现在需要处理除了递归之外的内容</span></span><br><span class="line">                res.<span class="built_in">push_back</span>(st.<span class="built_in">top</span>()-&gt;val);  <span class="comment">//st.top()是nullptr之前压栈的一个节点，也就是上面st.push(t)中的那个t</span></span><br><span class="line">                st.<span class="built_in">pop</span>();  <span class="comment">//处理完了，第二次弹出节点（彻底从栈中移除）</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
+      <p>本文系统梳理 C++ 二叉树的基础概念，给出满二叉树与完全二叉树的定义，并分别提供前序、中序、后序遍历的非递归实现，最后总结一种用空指针标记的统一遍历写法。</p>
+<blockquote>
+<p><strong>前中后序，遍历自有章法</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/08/02/2020-08-02-C++%E6%A0%91/">阅读更多...</a>
+      
       
       <!-- reward -->
       
@@ -306,6 +267,10 @@
       
       <p> Cmake 是 kitware 公司以及一些开源开发者在开发几个工具套件(VTK)的过程中衍生品，最终形成体系，成为一个独立的开放源代码项目。</p>
 <p>本文主要记录书写Cmake的大致流程</p>
+<p>本文按书写 CMakeLists.txt 的流程，逐一剖析 project、ADD_EXECUTABLE、SET、FIND_LIBRARY 等常用指令，讲解内部构建与外部构建的区别，并附上可直接套用的 CMake 基础模板与常用变量速查表。</p>
+<blockquote>
+<p><strong>写好 CMake，构建事半功倍</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/">阅读更多...</a>
       
@@ -379,6 +344,10 @@
 
       
       <p>多线程是学习SLAM过程中不可缺少的一步，正确的使用多线程能使SLAM系统的运行速度提升很多，达到更高的精度和速度。本节就来学习SLAM中的多线程编程方法。</p>
+<p>本文讲解 SLAM 学习中常用的 C++ 多线程编程，从线程的概念与优点讲起，介绍了 C++11 标准库中 std::thread 的创建、join&#x2F;detach 与终止方法，并覆盖互斥锁（lock_guard、unique_lock）和信号量等同步机制。文末通过按序打印、交替打印 FooBar、哲学家进餐等经典并发例题演示实际用法。</p>
+<blockquote>
+<p><strong>多线程用好，并发计算快人一步</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/">阅读更多...</a>
       
@@ -452,6 +421,10 @@
 
       
       <p>本节主要学习ORB_SLAM2中的双目立体匹配算法的实现过程</p>
+<p>本文从源码层面学习 ORB_SLAM2 双目稀疏立体匹配的实现（主要在 frame.cc）：梳理从帧 ID 分配、图像金字塔参数设置、左右图双线程提取 ORB 特征，到特征点去畸变、双目特征匹配与深度计算的完整流程。</p>
+<blockquote>
+<p><strong>稀疏点匹配成功，稠密深度随之而来</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/">阅读更多...</a>
       
@@ -526,6 +499,10 @@
       
       <p>堆（heaps）是一种特殊的数据组织方式，<a target="_blank" rel="noopener" href="http://c.biancheng.net/stl/">STL</a> 中的 priority_queue 容器适配器底层就是采用堆来组织数据存储的。为了弄明白堆是什么，首先要搞清楚什么是树存储结构。</p>
 <p>本节就来学习C++中点的堆于优先队列。</p>
+<p>本文学习 C++ 中的堆与优先队列，先讲解二叉堆的概念、大顶堆与小顶堆的性质以及用数组存储堆的方式，再介绍 STL 中 priority_queue 的常用操作。文章指出优先队列本质上就是堆，入队出队复杂度为 O(log n)，最后以”数据流中的中位数”面试题演示堆的实际应用。</p>
+<blockquote>
+<p><strong>堆顶即最值，优先队列取舍有序</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/04/23/2020-04-23-Cpp-heap/">阅读更多...</a>
       
@@ -639,6 +616,10 @@
 <td>expr1 | expr2</td>
 </tr>
 </tbody></table>
+<p>本文介绍 C++ 位运算的常用技巧，列出位求反、移位、与或异或六种操作符，并给出求二进制中 1 的个数、对齐到 8 的倍数、取整型最值、判断符号、交换两数及提取与修改指定位等经典用法与代码。</p>
+<blockquote>
+<p><strong>位运算虽简，威力不容小觑</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/04/15/2020-04-15-Cpp-Bit/">阅读更多...</a>
       
@@ -712,6 +693,10 @@
 
       
       <p>本节用来总结SLAM学习过程中，用到的重要的opencv函数</p>
+<p>本文总结 SLAM 学习中常用的 OpenCV 函数，重点介绍 calcOpticalFlowPyrLK 金字塔 LK 光流函数的参数含义与用法，并补充 circle 画圆与 goodFeaturesToTrack 角点检测函数的参数说明及 VINS-Fusion 应用示例。</p>
+<blockquote>
+<p><strong>熟悉参数含义，SLAM 开发得心应手</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/04/14/2020-04-14-OPENCV-Function/">阅读更多...</a>
       
@@ -785,6 +770,10 @@
 
       
       <p>普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, largest out）的行为特征。通常采用堆数据结构来实现。本节来介绍C++中的优先队列。</p>
+<p>本文介绍 C++ 优先队列的概念与用法，讲解其基于堆的最高优先级先出队特性，涵盖相关定义、声明方式（默认、greater&#x2F;less、自定义仿函数、结构体重载小于号）以及基本操作成员函数，并给出基本类型、pair 与自定义类型的完整示例。</p>
+<blockquote>
+<p><strong>优先级高者先出，队列自有章法</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/04/14/2020-04-14-C-priority-queue/">阅读更多...</a>
       
@@ -858,6 +847,10 @@
 
       
       <p>ORB-SLAM 是西班牙 Zaragoza 大学的 Raúl Mur-Arta 编写的视觉 SLAM 系统。 它是一个完整的 SLAM 系统，包括视觉里程计、跟踪、回环检测，是一种完全基于稀疏特征点的单目 SLAM 系统，同时还有单目、双目、RGBD 相机的接口。其核心是使用 ORB (Orinted FAST and BRIEF) 作为整个视觉 SLAM 中的核心特征。</p>
+<p>本文介绍特征点法 SLAM 的代表作 ORB-SLAM2，概述其基于 ORB 特征、由跟踪、局部建图和闭环检测三大线程并行运行的系统框架，以及支持单目、双目、RGB-D 相机和实时运行等特点。文章还解析了代码结构，包括数据集读取、地图表示与 System 入口函数。</p>
+<blockquote>
+<p><strong>三大线程并行，稀疏特征建图定位</strong></p>
+</blockquote>
       
       <a class="article-more-link" href="/2020/04/13/2020-04-13-ORBSLAM2/">阅读更多...</a>
       

@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">3.5k字</span>
+            <span class="post-count">3.7k字</span>
         </span>
     </span>
 
@@ -99,6 +99,10 @@
 
       
       <p>多线程是学习SLAM过程中不可缺少的一步，正确的使用多线程能使SLAM系统的运行速度提升很多，达到更高的精度和速度。本节就来学习SLAM中的多线程编程方法。</p>
+<p>本文讲解 SLAM 学习中常用的 C++ 多线程编程，从线程的概念与优点讲起，介绍了 C++11 标准库中 std::thread 的创建、join&#x2F;detach 与终止方法，并覆盖互斥锁（lock_guard、unique_lock）和信号量等同步机制。文末通过按序打印、交替打印 FooBar、哲学家进餐等经典并发例题演示实际用法。</p>
+<blockquote>
+<p><strong>多线程用好，并发计算快人一步</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <p>多线程是多任务处理的一种特殊形式，多任务处理允许让电脑同时运行两个或两个以上的程序。一般情况下，两种类型的多任务处理：<strong>基于进程和基于线程</strong>。</p>

@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.2k字</span>
+            <span class="post-count">2.3k字</span>
         </span>
     </span>
 
@@ -100,6 +100,10 @@
       
       <p>根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。</p>
 <p>本文将学习制作SDK的流程。</p>
+<p>本文完整演示如何用 NDK&#x2F;JNI 将纯 C 模块打包成 aar 格式的 Android SDK：从认识 AAR 与 NDK 入手，依次经历创建 Library 模块、javah 生成 JNI 头文件、实现 C 接口函数、配置 Android.mk 与 build.gradle、ndk-build 编译 so 并打包 aar，最后将 aar 导入工程中通过 gradle 依赖使用。</p>
+<blockquote>
+<p><strong>写好 JNI 接口，C 库即可服务安卓世界</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。</p>
@@ -108,8 +112,6 @@
 
 <p><code>mylib.c</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">// Created by 郭犇 on 2021/4/1.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">char* count_mean(float *a ,int num)&#123;</span><br><span class="line">    float sum = 0.0f;</span><br><span class="line">    for(int i = 0;i&lt;=num;i++)&#123;</span><br><span class="line">        sum += a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    float mean = sum/num;</span><br><span class="line"></span><br><span class="line">    int n = 5; // 显示小数点后5位</span><br><span class="line">    int p,c;</span><br><span class="line">    //char *str=fcvt(mean,n,&amp;p,&amp;c);</span><br><span class="line">    char *str;</span><br><span class="line">    sprintf(str,&quot;%5.2f&quot;,mean);</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
 
 <p>下面用实例一步一步介绍这个过程。</p>
 <h2 id="一-认识AAR"><a href="#一-认识AAR" class="headerlink" title="一 认识AAR"></a>一 认识AAR</h2><p>Android 库的结构与 Android 应用模块的结构相同。它可以提供构建应用所需的一切内容，包括源代码、资源文件和 Android 清单。不过，Android 库将编译为您可以用作 Android 应用模块依赖项的 Android ARchive (AAR) 文件，而不是编译为在设备上运行的 APK。</p>
@@ -176,14 +178,14 @@
 <h4 id="4-配置-Android-mk"><a href="#4-配置-Android-mk" class="headerlink" title="4 配置 Android.mk"></a>4 配置 Android.mk</h4><p>该文件内容如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE    := MySDK</span><br><span class="line">LOCAL_SRC_FILES := main.c</span><br><span class="line">LOCAL_SRC_FILES += my_lib.c</span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure>
 
-<p>其中，LOCAL_MODULE  :&#x3D; mysdklibrary，这里的定义，最终生成的so文件是 libMySDK.so。</p>
+<p>其中，LOCAL_MODULE :&#x3D; mysdklibrary，这里的定义，最终生成的so文件是 libMySDK.so。</p>
 <p>此外可以加上以下语句，用于生成最终的log。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_LDLIBS :=-llog</span><br></pre></td></tr></table></figure>
 
 <h4 id="5-配置-MySDK下的build-gradle"><a href="#5-配置-MySDK下的build-gradle" class="headerlink" title="5 配置 MySDK下的build.gradle"></a>5 配置 MySDK下的build.gradle</h4><p>修改图下的位置</p>
 <p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191344975.png"></p>
 <p>其中，moduleName对应的是 SDK的名字。cFlags表示C语言对应的标准。</p>
-<p>sourceSets设置中。jni.srcDirs指的是我们放置C语言源代码的目录。 </p>
+<p>sourceSets设置中。jni.srcDirs指的是我们放置C语言源代码的目录。</p>
 <p>jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不是用来指示生成的位置，只是为后续打包aar时找到so库用的）。</p>
 <p>到这里，jni部分的工作基本完成了。</p>
 <h4 id="6-调用ndk-build生成so库。"><a href="#6-调用ndk-build生成so库。" class="headerlink" title="6 调用ndk-build生成so库。"></a>6 调用ndk-build生成so库。</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193741347.png"></p>
@@ -204,19 +206,15 @@
 <p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402193110508.png"></p>
 </li>
 <li><p>在app的build.gradle文件添加如下内容；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    flatDir &#123;</span><br><span class="line">        dirs <span class="string">&#x27;libs&#x27;</span> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    flatDir &#123;</span><br><span class="line">        dirs <span class="string">&#x27;libs&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>之后只需要添加一句gradle依赖便方便的引用了该aar文件；</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.2.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.google.android.material:material:1.3.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.constraintlayout:constraintlayout:2.0.4&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加以下这句</span></span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.aar&#x27;</span>]) </span><br><span class="line"></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.+&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.3.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.2.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.google.android.material:material:1.3.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.constraintlayout:constraintlayout:2.0.4&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加以下这句</span></span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.aar&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.+&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.3.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>至此，在Android Studio中加载本地的*.aar文件就结束。</p>
 </li>
 <li><p>修改主活动</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;AppCompatActivity&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">        List&lt;Float&gt; a = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        a.add(<span class="number">1.0f</span>);</span><br><span class="line">        a.add(<span class="number">2.0f</span>);</span><br><span class="line">        a.add(<span class="number">3.0f</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">        <span class="type">float</span> <span class="variable">ret</span> <span class="operator">=</span> MySDK.my_count_mean_funtion(a,b);</span><br><span class="line">        Log.d(<span class="string">&quot;ret&quot;</span>, Float.toString(ret));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
 </li>
 <li><p>运行程序得到正确结果</p>
 <p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210419201234352.png"></p>

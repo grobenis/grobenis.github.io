@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">651字</span>
+            <span class="post-count">777字</span>
         </span>
     </span>
 
@@ -106,6 +106,10 @@
 <li>本质矩阵E</li>
 <li>E与F的区别与联系</li>
 </ol>
+<p>本文学习 SLAM 中的对极约束，从两帧图像的匹配像素点出发推导出对极约束方程，介绍极点、基线、极线等基本概念及其”三点共面”的几何意义。文章重点讲解基础矩阵 F 与本质矩阵 E 的定义与联系（E&#x3D;t^R，F&#x3D;K^{-T}EK^{-1}），说明由匹配点求解 E 或 F 后即可分解出相机运动 R、t。</p>
+<blockquote>
+<p><strong>双视图匹配点，约束出相机运动</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="对极约束"><a href="#对极约束" class="headerlink" title="对极约束"></a>对极约束</h2><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>在已知 2D像素坐标的前提下，根据两幅图像间多组2D像素点对来估计相机的运动。</p>

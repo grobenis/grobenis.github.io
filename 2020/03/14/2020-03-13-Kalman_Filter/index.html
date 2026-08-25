@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.6k字</span>
+            <span class="post-count">2.7k字</span>
         </span>
     </span>
 
@@ -106,6 +106,10 @@
 <li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
 </ol>
 <p>本节主要来介绍kalman滤波器。</p>
+<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
+<blockquote>
+<p><strong>预测加修正，噪声终让路</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>卡尔曼滤波器是由Swerling（1958）和Kalman（1960）作为线性高斯系统中的预测和滤波技术而发明的，使用矩来定义的。KF实现了对连续状态的置信度计算。KF用矩参数来表示置信度：在时刻k，置信度用均值$ \mu_k $（一阶矩）和方差$ \sum _{k-1} $（二阶矩）表达。</p>
@@ -254,11 +258,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-nav-link">
+      <a href="/2020/03/22/2020-03-22-KMP-Algorithm/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            粒子滤波器
+            KMP-Algorithm
           
         </div>
       </a>

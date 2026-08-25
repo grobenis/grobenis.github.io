@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.8k字</span>
+            <span class="post-count">4.9k字</span>
         </span>
     </span>
 
@@ -104,6 +104,10 @@
 <p>1、打印一张棋盘格，把它贴在一个平面上，作为标定物。<br>2、通过调整标定物或摄像机的方向，为标定物拍摄一些不同方向的照片。<br>3、从照片中提取棋盘格角点。<br>4、估算理想无畸变的情况下，五个内参和六个外参。<br>5、应用最小二乘法估算实际存在径向畸变下的畸变系数。<br>6、极大似然法，优化估计，提升估计精度。</p>
 </blockquote>
 <p>参考来源：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/q-RIpy4YZUrrt9qCdR9Xvw">一文详解相机标定算法原理</a></p>
+<p>本文讲解 SLAM 中传感器的标定原理，重点介绍张正友棋盘格标定法，从相机内参、外参与畸变模型入手，推导平面单应性矩阵与求解内参的两个基本约束。文章进一步说明通过极大似然估计和 L-M 算法迭代优化参数，并简要提及 IMU 标定及相机与 IMU 之间的外参标定。</p>
+<blockquote>
+<p><strong>一块棋盘格，求解相机内外参</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="相机标定"><a href="#相机标定" class="headerlink" title="相机标定"></a>相机标定</h2><h3 id="问题引出"><a href="#问题引出" class="headerlink" title="问题引出"></a>问题引出</h3><h4 id="一-为什么要相机标定？"><a href="#一-为什么要相机标定？" class="headerlink" title="一. 为什么要相机标定？"></a>一. 为什么要相机标定？</h4><blockquote>

@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.3k字</span>
+            <span class="post-count">4.4k字</span>
         </span>
     </span>
 
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">16分钟</span>
+            <span class="post-count">17分钟</span>
         </span>
     </span>
 </div>
@@ -100,6 +100,10 @@
       
       <p>散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。<br>给定表M，存在函数f(key)，对任意给定的关键字值key，代入函数后若能得到包含该关键字的记录在表中的地址，则称表M为哈希(Hash）表，函数f(key)为哈希(Hash) 函数。</p>
 <p>本节将介绍哈希表的基本概念，与C++实现方法。</p>
+<p>本文介绍哈希表的基本概念、常用散列函数与冲突处理方法，分析影响查找性能的因素，并结合 C++11 的 unordered_map 讲解其构造函数、成员函数与遍历等实际用法。</p>
+<blockquote>
+<p><strong>以空间换时间，哈希表巧解查找之困</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ol>

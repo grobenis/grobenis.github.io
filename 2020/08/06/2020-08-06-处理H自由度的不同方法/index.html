@@ -60,7 +60,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.9k字</span>
+            <span class="post-count">3.1k字</span>
         </span>
     </span>
 
@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">10分钟</span>
+            <span class="post-count">11分钟</span>
         </span>
     </span>
 </div>
@@ -106,6 +106,10 @@
 <li>三种方法的准确性和计算时间相似，自由量测方法稍快一些； </li>
 <li>自由优化法的协方差估计似乎有很大的不同，但实际上与其他方法紧密相关。</li>
 </ol>
+<p>本文对比了基于优化的视觉惯性状态估计中处理不可观测自由度的三种方法：固定规范状态、施加规范先验与自由优化。文章指出 VI 系统存在绕重力方向的旋转与整体平移共四个测量自由度，实验表明三种方法的精度与计算时间相近，自由方法略快，且其协方差估计经变换后与其他方法的结果密切相关。</p>
+<blockquote>
+<p><strong>不可观自由度处理得当，状态估计稳健可靠</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在机器人视觉研究领域。 惯性传感器与相机融合是互补的[1]，两者的结合可提供可靠而准确的状态估计。 尽管关于VI融合的大多数研究都集中在基于滤波器的方法上[2]，[3]，[4]，但非线性优化在最近几年中变得越来越流行。 与基于滤波器的方法相比，基于非线性优化的方法受线性累积误差的影响较小。 它们的主要缺点即高计算成本，已通过硬件和理论的发展得到缓解[5]，[6]。 最近的工作[5]，[7]，[8]，[9]在使用非线性优化的挑战性环境中显示了令人印象深刻的实时VI状态估计结果。</p>
