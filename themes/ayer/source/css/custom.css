@@ -148,3 +148,12 @@ html {
 .totop:hover {
   transform: scale(1.1);
 }
+
+/* 友链页头像：缩略为 80px 圆形 */
+.article-entry img[src*="/friends/"] {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
