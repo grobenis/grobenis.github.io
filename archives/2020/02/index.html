@@ -119,13 +119,13 @@
       <article class="archive-article archive-type-post">
   <div class="archive-article-inner">
     <header class="archive-article-header">
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="archive-article-date">
+      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="archive-article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">02/15</time>
 </a>
        
 <h2 itemprop="name">
-  <a class="archive-article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
-    >利用Kalibr标定双目相机与IMU</a
+  <a class="archive-article-title" href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"
+    >利用ROS标定相机步骤与方法</a
   >
 </h2>
   
@@ -163,13 +163,13 @@
       <article class="archive-article archive-type-post">
   <div class="archive-article-inner">
     <header class="archive-article-header">
-      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="archive-article-date">
+      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="archive-article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">02/15</time>
 </a>
        
 <h2 itemprop="name">
-  <a class="archive-article-title" href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"
-    >利用ROS标定相机步骤与方法</a
+  <a class="archive-article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
+    >利用Kalibr标定双目相机与IMU</a
   >
 </h2>
   
@@ -475,7 +475,10 @@
     
     
 <div id="music">
-    <audio id="musicPlayer" controls preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
 </div>
 
 <style>
@@ -485,16 +488,48 @@
         top: 15px;
         z-index: 998;
         background: transparent;
-        padding: 0;
     }
-    #music audio {
-        width: 280px;
+    .music-btn {
+        width: 40px;
         height: 40px;
-        outline: none;
-        display: block;
+        border-radius: 50%;
+        border: none;
         background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
     }
 </style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
 
 
     

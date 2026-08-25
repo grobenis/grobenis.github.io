@@ -146,7 +146,7 @@
 
 </article>
     
-    <article id="post-2020-02-15-Calibrate_IMU_Camera_by_Kalibr" class="article article-type-post" itemscope
+    <article id="post-2020-02-15-使用ROS工具标定USB相机" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -154,8 +154,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
-    >利用Kalibr标定双目相机与IMU</a
+  <a class="article-title" href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"
+    >利用ROS标定相机步骤与方法</a
   >
 </h2>
   
@@ -165,7 +165,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-date">
+      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -187,19 +187,13 @@
       
 
       
-      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
-<ol>
-<li>生成标定板</li>
-<li>标定双目相机</li>
-<li>标定IMU</li>
-<li>联合标定</li>
-</ol>
-<p>本文介绍用 Kalibr 工具完成双目相机与 IMU 联合标定的完整流程，涵盖生成 AprilTag 标定板、标定双目相机内参与 IMU 噪声参数、录制数据并联合标定，最终得到相机到 IMU 的外参，同时整理了几类环境配置报错的解决办法。</p>
+      <p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
+<p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p>
 <blockquote>
-<p><strong>联合标定做好，视觉惯性方可融合</strong></p>
+<p><strong>标定相机参数，方能还原真实世界</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -212,7 +206,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalibr/" rel="tag">Kalibr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li></ul>
 
 
     </footer>
@@ -307,7 +301,7 @@
 
 </article>
     
-    <article id="post-2020-02-15-使用ROS工具标定USB相机" class="article article-type-post" itemscope
+    <article id="post-2020-02-15-Calibrate_IMU_Camera_by_Kalibr" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -315,8 +309,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"
-    >利用ROS标定相机步骤与方法</a
+  <a class="article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
+    >利用Kalibr标定双目相机与IMU</a
   >
 </h2>
   
@@ -326,7 +320,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-date">
+      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -348,13 +342,19 @@
       
 
       
-      <p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
-<p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p>
+      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
+<ol>
+<li>生成标定板</li>
+<li>标定双目相机</li>
+<li>标定IMU</li>
+<li>联合标定</li>
+</ol>
+<p>本文介绍用 Kalibr 工具完成双目相机与 IMU 联合标定的完整流程，涵盖生成 AprilTag 标定板、标定双目相机内参与 IMU 噪声参数、录制数据并联合标定，最终得到相机到 IMU 的外参，同时整理了几类环境配置报错的解决办法。</p>
 <blockquote>
-<p><strong>标定相机参数，方能还原真实世界</strong></p>
+<p><strong>联合标定做好，视觉惯性方可融合</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -367,7 +367,83 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalibr/" rel="tag">Kalibr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-01-15-chinese-markdown-cheatsheet" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/"
+    >Markdown语法简介</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/" class="article-date">
+  <time datetime="2020-01-14T16:00:00.000Z" itemprop="datePublished">2020-01-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文是一份 Markdown 语法速查手册，覆盖标题、引用、列表、代码块、链接、图片、强调与转义等常用语法，逐项给出书写格式与显示效果的对照示例。</p>
+<blockquote>
+<p><strong>语法记于心中，排版自然信手拈来</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
 
 
     </footer>
@@ -449,82 +525,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-01-15-chinese-markdown-cheatsheet" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/"
-    >Markdown语法简介</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/" class="article-date">
-  <time datetime="2020-01-14T16:00:00.000Z" itemprop="datePublished">2020-01-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本文是一份 Markdown 语法速查手册，覆盖标题、引用、列表、代码块、链接、图片、强调与转义等常用语法，逐项给出书写格式与显示效果的对照示例。</p>
-<blockquote>
-<p><strong>语法记于心中，排版自然信手拈来</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
 
 
     </footer>
@@ -840,7 +840,10 @@
     
     
 <div id="music">
-    <audio id="musicPlayer" controls preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
 </div>
 
 <style>
@@ -850,16 +853,48 @@
         top: 15px;
         z-index: 998;
         background: transparent;
-        padding: 0;
     }
-    #music audio {
-        width: 280px;
+    .music-btn {
+        width: 40px;
         height: 40px;
-        outline: none;
-        display: block;
+        border-radius: 50%;
+        border: none;
         background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
     }
 </style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
 
 
     

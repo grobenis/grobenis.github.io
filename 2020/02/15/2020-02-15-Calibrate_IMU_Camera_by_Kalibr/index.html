@@ -243,19 +243,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            VIO主流框架
+            使用evo工具评测SLAM
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
+      <a href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">使用evo工具评测SLAM</div>
+        <div class="article-nav-title">Markdown语法简介</div>
       </a>
     
   </nav>
@@ -634,7 +634,10 @@
     
     
 <div id="music">
-    <audio id="musicPlayer" controls preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
 </div>
 
 <style>
@@ -644,16 +647,48 @@
         top: 15px;
         z-index: 998;
         background: transparent;
-        padding: 0;
     }
-    #music audio {
-        width: 280px;
+    .music-btn {
+        width: 40px;
         height: 40px;
-        outline: none;
-        display: block;
+        border-radius: 50%;
+        border: none;
         background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
     }
 </style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
 
 
     
