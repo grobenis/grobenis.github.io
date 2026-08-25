@@ -585,22 +585,31 @@
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
     
-    <div id="music">
     
-    
-    
-    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
-        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+<div id="music">
+    <audio id="musicPlayer" controls preload="metadata" src="/music/zengjingdeni.mp3"></audio>
 </div>
 
 <style>
     #music {
         position: fixed;
         right: 15px;
-        bottom: 0;
+        bottom: 20px;
         z-index: 998;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        padding: 6px 10px;
+    }
+    #music audio {
+        width: 280px;
+        height: 40px;
+        outline: none;
+        display: block;
     }
 </style>
+
+
     
   </div>
 </body>
