@@ -72,6 +72,80 @@
     
     
     
+    <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/15/2020-02-15-VIO_Framework/"
+    >VIO主流框架</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
+<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
+<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
+<blockquote>
+<p><strong>视觉惯性融合，约束决定精度</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-VIO_Framework/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-2020-02-15-Calibrate_IMU_Camera_by_Kalibr" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -155,7 +229,7 @@
 
 </article>
     
-    <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
+    <article id="post-2020-02-19-How_to_use_evo" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -163,8 +237,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-VIO_Framework/"
-    >VIO主流框架</a
+  <a class="article-title" href="/2020/02/15/2020-02-19-How_to_use_evo/"
+    >使用evo工具评测SLAM</a
   >
 </h2>
   
@@ -174,10 +248,14 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
+  </div>
+
       
       
       
@@ -192,14 +270,14 @@
       
 
       
-      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
-<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
-<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
+      <p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/MichaelGrupp/evo">github地址</a></p>
+<p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p>
 <blockquote>
-<p><strong>视觉惯性融合，约束决定精度</strong></p>
+<p><strong>轨迹评估有据，SLAM 精度了然</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-VIO_Framework/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-19-How_to_use_evo/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -212,7 +290,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
 
 
     </footer>
@@ -290,84 +368,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-02-19-How_to_use_evo" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-19-How_to_use_evo/"
-    >使用evo工具评测SLAM</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-date">
-  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/MichaelGrupp/evo">github地址</a></p>
-<p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p>
-<blockquote>
-<p><strong>轨迹评估有据，SLAM 精度了然</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/02/15/2020-02-19-How_to_use_evo/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
 
 
     </footer>
@@ -847,18 +847,17 @@
     #music {
         position: fixed;
         right: 15px;
-        bottom: 20px;
+        top: 15px;
         z-index: 998;
-        background: rgba(255, 255, 255, 0.92);
-        border-radius: 10px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-        padding: 6px 10px;
+        background: transparent;
+        padding: 0;
     }
     #music audio {
         width: 280px;
         height: 40px;
         outline: none;
         display: block;
+        background: transparent;
     }
 </style>
 
