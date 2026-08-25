@@ -1,0 +1,145 @@
+/* =============================================================================
+   站点自定义样式（custom.css）
+   1) 代码高亮美化：One Dark 配色 + 代码块 UI 升级
+   2) 页面动效：卡片 hover、平滑滚动、链接过渡
+   -----------------------------------------------------------------------------
+   本文件是主题 main.css 之后的覆盖层，选择器特异性更高，安全覆盖。
+   ============================================================================= */
+
+/* ---------- 1. 代码高亮：One Dark 配色（VS Code 同款） ---------- */
+.article-entry .highlight {
+  background: #282c34;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
+  transition: box-shadow 0.3s ease;
+}
+.article-entry .highlight:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+.article-entry .highlight .gutter pre .line,
+.article-entry .highlight .gutter {
+  color: #4b5263;
+}
+.article-entry .highlight pre,
+.article-entry .highlight {
+  color: #abb2bf;
+}
+.article-entry .highlight .line {
+  color: #abb2bf;
+}
+.article-entry .highlight figcaption {
+  color: #5c6370;
+}
+
+/* token 配色 */
+.article-entry .highlight .comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.article-entry .highlight .keyword,
+.article-entry .highlight .function .keyword,
+.article-entry .highlight .class .params {
+  color: #c678dd;
+}
+.article-entry .highlight .string,
+.article-entry .highlight .value {
+  color: #98c379;
+}
+.article-entry .highlight .number {
+  color: #d19a66;
+}
+.article-entry .highlight .title,
+.article-entry .highlight .function .title,
+.article-entry .highlight .at_rule,
+.article-entry .highlight .preprocessor,
+.article-entry .highlight .preprocessor .keyword {
+  color: #61afef;
+}
+.article-entry .highlight .type,
+.article-entry .highlight .class {
+  color: #e5c07b;
+}
+.article-entry .highlight .built_in,
+.article-entry .highlight .attribute,
+.article-entry .highlight .tag,
+.article-entry .highlight .selector {
+  color: #e06c75;
+}
+.article-entry .highlight .literal,
+.article-entry .highlight .operator,
+.article-entry .highlight .symbol,
+.article-entry .highlight .meta {
+  color: #56b6c2;
+}
+.article-entry .highlight .params,
+.article-entry .highlight .doctype,
+.article-entry .highlight .function {
+  color: #abb2bf;
+}
+.article-entry .highlight .variable,
+.article-entry .highlight .name {
+  color: #e06c75;
+}
+
+/* 行内代码 */
+.article-entry code {
+  background: #f0f2f5;
+  color: #c7254e;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+/* 代码块滚动条细化 */
+.article-entry .highlight::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+}
+.article-entry .highlight::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- 2. 页面动效升级 ---------- */
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 首页文章卡片 hover：轻浮起 + 阴影 */
+.article-inner {
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  border-radius: 10px;
+}
+.article-inner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* 通用链接过渡 */
+.content a {
+  transition: color 0.25s ease;
+}
+
+/* 封面区 hover 微动（logo 轻微放大） */
+.cover-logo {
+  transition: transform 0.35s ease;
+}
+.cover-logo:hover {
+  transform: scale(1.05);
+}
+
+/* 图片圆角（正文插图更柔和） */
+.article-entry img {
+  border-radius: 6px;
+}
+
+/* 音乐按钮与返回顶部按钮 hover 过渡 */
+.music-btn,
+.totop {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.music-btn:hover,
+.totop:hover {
+  transform: scale(1.1);
+}
