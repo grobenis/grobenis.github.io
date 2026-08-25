@@ -1,5 +1,20 @@
 [
   {
+    "slug": "2020-02-15-VIO_Framework",
+    "src": "![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)",
+    "reason": "源文件在仓库中不存在，已注释"
+  },
+  {
+    "slug": "2020-02-15-VIO_Framework",
+    "src": "![image-20191202161618980](/home/guoben/ICE-BA因子图.png)",
+    "reason": "源文件在仓库中不存在，已注释"
+  },
+  {
+    "slug": "2020-03-13-Kalman_Filter",
+    "src": "![image-20200330234714941](C:\\Users\\郭犇\\AppData\\Roaming\\Typora\\typora-user-images\\image-20200330234714941.png)",
+    "reason": "本地 Typora 绝对路径，源文件在仓库中不存在，已注释"
+  },
+  {
     "slug": "2020-03-31-各种排序算法",
     "src": "2020-03-31-LeeCode-CheckDaily/849589-20180402133438219-1946132192.png",
     "reason": "源文件确实不存在，已在 markdown 中注释掉对应 <img> 标签"
@@ -11,23 +26,8 @@
   },
   {
     "slug": "2021-06-19-可穿戴算法中的压力监测",
-    "src": "../../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/hrv_20160426.png",
-    "reason": "OneDrive 同步路径，已不可达，已在 markdown 中完整注释掉 <img> 标签（整个 <img> 都在 <!-- --> 内）",标签"
-  },
-  {
-    "slug": "2021-06-19-可穿戴算法中的压力监测",
-    "src": "../../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201203949490.png",
-    "reason": "OneDrive 同步路径，已不可达，已在 markdown 中完整注释掉 <img> 标签（整个 <img> 都在 <!-- --> 内）",标签"
-  },
-  {
-    "slug": "2021-06-19-可穿戴算法中的压力监测",
-    "src": "../../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210201103913597.png",
-    "reason": "OneDrive 同步路径，已不可达，已在 markdown 中完整注释掉 <img> 标签（整个 <img> 都在 <!-- --> 内）",标签"
-  },
-  {
-    "slug": "2021-06-19-可穿戴算法中的压力监测",
-    "src": "../../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/image-20210203140823019.png",
-    "reason": "OneDrive 同步路径，已不可达，已在 markdown 中完整注释掉 <img> 标签（整个 <img> 都在 <!-- --> 内）",标签"
+    "src": "../../../OneDrive - buaa.edu.cn/健康算法/压力监测/压力检测调研.assets/*.png (4 张)",
+    "reason": "OneDrive 同步路径已不可达，已在 markdown 中完整注释掉 <img> 标签"
   },
   {
     "slug": "2021-07-04-通过ndkd打包aar格式的SDK",
