@@ -17,6 +17,11 @@
 .article-entry .highlight:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
 }
+.article-entry .highlight pre,
+.article-entry .highlight table,
+.article-entry pre {
+  background: #282c34;
+}
 .article-entry .highlight .gutter pre .line,
 .article-entry .highlight .gutter {
   color: #4b5263;
