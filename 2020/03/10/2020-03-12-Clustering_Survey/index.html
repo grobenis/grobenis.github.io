@@ -107,10 +107,10 @@
 <li>Turbopixel算法</li>
 <li>SLIC算法</li>
 </ol>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p>
-<p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组/类的中心点。</p>
+<p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p>
 <p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p>
 <p><strong>算法步骤</strong></p>
 <ol>
@@ -122,17 +122,17 @@
 </li>
 <li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p>
 <p>下图演示了均值漂移聚类的计算步骤：</p>
-<p><img src="/2020/03/10/2020-03-12-Clustering_Survey/..%5Cimages%5C%E8%81%9A%E7%B1%BB%5CMeanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法"></p>
+<p><img src="/..%5Cimages%5C%E8%81%9A%E7%B1%BB%5CMeanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法"></p>
 </li>
 </ol>
 <p><strong>算法评价</strong></p>
 <p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p>
-<p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小/半径</p>
+<p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p>
 <h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p>
 <p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p>
 <p><strong>算法步骤</strong></p>
 <ol>
-<li>选择一些类/组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li>
+<li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li>
 <li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li>
 <li>计算每一类中中心点作为新的中心点。</li>
 <li>重复以上步骤，直至聚类中心变化在一定范围内为止</li>
@@ -141,10 +141,10 @@
 <p>优点：简单快速高效；对异常值不太敏感</p>
 <p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p>
 <p>下图演示了k均值聚类的过程：</p>
-<p><img src="/2020/03/10/2020-03-12-Clustering_Survey/..%5Cimages%5C%E8%81%9A%E7%B1%BB%5Ck%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" alt></p>
+<p><img src="/..%5Cimages%5C%E8%81%9A%E7%B1%BB%5Ck%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif"></p>
 <h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p>
 <p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p>
-<p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$<br>J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞<br>$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p>
+<p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$<br>J_m &#x3D; \sum^N_{i&#x3D;1}\sum^C_{j&#x3D;1}U^m_{ij}||x_i-c_j||^2 ,1&lt;&#x3D;m&lt;∞<br>$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p>
 <p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p>
 <p><strong>算法思路</strong></p>
 <p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p>
@@ -190,12 +190,12 @@
 <p>像素相似性与向量距离成反比。</p>
 <p><strong>算法步骤</strong></p>
 <p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p>
-<p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p>
+<p>步距设置为：$S&#x3D;\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p>
 <p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p>
-<p>距离计算公式如下：<br>$$<br>d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}<br>$$</p>
-<p>$$<br>d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}<br>$$</p>
-<p>$$<br>D’=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}<br>$$</p>
-<p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p>
+<p>距离计算公式如下：<br>$$<br>d_c&#x3D;\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}<br>$$</p>
+<p>$$<br>d_s&#x3D;\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}<br>$$</p>
+<p>$$<br>D’&#x3D;\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}<br>$$</p>
+<p>其中，$N_S&#x3D;S&#x3D;\sqrt{\frac{N}{K}}$</p>
 <p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p>
 <p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p>
 <p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p>
@@ -260,7 +260,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -278,19 +278,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            隐马尔可夫模型
+            回环检测与DBoW2库
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
+        <div class="article-nav-title">隐马尔可夫模型</div>
       </a>
     
   </nav>
@@ -363,7 +363,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -418,6 +418,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -662,6 +666,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

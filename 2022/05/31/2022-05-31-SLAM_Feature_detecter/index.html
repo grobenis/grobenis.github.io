@@ -98,7 +98,7 @@
       
 
       
-      <a id="more"></a>
+      <span id="more"></span>
 
 <h3 id="特征点"><a href="#特征点" class="headerlink" title="特征点"></a>特征点</h3><p>人工设计的特征点该具有的特性</p>
 <blockquote>
@@ -118,12 +118,12 @@
 </ol>
 <h3 id="常用角点检测算法"><a href="#常用角点检测算法" class="headerlink" title="常用角点检测算法"></a>常用角点检测算法</h3><p>SLAM中常用的角点检测算法整理如下：</p>
 <p>本文根据ORBSLAM3中的综述表格进行总结：</p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png" alt="image-20220531214022010"></p>
-<h2 id><a href="#" class="headerlink" title></a></h2><h4 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h4><ol>
+<p><img src="/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png" alt="image-20220531214022010"></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h4 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h4><ol>
 <li><p>单纯的FAST关键点，没有描述子</p>
 </li>
 <li><p>FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思<br>想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）：</p>
-<img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855" style="zoom:50%;">
+<img src="2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855" style="zoom:50%;" />
 
 <ol>
 <li>在图像中选取像素p，假设它的亮度为$I_p$。</li>
@@ -141,12 +141,12 @@
 <li>其次，FAST 角点不具有方向信息。而且，由于它固定取半径为3 的圆，存在尺度问题：远处看着像是角点的地方，接近后看可能就不是角点了。</li>
 </ul>
 <h4 id="Harris特征点"><a href="#Harris特征点" class="headerlink" title="Harris特征点"></a>Harris特征点</h4><p>OPENCV描述：In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by <strong>Chris Harris &amp; Mike Stephens</strong> in their paper <strong>A Combined Corner and Edge Detector</strong> in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. </p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png" alt="image-20220615153225850"></p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png" alt="image-20220615154043028"></p>
+<p><img src="/2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png" alt="image-20220615153225850"></p>
+<p><img src="/2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png" alt="image-20220615154043028"></p>
 <blockquote>
-<p><a href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html" target="_blank" rel="noopener">openCV链接</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html">openCV链接</a></p>
 </blockquote>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png" alt="image-20220615154149887"></p>
+<p><img src="/2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png" alt="image-20220615154149887"></p>
 <h4 id="Shi-Tomas特征点"><a href="#Shi-Tomas特征点" class="headerlink" title="Shi-Tomas特征点"></a>Shi-Tomas特征点</h4><blockquote>
 <p>Harris 和 Shi-Tomasi 都是基于梯度计算的角点检测方法，Shi-Tomasi 的效果要好一些。</p>
 <ul>
@@ -154,14 +154,14 @@
 </ul>
 <p>想要提高检测速度的话，可以考虑基于模板的方法：FAST角点检测算法。该算法原理比较简单，但实时性很强。</p>
 <p>Harris 角点检测中每个窗口的分数公式是将矩阵 M 的行列式与 M 的迹相减：</p>
-<p><img src="https://www.zhihu.com/equation?tex=R+%3D+%CE%BB_1%CE%BB_2+%E2%88%92+k+%28%CE%BB_1+%2B+%CE%BB_2%29%5E2+%5C%5C" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=R+=+%CE%BB_1%CE%BB_2+%E2%88%92+k+(%CE%BB_1+++%CE%BB_2)%5E2+%5C%5C" alt="[公式]"></p>
 <p>由于 Harris 角点检测算法的稳定性和 k 值有关，而 k 是个经验值，不好设定最佳值。</p>
 <p>Shi-Tomasi 发现，角点的稳定性其实和矩阵 M 的较小特征值有关，于是直接用较小的那个特征值作为分数。这样就不用调整k值了。</p>
 <p>所以 Shi-Tomasi 将分数公式改为如下形式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=R+%3D+min+%28%CE%BB_1%2C+%CE%BB_2%29+%5C%5C" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=R+=+min+(%CE%BB_1,+%CE%BB_2)+%5C%5C" alt="[公式]"></p>
 <p>和 Harris 一样，如果该分数大于设定的阈值，我们就认为它是一个角点。</p>
 <p>我们可以把它绘制到 λ1 ～ λ2 空间中，就会得到下图：</p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg" alt="img"></p>
+<p><img src="/2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg" alt="img"></p>
 </blockquote>
 <h4 id="ORB特征点"><a href="#ORB特征点" class="headerlink" title="ORB特征点"></a>ORB特征点</h4><ol>
 <li>改进了FAST关键点;</li>
@@ -170,9 +170,9 @@
 </ol>
 <h5 id="改进FAST关键点"><a href="#改进FAST关键点" class="headerlink" title="改进FAST关键点"></a>改进FAST关键点</h5><p>针对FAST 角点不具有方向性和尺度的弱点，ORB 添加了尺度和旋转的描述。尺度不变性由构建图像金字塔¬，并在金字塔的每一层上检测角点来实现。而特征的旋转是由灰度质心法（Intensity Centroid）实现的。我们稍微介绍一下。质心是指以图像块灰度值作为权重的中心。其具体操作步骤如下[35]：</p>
 <ol>
-<li><p>在一个小的图像块B 中，定义图像块的矩为：<br>$$<br>m_{pq} = \sum_{x;y\in \Beta} x^py^qI(x; y); p,q = {0,1}<br>$$</p>
+<li><p>在一个小的图像块B 中，定义图像块的矩为：<br>  $$<br>  m_{pq} &#x3D; \sum_{x;y\in \Beta} x^py^qI(x; y); p,q &#x3D; {0,1}<br>  $$</p>
 </li>
-<li><p>通过矩可以找到图像块的质心：<br>$$<br>C = (\frac{m_{10}}{m_{00}}，\frac{m_{10}}{m_{00}})<br>$$<br>连接图像块的几何中心O 与质心C，得到一个方向向量$OC$,于是特征点的方向可以定义为$\theta = \arctan{\frac{m01}{m10}}$。</p>
+<li><p>通过矩可以找到图像块的质心：<br>  $$<br>  C &#x3D; (\frac{m_{10}}{m_{00}}，\frac{m_{10}}{m_{00}})<br>  $$<br>  连接图像块的几何中心O 与质心C，得到一个方向向量$OC$,于是特征点的方向可以定义为$\theta &#x3D; \arctan{\frac{m01}{m10}}$。</p>
 </li>
 </ol>
 <p>通过以上方法，FAST 角点便具有了尺度与旋转的描述，大大提升了它们在不同图像之间表述的鲁棒性。所以在ORB 中，把这种改进后的FAST 称为Oriented FAST。</p>
@@ -187,7 +187,7 @@
 </blockquote>
 <h4 id="SURF"><a href="#SURF" class="headerlink" title="SURF"></a>SURF</h4><blockquote>
 <p>SIFT和SURF由于计算复杂度的原因在SLAM中应用较少</p>
-<p>链接：<a href="https://www.cnblogs.com/multhree/p/11296945.html" target="_blank" rel="noopener">https://www.cnblogs.com/multhree/p/11296945.html</a></p>
+<p>链接：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/multhree/p/11296945.html">https://www.cnblogs.com/multhree/p/11296945.html</a></p>
 </blockquote>
 
       
@@ -258,7 +258,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2022/05/31/2022-05-31-SLAM_Feature_detecter/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2022/05/31/2022-05-31-SLAM_Feature_detecter/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -361,7 +361,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -416,6 +416,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -660,6 +664,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

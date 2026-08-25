@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">505字</span>
+            <span class="post-count">508字</span>
         </span>
     </span>
 
@@ -100,7 +100,7 @@
       
       <p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
 <p>本节将用来介绍概率图模型。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p>
 <p><strong>分类</strong></p>
@@ -115,8 +115,8 @@
 <p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p>
 <p>性质：</p>
 <p>如果父节点被观测，则其子节点独立；</p>
-<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p>
-<p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p>
+<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)&#x3D;\Pi(x_i|x_{pa_i})$</p>
+<p>无向图：$P(x)&#x3D;\cfrac{1}{Z}\Pi^k_{i&#x3D;1}\phi_{c_i}(x_{c_i})$</p>
 <p>道德图：有向图 → 无向图</p>
 <p>出发点：</p>
 <ol>
@@ -124,7 +124,7 @@
 <li>简便</li>
 </ol>
 <p>因子图把因子引入图里边。</p>
-<p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph"></p>
+<p><img src="/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph"></p>
 
       
       <!-- reward -->
@@ -179,7 +179,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/14/2020-03-14-Probability_graph_model/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -197,11 +197,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-14-GMM/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Kalman滤波器学习
+            高斯混合模型
           
         </div>
       </a>
@@ -282,7 +282,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -337,6 +337,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -581,6 +585,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

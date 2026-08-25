@@ -100,7 +100,7 @@
       
       <p>Nerf(neural  radiance  field)神经辐射场</p>
 <p>本文用来学习Nerf；</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="NeRF-Representing-Scenes-asNeural-Radiance-Fields-for-View-Synthesis"><a href="#NeRF-Representing-Scenes-asNeural-Radiance-Fields-for-View-Synthesis" class="headerlink" title="NeRF: Representing Scenes asNeural Radiance Fields for View Synthesis"></a>NeRF: Representing Scenes asNeural Radiance Fields for View Synthesis</h2><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>NeRF可以简要概括为用一个MLP神经网络去隐式地学习一个静态3D场景。为了训练网络，针对一个静态场景，需要提供大量相机参数已知的图片。基于这些图片训练好的神经网络，即可以从任意角度渲染出图片结果了。理解NeRF主要需要理解三个方面：</p>
 <ul>
@@ -119,7 +119,7 @@
 <li>使用经典的体积渲染技术将这些颜色和密度累积到 2D 图像中。</li>
 </ol>
 <p>​        因为这个过程是自然可微的，我们可以使用梯度下降来优化这个模型，通过最小化每个观察到的图像和从我们的表示中渲染的相应视图之间的误差。跨多个视图最小化此错误可鼓励网络通过将高体积密度和准确颜色分配给包含真正底层场景内容的位置来预测场景的连贯模型。</p>
-<p><img src="/2022/07/24/2022-7-24-Nerf/image-20220802001655110.png" alt="image-20220802001655110"></p>
+<p><img src="/2022-7-24-Nerf/image-20220802001655110.png" alt="image-20220802001655110"></p>
 <p>图 1：我们提出了一种方法，可以优化来自一组输入图像的场景的连续 5D 神经辐射场表示（任意连续位置的体积密度和视图相关颜色）。 我们使用体积渲染技术沿光线累积此场景表示的样本，以从任何视点渲染场景。 在这里，我们可视化在周围半球上随机捕获的合成鼓场景的 100 个输入视图集，并展示了从优化的 NeRF 表示中呈现的两个新视图。</p>
 <p>​        图 2 可视化了整个流程。我们发现，针对复杂场景优化神经辐射场表示的基本实现不能收敛到足够高分辨率的表示，并且在每个摄像机光线所需的样本数量方面效率低下。我们通过使用位置编码转换输入 5D 坐标来解决这些问题，使 MLP 能够表示更高频率的函数，并且我们提出了一种分层采样程序来减少充分采样这种高频场景表示所需的查询数量。我们的方法继承体积表示的好处：两者都可以表示复杂的现实世界几何和外观，并且非常适合使用投影图像进行基于梯度的优化。至关重要的是，我们的方法在对复杂场景进行高分辨率建模时克服了离散体素网格的高昂存储成本。总之，我们的技术贡献是：– 一种将具有复杂几何形状和材料的连续场景表示为 5D 神经辐射场的方法，参数化为基本 MLP 网络。– 基于经典体积渲染技术的可微渲染过程，我们使用它来优化这些来自标准 RGB 图像的表示。这包括一种分层采样策略，用于将 MLP 的容量分配给具有可见场景内容的空间。</p>
 <p>​        我们发现，针对复杂场景优化神经辐射场表示的基本实现不能收敛到足够高分辨率的表示，并且在每摄像机光线所需的样本数量方面效率低下。我们通过使用位置编码转换输入 5D 坐标来解决这些问题，使 MLP 能够表示更高频率的函数，并且我们提出了一种分层采样程序来减少充分采样这种高频场景表示所需的查询数量。</p>
@@ -130,25 +130,25 @@
 <li>将每个输入 5D 坐标映射到更高维空间的位置编码，这使我们能够成功地优化神经辐射场以表示高频场景内容。</li>
 </ol>
 <p>​        我们证明了我们得到的神经辐射场方法在数量和质量上都优于 state-of-最先进的视图合成方法，包括将神经 3D 表示拟合到场景的工作以及训练深度卷积网络以预测采样体积表示的工作。据我们所知，本文提出了第一个连续的神经场景表示，它能够从在自然环境中捕获的 RGB 图像中渲染真实物体和场景的高分辨率照片般逼真的新颖视图。</p>
-<h3 id="三-用神经辐射场表示场景"><a href="#三-用神经辐射场表示场景" class="headerlink" title="三 用神经辐射场表示场景"></a>三 用神经辐射场表示场景</h3><p><img src="/2022/07/24/2022-7-24-Nerf/image-20220803074258414.png" alt="image-20220803074258414"></p>
-<p>NeRF函数是将一个连续的场景表示为一个输入为5D向量的函数，包括一个空间点的3D坐标位置 x=(x,y,z) ，以及视角方向 d=(θ,ϕ) 。这个神经网络可以写作：<br>$$<br>F_Θ:(x,d)→(c,σ)<br>$$<br>输出结果中， σ是对应3D位置（或者说是体素）的密度，而 c=(r,g,b) 是视角相关的该3D点颜色。在具体的实现中， x 首先输入到MLP网络中，并输出 σ 和中间特征，中间特征和 d 再输入到额外的全连接层中并预测颜色。因此，体素密度只和空间位置有关，而颜色则与空间位置以及观察的视角都有关系。基于view dependent 的颜色预测，能够得到不同视角下不同的光照效果，非常惊艳。可以看出，NeRF函数的表示非常简单。</p>
-<h4 id="原文翻译"><a href="#原文翻译" class="headerlink" title="原文翻译"></a>原文翻译</h4><p>我们将连续场景表示为 5D 向量值函数，其输入是 3D 位置 x= (x,y,z) 和 2D 观察方向 (θ,φ)，其输出是发射颜色 c= (r,g,b) 和 体积密度σ。 在实践中，我们表示</p>
+<h3 id="三-用神经辐射场表示场景"><a href="#三-用神经辐射场表示场景" class="headerlink" title="三 用神经辐射场表示场景"></a>三 用神经辐射场表示场景</h3><p><img src="/2022-7-24-Nerf/image-20220803074258414.png" alt="image-20220803074258414"></p>
+<p>NeRF函数是将一个连续的场景表示为一个输入为5D向量的函数，包括一个空间点的3D坐标位置 x&#x3D;(x,y,z) ，以及视角方向 d&#x3D;(θ,ϕ) 。这个神经网络可以写作：<br>$$<br>F_Θ:(x,d)→(c,σ)<br>$$<br>输出结果中， σ是对应3D位置（或者说是体素）的密度，而 c&#x3D;(r,g,b) 是视角相关的该3D点颜色。在具体的实现中， x 首先输入到MLP网络中，并输出 σ 和中间特征，中间特征和 d 再输入到额外的全连接层中并预测颜色。因此，体素密度只和空间位置有关，而颜色则与空间位置以及观察的视角都有关系。基于view dependent 的颜色预测，能够得到不同视角下不同的光照效果，非常惊艳。可以看出，NeRF函数的表示非常简单。</p>
+<h4 id="原文翻译"><a href="#原文翻译" class="headerlink" title="原文翻译"></a>原文翻译</h4><p>我们将连续场景表示为 5D 向量值函数，其输入是 3D 位置 x&#x3D; (x,y,z) 和 2D 观察方向 (θ,φ)，其输出是发射颜色 c&#x3D; (r,g,b) 和 体积密度σ。 在实践中，我们表示</p>
 <h3 id="四-基于辐射场的体素渲染算法"><a href="#四-基于辐射场的体素渲染算法" class="headerlink" title="四 基于辐射场的体素渲染算法"></a>四 基于辐射场的体素渲染算法</h3><p>NeRF 函数得到的是一个3D空间点的颜色和密度信息，但当用一个相机去对这个场景成像时，所得到的2D 图像上的一个像素实际上对应了一条从相机出发的射线上的所有连续空间点。我们需要通过渲染算法从这条射线上的所有点得到这条射线的最终渲染颜色。同时，为了保证网络可以训练，NeRF中需要采用可微的渲染方法。</p>
-<h4 id="经典的提速渲染方法"><a href="#经典的提速渲染方法" class="headerlink" title="经典的提速渲染方法"></a>经典的提速渲染方法</h4><p>论文中首先介绍了经典的体素渲染volume rendering [2] 方法。体素密度 σ(x) 可以被理解为，一条射线 r 在经过 x 处的一个无穷小的粒子时被终止的概率，这个概率是可微的。换句话说，有点类似于这个点的不透明度。由于一条射线上的点是连续的，自然的想法是这条射线的颜色可以由积分的方式得到。将一个相机射线标记为 r(t)=o+td ，这里 o 是射线原点， d 是前述的相机射线角度，t 的近段和远端边界分别为 tn 以及 tf 。那么这条射线的颜色，则可以用积分的方式表示为：<br>$$<br>C(r)=\int_{t_{n}}^{t_{f}} T(t) \cdot \sigma(\boldsymbol{r}(t)) \cdot \boldsymbol{c}(\boldsymbol{r}(t), \boldsymbol{d}) d t<br>$$<br>此处, $T(t)$ 是射线从 $t_{n}$ 到 $t$ 这一段路径上的累计透明度，可以被理解为这条射线从 tn 到 t 一路上没有击中任何粒子的概率。其具体的形式为：<br>$$<br>T(t)=\exp \left(-\int_{t_{n}}^{t} \sigma(\boldsymbol{r}(s)) d s\right)<br>$$<br>但是，实际应用中，我们并不可能够用NeRF去估计连续的3D点的信息，因此就需要数值近似的方法。这里也是NeRF中非常核心的一个部分。</p>
-<h4 id="基于分段随机采样的离散近似volume-rendering方式"><a href="#基于分段随机采样的离散近似volume-rendering方式" class="headerlink" title="基于分段随机采样的离散近似volume rendering方式"></a>基于分段随机采样的离散近似volume rendering方式</h4><p>一个直观且很常用的思路是，在需要求积的区域均匀地采样N个点进行近似计算。但作者提出，这样的方式会导致MLP只需要学习一系列离散点的信息，最终会限制NeRF的分辨率，使得最终生成的结果不够清晰。作为替代，作者提出了一种简单有效的方法，如上图所示，首先将射线需要积分的区域分为N份，然后在每一个小区域中进行均匀随机采样。这样的方式能够在只采样离散点的前提下，保证采样位置的连续性。第i个采样点可以表示为：<br>$$<br>t_{i}=\boldsymbol{U}\left[t_{n}+\frac{i-1}{N}\left(t_{f}-t_{n}\right), t_{n}+\frac{i}{N}\left(t_{f}-t_{n}\right)\right]<br>$$<br>基于这些采样点, 我们可以将上面的积分简化为求和的形式：<br>$$<br>\hat{C}(\boldsymbol{r})=\sum_{i=1}^{N} T_{i} \cdot\left(1-\exp \left(-\sigma_{i} \cdot \delta_{i}\right)\right) \cdot \boldsymbol{c}<em>{i}<br>$$<br>其中, $\delta</em>{i}=t_{i+1}-t_{i}$ 是邻近两个采样点之间的距离。此处 $T(t)$ 为:<br>$$<br>T_{i}=\exp \left(-\sum_{j=1}^{i-1} \sigma_{j} \delta_{j}\right)<br>$$<br>同样, 基于分段采样的渲染方式也是可微的。因此, 基于这样的渲染方式, 我们就可以用NeRF函 数从任意角度中洹染出图片。</p>
+<h4 id="经典的提速渲染方法"><a href="#经典的提速渲染方法" class="headerlink" title="经典的提速渲染方法"></a>经典的提速渲染方法</h4><p>论文中首先介绍了经典的体素渲染volume rendering [2] 方法。体素密度 σ(x) 可以被理解为，一条射线 r 在经过 x 处的一个无穷小的粒子时被终止的概率，这个概率是可微的。换句话说，有点类似于这个点的不透明度。由于一条射线上的点是连续的，自然的想法是这条射线的颜色可以由积分的方式得到。将一个相机射线标记为 r(t)&#x3D;o+td ，这里 o 是射线原点， d 是前述的相机射线角度，t 的近段和远端边界分别为 tn 以及 tf 。那么这条射线的颜色，则可以用积分的方式表示为：<br>$$<br>C(r)&#x3D;\int_{t_{n}}^{t_{f}} T(t) \cdot \sigma(\boldsymbol{r}(t)) \cdot \boldsymbol{c}(\boldsymbol{r}(t), \boldsymbol{d}) d t<br>$$<br>此处, $T(t)$ 是射线从 $t_{n}$ 到 $t$ 这一段路径上的累计透明度，可以被理解为这条射线从 tn 到 t 一路上没有击中任何粒子的概率。其具体的形式为：<br>$$<br>T(t)&#x3D;\exp \left(-\int_{t_{n}}^{t} \sigma(\boldsymbol{r}(s)) d s\right)<br>$$<br>但是，实际应用中，我们并不可能够用NeRF去估计连续的3D点的信息，因此就需要数值近似的方法。这里也是NeRF中非常核心的一个部分。</p>
+<h4 id="基于分段随机采样的离散近似volume-rendering方式"><a href="#基于分段随机采样的离散近似volume-rendering方式" class="headerlink" title="基于分段随机采样的离散近似volume rendering方式"></a>基于分段随机采样的离散近似volume rendering方式</h4><p>一个直观且很常用的思路是，在需要求积的区域均匀地采样N个点进行近似计算。但作者提出，这样的方式会导致MLP只需要学习一系列离散点的信息，最终会限制NeRF的分辨率，使得最终生成的结果不够清晰。作为替代，作者提出了一种简单有效的方法，如上图所示，首先将射线需要积分的区域分为N份，然后在每一个小区域中进行均匀随机采样。这样的方式能够在只采样离散点的前提下，保证采样位置的连续性。第i个采样点可以表示为：<br>$$<br>t_{i}&#x3D;\boldsymbol{U}\left[t_{n}+\frac{i-1}{N}\left(t_{f}-t_{n}\right), t_{n}+\frac{i}{N}\left(t_{f}-t_{n}\right)\right]<br>$$<br>基于这些采样点, 我们可以将上面的积分简化为求和的形式：<br>$$<br>\hat{C}(\boldsymbol{r})&#x3D;\sum_{i&#x3D;1}^{N} T_{i} \cdot\left(1-\exp \left(-\sigma_{i} \cdot \delta_{i}\right)\right) \cdot \boldsymbol{c}<em>{i}<br>$$<br>其中, $\delta</em>{i}&#x3D;t_{i+1}-t_{i}$ 是邻近两个采样点之间的距离。此处 $T(t)$ 为:<br>$$<br>T_{i}&#x3D;\exp \left(-\sum_{j&#x3D;1}^{i-1} \sigma_{j} \delta_{j}\right)<br>$$<br>同样, 基于分段采样的渲染方式也是可微的。因此, 基于这样的渲染方式, 我们就可以用NeRF函 数从任意角度中洹染出图片。</p>
 <h3 id="五-NERF的训练过程"><a href="#五-NERF的训练过程" class="headerlink" title="五 NERF的训练过程"></a>五 NERF的训练过程</h3><p>介绍完NeRF的基本原理，论文接下来介绍了NeRF中的两个重要Trick，以及训练方式。</p>
 <h4 id="1-训练高质量NeRF的重要技巧-——-位置信息编码"><a href="#1-训练高质量NeRF的重要技巧-——-位置信息编码" class="headerlink" title="1. 训练高质量NeRF的重要技巧 —— 位置信息编码"></a>1. 训练高质量NeRF的重要技巧 —— 位置信息编码</h4><p>NeRF函数的输入为位置和角度信息，作者发现直接将位置和角度作为网络的输入得到的结果是相对模糊的（见实验部分）。而用positon encoding 的方式将位置信息映射到高频则能有效提升清晰度效果。具体而言，这里采用的是与Transformer 中类似的正余弦周期函数的形式。我的理解是，采用position encoding 能够使得网络更容易的理解并建模位置信息。</p>
-<h4 id="2-训练高质量NeRF的重要技巧-——-多层级体素采样"><a href="#2-训练高质量NeRF的重要技巧-——-多层级体素采样" class="headerlink" title="2. 训练高质量NeRF的重要技巧 —— 多层级体素采样"></a>2. 训练高质量NeRF的重要技巧 —— 多层级体素采样</h4><p>NeRF的渲染过程计算量很大，每条射线都要采样很多点。但实际上，一条射线上的大部分区域都是空区域，或者是被遮挡的区域，对最终的颜色没有啥贡献。因此，作者采用了一种“coarse to fine” 的形式，同时优化coarse 网络和fine 网络。这一部分也非常有趣。首先对于coarse 网络，我们可以采样较为稀疏的 Nc 个点，并将前述的离散求和函数重新表示为：<br>$$<br>\hat{C}<em>c(r)=∑</em>{i=1}^{N_c}w_ic_i ，其中 w_i=T_i⋅(1−exp(−σ<em>i⋅δ_i))<br>$$<br>接下来，可以对 wi 做归一化<br>$$<br>\hat{w}_i=\frac{w_i}{\sum^{N_c}</em>{j=1}w_j}<br>$$<br>此处的 $\hat{w}_i$ 可以看作是沿着射线的概率密度函数（PDF），如下图所示。通过这个概率密度函数，我们可以粗略地得到射线上物体的分布情况。</p>
-<img src="https://pic4.zhimg.com/80/v2-acd57623f49c25dd61730007288cc63f_720w.jpg" alt="img" style="zoom: 33%;">
+<h4 id="2-训练高质量NeRF的重要技巧-——-多层级体素采样"><a href="#2-训练高质量NeRF的重要技巧-——-多层级体素采样" class="headerlink" title="2. 训练高质量NeRF的重要技巧 —— 多层级体素采样"></a>2. 训练高质量NeRF的重要技巧 —— 多层级体素采样</h4><p>NeRF的渲染过程计算量很大，每条射线都要采样很多点。但实际上，一条射线上的大部分区域都是空区域，或者是被遮挡的区域，对最终的颜色没有啥贡献。因此，作者采用了一种“coarse to fine” 的形式，同时优化coarse 网络和fine 网络。这一部分也非常有趣。首先对于coarse 网络，我们可以采样较为稀疏的 Nc 个点，并将前述的离散求和函数重新表示为：<br>$$<br>\hat{C}<em>c(r)&#x3D;∑</em>{i&#x3D;1}^{N_c}w_ic_i ，其中 w_i&#x3D;T_i⋅(1−exp(−σ_i⋅δ_i))<br>$$<br>接下来，可以对 wi 做归一化<br>$$<br>\hat{w}<em>i&#x3D;\frac{w_i}{\sum^{N_c}</em>{j&#x3D;1}w_j}<br>$$<br>此处的 $\hat{w}_i$ 可以看作是沿着射线的概率密度函数（PDF），如下图所示。通过这个概率密度函数，我们可以粗略地得到射线上物体的分布情况。</p>
+<img src="https://pic4.zhimg.com/80/v2-acd57623f49c25dd61730007288cc63f_720w.jpg" alt="img" style="zoom: 33%;" />
 
 <p>接下来，基于得到的概率密度函数来采样 Nf 个点，并用这Nf 个点和前面的Nc 个点一同计算fine 网络的渲染结果 C^f(r) 。虽然coarse to fine 是计算机视觉领域中常见的一个思路，但这篇方法中用coarse 网络来生成概率密度函数，再基于概率密度函数采样更精细的点算的上是很有趣新颖的做法了。二阶段的采样示意图如下所示：</p>
-<img src="https://pic2.zhimg.com/80/v2-f87f541db573e2673e5c514198e5dba5_720w.jpg" alt="img" style="zoom:33%;">
+<img src="https://pic2.zhimg.com/80/v2-f87f541db573e2673e5c514198e5dba5_720w.jpg" alt="img" style="zoom:33%;" />
 
-<h4 id="损失函数与一些训练细节"><a href="#损失函数与一些训练细节" class="headerlink" title="损失函数与一些训练细节"></a>损失函数与一些训练细节</h4><p>最后，训练损失的定义倒是非常简单，直接定义在渲染结果上的L2损失(同时优化coarse 和 fine）：<br>$$<br>L=∑_{r∈R}[‖\hat{C}_c(r)−C(r)‖^2_2−‖\hat{C}_f(r)−C(r)‖^2_2]<br>$$<br>训练时长方面，论文中提及的速度是一个场景要用单卡V100 训练1-2天左右。</p>
+<h4 id="损失函数与一些训练细节"><a href="#损失函数与一些训练细节" class="headerlink" title="损失函数与一些训练细节"></a>损失函数与一些训练细节</h4><p>最后，训练损失的定义倒是非常简单，直接定义在渲染结果上的L2损失(同时优化coarse 和 fine）：<br>$$<br>L&#x3D;∑_{r∈R}[‖\hat{C}_c(r)−C(r)‖^2_2−‖\hat{C}_f(r)−C(r)‖^2_2]<br>$$<br>训练时长方面，论文中提及的速度是一个场景要用单卡V100 训练1-2天左右。</p>
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>NeRF的效果非常酷炫，同时也提供了一种3D场景建模的新形式。NeRF本身当然存在很多的问题，最重要的是其渲染速度很慢，渲染一帧约要1分钟左右。但后续的新方法提出了很多优化的方式，大大优化了速度问题，也使得NeRF有了在实际场景应用的可能。除了速度，另外一个值得关注的点在于，NeRF本身就可以看作是对场景的一种conditional 的表示（NeRF中的视角就是一种condition），那么自然的想法就是拓展condition来建模动态场景。比如最近的AD-NeRF 就是将语音特征作为condition，使得NeRF可以实现Talking-head Animation 的效果。总的来说，NeRF简洁的表示方式和优秀的效果带来了丰富的可玩性和拓展性，是非常棒的工作。此外，在论文附录中，还对论文中所使用的归一化设备坐标系（Normalized Device Coordinate, NDC)进行了详细的推导，感兴趣的话可以看看。</p>
 <h3 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h3><ul>
-<li>Code: <a href="https://link.zhihu.com/?target=https%3A//github.com/yenchenlin/nerf-pytorch">yenchenlin/nerf-pytorch</a></li>
-<li>Awesome-Nerf: <a href="https://link.zhihu.com/?target=https%3A//github.com/yenchenlin/awesome-NeRF">yenchenlin/awesome-NeRF</a></li>
+<li>Code: <a href="https://link.zhihu.com/?target=https://github.com/yenchenlin/nerf-pytorch">yenchenlin&#x2F;nerf-pytorch</a></li>
+<li>Awesome-Nerf: <a href="https://link.zhihu.com/?target=https://github.com/yenchenlin/awesome-NeRF">yenchenlin&#x2F;awesome-NeRF</a></li>
 </ul>
 
       
@@ -219,7 +219,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2022/07/24/2022-7-24-Nerf/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2022/07/24/2022-7-24-Nerf/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -322,7 +322,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -377,6 +377,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -621,6 +625,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

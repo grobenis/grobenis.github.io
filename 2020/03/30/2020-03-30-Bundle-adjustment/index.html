@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">339字</span>
+            <span class="post-count">340字</span>
         </span>
     </span>
 
@@ -99,10 +99,10 @@
 
       
       <p>本节介绍SLAM中的后端优化过程</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="一、问题阐述"><a href="#一、问题阐述" class="headerlink" title="一、问题阐述"></a>一、问题阐述</h2><p>同时对三维点位置和相机参数进行非线性优化</p>
-<p><img src="/2020/03/30/2020-03-30-Bundle-adjustment/BA%E4%BC%98%E5%8C%96.jpg" alt="BA原理"></p>
+<p><img src="/2020-03-30-Bundle-adjustment/BA%E4%BC%98%E5%8C%96.jpg" alt="BA原理"></p>
 <h2 id="二、LM法的原理与优势"><a href="#二、LM法的原理与优势" class="headerlink" title="二、LM法的原理与优势"></a>二、LM法的原理与优势</h2><p> <strong>原理</strong>：是一种“信赖域”的方法，当收敛速度较快时，增大信赖域使算法趋向于高斯牛顿法；当收敛速度较慢时，减小信赖域使算法趋向于最速下降法。</p>
 <p><strong>优势</strong>：速度快；可以在距离初始值较远处得到最优解。</p>
 <h4 id="SLAM优化算法对比"><a href="#SLAM优化算法对比" class="headerlink" title="SLAM优化算法对比"></a>SLAM优化算法对比</h4><table>
@@ -114,7 +114,7 @@
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">KF/EKF</td>
+<td align="center">KF&#x2F;EKF</td>
 <td align="center">假设噪声为高斯分布，在高维状态空间时计算效率较低，不适合大规模场景的地图构建</td>
 <td align="center">原理简单，小场景下收敛性好。</td>
 </tr>
@@ -188,7 +188,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/03/30/2020-03-30-Bundle-adjustment/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/30/2020-03-30-Bundle-adjustment/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -291,7 +291,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -346,6 +346,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -590,6 +594,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

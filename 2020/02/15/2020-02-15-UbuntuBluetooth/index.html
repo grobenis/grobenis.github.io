@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">124字</span>
+            <span class="post-count">129字</span>
         </span>
     </span>
 
@@ -97,9 +97,9 @@
 
       
       <p>打开命令行<br>$ sudo -i</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
 
-<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
+<p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
 
       
       <!-- reward -->
@@ -154,7 +154,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -172,19 +172,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            发布IMU信息到ROS系统中
+            使用evo工具评测SLAM
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
+      <a href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
+        <div class="article-nav-title">SLAM各算法运行方法与过程</div>
       </a>
     
   </nav>
@@ -257,7 +257,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -312,6 +312,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -556,6 +560,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

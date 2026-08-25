@@ -99,10 +99,10 @@
 
       
       <p>本节用来总结SLAM学习过程中，用到的重要的opencv函数</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="CalcopticalFlowPyrLK"><a href="#CalcopticalFlowPyrLK" class="headerlink" title="CalcopticalFlowPyrLK()"></a>CalcopticalFlowPyrLK()</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><p>使用具有金字塔的迭代Lucas-Kanade方法计算稀疏特征集的光流。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::calcOpticalFlowPyrLK</span>	<span class="params">(	</span></span></span><br><span class="line"><span class="function"><span class="params">    InputArray 	prevImg,</span></span></span><br><span class="line"><span class="function"><span class="params">    InputArray 	nextImg,</span></span></span><br><span class="line"><span class="function"><span class="params">    InputArray 	prevPts,</span></span></span><br><span class="line"><span class="function"><span class="params">    InputOutputArray 	nextPts,</span></span></span><br><span class="line"><span class="function"><span class="params">    OutputArray 	status,</span></span></span><br><span class="line"><span class="function"><span class="params">    OutputArray 	err,</span></span></span><br><span class="line"><span class="function"><span class="params">    Size 	winSize = Size(<span class="number">21</span>, <span class="number">21</span>),</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> 	maxLevel = <span class="number">3</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    TermCriteria 	criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, <span class="number">30</span>, <span class="number">0.01</span>),</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> 	flags = <span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">double</span> 	minEigThreshold = <span class="number">1e-4</span> </span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">cv::calcOpticalFlowPyrLK</span>	<span class="params">(	</span></span></span><br><span class="line"><span class="params"><span class="function">    InputArray 	prevImg,</span></span></span><br><span class="line"><span class="params"><span class="function">    InputArray 	nextImg,</span></span></span><br><span class="line"><span class="params"><span class="function">    InputArray 	prevPts,</span></span></span><br><span class="line"><span class="params"><span class="function">    InputOutputArray 	nextPts,</span></span></span><br><span class="line"><span class="params"><span class="function">    OutputArray 	status,</span></span></span><br><span class="line"><span class="params"><span class="function">    OutputArray 	err,</span></span></span><br><span class="line"><span class="params"><span class="function">    Size 	winSize = Size(<span class="number">21</span>, <span class="number">21</span>),</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">int</span> 	maxLevel = <span class="number">3</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    TermCriteria 	criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, <span class="number">30</span>, <span class="number">0.01</span>),</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">int</span> 	flags = <span class="number">0</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">double</span> 	minEigThreshold = <span class="number">1e-4</span> </span></span></span><br><span class="line"><span class="params"><span class="function">)</span>		</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>参数：</strong></p>
 <ul>
@@ -120,7 +120,7 @@
 <li>OPTFLOW_LK_GET_MIN_EIGENVALS：使用最小特征值作为误差测量（参见minEigThreshold描述）;如果没有设置标志，则将原稿周围的色块和移动点之间的L1距离除以窗口中的像素数，用作误差测量。</li>
 <li>minEigThreshold ：算法计算光流方程的2x2正常矩阵的最小特征值，除以窗口中的像素数;如果此值小于minEigThreshold，则过滤掉相应的功能并且不处理其流程，因此它允许删除坏点并获得性能提升。<br>该函数实现了金字塔中Lucas-Kanade光流的稀疏迭代版本。</li>
 </ul>
-<h3 id="cv-circle"><a href="#cv-circle" class="headerlink" title="cv::circle()"></a>cv::circle()</h3><h4 id="功能：画圆"><a href="#功能：画圆" class="headerlink" title="功能：画圆"></a>功能：画圆</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">circle</span><span class="params">(CV_IN_OUT Mat&amp; img, Point center, <span class="keyword">int</span> radius, <span class="keyword">const</span> Scalar&amp; color, <span class="keyword">int</span> thickness=<span class="number">1</span>, <span class="keyword">int</span> lineType=<span class="number">8</span>, <span class="keyword">int</span> shift=<span class="number">0</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="cv-circle"><a href="#cv-circle" class="headerlink" title="cv::circle()"></a>cv::circle()</h3><h4 id="功能：画圆"><a href="#功能：画圆" class="headerlink" title="功能：画圆"></a>功能：画圆</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">circle</span><span class="params">(CV_IN_OUT Mat&amp; img, Point center, <span class="type">int</span> radius, <span class="type">const</span> Scalar&amp; color, <span class="type">int</span> thickness=<span class="number">1</span>, <span class="type">int</span> lineType=<span class="number">8</span>, <span class="type">int</span> shift=<span class="number">0</span>)</span></span>; </span><br></pre></td></tr></table></figure>
 
 <h4 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h4><ul>
 <li>img：图像，单通道多通道都行，不需要特殊要求</li>
@@ -138,7 +138,7 @@
 <p>  <em>blockSize：计算协方差矩阵时的窗口大小</em></p>
 <p>  <em>useHarrisDetector：指示是否使用Harris角点检测，如不指定，则计算shi-tomasi角点</em></p>
 <p>  harrisK：Harris角点检测需要的k值 </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cv::goodFeaturesToTrack(cur_img, n_pts, MAX_CNT - cur_pts.<span class="built_in">size</span>(), <span class="number">0.01</span>, MIN_DIST, mask); <span class="comment">//VINS_Fusion中的应用</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cv::<span class="built_in">goodFeaturesToTrack</span>(cur_img, n_pts, MAX_CNT - cur_pts.<span class="built_in">size</span>(), <span class="number">0.01</span>, MIN_DIST, mask); <span class="comment">//VINS_Fusion中的应用</span></span><br></pre></td></tr></table></figure>
 
 
       
@@ -194,7 +194,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/04/14/2020-04-14-OPENCV-Function/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/14/2020-04-14-OPENCV-Function/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -297,7 +297,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -352,6 +352,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -596,6 +600,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

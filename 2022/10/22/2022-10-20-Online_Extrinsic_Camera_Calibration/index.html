@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2022-10-20-Online_Extrinsic_Camera_Calibration" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/10/22/2022-10-20-Online_Extrinsic_Camera_Calibration/" class="article-date">
+  <time datetime="2022-10-22T11:41:51.955Z" itemprop="datePublished">2022-10-22</time>
+</a>
+      
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">17分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h1 id="Online-Extrinsic-Camera-Calibration-for-Temporally-Consistent-IPM-Using-Lane-Boundary-Observations-with-a-Lane-Width-Prior"><a href="#Online-Extrinsic-Camera-Calibration-for-Temporally-Consistent-IPM-Using-Lane-Boundary-Observations-with-a-Lane-Width-Prior" class="headerlink" title="Online Extrinsic Camera Calibration for Temporally Consistent IPM Using Lane Boundary Observations with a Lane Width Prior"></a>Online Extrinsic Camera Calibration for Temporally Consistent IPM Using Lane Boundary Observations with a Lane Width Prior</h1><p>标题：基于车道线等宽的先验进行车道边界观测的时间一致 IPM 的在线外部相机校准</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>​    在本文中，我们提出了一种在线外部相机校准方法，即在连续驾驶场景图像中从路面估计俯仰角、偏航角、侧倾角和相机高度。 所提出的方法通过两个步骤估计外部摄像机参数：</p>
+<ol>
+<li>使用从一组车道边界观测计算的消失点同时估计俯仰角和偏航角</li>
+<li>通过最小化车道之间的差异来计算滚动角和摄像机高度 宽度观察和车道宽度先验。</li>
+</ol>
+<p>​    外部相机参数使用扩展卡尔曼滤波 (EKF) 顺序更新，并最终用于通过逆透视映射 (IPM) 生成时间一致的鸟瞰 (BEV) 图像。 我们证明了所提出的方法在合成和现实世界数据集中的优越性。</p>
+<h2 id="I-引言"><a href="#I-引言" class="headerlink" title="I 引言"></a>I 引言</h2><p>近年来，针对ADAS（高级驾驶辅助系统）和AD（自动驾驶）应用的摄像头视觉感知研究已经深入开展。许多研究集中在相邻物体和驾驶环境的检测上，例如车道边界检测[1]、[2]、交通标志检测[3]、[4]、物体检测和跟踪[5]、[6]等，来自前置摄像头捕获的输入图像。特别是对于路面标记，主要使用逆透视映射（IPM）[7]，因为它们受摄像机透视失真的影响更大。给定相机与路面的几何关系，即相机外参，可将输入图像转换为鸟瞰（BEV）图像，从而保留路面标记的实际形状并提高检测性能。此外，外参被广泛用于估计单目相机系统[8]、[9]中物体的距离，并通过生成增强特征[10]来提高物体检测的性能。</p>
+<p>外参通常在驾驶前通过使用矩形&#x2F;梯形&#x2F;平行四边形的各种图案[11]、[12]或车道标记上的手动注释线&#x2F;顶点[13]、[14]、[15]来计算]。然而，由于出厂默认标定的不持久性，摄像头与路面的几何关系会逐渐发生变化，并且随着摄像头在行驶中的晃动而变化很大。因此，IPM 无法产生如图 1(b) 所示的良好 BEV 图像，因此在驾驶时应反复补偿外部相机参数，但人们不能在驾驶时干预校准过程，尤其是出于安全原因。因此，外部相机校准应该使用来自驾驶场景图像的观察来自动执行。</p>
+<p>有几项研究 [16]、[17] 使用具有相机运动变化的驾驶环境的图像序列进行在线外部相机校准。他们使用从视觉里程计或车道边界的消失点 (VP) 估计的摄像机运动来更新外部摄像机参数，并生成显示平行车道边界的 BEV 图像。然而，这些研究仅更新俯仰角和偏航角，没有纠正所有外部相机参数。因此，当滚动角和相机高度发生变化时，它们可能会产生路面波动和比例（例如车道宽度和物体之间的距离）不一致的 BEV 图像。</p>
+<p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221020152655478.png" alt="image-20221020152655478"></p>
+<p>​    在本文中，我们提出了一种在线外在相机校准方法，该方法可以估计连续驾驶场景图像中与路面的几何关系，如俯仰角、偏航角、滚动角和相机高度。据我们所知，这是第一个以在线方式同时计算所有四个外部相机参数的工作。所提出的方法分两个阶段估计外部摄像机参数，估计 1）俯仰角和偏航角，然后 2）滚动角和摄像机高度。使用从一组车道边界观测值计算的 VP 同时估计俯仰角和偏航角。然后，给定车道宽度作为先验，通过最小化陆地宽度观测值和车道宽度先验之间的差异来计算滚动角和相机高度。所提出的方法使用扩展卡尔曼滤波 (EKF) [18] 在序列图像中更新外部相机参数，因此可以产生时间一致的 IPM 结果，如图 1(c) 所示。</p>
+<h2 id="II-OVERVIEW"><a href="#II-OVERVIEW" class="headerlink" title="II OVERVIEW"></a>II OVERVIEW</h2><p>我们提出了一种在线外部相机校准方法，即从路面估计俯仰角、偏航角、滚动角和相机高度，从而产生时间上一致的 IPM 结果。我们假设相机经过校准，路面平坦，路面上所有车道边界相互平行，车道宽度与之前的车道宽度相同。</p>
+<p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221020155507999.png" alt="image-20221020155507999"></p>
+<p>图 2 显示了所提出方法的总体过程。首先，我们使用基于全卷积网络的分割模型从输入图像中提取车道边界观测值 [19]。由于平行车道边界的 VP 仅取决于俯仰角和偏航角，并且不受滚动角和相机高度的变化，我们从一组平行车道边界中找到一个 VP，并使用 VP 估计俯仰角和偏航角。三）。然后我们计算滚动角和相机高度，以最小化车道宽度观测值与作为先验给出的实际车道宽度之间的差异（第 IV 节）。最后，使用更新的外部相机参数（第 V 节）计算 IPM。</p>
+<h2 id="III-Pitch角和Yaw角的估计"><a href="#III-Pitch角和Yaw角的估计" class="headerlink" title="III Pitch角和Yaw角的估计"></a>III Pitch角和Yaw角的估计</h2><p>如在[13]、[15]、[17]中，我们将俯仰角和偏航角估计转换为找到相机和路面上平行车道边界的VP之间的旋转关系，如图3所示。C和W表示分别是相机和世界坐标系。让我们将 W 的 z 轴定义为 VP 的方向，即 VD（消失方向）。</p>
+<p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221020155538760.png" alt="image-20221020155538760"></p>
+<p>然后俯仰角和偏航角可以定义为摄像机前向和VD之间的角度，如图3（b）和图3（c）所示。</p>
+<p>我们采用基于高斯球体理论和 RANSAC [21] 的 [20] 的稳健 VP 估计方法，因为车道边界观测可能是嘈杂的。在使用 VP 初始化俯仰角和偏航角之后，它们在序列图像中由 EKF 估计。</p>
+<h3 id="A-高斯球"><a href="#A-高斯球" class="headerlink" title="A. 高斯球"></a>A. 高斯球</h3><p>在针孔相机模型中，以相机主点为中心的单位球体称为高斯球。如图 4 所示，大圆是高斯球面与图像上的一条线与主点确定的平面的交点。由于平行线投影到像平面上时在VP处相交，平行线对应的大圆在高斯球面上有一个交点，主点到交点的方向为VD。 VD是由大圆（NGC）的所有法线确定的平面的法向量，我们称之为NGC-VD正交性。正交性与像平面中的线-VP入射相同，即像平面中的平行线入射到VP。 </p>
+<p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221020161949374.png" alt="image-20221020161949374"></p>
+<h3 id="B-灭点估计"><a href="#B-灭点估计" class="headerlink" title="B. 灭点估计"></a>B. 灭点估计</h3><p>我们假设给出了一组表示车道边界的线。 该集合通常包括一些噪声线或异常值，因此我们使用 RANSAC [21] 过滤掉异常值，然后估计对噪声线具有鲁棒性的 VP。 当给定一组线段 L 时，RANSAC 过程可以描述为算法 1。</p>
+<p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221020162925514.png" alt="image-20221020162925514"></p>
+<p>在算法 1 中，VP 假设$v_i$由两个随机采样的线段 ${l_j , l_k} ⊂ L$ 计算得出，如下所示：<br>$$<br>v_i &#x3D; l_j \times l_k<br>$$<br>然后，使用 Rother [22] 的评分函数计算 VP 假设 $v_i$ 的评分值 $s_i$。 </p>
+<p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221021161843215.png" alt="image-20221021161843215"></p>
+<p>图 5 显示了计算 $s_i$ 时要考虑的两个约束：对于每条线段 $l ∈ L，1) $ 和包括 vi 和 l 中心点的假想线之间的角度 $θ(v_i, l)$，以及 2) l 的长度，ll。 得分函数定义为<br>$$<br>S\left(\mathbf{v}<em>i, \mathcal{L}\right)&#x3D;\sum</em>{\mathbf{l} \in \mathcal{L}}\left[\lambda_1\left(1-\frac{\theta\left(\mathbf{v}<em>i, \mathbf{l}\right)}{\theta</em>{t h}}\right)+\lambda_2 \frac{l_1}{l_m}\right]<br>$$<br>其中，$\lambda&#x3D;0.8$，$\lambda&#x3D;0.2$。表示权重，$\theta_{th}&#x3D;0.7°$。$l_m$是$\mathcal{L}$最长的分割线长度。当$\theta(v_i,l)$不超过$\theta_{th}$，$l$不会包含在分数计算中。</p>
+<p>因此，具有最高分数的一组线段 Lc 被 RANSAC 过程聚类。 聚类线用于计算最佳 VP。 为了获得最佳 VP，我们使用了 NGC-VD 正交性，如第 1 节所述。 III-A。 每行 l 的 NGC n 由下式计算<br>$$<br>\mathbf{n}&#x3D;\left(\mathbf{K}^{-1} \mathbf{p}_1\right) \times\left(\mathbf{K}^{-1} \mathbf{p}_2\right),<br>$$<br>其中，K是相机的内参矩阵，$p_1$和$p_2$是l的端点。 那么v和NGCs的正交方程如下：<br>$$<br>\mathbf{A v}&#x3D;0 \text {, where } \mathbf{A}&#x3D;[\cdots, \mathbf{n}, \cdots]^{\top} \text {. }<br>$$<br>线性方程组的超定系统可以通过奇异值分解 (SVD) 轻松求解。 实际上，(4)中计算的v是一个VD向量，它被K投影为成像平面上一个VP，即$v_d &#x3D; K^{−1}v_p$ 其中$v_d$和$v_p$分别是VD和VP，但是它们是相同的，所以VD 从现在开始将被写为VP。</p>
+<h3 id="C-Pitch和Yaw角初始化"><a href="#C-Pitch和Yaw角初始化" class="headerlink" title="C Pitch和Yaw角初始化"></a>C Pitch和Yaw角初始化</h3><p>俯仰角和偏航角分别用 θ 和 φ 表示。 由pitch和yaw角计算的旋转矩阵，即从世界坐标到相机坐标的变换矩阵，用RCW(θ, φ)表示，世界坐标系W中z轴的方向向量用dWZ表示 &#x3D; [0, 0, 1]。 那么dWZ和v有如下关系，<br>$$<br>\mathbf{v}&#x3D;\mathbf{R}<em>{C W}(\theta, \phi) \mathbf{d}</em>{W_Z} .<br>$$<br>We can decompose the rotation matrix into two rotation matrices of $\theta$ and $\phi$ as follows.<br>$$<br>\begin{aligned}<br>\mathbf{R}_{C W}(\theta, \phi) &amp;&#x3D;\mathbf{R}(\theta) \mathbf{R}(\phi) \<br>&amp;&#x3D;\left[\begin{array}{ccc}<br>1 &amp; 0 &amp; 0 \<br>0 &amp; c_\theta &amp; -s_\theta \<br>0 &amp; s_\theta &amp; c_\theta<br>\end{array}\right]\left<a href="6">\begin{array}{ccc}<br>c_\phi &amp; 0 &amp; s_\phi \<br>0 &amp; 1 &amp; 0 \<br>-s_\phi &amp; 0 &amp; c_\phi<br>\end{array}\right</a><br>\end{aligned}<br>$$<br>其中，$\theta$和$\phi$通过v来初始化：<br>$$<br>\begin{aligned}<br>\theta &amp;&#x3D;\operatorname{atan2}\left(-v_y, v_z\right) \text { and } \<br>\phi &amp;&#x3D;\operatorname{atan} 2\left(v_x, v_z\right)<br>\end{aligned}<br>$$<br>Wwhere $\mathbf{v}&#x3D;\left[v_x, v_y, v_z\right]^{\top}$ and $\operatorname{atan} 2(y, x)$ is the 2 -argument arctangent function.</p>
+<h3 id="D-EKF"><a href="#D-EKF" class="headerlink" title="D EKF"></a>D EKF</h3><p>我们使用 EKF [18] 来估计图像序列中的俯仰角和偏航角。 采用恒定角速度模型来模拟驾驶时的俯仰和偏航角变化。 因此，用于俯仰角和偏航角估计的状态向量 $x_{PY}$ 和系统模型$f_{PY}$ 被定义为：<br>$$<br>\begin{aligned}<br>\mathrm{x}<em>{P Y} &amp;&#x3D;\left[\theta, \phi, \omega_\theta, \omega_\phi\right]^{\top} \text { and } \<br>\mathbf{f}</em>{P Y}\left(\mathbf{x}<em>{P Y}\right) &amp;&#x3D;\left[\begin{array}{c}<br>\theta+\omega_\theta \Delta t \<br>\phi+\omega_\phi \Delta t \<br>\omega_\theta \<br>\omega_\phi<br>\end{array}\right]+\mathbf{w}</em>{P Y},<br>\end{aligned}<br>$$<br>where $\omega_\theta$ and $\omega_\phi$ are the angular velocity of pitch and yaw angles and $\mathbf{w}<em>{P Y}&#x3D;\left[0,0, w_\theta, w_\phi\right]^{\top}$ is a noise variable of the system model with the normal distribution $\mathcal{N}\left(0, \mathbf{W}</em>{P Y}\right)$. </p>
+<p>Using the NGC-VD orthogonality, a measurement model $h_{P Y}$ for the pitch and yaw angle estimation is defined as<br>$$<br>h_{P Y}^{\mathbf{n}}\left(\mathbf{x}<em>{P Y}\right)&#x3D;\mathbf{d}</em>{W_Z}^{\top} \mathbf{R}<em>{C W}(\theta, \phi)^{\top} \mathbf{n}+q</em>{P Y},<br>$$<br>where $\mathbf{n}$ is an $\mathrm{NGC}$ of $\mathrm{l} \in \mathcal{L}<em>c$ and $q</em>{P Y}$ is a noise variable of the measurement model with the normal distribution $\mathcal{N}\left(0, Q_{P Y}\right)$.</p>
+<p>The state vector $\mathrm{x}<em>{P Y}$ are estimated by $\mathrm{EKF}$ as follows: For simplicity, $\mathrm{x}</em>{P Y}$ is abbreviated as $\mathrm{x}$. Then let $\mathrm{x}<em>{t-1}$ and $\mathbf{P}</em>{t-1}$ denote the state estimate and its covariance at time $t-1$. The prediction of the state $\hat{\mathbf{x}}_t$ and its covariance $\hat{\mathbf{P}}<em>t$ is calculated as follows.<br>$$<br>\begin{aligned}<br>\hat{\mathbf{x}}<em>t &amp;&#x3D;\mathbf{f}</em>{P Y}\left(\mathrm{x}</em>{t-1}\right) \text { and } \<br>\hat{\mathbf{P}}_t &amp;&#x3D;\mathbf{F}<em>t \mathbf{P}</em>{t-1} \mathbf{F}_t^{\top}+\mathbf{W}_t,<br>\end{aligned}<br>$$<br>where $\mathbf{F}_t$ is a Jacobian of the system model. For all the inliers in $\mathcal{L}_c$, the residuals of the measurements are computed using (11) and concatenated as follows.<br>$$<br>\mathrm{y}<em>t&#x3D;-\left[\cdots, h</em>{P Y}^{\mathrm{n}}\left(\hat{\mathbf{x}}_t\right), \cdots\right]^{\top}<br>$$<br>The Kalman gain $\mathrm{G}_t$ for update is computed as follows. </p>
+<p>$\mathbf{G}_t&#x3D;\hat{\mathbf{P}}_t \mathbf{H}_t^{\top} \mathbf{S}_t^{-1}$, where $\mathbf{S}_t&#x3D;\mathbf{H}_t \hat{\mathbf{P}}_t \mathbf{H}_t^{\top}+\mathbf{Q}_t$.<br>Here, $\mathrm{H}_t$ and $\mathrm{Q}<em>t$ denote a Jacobian of the measurement model, i.e., $\mathbf{H}<em>t&#x3D;\left[\cdots,\left.\frac{\partial h</em>{P Y}^{\mathrm{n}}}{\partial \mathbf{x}}\right|</em>{\hat{\mathbf{x}}_t} ^{\top}, \cdots\right]^{\top}$, and a measurement noise covariance at time $t$, respectively. From the residuals and the Kalman gain, the predicted state and covariance are updated as follows.<br>$$<br>\begin{aligned}<br>\mathrm{x}_t &amp;&#x3D;\hat{\mathbf{x}}_t+\mathbf{G}_t \mathbf{y}_t \text { and } \<br>\mathbf{P}_t &amp;&#x3D;\left(\mathbf{I}-\mathbf{G}_t \mathbf{H}_t\right) \hat{\mathbf{P}}_t<br>\end{aligned}<br>$$<br>where $\mathrm{I}$ is an identity matrix.</p>
+<h2 id="IV-roll角和相机高度估计"><a href="#IV-roll角和相机高度估计" class="headerlink" title="IV roll角和相机高度估计"></a>IV roll角和相机高度估计</h2><p>与 [14] 使用车道宽度先验和道路表面上手动注释的 3D 顶点作为观测值相比。</p>
+<p>由于缺乏几何图形以及投影属性和观察到的车道边界与外参之间的非线性几何关系产生的信息，以车道线的2D投影作为观测值来校准roll角和相机高度变得更加复杂。为简化问题，假设俯仰角和偏航角在第三部分中已得到校正。这样在图 6 所示，roll角和相机高度估计可以被认为是计算它们在 x-y 平面上的近似值。</p>
+<p>通过将路面和线投影到 x-y 平面上，我们可以估计滚动角和相机高度值，其中路面与线的交点之间的距离应等于车道宽度先验$w_p$。</p>
+<h3 id="A-Roll角和相机高度初始化"><a href="#A-Roll角和相机高度初始化" class="headerlink" title="A. Roll角和相机高度初始化"></a>A. Roll角和相机高度初始化</h3><p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221020173426411.png" alt="image-20221020173426411"></p>
+<p>（斜率可能出错，$\alpha$表示车道线与相机y轴的夹角）<br>$$<br>w_{1_L, l_R}(\psi, h)&#x3D;h\left(\tan \left(\alpha_L-\psi\right)-\tan \left(\alpha_R-\psi\right)\right)<br>$$<br>An energy function for the roll angle and camera height estimation is defined as<br>$$<br>E_{R H}(\psi, h)&#x3D;\sum_{\left(1_L, 1_R\right) \in \mathcal{L}<em>c} C</em>{\mathbf{l}<em>L, 1_R}(\psi, h),<br>$$<br>其中，<br>$$<br>C</em>{1_L, 1_R}(\psi, h)&#x3D;w_p-w_{1_L, 1_R}(\psi, h)<br>$$<br>$\omega$ 和 $h$ 通过在有限范围内的穷举搜索进行初始化，然后使用 Gauss-Newton 方法通过最小化 (19) 的能量函数来优化。 值得注意的是，至少应考虑两条车道，因为侧倾角是根据一对车道宽度观测值的相等性估计的。</p>
+<h3 id="B-基于EKF-估计滚动角和相机高度"><a href="#B-基于EKF-估计滚动角和相机高度" class="headerlink" title="B. 基于EKF 估计滚动角和相机高度"></a>B. 基于EKF 估计滚动角和相机高度</h3><p>与第三部分D类似，本文使用恒定角和线速度模型来对滚动角和相机高度进行时间一致的估计。 因此，用于滚动角和相机高度估计的状态向量 $X_{RH}$ 和系统模型 $f_{RH}$ 定义为<br>$$<br>\begin{aligned}<br>\mathbf{x}<em>{R H}&#x3D;&amp; {\left[\psi, h, \omega_\psi, v_h\right]^{\top} \text { and } } \<br>\mathbf{f}</em>{R H}\left(\mathbf{x}<em>{R H}\right)&#x3D;&amp; {\left[\begin{array}{c}<br>\psi+\omega_\psi \Delta t \<br>h+v_h \Delta t \<br>\omega_\psi \<br>v_h<br>\end{array}\right]+\mathbf{w}</em>{R H} }<br>\end{aligned}<br>$$</p>
+<p>式中，$ω_ψ$和$v_h$分别为横滚角的角速度和相机高度的线速度，$w_{RH}&#x3D;[0, 0, w_ψ, v_h]$是系统模型的噪声变量，服从正态分布$N(0, W_{RH})$。 滚动角和相机高度估计的测量模型 $h_{RH}(ψ, h)$ 与 (20) 相同。 最后，滚动角和相机高度由 EKF 使用方程(12)-(17)估计 。</p>
+<h2 id="V-IPM"><a href="#V-IPM" class="headerlink" title="V IPM"></a>V IPM</h2><p>Finally, temporally consistent IPM is possible with the extrinsic camera parameter estimates $\theta, \phi, \psi$, and $h$. A homography matrix $\mathbf{H}<em>{W C}$ from the camera coordinates to the world (or ground) coordinates is calculated as follows.<br>$$<br>\mathbf{H}</em>{W C}&#x3D;\left[\begin{array}{ccc}<br>a_X &amp; 0 &amp; \frac{b_X a_X}{2} \<br>0 &amp; -a_Z &amp; b_Z a_Z \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]\left[\begin{array}{c}<br>\mathbf{R}<em>{r_1} \<br>\mathbf{R}</em>{r_3} \<br>\frac{1}{h} \mathbf{R}<em>{r_2}<br>\end{array}\right] \mathbf{K}^{-1}<br>$$<br>where $a_X$ and $a_Z$ are the scale parameters that determine the resolution of a BEV image, $b_X$ and $b_Z$ are the size parameters of $X$-axis and $Z$-axis in the world coordinate system, and $\mathbf{R}</em>{r_1}$ is the $i$-th row of the matrix $\mathbf{R}(\theta, \phi, \psi)$ which is computed by<br>$$<br>\mathbf{R}(\theta, \phi, \psi)&#x3D;\left[\begin{array}{ccc}<br>\cos \psi &amp; \sin \psi &amp; 0 \<br>-\sin \psi &amp; \cos \psi &amp; 0 \<br>0 &amp; 0 &amp; 1<br>\end{array}\right] \mathbf{R}_{C W}(\theta, \phi)^{\top}<br>$$<br>Using (23), an input image can be converted into a BEV image as shown in Fig. 11(c).</p>
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p><img src="/2022-10-20-Online_Extrinsic_Camera_Calibration/image-20221021163302120.png" alt="image-20221021163302120"></p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2022/10/22/2022-10-20-Online_Extrinsic_Camera_Calibration/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2025/03/04/2025-03-04-%E6%BF%80%E5%85%89SLAM%E7%BB%BC%E8%BF%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            (no title)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/07/25/2022-7-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">时间戳同步方法</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

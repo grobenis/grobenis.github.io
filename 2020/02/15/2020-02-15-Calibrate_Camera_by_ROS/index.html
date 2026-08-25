@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">227字</span>
+            <span class="post-count">216字</span>
         </span>
     </span>
 
@@ -99,16 +99,16 @@
 
       
       <p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="利用IMU标定相机流程"><a href="#利用IMU标定相机流程" class="headerlink" title="利用IMU标定相机流程"></a>利用IMU标定相机流程</h2><ol>
 <li>驱动USB摄像头</li>
 <li>利用camera_calibration标定相机</li>
 </ol>
 <p>执行命令为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:&#x3D;&#x2F;r_cam&#x2F;image_raw left:&#x3D;&#x2F;l_cam&#x2F;image_raw right_camera:&#x3D;&#x2F;r_cam left_camera:&#x3D;&#x2F;l_cam</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure>
 
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p>
@@ -117,7 +117,7 @@
 <li><p>畸变参数向量：[k1,k2,p1,p2]</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix &#x3D;</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>
 
 
       
@@ -173,7 +173,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -191,19 +191,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/10/2020-03-12-Clustering_Survey/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            经典聚类算法调研
+            隐马尔可夫模型
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">利用Kalibr标定双目相机与IMU</div>
+        <div class="article-nav-title">发布IMU信息到ROS系统中</div>
       </a>
     
   </nav>
@@ -276,7 +276,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -331,6 +331,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -575,6 +579,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

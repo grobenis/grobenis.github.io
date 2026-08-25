@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.4k字</span>
+            <span class="post-count">1.5k字</span>
         </span>
     </span>
 
@@ -99,33 +99,33 @@
 
       
       <p>高斯混合模型</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p>
 <p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
 <p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
 <p><strong>定义</strong></p>
-<p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$<br>\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})<br>$$<br>称为第k个分模型。</p>
+<p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$<br>P(y|\theta)&#x3D;\sum^K_{k&#x3D;1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k&#x3D;1}\alpha_k&#x3D;1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k&#x3D;(\mu_k,\delta^2_k)$;<br>$$<br>\phi(y|\theta_k)&#x3D;\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})<br>$$<br>称为第k个分模型。</p>
 <p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p>
 <h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p>
-<p>假设观测数据$y_1,y_2,…,y_N$由高斯混合模型生成，<br>$$<br>P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\theta=(\alpha_1,\alpha_2,…,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p>
+<p>假设观测数据$y_1,y_2,…,y_N$由高斯混合模型生成，<br>$$<br>P(y|\theta)&#x3D;\sum^K_{k&#x3D;1}\alpha_k\phi(y|\theta_k)<br>$$<br>其中，$\theta&#x3D;(\alpha_1,\alpha_2,…,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p>
 <p><strong>EM（期望最大化）算法</strong></p>
 <p>输入：观测数据$y_1,y_2,…,y_N$，高斯混合模型；</p>
 <p>输出：高斯混合模型参数。</p>
 <ol>
 <li><p>取参数的初始值开始迭代</p>
 </li>
-<li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$<br>\hat{\gamma}<em>{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K</em>{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,…N;k=1,2,..K<br>$$</p>
+<li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$<br>\hat{\gamma}<em>{jk}&#x3D;\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K</em>{k&#x3D;1}\alpha_k\phi(y_j|\theta_k)}，j&#x3D;1,2,…N;k&#x3D;1,2,..K<br>$$</p>
 </li>
-<li><p>求M步:计算新一轮的迭代的模型参数：<br>$$<br>\hat{\mu}<em>k=\cfrac{\sum^N</em>{j=1}\hat{\gamma}<em>{jk}y_j}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,..,K<br>$$</p>
+<li><p>求M步:计算新一轮的迭代的模型参数：<br>$$<br>\hat{\mu}<em>k&#x3D;\cfrac{\sum^N</em>{j&#x3D;1}\hat{\gamma}<em>{jk}y_j}{\sum^N</em>{j&#x3D;1}\hat{\gamma}_{jk}},k&#x3D;1,2,..,K<br>$$</p>
 </li>
 </ol>
-<p>$$<br>\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}<em>{jk}(y_j-\mu_k)^2}{\sum^N</em>{j=1}\hat{\gamma}_{jk}},k=1,2,…K<br>$$</p>
-<p>$$<br>\hat{\alpha}<em>k=\cfrac{\sum^N_j=1\hat{\gamma</em>{jk}}}{N},k=1,2,…,K<br>$$</p>
+<p>$$<br>\hat{\delta_k}^2&#x3D;\cfrac{\sum^N_{j&#x3D;1}\hat{gamma}<em>{jk}(y_j-\mu_k)^2}{\sum^N</em>{j&#x3D;1}\hat{\gamma}_{jk}},k&#x3D;1,2,…K<br>$$</p>
+<p>$$<br>\hat{\alpha}<em>k&#x3D;\cfrac{\sum^N_j&#x3D;1\hat{\gamma</em>{jk}}}{N},k&#x3D;1,2,…,K<br>$$</p>
 <ol start="4">
 <li>重复第二步和第三步，直至收敛。</li>
 </ol>
-<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171"></p>
+<h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171"></p>
 <p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p>
 <ul>
 <li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li>
@@ -144,8 +144,8 @@
 <p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p>
 <p><strong>利用声学特征训练HMM</strong></p>
 <p>确定状态转移矩阵，是执行解码问题的基础。</p>
-<p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u=max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p>
-<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/2020/03/14/2020-03-14-GMM/..%5Cimages%5CGMM%5C20160901093401467.png" alt></p>
+<p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p>
+<h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/..%5Cimages%5CGMM%5C20160901093401467.png"></p>
 <ul>
 <li><strong>对待识别语音做信号预处理</strong></li>
 <li><strong>对待识别语音提取声学特征</strong></li>
@@ -154,7 +154,7 @@
 <p>对声学特征解码后得到的是状态序列，即音素序列。</p>
 <p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p>
 <p><strong>其它应用</strong></p>
-<p><img src="/2020/03/14/2020-03-14-GMM/D:%5CProject%5Cgrobenis.github.io%5Cimages%5CHMM%5CHMM_nlp.jpg" alt></p>
+<p><img src="D:\Project\grobenis.github.io\images\HMM\HMM_nlp.jpg"></p>
 <p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>
 
       
@@ -210,7 +210,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/03/14/2020-03-14-GMM/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/14/2020-03-14-GMM/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -228,19 +228,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/22/2020-03-22-KMP-Algorithm/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            KMP-Algorithm
+            Kalman滤波器学习
           
         </div>
       </a>
     
     
-      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-14-Probability_graph_model/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Kalman滤波器学习</div>
+        <div class="article-nav-title">概率图模型</div>
       </a>
     
   </nav>
@@ -313,7 +313,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -368,6 +368,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -612,6 +616,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.6k字</span>
+            <span class="post-count">2.7k字</span>
         </span>
     </span>
 
@@ -101,7 +101,7 @@
       <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
 <p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
 <p>来源：李航的《统计学习方法》</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。</p>
 <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>机器学习中的步骤优化：</p>
@@ -114,7 +114,7 @@
 <p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p>
 <p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）;</p>
 <p>概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）；</p>
-<p>概率图模型+时间序列=动态模型；</p>
+<p>概率图模型+时间序列&#x3D;动态模型；</p>
 <p>动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器；</p>
 <ol>
 <li>HMM：系统状态离散</li>
@@ -122,65 +122,65 @@
 <li>Particle滤波器：系统状态连续且非线性分布</li>
 </ol>
 <h3 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h3><p>​        隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下：</p>
-<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q = {q_1,q_2,…,q_N},V={v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
-<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I={i_1,i_2,…,i_N},O={v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A=[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
-<p>B是观测概率矩阵：<br>$$<br>B=[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)=P(o_t=v_k|i_t=q_j)，i=1,2,…N;j=1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
-<p>$\pi$是初始状态概率向量：<br>$$<br>\pi=(\pi_i)<br>$$<br>其中，<br>$$<br>\pi=P(i_1=q_i),i=1,2,…N<br>$$<br>是时刻t=1处于状态$t=1$处于状态$q_i$的概率。</p>
-<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda=(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
+<p>设Q是所有可能的状态集合，V是所有可能的观测的集合。<br>$$<br>Q &#x3D; {q_1,q_2,…,q_N},V&#x3D;{v_1,v_2,…v_M}<br>$$<br>其中，N是可能的状态数，M是可能的观测数。</p>
+<p>I是长度为T的状态序列，O是对应的观测序列<br>$$<br>I&#x3D;{i_1,i_2,…,i_N},O&#x3D;{v_1,v_2,…,v_M}<br>$$<br>A是状态转移概率矩阵：<br>$$<br>A&#x3D;[a_ij]<em>{N\times N}<br>$$<br>其中，<br>$$<br>a</em>{ij}&#x3D;P(i_{t+1}&#x3D;i_t|q_j),i&#x3D;1,2,..N;j&#x3D;1,2,…,N<br>$$<br>表示在时刻t处于状态$q_i$的条件下在时刻t+1转移到状态$q_j$的概率。</p>
+<p>B是观测概率矩阵：<br>$$<br>B&#x3D;[b_j(k)]_{N\times M}<br>$$<br>其中，<br>$$<br>b_j(k)&#x3D;P(o_t&#x3D;v_k|i_t&#x3D;q_j)，i&#x3D;1,2,…N;j&#x3D;1,2,…,N<br>$$<br>是在时刻t处于状态$q_j$的条件下生成观测$v_k$的概率。</p>
+<p>$\pi$是初始状态概率向量：<br>$$<br>\pi&#x3D;(\pi_i)<br>$$<br>其中，<br>$$<br>\pi&#x3D;P(i_1&#x3D;q_i),i&#x3D;1,2,…N<br>$$<br>是时刻t&#x3D;1处于状态$t&#x3D;1$处于状态$q_i$的概率。</p>
+<p>​    因此，隐马尔勒夫模型由初始状态向量$\pi$、状态转移概率矩阵Ahead观测概率矩阵B决定。$\pi$和A决定状态序列，B决定观测序列。因此，隐马尔可夫模型$\lambda$可以用三元符号表示，即<br>$$<br>\lambda&#x3D;(A,B,\pi)<br>$$<br>$A,B,\pi$称为隐马尔可夫模型的三要素。</p>
 <p>​    状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列</p>
 <h3 id="两个基本假设"><a href="#两个基本假设" class="headerlink" title="两个基本假设"></a>两个基本假设</h3><ol>
-<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)=P(i_t|i_t-1),t=1,2,…,T<br>$$</p>
+<li><p><strong>齐次马尔可夫性假设</strong>，即假设隐藏的马尔可夫链在任意时刻t的状态只依赖于其前一其前一时刻的状态，于其它时刻的状态及观测无关，也与时刻t无关。<br>$$<br>P(i_t|i_t-1,o_{t-1},…,i_1,o_1)&#x3D;P(i_t|i_t-1),t&#x3D;1,2,…,T<br>$$</p>
 </li>
-<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)=P(o_t|i_t)<br>$$</p>
+<li><p><strong>观测独立性假设</strong>，即假设任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关。<br>$$<br>P(o_T|i_T,o_T,i_{T-1},o_{T-1}，…i_{t+1},o_{t+1},i_t,i_{t-1},o_{t-1},…,i_1,o_1)&#x3D;P(o_t|i_t)<br>$$</p>
 </li>
 </ol>
-<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O=(o_1,o_2,…o_T)$的生成过程描述如下：</p>
+<h3 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h3><p>根据HMM模型定义，可以将一个长度为T的观测序列$O&#x3D;(o_1,o_2,…o_T)$的生成过程描述如下：</p>
 <p>算法：观测序列的生成</p>
-<p>输入：隐马尔可夫模型$\lambda=(A,B,\pi)$,观测序列长度；</p>
-<p>输出：观测序列$O=(o_1,o_2,…,o_T)$</p>
+<p>输入：隐马尔可夫模型$\lambda&#x3D;(A,B,\pi)$,观测序列长度；</p>
+<p>输出：观测序列$O&#x3D;(o_1,o_2,…,o_T)$</p>
 <ol>
 <li>按照初始状态分布$\pi$产生状态$i_1$</li>
-<li>令t=1</li>
+<li>令t&#x3D;1</li>
 <li>按照状态$i_t$的观测概率分布$b_{i_t(k)}$生成$o_t$</li>
-<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}=1,2,…N$ </li>
-<li>令t=t+1,如果t&lt;T，转步（3），否则，终止</li>
+<li>按照状态$i_t$的状态转移概率分布${a_{i_ti_{t+1}}}$产生状态$i_{t+1},i_{t+2}&#x3D;1,2,…N$ </li>
+<li>令t&#x3D;t+1,如果t&lt;T，转步（3），否则，终止</li>
 </ol>
 <h2 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h2><p>隐马尔可夫模型有三个<strong>基本问题</strong>：</p>
 <ol>
-<li><strong>概率计算问题</strong>。给的模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
-<li><strong>学习问题</strong>。阈值观测序列$O=(o_1,o_2,…,o_T)$，估计模型参数$\lambda=(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
-<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I=(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
+<li><strong>概率计算问题</strong>。给的模型$\lambda&#x3D;(A,B,\pi)$和观测序列$O&#x3D;(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</li>
+<li><strong>学习问题</strong>。阈值观测序列$O&#x3D;(o_1,o_2,…,o_T)$，估计模型参数$\lambda&#x3D;(A,B,\pi)$参数，使得在该模型下观测序列序列概率$P(O|\lambda)$最大，即用极大似然估计的方法估计参数</li>
+<li><strong>预测问题</strong>，（解码（decoding）问题）。一致模型$\lambda&#x3D;(A,B,\pi)$和观测序列$O&#x3D;(o_1,o_2,…,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I&#x3D;(i_1,i_2,…,i_T)$，即<strong>给定观测序列，求最有可能的对应的状态序列。</strong></li>
 </ol>
 <p>本节将介绍HMM模型的概率计算算法、学习算法以及预测算法</p>
-<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda=(A,B,\pi)$和观测序列$O=(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
-<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I=(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O=(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
-<p>状态序列$I=(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)=\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I=(i_1,i_2,…i_T)$,观测序列$O=(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)=b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)=P(O|I,\lambda)P(I,\lambda)=\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)=\sum_IP(O|I,\lambda)P(I|\lambda)=\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
-<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O=(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)=P(o_1,o_2,…,o_t,i_t=q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
+<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><p><strong>目的</strong>：给定模型$\lambda&#x3D;(A,B,\pi)$和观测序列$O&#x3D;(o_1,o_2,…,o_T)$，计算在模型$\lambda$下观测序列O出现的概率$P(O|\lambda)$。</p>
+<h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>最直接的方法是按照概率公式直接计算。通过列举所有可能的长度为T的状态序列$I&#x3D;(i_1,i_2,…i_T)$，求各个状态序列I与观测序列$O&#x3D;(o_1,o_2,…,o_T)$的联合概率$P(O,I|\lambda)$，然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
+<p>状态序列$I&#x3D;(i_1,i_2,…i_T)$的概率是<br>$$<br>P(I|\lambda)&#x3D;\pi_{i_1}a_{i_1i_2}a_{i_2i_3}…a_{i_{T-1}i_T}<br>$$<br>对固定的状态序列$I&#x3D;(i_1,i_2,…i_T)$,观测序列$O&#x3D;(o_1,o_2,…,o_T)$的概率是$P(O|I,\lambda)$，<br>$$<br>P(O|I,\lambda)&#x3D;b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)<br>$$<br>O和I同时出现的概率为：<br>$$<br>P(O,I|\lambda)&#x3D;P(O|I,\lambda)P(I,\lambda)&#x3D;\pi_{i_i}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b(o_T)<br>$$<br>对所有可能的状态序列I球壳，得到观测序列O的概率$P(P|\lambda)$，即<br>$$<br>P(O|\lambda)&#x3D;\sum_IP(O|I,\lambda)P(I|\lambda)&#x3D;\sum_{i_1,i_2,…,i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1I_2}b_{i_2}(o_2)…a_{i_{T-1}i_T}b_{i_T}(o_T)<br>$$<br>这种方法很容易理解，但是计算量很大，是$O(TN^T)$阶的。不可行</p>
+<h4 id="前向算法（forward-backward-algorithm）"><a href="#前向算法（forward-backward-algorithm）" class="headerlink" title="前向算法（forward-backward algorithm）"></a>前向算法（forward-backward algorithm）</h4><p><strong>前向概率</strong> 给定隐马尔可夫模型$\lambda$，定义时刻t部分观测序列为$O&#x3D;(o_1,o_2,…,o_T)$且状态为$q_i$的概率为前向概率，记作<br>$$<br>\alpha_t(i)&#x3D;P(o_1,o_2,…,o_t,i_t&#x3D;q_i|\lambda)<br>$$<br><strong>观测序列概率的前向算法</strong></p>
 <p>输入：隐马尔可夫模型$\lambda$，观测序列O;</p>
 <p>输出：观测序列概率$P(O|\lambda)$</p>
 <ol>
-<li><p>初值<br>$$<br>\alpha_1(i)=\pi_ib_i(o_1),i=1,2,…N<br>$$</p>
+<li><p>初值<br>$$<br>\alpha_1(i)&#x3D;\pi_ib_i(o_1),i&#x3D;1,2,…N<br>$$</p>
 </li>
-<li><p>递推 对 $t=1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)=[\sum^N_{j=1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i=1,2,…N<br>$$</p>
+<li><p>递推 对 $t&#x3D;1,2,..,T-1$<br>$$<br>\alpha_{t+1}(i)&#x3D;[\sum^N_{j&#x3D;1}\alpha_t(j)a_{ji}]b_t(o_{t+1}),i&#x3D;1,2,…N<br>$$</p>
 </li>
-<li><p>终止<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$</p>
+<li><p>终止<br>$$<br>P(O|\lambda)&#x3D;\sum^N_{j&#x3D;1}\alpha_T(i)<br>$$</p>
 </li>
 </ol>
 <p>算法解读，步骤（1）初始化前向概率是初始时刻状态和观测的联合概率，步骤（2）是前向概率的递推公式，计算到时刻t+1部分观测序列在时刻t+1且初始状态$q_i$的的前向概率。</p>
-<p>所以：<br>$$<br>P(O|\lambda)=\sum^N_{j=1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
-<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
-<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)=P(o_{t+1},o_{t+2},…,o_T|i_t=q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
+<p>所以：<br>$$<br>P(O|\lambda)&#x3D;\sum^N_{j&#x3D;1}\alpha_T(i)<br>$$<br>下图表示了前向概率的递推公式：</p>
+<p><img src="/..%5Cimages%5CHMM%5C%E5%89%8D%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="递推公式"></p>
+<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p><strong>后向概率</strong>：给定隐马尔可夫模型$\lambda$ ，定义在时刻t状态为$q_i$的条件下，从t+1到T的部分观测序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率，记作：<br>$$<br>\beta_t(i)&#x3D;P(o_{t+1},o_{t+2},…,o_T|i_t&#x3D;q_i,\lambda)<br>$$<br>可以也递推的方法求得后向概率$\beta_t(i)$及观测序列概率$P(O|\lambda)$.</p>
 <p><strong>算法步骤</strong></p>
 <p><strong>输入</strong>：隐马尔可夫模型$\lambda$,观测序列O;</p>
 <p><strong>输出</strong>：观测序列$P(O|\lambda)$;</p>
 <ol>
-<li><p>$\beta_T(i)=1,i=1,2,…N$</p>
+<li><p>$\beta_T(i)&#x3D;1,i&#x3D;1,2,…N$</p>
 </li>
-<li><p>对$t=T-1,T-2,…1$<br>$$<br>\beta_t(i)=\sum^N_{j=1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i=1,2,…,N<br>$$</p>
+<li><p>对$t&#x3D;T-1,T-2,…1$<br>$$<br>\beta_t(i)&#x3D;\sum^N_{j&#x3D;1}a_{ij}b_j(a_{t+1})\beta_{t+1}(j),i&#x3D;1,2,…,N<br>$$</p>
 </li>
 </ol>
-<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)=1$ ；步骤（2）是后向概率的递推公式。</p>
-<p><img src="/2020/03/10/2020-03-13-HMM_model/..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
+<p>算法（1）初始化后向概率，对最终时刻的所有状态$q_i$规定$\beta_T(i)&#x3D;1$ ；步骤（2）是后向概率的递推公式。</p>
+<p><img src="/..%5Cimages%5CHMM%5C%E5%90%8E%E5%90%91%E6%A6%82%E7%8E%87%E7%9A%84%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F.png" alt="后向概率的递推公式"></p>
 <h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><h4 id="Baum-welch算法"><a href="#Baum-welch算法" class="headerlink" title="Baum-welch算法"></a>Baum-welch算法</h4><h3 id="预测算法（Decoding算法"><a href="#预测算法（Decoding算法" class="headerlink" title="预测算法（Decoding算法)"></a>预测算法（Decoding算法)</h3><h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>隐马尔可夫模型在语音识别、自然语言处理、生物信息、模式识别等领域有着广泛的应用。</p>
 <p>HMM的主要应用是解码</p>
 <p>两种解码方法：</p>
@@ -250,7 +250,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/03/10/2020-03-13-HMM_model/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/10/2020-03-13-HMM_model/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -268,19 +268,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-12-Clustering_Survey/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            回环检测与DBoW2库
+            经典聚类算法调研
           
         </div>
       </a>
     
     
-      <a href="/2020/03/10/2020-03-12-Clustering_Survey/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">经典聚类算法调研</div>
+        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
       </a>
     
   </nav>
@@ -353,7 +353,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -408,6 +408,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -652,6 +656,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

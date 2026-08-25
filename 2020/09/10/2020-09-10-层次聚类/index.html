@@ -99,9 +99,9 @@
 
       
       <p>本文主要为了了解聚类的分裂与合并。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>层次聚类（Hierarchical Clustering）考虑把n个样本聚成c类的情况。首先把所有样本分成n类，每类正好含有一个样本。其次，我们将样本分为n-1类，接着是n-2类，这样下去知道所有样本被分为一类。我们成聚类数目$c=n-k+1$对应层次结构的第k层，因此第1层对应n个类而第n层对应一个类别。对层次结构的任意一层及其该层中的任意n个样本，如果该层中属于同一类，而且在更高的层次一直属于同一类，那么这样的序列称为层次聚类。</p>
+<h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>层次聚类（Hierarchical Clustering）考虑把n个样本聚成c类的情况。首先把所有样本分成n类，每类正好含有一个样本。其次，我们将样本分为n-1类，接着是n-2类，这样下去知道所有样本被分为一类。我们成聚类数目$c&#x3D;n-k+1$对应层次结构的第k层，因此第1层对应n个类而第n层对应一个类别。对层次结构的任意一层及其该层中的任意n个样本，如果该层中属于同一类，而且在更高的层次一直属于同一类，那么这样的序列称为层次聚类。</p>
 <h3 id="层次聚类的表达方式"><a href="#层次聚类的表达方式" class="headerlink" title="层次聚类的表达方式"></a>层次聚类的表达方式</h3><ol>
 <li>树图</li>
 <li>集合图<ol>
@@ -115,19 +115,19 @@
 <p>合并是自底向上，先使得所有样本归入一类，然后通过后续分裂，来增加类别的数目。</p>
 <h4 id="一-合并"><a href="#一-合并" class="headerlink" title="一 合并"></a>一 合并</h4><p>自底向上，先使得样本各成一类，然后通过合并不同的类，来减少类别数目。</p>
 <h5 id="基于合并的聚类算法"><a href="#基于合并的聚类算法" class="headerlink" title="基于合并的聚类算法"></a>基于合并的聚类算法</h5><p>一开始一共有c类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 begin intialize: c,\hat&#123;c&#125; &lt;- n, D_i &lt;- &#123;x_i&#125;, i &#x3D; 1,...,n</span><br><span class="line">2 		do \hat&#123;c&#125;&lt;-\hat&#123;c&#125;-1</span><br><span class="line">3 			求最接近的聚类，如D_i和D_j</span><br><span class="line">4			合并D_i和D_j</span><br><span class="line">5 		until c &#x3D; \hat&#123;c&#125;</span><br><span class="line">6		return c个聚类</span><br><span class="line">7 end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 begin intialize: c,\hat&#123;c&#125; &lt;- n, D_i &lt;- &#123;x_i&#125;, i = 1,...,n</span><br><span class="line">2 		do \hat&#123;c&#125;&lt;-\hat&#123;c&#125;-1</span><br><span class="line">3 			求最接近的聚类，如D_i和D_j</span><br><span class="line">4			合并D_i和D_j</span><br><span class="line">5 		until c = \hat&#123;c&#125;</span><br><span class="line">6		return c个聚类</span><br><span class="line">7 end</span><br></pre></td></tr></table></figure>
 
 <p>对合并方法来说，从一个层次到另一个层次所需的计算比较简单。但是如果样本过多而期望的类别样本数目又很少，这种计算会被反复多次地执行。</p>
-<p>不同类别之间的相似性的度量：<br>$$<br>d_\min(D_i,D_j) = \min_{x\in D_i\x’D_j}||x-x’||\<br>d_\max(D_i,D_j) = \max_{x\in D_i\x’D_j}||x-x’||\<br>d_{avg}(D_i,D_j) = \frac{1}{n_in_j}\sum_{x\in D_i}\sum_{x\in D_j}||x-x’||\<br>d_{mean}(D_i,D_j) = ||m_i-m_j||<br>$$<br>在上述的这些距离度量中，最近距离度量$d_\min(.,.)$和$d_\max(.,.)$ 代表了类与类之间距离的两个极端。就像所有利用最大值或最小值的算法，它们对噪声和孤立点非常敏感。用平静值代替它们可以改善这些问题。</p>
+<p>不同类别之间的相似性的度量：<br>$$<br>d_\min(D_i,D_j) &#x3D; \min_{x\in D_i\x’D_j}||x-x’||\<br>d_\max(D_i,D_j) &#x3D; \max_{x\in D_i\x’D_j}||x-x’||\<br>d_{avg}(D_i,D_j) &#x3D; \frac{1}{n_in_j}\sum_{x\in D_i}\sum_{x\in D_j}||x-x’||\<br>d_{mean}(D_i,D_j) &#x3D; ||m_i-m_j||<br>$$<br>在上述的这些距离度量中，最近距离度量$d_\min(.,.)$和$d_\max(.,.)$ 代表了类与类之间距离的两个极端。就像所有利用最大值或最小值的算法，它们对噪声和孤立点非常敏感。用平静值代替它们可以改善这些问题。</p>
 <h4 id="二-分裂"><a href="#二-分裂" class="headerlink" title="二 分裂"></a>二 分裂</h4><p>先将样本都归入一类，然后通过后续分裂，来增加类别数目。</p>
 <h3 id="基于优化的层次聚类"><a href="#基于优化的层次聚类" class="headerlink" title="基于优化的层次聚类"></a>基于优化的层次聚类</h3><p>任选一种距离度量来表示类与类之间的距离时，没有考虑到是否能使聚类准则函数取极值。</p>
 <p>因此可以稍作修改，获得一个极值化准则函数的“逐步优化的层次聚类”的算法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 begin intialize: c,\hat&#123;c&#125; &lt;- n, D_i &lt;- &#123;x_i&#125;, i &#x3D; 1,...,n</span><br><span class="line">2 		do \hat&#123;c&#125;&lt;-\hat&#123;c&#125;-1</span><br><span class="line">3 			寻找其合并类，将准则函数改变为最小的聚类，例如D_i和D_j</span><br><span class="line">4			合并D_i和D_j</span><br><span class="line">5 		until c &#x3D; \hat&#123;c&#125;</span><br><span class="line">6		return c个聚类</span><br><span class="line">7 end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 begin intialize: c,\hat&#123;c&#125; &lt;- n, D_i &lt;- &#123;x_i&#125;, i = 1,...,n</span><br><span class="line">2 		do \hat&#123;c&#125;&lt;-\hat&#123;c&#125;-1</span><br><span class="line">3 			寻找其合并类，将准则函数改变为最小的聚类，例如D_i和D_j</span><br><span class="line">4			合并D_i和D_j</span><br><span class="line">5 		until c = \hat&#123;c&#125;</span><br><span class="line">6		return c个聚类</span><br><span class="line">7 end</span><br></pre></td></tr></table></figure>
 
 <p>可以看出，基于$d_\max(.,.)$的聚类方法使得划分半径增长最慢，可以看作是一种逐步求精的例子。</p>
-<p>还有一种基于误差平方和的准则函数$J_e$的方法，如果我们找到两个类，若它们的合并类造成$J_e$的增加凉最少，就要求距离<br>$$<br>d_e(D_i,D_j) = \sqrt{\frac{n_in_j}{n_i+n_j}}||m_i-m_j||<br>$$<br>最小，当挑选用来合并的聚类的时候，这个准则除了考虑了类与类之间的距离，还考虑了类中所含样本的个数。一般来说，基于$d_e(.,.)$的算法倾向于将孤立点或较小的类与较大的类合并。虽然最后的结果不一定能最小化$J_e$，但这个结果可以向进一步的迭代优化提供非常好的初始点。</p>
-<h3 id="层次聚类和导出度量"><a href="#层次聚类和导出度量" class="headerlink" title="层次聚类和导出度量"></a>层次聚类和导出度量</h3><p>假定可以衡量数据集中的任意两个样本之间的相异程度，$\delta(x,x’)$。而且$\delta(x,x’)\geq 0 $，等号当且仅当$x=x’$时成立。那么合并聚类算法还是可以使用，只要理解两个最近的聚类就是最不相异的类。</p>
-<p>如果定义两个聚类的相异度为：<br>$$<br>\delta_\min(D_i,D_j) = \min_{x\in D_i\x’\in D_j} \delta(x,x’)\<br>\delta_\max(D_i,D_j) = \max_{x\in D_i\x’\in D_j} \delta(x,x’)<br>$$<br>层次聚类算法就可以对给定的n个样本集导出距离函数。</p>
+<p>还有一种基于误差平方和的准则函数$J_e$的方法，如果我们找到两个类，若它们的合并类造成$J_e$的增加凉最少，就要求距离<br>$$<br>d_e(D_i,D_j) &#x3D; \sqrt{\frac{n_in_j}{n_i+n_j}}||m_i-m_j||<br>$$<br>最小，当挑选用来合并的聚类的时候，这个准则除了考虑了类与类之间的距离，还考虑了类中所含样本的个数。一般来说，基于$d_e(.,.)$的算法倾向于将孤立点或较小的类与较大的类合并。虽然最后的结果不一定能最小化$J_e$，但这个结果可以向进一步的迭代优化提供非常好的初始点。</p>
+<h3 id="层次聚类和导出度量"><a href="#层次聚类和导出度量" class="headerlink" title="层次聚类和导出度量"></a>层次聚类和导出度量</h3><p>假定可以衡量数据集中的任意两个样本之间的相异程度，$\delta(x,x’)$。而且$\delta(x,x’)\geq 0 $，等号当且仅当$x&#x3D;x’$时成立。那么合并聚类算法还是可以使用，只要理解两个最近的聚类就是最不相异的类。</p>
+<p>如果定义两个聚类的相异度为：<br>$$<br>\delta_\min(D_i,D_j) &#x3D; \min_{x\in D_i\x’\in D_j} \delta(x,x’)\<br>\delta_\max(D_i,D_j) &#x3D; \max_{x\in D_i\x’\in D_j} \delta(x,x’)<br>$$<br>层次聚类算法就可以对给定的n个样本集导出距离函数。</p>
 
       
       <!-- reward -->
@@ -197,7 +197,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2020/09/10/2020-09-10-%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/09/10/2020-09-10-%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -300,7 +300,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -355,6 +355,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -599,6 +603,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>

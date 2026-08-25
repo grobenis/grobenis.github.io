@@ -64,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.7k字</span>
+            <span class="post-count">4.8k字</span>
         </span>
     </span>
 
@@ -103,8 +103,8 @@
 <blockquote>
 <p>1、打印一张棋盘格，把它贴在一个平面上，作为标定物。<br>2、通过调整标定物或摄像机的方向，为标定物拍摄一些不同方向的照片。<br>3、从照片中提取棋盘格角点。<br>4、估算理想无畸变的情况下，五个内参和六个外参。<br>5、应用最小二乘法估算实际存在径向畸变下的畸变系数。<br>6、极大似然法，优化估计，提升估计精度。</p>
 </blockquote>
-<p>参考来源：<a href="https://mp.weixin.qq.com/s/q-RIpy4YZUrrt9qCdR9Xvw" target="_blank" rel="noopener">一文详解相机标定算法原理</a></p>
-<a id="more"></a>
+<p>参考来源：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/q-RIpy4YZUrrt9qCdR9Xvw">一文详解相机标定算法原理</a></p>
+<span id="more"></span>
 
 <h2 id="相机标定"><a href="#相机标定" class="headerlink" title="相机标定"></a>相机标定</h2><h3 id="问题引出"><a href="#问题引出" class="headerlink" title="问题引出"></a>问题引出</h3><h4 id="一-为什么要相机标定？"><a href="#一-为什么要相机标定？" class="headerlink" title="一. 为什么要相机标定？"></a>一. 为什么要相机标定？</h4><blockquote>
 <p>​    在图像测量过程以及机器视觉应用中，为确定空间物体表面某点的三维几何位置与其在图像中对应点之间的相互关系，必须建立相机成像的几何模型，这些几何模型参数就是相机参数。      </p>
@@ -130,17 +130,17 @@
 </blockquote>
 <h3 id="相机标定的概念"><a href="#相机标定的概念" class="headerlink" title="相机标定的概念"></a>相机标定的概念</h3><p>相机标定就是通过输入带有标定pattern的标定板来计算相机参数，来用简单地数学模型来表达复杂的成像过程。求解这个数学模型，也就是求解相机的参数，包括相机的内参，外参以及畸变参数。有了这个数学模型，我们可以对相机拍摄的图片进行畸变校正，也可以用多个相机拍摄图片来进行三维重建，测量物体距离以及其他的计算机视觉的应用。</p>
 <p>相机成像需要通过一系列变换组成</p>
-<p><img src="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220725194347996.png" alt="image-20220725194347996"></p>
-<p>从世界坐标系到像素坐标系，写成矩阵形式，可以得到：<br>$$<br>\begin{array}{r}<br>z_{c} \cdot\left[\begin{array}{c}<br>u \<br>v \<br>1<br>\end{array}\right]=\left[\begin{array}{ccc}<br>\frac{1}{d x} &amp; 0 &amp; u_{0} \<br>0 &amp; \frac{1}{d y} &amp; v_{0} \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]\left[\begin{array}{llll}<br>f &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; f &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 1 &amp; 0<br>\end{array}\right] \cdot\left[\begin{array}{cc}<br>R_{3 \times 3} &amp; T_{3 \times 1} \<br>O &amp; 1<br>\end{array}\right] \cdot\left[\begin{array}{c}<br>x_{w} \<br>y_{w} \<br>z_{w} \<br>1<br>\end{array}\right] \<br>=\mathbf{M}<em>{1} \mathbf{M}</em>{2}\left[\begin{array}{c}<br>x_{w} \<br>y_{w} \<br>z_{w} \<br>1<br>\end{array}\right]<br>\end{array}<br>$$</p>
-<p>上式子中，$M_1$为相机内参，包括相机的教具，光轴与图像平面的角点位置等内部参数，和外部因素无关，表示为:<br>$$<br>M_1 = \left[\begin{array}{ccc}<br>f_x &amp; 0 &amp; u_{0} \<br>0 &amp; f_y &amp; v_{0} \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]<br>$$<br>如果相机像素坐标系的坐标轴不是完全垂直的吗，会有一个偏斜系数，坐标轴不垂直的的话，<strong>偏斜系数</strong>不为0。<br>$$<br>M_1 = \left[\begin{array}{ccc}<br>f_x &amp; s &amp; u_{0} \<br>0 &amp; f_y &amp; v_{0} \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]<br>$$<br>$M_2$为相机外参，表征世界坐标系到相机坐标系的旋转关系，是相机在世界坐标系的下的位置姿态矩阵，认为是摄像机的外参，一般情况下，如果世界坐标系设置为相机坐标系，即二者重合，那么这个外参就是一个单位矩阵。<br>$$<br>M_{2}=\left[\begin{array}{ll}<br>R_{3 \times 3} &amp; T_{3 \times 1}<br>\end{array}\right]=\left[\begin{array}{llll}<br>r_{11} &amp; r_{12} &amp; r_{13} &amp; t_{1} \<br>r_{21} &amp; r_{22} &amp; r_{23} &amp; t_{2} \<br>r_{31} &amp; r_{32} &amp; r_{33} &amp; t_{3}<br>\end{array}\right]<br>$$</p>
+<p><img src="/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220725194347996.png" alt="image-20220725194347996"></p>
+<p>从世界坐标系到像素坐标系，写成矩阵形式，可以得到：<br>$$<br>\begin{array}{r}<br>z_{c} \cdot\left[\begin{array}{c}<br>u \<br>v \<br>1<br>\end{array}\right]&#x3D;\left[\begin{array}{ccc}<br>\frac{1}{d x} &amp; 0 &amp; u_{0} \<br>0 &amp; \frac{1}{d y} &amp; v_{0} \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]\left[\begin{array}{llll}<br>f &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; f &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 1 &amp; 0<br>\end{array}\right] \cdot\left[\begin{array}{cc}<br>R_{3 \times 3} &amp; T_{3 \times 1} \<br>O &amp; 1<br>\end{array}\right] \cdot\left[\begin{array}{c}<br>x_{w} \<br>y_{w} \<br>z_{w} \<br>1<br>\end{array}\right] \<br>&#x3D;\mathbf{M}<em>{1} \mathbf{M}</em>{2}\left[\begin{array}{c}<br>x_{w} \<br>y_{w} \<br>z_{w} \<br>1<br>\end{array}\right]<br>\end{array}<br>$$</p>
+<p>上式子中，$M_1$为相机内参，包括相机的教具，光轴与图像平面的角点位置等内部参数，和外部因素无关，表示为:<br>$$<br>M_1 &#x3D; \left[\begin{array}{ccc}<br>f_x &amp; 0 &amp; u_{0} \<br>0 &amp; f_y &amp; v_{0} \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]<br>$$<br>如果相机像素坐标系的坐标轴不是完全垂直的吗，会有一个偏斜系数，坐标轴不垂直的的话，<strong>偏斜系数</strong>不为0。<br>$$<br>M_1 &#x3D; \left[\begin{array}{ccc}<br>f_x &amp; s &amp; u_{0} \<br>0 &amp; f_y &amp; v_{0} \<br>0 &amp; 0 &amp; 1<br>\end{array}\right]<br>$$<br>$M_2$为相机外参，表征世界坐标系到相机坐标系的旋转关系，是相机在世界坐标系的下的位置姿态矩阵，认为是摄像机的外参，一般情况下，如果世界坐标系设置为相机坐标系，即二者重合，那么这个外参就是一个单位矩阵。<br>$$<br>M_{2}&#x3D;\left[\begin{array}{ll}<br>R_{3 \times 3} &amp; T_{3 \times 1}<br>\end{array}\right]&#x3D;\left[\begin{array}{llll}<br>r_{11} &amp; r_{12} &amp; r_{13} &amp; t_{1} \<br>r_{21} &amp; r_{22} &amp; r_{23} &amp; t_{2} \<br>r_{31} &amp; r_{32} &amp; r_{33} &amp; t_{3}<br>\end{array}\right]<br>$$</p>
 <h4 id="镜头畸变"><a href="#镜头畸变" class="headerlink" title="镜头畸变"></a>镜头畸变</h4><p>实际使用中，相机镜头的畸变主要包括切向畸变与径向畸变两种。</p>
 <ol>
 <li>径向畸变是由于相机的透镜形状造成的；在光学上，桶形畸变是由于图像放大率随着离光轴的距离增加而减小，而枕形畸变却恰好相反。在这两种畸变中，穿过图像中心和光轴有交点的直线还能保持形状不变。</li>
 <li>切向畸变则是整个相机的组装过程中造成的；</li>
 </ol>
-<p>图像的径向畸变往往被描述为一个低阶多项式模型：<br>$$<br>\begin{aligned}<br>&amp;x_{\text {corrected }}=x\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right) \<br>&amp;y_{\text {corrected }}=y\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)<br>\end{aligned}<br>$$<br>注意它们都是归一化平面上的点，而不是像素平面上的点。</p>
+<p>图像的径向畸变往往被描述为一个低阶多项式模型：<br>$$<br>\begin{aligned}<br>&amp;x_{\text {corrected }}&#x3D;x\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right) \<br>&amp;y_{\text {corrected }}&#x3D;y\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)<br>\end{aligned}<br>$$<br>注意它们都是归一化平面上的点，而不是像素平面上的点。</p>
 <p>在式（5.11）描述的纠正模型中，对于畸变较小的图像中心区域，畸变纠正主要是 $k_1$起作用。而对于畸变较大的边缘区域主要是 $k_2$起作用。普通摄像头用这两个系数就能很好的纠正径向畸变。对畸变很大的摄像头，比如鱼眼镜头，可以加入 $k_3$ 畸变项对畸变进行纠正。</p>
-<p>另一方面，对于切向畸变，可以使用另外的两个参数 <em>p</em>1<em>, p</em>2 来进行纠正:<br>$$<br>\left{\begin{array}{l}<br>x_{\text {corrected }}=x\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)+2 p_{1} x y+p_{2}\left(r^{2}+2 x^{2}\right) \<br>y_{\text {corrected }}=y\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)+p_{1}\left(r^{2}+2 y^{2}\right)+2 p_{2} x y<br>\end{array} .\right.<br>$$</p>
+<p>另一方面，对于切向畸变，可以使用另外的两个参数 <em>p</em>1*, p*2 来进行纠正:<br>$$<br>\left{\begin{array}{l}<br>x_{\text {corrected }}&#x3D;x\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)+2 p_{1} x y+p_{2}\left(r^{2}+2 x^{2}\right) \<br>y_{\text {corrected }}&#x3D;y\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)+p_{1}\left(r^{2}+2 y^{2}\right)+2 p_{2} x y<br>\end{array} .\right.<br>$$</p>
 <h4 id="相机待标定的参数"><a href="#相机待标定的参数" class="headerlink" title="相机待标定的参数"></a>相机待标定的参数</h4><ol>
 <li><p>与镜头畸变有关的参数;$k_1$, $k_2$，$k_3$，$p_1$，$p_2$。</p>
 <p>镜头畸变包括切向畸变和径向畸变两种；</p>
@@ -148,21 +148,21 @@
 <li><p>外参，相机坐标系与世界坐标系之间的旋转与平移R, t；</p>
 </li>
 </ol>
-<h3 id="相机标定原理"><a href="#相机标定原理" class="headerlink" title="相机标定原理"></a>相机标定原理</h3><h4 id="单应性矩阵"><a href="#单应性矩阵" class="headerlink" title="单应性矩阵"></a>单应性矩阵</h4><p>平面的单应性关系定义为从一个平面到另一个平面的投影映射。从世界坐标系中物体牌面到相机坐标系的成像平面指尖的映射就是平面单应性。我们采用的是标定板，可以认为是用到的模型平面。模型平面上的一点$Q=[X,Y,Z,1]^T$映射到成像平面上的一点$q = [x,y,1]^T$，他们之间的单应性关系可以描述为:<br>$$<br>q = s H Q<br>$$<br>单应性矩阵H本来有9个元素，但由于是单应性矩阵，考虑到其次坐标，可以提出到尺度因子中，所以有8个参数需要求解，自由度是8，求解8个参数至少需要四个点，两个平面中的对应的四组，可以得到8个方程。求解方程可以得到单应性关系。采用更多的点可以减小噪音和其他不确定因素的影响。我们是完全可以在不知道内外参的 情况下求解单应性关系的。一般情况下我们会有更多的点，opencv使用<code>findHomography</code>接口来求解单应性，有多种求解的算法。method为0，考虑所有点，计算结果使重投影 的误差最小，即最小化均方误差。method为RANSAC，从所有点集中随机选择子集，计算需要这样的随机样本，保留具有最大内部点的样本。</p>
-<h4 id="相机求内参的两个基本约束"><a href="#相机求内参的两个基本约束" class="headerlink" title="相机求内参的两个基本约束"></a>相机求内参的两个基本约束</h4><p>给定标定平面的一张图片，它的单应性可以被估计，假设$H = [h_1,h_2,h_3]$,由公式可以得出<br>$$<br>\left[\begin{array}{lll}<br>\mathrm{h}<em>{1} &amp; \mathrm{~h}</em>{2} &amp; \mathrm{~h}<em>{3}<br>\end{array}\right]=\lambda \mathbf{A}\left[\begin{array}{lll}<br>\mathrm{r}</em>{1} &amp; \mathrm{r}<em>{2} &amp; \mathrm{t}<br>\end{array}\right]<br>$$<br>分解后可以得到：<br>$$<br>\mathbf{h}</em>{1}=\lambda \cdot \mathbf{A} \cdot \mathbf{r}<em>{1}, \mathbf{h}</em>{2}=\lambda \cdot \mathbf{A} \cdot \mathbf{r}<em>{2}, \mathbf{h}</em>{3}=\lambda \cdot \mathbf{A} \cdot \mathrm{t}<br>$$<br>$$<br>\mathrm{r}<em>{1}=\frac{1}{\lambda} \cdot \mathbf{A}^{-1} \cdot \mathrm{h}</em>{1}, \mathrm{r}<em>{2}=\frac{1}{\lambda} \cdot \mathbf{A}^{-1} \cdot \mathrm{h}</em>{2}, \mathrm{t}=\frac{1}{\lambda} \cdot \mathbf{A}^{-1} \cdot \mathrm{h}_{3}<br>$$</p>
+<h3 id="相机标定原理"><a href="#相机标定原理" class="headerlink" title="相机标定原理"></a>相机标定原理</h3><h4 id="单应性矩阵"><a href="#单应性矩阵" class="headerlink" title="单应性矩阵"></a>单应性矩阵</h4><p>平面的单应性关系定义为从一个平面到另一个平面的投影映射。从世界坐标系中物体牌面到相机坐标系的成像平面指尖的映射就是平面单应性。我们采用的是标定板，可以认为是用到的模型平面。模型平面上的一点$Q&#x3D;[X,Y,Z,1]^T$映射到成像平面上的一点$q &#x3D; [x,y,1]^T$，他们之间的单应性关系可以描述为:<br>$$<br>q &#x3D; s H Q<br>$$<br>单应性矩阵H本来有9个元素，但由于是单应性矩阵，考虑到其次坐标，可以提出到尺度因子中，所以有8个参数需要求解，自由度是8，求解8个参数至少需要四个点，两个平面中的对应的四组，可以得到8个方程。求解方程可以得到单应性关系。采用更多的点可以减小噪音和其他不确定因素的影响。我们是完全可以在不知道内外参的 情况下求解单应性关系的。一般情况下我们会有更多的点，opencv使用<code>findHomography </code>接口来求解单应性，有多种求解的算法。method为0，考虑所有点，计算结果使重投影 的误差最小，即最小化均方误差。method为RANSAC，从所有点集中随机选择子集，计算需要这样的随机样本，保留具有最大内部点的样本。</p>
+<h4 id="相机求内参的两个基本约束"><a href="#相机求内参的两个基本约束" class="headerlink" title="相机求内参的两个基本约束"></a>相机求内参的两个基本约束</h4><p>给定标定平面的一张图片，它的单应性可以被估计，假设$H &#x3D; [h_1,h_2,h_3]$,由公式可以得出<br>$$<br>\left[\begin{array}{lll}<br>\mathrm{h}<em>{1} &amp; \mathrm{~h}</em>{2} &amp; \mathrm{~h}<em>{3}<br>\end{array}\right]&#x3D;\lambda \mathbf{A}\left[\begin{array}{lll}<br>\mathrm{r}</em>{1} &amp; \mathrm{r}<em>{2} &amp; \mathrm{t}<br>\end{array}\right]<br>$$<br>分解后可以得到：<br>$$<br>\mathbf{h}</em>{1}&#x3D;\lambda \cdot \mathbf{A} \cdot \mathbf{r}<em>{1}, \mathbf{h}</em>{2}&#x3D;\lambda \cdot \mathbf{A} \cdot \mathbf{r}<em>{2}, \mathbf{h}</em>{3}&#x3D;\lambda \cdot \mathbf{A} \cdot \mathrm{t}<br>$$<br>$$<br>\mathrm{r}<em>{1}&#x3D;\frac{1}{\lambda} \cdot \mathbf{A}^{-1} \cdot \mathrm{h}</em>{1}, \mathrm{r}<em>{2}&#x3D;\frac{1}{\lambda} \cdot \mathbf{A}^{-1} \cdot \mathrm{h}</em>{2}, \mathrm{t}&#x3D;\frac{1}{\lambda} \cdot \mathbf{A}^{-1} \cdot \mathrm{h}_{3}<br>$$</p>
 <p>公式中，$\lambda$是一个尺度因子。由于$r_1$和$r_2$分别是绕着x, y轴旋转的，x轴,y轴均垂直于z轴，所以是正交的。所以我们可以得到．</p>
 <ol>
-<li><p>x轴与y轴正交<br>$$<br>\mathbf{h}<em>{1}^{T} \mathbf{A}^{-T} \mathbf{A}^{-1} \mathbf{h}</em>{2}=0<br>$$</p>
+<li><p>x轴与y轴正交<br>$$<br>\mathbf{h}<em>{1}^{T} \mathbf{A}^{-T} \mathbf{A}^{-1} \mathbf{h}</em>{2}&#x3D;0<br>$$</p>
 </li>
-<li><p>旋转向量的模相等<br>$$<br>\mathbf{h}<em>{1}^{T} \mathbf{A}^{-T} \mathbf{A}^{-1} \mathbf{h}</em>{1}=\mathbf{h}<em>{2}^{T} \mathbf{A}^{-T} \mathbf{A}^{-1} \mathbf{h}</em>{2}<br>$$<br>对于一个给定的单应性矩阵，这是对内参的两个基础的约束条件。一个单应性矩阵 有8个自由度，六个参数（旋转3个角度，平移用三个偏移量），然而我们只得到了内参 的两个限制。接下里的章节，我们会给出一个几何解释。</p>
+<li><p>旋转向量的模相等<br>$$<br>\mathbf{h}<em>{1}^{T} \mathbf{A}^{-T} \mathbf{A}^{-1} \mathbf{h}</em>{1}&#x3D;\mathbf{h}<em>{2}^{T} \mathbf{A}^{-T} \mathbf{A}^{-1} \mathbf{h}</em>{2}<br>$$<br>对于一个给定的单应性矩阵，这是对内参的两个基础的约束条件。一个单应性矩阵 有8个自由度，六个参数（旋转3个角度，平移用三个偏移量），然而我们只得到了内参 的两个限制。接下里的章节，我们会给出一个几何解释。</p>
 </li>
 </ol>
-<h4 id="相机标定内参的求解"><a href="#相机标定内参的求解" class="headerlink" title="相机标定内参的求解"></a>相机标定内参的求解</h4><p>令<br>$$<br>\begin{gathered}<br>\mathbf{B}=\mathbf{A}^{-T} \mathbf{A}^{-1} \equiv\left[\begin{array}{ccc}<br>B_{11} &amp; B_{12} &amp; B_{13} \<br>B_{21} &amp; B_{22} &amp; B_{23} \<br>B_{31} &amp; B_{32} &amp; B_{33} p<br>\end{array}\right]= \<br>{\left[\begin{array}{ccc}<br>\frac{1}{\alpha^{2}} &amp; -\frac{\gamma}{\alpha^{2} \beta} &amp; \frac{v_{0} \gamma-u_{0} \beta}{\alpha^{2} \beta} \<br>-\frac{\gamma}{\alpha^{2} \beta} &amp; \frac{\gamma^{2}}{\alpha^{2} \beta^{2}}+\frac{1}{\beta^{2}} &amp; -\frac{\gamma\left(v_{0} \gamma-u_{0} \beta\right)}{\alpha^{2} \beta^{2}}-\frac{v_{0}}{\beta^{2}} \<br>\frac{v_{0} \gamma-u_{0} \beta}{\alpha^{2} \beta} &amp; -\frac{\gamma\left(v_{0} \gamma-u_{0} \beta\right)}{\alpha^{2} \beta^{2}}-\frac{v_{0}}{\beta^{2}} &amp; \frac{\left(v_{0} \gamma-u_{0} \beta\right)^{2}}{\alpha^{2} \beta^{2}}+\frac{v_{0}^{0}}{\beta^{2}}+1<br>\end{array}\right]}<br>\end{gathered}<br>$$</p>
-<p>注意到 $B$ 是对称的, 定义一个 6 维向量:<br>$$<br>b=\left[B_{11}, B_{12}, B_{22}, B_{13}, B_{23}, B_{33}\right]^{T}<br>$$<br>令矩阵 $H$ 的第 $i^{\text {th }}$ 个列向量为 $h_{i}=\left[h_{i 1}, h_{i 2}, h_{i 3}\right]^{T}$, 代人公式 $1.26$ 可以得到:<br>$$<br>h_{i}^{T} \mathbf{B} h_{j}=v_{i j}^{T} b<br>$$<br>式中:<br>$$<br>v_{i j}=\left[h_{i 1} h_{j 1}, h_{i 1} h_{j 2}+h_{i 2} h_{j 1}, h_{i 2} h_{j 2}, h_{i 3} h_{j 1}+h_{i 1} h_{j 3}, h_{i 3} h_{j 2}+h_{i 2} h_{j 3}, h_{i 3} h_{j 3}\right]^{T}<br>$$<br>$$<br>\left[\begin{array}{c}<br>\mathbf{v}<em>{12}^{T} \<br>\left(\mathbf{v}</em>{11}-\mathbf{v}_{22}\right)^{T}<br>\end{array}\right] \mathbf{b}=\mathbf{0}<br>$$</p>
-<p>如果观察了 $n$ 张模型平面的图片, 可以将 $n$ 个 $1.33$ 这样的方程放在一起, 可以得到:<br>$$<br>\mathbf{V} \cdot \mathbf{b}=0<br>$$<br>公式中 $\mathbf{V}$ 是一个 $2 n \times 6$ 的矩阵 (对应 $2 n$ 个方程), $b$ 有六个参数。所以要求 $n&gt;=3$, 至少需要三张图片, 才可以得到唯一解 $b$ 。 $H$ 矩阵是可以根据单应性关系求解出来的, 每 一组标定板的 3D 真实坐标和二维坐标点就可以一个单应性关系。 $n=3$, 即三个单应性 矩阵, 也就是拍摄三张标定板的图片。<br>在张正友的论文中, 对不同的平面数进行了性能测试, 即使用不同的图片数, 来做 相机标定, 比较相机参数的正确性。如图1.10从实验结果可以看出, pattern 数从 2 到 3 , 误差降低非常明显。</p>
-<p><img src="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220726084842841.png" alt="image-20220726084842841"></p>
-<p>如果 $n=2$, 可以让畸变参数 $\gamma=0$, 那么 $[0,1,0,0,0,0] \mathbf{b}=0$,<br>一旦 $\mathbf{b}$ 被估计出来, 我们可以计算所有的相机内参矩阵 $\mathbf{A}$ :<br>$$<br>\begin{aligned}<br>v_{0} &amp;=\left(B_{12} B_{13}-B_{11} B_{23}\right) /\left(B_{11} B_{22}-B_{12}^{2}\right) \<br>\lambda &amp;=B_{33}-\left[B_{13}^{2}+v_{0}\left(B_{12} B_{13}-B_{11} B_{23}\right)\right] / B_{11} \<br>\alpha &amp;=\sqrt{\lambda / B_{11}} \<br>\beta &amp;=\sqrt{\lambda B_{11} /\left(B_{11} B_{22}-B_{12}^{2}\right)} \<br>\gamma &amp;=-B_{12} \alpha^{2} \beta / \lambda \<br>u_{0} &amp;=\gamma v_{0} / \beta-B_{13} \alpha^{2} / \lambda<br>\end{aligned}<br>$$<br>通过内参 $A$, 便可以求解每一个视图的外参矩阵, 通过公式 $1.23$, 可得到 :<br>$$<br>$\mathbf{r}<em>{1}=\lambda^{-1} \cdot \mathbf{A}^{-1} \cdot \mathbf{h}</em>{1}, \mathbf{r}<em>{2}=\lambda^{-1} \cdot \mathbf{A}^{-1} \cdot \mathbf{h}</em>{2}, \mathbf{r}<em>{3}=\mathbf{r}</em>{1} \times \mathbf{r}<em>{2}, \mathbf{t}=\lambda^{-1} \cdot \mathbf{A}^{-1} \cdot \mathbf{h}</em>{3}<br>$$<br>当然，因为数据中噪声的存在，这么计算得到的矩阵R=“2，门]一般来说不能满足 旋转矩阵的特性。 公式L34我们可以认为是2“个方程，一般情况下，我们得到的方程数要多余未知数， 所以可以采用最小二乘法求解。</p>
-<h4 id="极大似然求解"><a href="#极大似然求解" class="headerlink" title="极大似然求解"></a>极大似然求解</h4><p><strong>张正友标定法所提供的是一套获取初始相机参数的过程</strong>。而且，上述的方法是通过最小化代数距离（最小二乘法）来获得，这种方法不具有实际的物理意义。我们可以通过极大似然估计的方法来改善它，使用张正友标定得到的相机参数进行初始化，然后进行迭代求解。 我们可以得到一个标定板平面的<code>n</code>张照片，在这个标定板上有<code>m</code>个点。假设图像上 点的噪声，服从独立同分布。可以通过最小化下列的函数来得到极大似然估计：<br>$$<br>\sum_{i=1}^{n} \sum_{j=1}^{m}\left|\mathbf{m}<em>{i j}-\hat{\mathbf{m}}\left(\mathbf{A}, \mathbf{R}</em>{i}, \mathbf{t}<em>{i}, \mathbf{M}</em>{j}\right)\right|^{2}<br>$$<br>上式中 $\hat{m}\left(\mathbf{A}, \mathbf{R}<em>{i}, \mathbf{t}</em>{i}, M_{j}\right)$ 是空间中的点 $\mathbf{M}_{j}$ 在图像 $i$ 中的投影点, 可以根据公式1.22计算得到。求解公式上1.42的最小值是一个非线性优化问题，可以通过<code>levenberg-Marquardt</code>算法解决。 我们为什么不直接适用上述优化方法，求解这个最小二乘问题呢，是因为待求解的 参数比较多，很难找到一个好的初始化参数，所以<strong>张正友标定法的重点是提供了一个好的初始化</strong>。</p>
+<h4 id="相机标定内参的求解"><a href="#相机标定内参的求解" class="headerlink" title="相机标定内参的求解"></a>相机标定内参的求解</h4><p>令<br>$$<br>\begin{gathered}<br>\mathbf{B}&#x3D;\mathbf{A}^{-T} \mathbf{A}^{-1} \equiv\left[\begin{array}{ccc}<br>B_{11} &amp; B_{12} &amp; B_{13} \<br>B_{21} &amp; B_{22} &amp; B_{23} \<br>B_{31} &amp; B_{32} &amp; B_{33} p<br>\end{array}\right]&#x3D; \<br>{\left[\begin{array}{ccc}<br>\frac{1}{\alpha^{2}} &amp; -\frac{\gamma}{\alpha^{2} \beta} &amp; \frac{v_{0} \gamma-u_{0} \beta}{\alpha^{2} \beta} \<br>-\frac{\gamma}{\alpha^{2} \beta} &amp; \frac{\gamma^{2}}{\alpha^{2} \beta^{2}}+\frac{1}{\beta^{2}} &amp; -\frac{\gamma\left(v_{0} \gamma-u_{0} \beta\right)}{\alpha^{2} \beta^{2}}-\frac{v_{0}}{\beta^{2}} \<br>\frac{v_{0} \gamma-u_{0} \beta}{\alpha^{2} \beta} &amp; -\frac{\gamma\left(v_{0} \gamma-u_{0} \beta\right)}{\alpha^{2} \beta^{2}}-\frac{v_{0}}{\beta^{2}} &amp; \frac{\left(v_{0} \gamma-u_{0} \beta\right)^{2}}{\alpha^{2} \beta^{2}}+\frac{v_{0}^{0}}{\beta^{2}}+1<br>\end{array}\right]}<br>\end{gathered}<br>$$</p>
+<p>注意到 $B$ 是对称的, 定义一个 6 维向量:<br>$$<br>b&#x3D;\left[B_{11}, B_{12}, B_{22}, B_{13}, B_{23}, B_{33}\right]^{T}<br>$$<br>令矩阵 $H$ 的第 $i^{\text {th }}$ 个列向量为 $h_{i}&#x3D;\left[h_{i 1}, h_{i 2}, h_{i 3}\right]^{T}$, 代人公式 $1.26$ 可以得到:<br>$$<br>h_{i}^{T} \mathbf{B} h_{j}&#x3D;v_{i j}^{T} b<br>$$<br>式中:<br>$$<br>v_{i j}&#x3D;\left[h_{i 1} h_{j 1}, h_{i 1} h_{j 2}+h_{i 2} h_{j 1}, h_{i 2} h_{j 2}, h_{i 3} h_{j 1}+h_{i 1} h_{j 3}, h_{i 3} h_{j 2}+h_{i 2} h_{j 3}, h_{i 3} h_{j 3}\right]^{T}<br>$$<br>$$<br>\left[\begin{array}{c}<br>\mathbf{v}<em>{12}^{T} \<br>\left(\mathbf{v}</em>{11}-\mathbf{v}_{22}\right)^{T}<br>\end{array}\right] \mathbf{b}&#x3D;\mathbf{0}<br>$$</p>
+<p>如果观察了 $n$ 张模型平面的图片, 可以将 $n$ 个 $1.33$ 这样的方程放在一起, 可以得到:<br>$$<br>\mathbf{V} \cdot \mathbf{b}&#x3D;0<br>$$<br>公式中 $\mathbf{V}$ 是一个 $2 n \times 6$ 的矩阵 (对应 $2 n$ 个方程), $b$ 有六个参数。所以要求 $n&gt;&#x3D;3$, 至少需要三张图片, 才可以得到唯一解 $b$ 。 $H$ 矩阵是可以根据单应性关系求解出来的, 每 一组标定板的 3D 真实坐标和二维坐标点就可以一个单应性关系。 $n&#x3D;3$, 即三个单应性 矩阵, 也就是拍摄三张标定板的图片。<br>在张正友的论文中, 对不同的平面数进行了性能测试, 即使用不同的图片数, 来做 相机标定, 比较相机参数的正确性。如图1.10从实验结果可以看出, pattern 数从 2 到 3 , 误差降低非常明显。</p>
+<p><img src="/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220726084842841.png" alt="image-20220726084842841"></p>
+<p>如果 $n&#x3D;2$, 可以让畸变参数 $\gamma&#x3D;0$, 那么 $[0,1,0,0,0,0] \mathbf{b}&#x3D;0$,<br>一旦 $\mathbf{b}$ 被估计出来, 我们可以计算所有的相机内参矩阵 $\mathbf{A}$ :<br>$$<br>\begin{aligned}<br>v_{0} &amp;&#x3D;\left(B_{12} B_{13}-B_{11} B_{23}\right) &#x2F;\left(B_{11} B_{22}-B_{12}^{2}\right) \<br>\lambda &amp;&#x3D;B_{33}-\left[B_{13}^{2}+v_{0}\left(B_{12} B_{13}-B_{11} B_{23}\right)\right] &#x2F; B_{11} \<br>\alpha &amp;&#x3D;\sqrt{\lambda &#x2F; B_{11}} \<br>\beta &amp;&#x3D;\sqrt{\lambda B_{11} &#x2F;\left(B_{11} B_{22}-B_{12}^{2}\right)} \<br>\gamma &amp;&#x3D;-B_{12} \alpha^{2} \beta &#x2F; \lambda \<br>u_{0} &amp;&#x3D;\gamma v_{0} &#x2F; \beta-B_{13} \alpha^{2} &#x2F; \lambda<br>\end{aligned}<br>$$<br>通过内参 $A$, 便可以求解每一个视图的外参矩阵, 通过公式 $1.23$, 可得到 :<br>$$<br>$\mathbf{r}<em>{1}&#x3D;\lambda^{-1} \cdot \mathbf{A}^{-1} \cdot \mathbf{h}</em>{1}, \mathbf{r}<em>{2}&#x3D;\lambda^{-1} \cdot \mathbf{A}^{-1} \cdot \mathbf{h}</em>{2}, \mathbf{r}<em>{3}&#x3D;\mathbf{r}</em>{1} \times \mathbf{r}<em>{2}, \mathbf{t}&#x3D;\lambda^{-1} \cdot \mathbf{A}^{-1} \cdot \mathbf{h}</em>{3}<br>$$<br>当然，因为数据中噪声的存在，这么计算得到的矩阵R&#x3D;“2，门]一般来说不能满足 旋转矩阵的特性。 公式L34我们可以认为是2“个方程，一般情况下，我们得到的方程数要多余未知数， 所以可以采用最小二乘法求解。</p>
+<h4 id="极大似然求解"><a href="#极大似然求解" class="headerlink" title="极大似然求解"></a>极大似然求解</h4><p><strong>张正友标定法所提供的是一套获取初始相机参数的过程</strong>。而且，上述的方法是通过最小化代数距离（最小二乘法）来获得，这种方法不具有实际的物理意义。我们可以通过极大似然估计的方法来改善它，使用张正友标定得到的相机参数进行初始化，然后进行迭代求解。 我们可以得到一个标定板平面的<code>n</code>张照片，在这个标定板上有<code>m</code>个点。假设图像上 点的噪声，服从独立同分布。可以通过最小化下列的函数来得到极大似然估计：<br>$$<br>\sum_{i&#x3D;1}^{n} \sum_{j&#x3D;1}^{m}\left|\mathbf{m}<em>{i j}-\hat{\mathbf{m}}\left(\mathbf{A}, \mathbf{R}</em>{i}, \mathbf{t}<em>{i}, \mathbf{M}</em>{j}\right)\right|^{2}<br>$$<br>上式中 $\hat{m}\left(\mathbf{A}, \mathbf{R}<em>{i}, \mathbf{t}</em>{i}, M_{j}\right)$ 是空间中的点 $\mathbf{M}_{j}$ 在图像 $i$ 中的投影点, 可以根据公式1.22计算得到。求解公式上1.42的最小值是一个非线性优化问题，可以通过<code>levenberg-Marquardt</code>算法解决。 我们为什么不直接适用上述优化方法，求解这个最小二乘问题呢，是因为待求解的 参数比较多，很难找到一个好的初始化参数，所以<strong>张正友标定法的重点是提供了一个好的初始化</strong>。</p>
 <p><strong>以上推导都是假设不存在畸变参数的情况下成立的</strong>。但是事实上，相机是存在畸变参数的，因此，张正友标定法还需要通过L-M算法对于参数进行迭代优化。</p>
 <p>事实上，张正友标定法提供的是内参与外参矩阵的优化初始值。</p>
 <p>张正友标定法的总逻辑：</p>
@@ -240,7 +240,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://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@grobenis.github.io/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -343,7 +343,7 @@
     <ul class="list-inline">
       <li>
         &copy;
-        2019-2022
+        2019-2026
         guoben
       </li>
       <li>
@@ -398,6 +398,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">项目</a>
     </li>
     
     <li class="nav-item">
@@ -642,6 +646,23 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
 
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=167975&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
     
   </div>
 </body>
