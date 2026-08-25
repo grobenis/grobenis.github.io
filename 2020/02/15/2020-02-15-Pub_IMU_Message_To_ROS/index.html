@@ -102,6 +102,9 @@
 <p>​    本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
 <span id="more"></span>
 
+
+<!--more-->
+
 <h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure>
 
 <p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p>
@@ -190,19 +193,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Ubuntu1604连接蓝牙鼠标
+            利用ROS标定相机步骤与方法
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">VIO主流框架</div>
+        <div class="article-nav-title">使用evo工具评测SLAM</div>
       </a>
     
   </nav>

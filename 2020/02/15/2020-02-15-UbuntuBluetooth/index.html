@@ -96,7 +96,10 @@
       
 
       
-      <p>打开命令行<br>$ sudo -i</p>
+      <p>打开命令行</p>
+<span id="more"></span>
+
+<p>$ sudo -i</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure>
 
 <p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>
@@ -172,19 +175,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            利用Kalibr标定双目相机与IMU
+            利用ROS标定相机步骤与方法
           
         </div>
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">发布IMU信息到ROS系统中</div>
+        <div class="article-nav-title">VIO主流框架</div>
       </a>
     
   </nav>
