@@ -15,10 +15,9 @@ toc: true
 
 > **视觉惯性融合，约束决定精度**
 
-<!-- more -->
-
-
 <!--more-->
+
+
 
 ## Bundle Adjustment
 

@@ -22,10 +22,9 @@ toc: true
 
 > **跑通五种算法，间接法体系尽收眼底**
 
-<!-- more -->
-
-
 <!--more-->
+
+
 
 ## VINS_mono
 ----
@@ -38,7 +37,7 @@ Opencv3.4.7没有这个模块
 ---
 
 ## ROVIO
-可参考：[该博客]https://www.cnblogs.com/Jessica-jie/p/6607719.html
+可参考：[该博客](https://www.cnblogs.com/Jessica-jie/p/6607719.html)
 
 ```
 catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON
