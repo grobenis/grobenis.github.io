@@ -2,8 +2,6 @@
 title: 在线外部相机标定论文学习
 ---
 
-# Online Extrinsic Camera Calibration for Temporally Consistent IPM Using Lane Boundary Observations with a Lane Width Prior
-
 本文是论文《基于车道宽度先验与车道边界观测的时间一致 IPM 在线外部相机校准》的翻译与学习笔记。论文提出利用消失点估计俯仰角与偏航角，再通过最小化车道宽度观测值与先验的差异求解横滚角与相机高度，并由扩展卡尔曼滤波顺序更新参数，从而生成时间一致的 IPM 鸟瞰图。
 
 > **稳定的外参，才有稳定一致的俯视图**
