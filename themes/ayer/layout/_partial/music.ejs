@@ -1,16 +1,24 @@
+<% if (theme.music && theme.music.enable && theme.music.file) { %>
 <div id="music">
-    <%# "bottom:120px; left:auto;position:fixed;  width:85%" %>
-    <% var defaultHeight = theme.music.type == 1 ? '32' : '66'; %>
-    <% var defaultIframeHeight = theme.music.type == 1 ? '52' : '86'; %>
-    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="<%=defaultIframeHeight%>"
-        src="//music.163.com/outchain/player?type=2&id=<%=theme.music.id||22707008%>&auto=<%=theme.music.autoPlay?1:0%>&height=<%=defaultHeight%>"></iframe>
+    <audio id="musicPlayer" controls preload="metadata" src="<%= url_for(theme.music.file) %>"></audio>
 </div>
 
 <style>
     #music {
         position: fixed;
         right: 15px;
-        bottom: 0;
+        bottom: 20px;
         z-index: 998;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        padding: 6px 10px;
+    }
+    #music audio {
+        width: 280px;
+        height: 40px;
+        outline: none;
+        display: block;
     }
 </style>
+<% } %>
