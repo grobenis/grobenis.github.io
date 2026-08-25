@@ -14,7 +14,7 @@ tags: [SLAM,BA,优化]
 
 同时对三维点位置和相机参数进行非线性优化
 
-![BA原理](2020-03-30-Bundle-adjustment/BA优化.jpg)
+![](BA优化.jpg)
 
 
 

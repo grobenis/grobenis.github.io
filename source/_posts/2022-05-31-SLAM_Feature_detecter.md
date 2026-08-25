@@ -35,7 +35,7 @@ SLAM中常用的角点检测算法整理如下：
 
 本文根据ORBSLAM3中的综述表格进行总结：
 
-![image-20220531214022010](2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png)
+![](image-20220531214022010.png)
 
 ## 
 
@@ -48,7 +48,7 @@ SLAM中常用的角点检测算法整理如下：
 2. FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思
    想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）：
 
-   <img src="2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855" style="zoom:50%;" />
+   <img src="image-20220615150207855.png" alt="image-20220615150207855" style="zoom:50%;" />
 
    1. 在图像中选取像素p，假设它的亮度为$I_p$。
    2. 设置一个阈值T(比如$I_p$ 的20%)。
@@ -70,13 +70,13 @@ FAST 特征点的计算仅仅是比较像素间亮度的差异，速度非常快
 
 OPENCV描述：In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by **Chris Harris & Mike Stephens** in their paper **A Combined Corner and Edge Detector** in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. 
 
-![image-20220615153225850](2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png)
+![](image-20220615153225850.png)
 
-![image-20220615154043028](2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png)
+![](image-20220615154043028.png)
 
 > [openCV链接](https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html)
 
-![image-20220615154149887](2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png)
+![](image-20220615154149887.png)
 
 #### Shi-Tomas特征点
 
@@ -102,7 +102,7 @@ OPENCV描述：In the last chapter, we saw that corners are regions in the image
 >
 > 我们可以把它绘制到 λ1 ～ λ2 空间中，就会得到下图：
 >
-> ![img](2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg)
+> ![](v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg)
 
 
 

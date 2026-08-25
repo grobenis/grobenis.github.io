@@ -20,11 +20,11 @@ tags: [IMU]
 
 首先使用4*4的变换矩阵来来表示相机之间的变换T：
 
-<img src="Generate-Imu-Data-Based-on-GroundTruth/image-20200723220416181.png" alt="image-20200723220416181" style="zoom: 50%;" />
+<img src="image-20200723220416181.png" alt="image-20200723220416181" style="zoom: 50%;" />
 
 ​	使用$T_{b,a}$表示时间Δt内，帧$T_{w,a}$与帧$T_{w,b}$(其中w为世界坐标系)之间运动的速度（该速度恒定且包括角速度和线速度）可表示为矩阵形式：
 
-<img src="Generate-Imu-Data-Based-on-GroundTruth/image-20200723220712114.png" alt="image-20200723220712114" style="zoom: 50%;" />
+<img src="image-20200723220712114.png" alt="image-20200723220712114" style="zoom: 50%;" />
 
 ​		其中log是矩阵对数。对于矩阵组SE3，对数映射和它的逆(指数映射)就可以在闭域内计算。
 
@@ -54,7 +54,7 @@ $$
 
 ​		累积的B样条参数化满足可求导性，因此可轻松地得到加速度计和陀螺仪的带误差的测量值。计算公式如下：
 
-![image-20200723171456502](Generate-Imu-Data-Based-on-GroundTruth/image-20200723171456502.png)
+![](image-20200723171456502.png)
 
 其中,$\dot{R}_{w,s}$和$\ddot{s}_w$分别是$\dot{T}_{w,s}$和$\ddot{T_{w,s}}$相应的子矩阵. $g_w$是世界坐标系下的重力加速度.
 
