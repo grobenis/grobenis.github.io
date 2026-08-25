@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">5分钟</span>
+            <span class="post-count">6分钟</span>
         </span>
     </span>
 </div>
@@ -105,20 +105,20 @@
 <p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p>
 <p><strong>核心</strong>：误差项、优化变量、协方差</p>
 <p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p>
-<h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933"></p>
+<h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933"></p>
 <h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：<br>$$<br>\Delta x* &#x3D; \arg\min_x||e(x+\Delta x||^2_P\&#x3D;\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)<br>$$<br>误差项:<br>$$<br>e(x+\Delta x)&#x3D;e(x)+J(x)\Delta x<br>$$</p>
 <p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：<br>$$<br>J^T P^{-1}\Delta x &#x3D; -J^TP^{-1}e<br>$$</p>
-<h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498"></p>
+<h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498"></p>
 <p>其Jacobian矩阵如下：</p>
-<p><img src="/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322"></p>
 <p>得到相应的Hession矩阵如下所示：</p>
-<p><img src="/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060"></p>
-<h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397"></p>
-<h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060"></p>
+<h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397"></p>
+<h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622"></p>
 <p>举例，其中一个T1T1的小块的数学形式如下所示：</p>
-<p><img src="/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614"></p>
 <h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。 </p>
-<h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013"></p>
+<h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013"></p>
 <h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol>
 <li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li>
 <li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li>
@@ -135,7 +135,7 @@
 <li><p>将视觉约束后的位姿加入到联合优化是松耦合</p>
 </li>
 </ol>
-<p><img src="/image/image-20191202135710367.png" alt="image-20191202135710367"></p>
+<p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367"></p>
 <h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p>
 <ol>
 <li>初始化</li>
@@ -152,7 +152,8 @@
 <blockquote>
 <p>每得到一个新图像以后需要对协方差矩阵做一个增广</p>
 </blockquote>
-<p><img src="/images/SLAM/%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E6%8E%A8%E5%AF%BC/MSCKF%E5%AF%B9%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5%E7%9A%84%E5%A2%9E%E5%B9%BF.png" alt="MSCKF对协方差矩阵的增广"></p>
+<!-- 源文件缺失，已注释 -->![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)<!-- / -->
+
 <p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268"></p>
 <blockquote>
 <p>成熟的路标点 表示窗口内各帧都看得到的点</p>
@@ -205,7 +206,8 @@
 <p>Local Map：优化华创内的所有帧的PVQB和路标点</p>
 <p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237"></p>
 <h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p>
-<p><img src="/home/guoben/ICE-BA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161618980"></p>
+<!-- 源文件缺失，已注释 -->![image-20191202161618980](/home/guoben/ICE-BA因子图.png)<!-- / -->
+
 <p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p>
 <p>总结而言，在ICE-BA中更新Factor有三种情况：</p>
 <ol>
@@ -214,8 +216,8 @@
 <li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li>
 </ol>
 <p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
-<h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p> <img src="/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013"></p>
-<p><img src="/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464"></p>
+<h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p> <img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464"></p>
 <ol>
 <li>黄色为IMU帧间约束（PVQBaBg 15×1）</li>
 <li>蓝色为视觉重投影误差约束（2×1）</li>
@@ -302,7 +304,7 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
@@ -312,9 +314,9 @@
       </a>
     
     
-      <a href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/" class="article-nav-link">
+      <a href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
+        <div class="article-nav-title">SLAM各算法运行方法与过程</div>
       </a>
     
   </nav>

@@ -118,7 +118,9 @@
 <li>$\hat{x}_k$，在时刻k的状态的估计；</li>
 <li>$\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。</li>
 </ol>
-<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k&#x3D;A_kx_{k-1}+u_k+w_k \quad k&#x3D;1,…,N\<br>z_k&#x3D;C_kx_k+v_k<br>\end{cases}<br>$$<br><img src="C:\Users\郭犇\AppData\Roaming\Typora\typora-user-images\image-20200330234714941.png" alt="image-20200330234714941"></p>
+<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$<br>\begin{cases}x_k&#x3D;A_kx_{k-1}+u_k+w_k \quad k&#x3D;1,…,N\<br>z_k&#x3D;C_kx_k+v_k<br>\end{cases}<br>$$</p>
+<!-- 本地 Typora 路径源文件缺失，已注释 -->
+
 <h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$<br>x_k&#x3D;A_kx_{k-1}+u_k+w_k \quad k&#x3D;1,…,N<br>$$</p>
 <p>其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵&#x2F;矢量）。</p>
 <p>$w_k$是过程噪声,满足$w_k\sim N(0,Q)$</p>
@@ -252,11 +254,11 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/22/2020-03-22-KMP-Algorithm/" class="article-nav-link">
+      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            KMP-Algorithm
+            粒子滤波器
           
         </div>
       </a>

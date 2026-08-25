@@ -136,7 +136,7 @@
 <p>根据准确率和召回率可以得到ROC曲线.</p>
 <p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p>
 <h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p>
-<p><img src="/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img"></p>
+<p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img"></p>
 <p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p>
 <h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p>
 <h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p>
@@ -245,19 +245,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/10/2020-03-10-Read-VINS-Fusion/" class="article-nav-link">
+      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            VINS-Fusion代码阅读
+            隐马尔可夫模型
           
         </div>
       </a>
     
     
-      <a href="/2020/03/10/2020-03-12-Clustering_Survey/" class="article-nav-link">
+      <a href="/2020/02/15/2020-02-15-Calibrate_Camera_by_ROS/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">经典聚类算法调研</div>
+        <div class="article-nav-title">利用ROS标定相机步骤与方法</div>
       </a>
     
   </nav>
