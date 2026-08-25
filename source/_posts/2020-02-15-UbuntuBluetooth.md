@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ubuntu1604连接蓝牙鼠标
+title: Ubuntu 连接蓝牙鼠标
 date: 2020-02-15
 Author: guoben
 categories: 实验

@@ -1,9 +1,9 @@
 ---
-title: KMP-Algorithm
+title: KMP 字符串匹配算法
 Author: Grobenis
 date: 2020-03-22 14:31:40
 categories: 学习
-tags: [C++,KMP]
+tags: [C++, KMP]
 ---
 
 KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。
@@ -31,7 +31,7 @@ KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V
 
 源代码：
 
-~~~C
+```C
 /* 字符串下标始于 0 */
 int NaiveStringSearch(string S, string P)
 {
@@ -56,7 +56,7 @@ int NaiveStringSearch(string S, string P)
         return i - j;
     return -1;
 }
-~~~
+```
 
 时间复杂度：$O(nm)$
 
@@ -66,8 +66,8 @@ int NaiveStringSearch(string S, string P)
 
 **引入概念**
 
-* 前缀：指的是字符串的子串中从原串最前面开始的子串
-* 后缀：指的是字符串的子串中在原串结尾处结尾的子串
+- 前缀：指的是字符串的子串中从原串最前面开始的子串
+- 后缀：指的是字符串的子串中在原串结尾处结尾的子串
 
 **算法思想**
 
@@ -97,10 +97,9 @@ next 数组里面的变量，存的是最有可能匹配的长度，也就是在
 
 next 数组中，第一个值，也就是next [0] = -1，而且，next [n]里面存的是 str[0] ~ str[n - 1]的前缀和后缀相等的最大长度。
 
-
 **源代码：**
 
-~~~C
+```C
 #include <iostream>
 #include <string>
 using namespace std;
@@ -110,7 +109,7 @@ void GetNext(string P, int next[])
 {
     int p_len = P.size();
     int i = 0;   // P 的下标
-    int j = -1;  
+    int j = -1;
     next[0] = -1;
 
     while (i < p_len)
@@ -146,7 +145,7 @@ int KMP(string S, string P, int next[])
     }
     if (j == p_len)  // 匹配成功
         return i - j;
-    
+
     return -1;
 }
 
@@ -156,6 +155,6 @@ int main()
     cout << KMP("bbc abcdab abcdabcdabde", "abcdabd", next) << endl; // 15
     return 0;
 }
-~~~
+```
 
 **时间复杂度**：$O(m+n)$
