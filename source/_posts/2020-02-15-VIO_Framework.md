@@ -13,6 +13,9 @@ toc: true
 
 <!-- more -->
 
+
+<!--more-->
+
 ## Bundle Adjustment
 
 定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心；

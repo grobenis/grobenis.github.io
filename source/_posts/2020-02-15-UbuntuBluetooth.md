@@ -10,6 +10,9 @@ toc: true
 ---
 
 打开命令行
+
+<!--more-->
+
 $ sudo -i
 
 ```
@@ -26,4 +29,3 @@ $ sudo -i
 
 注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/..../XX:XX:XX:XX:XX 的老的配对文件也给删了。
 重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据
-

@@ -13,6 +13,9 @@ toc: true
 
 <!-- more -->
 
+
+<!--more-->
+
 ## 利用IMU标定相机流程
 1. 驱动USB摄像头
 2. 利用camera_calibration标定相机

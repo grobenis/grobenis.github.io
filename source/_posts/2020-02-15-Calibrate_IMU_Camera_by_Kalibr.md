@@ -20,6 +20,9 @@ toc: true
 
 <!-- more -->
 
+
+<!--more-->
+
 ## 1. 生成标定板
 
 使用AprilTag
