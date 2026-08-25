@@ -14,7 +14,7 @@ date: 2022-05-31 21:38:32
 
 <!--More-->
 
-### 特征点
+## 特征点
 
 人工设计的特征点该具有的特性
 
@@ -23,7 +23,7 @@ date: 2022-05-31 21:38:32
 > 3. 高效率（Efficiency）：同一图像中，特征点的数量应远小于像素的数量。
 > 4. 本地性（Locality）：特征仅与一小片图像区域相关。
 
-#### 组成
+### 组成
 
 1. 关键点
 
@@ -31,7 +31,7 @@ date: 2022-05-31 21:38:32
 
    描述子设计原则：外观相似的特征应该又相似的描述子；
 
-### 常用角点检测算法
+## 常用角点检测算法
 
 SLAM中常用的角点检测算法整理如下：
 
@@ -42,7 +42,7 @@ SLAM中常用的角点检测算法整理如下：
 
 
 
-#### FAST关键点
+### FAST关键点
 
 1. 单纯的FAST关键点，没有描述子
 
@@ -59,7 +59,7 @@ SLAM中常用的角点检测算法整理如下：
 
 在FAST-12 算法中，为了更高效，可以添加一项预测试操作，以快速地排除绝大多数不是角点的像素。具体操作为，对于每个像素，直接检测邻域圆上的第1，5，9，13 个像素的亮度。只有当这四个像素中有三个同时大于Ip + T 或小于Ip 􀀀 T 时，当前像素才有可能是一个角点，否则应该直接排除。这样的预测试操作大大加速了角点检测。此外，原始的FAST 角点经常出现“扎堆”的现象。所以在第一遍检测之后，还需要用非极大值抑制（Non-maximal suppression），在一定区域内仅保留响应极大值的角点，避免角点集中的问题。
 
-##### 缺点
+#### 缺点
 
 FAST 特征点的计算仅仅是比较像素间亮度的差异，速度非常快，但它也有一些问题。
 
@@ -67,7 +67,7 @@ FAST 特征点的计算仅仅是比较像素间亮度的差异，速度非常快
   作为最终的角点集合。
 * 其次，FAST 角点不具有方向信息。而且，由于它固定取半径为3 的圆，存在尺度问题：远处看着像是角点的地方，接近后看可能就不是角点了。
 
-#### Harris特征点
+### Harris特征点
 
 OPENCV描述：In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by **Chris Harris & Mike Stephens** in their paper **A Combined Corner and Edge Detector** in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. 
 
@@ -79,7 +79,7 @@ OPENCV描述：In the last chapter, we saw that corners are regions in the image
 
 ![](image-20220615154149887.png)
 
-#### Shi-Tomas特征点
+### Shi-Tomas特征点
 
 > Harris 和 Shi-Tomasi 都是基于梯度计算的角点检测方法，Shi-Tomasi 的效果要好一些。
 >
@@ -107,13 +107,13 @@ OPENCV描述：In the last chapter, we saw that corners are regions in the image
 
 
 
-#### ORB特征点
+### ORB特征点
 
 1. 改进了FAST关键点;
 2. ORB特征点有方向，采用BRIEF描述子进行描述；
 3. 具有旋转和尺度不变性，速度快；
 
-##### 改进FAST关键点
+#### 改进FAST关键点
 
 针对FAST 角点不具有方向性和尺度的弱点，ORB 添加了尺度和旋转的描述。尺度不变性由构建图像金字塔¬，并在金字塔的每一层上检测角点来实现。而特征的旋转是由灰度质心法（Intensity Centroid）实现的。我们稍微介绍一下。质心是指以图像块灰度值作为权重的中心。其具体操作步骤如下[35]：
 1. 在一个小的图像块B 中，定义图像块的矩为：
@@ -129,12 +129,12 @@ OPENCV描述：In the last chapter, we saw that corners are regions in the image
 
 通过以上方法，FAST 角点便具有了尺度与旋转的描述，大大提升了它们在不同图像之间表述的鲁棒性。所以在ORB 中，把这种改进后的FAST 称为Oriented FAST。
 
-##### BRIEF 描述子
+#### BRIEF 描述子
 
 ​	BRIEF 是一种二进制描述子，它的描述向量由许多个0 和1 组成，这里的0 和1 编码了关键点附近两个像素（比如说p 和q）的大小关系：如果p 比q 大，则取1，反之就取0。如果我们取了128 个这样的p; q，最后就得到128 维由0，1 组成的向量。那么，p和q 如何选取呢？在作者原始的论文中给出了若干种挑选方法，大体上都是按照某种概率分布，随机地挑选p 和q 的位置，读者可以阅读BRIEF 论文或OpenCV 源码以查看它的具体实现[34]。BRIEF 使用了随机选点的比较，速度非常快，而且由于使用了二进制表达，存储起来也十分方便，适用于实时的图像匹配。原始的BRIEF 描述子不具有旋转不变性的，因此在图像发生旋转时容易丢失。而ORB 在FAST 特征点提取阶段计算了关键点的方向，所以可以利用方向信息，计算了旋转之后的“Steer BRIEF”特征，使ORB 的描述子具有较好的旋转不变性。
 由于考虑到了旋转和缩放，使得ORB 在平移、旋转、缩放的变换下仍有良好的表现。同时，FAST 和BRIEF 的组合也非常的高效，使得ORB 特征在实时SLAM 中非常受欢迎。
 
-#### SIFT
+### SIFT
 
 > SIFT(Scale-Invariant Feature Transform)特征，即尺度不变特征变换，是一种计算机视觉的特征提取算法，用来侦测与描述图像中的局部性特征。
 >
@@ -143,7 +143,7 @@ OPENCV描述：In the last chapter, we saw that corners are regions in the image
 > 1. 具有尺度不变性，充分考虑了图像变换过程中出现的光照，尺度，旋转等变化；计算量较大；
 > 2. 无法实时计算SIFT特征，无法用在定位与建图中；
 
-#### SURF
+### SURF
 
 > SIFT和SURF由于计算复杂度的原因在SLAM中应用较少
 >

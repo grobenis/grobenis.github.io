@@ -14,9 +14,9 @@ tags: [opencv,SLAM]
 
 <!--More-->
 
-### CalcopticalFlowPyrLK()
+## CalcopticalFlowPyrLK()
 
-#### 功能
+### 功能
 
 使用具有金字塔的迭代Lucas-Kanade方法计算稀疏特征集的光流。
 
@@ -53,15 +53,15 @@ void cv::calcOpticalFlowPyrLK	(
 * minEigThreshold ：算法计算光流方程的2x2正常矩阵的最小特征值，除以窗口中的像素数;如果此值小于minEigThreshold，则过滤掉相应的功能并且不处理其流程，因此它允许删除坏点并获得性能提升。
   该函数实现了金字塔中Lucas-Kanade光流的稀疏迭代版本。
 
-### cv::circle()
+## cv::circle()
 
-#### 功能：画圆
+### 功能：画圆
 
 ```C++
 void circle(CV_IN_OUT Mat& img, Point center, int radius, const Scalar& color, int thickness=1, int lineType=8, int shift=0); 
 ```
 
-#### 参数
+### 参数
 
 * img：图像，单通道多通道都行，不需要特殊要求
 * center：画圆的圆心坐标
@@ -69,7 +69,7 @@ void circle(CV_IN_OUT Mat& img, Point center, int radius, const Scalar& color, i
 * color：设定圆的颜色，比如用CV_RGB(255, 0,0)设置为红色， CV_RGB(255, 255,255)设置为白色，CV_RGB(0, 0,0)设置为黑色 
 * thickness：为设置圆线条的粗细，值越大则线条越粗，为负数则是填充效果
 
-### goodFeaturesToTrack
+## goodFeaturesToTrack
 
   *_image：8位或32位浮点型输入图像，单通道*
 
