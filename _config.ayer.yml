@@ -22,7 +22,7 @@ menu:
   # CSDN: https://blog.csdn.net/GuoBen_
   # 生活: https://cengshishaonian37279.lofter.com/
   关于: /about
-  # 友链: /friends
+  友链: /friends
 # 站点次标题和打字动效
 # https://github.com/mattboldt/typed.js
 subtitle:
@@ -98,7 +98,7 @@ reward_type: 1
 # 打赏wording
 reward_wording:
 # 支付宝二维码图片地址，跟你设置logo的方式一样。比如：/images/alipay.jpg
-# alipay: /images/pay/alipay.jpg
+alipay: /images/pay/alipay.jpg
 # 微信二维码图片地址
 weixin: /images/pay/wechat.jpg
 
