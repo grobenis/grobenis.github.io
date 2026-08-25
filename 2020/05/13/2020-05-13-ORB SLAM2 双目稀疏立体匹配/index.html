@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -138,7 +139,7 @@
 <ol start="6">
 <li>计算去畸变后边界</li>
 </ol>
-<h2 id="双目特征点匹配"><a href="#双目特征点匹配" class="headerlink" title="双目特征点匹配"></a>双目特征点匹配</h2><p><img src="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E5%8F%8C%E7%9B%AE%E7%89%B9%E5%BE%81%E7%82%B9%E5%8C%B9%E9%85%8D.png" alt="image-20200515110530658"></p>
+<h2 id="双目特征点匹配"><a href="#双目特征点匹配" class="headerlink" title="双目特征点匹配"></a>双目特征点匹配</h2><p><img src="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E5%8F%8C%E7%9B%AE%E7%89%B9%E5%BE%81%E7%82%B9%E5%8C%B9%E9%85%8D.png" alt="image-20200515110530658" loading="lazy"></p>
 <p>主要对应函数<code>Frame::ComputeStereoMatches()</code>。<br><strong>输入</strong>：两帧立体矫正后的图像对应的ob特征点集<br><strong>过程</strong></p>
 <ol>
 <li>行特征点统计</li>
@@ -156,7 +157,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Sub-pixel match (Parabola fitting)</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist1 = vDists[L+bestincR<span class="number">-1</span>];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist2 = vDists[L+bestincR];</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> dist3 = vDists[L+bestincR<span class="number">+1</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> deltaR = (dist1-dist3)/(<span class="number">2.0f</span>*(dist1+dist3<span class="number">-2.0f</span>*dist2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(deltaR&lt;<span class="number">-1</span> || deltaR&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
 
 <p>亚像素插值方法：</p>
-<p><img src="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723"></p>
+<p><img src="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/%E4%BA%9A%E5%83%8F%E7%B4%A0%E6%8F%92%E5%80%BC.png" alt="image-20200515113540723" loading="lazy"></p>
 <p>亚像素的误差在一个像素以内，所以修正量大一1时鉴定为误匹配。</p>
 <ol start="5">
 <li>最优视差值。深度选择</li>
@@ -333,6 +334,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -361,6 +366,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

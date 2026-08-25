@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -175,7 +176,7 @@
 
 <p>​    lock_guard 通常用来管理一个 std::mutex 类型的对象，通过定义一个 lock_guard 一个对象来管理 std::mutex 的上锁和解锁。在 lock_guard 初始化的时候进行上锁，然后在 lock_guard 析构的时候进行解锁。这样避免了我们对 std::mutex 的上锁和解锁的管理。注意，lock_guard 并不管理 std::mutex 对象的声明周期，也就是说在使用 lock_guard 的过程中，如果 std::mutex 的对象被释放了，那么在 lock_guard 析构的时候进行解锁就会出现空指针错误之类。</p>
 <h4 id="二、std-unique-lock-的介绍"><a href="#二、std-unique-lock-的介绍" class="headerlink" title="二、std::unique_lock 的介绍"></a>二、std::unique_lock 的介绍</h4><p>​	unique_lock 和 lock_guard 一样，对 std::mutex 类型的互斥量的上锁和解锁进行管理，一样也不管理 std::mutex 类型的互斥量的声明周期。但是它的使用更加的灵活，支持的构造函数如下：</p>
-<p><img src="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/image-20220626225902414.png"></p>
+<p><img src="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/image-20220626225902414.png" loading="lazy"></p>
 <ol>
 <li><p>默认构造函数，新创建的 unique_lock 对象不管理任何 Mutex 对象。</p>
 </li>
@@ -416,6 +417,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -444,6 +449,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

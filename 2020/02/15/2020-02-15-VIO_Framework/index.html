@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -111,7 +112,7 @@
 <p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p>
 <p><strong>核心</strong>：误差项、优化变量、协方差</p>
 <p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p>
-<h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933"></p>
+<h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933" loading="lazy"></p>
 <h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：<br>$$
 \Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)
 $$<br>误差项:<br>$$
@@ -120,17 +121,17 @@ $$</p>
 <p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：<br>$$
 J^T P^{-1}\Delta x = -J^TP^{-1}e
 $$</p>
-<h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498"></p>
+<h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498" loading="lazy"></p>
 <p>其Jacobian矩阵如下：</p>
-<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322" loading="lazy"></p>
 <p>得到相应的Hession矩阵如下所示：</p>
-<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060"></p>
-<h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397"></p>
-<h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060" loading="lazy"></p>
+<h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397" loading="lazy"></p>
+<h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622" loading="lazy"></p>
 <p>举例，其中一个T1T1的小块的数学形式如下所示：</p>
-<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614" loading="lazy"></p>
 <h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。 </p>
-<h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013"></p>
+<h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013" loading="lazy"></p>
 <h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol>
 <li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li>
 <li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li>
@@ -140,14 +141,14 @@ $$</p>
 <li>预计分相邻帧的PVQ变化量，作为IMU的约束</li>
 <li>计算IMU误差的协方差和jacobian</li>
 </ol>
-<p><img src="/./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399"></p>
+<p><img src="/./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399" loading="lazy"></p>
 <h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol>
 <li><p>将视觉约束就加到联合优化是紧耦合</p>
 </li>
 <li><p>将视觉约束后的位姿加入到联合优化是松耦合</p>
 </li>
 </ol>
-<p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367"></p>
+<p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367" loading="lazy"></p>
 <h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p>
 <ol>
 <li>初始化</li>
@@ -158,7 +159,7 @@ $$</p>
 <li>视觉更新—边缘化</li>
 <li>剔除老帧</li>
 </ol>
-<p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678"></p>
+<p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678" loading="lazy"></p>
 <p>误差状态向量<br>$$
 \hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce{^{G}\hat{p}_{c_N} \ce{G}\hat{p}_{C_N}}]
 $$</p>
@@ -170,21 +171,21 @@ $$</p>
 </blockquote>
 <!-- 源文件缺失，已注释 -->![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)<!-- / -->
 
-<p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268"></p>
+<p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268" loading="lazy"></p>
 <blockquote>
 <p>成熟的路标点 表示窗口内各帧都看得到的点</p>
 </blockquote>
 <p><strong>因子图</strong></p>
-<p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572"></p>
+<p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572" loading="lazy"></p>
 <blockquote>
 <p>Tbc表示IMU与相机间的转换矩阵</p>
 </blockquote>
-<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717"></p>
-<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060"></p>
+<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717" loading="lazy"></p>
+<p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060" loading="lazy"></p>
 <p>路标点边缘化完后就可以了</p>
 <p><strong>第j个路标点的所有视觉误差为</strong><br>$$
 r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}
-$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897"></p>
+$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897" loading="lazy"></p>
 <p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。<br>$$
 r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)
 $$</p>
@@ -203,10 +204,10 @@ $$</p>
 <li>Paych提取及Warp计算</li>
 <li>路标点质量评价及维护</li>
 </ol>
-<p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738"></p>
+<p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738" loading="lazy"></p>
 <blockquote>
 <p>ROVIO使用光度误差</p>
-<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499"></p>
+<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499" loading="lazy"></p>
 </blockquote>
 <blockquote>
 <blockquote>
@@ -215,16 +216,16 @@ $$</p>
 </blockquote>
 <p>ROVIO的创新点如下所示：</p>
 <p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing  Vector老了使得Pc平滑可导</p>
-<p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978"></p>
+<p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978" loading="lazy"></p>
 <p>状态向量：当前帧的PVQB和路标点( mu,p)</p>
-<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085"></p>
+<p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085" loading="lazy"></p>
 <p>因子图如下</p>
-<p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998"></p>
-<h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722"></p>
+<p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998" loading="lazy"></p>
+<h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722" loading="lazy"></p>
 <p>Tracklocal map：仅优化当前帧</p>
-<p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305"></p>
+<p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305" loading="lazy"></p>
 <p>Local Map：优化华创内的所有帧的PVQB和路标点</p>
-<p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237"></p>
+<p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237" loading="lazy"></p>
 <h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p>
 <!-- 源文件缺失，已注释 -->![image-20191202161618980](/home/guoben/ICE-BA因子图.png)<!-- / -->
 
@@ -235,9 +236,9 @@ $$</p>
 <li>该Factor是新Factor，则在原来基础上+&#x3D;新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li>
 <li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li>
 </ol>
-<p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352"></p>
-<h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p> <img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013"></p>
-<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464"></p>
+<p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352" loading="lazy"></p>
+<h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p> <img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013" loading="lazy"></p>
+<p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464" loading="lazy"></p>
 <ol>
 <li>黄色为IMU帧间约束（PVQBaBg 15×1）</li>
 <li>蓝色为视觉重投影误差约束（2×1）</li>
@@ -250,7 +251,7 @@ $$</p>
 <p>$$
 X=[x_0\,x_1\,...x_n,x_c^b,\lambda_0,\lambda_1,...\lambda_m]
 $$</p>
-<p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170"></p>
+<p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170" loading="lazy"></p>
 <blockquote>
 <p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p>
 </blockquote>
@@ -424,6 +425,10 @@ $$</p>
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -452,6 +457,11 @@ $$</p>
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

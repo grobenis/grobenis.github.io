@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -124,7 +125,7 @@
 <li>AAR 文件可以<a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/native-dependencies?hl=zh-cn">包含 C&#x2F;C++ 库</a>，供应用模块的 C&#x2F;C++ 代码使用。</li>
 </ul>
 <p>*.aar，AAR（Android Archive）包是一个Android库项目的二进制归档文件。我们随便找一个aar文件，然后修改后缀名为‘zip’或者‘rar’格式，然后解压该文件，打开解压后的文件夹，截图如下所示：（每个aar解压后的内容可能不完全一样，但是都会包含AndroidManifest.xml，classes.jar，res，R.txt）。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210330150317969.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210330150317969.png" loading="lazy"></p>
 <p>*.aar文件中包含所有资源，class以及res资源文件。</p>
 <h2 id="二-NDK"><a href="#二-NDK" class="headerlink" title="二 NDK"></a>二 NDK</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>本部分简要介绍了 NDK 的工作原理。Android NDK 是一组使您能将 C 或 C++（“原生代码”）嵌入到 Android 应用中的工具。能够在 Android 应用中使用原生代码对于想执行以下一项或多项操作的开发者特别有用：</p>
 <ul>
@@ -142,38 +143,38 @@
 <p>APP_BUILD_SCRIPT :&#x3D; Android.mk</p>
 </blockquote>
 <h2 id="三-利用Android-Studio生成aar文件"><a href="#三-利用Android-Studio生成aar文件" class="headerlink" title="三 利用Android Studio生成aar文件"></a>三 利用Android Studio生成aar文件</h2><p>生成<code>.aar</code>形式SDK的整个过程我们可以利用AS实现。</p>
-<h3 id="3-1-建立一个项目ProjectDemo"><a href="#3-1-建立一个项目ProjectDemo" class="headerlink" title="3.1 建立一个项目ProjectDemo"></a>3.1 建立一个项目ProjectDemo</h3><h4 id="1-新建项目"><a href="#1-新建项目" class="headerlink" title="1 新建项目"></a>1 新建项目</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170348808.png"></p>
+<h3 id="3-1-建立一个项目ProjectDemo"><a href="#3-1-建立一个项目ProjectDemo" class="headerlink" title="3.1 建立一个项目ProjectDemo"></a>3.1 建立一个项目ProjectDemo</h3><h4 id="1-新建项目"><a href="#1-新建项目" class="headerlink" title="1 新建项目"></a>1 新建项目</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170348808.png" loading="lazy"></p>
 <h4 id="2-配置项目"><a href="#2-配置项目" class="headerlink" title="2 配置项目"></a>2 配置项目</h4><!-- <img src="image-20210401170459101.png" alt="image-20210401170459101" style="zoom: 67%;" /> 图片源文件已丢失 -->
 
 <p>点finish结束即可。</p>
-<h3 id="3-2-建立一个library的模块库MySDK"><a href="#3-2-建立一个library的模块库MySDK" class="headerlink" title="3.2 建立一个library的模块库MySDK"></a>3.2 建立一个library的模块库MySDK</h3><h4 id="1-新建模块"><a href="#1-新建模块" class="headerlink" title="1 新建模块"></a>1 新建模块</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170658032.png"></p>
-<h4 id="2-选择Library的模块"><a href="#2-选择Library的模块" class="headerlink" title="2 选择Library的模块"></a>2 选择Library的模块</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170716786.png"></p>
-<h4 id="3-配置该模块"><a href="#3-配置该模块" class="headerlink" title="3 配置该模块"></a>3 配置该模块</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171021523.png"></p>
+<h3 id="3-2-建立一个library的模块库MySDK"><a href="#3-2-建立一个library的模块库MySDK" class="headerlink" title="3.2 建立一个library的模块库MySDK"></a>3.2 建立一个library的模块库MySDK</h3><h4 id="1-新建模块"><a href="#1-新建模块" class="headerlink" title="1 新建模块"></a>1 新建模块</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170658032.png" loading="lazy"></p>
+<h4 id="2-选择Library的模块"><a href="#2-选择Library的模块" class="headerlink" title="2 选择Library的模块"></a>2 选择Library的模块</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170716786.png" loading="lazy"></p>
+<h4 id="3-配置该模块"><a href="#3-配置该模块" class="headerlink" title="3 配置该模块"></a>3 配置该模块</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171021523.png" loading="lazy"></p>
 <p>现在建议从Android视图切换到Project视图，这样有利于我看看清楚整个项目的目录结构</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171346953.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171346953.png" loading="lazy"></p>
 <h3 id="3-3-建立MySDK类-编写Native方法，生成jni头文件"><a href="#3-3-建立MySDK类-编写Native方法，生成jni头文件" class="headerlink" title="3.3 建立MySDK类,编写Native方法，生成jni头文件"></a>3.3 建立MySDK类,编写Native方法，生成jni头文件</h3><h4 id="1-建立类"><a href="#1-建立类" class="headerlink" title="1 建立类"></a>1 建立类</h4><p>接下来，我们建立一个名为MySDK的java类，作为SDK的接口。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171535574.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171535574.png" loading="lazy"></p>
 <p>生成的函数类如下：</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171822235.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171822235.png" loading="lazy"></p>
 <h4 id="2-书写方法名"><a href="#2-书写方法名" class="headerlink" title="2 书写方法名"></a>2 书写方法名</h4><p>接下来，我们可以需要写类中的方法，目前只需要写函数名即可。我定义了一个用于计算链表平均值的函数，输入为一个</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172213525.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172213525.png" loading="lazy"></p>
 <p>（为了展示后边Jni的书写方法，我用了一个链表的数据结构。）目前定义的这个类不需要实现他的方法，仅仅用于生成JNI的头文件。（由于JNI的头文件书写极其复杂，因此我们使用自动的方法生成）。</p>
 <h4 id="3-利用javah生成头文件"><a href="#3-利用javah生成头文件" class="headerlink" title="3 利用javah生成头文件"></a>3 利用javah生成头文件</h4><p>利用javah生成头文件的操作， 我们可以使用AS自带的命令行完成。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172646427.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172646427.png" loading="lazy"></p>
 <p>在terminal中，输入以下的命令：</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172733132.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172733132.png" loading="lazy"></p>
 <p>我们可以在目录中看到文件<code>com_xiaomi_phonesleepsdk_PhoneSleepSDK.h</code>：</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172919207.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172919207.png" loading="lazy"></p>
 <p>内容长这样：</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173031982.png"></p>
-<h3 id="3-4-建立JNI文件夹，建立main-c，实现函数，编写编译文件Android-mk"><a href="#3-4-建立JNI文件夹，建立main-c，实现函数，编写编译文件Android-mk" class="headerlink" title="3.4 建立JNI文件夹，建立main.c，实现函数，编写编译文件Android.mk"></a>3.4 建立JNI文件夹，建立main.c，实现函数，编写编译文件Android.mk</h3><h4 id="1-建立JNI文件夹"><a href="#1-建立JNI文件夹" class="headerlink" title="1 建立JNI文件夹"></a>1 建立JNI文件夹</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173247121.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173031982.png" loading="lazy"></p>
+<h3 id="3-4-建立JNI文件夹，建立main-c，实现函数，编写编译文件Android-mk"><a href="#3-4-建立JNI文件夹，建立main-c，实现函数，编写编译文件Android-mk" class="headerlink" title="3.4 建立JNI文件夹，建立main.c，实现函数，编写编译文件Android.mk"></a>3.4 建立JNI文件夹，建立main.c，实现函数，编写编译文件Android.mk</h3><h4 id="1-建立JNI文件夹"><a href="#1-建立JNI文件夹" class="headerlink" title="1 建立JNI文件夹"></a>1 建立JNI文件夹</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173247121.png" loading="lazy"></p>
 <h4 id="2-建立main-c文件"><a href="#2-建立main-c文件" class="headerlink" title="2 建立main.c文件"></a>2 建立main.c文件</h4><p>main.c文件将实现前文中文件中的方法。作为JAVA转C的接口。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173328777.png"></p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173501401.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173328777.png" loading="lazy"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173501401.png" loading="lazy"></p>
 <h4 id="3-实现接口函数"><a href="#3-实现接口函数" class="headerlink" title="3 实现接口函数"></a>3 实现接口函数</h4><p>在实现函数之前，我们需要把生成的头文件，移动或者复制到jni文件夹</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173600997.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173600997.png" loading="lazy"></p>
 <p>然后可以把自己的C库复制到jni目录下边。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193013539.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193013539.png" loading="lazy"></p>
 <p>接下来，我们需要利用JNI实现main.c中的接口函数。</p>
 <p>main.c内容如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by 郭犇 on 2021/4/1.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;com_xiaomi_mysdk_MySDK.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my_lib.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> jstring <span class="title function_">stoJstring</span><span class="params">(JNIEnv* env, <span class="type">char</span>* pat)</span>;</span><br><span class="line"></span><br><span class="line">JNIEXPORT jstring JNICALL <span class="title function_">Java_com_xiaomi_mysdk_MySDK_my_1count_1mean_1funtion</span></span><br><span class="line">   <span class="params">(JNIEnv *env, jobject thisz , jobject a, jint b)</span>&#123;</span><br><span class="line">        <span class="type">int</span> num = b; <span class="comment">//JNI语法中，int与jint支持强制转换</span></span><br><span class="line">        <span class="comment">//链表的类型转换比较复杂</span></span><br><span class="line"></span><br><span class="line">        jclass list_class = (*env)-&gt;FindClass(env,<span class="string">&quot;java/util/ArrayList&quot;</span>);</span><br><span class="line">        jmethodID list_get =  (*env)-&gt;GetMethodID(env, list_class, <span class="string">&quot;get&quot;</span>, <span class="string">&quot;(I)Ljava/lang/Object;&quot;</span>);</span><br><span class="line">        jmethodID list_size = (*env)-&gt;GetMethodID(env, list_class, <span class="string">&quot;size&quot;</span>, <span class="string">&quot;()I&quot;</span>);</span><br><span class="line"></span><br><span class="line">        jclass float_class = (*env)-&gt;FindClass(env,<span class="string">&quot;java/lang/Float&quot;</span>);</span><br><span class="line">        jmethodID get_float_value = (*env)-&gt;GetMethodID(env, float_class, <span class="string">&quot;floatValue&quot;</span>,<span class="string">&quot;()F&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">float</span> *l = (<span class="type">float</span> *)<span class="built_in">malloc</span>(num*(<span class="keyword">sizeof</span>(<span class="type">float</span>)));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">            jobject obj_element = (*env)-&gt;CallObjectMethod(env, a, list_get, i);</span><br><span class="line">            <span class="type">float</span> float_ele = (*env)-&gt;CallFloatMethod(env, obj_element, get_float_value);</span><br><span class="line">            l[i] = float_ele;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">char</span>* str = count_mean(l ,num);</span><br><span class="line">        jstring ret = stoJstring(env, str);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> jstring <span class="title function_">stoJstring</span><span class="params">(JNIEnv* env, <span class="type">char</span>* pat)</span>&#123;</span><br><span class="line">    jclass strClass = (*env)-&gt;FindClass(env, <span class="string">&quot;java/lang/String&quot;</span>);</span><br><span class="line">    jmethodID ctorID = (*env)-&gt;GetMethodID(env, strClass, <span class="string">&quot;&lt;init&gt;&quot;</span>, <span class="string">&quot;([BLjava/lang/String;)V&quot;</span>);</span><br><span class="line">    jbyteArray bytes = (*env)-&gt;NewByteArray(env, <span class="built_in">strlen</span>(pat));</span><br><span class="line">    (*env)-&gt;SetByteArrayRegion(env, bytes, <span class="number">0</span>, <span class="built_in">strlen</span>(pat), (jbyte*)pat);</span><br><span class="line">    jstring encoding = (*env)-&gt;NewStringUTF(env, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> (jstring)(*env)-&gt;NewObject(env, strClass, ctorID, bytes, encoding);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -186,27 +187,27 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_LDLIBS :=-llog</span><br></pre></td></tr></table></figure>
 
 <h4 id="5-配置-MySDK下的build-gradle"><a href="#5-配置-MySDK下的build-gradle" class="headerlink" title="5 配置 MySDK下的build.gradle"></a>5 配置 MySDK下的build.gradle</h4><p>修改图下的位置</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191344975.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191344975.png" loading="lazy"></p>
 <p>其中，moduleName对应的是 SDK的名字。cFlags表示C语言对应的标准。</p>
 <p>sourceSets设置中。jni.srcDirs指的是我们放置C语言源代码的目录。</p>
 <p>jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不是用来指示生成的位置，只是为后续打包aar时找到so库用的）。</p>
 <p>到这里，jni部分的工作基本完成了。</p>
-<h4 id="6-调用ndk-build生成so库。"><a href="#6-调用ndk-build生成so库。" class="headerlink" title="6 调用ndk-build生成so库。"></a>6 调用ndk-build生成so库。</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193741347.png"></p>
+<h4 id="6-调用ndk-build生成so库。"><a href="#6-调用ndk-build生成so库。" class="headerlink" title="6 调用ndk-build生成so库。"></a>6 调用ndk-build生成so库。</h4><p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193741347.png" loading="lazy"></p>
 <p>生成的so库在如下的位置</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191907379.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191907379.png" loading="lazy"></p>
 <h3 id="3-5-把源代码和so库一并打包到aar文件中"><a href="#3-5-把源代码和so库一并打包到aar文件中" class="headerlink" title="3.5 把源代码和so库一并打包到aar文件中"></a>3.5 把源代码和so库一并打包到aar文件中</h3><p>我们可以直接利用AS自带的右方的gradle按钮。按照如图的目录找到assembleRelease</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192057568.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192057568.png" loading="lazy"></p>
 <p>运行结束之后，我们就可以在MyDemo&#x2F;MySDK&#x2F;build&#x2F;outputs&#x2F;aar&#x2F;目录中找到MySDK-release.aar文件。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192217160.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192217160.png" loading="lazy"></p>
 <p>双击aar文件可以看到如下所示的目录；</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192323837.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192323837.png" loading="lazy"></p>
 <p>可以发现包含了各种文件。jni文件夹下是四个so库。可供Java程序调用的so库就在jni目录中。</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192431250.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192431250.png" loading="lazy"></p>
 <p>至此，<strong>打包成功！</strong>。</p>
 <h2 id="四-将-aar导入项目中进行使用"><a href="#四-将-aar导入项目中进行使用" class="headerlink" title="四 将.aar导入项目中进行使用"></a>四 将.aar导入项目中进行使用</h2><p>下面主要看看在Android Studio中如何加载本地的*.aar文件。</p>
 <ol>
 <li><p>把aar文件放在一个文件目录内，比如就放在libs目录内；</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402193110508.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402193110508.png" loading="lazy"></p>
 </li>
 <li><p>在app的build.gradle文件添加如下内容；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    flatDir &#123;</span><br><span class="line">        dirs <span class="string">&#x27;libs&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -220,7 +221,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;AppCompatActivity&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">        <span class="type">List</span>&lt;Float&gt; <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        a.add(<span class="number">1.0f</span>);</span><br><span class="line">        a.add(<span class="number">2.0f</span>);</span><br><span class="line">        a.add(<span class="number">3.0f</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">        <span class="type">float</span> <span class="variable">ret</span> <span class="operator">=</span> MySDK.my_count_mean_funtion(a,b);</span><br><span class="line">        Log.d(<span class="string">&quot;ret&quot;</span>, Float.toString(ret));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>运行程序得到正确结果</p>
-<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210419201234352.png"></p>
+<p><img src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210419201234352.png" loading="lazy"></p>
 </li>
 </ol>
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
@@ -412,6 +413,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -440,6 +445,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

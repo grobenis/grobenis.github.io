@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -294,8 +295,8 @@
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/Examples/myvideo)</span><br><span class="line"><span class="keyword">add_executable</span>(myvideo</span><br><span class="line">Examples/myvideo/myvideo.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(myvideo <span class="variable">$&#123;PROJECT_NAME&#125;</span>)</span><br></pre></td></tr></table></figure>
 
 <h4 id="3-运行ORBSLAM"><a href="#3-运行ORBSLAM" class="headerlink" title="3. 运行ORBSLAM"></a>3. 运行ORBSLAM</h4><p>现在你的程序应该可以编译出结果了。但是我们现在还没有谈相机标定，所以你还没办法标定你的摄像头。我们可以用⼀个不那么好的标定参数，先来试一试效果（所幸 ORB-SLAM2对标定参数不太敏感）。我为你提供了⼀个<code>myslam.yaml（myvideo.yaml）</code>，这个文件是我们假想的标定参数。现在，用这个文件让 ORB-SLAM2 运行起来，看看 ORB-SLAM2 的实际效果吧。请给出运行截图，并谈谈你在运⾏过程中的体会。</p>
-<p><img src="/assets/ORBSLAM%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE.png"></p>
-<p><img src="/assets/%E8%BF%90%E8%A1%8Cmyvideo.png"></p>
+<p><img src="/assets/ORBSLAM%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE.png" loading="lazy"></p>
+<p><img src="/assets/%E8%BF%90%E8%A1%8Cmyvideo.png" loading="lazy"></p>
 <p><strong>体会</strong></p>
 <p>实验过程中，我使用的是虚拟机，运行内存为3G，ORBSLAM2在运行myvideo的过程中，能够保持24~40的关键帧，同时追踪200个特征点，可见其能在计算量有限的情况下仍能追踪到特征点，非常强大。</p>
 <p>对于一个不那么准确的标定文件，依然能展现出一定的结果，表明ORBSLAM具有对于标定过程具有一定的鲁棒性。我猜想这可能是因为单目相机的单一性，不需要考虑多个传感器之间的协同。在我测试VINS的过程中则发现运行效果对标定的依赖性非常大。</p>
@@ -484,6 +485,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -512,6 +517,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

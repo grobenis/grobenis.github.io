@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -117,14 +118,14 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">valgrind --tool=massif --stacks=yes --time-unit=B --alloc-fn=generic_malloc  ./swimming_analyzer_demo</span><br></pre></td></tr></table></figure>
 
 <p>然后在当前目录会生成一个文件 比如：massif.out.1250590 后面的数字是个id<br>再安装一个软件 <code>massif-visualizer</code>, 使用这个软件打开生成的这个文件massif.out.<id>.</p>
-<p><img src="/2022/03/16/2022-03-16-Souce_static_in_project/image-20220316163119363.png" alt="image-20220316163119363"></p>
+<p><img src="/2022/03/16/2022-03-16-Souce_static_in_project/image-20220316163119363.png" alt="image-20220316163119363" loading="lazy"></p>
 <p>也可以辅助分析它的内存RAM消耗。</p>
 <h2 id="ROM统计"><a href="#ROM统计" class="headerlink" title="ROM统计"></a>ROM统计</h2><p>关于程序占用ROM的计算借助arm交叉编译器实现</p>
 <p>可以通过以下命令查看文件占用flash和ram的大小。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arm-none-eabi-size -t *.a</span><br></pre></td></tr></table></figure>
 
 <p>显示结果如下：</p>
-<p><img src="/2022/03/16/2022-03-16-Souce_static_in_project/image-20220318103734602.png" alt="image-20220318103734602"></p>
+<p><img src="/2022/03/16/2022-03-16-Souce_static_in_project/image-20220318103734602.png" alt="image-20220318103734602" loading="lazy"></p>
 <p>上图中，TOTALS所在的dec指示的数字即是占用ROM空间的情况，单位为字节（Byte）。上图中占用为4863&#x2F;1024 &#x3D;4.74KB。</p>
 <h3 id="利用工具统计资源泄露情况"><a href="#利用工具统计资源泄露情况" class="headerlink" title="利用工具统计资源泄露情况"></a>利用工具统计资源泄露情况</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">valgrind --tool=memcheck --leak-check=full --show-reachable=yes --trace-children=yes build_linux-x86_64/L67main</span><br></pre></td></tr></table></figure>
 
@@ -312,6 +313,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -340,6 +345,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

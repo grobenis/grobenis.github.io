@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -137,7 +138,7 @@
 </blockquote>
 <h3 id="相机标定的概念"><a href="#相机标定的概念" class="headerlink" title="相机标定的概念"></a>相机标定的概念</h3><p>相机标定就是通过输入带有标定pattern的标定板来计算相机参数，来用简单地数学模型来表达复杂的成像过程。求解这个数学模型，也就是求解相机的参数，包括相机的内参，外参以及畸变参数。有了这个数学模型，我们可以对相机拍摄的图片进行畸变校正，也可以用多个相机拍摄图片来进行三维重建，测量物体距离以及其他的计算机视觉的应用。</p>
 <p>相机成像需要通过一系列变换组成</p>
-<p><img src="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220725194347996.png"></p>
+<p><img src="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220725194347996.png" loading="lazy"></p>
 <p>从世界坐标系到像素坐标系，写成矩阵形式，可以得到：<br>$$
 \begin{array}{r}
 z_{c} \cdot\left[\begin{array}{c}
@@ -269,7 +270,7 @@ $$</p>
 <p>如果观察了 $n$ 张模型平面的图片, 可以将 $n$ 个 $1.33$ 这样的方程放在一起, 可以得到:<br>$$
 \mathbf{V} \cdot \mathbf{b}=0
 $$<br>公式中 $\mathbf{V}$ 是一个 $2 n \times 6$ 的矩阵 (对应 $2 n$ 个方程), $b$ 有六个参数。所以要求 $n&gt;=3$, 至少需要三张图片, 才可以得到唯一解 $b$ 。 $H$ 矩阵是可以根据单应性关系求解出来的, 每 一组标定板的 3D 真实坐标和二维坐标点就可以一个单应性关系。 $n=3$, 即三个单应性 矩阵, 也就是拍摄三张标定板的图片。<br>在张正友的论文中, 对不同的平面数进行了性能测试, 即使用不同的图片数, 来做 相机标定, 比较相机参数的正确性。如图1.10从实验结果可以看出, pattern 数从 2 到 3 , 误差降低非常明显。</p>
-<p><img src="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220726084842841.png"></p>
+<p><img src="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/image-20220726084842841.png" loading="lazy"></p>
 <p>如果 $n=2$, 可以让畸变参数 $\gamma=0$, 那么 $[0,1,0,0,0,0] \mathbf{b}=0$,<br>一旦 $\mathbf{b}$ 被估计出来, 我们可以计算所有的相机内参矩阵 $\mathbf{A}$ :<br>$$
 \begin{aligned}
 v_{0} &amp;=\left(B_{12} B_{13}-B_{11} B_{23}\right) /\left(B_{11} B_{22}-B_{12}^{2}\right) \\
@@ -478,6 +479,10 @@ $$<br>上式中 $\hat{m}\left(\mathbf{A}, \mathbf{R}_{i}, \mathbf{t}_{i}, M_{j}\
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -506,6 +511,11 @@ $$<br>上式中 $\hat{m}\left(\mathbf{A}, \mathbf{R}_{i}, \mathbf{t}_{i}, M_{j}\
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

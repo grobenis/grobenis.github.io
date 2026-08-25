@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -125,12 +126,12 @@
 </ol>
 <h2 id="常用角点检测算法"><a href="#常用角点检测算法" class="headerlink" title="常用角点检测算法"></a>常用角点检测算法</h2><p>SLAM中常用的角点检测算法整理如下：</p>
 <p>本文根据ORBSLAM3中的综述表格进行总结：</p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png" loading="lazy"></p>
 <h3 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h3><ol>
 <li><p>单纯的FAST关键点，没有描述子</p>
 </li>
 <li><p>FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思<br>想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）：</p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615150207855.png" alt="image-20220615150207855" loading="lazy"></p>
 <ol>
 <li>在图像中选取像素p，假设它的亮度为$I_p$。</li>
 <li>设置一个阈值T(比如$I_p$ 的20%)。</li>
@@ -147,12 +148,12 @@
 <li>其次，FAST 角点不具有方向信息。而且，由于它固定取半径为3 的圆，存在尺度问题：远处看着像是角点的地方，接近后看可能就不是角点了。</li>
 </ul>
 <h3 id="Harris特征点"><a href="#Harris特征点" class="headerlink" title="Harris特征点"></a>Harris特征点</h3><p>OPENCV描述：In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by <strong>Chris Harris &amp; Mike Stephens</strong> in their paper <strong>A Combined Corner and Edge Detector</strong> in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. </p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png"></p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615153225850.png" loading="lazy"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154043028.png" loading="lazy"></p>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html">openCV链接</a></p>
 </blockquote>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220615154149887.png" loading="lazy"></p>
 <h3 id="Shi-Tomas特征点"><a href="#Shi-Tomas特征点" class="headerlink" title="Shi-Tomas特征点"></a>Shi-Tomas特征点</h3><blockquote>
 <p>Harris 和 Shi-Tomasi 都是基于梯度计算的角点检测方法，Shi-Tomasi 的效果要好一些。</p>
 <ul>
@@ -160,14 +161,14 @@
 </ul>
 <p>想要提高检测速度的话，可以考虑基于模板的方法：FAST角点检测算法。该算法原理比较简单，但实时性很强。</p>
 <p>Harris 角点检测中每个窗口的分数公式是将矩阵 M 的行列式与 M 的迹相减：</p>
-<p><img src="https://www.zhihu.com/equation?tex=R+=+%CE%BB_1%CE%BB_2+%E2%88%92+k+(%CE%BB_1+++%CE%BB_2)%5E2+%5C%5C" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=R+=+%CE%BB_1%CE%BB_2+%E2%88%92+k+(%CE%BB_1+++%CE%BB_2)%5E2+%5C%5C" alt="[公式]" loading="lazy"></p>
 <p>由于 Harris 角点检测算法的稳定性和 k 值有关，而 k 是个经验值，不好设定最佳值。</p>
 <p>Shi-Tomasi 发现，角点的稳定性其实和矩阵 M 的较小特征值有关，于是直接用较小的那个特征值作为分数。这样就不用调整k值了。</p>
 <p>所以 Shi-Tomasi 将分数公式改为如下形式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=R+=+min+(%CE%BB_1,+%CE%BB_2)+%5C%5C" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=R+=+min+(%CE%BB_1,+%CE%BB_2)+%5C%5C" alt="[公式]" loading="lazy"></p>
 <p>和 Harris 一样，如果该分数大于设定的阈值，我们就认为它是一个角点。</p>
 <p>我们可以把它绘制到 λ1 ～ λ2 空间中，就会得到下图：</p>
-<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg"></p>
+<p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/v2-56a5bd60f1e79bc8b6f0b652dee589bc_1440w.jpg" loading="lazy"></p>
 </blockquote>
 <h3 id="ORB特征点"><a href="#ORB特征点" class="headerlink" title="ORB特征点"></a>ORB特征点</h3><ol>
 <li>改进了FAST关键点;</li>
@@ -384,6 +385,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -412,6 +417,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">

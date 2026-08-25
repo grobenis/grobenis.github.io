@@ -27,6 +27,7 @@
 
   
 
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
 </head>
 
 </html>
@@ -669,7 +670,7 @@
 <p>对输出流操作：seekp（）与tellp（） seekg（）是对输入文件定位，它有两个参数：第一个参数是偏移量，第二个参数是基地址。</p>
 <p>对于第一个参数，可以是正负数值，正的表示向后偏移，负的表示向前偏移。而第二个参数可以是： ios：：beg：表示输入流的开始位置 ios：：cur：表示输入流的当前位置 ios：：end：表示输入流的结束位置 tellg（）函数不需要带参数，它返回当前定位指针的位置，也代表着输入流的大小。</p>
 </blockquote>
-<h3 id="二-类与数据抽象"><a href="#二-类与数据抽象" class="headerlink" title="二 类与数据抽象"></a>二 类与数据抽象</h3><h4 id="一-类"><a href="#一-类" class="headerlink" title="一 类"></a>一 类</h4><h5 id="1-若类里面有static、virtual等，类的内存如何分布"><a href="#1-若类里面有static、virtual等，类的内存如何分布" class="headerlink" title="1. 若类里面有static、virtual等，类的内存如何分布"></a>1. 若类里面有static、virtual等，类的内存如何分布</h5><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470920741_7D40CEF3951A10F626301148E06D89DA" alt="img"></p>
+<h3 id="二-类与数据抽象"><a href="#二-类与数据抽象" class="headerlink" title="二 类与数据抽象"></a>二 类与数据抽象</h3><h4 id="一-类"><a href="#一-类" class="headerlink" title="一 类"></a>一 类</h4><h5 id="1-若类里面有static、virtual等，类的内存如何分布"><a href="#1-若类里面有static、virtual等，类的内存如何分布" class="headerlink" title="1. 若类里面有static、virtual等，类的内存如何分布"></a>1. 若类里面有static、virtual等，类的内存如何分布</h5><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470920741_7D40CEF3951A10F626301148E06D89DA" alt="img" loading="lazy"></p>
 <blockquote>
 <h4 id="1、static修饰符"><a href="#1、static修饰符" class="headerlink" title="1、static修饰符"></a>1、static修饰符</h4><blockquote>
 <p>1）static修饰成员变量</p>
@@ -1566,7 +1567,7 @@
 <blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (_Count == <span class="number">0</span>)<span class="comment">//这里进行了判断，但是什么都不做，不知道为什么？？？？？？？</span></span><br><span class="line">    ;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">max_size</span>() - <span class="built_in">size</span>() &lt; _Count)<span class="comment">//编译器可以申请的最大容量也装不下，抛出异常_THROW(length_error, &quot;vector&lt;T&gt; too long&quot;);</span></span><br><span class="line">    _Xlen();</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (_Capacity &lt; <span class="built_in">size</span>() + _Count) <span class="comment">//当前空间不足，需要扩容</span></span><br><span class="line">&#123;   <span class="comment">// not enough room, reallocate</span></span><br><span class="line">    _Capacity = <span class="built_in">max_size</span>() - _Capacity / <span class="number">2</span> &lt; _Capacity</span><br><span class="line">        ? <span class="number">0</span> : _Capacity + _Capacity / <span class="number">2</span>;    <span class="comment">// 先保证扩容后的内存大小不超限。如果满足，就扩容50%</span></span><br><span class="line">    <span class="keyword">if</span> (_Capacity &lt; <span class="built_in">size</span>() + _Count)<span class="comment">// 扩容50%后依然不够容下，则使容量等于当前数据个数加上新增数据个数（有时候是好多数据（存在文件夹）一起push进去</span></span><br><span class="line">        _Capacity = <span class="built_in">size</span>() + _Count;</span><br><span class="line">    pointer _Newvec = <span class="keyword">this</span>-&gt;_Alval.<span class="built_in">allocate</span>(_Capacity);<span class="comment">//申请新的空间</span></span><br><span class="line">    pointer _Ptr = _Newvec;</span><br><span class="line"></span><br><span class="line">    _TRY_BEGIN</span><br><span class="line">        _Ptr = _Umove(_Myfirst, _VEC_ITER_BASE(_Where),</span><br><span class="line">                      _Newvec);   <span class="comment">// copy prefix      //拷贝原有数据到新的内存中</span></span><br><span class="line">    _Ptr = _Ucopy(_First, _Last, _Ptr); <span class="comment">//  //拷贝新增数据到新的内存的后面</span></span><br><span class="line">    _Umove(_VEC_ITER_BASE(_Where), _Mylast, _Ptr);  <span class="comment">// copy suffix</span></span><br><span class="line">    _CATCH_ALL</span><br><span class="line">        _Destroy(_Newvec, _Ptr);</span><br><span class="line">    <span class="keyword">this</span>-&gt;_Alval.<span class="built_in">deallocate</span>(_Newvec, _Capacity);<span class="comment">//释放原来申请的内存</span></span><br><span class="line">    _RERAISE;</span><br><span class="line">    _CATCH_END</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h3 id="五-内存管理"><a href="#五-内存管理" class="headerlink" title="五 内存管理"></a>五 内存管理</h3><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552467921124_13956548C4BB199139A2744C39350272" alt="img"></p>
+<h3 id="五-内存管理"><a href="#五-内存管理" class="headerlink" title="五 内存管理"></a>五 内存管理</h3><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552467921124_13956548C4BB199139A2744C39350272" alt="img" loading="lazy"></p>
 <h4 id="1-C-的内存管理"><a href="#1-C-的内存管理" class="headerlink" title="1. C++的内存管理"></a>1. C++的内存管理</h4><p>在C++中，虚拟内存分为代码段、数据段、BSS段、堆区、文件映射区以及栈区六部分。</p>
 <blockquote>
 <ol>
@@ -1680,7 +1681,7 @@
 </blockquote>
 <h5 id="2）二级内存池"><a href="#2）二级内存池" class="headerlink" title="2）二级内存池"></a>2）二级内存池</h5><blockquote>
 <p>二级内存池采用了16个空闲链表，这里的16个空闲链表分别管理大小为8、16、24……120、128的数据块。这里空闲链表节点的设计十分巧妙，这里用了一个联合体既可以表示下一个空闲数据块（存在于空闲链表中）的地址，也可以表示已经被用户使用的数据块（不存在空闲链表中）的地址。</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190414/970829_1555246716341_19203EAD1152E0317EE9B5F6BFE090C6" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190414/970829_1555246716341_19203EAD1152E0317EE9B5F6BFE090C6" alt="img" loading="lazy"></p>
 <h5 id="1、空间配置函数allocate"><a href="#1、空间配置函数allocate" class="headerlink" title="1、空间配置函数allocate"></a>1、空间配置函数allocate</h5><p>首先先要检查申请空间的大小，如果大于128字节就调用第一级配置器，小于128字节就检查对应的空闲链表，如果该空闲链表中有可用数据块，则直接拿来用（拿取空闲链表中的第一个可用数据块，然后把该空闲链表的地址设置为该数据块指向的下一个地址），如果没有可用数据块，则调用refill重新填充空间。</p>
 <h5 id="2、空间释放函数deallocate"><a href="#2、空间释放函数deallocate" class="headerlink" title="2、空间释放函数deallocate"></a>2、空间释放函数deallocate</h5><p>首先先要检查释放数据块的大小，如果大于128字节就调用第一级配置器，小于128字节则根据数据块的大小来判断回收后的空间会被插入到哪个空闲链表。</p>
 <h5 id="3、重新填充空闲链表refill"><a href="#3、重新填充空闲链表refill" class="headerlink" title="3、重新填充空闲链表refill"></a>3、重新填充空闲链表refill</h5><p>在用allocate配置空间时，如果空闲链表中没有可用数据块，就会调用refill来重新填充空间，新的空间取自内存池。缺省取20个数据块，如果内存池空间不足，那么能取多少个节点就取多少个。<br>从内存池取空间给空闲链表用是chunk_alloc的工作，首先根据end_free-start_free来判断内存池中的剩余空间是否足以调出nobjs个大小为size的数据块出去，如果内存连一个数据块的空间都无法供应，需要用malloc取堆中申请内存。<br>假如山穷水尽，整个系统的堆空间都不够用了，malloc失败，那么chunk_alloc会从空闲链表中找是否有大的数据块，然后将该数据块的空间分给内存池（这个数据块会从链表中去除）。</p>
@@ -1709,7 +1710,7 @@
 <blockquote>
 <p>IO复用模型在阻塞IO模型上多了一个select函数，select函数有一个参数是文件描述符集合，意思就是对这些的文件描述符进行循环监听，当某个文件描述符就绪的时候，就对这个文件描述符进行处理。</p>
 <p>这种IO模型是属于阻塞的IO。但是由于它可以对多个文件描述符进行阻塞监听，所以它的效率比阻塞IO模型高效。</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190315/826546_1552638064152_94DD1FAB6C2E289FF496A8013E092EA5" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190315/826546_1552638064152_94DD1FAB6C2E289FF496A8013E092EA5" alt="img" loading="lazy"></p>
 <p>IO多路复用就是我们说的select，poll，epoll。select&#x2F;epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。</p>
 <p>当用户进程调用了select，那么整个进程会被block，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。</p>
 <p>所以，I&#x2F;O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</p>
@@ -1952,7 +1953,7 @@
 </ol>
 <p><strong>应用</strong>：广泛应用于C++的STL中，map和set底层都是用红黑树实现的。</p>
 </blockquote>
-<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/1732651-20190821151029589-676793772.png"></p>
+<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/1732651-20190821151029589-676793772.png" loading="lazy"></p>
 <blockquote>
 <h6 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h6><ol>
 <li>根节点是黑色的；</li>
@@ -1993,7 +1994,7 @@
 <li>更适合文件索引系统。</li>
 </ul>
 <h4 id="带有顺序访问指针的B-Tree"><a href="#带有顺序访问指针的B-Tree" class="headerlink" title="带有顺序访问指针的B+Tree"></a>带有顺序访问指针的B+Tree</h4><p>一般在数据库系统或文件系统中使用的B+Tree结构都在经典B+Tree的基础上进行了优化，增加了顺序访问指针。</p>
-<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/758447-20180126172151522-1626747450.png"></p>
+<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/758447-20180126172151522-1626747450.png" loading="lazy"></p>
 <p>如上图所示，在B+Tree的每个叶子节点增加一个指向相邻叶子节点的指针，就形成了带有顺序访问指针的B+Tree。做这个优化的目的是为了提高区间访问的性能，例如图4中如果要查询key为从18到49的所有数据记录，当找到18后，只需顺着节点和指针顺序遍历就可以一次性访问到所有数据节点，极大提高了区间查询效率。</p>
 </blockquote>
 <h4 id="六-平衡二叉树"><a href="#六-平衡二叉树" class="headerlink" title="六 平衡二叉树"></a>六 平衡二叉树</h4><blockquote>
@@ -2528,7 +2529,7 @@
 <h5 id="死循环-来连接时新建线程的方法效率有点低，怎么改进？"><a href="#死循环-来连接时新建线程的方法效率有点低，怎么改进？" class="headerlink" title="死循环+来连接时新建线程的方法效率有点低，怎么改进？"></a>死循环+来连接时新建线程的方法效率有点低，怎么改进？</h5><blockquote>
 <p>提前创建好一个线程池，用生产者消费者模型，创建一个任务队列，队列作为临界资源，有了新连接，就挂在到任务队列上，队列为空所有线程睡眠。改进死循环：使用select epoll 这样的技术。</p>
 </blockquote>
-<h4 id="6-进程和线程的状态"><a href="#6-进程和线程的状态" class="headerlink" title="6 进程和线程的状态"></a>6 进程和线程的状态</h4><h5 id="进程的五种基本状态"><a href="#进程的五种基本状态" class="headerlink" title="进程的五种基本状态"></a>进程的五种基本状态</h5><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470678794_F9BF116BD97A95A5E655DF9E1672186F" alt="img"></p>
+<h4 id="6-进程和线程的状态"><a href="#6-进程和线程的状态" class="headerlink" title="6 进程和线程的状态"></a>6 进程和线程的状态</h4><h5 id="进程的五种基本状态"><a href="#进程的五种基本状态" class="headerlink" title="进程的五种基本状态"></a>进程的五种基本状态</h5><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470678794_F9BF116BD97A95A5E655DF9E1672186F" alt="img" loading="lazy"></p>
 <blockquote>
 <p>1）创建状态：进程正在被创建</p>
 <p>2）就绪状态：进程被加入到就绪队列中等待CPU调度运行</p>
@@ -2536,7 +2537,7 @@
 <p>4）等待阻塞状态：进程因为某种原因，比如等待I&#x2F;O，等待设备，而暂时不能运行。</p>
 <p>5）终止状态：进程运行完毕</p>
 </blockquote>
-<h5 id="线程的五种状态"><a href="#线程的五种状态" class="headerlink" title="线程的五种状态"></a>线程的五种状态</h5><p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/20161017181631639"></p>
+<h5 id="线程的五种状态"><a href="#线程的五种状态" class="headerlink" title="线程的五种状态"></a>线程的五种状态</h5><p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/20161017181631639" loading="lazy"></p>
 <blockquote>
 <ol>
 <li><p>新建状态：当用new操作符创建一个线程时。此时程序还没有开始运行线程中的代码。</p>
@@ -2804,7 +2805,7 @@
 <li>输入设备:　实现将程序、原始数据、文字、字符、控制命令或现场采集的数据等信息输入到计算机。</li>
 <li>输出设备:　实现将计算机处理后生成的中间结果或最后结果（各种数据符号及文字或各种控制信号等信息）输出出来。</li>
 </ul>
-<h4 id="1-程序的内存结构"><a href="#1-程序的内存结构" class="headerlink" title="1 程序的内存结构"></a>1 程序的内存结构</h4><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552469062814_B7994596FDDB98A22E80E1D2556A6153" alt="img"></p>
+<h4 id="1-程序的内存结构"><a href="#1-程序的内存结构" class="headerlink" title="1 程序的内存结构"></a>1 程序的内存结构</h4><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552469062814_B7994596FDDB98A22E80E1D2556A6153" alt="img" loading="lazy"></p>
 <p>一个程序本质上都是由BSS段、data段、text段三个组成的。可以看到一个可执行程序在存储（没有调入内存）时分为代码段、数据区和未初始化数据区三部分。</p>
 <blockquote>
 <ol>
@@ -2928,7 +2929,7 @@
 <p>实现：每个数据块一个引用计数，所有数据块按照引用计数排序，具有相同引用计数的数据块则按照时间排序。每次淘汰队尾数据块。</p>
 <p>开销：排序开销。</p>
 <p>弊端：缓存颠簸。</p>
-<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/311436_1552470476683_909843CE326FD7243A252E09C80772B8"></p>
+<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/311436_1552470476683_909843CE326FD7243A252E09C80772B8" loading="lazy"></p>
 <h4 id="3、LRU（最近最少使用替换算法）"><a href="#3、LRU（最近最少使用替换算法）" class="headerlink" title="3、LRU（最近最少使用替换算法）"></a>3、LRU（最近最少使用替换算法）</h4><p>思想：如果数据最近被访问过，那么将来被访问的几率也更高。</p>
 <p>实现：使用一个栈，新页面或者命中的页面则将该页面移动到栈底，每次替换栈顶的缓存页面。</p>
 <p>优点：LRU算法对热点数据命中率是很高的。</p>
@@ -2967,17 +2968,17 @@
 <p>CPU要利用其段式内存管理单元，先将为个逻辑地址转换成一个线程地址。</p>
 <p>一个逻辑地址由两部份组成，【段标识符：段内偏移量】。</p>
 <p>段标识符是由一个16位长的字段组成，称为段选择符。其中前13位是一个索引号。后面3位包含一些硬件细节，如图：</p>
-<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/311436_1552470210037_13DB46E4DEE567FEF6756A26C5A0EC62"></p>
+<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/311436_1552470210037_13DB46E4DEE567FEF6756A26C5A0EC62" loading="lazy"></p>
 <p>通过段标识符中的索引号从GDT或者LDT找到该段的段描述符，段描述符中的base字段是段的起始地址。</p>
 <p>段描述符：Base字段，它描述了一个段的开始位置的线性地址。</p>
 <p>一些全局的段描述符，就放在“全局段描述符表(GDT)”中，一些局部的，例如每个进程自己的，就放在所谓的“局部段描述符表(LDT)”中。GDT在内存中的地址和大小存放在CPU的gdtr控制寄存器中，而LDT则在ldtr寄存器中。</p>
 <p>段起始地址+ 段内偏移量 &#x3D; 线性地址</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470239469_B327A1776BDD614C1FA189B123676D44" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470239469_B327A1776BDD614C1FA189B123676D44" alt="img" loading="lazy"></p>
 <p>首先，给定一个完整的逻辑地址 [段选择符：段内偏移地址]，</p>
 <p>1、看段选择符的T1&#x3D;0还是1，知道当前要转换是GDT中的段，还是LDT中的段，再根据相应寄存器，得到其地址和大小。我们就有了一个数组了。</p>
 <p>2、拿出段选择符中前13位，可以在这个数组中，查找到对应的段描述符，这样，它了Base，即基地址就知道了。</p>
 <p>3、把Base + offset，就是要转换的线性地址了。</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470270211_A8B080AAD8609459CD745F5E2480B919" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470270211_A8B080AAD8609459CD745F5E2480B919" alt="img" loading="lazy"></p>
 <p>第一步：页式管理——线性地址转物理地址</p>
 <p>再利用其页式内存管理单元，转换为最终物理地址。</p>
 <p>linux假的段式管理</p>
@@ -2987,7 +2988,7 @@
 <p>CPU的页式内存管理单元，负责把一个线性地址，最终翻译为一个物理地址。</p>
 <p>线性地址被分为以固定长度为单位的组，称为页(page)，例如一个32位的机器，线性地址最大可为4G，可以用4KB为一个页来划分，这页，整个线性地址就被划分为一个tatol_page[2^20]的大数组，共有2的20个次方个页。</p>
 <p>另一类“页”，我们称之为物理页，或者是页框、页桢的。是分页单元把所有的物理内存也划分为固定长度的管理单位，它的长度一般与内存页是一一对应的。</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470300375_E395C4896EA5D7621E9211A0C3817BB5" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470300375_E395C4896EA5D7621E9211A0C3817BB5" alt="img" loading="lazy"></p>
 <p>每个进程都有自己的页目录，当进程处于运行态的时候，其页目录地址存放在cr3寄存器中。</p>
 <p>每一个32位的线性地址被划分为三部份，【页目录索引(10位)：页表索引(10位)：页内偏移(12位)】</p>
 <p>依据以下步骤进行转换：</p>
@@ -2997,7 +2998,7 @@
 <p>将页的起始地址与线性地址中最后12位相加。</p>
 <p>目的：</p>
 <p>内存节约：如果一级页表中的一个页表条目为空，那么那所指的二级页表就根本不会存在。这表现出一种巨大的潜在节约，因为对于一个典型的程序，4GB虚拟地址空间的大部份都会是未分配的；</p>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470330729_28397F90C2D7C059A122BFF0B4DFD63A" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552470330729_28397F90C2D7C059A122BFF0B4DFD63A" alt="img" loading="lazy"></p>
 <p>32位，PGD &#x3D; 10bit，PUD &#x3D; PMD &#x3D; 0，table &#x3D; 10bit，offset &#x3D; 12bit</p>
 <p>64位，PUD和PMD ≠ 0</p>
 </blockquote>
@@ -3179,7 +3180,7 @@
 <p>路由器会以广播的形式发送一个ARP请求，每一台连接到该路由器的主机都收到得到这条消息。</p>
 <p>但是只有主机B检查到自己的IP地址符合要求。</p>
 <p>于是主机B发送给路由器一条ARP响应，把自己的MAC的地址告诉了路由器。就像下面图示的那样：</p>
-<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/640"></p>
+<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/640" loading="lazy"></p>
 <p>每次路由器发送一个ARP请求的时候，就会增加一条数据，这一条数据记录了IP地址对应的MAC地址，这样路由器下次再给该主机发送消息的时候就不用广播了。当然如同交换机的CAM表中的数据有生存了时间一样，路由表中的数据也有生存时间。试想一下，如果数据一直存在，那么路由器岂不是需要花大量的存储空间来缓存已经失效的数据。</p>
 </blockquote>
 <h3 id="三-网络层"><a href="#三-网络层" class="headerlink" title="三 网络层"></a>三 网络层</h3><h4 id="1-IP地址以及MAC地址的作用"><a href="#1-IP地址以及MAC地址的作用" class="headerlink" title="1 IP地址以及MAC地址的作用"></a>1 IP地址以及MAC地址的作用</h4><blockquote>
@@ -3282,7 +3283,7 @@
 <li>Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack&#x3D;K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了。</li>
 </ol>
 </blockquote>
-<h6 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h6><p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwNjA3MjA1NzU2MjU1"></p>
+<h6 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h6><p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTcwNjA3MjA1NzU2MjU1" loading="lazy"></p>
 <blockquote>
 <p>由于TCP连接时全双工的，因此，每个方向都必须要单独进行关闭，这一原则是当一方完成数据发送任务后，发送一个FIN来终止这一方向的连接，收到一个FIN只是意味着这一方向上没有数据流动了，即不会再收到数据了，但是在这个TCP连接上仍然能够发送数据，直到这一方向也发送了FIN。首先进行关闭的一方将执行主动关闭，而另一方则执行被动关闭。</p>
 <ol>
@@ -3336,7 +3337,7 @@
 <li>另一种细线箭头表示异常变迁。</li>
 </ol>
 </blockquote>
-<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/730879-20170219170921285-996689810.png"></p>
+<p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/730879-20170219170921285-996689810.png" loading="lazy"></p>
 <h5 id="5-TCP的三次握手和四次挥手的过程及原因"><a href="#5-TCP的三次握手和四次挥手的过程及原因" class="headerlink" title="5. TCP的三次握手和四次挥手的过程及原因"></a>5. TCP的三次握手和四次挥手的过程及原因</h5><blockquote>
 <p>TCP的三次握手过程如下：</p>
 <ol>
@@ -3409,7 +3410,7 @@
 <li>一旦发送方连续收到了三个重复确认，就采用拥塞避免算法，减慢增长速度</li>
 </ol>
 </blockquote>
-<h5 id="8-介绍滑动窗口协议"><a href="#8-介绍滑动窗口协议" class="headerlink" title="8. 介绍滑动窗口协议"></a>8. 介绍滑动窗口协议</h5><p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/926914251_1582337620808_94597327B024F1B694D69B3314AC9532"></p>
+<h5 id="8-介绍滑动窗口协议"><a href="#8-介绍滑动窗口协议" class="headerlink" title="8. 介绍滑动窗口协议"></a>8. 介绍滑动窗口协议</h5><p><img src="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/926914251_1582337620808_94597327B024F1B694D69B3314AC9532" loading="lazy"></p>
 <blockquote>
 <p>当发送窗口和接收窗口的大小都等于 1时，就是停止等待协议。每发完一个分组就停止发送，等待下一个。</p>
 <p>当发送窗口大于1，接收窗口等于1时，就是回退N步协议。</p>
@@ -3790,7 +3791,7 @@
 <li>4 收发数据，用函数send()和recv()，或read()和write()</li>
 <li>5 关闭网络连接</li>
 </ul>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190315/308571_1552654678444_69CF8398BCC9F204991E623723D022E7" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190315/308571_1552654678444_69CF8398BCC9F204991E623723D022E7" alt="img" loading="lazy"></p>
 <h4 id="2）基于UDP的socket："><a href="#2）基于UDP的socket：" class="headerlink" title="2）基于UDP的socket："></a>2）基于UDP的socket：</h4><p>1、服务器端流程</p>
 <ul>
 <li>1 建立套接字文件描述符，使用函数socket()，生成套接字文件描述符。</li>
@@ -3808,7 +3809,7 @@
 <li>4 接收服务器的数据，recvfrom()。</li>
 <li>5 关闭套接字，close()。</li>
 </ul>
-<p><img src="https://uploadfiles.nowcoder.com/images/20190315/308571_1552654687053_263E6AFD1A48F8511D04B67EB12AA24C" alt="img"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190315/308571_1552654687053_263E6AFD1A48F8511D04B67EB12AA24C" alt="img" loading="lazy"></p>
 </blockquote>
 <h4 id="4-Socket编程的send-、recv-、accept-、socket-函数？"><a href="#4-Socket编程的send-、recv-、accept-、socket-函数？" class="headerlink" title="4. Socket编程的send()、recv()、accept()、socket()函数？"></a>4. Socket编程的send()、recv()、accept()、socket()函数？</h4><blockquote>
 <ol>
@@ -3971,9 +3972,9 @@
 <p>MyISAM引擎使用B+Tree作为索引结构，叶节点的data域存放的是数据记录的地址。</p>
 <p>MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。</p>
 <p>下图是MyISAM索引的原理图：</p>
-<p><img src="https://images2017.cnblogs.com/blog/758447/201801/758447-20180127161009725-1788644003.png" alt="img"></p>
+<p><img src="https://images2017.cnblogs.com/blog/758447/201801/758447-20180127161009725-1788644003.png" alt="img" loading="lazy"></p>
 <p>这里设表一共有三列，假设我们以Col1为主键，则上图是一个MyISAM表的主索引（Primary key）示意。可以看出MyISAM的索引文件仅仅保存数据记录的地址。在MyISAM中，主索引和辅助索引（Secondary key）在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复。如果我们在Col2上建立一个辅助索引，则此索引的结构如下图所示：</p>
-<p><img src="https://images2017.cnblogs.com/blog/758447/201801/758447-20180127161153647-1802334548.png" alt="img"></p>
+<p><img src="https://images2017.cnblogs.com/blog/758447/201801/758447-20180127161153647-1802334548.png" alt="img" loading="lazy"></p>
 <ul>
 <li>MyISAM存储引擎采用的是非聚簇索引，非聚簇索引的<strong>主索引和辅助索引几乎是一样的</strong>，只是主索引不允许重复，不允许空值，他们的<strong>叶子结点的key都存储指向键值对应的数据的物理地址</strong>。</li>
 <li>非聚簇索引的<strong>数据表和索引表是分开存储</strong>的。</li>
@@ -3983,7 +3984,7 @@
 <p><strong>InnoDB——聚簇索引</strong></p>
 <blockquote>
 <p>聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。</p>
-<p><img src="https://images2017.cnblogs.com/blog/758447/201801/758447-20180127161454428-323630182.png" alt="img"></p>
+<p><img src="https://images2017.cnblogs.com/blog/758447/201801/758447-20180127161454428-323630182.png" alt="img" loading="lazy"></p>
 <p>第一个重大区别是InnoDB的数据文件本身就是索引文件。从上文知道，MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。</p>
 <ul>
 <li>聚簇索引的<strong>主索引的叶子结点存储的是键值对应的数据本身，辅助索引的叶子结点存储的是键值对应的数据的主键键值</strong>。因此主键的值长度越小越好，类型越简单越好。</li>
@@ -4196,7 +4197,7 @@
 <td align="left">MVC 模式（MVC Pattern）业务代表模式（Business Delegate Pattern）<br />组合实体模式（Composite Entity Pattern）数据访问对象模式（Data Access Object Pattern）前端控制器模式（Front Controller Pattern）<br />拦截过滤器模式（Intercepting Filter Pattern）服务定位器模式（Service Locator Pattern）传输对象模式（Transfer Object Pattern）</td>
 </tr>
 </tbody></table>
-<h4 id="设计模式之间的关系"><a href="#设计模式之间的关系" class="headerlink" title="设计模式之间的关系"></a>设计模式之间的关系</h4><p><img src="/assets/image-20200818164627077.png" alt="image-20200818164627077"></p>
+<h4 id="设计模式之间的关系"><a href="#设计模式之间的关系" class="headerlink" title="设计模式之间的关系"></a>设计模式之间的关系</h4><p><img src="/assets/image-20200818164627077.png" alt="image-20200818164627077" loading="lazy"></p>
 <h3 id="三-设计模式"><a href="#三-设计模式" class="headerlink" title="三 设计模式"></a>三 设计模式</h3><h4 id="0-常见设计模式"><a href="#0-常见设计模式" class="headerlink" title="0 常见设计模式"></a>0 常见设计模式</h4><ol>
 <li>单例模式：单例模式主要解决一个全局使用的类频繁的创建和销毁的问题。单例模式下可以确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。单例模式有三个要素：一是某个类只能有一个实例；二是它必须自行创建这个实例；三是它必须自行向整个系统提供这个实例。</li>
 <li>工厂模式：工厂模式主要解决接口选择的问题。该模式下定义一个创建对象的接口，让其子类自己决定实例化哪一个工厂类，使其创建过程延迟到子类进行。</li>
@@ -5195,6 +5196,10 @@
       <a class="nav-item-link" href="/about">关于</a>
     </li>
     
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -5223,6 +5228,11 @@
   <span class="close"><i class="ri-close-line"></i></span>
   <p class="reward-p"><i class="ri-cup-line"></i></p>
   <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
     
     
     <div class="reward-item">
