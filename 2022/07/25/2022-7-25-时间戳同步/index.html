@@ -105,7 +105,7 @@
 <p><img src="/2022/07/25/2022-7-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/640.jpeg"></p>
 <h3 id="IMU与相机帧之间的同步"><a href="#IMU与相机帧之间的同步" class="headerlink" title="IMU与相机帧之间的同步"></a>IMU与相机帧之间的同步</h3><p>各种插值方法</p>
 <p><img src="/2022/07/25/2022-7-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/640-16587184562393.png"></p>
-<h5 id="双线性插值"><a href="#双线性插值" class="headerlink" title="双线性插值"></a>双线性插值</h5><p>在图像处理和计算机视觉领域，应用比较多的双线性插值。双线性插值的效果不是最好的，但相较最邻近插值和线性插值的简单粗暴，其获得图像的效果还是更令人满意的，而且双线性插值的计算量和易于理解程度会优于双三次插值和三次样条插值等高阶插值方法。因此双线性插值还是最受广大图像研究者喜爱的。</p>
+<h4 id="双线性插值"><a href="#双线性插值" class="headerlink" title="双线性插值"></a>双线性插值</h4><p>在图像处理和计算机视觉领域，应用比较多的双线性插值。双线性插值的效果不是最好的，但相较最邻近插值和线性插值的简单粗暴，其获得图像的效果还是更令人满意的，而且双线性插值的计算量和易于理解程度会优于双三次插值和三次样条插值等高阶插值方法。因此双线性插值还是最受广大图像研究者喜爱的。</p>
 <h4 id="四元数的插值方法"><a href="#四元数的插值方法" class="headerlink" title="四元数的插值方法"></a>四元数的插值方法</h4><p>线性插值-&gt;归一化线性插值<br>$$<br>q_{t}&#x3D;\operatorname{Nerp}\left(q_{0}, q_{1}, t\right)&#x3D;\frac{(1-t) q_{0}+t q_{1}}{\left|(1-t) q_{0}+t q_{1}\right|}<br>$$<br><img src="/2022/07/25/2022-7-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/640-16587194570506.jpeg"></p>
 <p>线性插值即在$q_0$,$q_1$上进行插值得到$q_t$，对于匀速的变换，其扫过的面积却不是匀速的<br>$$<br>\begin{aligned}<br>&amp;q_{t}&#x3D;\operatorname{Serp}\left(q_{0}, q_{1}, t\right)&#x3D;\frac{\sin ((1-t) \theta)}{\sin (\theta)} q_{0}+\frac{\sin (t \theta)}{\sin (\theta)} q_{1} \<br>&amp;\theta&#x3D;\operatorname{acos}\left(q_{0} \cdot q_{1}\right)<br>\end{aligned}<br>$$</p>
 <h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>理论上是这样的，不过，在编程实现Slerp插值的时候还是有几个问题需要注意一下。</p>

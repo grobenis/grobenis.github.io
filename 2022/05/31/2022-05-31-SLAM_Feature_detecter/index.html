@@ -123,7 +123,7 @@
 <h3 id="常用角点检测算法"><a href="#常用角点检测算法" class="headerlink" title="常用角点检测算法"></a>常用角点检测算法</h3><p>SLAM中常用的角点检测算法整理如下：</p>
 <p>本文根据ORBSLAM3中的综述表格进行总结：</p>
 <p><img src="/2022/05/31/2022-05-31-SLAM_Feature_detecter/image-20220531214022010.png"></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h4 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h4><ol>
+<h4 id="FAST关键点"><a href="#FAST关键点" class="headerlink" title="FAST关键点"></a>FAST关键点</h4><ol>
 <li><p>单纯的FAST关键点，没有描述子</p>
 </li>
 <li><p>FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思<br>想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）：</p>
