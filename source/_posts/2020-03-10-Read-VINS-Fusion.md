@@ -1,6 +1,6 @@
 ---
 layout: post
-title: VINS-Fusion代码阅读
+title: VINS-Fusion 代码阅读
 date: 2020-03-10
 Author: guoben
 categories: 学习

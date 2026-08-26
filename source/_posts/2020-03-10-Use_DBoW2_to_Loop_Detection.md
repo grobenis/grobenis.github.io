@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 回环检测与DBoW2库
+title: 回环检测与 DBoW2 库
 date: 2020-03-10
 Author: Guo ben
 categories: 学习

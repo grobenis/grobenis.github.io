@@ -1,5 +1,5 @@
 ---
-title: OPENCV重要函数
+title: OpenCV 重要函数
 Author: Grobenis
 date: 2020-04-14 20:43:39
 categories: [学习]

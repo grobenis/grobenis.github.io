@@ -1,5 +1,5 @@
 ---
-title: 通过NDK打包aar格式的SDK
+title: 通过 NDK 打包 aar 格式的 SDK
 Author: Grobenis
 reward: true
 copyright: true

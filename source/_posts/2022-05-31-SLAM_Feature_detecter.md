@@ -1,5 +1,5 @@
 ---
-title: SLAM中常用的角点检测算法
+title: SLAM 中常用的角点检测算法
 Author: 郭犇
 reward: true
 copyright: true

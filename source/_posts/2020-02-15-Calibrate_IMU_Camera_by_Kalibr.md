@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 利用Kalibr标定双目相机与IMU
+title: 使用 Kalibr 标定双目相机与 IMU
 date: 2020-02-15
 Author: guoben
 categories: 实验

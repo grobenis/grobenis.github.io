@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 发布IMU信息到ROS系统中
+title: 发布 IMU 信息到 ROS 系统
 date: 2020-02-15
 Author: guoben
 categories: 实验
