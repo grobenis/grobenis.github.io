@@ -139,13 +139,11 @@ html {
   border-radius: 6px;
 }
 
-/* 音乐按钮与返回顶部按钮 hover 过渡 */
-.music-btn,
-.totop {
+/* 音乐按钮 hover 过渡 */
+.music-btn {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
-.music-btn:hover,
-.totop:hover {
+.music-btn:hover {
   transform: scale(1.1);
 }
 
@@ -336,8 +334,8 @@ html {
 /* ---------- 8. 可爱小牛装饰 ---------- */
 .site-mascot {
   position: fixed;
-  right: 28px;
-  bottom: 150px;
+  right: 32px;
+  bottom: 104px;
   width: 74px;
   height: 74px;
   z-index: 999;
