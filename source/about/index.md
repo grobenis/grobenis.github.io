@@ -34,16 +34,14 @@ layout: "about"
 
 - GitHub：[grobenis](https://github.com/grobenis)
 - CSDN：[GuoBen\_](https://blog.csdn.net/GuoBen_)
-- 邮箱：（待补充）
+- 邮箱：[guoben@buaa.edu.cn](mailto:guoben@buaa.edu.cn)
 
 ## 关于本站
 
 本站使用 [Hexo](https://hexo.io) 搭建，[Ayer](https://github.com/Shen-Yu/hexo-theme-ayer) 主题，部署于 GitHub Pages。
 
-## 友链
-
-- [仔仔的博客](https://cparadox.github.io/)：一位乐于分享的朋友
-
-## 订阅
-
-通过 RSS 订阅本站最新文章：[atom.xml](https://grobenis.github.io/atom.xml)
+<div class="about-links">
+  <a href="https://github.com/grobenis/grobenis.github.io" target="_blank" rel="noopener" title="关于本站"><i class="ri-information-line"></i><span>关于本站</span></a>
+  <a href="https://cparadox.github.io/" target="_blank" rel="noopener" title="友链：仔仔的博客"><i class="ri-links-line"></i><span>友链</span></a>
+  <a href="/atom.xml" title="订阅 RSS"><i class="ri-rss-line"></i><span>订阅</span></a>
+</div>

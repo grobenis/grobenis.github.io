@@ -443,3 +443,33 @@ html {
 .nav-life {
   border-top: 1px dashed rgba(255, 255, 255, 0.18);
 }
+
+/* ---------- 9. 关于页：底部图标排（关于本站 / 友链 / 订阅） ---------- */
+.about-links {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin: 2.5rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+.about-links a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: #888;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.about-links a:hover {
+  color: #61a3f8;
+  transform: translateY(-2px);
+}
+.about-links i {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.about-links span {
+  font-size: 0.85rem;
+}
