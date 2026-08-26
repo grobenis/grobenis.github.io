@@ -5,7 +5,7 @@ reward: true
 copyright: true
 date: 2022-03-16 16:28:29
 categories: [SLAM]
-tags: [SLAM, C, Work]
+tags: [SLAM, C++, 工作]
 ---
 
 简尔言之：

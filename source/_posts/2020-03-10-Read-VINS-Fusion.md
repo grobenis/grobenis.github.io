@@ -4,7 +4,7 @@ title: VINS-Fusion 代码阅读
 date: 2020-03-10
 Author: guoben
 categories: 学习
-tags: [VINS,代码阅读]
+tags: [VINS]
 comments: true
 toc: true
 ---

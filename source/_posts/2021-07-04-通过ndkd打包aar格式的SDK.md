@@ -5,7 +5,7 @@ reward: true
 copyright: true
 date: 2021-07-04 13:06:09
 categories: [学习]
-tags: [安卓, 开发]
+tags: [安卓]
 ---
 
 根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。
