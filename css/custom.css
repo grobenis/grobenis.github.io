@@ -331,11 +331,36 @@ html {
   color: #666;
 }
 
-/* ---------- 8. 侧边栏菜单分组分隔线（技术区 / 生活区） ---------- */
+/* ---------- 8. 侧边栏菜单分组（技术区 / 生活区） ---------- */
+/* 菜单项色块：外边距 + 圆角 */
+.nav-main .nav-item {
+  margin: 4px 12px;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
+}
+/* 分组分隔线（生活区第一项上方） */
 .nav-main .nav-item:nth-child(5) {
   border-top: 1px dashed rgba(255, 255, 255, 0.22);
-  margin-top: 6px;
-  padding-top: 6px;
+  margin-top: 8px;
+  padding-top: 4px;
+}
+/* 技术区（主页/归档/分类/标签）：冷色半透明背景 */
+.nav-main .nav-item:nth-child(-n+4) {
+  background: rgba(90, 140, 220, 0.16);
+}
+.nav-main .nav-item:nth-child(-n+4):hover {
+  background: rgba(90, 140, 220, 0.30);
+}
+/* 生活区（旅程/关于/音乐盒/友链/私人空间）：暖色半透明背景 */
+.nav-main .nav-item:nth-child(n+5) {
+  background: rgba(230, 140, 90, 0.14);
+}
+.nav-main .nav-item:nth-child(n+5):hover {
+  background: rgba(230, 140, 90, 0.28);
+}
+/* 覆盖主题 hover 时将链接背景置为浅色 body 色，保持分组底色 */
+.navbar .nav-main .nav-item-link:hover {
+  background: transparent;
 }
 
 /* ---------- 9. 可爱小牛装饰 ---------- */
