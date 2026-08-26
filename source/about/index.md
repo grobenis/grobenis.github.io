@@ -39,3 +39,11 @@ layout: "about"
 ## 关于本站
 
 本站使用 [Hexo](https://hexo.io) 搭建，[Ayer](https://github.com/Shen-Yu/hexo-theme-ayer) 主题，部署于 GitHub Pages。
+
+## 友链
+
+- [仔仔的博客](https://cparadox.github.io/)：一位乐于分享的朋友
+
+## 订阅
+
+通过 RSS 订阅本站最新文章：[atom.xml](https://grobenis.github.io/atom.xml)

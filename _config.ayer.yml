@@ -22,8 +22,10 @@ menu:
   # CSDN: https://blog.csdn.net/GuoBen_
   # 生活: https://cengshishaonian37279.lofter.com/
   关于: /about
+  成果展示: /works
+  自创游戏: /games
   音乐盒: /lyrics
-  # 友链: /friends # 暂屏蔽友链入口
+  # 友链: /friends # 友链已移至「关于」页底部
   私人空间: /private
 # 站点次标题和打字动效
 # https://github.com/mattboldt/typed.js
