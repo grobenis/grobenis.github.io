@@ -82,35 +82,7 @@
     });
   });
 
-  // To top
-  (function ($) {
-    // When to show the scroll link
-    // higher number = scroll link appears further down the page
-    var upperLimit = 1000;
-
-    // Our scroll link element
-    var scrollElem = $('#totop');
-
-    // Scroll to top speed
-    var scrollSpeed = 1600;
-
-    // Show and hide the scroll to top link based on scroll position
-    scrollElem.hide();
-    $('.content').scroll(function () {
-      var scrollTop = $('.content').scrollTop();
-      if (scrollTop > upperLimit) {
-        $(scrollElem).stop().fadeTo(300, 1); // fade back in
-      } else {
-        $(scrollElem).stop().fadeTo(300, 0); // fade out
-      }
-    });
-
-    // Scroll to top animation on click
-    $(scrollElem).click(function () {
-      $('.content').animate({ scrollTop: 0 }, scrollSpeed); return false;
-    });
-  })(jQuery);
-
+  // To top（已由 custom.css + layout.ejs 中的小牛替代，删除旧逻辑）
   // Mobile nav
   var $content = $('.content'),
     $sidebar = $('.sidebar');

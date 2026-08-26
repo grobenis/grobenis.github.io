@@ -289,11 +289,6 @@
     </ul>
   </div>
 </footer>
-      <div class="to_top">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-      </div>
     </main>
     <aside class="sidebar">
       <button class="navbar-toggle"></button>
@@ -645,11 +640,12 @@
 
 
     
-    <div class="site-mascot" title="哞~">
-      <img src="/images/cow.svg" alt="小牛" />
+    <!-- 黑白小牛：兼作返回顶部按钮 -->
+    <div class="site-mascot" title="回到顶部">
+      <img src="/images/cow.svg" alt="回到顶部" />
     </div>
     <script>
-    // 小牛：滚动超过封面高度后才淡入，避免破坏首页首屏美感
+    // 小牛：滚动超过封面高度后淡入（替代原返回顶部箭头），点击平滑回顶
     // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
     (function () {
       var mascot = document.querySelector('.site-mascot');
@@ -659,12 +655,21 @@
         var cover = document.querySelector('.cover');
         return cover ? cover.offsetHeight : 400;
       }
-      function onScroll() {
-        var y = scroller === window
+      function getScrollY() {
+        return scroller === window
           ? (window.pageYOffset || document.documentElement.scrollTop)
           : scroller.scrollTop;
-        mascot.classList.toggle('is-visible', y > getThreshold());
       }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+      }
+      mascot.addEventListener('click', function () {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
       scroller.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
