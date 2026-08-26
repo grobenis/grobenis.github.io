@@ -672,10 +672,12 @@ $$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1
 
 
     
-    <!-- 黑白小牛：兼作返回顶部按钮 -->
+    <!-- 黑白小牛：兼作返回顶部按钮（音乐盒页不显示） -->
+    
     <div class="site-mascot" title="回到顶部">
       <img src="/images/cow.svg" alt="回到顶部" />
     </div>
+    
     <script>
     // 小牛：滚动超过封面高度后淡入（替代原返回顶部箭头），点击平滑回顶
     // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
@@ -705,18 +707,6 @@ $$<br>现在已知$R$,$t$要求解$s_1$,$s_2$,先求解$s_2$,对上式左乘$x_1
       scroller.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
-
-      // 音乐播放时隐藏小牛（避免右下角图标干扰）
-      var audio = document.querySelector('audio');
-      if (audio) {
-        var sync = function () {
-          mascot.classList.toggle('is-hidden', !audio.paused);
-        };
-        audio.addEventListener('play', sync);
-        audio.addEventListener('pause', sync);
-        audio.addEventListener('ended', sync);
-        sync();
-      }
     })();
     </script>
   </div>
