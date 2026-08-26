@@ -39,8 +39,7 @@ date: 2020-03-20 18:28:43
 <div class="timeline-logo"><img src="/assets/img/timeline/beihang.svg" alt="北京航空航天大学"></div>
 <div class="timeline-content">
 <h3>北京航空航天大学</h3>
-<p>计算机学院</p>
-<p>虚拟现实方向</p>
+<p>计算机学院 · 虚拟现实方向</p>
 </div>
 </div>
 
@@ -49,8 +48,7 @@ date: 2020-03-20 18:28:43
 <div class="timeline-logo"><img src="/assets/img/timeline/nanhang.png" alt="南京航空航天大学"></div>
 <div class="timeline-content">
 <h3>南京航空航天大学</h3>
-<p>理学院</p>
-<p>信息与计算科学</p>
+<p>理学院 · 信息与计算科学</p>
 </div>
 </div>
 
