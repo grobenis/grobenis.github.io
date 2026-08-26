@@ -54,6 +54,9 @@ cover:
 # 页面顶部进度条
 progressBar: true
 
+# RSS 订阅（对应 hexo-generator-feed 生成的 atom.xml）
+rss: /atom.xml
+
 # 音乐播放器（本地音频文件）
 # 将音频文件放到 source/music/ 目录，并在此指定相对站点的路径
 music:
@@ -129,13 +132,20 @@ valine:
   placeholder: 给我的文章加点评论吧~ # placeholder
 
 # 2、Gitalk(https://github.com/gitalk/gitalk)
+# 启用步骤：
+#   1. GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
+#      Homepage URL 填 https://grobenis.github.io
+#      Authorization callback URL 填 https://grobenis.github.io/
+#   2. 创建后拿到 Client ID / Client Secret 填入下方
+#   3. 新建一个空仓库存评论（如 blog-comments），填入 repo
+#   4. enable 改为 true，重新部署
 gitalk:
-  enable: false # true
+  enable: false # 凭据就绪后改为 true
   clientID: # GitHub Application Client ID
   clientSecret: # Client Secret
-  repo: # Repository name
-  owner: # GitHub ID
-  admin: # GitHub ID
+  repo: blog-comments # 存放评论的仓库（需先在 GitHub 创建空仓库）
+  owner: grobenis
+  admin: grobenis
 
 # GitHub Ribbons-封面右上角的forkme
 github:

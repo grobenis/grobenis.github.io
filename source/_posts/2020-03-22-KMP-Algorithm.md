@@ -1,5 +1,6 @@
 ---
 title: KMP 字符串匹配算法
+description: "KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后…"
 Author: Grobenis
 date: 2020-03-22 14:31:40
 categories: 学习

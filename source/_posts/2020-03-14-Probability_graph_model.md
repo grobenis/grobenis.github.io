@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 概率图模型
+description: "概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的…"
 date: 2020-03-14
 Author: guoben
 categories: 学习

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: SLAM 各算法运行方法与过程
+description: "本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。"
 date: 2020-01-15
 Author: guoben
 categroies: 实验

@@ -6,10 +6,10 @@
 title: 曾是少年
 subtitle: ""
 description: "曾梦想仗剑走天涯"
-keywords:
+keywords: SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴
 author: guoben
 language: zh
-timezone: ""
+timezone: Asia/Shanghai
 
 # server:
 #   port: 4000 #端口号随意，默认是4000

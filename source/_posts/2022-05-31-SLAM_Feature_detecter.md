@@ -1,5 +1,6 @@
 ---
 title: SLAM 中常用的角点检测算法
+description: "本文总结 SLAM 中常用的角点检测算法：先介绍人工设计特征点应具备的可重复性、可区别性、高效率与本地性，以及关键点和描述子的组成；再逐一讲解 FAST、Harris、Shi-Tomas、ORB、SI…"
 Author: 郭犇
 reward: true
 copyright: true

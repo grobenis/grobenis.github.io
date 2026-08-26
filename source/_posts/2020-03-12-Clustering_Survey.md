@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 经典聚类算法调研
+description: "本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种："
 date: 2020-03-10
 Author: guoben
 categories: 学习

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Ubuntu 连接蓝牙鼠标
+description: "本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。"
 date: 2020-02-15
 Author: guoben
 categories: 实验

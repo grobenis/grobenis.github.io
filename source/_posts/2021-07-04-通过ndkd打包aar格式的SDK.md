@@ -1,5 +1,6 @@
 ---
 title: 通过 NDK 打包 aar 格式的 SDK
+description: "根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。"
 Author: Grobenis
 reward: true
 copyright: true

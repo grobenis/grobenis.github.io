@@ -1,5 +1,6 @@
 ---
 title: C++ 字符串
+description: "string是C++标准库的一个重要的部分，主要用于字符串处理。可以使用输入输出流方式直接进行string操作，也可以通过文件等手段进行string操作。同时，C++的算法库对string类也有着很好…"
 Author: Grobenis
 date: 2020-03-28 17:06:29
 categories: 学习

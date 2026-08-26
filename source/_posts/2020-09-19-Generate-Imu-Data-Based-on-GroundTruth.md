@@ -1,5 +1,6 @@
 ---
 title: 基于真实轨迹生成 IMU 数据
+description: "该文用来介绍仿真IMU数据的方法"
 Author: Grobenis
 reward: true
 copyright: true

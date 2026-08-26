@@ -1,5 +1,6 @@
 ---
 title: OpenCV 图像像素遍历方法
+description: "本文总结 OpenCV 遍历图像像素的四种方式：at 模板函数、指针、迭代器与基于 isContinuous 的高效一维遍历，每种方式均配以 colorReduce 颜色缩减实例代码，便于按性能需求选…"
 Author: Grobenis
 reward: true
 copyright: true

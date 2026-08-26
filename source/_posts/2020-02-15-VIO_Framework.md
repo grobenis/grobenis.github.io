@@ -1,6 +1,7 @@
 ---
 layout: post
 title: VIO 主流框架
+description: "本节主要说明当前主流的VIO算法流程。课程来源于B站。"
 date: 2020-02-15
 Author: guoben
 tags: [VIO, VINS]

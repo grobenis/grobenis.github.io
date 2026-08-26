@@ -1,5 +1,6 @@
 ---
 title: 相机标定
+description: "本节将探讨相机标定，主要探讨以下三个问题"
 Author: Grobenis
 date: 2020-03-28 19:34:04
 categories: 学习
