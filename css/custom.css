@@ -416,3 +416,30 @@ html {
     display: none;
   }
 }
+
+/* ---------- 8b. 侧边栏三组布局（覆盖第 8 区块旧规则） ---------- */
+/* 上组新增项（旅程/关于）透明度 */
+.nav-main .nav-item:nth-child(5) { opacity: 0.68; }
+.nav-main .nav-item:nth-child(6) { opacity: 0.62; }
+/* 中组（成果展示/自创游戏/音乐盒）：0.56 → 0.44 */
+.nav-mid .nav-item {
+  transition: opacity 0.25s ease;
+}
+.nav-mid .nav-item:nth-child(1) { opacity: 0.56; }
+.nav-mid .nav-item:nth-child(2) { opacity: 0.50; }
+.nav-mid .nav-item:nth-child(3) { opacity: 0.44; }
+/* 底部（私人空间）：0.38（覆盖旧 0.68） */
+.nav-life .nav-item:nth-child(1) { opacity: 0.38; }
+/* 悬停恢复不透明 */
+.nav-mid .nav-item:hover {
+  opacity: 1 !important;
+}
+/* 中组 / 底部：分隔线 */
+.nav-mid {
+  border-top: 1px dashed rgba(255, 255, 255, 0.18);
+  margin-top: 6px;
+  padding-top: 2px;
+}
+.nav-life {
+  border-top: 1px dashed rgba(255, 255, 255, 0.18);
+}
