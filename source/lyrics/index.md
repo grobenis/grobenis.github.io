@@ -89,12 +89,13 @@ date: 2020-03-20 18:28:43
 
 </div>
 
+<div class="lyric-controls">
 <button class="lyric-prev" type="button" aria-label="上一首">&#8249;</button>
-<button class="lyric-next" type="button" aria-label="下一首">&#8250;</button>
-
 <div class="lyric-dots">
 <span class="lyric-dot is-active"></span>
 <span class="lyric-dot"></span>
+</div>
+<button class="lyric-next" type="button" aria-label="下一首">&#8250;</button>
 </div>
 
 </div>

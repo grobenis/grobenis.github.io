@@ -195,28 +195,29 @@ html {
 .lyric-card.slide-in-left {
   animation: lyricInLeft 0.4s ease;
 }
+.lyric-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+}
 .lyric-prev,
 .lyric-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: none;
   background: rgba(73, 177, 245, 0.15);
   color: #49b1f5;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: background 0.3s ease, color 0.3s ease;
-  z-index: 2;
 }
-.lyric-prev { left: 10px; }
-.lyric-next { right: 10px; }
 .lyric-prev:hover,
 .lyric-next:hover {
   background: #49b1f5;
@@ -226,7 +227,6 @@ html {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 16px;
 }
 .lyric-dot {
   width: 8px;
@@ -242,9 +242,10 @@ html {
   border-radius: 4px;
 }
 .lyric-card-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 14px;
   padding-bottom: 12px;
   border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
@@ -260,15 +261,16 @@ html {
   color: #fff;
   font-size: 13px;
   font-weight: 600;
-  flex-shrink: 0;
+  justify-self: start;
 }
 .lyric-card-header h3 {
   margin: 0;
   font-size: 20px;
   color: #333;
+  text-align: center;
 }
 .lyric-card-header .lyric-singer {
-  margin-left: auto;
+  justify-self: end;
   font-size: 13px;
   color: #999;
 }
