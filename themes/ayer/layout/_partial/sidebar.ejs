@@ -7,7 +7,7 @@
   <% } %>
   <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
   <ul class="nav nav-main">
-    <% for (var i in theme.menu){ if (i === '成果展示') break; %>
+    <% for (var i in theme.menu){ if (i === '旅程') break; %>
     <li class="nav-item">
       <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
     </li>
@@ -19,17 +19,17 @@
     <i class="ri-search-line"></i>
   </a>
   <% } %>
-  <!-- 中组：成果展示 / 自创游戏 / 音乐盒 -->
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
   <ul class="nav nav-mid">
     <% var inMid = false; %>
-    <% for (var i in theme.menu){ if (i === '成果展示') inMid = true; if (i === '私人空间') break; if (!inMid) continue; %>
+    <% for (var i in theme.menu){ if (i === '旅程') inMid = true; if (i === '私人空间') break; if (!inMid) continue; %>
     <li class="nav-item">
       <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
     </li>
     <% } %>
   </ul>
 </nav>
-<!-- 底部：私人空间 -->
+<!-- 底部：私人空间（隐藏入口） -->
 <nav class="navbar navbar-bottom">
   <ul class="nav nav-life">
     <% for (var i in theme.menu){ if (i === '私人空间'){ %>
