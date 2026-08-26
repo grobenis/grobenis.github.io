@@ -285,7 +285,7 @@ html {
 .lyric-card-body p:last-child {
   margin-bottom: 0;
 }
-/* ---------- 7. �ó�ʱ���� ---------- */
+/* ---------- 7. �ó�ʱ���� ---------- */
 .timeline {
   position: relative;
   margin: 24px 0 8px 12px;
@@ -331,4 +331,44 @@ html {
   font-size: 15px;
   line-height: 1.8;
   color: #666;
+}
+
+/* ---------- 8. 可爱小牛装饰 ---------- */
+.site-mascot {
+  position: fixed;
+  right: 24px;
+  bottom: 176px;
+  width: 108px;
+  height: 108px;
+  z-index: 999;
+  cursor: pointer;
+  animation: mascotFloat 3.5s ease-in-out infinite;
+}
+.site-mascot img {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.site-mascot:hover {
+  animation-play-state: paused;
+}
+.site-mascot:hover img {
+  animation: mascotWiggle 0.6s ease;
+}
+@keyframes mascotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes mascotWiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+/* 小屏隐藏，避免遮挡内容 */
+@media (max-width: 768px) {
+  .site-mascot {
+    display: none;
+  }
 }
