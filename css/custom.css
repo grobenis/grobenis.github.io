@@ -331,7 +331,14 @@ html {
   color: #666;
 }
 
-/* ---------- 8. 可爱小牛装饰 ---------- */
+/* ---------- 8. 侧边栏菜单分组分隔线（技术区 / 生活区） ---------- */
+.nav-main .nav-item:nth-child(5) {
+  border-top: 1px dashed rgba(255, 255, 255, 0.22);
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+/* ---------- 9. 可爱小牛装饰 ---------- */
 .site-mascot {
   position: fixed;
   right: 32px;
