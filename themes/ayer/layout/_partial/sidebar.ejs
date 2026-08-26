@@ -5,28 +5,44 @@
     <a href="<%- url_for() %>"><img src="<%- theme.logo %>" alt="<%= config.title %>"></a>
   </div>
   <% } %>
+  <!-- 技术区菜单（主页/归档/分类/标签） -->
+  <% var lifeStarted = false; %>
   <ul class="nav nav-main">
     <% for (var i in theme.menu){ %>
+    <% if (i === '旅程') lifeStarted = true; %>
+    <% if (!lifeStarted){ %>
     <li class="nav-item">
       <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
     </li>
     <% } %>
+    <% } %>
   </ul>
+  <!-- 搜索：位于主页标签（技术区）下方 -->
+  <% if (theme.search){ %>
+  <a class="nav-item-link nav-item-search nav-search-top" title="<%= __('search') %>">
+    <i class="ri-search-line"></i>
+  </a>
+  <% } %>
 </nav>
+<!-- 生活区菜单（旅程/关于/音乐盒/友链/私人空间）：左下角 -->
 <nav class="navbar navbar-bottom">
-  <ul class="nav">
+  <ul class="nav nav-life">
+    <% lifeStarted = false; %>
+    <% for (var i in theme.menu){ %>
+    <% if (i === '旅程') lifeStarted = true; %>
+    <% if (lifeStarted){ %>
     <li class="nav-item">
-      <% if (theme.search){ %>
-      <a class="nav-item-link nav-item-search"  title="<%= __('search') %>">
-        <i class="ri-search-line"></i>
-      </a>
-      <% } %>
-      <% if (theme.rss){ %>
+      <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
+    </li>
+    <% } %>
+    <% } %>
+    <% if (theme.rss){ %>
+    <li class="nav-item nav-rss">
       <a class="nav-item-link" target="_blank" href="<%- url_for(theme.rss) %>" title="<%= __('rss_feed') %>">
         <i class="ri-rss-line"></i>
       </a>
-      <% } %>
     </li>
+    <% } %>
   </ul>
 </nav>
 <div class="search-form-wrap">
