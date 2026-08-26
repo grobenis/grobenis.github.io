@@ -142,9 +142,16 @@ github:
   # (关闭请设置为false)
   url: false
 
-# 访问量统计(不蒜子)
+# 访问量统计（改用 Umami 自建，不蒜子已关闭）
 busuanzi:
-  enable: true
+  enable: false
+
+# Umami 自建统计
+# 服务器上部署 Umami 后，把 script_url / website_id 换成实际值，并将 enable 改为 true
+umami:
+  enable: false # 部署完成后改为 true
+  script_url: https://umami.example.com/script.js # Umami 跟踪脚本地址
+  website_id: YOUR_WEBSITE_ID # Umami 站点 ID
 
 # 友盟cnzz统计(url填js代码src链接)
 cnzz:

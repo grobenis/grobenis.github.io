@@ -63,4 +63,9 @@
 <%- js('/js/busuanzi-2.3.pure.min') %>
 <% } %>
 
-<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+<% if (theme.umami && theme.umami.enable && theme.umami.script_url && theme.umami.website_id){ %>
+<script async defer src="<%- theme.umami.script_url %>" data-website-id="<%- theme.umami.website_id %>"></script>
+<% } %>
+
+<%# 51.la 第三方统计已停用（改用 Umami 自建统计） %>
+<%# <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script> %>
