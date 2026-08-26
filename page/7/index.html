@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="utf-8" />
-    
+   
+  <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
   <meta name="description" content="曾梦想仗剑走天涯" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="曾是少年" />
+  <meta property="og:description" content="曾梦想仗剑走天涯" />
+  <meta property="og:url" content="https://grobenis.github.iopage/7/index.html" />
+  <meta property="og:type" content="website" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
   <title>
      曾是少年
   </title>
@@ -76,7 +91,7 @@
     
     
     
-    <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
+    <article id="post-2020-02-15-UbuntuBluetooth" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -84,8 +99,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-VIO_Framework/"
-    >VIO 主流框架</a
+  <a class="article-title" href="/2020/02/15/2020-02-15-UbuntuBluetooth/"
+    >Ubuntu 连接蓝牙鼠标</a
   >
 </h2>
   
@@ -95,79 +110,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
-  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
-<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
-<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
-<blockquote>
-<p><strong>视觉惯性融合，约束决定精度</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-VIO_Framework/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-02-15-Calibrate_IMU_Camera_by_Kalibr" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
-    >使用 Kalibr 标定双目相机与 IMU</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-date">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -189,19 +132,12 @@
       
 
       
-      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
-<ol>
-<li>生成标定板</li>
-<li>标定双目相机</li>
-<li>标定IMU</li>
-<li>联合标定</li>
-</ol>
-<p>本文介绍用 Kalibr 工具完成双目相机与 IMU 联合标定的完整流程，涵盖生成 AprilTag 标定板、标定双目相机内参与 IMU 噪声参数、录制数据并联合标定，最终得到相机到 IMU 的外参，同时整理了几类环境配置报错的解决办法。</p>
+      <p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p>
 <blockquote>
-<p><strong>联合标定做好，视觉惯性方可融合</strong></p>
+<p><strong>命令行之下，蓝牙设备亦可驯服</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-UbuntuBluetooth/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -214,7 +150,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalibr/" rel="tag">Kalibr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li></ul>
 
 
     </footer>
@@ -366,6 +302,78 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/15/2020-02-15-VIO_Framework/"
+    >VIO 主流框架</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
+<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
+<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
+<blockquote>
+<p><strong>视觉惯性融合，约束决定精度</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-VIO_Framework/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
 
 
     </footer>
@@ -685,6 +693,12 @@
     </li>
     
     
+    
+    <li class="nav-item nav-rss">
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+    </li>
     
   </ul>
 </nav>

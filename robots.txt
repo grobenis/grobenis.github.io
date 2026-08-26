@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /private/
 
 Sitemap: https://grobenis.github.io/sitemap.xml
