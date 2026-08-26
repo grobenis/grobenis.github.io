@@ -297,17 +297,19 @@ html {
 .timeline-item:last-child {
   margin-bottom: 0;
 }
-.timeline-item::before {
-  content: "";
+.timeline-item .timeline-logo {
   position: absolute;
-  left: -35px;
+  left: -50px;
   top: 4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
   background: #fff;
-  border: 3px solid #49b1f5;
+  border-radius: 50%;
+  border: 2px solid #49b1f5;
   box-shadow: 0 0 0 3px rgba(73, 177, 245, 0.15);
+  padding: 5px;
+  box-sizing: border-box;
 }
 .timeline-date {
   display: inline-block;
