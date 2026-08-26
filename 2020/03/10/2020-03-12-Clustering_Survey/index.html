@@ -713,6 +713,28 @@ $$</p>
     <div class="site-mascot" title="哞~">
       <img src="/images/cow.svg" alt="小牛" />
     </div>
+    <script>
+    // 小牛：滚动超过封面高度后才淡入，避免破坏首页首屏美感
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function onScroll() {
+        var y = scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+        mascot.classList.toggle('is-visible', y > getThreshold());
+      }
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
   </div>
 </body>
 
