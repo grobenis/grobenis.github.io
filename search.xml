@@ -30,7 +30,7 @@
     
     
     <entry>
-      <title>传感器的标定</title>
+      <title>相机标定原理</title>
       <link href="/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/"/>
       <url>/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/</url>
       
@@ -57,7 +57,7 @@
     
     
     <entry>
-      <title>Nerf论文学习</title>
+      <title>NeRF 论文学习</title>
       <link href="/2022/07/24/2022-7-24-Nerf/"/>
       <url>/2022/07/24/2022-7-24-Nerf/</url>
       
@@ -84,7 +84,7 @@
     
     
     <entry>
-      <title>SLAM中常用的角点检测算法</title>
+      <title>SLAM 中常用的角点检测算法</title>
       <link href="/2022/05/31/2022-05-31-SLAM_Feature_detecter/"/>
       <url>/2022/05/31/2022-05-31-SLAM_Feature_detecter/</url>
       
@@ -242,9 +242,9 @@
       
         <tags>
             
-            <tag> SLAM </tag>
-            
             <tag> ROS </tag>
+            
+            <tag> SLAM </tag>
             
             <tag> VINS </tag>
             
@@ -255,7 +255,7 @@
     
     
     <entry>
-      <title>C++正则表达式</title>
+      <title>C++ 正则表达式</title>
       <link href="/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
       <url>/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
       
@@ -280,7 +280,7 @@
     
     
     <entry>
-      <title>通过NDK打包aar格式的SDK</title>
+      <title>通过 NDK 打包 aar 格式的 SDK</title>
       <link href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/"/>
       <url>/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/</url>
       
@@ -307,7 +307,7 @@
     
     
     <entry>
-      <title>可穿戴领域中的压力监测算法</title>
+      <title>可穿戴设备压力监测算法</title>
       <link href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/"/>
       <url>/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/</url>
       
@@ -323,9 +323,9 @@
       
         <tags>
             
-            <tag> 算法 </tag>
-            
             <tag> 可穿戴 </tag>
+            
+            <tag> 算法 </tag>
             
         </tags>
       
@@ -388,7 +388,7 @@
     
     
     <entry>
-      <title>HTTP协议</title>
+      <title>HTTP 协议</title>
       <link href="/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/"/>
       <url>/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/</url>
       
@@ -682,7 +682,7 @@
     
     
     <entry>
-      <title>SLAM概述</title>
+      <title>SLAM 概述</title>
       <link href="/2020/08/06/2020-08-06-SLAM%E6%A6%82%E8%BF%B0/"/>
       <url>/2020/08/06/2020-08-06-SLAM%E6%A6%82%E8%BF%B0/</url>
       
@@ -707,11 +707,11 @@
     
     
     <entry>
-      <title>处理H自由度的不同方法</title>
+      <title>处理 H 自由度的不同方法</title>
       <link href="/2020/08/06/2020-08-06-%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/"/>
       <url>/2020/08/06/2020-08-06-%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/</url>
       
-        <content type="html"><![CDATA[<p>视觉-惯性状态估计过程中有四个自由度需要进行额外处理，它们是一个平移变量（3个自由度）和绕重力轴方向的旋转（1个自由度）。</p><p>视觉惯性状态估计最多可以达到四自由度的转换（围绕重力的旋转和平移），因此必须正确处理额外的自由度 。尽管在实践中使用了不同方法处理多余自由度，但没有任何研究来系统地分析它们的差异。本文介绍了在基于优化的视觉惯性状态估计中处理量测自由度的不同方法的对比分析。通过实验比较了三种常用方法：</p><ol><li>将不可观察的状态固定为给定值，</li><li>在这些状态上设置先验</li><li>在优化过程中让状态自由地优化。</li></ol><p>实验表明：</p><ol><li>三种方法的准确性和计算时间相似，自由量测方法稍快一些； </li><li>自由优化法的协方差估计似乎有很大的不同，但实际上与其他方法紧密相关。</li></ol><p>本文对比了基于优化的视觉惯性状态估计中处理不可观测自由度的三种方法：固定规范状态、施加规范先验与自由优化。文章指出 VI 系统存在绕重力方向的旋转与整体平移共四个测量自由度，实验表明三种方法的精度与计算时间相近，自由方法略快，且其协方差估计经变换后与其他方法的结果密切相关。</p><blockquote><p><strong>不可观自由度处理得当，状态估计稳健可靠</strong></p></blockquote><span id="more"></span><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在机器人视觉研究领域。 惯性传感器与相机融合是互补的[1]，两者的结合可提供可靠而准确的状态估计。 尽管关于VI融合的大多数研究都集中在基于滤波器的方法上[2]，[3]，[4]，但非线性优化在最近几年中变得越来越流行。 与基于滤波器的方法相比，基于非线性优化的方法受线性累积误差的影响较小。 它们的主要缺点即高计算成本，已通过硬件和理论的发展得到缓解[5]，[6]。 最近的工作[5]，[7]，[8]，[9]在使用非线性优化的挑战性环境中显示了令人印象深刻的实时VI状态估计结果。</p><p>尽管这些工作具有相同的基本原理，即将状态估计作为非线性最小二乘优化问题求解，但它们使用不同的方法来处理VI系统中不可观察的自由度。众所周知，VI系统无法观察到全局位置和偏航[3]，[10]，在本文中，我们根据BA领域的惯例将其称为测量自由度[11]。给定这种测量自由度，获得唯一解决方案的自然方法是在优化中固定相应的状态（即参数）[12]。另一种可能性是将先验设置为不可观察状态，并且先验本质上在优化中充当虚拟度量[5]，[8]，[13]，[7]。最后，可以改为允许优化算法在迭代过程中自由更改不可观察的状态。尽管这三种方法在现有文献中都可以证明是可行的，但对VI状态估计的差异却没有进行比较研究：它们通常作为实现细节呈现，因此没有得到很好的研究和理解。此外，尽管已经研究了类似的仅视觉束调节问题（例如，在单目情况下具有7个不可观察的DoF的[11]，[14]），但据我们所知，此类研究尚未完成用于VI系统（具有4个不可观察的DoF）。</p><p>本文所对比的三种方法包括：<strong>规范自由度固定法</strong>，<strong>规范自由度先验法</strong>和<strong>自由规范自由度</strong>法。在准确性，计算成本和估计的协方差（该指标是SLAM感兴趣的[16]）。虽然所有这些方法在估计误差方面具有相似的性能，但由于收敛所需的迭代次数较少，因此自由规范方法略快。我们还发现，正如[7]所述，在自由规范自由度方法中，由优化产生的协方差与任何特定的参考系都没有关联（与规范自由度固定方法相反），这使得解释不确定性的含义变得困难。然而，在这项工作中，我们进一步表明，通过应用协方差变换，自由规范自由度方法得到的协方差实际上与其他方法所得的密切相关（见图1）。</p><table><thead><tr><th align="center">章节</th><th align="center">内容安排</th></tr></thead><tbody><tr><td align="center">二</td><td align="center">介绍了基于优化的VI状态估计问题及其非唯一解</td></tr><tr><td align="center">三</td><td align="center">介绍了处理规范自由度的不同方法</td></tr><tr><td align="center">四</td><td align="center">描述了我们用于对比研究的仿真环境设置</td></tr><tr><td align="center">五</td><td align="center">精度&#x2F;时间和协方差方面的详细比较</td></tr><tr><td align="center">六</td><td align="center"></td></tr><tr><td align="center">七</td><td align="center">展示了真实世界数据集的实验结果。</td></tr></tbody></table><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>视觉惯性状态估计的问题包括推断<strong>相机-IMU组合传感器</strong>的运动以及传感器在场景中移动时摄像机看到的3D路标点的位置。 通过收集视觉测量（图像点）和惯性测量（加速度计和陀螺仪）的方程，可以将问题写为非线性最小二乘（NLLS）优化问题，其目的是最小化目标函数（ 例如，假设高斯误差）。<br>$$J(\theta) = ||r^V(\theta)||^2_{\sum_V}+||r^I(\theta)||^2_{\sum_I}$$<br>其中，$||r||^2_\Sigma = r^T\Sigma^{-1}r$ 是是残差向量<code>r</code>的平方<code>Mahalanobis</code>范数，$||r^I(\theta)||^2_{\Sigma_I}$是协方差矩阵，协方差矩阵用来加权。损失函数（1）可用在完全平滑[5]或固定滞后平滑[7]方法中。</p><p>方程（1）中的<strong>视觉项</strong>，包括测量图像点$x_{ij}$与米制重建得到的预测点$\hat x_{ij}$间的重投影误差。假设有针孔摄像机模型，则x̂ij（θ）∝ Ki（R&gt; i | − Ri&gt; pi）（Xj&gt;，1）&gt;，其中（Ri，pi）是第i个摄像机的外部参数（i &#x3D; 0 ，…，N-1）和Xj是第j个界标点（j &#x3D; 0，…，K-1）的3D欧几里得坐标。 我们假设固有校准Ki是无噪声的。 （1）中的惯性项由惯性测量值和IMU轨迹模型所预测的值之间的误差组成。 例如，[17]考虑了原始加速度和角速度测量中的误差，而[5]考虑了等效的较低速率测量中的误差（以视觉数据的速率表示的惯性预积分项）。 在这项工作中，我们将考虑后一种配方，尽管大多数结果并不取决于配方的选择。</p><p>假设有针孔摄像机模型，则$\hat{x̂}_{ij}（θ）∝ K——i（R&gt; i | − R_i&gt; p_i）（X_j^T，1）^T$，其中$（R_i，p_i）$是第i个摄像机的外部参数$（i = 0 ，...，N-1）$和$X_j$是第$j$个界标点$（j = 0，...，K-1）$的3D欧几里得坐标。 我们假设固有校准Ki是无噪声的。 （1）中的惯性项由惯性测量值和IMU轨迹模型所预测的值之间的误差组成。 例如，[17]考虑了原始加速度和角速度测量中的误差，而[5]考虑了等效的较低速率测量中的误差（以视觉数据的速率表示的惯性预积分项）。 在这项工作中，我们将考虑后一种描述，尽管大多数结果并不取决于描述方法的选择。</p><p>问题的参数（也称为状态）如下：<br>$$θ \dot{=} {p_i , R_i , v_i , X_j }$$<br>包括相机参数（外参和线速度）和3D路标点。加速度计和陀螺仪的偏置通常表示在<code>IMU</code>框架中，不受坐标系的影响。 因此，我们从状态中排除了bias，并假设IMU测量值已被校正。 惯性和视觉测量模型的完整阐述不在本文的讨论范围内，有关详细信息，请读者参考[5]。</p><p>由于VI状态估计问题的不确定性和不可观性，导致没有足够的方程来求解唯一解。</p><p>A. 解歧义和几何等价</p><p>当解决VI状态估计问题的时候，有必要确定目标函数来确定内参的变换，例如：<br>$$J(\theta)=J(g(\theta))$$<br>特别的，g 有本征矩阵的形式定义如下：</p><p><img src="/assets/image-20200807193315625.png" loading="lazy"></p><p>是一个4自由度变换，由任意平移t∈R3和围绕重力轴ez &#x3D;（0，0，1的任意角度（yaw）α∈（-π，π）旋转Rz &#x3D; Exp（αez）组成 ）&gt;。 Exp（θ</p><p>不变性（3）的主要结果是（1）没有唯一的最小值，因为有很多的组合可以得到相同的最小误差：轨道上的所有重构（6）的代价最小（见图2） ），仅区别于4自由度转换（4）。 因此，VI估计问题具有一些不确定性或不可观察的状态：没有足够的方程式来完全指定唯一的解。</p><p><img src="/assets/image-20200807193541351.png" loading="lazy"></p><p>图2：不同规范处理方法所采用的优化路径示意图。 量规固定方法始终在量规C上移动，因此满足了量规约束。 自由量规方法使用伪逆来选择给定成本降低的最小尺寸的参数步长，因此垂直于成本等值线（1）移动。 量规先验方法遵循量规固定和自由量规方法之间的路径。 它最大程度地减少了（11）所增加的成本，因此它可能无法完全落在最小视觉惯性成本（1）的轨道上。</p><p>三种不同解决方法的对比</p><table><thead><tr><th align="center"></th><th align="center">参数量</th><th align="center">Hessian矩阵</th></tr></thead><tbody><tr><td align="center">固定规范</td><td align="center">n-4</td><td align="center">逆,(n-4)*(n-4)</td></tr><tr><td align="center">规范先验</td><td align="center">n</td><td align="center">逆，n*n</td></tr><tr><td align="center">自由规范</td><td align="center">n</td><td align="center">伪逆，,n×n</td></tr></tbody></table><h2 id="三种处理方法"><a href="#三种处理方法" class="headerlink" title="三种处理方法"></a>三种处理方法</h2><p>一般在状态估计过程中，采用以下三种方法来处理这几个不可观状态：（1）将它们设置成固定值（固定值法）；（2）为它们设置一个先验值，然后在估计过程中进行优化；（3）不进行特殊处理，直接进行优化（自由优化法）。</p><p>1.固定值法：在优化过程中，保持第一个相机位姿的平移变量（涉及三个维度）和旋转变量（李代数表示法）中的z分量不变。具体做法是：在优化过程中，设置<br>$$p_0=p^0_0\\Δϕ_{0_z}≐e_z^T Δϕ=0$$<br>其中是第一个相机的初始位置。这样的设置也意味着Jacobi矩阵中，对上述变量的(导数）取值为0。</p><p>2.先验值法：在优化的时候，给目标函数增加一个惩罚项：<br>$$||r^P_0||^2_{\sum^P_0} \\ where, r^P_0(\theta) \dot{=}[p_0-o_0]^0，\Delta\phi_0z]^T$$<br>于是惩罚项。当时，效果接近于自由优化法，当时，效果基本上接近于固定值法。</p><p>3.自由优化法：在优化的过程中，让变量随着优化的过程自行演化。为了避免<code>hessian</code>矩阵的奇异化，可以求矩阵的广义逆或者使用阻尼因子来保证优化过程有一个良好的迭代更新过程。 </p><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>结果表明</p><ul><li>三种方法的数值精确度基本相同 先验值法需要选择合适的先验值权重以避免增加计算量</li><li>在选择了合适的先验值的情况下，先验值法和固定值法的表现（精确度和计算成本）基本相同</li><li>自由优化法比其他两种方法略微快一些，因为它用了更少的迭代来达到收敛</li><li>自由优化法的另一个优点是它更通用一些，不需要对旋转进行特殊处理</li></ul><p>虽然可能可以修复不可观察的自由度（量身定制的参数化方法（9）来修复偏航自由度），但自由规范方法具有通用的额外优势，即不是VI特有的，因此 不需要对旋转参数化进行任何特殊处理。</p>]]></content>
+        <content type="html"><![CDATA[<p>视觉-惯性状态估计过程中有四个自由度需要进行额外处理，它们是一个平移变量（3个自由度）和绕重力轴方向的旋转（1个自由度）。</p><p>视觉惯性状态估计最多可以达到四自由度的转换（围绕重力的旋转和平移），因此必须正确处理额外的自由度 。尽管在实践中使用了不同方法处理多余自由度，但没有任何研究来系统地分析它们的差异。本文介绍了在基于优化的视觉惯性状态估计中处理量测自由度的不同方法的对比分析。通过实验比较了三种常用方法：</p><ol><li>将不可观察的状态固定为给定值，</li><li>在这些状态上设置先验</li><li>在优化过程中让状态自由地优化。</li></ol><p>实验表明：</p><ol><li>三种方法的准确性和计算时间相似，自由量测方法稍快一些；</li><li>自由优化法的协方差估计似乎有很大的不同，但实际上与其他方法紧密相关。</li></ol><p>本文对比了基于优化的视觉惯性状态估计中处理不可观测自由度的三种方法：固定规范状态、施加规范先验与自由优化。文章指出 VI 系统存在绕重力方向的旋转与整体平移共四个测量自由度，实验表明三种方法的精度与计算时间相近，自由方法略快，且其协方差估计经变换后与其他方法的结果密切相关。</p><blockquote><p><strong>不可观自由度处理得当，状态估计稳健可靠</strong></p></blockquote><span id="more"></span><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在机器人视觉研究领域。 惯性传感器与相机融合是互补的[1]，两者的结合可提供可靠而准确的状态估计。 尽管关于VI融合的大多数研究都集中在基于滤波器的方法上[2]，[3]，[4]，但非线性优化在最近几年中变得越来越流行。 与基于滤波器的方法相比，基于非线性优化的方法受线性累积误差的影响较小。 它们的主要缺点即高计算成本，已通过硬件和理论的发展得到缓解[5]，[6]。 最近的工作[5]，[7]，[8]，[9]在使用非线性优化的挑战性环境中显示了令人印象深刻的实时VI状态估计结果。</p><p>尽管这些工作具有相同的基本原理，即将状态估计作为非线性最小二乘优化问题求解，但它们使用不同的方法来处理VI系统中不可观察的自由度。众所周知，VI系统无法观察到全局位置和偏航[3]，[10]，在本文中，我们根据BA领域的惯例将其称为测量自由度[11]。给定这种测量自由度，获得唯一解决方案的自然方法是在优化中固定相应的状态（即参数）[12]。另一种可能性是将先验设置为不可观察状态，并且先验本质上在优化中充当虚拟度量[5]，[8]，[13]，[7]。最后，可以改为允许优化算法在迭代过程中自由更改不可观察的状态。尽管这三种方法在现有文献中都可以证明是可行的，但对VI状态估计的差异却没有进行比较研究：它们通常作为实现细节呈现，因此没有得到很好的研究和理解。此外，尽管已经研究了类似的仅视觉束调节问题（例如，在单目情况下具有7个不可观察的DoF的[11]，[14]），但据我们所知，此类研究尚未完成用于VI系统（具有4个不可观察的DoF）。</p><p>本文所对比的三种方法包括：<strong>规范自由度固定法</strong>，<strong>规范自由度先验法</strong>和<strong>自由规范自由度</strong>法。在准确性，计算成本和估计的协方差（该指标是SLAM感兴趣的[16]）。虽然所有这些方法在估计误差方面具有相似的性能，但由于收敛所需的迭代次数较少，因此自由规范方法略快。我们还发现，正如[7]所述，在自由规范自由度方法中，由优化产生的协方差与任何特定的参考系都没有关联（与规范自由度固定方法相反），这使得解释不确定性的含义变得困难。然而，在这项工作中，我们进一步表明，通过应用协方差变换，自由规范自由度方法得到的协方差实际上与其他方法所得的密切相关（见图1）。</p><table><thead><tr><th align="center">章节</th><th align="center">内容安排</th></tr></thead><tbody><tr><td align="center">二</td><td align="center">介绍了基于优化的VI状态估计问题及其非唯一解</td></tr><tr><td align="center">三</td><td align="center">介绍了处理规范自由度的不同方法</td></tr><tr><td align="center">四</td><td align="center">描述了我们用于对比研究的仿真环境设置</td></tr><tr><td align="center">五</td><td align="center">精度&#x2F;时间和协方差方面的详细比较</td></tr><tr><td align="center">六</td><td align="center"></td></tr><tr><td align="center">七</td><td align="center">展示了真实世界数据集的实验结果。</td></tr></tbody></table><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>视觉惯性状态估计的问题包括推断<strong>相机-IMU组合传感器</strong>的运动以及传感器在场景中移动时摄像机看到的3D路标点的位置。 通过收集视觉测量（图像点）和惯性测量（加速度计和陀螺仪）的方程，可以将问题写为非线性最小二乘（NLLS）优化问题，其目的是最小化目标函数（ 例如，假设高斯误差）。</p><p>$$J(\theta) = ||r^V(\theta)||^2_{\sum_V}+||r^I(\theta)||^2_{\sum_I}$$</p><p>其中，$||r||^2_\Sigma = r^T\Sigma^{-1}r$ 是是残差向量<code>r</code>的平方<code>Mahalanobis</code>范数，$||r^I(\theta)||^2_{\Sigma_I}$是协方差矩阵，协方差矩阵用来加权。损失函数（1）可用在完全平滑[5]或固定滞后平滑[7]方法中。</p><p>方程（1）中的<strong>视觉项</strong>，包括测量图像点$x_{ij}$与米制重建得到的预测点$\hat x_{ij}$间的重投影误差。假设有针孔摄像机模型，则x̂ij（θ）∝ Ki（R&gt; i | − Ri&gt; pi）（Xj&gt;，1）&gt;，其中（Ri，pi）是第i个摄像机的外部参数（i &#x3D; 0 ，…，N-1）和Xj是第j个界标点（j &#x3D; 0，…，K-1）的3D欧几里得坐标。 我们假设固有校准Ki是无噪声的。 （1）中的惯性项由惯性测量值和IMU轨迹模型所预测的值之间的误差组成。 例如，[17]考虑了原始加速度和角速度测量中的误差，而[5]考虑了等效的较低速率测量中的误差（以视觉数据的速率表示的惯性预积分项）。 在这项工作中，我们将考虑后一种配方，尽管大多数结果并不取决于配方的选择。</p><p>假设有针孔摄像机模型，则$\hat{x̂}_{ij}（θ）∝ K——i（R&gt; i | − R_i&gt; p_i）（X_j^T，1）^T$，其中$（R_i，p_i）$是第i个摄像机的外部参数$（i = 0 ，...，N-1）$和$X_j$是第$j$个界标点$（j = 0，...，K-1）$的3D欧几里得坐标。 我们假设固有校准Ki是无噪声的。 （1）中的惯性项由惯性测量值和IMU轨迹模型所预测的值之间的误差组成。 例如，[17]考虑了原始加速度和角速度测量中的误差，而[5]考虑了等效的较低速率测量中的误差（以视觉数据的速率表示的惯性预积分项）。 在这项工作中，我们将考虑后一种描述，尽管大多数结果并不取决于描述方法的选择。</p><p>问题的参数（也称为状态）如下：</p><p>$$θ \dot{=} {p_i , R_i , v_i , X_j }$$</p><p>包括相机参数（外参和线速度）和3D路标点。加速度计和陀螺仪的偏置通常表示在<code>IMU</code>框架中，不受坐标系的影响。 因此，我们从状态中排除了bias，并假设IMU测量值已被校正。 惯性和视觉测量模型的完整阐述不在本文的讨论范围内，有关详细信息，请读者参考[5]。</p><p>由于VI状态估计问题的不确定性和不可观性，导致没有足够的方程来求解唯一解。</p><p>A. 解歧义和几何等价</p><p>当解决VI状态估计问题的时候，有必要确定目标函数来确定内参的变换，例如：</p><p>$$J(\theta)=J(g(\theta))$$</p><p>特别的，g 有本征矩阵的形式定义如下：</p><p><img src="/assets/image-20200807193315625.png" loading="lazy"></p><p>是一个4自由度变换，由任意平移t∈R3和围绕重力轴ez &#x3D;（0，0，1的任意角度（yaw）α∈（-π，π）旋转Rz &#x3D; Exp（αez）组成 ）&gt;。 Exp（θ</p><p>不变性（3）的主要结果是（1）没有唯一的最小值，因为有很多的组合可以得到相同的最小误差：轨道上的所有重构（6）的代价最小（见图2） ），仅区别于4自由度转换（4）。 因此，VI估计问题具有一些不确定性或不可观察的状态：没有足够的方程式来完全指定唯一的解。</p><p><img src="/assets/image-20200807193541351.png" loading="lazy"></p><p>图2：不同规范处理方法所采用的优化路径示意图。 量规固定方法始终在量规C上移动，因此满足了量规约束。 自由量规方法使用伪逆来选择给定成本降低的最小尺寸的参数步长，因此垂直于成本等值线（1）移动。 量规先验方法遵循量规固定和自由量规方法之间的路径。 它最大程度地减少了（11）所增加的成本，因此它可能无法完全落在最小视觉惯性成本（1）的轨道上。</p><p>三种不同解决方法的对比</p><table><thead><tr><th align="center"></th><th align="center">参数量</th><th align="center">Hessian矩阵</th></tr></thead><tbody><tr><td align="center">固定规范</td><td align="center">n-4</td><td align="center">逆,(n-4)*(n-4)</td></tr><tr><td align="center">规范先验</td><td align="center">n</td><td align="center">逆，n*n</td></tr><tr><td align="center">自由规范</td><td align="center">n</td><td align="center">伪逆，,n×n</td></tr></tbody></table><h2 id="三种处理方法"><a href="#三种处理方法" class="headerlink" title="三种处理方法"></a>三种处理方法</h2><p>一般在状态估计过程中，采用以下三种方法来处理这几个不可观状态：（1）将它们设置成固定值（固定值法）；（2）为它们设置一个先验值，然后在估计过程中进行优化；（3）不进行特殊处理，直接进行优化（自由优化法）。</p><p>1.固定值法：在优化过程中，保持第一个相机位姿的平移变量（涉及三个维度）和旋转变量（李代数表示法）中的z分量不变。具体做法是：在优化过程中，设置</p><p>$$p_0=p^0_0\\Δϕ_{0_z}≐e_z^T Δϕ=0$$</p><p>其中是第一个相机的初始位置。这样的设置也意味着Jacobi矩阵中，对上述变量的(导数）取值为0。</p><p>2.先验值法：在优化的时候，给目标函数增加一个惩罚项：</p><p>$$||r^P_0||^2_{\sum^P_0} \\ where, r^P_0(\theta) \dot{=}[p_0-o_0]^0，\Delta\phi_0z]^T$$</p><p>于是惩罚项。当时，效果接近于自由优化法，当时，效果基本上接近于固定值法。</p><p>3.自由优化法：在优化的过程中，让变量随着优化的过程自行演化。为了避免<code>hessian</code>矩阵的奇异化，可以求矩阵的广义逆或者使用阻尼因子来保证优化过程有一个良好的迭代更新过程。</p><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>结果表明</p><ul><li>三种方法的数值精确度基本相同 先验值法需要选择合适的先验值权重以避免增加计算量</li><li>在选择了合适的先验值的情况下，先验值法和固定值法的表现（精确度和计算成本）基本相同</li><li>自由优化法比其他两种方法略微快一些，因为它用了更少的迭代来达到收敛</li><li>自由优化法的另一个优点是它更通用一些，不需要对旋转进行特殊处理</li></ul><p>虽然可能可以修复不可观察的自由度（量身定制的参数化方法（9）来修复偏航自由度），但自由规范方法具有通用的额外优势，即不是VI特有的，因此 不需要对旋转参数化进行任何特殊处理。</p>]]></content>
       
       
       
@@ -778,7 +778,7 @@
     
     
     <entry>
-      <title>Cmake指令手册</title>
+      <title>CMake 指令手册</title>
       <link href="/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/"/>
       <url>/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/</url>
       
@@ -803,7 +803,7 @@
     
     
     <entry>
-      <title>C++多线程编程</title>
+      <title>C++ 多线程编程</title>
       <link href="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/"/>
       <url>/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
       
@@ -915,7 +915,7 @@
     
     
     <entry>
-      <title>OPENCV重要函数</title>
+      <title>OpenCV 重要函数</title>
       <link href="/2020/04/14/2020-04-14-OPENCV-Function/"/>
       <url>/2020/04/14/2020-04-14-OPENCV-Function/</url>
       
@@ -969,7 +969,7 @@
     
     
     <entry>
-      <title>特征点法的巅峰之作—ORBSLAM2</title>
+      <title>ORB-SLAM2 学习笔记</title>
       <link href="/2020/04/13/2020-04-13-ORBSLAM2/"/>
       <url>/2020/04/13/2020-04-13-ORBSLAM2/</url>
       
@@ -1021,7 +1021,7 @@
     
     
     <entry>
-      <title>C++ 容器Vector</title>
+      <title>C++ 容器 vector</title>
       <link href="/2020/04/02/2020-04-02-Cpp-Vector/"/>
       <url>/2020/04/02/2020-04-02-Cpp-Vector/</url>
       
@@ -1081,7 +1081,7 @@
     
     
     <entry>
-      <title>SLAM中的后端优化</title>
+      <title>SLAM 中的后端优化</title>
       <link href="/2020/03/30/2020-03-30-Bundle-adjustment/"/>
       <url>/2020/03/30/2020-03-30-Bundle-adjustment/</url>
       
@@ -1191,7 +1191,7 @@
     
     
     <entry>
-      <title>哈希表与C++</title>
+      <title>哈希表与 C++</title>
       <link href="/2020/03/26/2020-03-26-Hash-Table/"/>
       <url>/2020/03/26/2020-03-26-Hash-Table/</url>
       
@@ -1220,7 +1220,7 @@
     
     
     <entry>
-      <title>SLAM中的三角测量</title>
+      <title>SLAM 中的三角测量</title>
       <link href="/2020/03/24/2020-03-24-Triangulation/"/>
       <url>/2020/03/24/2020-03-24-Triangulation/</url>
       
@@ -1249,7 +1249,7 @@
     
     
     <entry>
-      <title>SLAM初始化</title>
+      <title>SLAM 初始化</title>
       <link href="/2020/03/23/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
       <url>/2020/03/23/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
       
@@ -1305,7 +1305,7 @@
     
     
     <entry>
-      <title>Kalman滤波器学习</title>
+      <title>Kalman 滤波器学习</title>
       <link href="/2020/03/14/2020-03-13-Kalman_Filter/"/>
       <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
       
@@ -1322,6 +1322,31 @@
         <tags>
             
             <tag> Kalman滤波器 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>概率图模型</title>
+      <link href="/2020/03/14/2020-03-14-Probability_graph_model/"/>
+      <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
+      
+        <content type="html"><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p>本节将用来介绍概率图模型。</p><p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p><blockquote><p><strong>用图言变量，依赖一目了然</strong></p></blockquote><span id="more"></span><h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p><p><strong>分类</strong></p><p>根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p><p><strong>前提背景</strong></p><p>利用条件独立性可以降低概率模型的计算复杂度；</p><p>条件独立性要在图的结构上有所映射；</p><p><strong>图的构建方法</strong></p><p>拓扑排序;</p><p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p><p>性质：</p><p>如果父节点被观测，则其子节点独立；</p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p><p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p><p>道德图：有向图 → 无向图</p><p>出发点：</p><ol><li>引入环</li><li>简便</li></ol><p>因子图把因子引入图里边。</p><p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph" loading="lazy"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概率图 </tag>
             
         </tags>
       
@@ -1380,31 +1405,6 @@
     
     
     <entry>
-      <title>概率图模型</title>
-      <link href="/2020/03/14/2020-03-14-Probability_graph_model/"/>
-      <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
-      
-        <content type="html"><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p>本节将用来介绍概率图模型。</p><p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p><blockquote><p><strong>用图言变量，依赖一目了然</strong></p></blockquote><span id="more"></span><h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p><p><strong>分类</strong></p><p>根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p><p><strong>前提背景</strong></p><p>利用条件独立性可以降低概率模型的计算复杂度；</p><p>条件独立性要在图的结构上有所映射；</p><p><strong>图的构建方法</strong></p><p>拓扑排序;</p><p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p><p>性质：</p><p>如果父节点被观测，则其子节点独立；</p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p><p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p><p>道德图：有向图 → 无向图</p><p>出发点：</p><ol><li>引入环</li><li>简便</li></ol><p>因子图把因子引入图里边。</p><p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph" loading="lazy"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 概率图 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>粒子滤波器</title>
       <link href="/2020/03/14/2020-03-15-Particle_Filter/"/>
       <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
@@ -1430,7 +1430,7 @@
     
     
     <entry>
-      <title>VINS-Fusion代码阅读</title>
+      <title>VINS-Fusion 代码阅读</title>
       <link href="/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
       <url>/2020/03/10/2020-03-10-Read-VINS-Fusion/</url>
       
@@ -1449,33 +1449,6 @@
             <tag> VINS </tag>
             
             <tag> 代码阅读 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>回环检测与DBoW2库</title>
-      <link href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
-      <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
-      
-        <content type="html"><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p><ol><li>回环检测</li><li>DBOW2介绍</li><li>DBOW3介绍</li></ol><p>本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。</p><blockquote><p><strong>视觉词袋，让回环检测又快又准</strong></p></blockquote><span id="more"></span><h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p><table><thead><tr><th align="center">算法结果事实</th><th align="center">是回环</th><th align="center">不是回环</th></tr></thead><tbody><tr><td align="center">是回环</td><td align="center">真阳性</td><td align="center">假阳性</td></tr><tr><td align="center">不是回环</td><td align="center">假阴性</td><td align="center">真阴性</td></tr></tbody></table><p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$准确率=N_{TP}/{N_{TP}+N_{FP}}$$</p><p>$$Recall = N_{TP}/{N_{TP}+N_{FN}}$$</p><p>准确率描述了检测到的回环中真回环的个数。</p><p>Recall描述了真回环中有多少个被检测出来了。</p><p>根据准确率和召回率可以得到ROC曲线.</p><p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p><h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p><p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img" loading="lazy"></p><p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p><h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p><h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p><h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p><h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3">Github地址</a></p><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p><ul><li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li><li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li><li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li><li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li><li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li><li>出于性能原因，DBoW2不支持停用词。</li></ul><p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p><h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p><h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p><h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedVocabulary</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedDatabase</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p><h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p><h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3"><strong>Github地址</strong></a></p><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p><ul><li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li><li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li><li>DBoW3可以在linux和Windows中进行编译。</li><li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li><li>使用二进制文件的可能性。二进制文件的加载&#x2F;保存速度比yml快4-5倍。同样，它们可以被压缩。</li><li>兼容DBoW2 yml文件</li></ul><h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p><h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p><h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p><h4 id="读取-x2F-存储-词汇"><a href="#读取-x2F-存储-词汇" class="headerlink" title="读取&#x2F;存储 词汇"></a>读取&#x2F;存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> DBoW2 </tag>
-            
-            <tag> 回环检测 </tag>
             
         </tags>
       
@@ -1511,6 +1484,33 @@
     
     
     <entry>
+      <title>回环检测与 DBoW2 库</title>
+      <link href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
+      <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+      
+        <content type="html"><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p><ol><li>回环检测</li><li>DBOW2介绍</li><li>DBOW3介绍</li></ol><p>本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。</p><blockquote><p><strong>视觉词袋，让回环检测又快又准</strong></p></blockquote><span id="more"></span><h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p><table><thead><tr><th align="center">算法结果事实</th><th align="center">是回环</th><th align="center">不是回环</th></tr></thead><tbody><tr><td align="center">是回环</td><td align="center">真阳性</td><td align="center">假阳性</td></tr><tr><td align="center">不是回环</td><td align="center">假阴性</td><td align="center">真阴性</td></tr></tbody></table><p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$准确率=N_{TP}/{N_{TP}+N_{FP}}$$</p><p>$$Recall = N_{TP}/{N_{TP}+N_{FN}}$$</p><p>准确率描述了检测到的回环中真回环的个数。</p><p>Recall描述了真回环中有多少个被检测出来了。</p><p>根据准确率和召回率可以得到ROC曲线.</p><p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p><h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p><p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img" loading="lazy"></p><p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p><h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p><h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p><h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p><h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3">Github地址</a></p><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p><ul><li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li><li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li><li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li><li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li><li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li><li>出于性能原因，DBoW2不支持停用词。</li></ul><p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p><h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p><h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p><h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedVocabulary</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedDatabase</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p><h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p><h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3"><strong>Github地址</strong></a></p><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p><ul><li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li><li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li><li>DBoW3可以在linux和Windows中进行编译。</li><li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li><li>使用二进制文件的可能性。二进制文件的加载&#x2F;保存速度比yml快4-5倍。同样，它们可以被压缩。</li><li>兼容DBoW2 yml文件</li></ul><h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p><h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p><h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p><h4 id="读取-x2F-存储-词汇"><a href="#读取-x2F-存储-词汇" class="headerlink" title="读取&#x2F;存储 词汇"></a>读取&#x2F;存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> DBoW2 </tag>
+            
+            <tag> 回环检测 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>隐马尔可夫模型</title>
       <link href="/2020/03/10/2020-03-13-HMM_model/"/>
       <url>/2020/03/10/2020-03-13-HMM_model/</url>
@@ -1536,7 +1536,7 @@
     
     
     <entry>
-      <title>利用Kalibr标定双目相机与IMU</title>
+      <title>使用 Kalibr 标定双目相机与 IMU</title>
       <link href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
       <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
       
@@ -1557,6 +1557,110 @@
             <tag> IMU </tag>
             
             <tag> Kalibr </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>发布 IMU 信息到 ROS 系统</title>
+      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
+      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
+      
+        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> IMU </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>VIO 主流框架</title>
+      <link href="/2020/02/15/2020-02-15-VIO_Framework/"/>
+      <url>/2020/02/15/2020-02-15-VIO_Framework/</url>
+      
+        <content type="html"><![CDATA[<p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p><p>需要理解约束关系的确定，以及确立相应约束的三个要素</p><p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p><blockquote><p><strong>视觉惯性融合，约束决定精度</strong></p></blockquote><span id="more"></span><h2 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h2><p>定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心；</p><p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p><p><strong>核心</strong>：误差项、优化变量、协方差</p><p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p><h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933" loading="lazy"></p><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：</p><p>$$\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)$$</p><p>误差项:</p><p>$$e(x+\Delta x)=e(x)+J(x)\Delta x$$</p><p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：</p><p>$$J^T P^{-1}\Delta x = -J^TP^{-1}e$$</p><h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498" loading="lazy"></p><p>其Jacobian矩阵如下：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322" loading="lazy"></p><p>得到相应的Hession矩阵如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060" loading="lazy"></p><h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397" loading="lazy"></p><h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622" loading="lazy"></p><p>举例，其中一个T1T1的小块的数学形式如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614" loading="lazy"></p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。</p><h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013" loading="lazy"></p><h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol><li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li><li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li></ol><h4 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h4><ol><li>积分下一个时刻的PVQ作为视觉初始值</li><li>预计分相邻帧的PVQ变化量，作为IMU的约束</li><li>计算IMU误差的协方差和jacobian</li></ol><p><img src="/./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399" loading="lazy"></p><h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol><li><p>将视觉约束就加到联合优化是紧耦合</p></li><li><p>将视觉约束后的位姿加入到联合优化是松耦合</p></li></ol><p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367" loading="lazy"></p><h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p><ol><li>初始化</li><li>IMU预测</li><li>视觉跟踪</li><li>视觉增广</li><li>视觉更新—选老点或者看不见的点</li><li>视觉更新—边缘化</li><li>剔除老帧</li></ol><p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678" loading="lazy"></p><p>误差状态向量</p><p>$$\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce{^{G}\hat{p}_{c_N} \ce{G}\hat{p}_{C_N}}]$$</p><p>$$\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T$$</p><blockquote><p>每得到一个新图像以后需要对协方差矩阵做一个增广</p></blockquote><!-- 源文件缺失，已注释 -->![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)<!-- / --><p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268" loading="lazy"></p><blockquote><p>成熟的路标点 表示窗口内各帧都看得到的点</p></blockquote><p><strong>因子图</strong></p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572" loading="lazy"></p><blockquote><p>Tbc表示IMU与相机间的转换矩阵</p></blockquote><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717" loading="lazy"></p><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060" loading="lazy"></p><p>路标点边缘化完后就可以了</p><p><strong>第j个路标点的所有视觉误差为</strong></p><p>$$r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}$$</p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897" loading="lazy"></p><p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。</p><p>$$r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)$$</p><h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote><p>复杂 不常用</p></blockquote><p>流程</p><ol><li>IMU预测</li><li>视觉更新</li><li>IEKF</li><li>相机模型</li><li>像素坐标校正</li><li>光度误差</li><li>QR分解</li><li>Paych提取及Warp计算</li><li>路标点质量评价及维护</li></ol><p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738" loading="lazy"></p><blockquote><p>ROVIO使用光度误差</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499" loading="lazy"></p></blockquote><blockquote><blockquote><p>ROVIO将路标点包含到状态向量中。有因将路标点表征在当前帧的坐标系下，有范围限制，因此对其进行归一化得到无约束的状态量—方向向量Bearing Vector</p></blockquote></blockquote><p>ROVIO的创新点如下所示：</p><p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing Vector老了使得Pc平滑可导</p><p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978" loading="lazy"></p><p>状态向量：当前帧的PVQB和路标点( mu,p)</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085" loading="lazy"></p><p>因子图如下</p><p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998" loading="lazy"></p><h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722" loading="lazy"></p><p>Tracklocal map：仅优化当前帧</p><p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305" loading="lazy"></p><p>Local Map：优化华创内的所有帧的PVQB和路标点</p><p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237" loading="lazy"></p><h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p><!-- 源文件缺失，已注释 -->![image-20191202161618980](/home/guoben/ICE-BA因子图.png)<!-- / --><p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p><p>总结而言，在ICE-BA中更新Factor有三种情况：</p><ol><li>该Factor在本次迭代中没有变化，则不更新；</li><li>该Factor是新Factor，则在原来基础上+&#x3D;新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li><li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li></ol><p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352" loading="lazy"></p><h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013" loading="lazy"></p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464" loading="lazy"></p><ol><li>黄色为IMU帧间约束（PVQBaBg 15×1）</li><li>蓝色为视觉重投影误差约束（2×1）</li><li>绿色为闭环帧，用来计算相对位姿，用于闭环优化时使用</li></ol><p>VINS在前端通过光流法进行跟踪，首先检测Harris角点，跟踪相邻帧的角点，</p><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote><p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p></blockquote><p>$$X=[x_0\,x_1\,...x_n,x_c^b,\lambda_0,\lambda_1,...\lambda_m]$$</p><p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170" loading="lazy"></p><blockquote><p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> VIO </tag>
+            
+            <tag> VINS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 ROS 工具标定相机</title>
+      <link href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
+      <url>/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p><p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p><blockquote><p><strong>标定相机参数，方能还原真实世界</strong></p></blockquote><span id="more"></span><h2 id="利用-camera-calibration-标定相机流程"><a href="#利用-camera-calibration-标定相机流程" class="headerlink" title="利用 camera_calibration 标定相机流程"></a>利用 camera_calibration 标定相机流程</h2><ol><li>驱动USB摄像头</li><li>利用camera_calibration标定相机</li></ol><p>执行命令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure><ol><li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p><p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img" loading="lazy"></p></li><li><p>畸变参数向量：[k1,k2,p1,p2]</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> 相机标定 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 evo 工具评测 SLAM</title>
+      <link href="/2020/02/15/2020-02-19-How_to_use_evo/"/>
+      <url>/2020/02/15/2020-02-19-How_to_use_evo/</url>
+      
+        <content type="html"><![CDATA[<p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p><p><a href="https://github.com/MichaelGrupp/evo">github地址</a></p><p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p><blockquote><p><strong>轨迹评估有据，SLAM 精度了然</strong></p></blockquote><span id="more"></span><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol><li>使用pypi直接安装：</li></ol><p><code>pip install evo --upgrade --no-binary evo</code></p><ol start="2"><li>本地编译安装</li></ol><p><code> pip install --editable . --upgrade --no-binary evo</code><br>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p><ul><li><code>evo_ape </code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；</li></ul><p>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</p><ul><li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差&#x3D;绝对误差&#x2F;真值）</li></ul><p><strong>工具命令</strong></p><ul><li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p></li><li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p></li><li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p></li><li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p></li><li><p><code>-va</code> a 对齐轨迹</p></li></ul><p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum&#x2F;kitti&#x2F;bag&#x2F;euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul><li>对比&#x2F;绘制VINS-mono&#x2F;fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html">该博客</a>.</li></ul><h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj euroc ./groundtruth/MH_01_data.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>画某一次结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./result/MH_01/loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p><h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p><ul><li><p>“vins_result_loop” : defined in [path to Vins folder]&#x2F;pose_graph&#x2F;src&#x2F;pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p></li><li><p>“vins_result_no_loop”: defined in [path to Vins folder]&#x2F;vins_estimator&#x2F;src&#x2F;utility&#x2F;visualization.cpp in function pubOdometry(). </p><p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p></li></ul><p>代码修改过程：</p><p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="type">double</span> turetime = header.stamp.<span class="built_in">toSec</span>();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">w</span>() &lt;&lt; endl; </span><br></pre></td></tr></table></figure><p>**pose_graph.cpp **</p><p>updatePath()</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">&quot;/home/guoben/Documents/output/loop_result.csv&quot;</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="type">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure><p>画某一个结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>对比结果</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_rpe euroc ./groundtruth/MH_01_data.csv ./result/MH_01/vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure><p>MSCKF</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// ofstream foutC(&quot;/home/guoben/Documents/output/result_vio.csv&quot;, ios::app);</span><br><span class="line">// foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">// foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> VIO </tag>
+            
+            <tag> evo </tag>
             
         </tags>
       
@@ -1590,130 +1694,7 @@
     
     
     <entry>
-      <title>发布IMU信息到ROS系统中</title>
-      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
-      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
-      
-        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> IMU </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>VIO主流框架</title>
-      <link href="/2020/02/15/2020-02-15-VIO_Framework/"/>
-      <url>/2020/02/15/2020-02-15-VIO_Framework/</url>
-      
-        <content type="html"><![CDATA[<p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p><p>需要理解约束关系的确定，以及确立相应约束的三个要素</p><p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p><blockquote><p><strong>视觉惯性融合，约束决定精度</strong></p></blockquote><span id="more"></span><h2 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h2><p>定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心；</p><p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p><p><strong>核心</strong>：误差项、优化变量、协方差</p><p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p><h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933" loading="lazy"></p><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：<br>$$\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)$$<br>误差项:<br>$$e(x+\Delta x)=e(x)+J(x)\Delta x$$</p><p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：<br>$$J^T P^{-1}\Delta x = -J^TP^{-1}e$$</p><h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498" loading="lazy"></p><p>其Jacobian矩阵如下：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322" loading="lazy"></p><p>得到相应的Hession矩阵如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060" loading="lazy"></p><h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397" loading="lazy"></p><h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622" loading="lazy"></p><p>举例，其中一个T1T1的小块的数学形式如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614" loading="lazy"></p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。 </p><h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013" loading="lazy"></p><h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol><li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li><li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li></ol><h4 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h4><ol><li>积分下一个时刻的PVQ作为视觉初始值</li><li>预计分相邻帧的PVQ变化量，作为IMU的约束</li><li>计算IMU误差的协方差和jacobian</li></ol><p><img src="/./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399" loading="lazy"></p><h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol><li><p>将视觉约束就加到联合优化是紧耦合</p></li><li><p>将视觉约束后的位姿加入到联合优化是松耦合</p></li></ol><p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367" loading="lazy"></p><h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p><ol><li>初始化</li><li>IMU预测</li><li>视觉跟踪</li><li>视觉增广</li><li>视觉更新—选老点或者看不见的点</li><li>视觉更新—边缘化</li><li>剔除老帧</li></ol><p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678" loading="lazy"></p><p>误差状态向量<br>$$\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce{^{G}\hat{p}_{c_N} \ce{G}\hat{p}_{C_N}}]$$</p><p>$$\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T$$</p><blockquote><p>每得到一个新图像以后需要对协方差矩阵做一个增广</p></blockquote><!-- 源文件缺失，已注释 -->![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)<!-- / --><p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268" loading="lazy"></p><blockquote><p>成熟的路标点 表示窗口内各帧都看得到的点</p></blockquote><p><strong>因子图</strong></p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572" loading="lazy"></p><blockquote><p>Tbc表示IMU与相机间的转换矩阵</p></blockquote><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717" loading="lazy"></p><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060" loading="lazy"></p><p>路标点边缘化完后就可以了</p><p><strong>第j个路标点的所有视觉误差为</strong><br>$$r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}$$<br><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897" loading="lazy"></p><p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。<br>$$r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)$$</p><h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote><p>复杂 不常用</p></blockquote><p>流程</p><ol><li>IMU预测</li><li>视觉更新</li><li>IEKF</li><li>相机模型</li><li>像素坐标校正</li><li>光度误差</li><li>QR分解</li><li>Paych提取及Warp计算</li><li>路标点质量评价及维护</li></ol><p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738" loading="lazy"></p><blockquote><p>ROVIO使用光度误差</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499" loading="lazy"></p></blockquote><blockquote><blockquote><p>ROVIO将路标点包含到状态向量中。有因将路标点表征在当前帧的坐标系下，有范围限制，因此对其进行归一化得到无约束的状态量—方向向量Bearing Vector</p></blockquote></blockquote><p>ROVIO的创新点如下所示：</p><p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing  Vector老了使得Pc平滑可导</p><p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978" loading="lazy"></p><p>状态向量：当前帧的PVQB和路标点( mu,p)</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085" loading="lazy"></p><p>因子图如下</p><p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998" loading="lazy"></p><h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722" loading="lazy"></p><p>Tracklocal map：仅优化当前帧</p><p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305" loading="lazy"></p><p>Local Map：优化华创内的所有帧的PVQB和路标点</p><p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237" loading="lazy"></p><h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p><!-- 源文件缺失，已注释 -->![image-20191202161618980](/home/guoben/ICE-BA因子图.png)<!-- / --><p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p><p>总结而言，在ICE-BA中更新Factor有三种情况：</p><ol><li>该Factor在本次迭代中没有变化，则不更新；</li><li>该Factor是新Factor，则在原来基础上+&#x3D;新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li><li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li></ol><p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352" loading="lazy"></p><h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p> <img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013" loading="lazy"></p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464" loading="lazy"></p><ol><li>黄色为IMU帧间约束（PVQBaBg 15×1）</li><li>蓝色为视觉重投影误差约束（2×1）</li><li>绿色为闭环帧，用来计算相对位姿，用于闭环优化时使用</li></ol><p>VINS在前端通过光流法进行跟踪，首先检测Harris角点，跟踪相邻帧的角点，</p><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote><p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p></blockquote><p>$$X=[x_0\,x_1\,...x_n,x_c^b,\lambda_0,\lambda_1,...\lambda_m]$$</p><p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170" loading="lazy"></p><blockquote><p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p></blockquote>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> VIO </tag>
-            
-            <tag> VINS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>利用ROS标定相机步骤与方法</title>
-      <link href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
-      <url>/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
-      
-        <content type="html"><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p><p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p><blockquote><p><strong>标定相机参数，方能还原真实世界</strong></p></blockquote><span id="more"></span><h2 id="利用-camera-calibration-标定相机流程"><a href="#利用-camera-calibration-标定相机流程" class="headerlink" title="利用 camera_calibration 标定相机流程"></a>利用 camera_calibration 标定相机流程</h2><ol><li>驱动USB摄像头</li><li>利用camera_calibration标定相机</li></ol><p>执行命令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure><ol><li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p><p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img" loading="lazy"></p></li><li><p>畸变参数向量：[k1,k2,p1,p2]</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> 相机标定 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>使用evo工具评测SLAM</title>
-      <link href="/2020/02/15/2020-02-19-How_to_use_evo/"/>
-      <url>/2020/02/15/2020-02-19-How_to_use_evo/</url>
-      
-        <content type="html"><![CDATA[<p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p><p><a href="https://github.com/MichaelGrupp/evo">github地址</a></p><p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p><blockquote><p><strong>轨迹评估有据，SLAM 精度了然</strong></p></blockquote><span id="more"></span><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol><li>使用pypi直接安装：</li></ol><p><code>pip install evo --upgrade --no-binary evo</code></p><ol start="2"><li>本地编译安装</li></ol><p><code> pip install --editable . --upgrade --no-binary evo</code><br>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p><ul><li><code>evo_ape </code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；</li></ul><p>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</p><ul><li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差&#x3D;绝对误差&#x2F;真值）</li></ul><p><strong>工具命令</strong></p><ul><li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p></li><li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p></li><li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p></li><li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p></li><li><p><code>-va</code> a 对齐轨迹</p></li></ul><p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum&#x2F;kitti&#x2F;bag&#x2F;euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul><li>对比&#x2F;绘制VINS-mono&#x2F;fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html">该博客</a>.</li></ul><h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj euroc ./groundtruth/MH_01_data.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>画某一次结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./result/MH_01/loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p><h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p><ul><li><p>“vins_result_loop” : defined in [path to Vins folder]&#x2F;pose_graph&#x2F;src&#x2F;pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p></li><li><p>“vins_result_no_loop”: defined in [path to Vins folder]&#x2F;vins_estimator&#x2F;src&#x2F;utility&#x2F;visualization.cpp in function pubOdometry(). </p><p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p></li></ul><p>代码修改过程：</p><p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="type">double</span> turetime = header.stamp.<span class="built_in">toSec</span>();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">w</span>() &lt;&lt; endl; </span><br></pre></td></tr></table></figure><p>**pose_graph.cpp **</p><p>updatePath()</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">&quot;/home/guoben/Documents/output/loop_result.csv&quot;</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="type">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure><p>画某一个结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>对比结果</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_rpe euroc ./groundtruth/MH_01_data.csv ./result/MH_01/vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure><p>MSCKF</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// ofstream foutC(&quot;/home/guoben/Documents/output/result_vio.csv&quot;, ios::app);</span><br><span class="line">// foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">// foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> SLAM </tag>
-            
-            <tag> VIO </tag>
-            
-            <tag> evo </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>SLAM各算法运行方法与过程</title>
-      <link href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
-      <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
-      
-        <content type="html"><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p><p>主要包括以下五种算法:</p><ol><li>VINS_mono&#x2F;fusion</li><li>OKVIS</li><li>ROVIO</li><li>VI_ORB-SLAM</li><li>MSCKF</li></ol><p>本文介绍 VINS_mono&#x2F;fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。</p><blockquote><p><strong>跑通五种算法，间接法体系尽收眼底</strong></p></blockquote><span id="more"></span><h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr><h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p><hr><h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html">该博客</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON</span><br></pre></td></tr></table></figure><h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source devel/setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch </span><br></pre></td></tr></table></figure><h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;/home/guoben/Documents/output/vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure><hr><h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc</p><hr><h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~/Project/msckf_vio_workspace/src/msckf_vio/rviz/rviz_euroc_config.rviz   //rviz显示模型</span><br><span class="line">  rosbag play /home/wj/Downloads/dataset/EuRoC/ROS_bag/MH_05_difficult.bag</span><br></pre></td></tr></table></figure><p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> SLAM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Markdown语法简介</title>
+      <title>Markdown 语法简介</title>
       <link href="/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/"/>
       <url>/2020/01/15/2020-01-15-chinese-markdown-cheatsheet/</url>
       
@@ -1730,6 +1711,25 @@
         <tags>
             
             <tag> markdown </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 各算法运行方法与过程</title>
+      <link href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
+      <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
+      
+        <content type="html"><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p><p>主要包括以下五种算法:</p><ol><li>VINS_mono&#x2F;fusion</li><li>OKVIS</li><li>ROVIO</li><li>VI_ORB-SLAM</li><li>MSCKF</li></ol><p>本文介绍 VINS_mono&#x2F;fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。</p><blockquote><p><strong>跑通五种算法，间接法体系尽收眼底</strong></p></blockquote><span id="more"></span><h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr><h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p><hr><h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html">该博客</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON</span><br></pre></td></tr></table></figure><h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source devel/setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch </span><br></pre></td></tr></table></figure><h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;/home/guoben/Documents/output/vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure><hr><h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc</p><hr><h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~/Project/msckf_vio_workspace/src/msckf_vio/rviz/rviz_euroc_config.rviz   //rviz显示模型</span><br><span class="line">  rosbag play /home/wj/Downloads/dataset/EuRoC/ROS_bag/MH_05_difficult.bag</span><br></pre></td></tr></table></figure><p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
             
         </tags>
       
