@@ -789,7 +789,7 @@
 
 </article>
     
-    <article id="post-2020-03-14-GMM" class="article article-type-post" itemscope
+    <article id="post-2020-03-13-Kalman_Filter" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -797,8 +797,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-14-GMM/"
-    >高斯混合模型</a
+  <a class="article-title" href="/2020/03/14/2020-03-13-Kalman_Filter/"
+    >Kalman滤波器学习</a
   >
 </h2>
   
@@ -808,7 +808,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/14/2020-03-14-GMM/" class="article-date">
+      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-date">
   <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
 </a>
       
@@ -830,13 +830,20 @@
       
 
       
-      <p>高斯混合模型</p>
-<p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p>
+      <p>概率图+时间&#x3D;动态系统</p>
+<p>​	对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
+<ol>
+<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
+<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
+<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
+</ol>
+<p>本节主要来介绍kalman滤波器。</p>
+<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
 <blockquote>
-<p><strong>简单分布叠加，拟合复杂世界</strong></p>
+<p><strong>预测加修正，噪声终让路</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/03/14/2020-03-14-GMM/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/03/14/2020-03-13-Kalman_Filter/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -849,7 +856,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GMM/" rel="tag">GMM</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">Kalman滤波器</a></li></ul>
 
 
     </footer>
@@ -947,7 +954,7 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/lyrics">歌词</a>
+      <a class="nav-item-link" href="/lyrics">音乐时光</a>
     </li>
     
     <li class="nav-item">
