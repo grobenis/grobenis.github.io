@@ -291,7 +291,7 @@ html {
 .timeline::before {
   content: "";
   position: absolute;
-  left: 78px;
+  left: 86px;
   top: 10px;
   bottom: 10px;
   width: 2px;
@@ -300,7 +300,7 @@ html {
 .timeline-item {
   position: relative;
   display: grid;
-  grid-template-columns: 58px 40px 18px 1fr;
+  grid-template-columns: 58px 56px 1fr;
   align-items: center;
   margin-bottom: 26px;
 }
