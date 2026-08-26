@@ -11,7 +11,6 @@ share: false
 <div class="about-grid">
 
 <div class="about-card">
-<div class="about-card-icon"><i class="ri-user-3-line"></i></div>
 <h3>关于我</h3>
 <p>你好，我是<strong>郭犇</strong>，一名专注于 <strong>SLAM / 计算机视觉</strong> 方向的工程师。</p>
 <ul>
@@ -22,7 +21,6 @@ share: false
 </div>
 
 <div class="about-card">
-<div class="about-card-icon"><i class="ri-article-line"></i></div>
 <h3>关于博客</h3>
 <p>这个博客用于记录自己在学习中遇到的有趣难题、学习过程，偶尔也写写随笔感悟、读书笔记，主要包括四类内容：</p>
 <ol>
@@ -34,7 +32,6 @@ share: false
 </div>
 
 <div class="about-card">
-<div class="about-card-icon"><i class="ri-stack-line"></i></div>
 <h3>技术领域</h3>
 <ul>
 <li><strong>SLAM</strong>：ORB-SLAM、VINS-mono、激光 SLAM、回环检测、图优化、后端优化</li>
@@ -44,7 +41,6 @@ share: false
 </div>
 
 <div class="about-card">
-<div class="about-card-icon"><i class="ri-mail-line"></i></div>
 <h3>联系我</h3>
 <ul class="about-contact">
 <li><i class="ri-github-line"></i><a href="https://github.com/grobenis" target="_blank" rel="noopener">grobenis</a></li>
