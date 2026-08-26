@@ -1,13 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
-  <!-- 简笔画小牛 -->
-  <path d="M45 28 Q42 13 52 7" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
-  <path d="M75 28 Q78 13 68 7" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
-  <ellipse cx="27" cy="44" rx="10" ry="15" fill="none" stroke="#000000" stroke-width="4" transform="rotate(-22 27 44)"/>
-  <ellipse cx="93" cy="44" rx="10" ry="15" fill="none" stroke="#000000" stroke-width="4" transform="rotate(22 93 44)"/>
-  <circle cx="60" cy="60" r="39" fill="none" stroke="#000000" stroke-width="4"/>
-  <circle cx="46" cy="57" r="3.2" fill="#000000"/>
-  <circle cx="74" cy="57" r="3.2" fill="#000000"/>
-  <ellipse cx="60" cy="80" rx="15" ry="10" fill="none" stroke="#000000" stroke-width="3.5"/>
-  <circle cx="54.5" cy="80" r="2.2" fill="#000000"/>
-  <circle cx="65.5" cy="80" r="2.2" fill="#000000"/>
+  <!-- 简笔画小牛：宽扁脸 + 大鼻口 + 月牙弯角，突出牛的特征 -->
+  <!-- 牛角（月牙弯，向上弯） -->
+  <path d="M36 30 Q28 14 38 4 Q42 17 51 24" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
+  <path d="M84 30 Q92 14 82 4 Q78 17 69 24" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
+  <!-- 耳朵（两侧） -->
+  <ellipse cx="24" cy="52" rx="9" ry="14" fill="none" stroke="#000000" stroke-width="4" transform="rotate(-18 24 52)"/>
+  <ellipse cx="96" cy="52" rx="9" ry="14" fill="none" stroke="#000000" stroke-width="4" transform="rotate(18 96 52)"/>
+  <!-- 头（宽扁圆角方形，牛脸） -->
+  <rect x="21" y="26" width="78" height="72" rx="32" fill="none" stroke="#000000" stroke-width="4"/>
+  <!-- 眼睛 -->
+  <circle cx="48" cy="58" r="3.5" fill="#000000"/>
+  <circle cx="72" cy="58" r="3.5" fill="#000000"/>
+  <!-- 大鼻口（宽扁圆角矩形，微凸出下巴） -->
+  <rect x="38" y="73" width="44" height="28" rx="14" fill="none" stroke="#000000" stroke-width="3.5"/>
+  <!-- 鼻孔（竖直椭圆，间距宽） -->
+  <ellipse cx="50" cy="89" rx="3.2" ry="5.5" fill="#000000"/>
+  <ellipse cx="70" cy="89" rx="3.2" ry="5.5" fill="#000000"/>
 </svg>
