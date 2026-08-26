@@ -6,3 +6,7 @@ node_modules/
 public/
 .deploy*/
 _multiconfig.yml
+# 私密文章（仅本地，不推送到公开仓库）
+source/_posts/private-*.md
+# 私密空间页面（明文源码仅本地，构建产物为加密版）
+source/private/
