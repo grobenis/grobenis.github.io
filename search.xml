@@ -242,9 +242,9 @@
       
         <tags>
             
-            <tag> SLAM </tag>
-            
             <tag> ROS </tag>
+            
+            <tag> SLAM </tag>
             
             <tag> VINS </tag>
             
@@ -323,9 +323,9 @@
       
         <tags>
             
-            <tag> 可穿戴 </tag>
-            
             <tag> 算法 </tag>
+            
+            <tag> 可穿戴 </tag>
             
         </tags>
       
@@ -518,11 +518,11 @@
       
         <tags>
             
+            <tag> 计算机网络 </tag>
+            
             <tag> TCP </tag>
             
             <tag> UDP </tag>
-            
-            <tag> 计算机网络 </tag>
             
         </tags>
       
@@ -553,9 +553,9 @@
             
             <tag> 笔试 </tag>
             
-            <tag> 计算机网络 </tag>
-            
             <tag> 算法 </tag>
+            
+            <tag> 计算机网络 </tag>
             
             <tag> 操作系统 </tag>
             
@@ -1238,9 +1238,9 @@
             
             <tag> SLAM </tag>
             
-            <tag> 三角化 </tag>
-            
             <tag> 面试 </tag>
+            
+            <tag> 三角化 </tag>
             
         </tags>
       
@@ -1267,9 +1267,9 @@
             
             <tag> SLAM </tag>
             
-            <tag> 面试 </tag>
-            
             <tag> 初始化 </tag>
+            
+            <tag> 面试 </tag>
             
         </tags>
       
@@ -1330,31 +1330,6 @@
     
     
     <entry>
-      <title>高斯混合模型</title>
-      <link href="/2020/03/14/2020-03-14-GMM/"/>
-      <url>/2020/03/14/2020-03-14-GMM/</url>
-      
-        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> GMM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>概率图模型</title>
       <link href="/2020/03/14/2020-03-14-Probability_graph_model/"/>
       <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
@@ -1380,11 +1355,11 @@
     
     
     <entry>
-      <title>粒子滤波器</title>
-      <link href="/2020/03/14/2020-03-15-Particle_Filter/"/>
-      <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+      <title>高斯混合模型</title>
+      <link href="/2020/03/14/2020-03-14-GMM/"/>
+      <url>/2020/03/14/2020-03-14-GMM/</url>
       
-        <content type="html"><![CDATA[<p>粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。</p><blockquote><p><strong>以粒子之众，逼近状态之真</strong></p></blockquote><span id="more"></span><h2 id="为什么需要粒子滤波"><a href="#为什么需要粒子滤波" class="headerlink" title="为什么需要粒子滤波"></a>为什么需要粒子滤波</h2><p>卡尔曼滤波（KF）在线性高斯假设下能得到解析的最优解，扩展卡尔曼滤波（EKF）通过一阶泰勒展开将非线性问题局部线性化。但现实中许多系统的运动模型与观测模型是强非线性的，噪声也往往不服从高斯分布，此时线性化会产生较大误差，甚至导致滤波器发散。</p><p>粒子滤波的思路是：既然无法用解析表达式描述后验分布，就用<strong>一组带权重的随机样本（粒子）</strong>来近似它。只要粒子足够多，采样近似就可以任意逼近真实的后验分布。</p><h2 id="贝叶斯滤波框架"><a href="#贝叶斯滤波框架" class="headerlink" title="贝叶斯滤波框架"></a>贝叶斯滤波框架</h2><p>状态估计可以统一在贝叶斯滤波框架下。设系统状态为 $x_k$，观测为 $z_k$，则递推估计分为两步：</p><ol><li><p><strong>预测</strong>：利用运动模型 $p(x_k|x_{k-1})$ 由上一时刻的后验 $p(x_{k-1}|z_{1:k-1})$ 推得先验：</p><p>$$p(x_k|z_{1:k-1}) = \int p(x_k|x_{k-1}) p(x_{k-1}|z_{1:k-1}) dx_{k-1}$$</p></li><li><p><strong>更新</strong>：利用观测模型 $p(z_k|x_k)$ 修正先验得到后验：</p><p>$$p(x_k|z_{1:k}) \propto p(z_k|x_k) p(x_k|z_{1:k-1})$$</p></li></ol><p>KF 在特定假设下有闭式解，而粒子滤波用数值采样的方式同时处理预测与更新两步。</p><h2 id="重要性采样与序贯重要性采样（SIS）"><a href="#重要性采样与序贯重要性采样（SIS）" class="headerlink" title="重要性采样与序贯重要性采样（SIS）"></a>重要性采样与序贯重要性采样（SIS）</h2><p>直接从后验 $p(x_k|z_{1:k})$ 采样通常是困难的。重要性采样引入一个容易采样的<strong>建议分布</strong> $q(x)$，用粒子及其权重近似后验：</p><p>$$w_k^{(i)} \propto \frac{p(x_k^{(i)}|z_{1:k})}{q(x_k^{(i)})}$$</p><p>结合递推结构，可导出序贯重要性采样（Sequential Importance Sampling, SIS）的权重递推公式：</p><p>$$w_k^{(i)} \propto w_{k-1}^{(i)} \frac{p(z_k|x_k^{(i)}) p(x_k^{(i)}|x_{k-1}^{(i)})}{q(x_k^{(i)}|x_{k-1}^{(i)}, z_k)}$$</p><p>即每来一个新观测，只需利用运动模型与观测模型更新粒子权重，而无需重新采样所有历史粒子。</p><h2 id="粒子退化与重采样"><a href="#粒子退化与重采样" class="headerlink" title="粒子退化与重采样"></a>粒子退化与重采样</h2><p>SIS 存在一个严重问题——<strong>粒子退化</strong>：经过若干次递推后，大部分粒子的权重趋近于 0，只剩少数粒子携带有效信息，浪费大量计算资源。</p><p>衡量退化程度的指标是有效粒子数 $N_{eff} = 1 / \sum_i (w^{(i)})^2$。当 $N_{eff}$ 低于阈值时，需要进行<strong>重采样</strong>：按照权重大小从旧粒子集中重新抽取 $N$ 个粒子，权重大的粒子被复制、权重小的被淘汰，之后所有粒子权重重新设为 $1/N$。</p><p>常用重采样方法包括：多项式重采样、系统重采样、残差重采样等。重采样以损失粒子多样性为代价换取粒子有效性，因此实际中常结合二者（如 Sampling Importance Resampling）。</p><h2 id="标准粒子滤波算法流程"><a href="#标准粒子滤波算法流程" class="headerlink" title="标准粒子滤波算法流程"></a>标准粒子滤波算法流程</h2><ol><li><strong>初始化</strong>：从先验分布 $p(x_0)$ 采样 $N$ 个粒子 $\{x_0^{(i)}\}_{i=1}^N$，权重均设为 $1/N$。</li><li><strong>预测</strong>：按运动模型 $x_k^{(i)} \sim p(x_k|x_{k-1}^{(i)})$ 递推每个粒子。</li><li><strong>更新</strong>：按观测似然更新权重 $w_k^{(i)} = w_{k-1}^{(i)} p(z_k|x_k^{(i)})$，并归一化。</li><li><strong>重采样</strong>：若 $N_{eff} &lt; N_{th}$，进行重采样。</li><li><strong>输出估计</strong>：$\hat{x}_k = \sum_i w_k^{(i)} x_k^{(i)}$，回到第 2 步循环。</li></ol><h2 id="与其他滤波方法的对比"><a href="#与其他滤波方法的对比" class="headerlink" title="与其他滤波方法的对比"></a>与其他滤波方法的对比</h2><table><thead><tr><th>方法</th><th>适用场景</th><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>KF</td><td>线性高斯系统</td><td>最优闭式解，计算快</td><td>适用范围窄</td></tr><tr><td>EKF</td><td>弱非线性</td><td>简单、工程常用</td><td>线性化误差，雅可比计算</td></tr><tr><td>UKF</td><td>强非线性</td><td>无需计算雅可比，精度高</td><td>仍假设高斯分布</td></tr><tr><td>粒子滤波</td><td>非线性、非高斯</td><td>通用性强，可近似任意分布</td><td>计算量大，粒子退化</td></tr></tbody></table><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul><li><strong>SLAM</strong>：如 FastSLAM 用粒子滤波估计机器人位姿，每个粒子维护一份地图。</li><li><strong>目标跟踪</strong>：非线性运动与量测场景下的多目标跟踪。</li><li><strong>定位</strong>：结合 GPS&#x2F;IMU 的非线性融合定位。</li><li><strong>机器人状态估计</strong>：非高斯噪声环境下的位姿与速度估计。</li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>粒子滤波以”样本近似分布”的蒙特卡洛思想，突破了 KF 系列的线性高斯局限，代价是计算开销与粒子退化问题。理解贝叶斯递推框架是掌握粒子滤波的关键，重采样则是保证算法长期稳定运行的灵魂。</p>]]></content>
+        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
       
       
       <categories>
@@ -1396,7 +1371,7 @@
       
         <tags>
             
-            <tag> 粒子滤波器 </tag>
+            <tag> GMM </tag>
             
         </tags>
       
@@ -1422,6 +1397,31 @@
         <tags>
             
             <tag> SLAM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>粒子滤波器</title>
+      <link href="/2020/03/14/2020-03-15-Particle_Filter/"/>
+      <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+      
+        <content type="html"><![CDATA[<p>粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。</p><blockquote><p><strong>以粒子之众，逼近状态之真</strong></p></blockquote><span id="more"></span><h2 id="为什么需要粒子滤波"><a href="#为什么需要粒子滤波" class="headerlink" title="为什么需要粒子滤波"></a>为什么需要粒子滤波</h2><p>卡尔曼滤波（KF）在线性高斯假设下能得到解析的最优解，扩展卡尔曼滤波（EKF）通过一阶泰勒展开将非线性问题局部线性化。但现实中许多系统的运动模型与观测模型是强非线性的，噪声也往往不服从高斯分布，此时线性化会产生较大误差，甚至导致滤波器发散。</p><p>粒子滤波的思路是：既然无法用解析表达式描述后验分布，就用<strong>一组带权重的随机样本（粒子）</strong>来近似它。只要粒子足够多，采样近似就可以任意逼近真实的后验分布。</p><h2 id="贝叶斯滤波框架"><a href="#贝叶斯滤波框架" class="headerlink" title="贝叶斯滤波框架"></a>贝叶斯滤波框架</h2><p>状态估计可以统一在贝叶斯滤波框架下。设系统状态为 $x_k$，观测为 $z_k$，则递推估计分为两步：</p><ol><li><p><strong>预测</strong>：利用运动模型 $p(x_k|x_{k-1})$ 由上一时刻的后验 $p(x_{k-1}|z_{1:k-1})$ 推得先验：</p><p>$$p(x_k|z_{1:k-1}) = \int p(x_k|x_{k-1}) p(x_{k-1}|z_{1:k-1}) dx_{k-1}$$</p></li><li><p><strong>更新</strong>：利用观测模型 $p(z_k|x_k)$ 修正先验得到后验：</p><p>$$p(x_k|z_{1:k}) \propto p(z_k|x_k) p(x_k|z_{1:k-1})$$</p></li></ol><p>KF 在特定假设下有闭式解，而粒子滤波用数值采样的方式同时处理预测与更新两步。</p><h2 id="重要性采样与序贯重要性采样（SIS）"><a href="#重要性采样与序贯重要性采样（SIS）" class="headerlink" title="重要性采样与序贯重要性采样（SIS）"></a>重要性采样与序贯重要性采样（SIS）</h2><p>直接从后验 $p(x_k|z_{1:k})$ 采样通常是困难的。重要性采样引入一个容易采样的<strong>建议分布</strong> $q(x)$，用粒子及其权重近似后验：</p><p>$$w_k^{(i)} \propto \frac{p(x_k^{(i)}|z_{1:k})}{q(x_k^{(i)})}$$</p><p>结合递推结构，可导出序贯重要性采样（Sequential Importance Sampling, SIS）的权重递推公式：</p><p>$$w_k^{(i)} \propto w_{k-1}^{(i)} \frac{p(z_k|x_k^{(i)}) p(x_k^{(i)}|x_{k-1}^{(i)})}{q(x_k^{(i)}|x_{k-1}^{(i)}, z_k)}$$</p><p>即每来一个新观测，只需利用运动模型与观测模型更新粒子权重，而无需重新采样所有历史粒子。</p><h2 id="粒子退化与重采样"><a href="#粒子退化与重采样" class="headerlink" title="粒子退化与重采样"></a>粒子退化与重采样</h2><p>SIS 存在一个严重问题——<strong>粒子退化</strong>：经过若干次递推后，大部分粒子的权重趋近于 0，只剩少数粒子携带有效信息，浪费大量计算资源。</p><p>衡量退化程度的指标是有效粒子数 $N_{eff} = 1 / \sum_i (w^{(i)})^2$。当 $N_{eff}$ 低于阈值时，需要进行<strong>重采样</strong>：按照权重大小从旧粒子集中重新抽取 $N$ 个粒子，权重大的粒子被复制、权重小的被淘汰，之后所有粒子权重重新设为 $1/N$。</p><p>常用重采样方法包括：多项式重采样、系统重采样、残差重采样等。重采样以损失粒子多样性为代价换取粒子有效性，因此实际中常结合二者（如 Sampling Importance Resampling）。</p><h2 id="标准粒子滤波算法流程"><a href="#标准粒子滤波算法流程" class="headerlink" title="标准粒子滤波算法流程"></a>标准粒子滤波算法流程</h2><ol><li><strong>初始化</strong>：从先验分布 $p(x_0)$ 采样 $N$ 个粒子 $\{x_0^{(i)}\}_{i=1}^N$，权重均设为 $1/N$。</li><li><strong>预测</strong>：按运动模型 $x_k^{(i)} \sim p(x_k|x_{k-1}^{(i)})$ 递推每个粒子。</li><li><strong>更新</strong>：按观测似然更新权重 $w_k^{(i)} = w_{k-1}^{(i)} p(z_k|x_k^{(i)})$，并归一化。</li><li><strong>重采样</strong>：若 $N_{eff} &lt; N_{th}$，进行重采样。</li><li><strong>输出估计</strong>：$\hat{x}_k = \sum_i w_k^{(i)} x_k^{(i)}$，回到第 2 步循环。</li></ol><h2 id="与其他滤波方法的对比"><a href="#与其他滤波方法的对比" class="headerlink" title="与其他滤波方法的对比"></a>与其他滤波方法的对比</h2><table><thead><tr><th>方法</th><th>适用场景</th><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>KF</td><td>线性高斯系统</td><td>最优闭式解，计算快</td><td>适用范围窄</td></tr><tr><td>EKF</td><td>弱非线性</td><td>简单、工程常用</td><td>线性化误差，雅可比计算</td></tr><tr><td>UKF</td><td>强非线性</td><td>无需计算雅可比，精度高</td><td>仍假设高斯分布</td></tr><tr><td>粒子滤波</td><td>非线性、非高斯</td><td>通用性强，可近似任意分布</td><td>计算量大，粒子退化</td></tr></tbody></table><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul><li><strong>SLAM</strong>：如 FastSLAM 用粒子滤波估计机器人位姿，每个粒子维护一份地图。</li><li><strong>目标跟踪</strong>：非线性运动与量测场景下的多目标跟踪。</li><li><strong>定位</strong>：结合 GPS&#x2F;IMU 的非线性融合定位。</li><li><strong>机器人状态估计</strong>：非高斯噪声环境下的位姿与速度估计。</li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>粒子滤波以”样本近似分布”的蒙特卡洛思想，突破了 KF 系列的线性高斯局限，代价是计算开销与粒子退化问题。理解贝叶斯递推框架是掌握粒子滤波的关键，重采样则是保证算法长期稳定运行的灵魂。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 粒子滤波器 </tag>
             
         </tags>
       
@@ -1484,6 +1484,33 @@
     
     
     <entry>
+      <title>经典聚类算法调研</title>
+      <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
+      <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
+      
+        <content type="html"><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p><ol><li>Means-shift聚类</li><li>k-means聚类</li><li>Fuzzy C means聚类</li><li>Medoid shift算法</li><li>Turbopixel算法</li><li>SLIC算法</li></ol><p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p><blockquote><p><strong>物以类聚，算法以分见真章</strong></p></blockquote><span id="more"></span><h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p><p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p><p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p><p><strong>算法步骤</strong></p><ol><li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p></li><li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p></li><li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p></li><li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p><p>下图演示了均值漂移聚类的计算步骤：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/Meanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法" loading="lazy"></p></li></ol><p><strong>算法评价</strong></p><p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p><p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p><h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p><p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p><p><strong>算法步骤</strong></p><ol><li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li><li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li><li>计算每一类中中心点作为新的中心点。</li><li>重复以上步骤，直至聚类中心变化在一定范围内为止</li></ol><p><strong>算法评价</strong></p><p>优点：简单快速高效；对异常值不太敏感</p><p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p><p>下图演示了k均值聚类的过程：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/k%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" loading="lazy"></p><h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p><p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p><p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p><p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p><p><strong>算法思路</strong></p><p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p><p><strong>算法步骤</strong></p><ol><li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p></li><li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p></li><li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p></li></ol><p><strong>算法评价</strong></p><p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p><p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p><h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p><p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p><p><strong>算法步骤</strong></p><p><strong>算法评价</strong></p><p>优点：比Mean shift更高效</p><p>缺点：不能控制图像块数量和大小</p><h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p><p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p><p>①每个图像块尺寸大小尽可能均匀：</p><p>②各个图像块之间紧凑连接且保持连通</p><p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p><p><strong>算法步骤</strong></p><ol><li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p></li><li><p>对图像中的像素点进行标记</p></li><li><p>初始化水平集函数。</p></li><li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p></li></ol><p>⑤返回边界。</p><p><strong>算法评价</strong></p><p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p><h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p><p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p><p>像素相似性与向量距离成反比。</p><p><strong>算法步骤</strong></p><p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p><p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p><p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p><p>距离计算公式如下：<br>$$d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}$$</p><p>$$d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}$$</p><p>$$D'=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}$$</p><p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p><p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p><p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p><p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p><p><strong>算法评价</strong></p><p>优点：</p><p>1.聚类结果紧凑整齐且邻域特征明显。</p><p>2.可处理彩色图和灰度图</p><p>3.只需一个超参数。</p><p>4.运行速度较快。</p><p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 聚类 </tag>
+            
+            <tag> 图像分割 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>隐马尔可夫模型</title>
       <link href="/2020/03/10/2020-03-13-HMM_model/"/>
       <url>/2020/03/10/2020-03-13-HMM_model/</url>
@@ -1509,25 +1536,25 @@
     
     
     <entry>
-      <title>经典聚类算法调研</title>
-      <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
-      <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
+      <title>发布IMU信息到ROS系统中</title>
+      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
+      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
       
-        <content type="html"><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p><ol><li>Means-shift聚类</li><li>k-means聚类</li><li>Fuzzy C means聚类</li><li>Medoid shift算法</li><li>Turbopixel算法</li><li>SLIC算法</li></ol><p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p><blockquote><p><strong>物以类聚，算法以分见真章</strong></p></blockquote><span id="more"></span><h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p><p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p><p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p><p><strong>算法步骤</strong></p><ol><li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p></li><li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p></li><li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p></li><li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p><p>下图演示了均值漂移聚类的计算步骤：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/Meanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法" loading="lazy"></p></li></ol><p><strong>算法评价</strong></p><p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p><p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p><h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p><p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p><p><strong>算法步骤</strong></p><ol><li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li><li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li><li>计算每一类中中心点作为新的中心点。</li><li>重复以上步骤，直至聚类中心变化在一定范围内为止</li></ol><p><strong>算法评价</strong></p><p>优点：简单快速高效；对异常值不太敏感</p><p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p><p>下图演示了k均值聚类的过程：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/k%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" loading="lazy"></p><h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p><p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p><p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p><p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p><p><strong>算法思路</strong></p><p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p><p><strong>算法步骤</strong></p><ol><li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p></li><li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p></li><li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p></li></ol><p><strong>算法评价</strong></p><p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p><p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p><h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p><p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p><p><strong>算法步骤</strong></p><p><strong>算法评价</strong></p><p>优点：比Mean shift更高效</p><p>缺点：不能控制图像块数量和大小</p><h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p><p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p><p>①每个图像块尺寸大小尽可能均匀：</p><p>②各个图像块之间紧凑连接且保持连通</p><p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p><p><strong>算法步骤</strong></p><ol><li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p></li><li><p>对图像中的像素点进行标记</p></li><li><p>初始化水平集函数。</p></li><li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p></li></ol><p>⑤返回边界。</p><p><strong>算法评价</strong></p><p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p><h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p><p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p><p>像素相似性与向量距离成反比。</p><p><strong>算法步骤</strong></p><p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p><p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p><p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p><p>距离计算公式如下：<br>$$d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}$$</p><p>$$d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}$$</p><p>$$D'=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}$$</p><p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p><p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p><p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p><p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p><p><strong>算法评价</strong></p><p>优点：</p><p>1.聚类结果紧凑整齐且邻域特征明显。</p><p>2.可处理彩色图和灰度图</p><p>3.只需一个超参数。</p><p>4.运行速度较快。</p><p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>]]></content>
+        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
       
       
       <categories>
           
-          <category> 学习 </category>
+          <category> 实验 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 聚类 </tag>
+            <tag> ROS </tag>
             
-            <tag> 图像分割 </tag>
+            <tag> IMU </tag>
             
         </tags>
       
@@ -1582,33 +1609,6 @@
         <tags>
             
             <tag> Ubuntu </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>发布IMU信息到ROS系统中</title>
-      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
-      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
-      
-        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> IMU </tag>
             
         </tags>
       
