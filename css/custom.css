@@ -549,3 +549,17 @@ html {
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
+/* ---------- 11. 私人空间：隐藏入口（与背景同色、无分隔线，点击仍可进入） ---------- */
+.nav-life {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+.nav-life .nav-item,
+.nav-life .nav-item-link,
+.nav-life .nav-item:hover,
+.nav-life .nav-item-link:hover {
+  opacity: 0 !important;
+  background: transparent !important;
+  color: transparent !important;
+}
