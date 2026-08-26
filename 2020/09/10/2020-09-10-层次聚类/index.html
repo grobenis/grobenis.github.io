@@ -693,6 +693,18 @@ $$<br>层次聚类算法就可以对给定的n个样本集导出距离函数。<
       scroller.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
+
+      // 音乐播放时隐藏小牛（避免右下角图标干扰）
+      var audio = document.querySelector('audio');
+      if (audio) {
+        var sync = function () {
+          mascot.classList.toggle('is-hidden', !audio.paused);
+        };
+        audio.addEventListener('play', sync);
+        audio.addEventListener('pause', sync);
+        audio.addEventListener('ended', sync);
+        sync();
+      }
     })();
     </script>
   </div>

@@ -723,6 +723,18 @@ $$<br>训练时长方面，论文中提及的速度是一个场景要用单卡V1
       scroller.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
+
+      // 音乐播放时隐藏小牛（避免右下角图标干扰）
+      var audio = document.querySelector('audio');
+      if (audio) {
+        var sync = function () {
+          mascot.classList.toggle('is-hidden', !audio.paused);
+        };
+        audio.addEventListener('play', sync);
+        audio.addEventListener('pause', sync);
+        audio.addEventListener('ended', sync);
+        sync();
+      }
     })();
     </script>
   </div>
