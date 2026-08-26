@@ -331,34 +331,43 @@ html {
   color: #666;
 }
 
-/* ---------- 8. 侧边栏菜单：透明度自上而下渐变 ---------- */
-/* 去掉背景色块，菜单项透明度从上到下依次提高（上面实、往下越淡） */
-.nav-main .nav-item {
+/* ---------- 8. 侧边栏：技术区在上、搜索居中、生活区左下角 ---------- */
+/* 透明度自上而下渐变（技术区 1.0→0.76，生活区 0.68→0.40） */
+.nav-main .nav-item,
+.nav-life .nav-item {
   transition: opacity 0.25s ease;
 }
 .nav-main .nav-item:nth-child(1) { opacity: 1.00; }
 .nav-main .nav-item:nth-child(2) { opacity: 0.92; }
 .nav-main .nav-item:nth-child(3) { opacity: 0.84; }
 .nav-main .nav-item:nth-child(4) { opacity: 0.76; }
-.nav-main .nav-item:nth-child(5) { opacity: 0.68; }
-.nav-main .nav-item:nth-child(6) { opacity: 0.60; }
-.nav-main .nav-item:nth-child(7) { opacity: 0.52; }
-.nav-main .nav-item:nth-child(8) { opacity: 0.44; }
-.nav-main .nav-item:nth-child(9) { opacity: 0.40; }
-/* 悬停时该项恢复不透明 */
-.nav-main .nav-item:hover {
+.nav-life .nav-item:nth-child(1) { opacity: 0.68; }
+.nav-life .nav-item:nth-child(2) { opacity: 0.60; }
+.nav-life .nav-item:nth-child(3) { opacity: 0.52; }
+.nav-life .nav-item:nth-child(4) { opacity: 0.44; }
+.nav-life .nav-item:nth-child(5) { opacity: 0.40; }
+/* 悬停恢复不透明 */
+.nav-main .nav-item:hover,
+.nav-life .nav-item:hover {
   opacity: 1 !important;
 }
-/* 分组分隔线（生活区第一项上方） */
-.nav-main .nav-item:nth-child(5) {
-  border-top: 1px dashed rgba(255, 255, 255, 0.22);
-  margin-top: 8px;
-  padding-top: 4px;
-}
 /* 覆盖主题 hover 时将链接背景置为浅色 body 色、文字降透明度 */
-.navbar .nav-main .nav-item-link:hover {
+.navbar .nav-item-link:hover {
   background: transparent;
   opacity: 1;
+}
+/* 搜索按钮：位于技术区菜单下方 */
+.nav-search-top {
+  display: block;
+  padding: 0.55rem 0;
+  font-size: 1.05rem;
+  color: #bbb;
+  text-align: center;
+}
+/* 生活区（左下角）：覆盖 navbar-bottom 的 2rem 大字号 */
+.navbar-bottom .nav-life .nav-item-link {
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
 }
 
 /* ---------- 9. 可爱小牛装饰 ---------- */
