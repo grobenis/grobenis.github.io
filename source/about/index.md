@@ -41,7 +41,62 @@ layout: "about"
 本站使用 [Hexo](https://hexo.io) 搭建，[Ayer](https://github.com/Shen-Yu/hexo-theme-ayer) 主题，部署于 GitHub Pages。
 
 <div class="about-links">
-  <a href="https://github.com/grobenis/grobenis.github.io" target="_blank" rel="noopener" title="关于本站"><i class="ri-information-line"></i><span>关于本站</span></a>
+  <a href="javascript:void(0)" id="about-info-btn" title="关于本站"><i class="ri-information-line"></i><span>关于本站</span></a>
   <a href="https://cparadox.github.io/" target="_blank" rel="noopener" title="友链：仔仔的博客"><i class="ri-links-line"></i><span>友链</span></a>
-  <a href="/atom.xml" title="订阅 RSS"><i class="ri-rss-line"></i><span>订阅</span></a>
+  <a href="javascript:void(0)" id="about-rss-btn" title="订阅 RSS"><i class="ri-rss-line"></i><span>订阅</span></a>
 </div>
+
+<div class="about-modal" id="aboutModal">
+  <div class="about-modal-card">
+    <button class="about-modal-close" id="aboutModalClose" title="关闭"><i class="ri-close-line"></i></button>
+    <h3>曾是少年</h3>
+    <p class="about-modal-sub">曾梦想仗剑走天涯，看一看世界的繁华</p>
+    <ul>
+      <li>站长：郭犇（grobenis）</li>
+      <li>方向：视觉 SLAM / 多传感器融合 / 三维重建</li>
+      <li>框架：Hexo · Ayer 主题 · GitHub Pages</li>
+    </ul>
+  </div>
+</div>
+<div class="about-toast" id="aboutToast">RSS 订阅链接已复制</div>
+<script>
+(function () {
+  var modal = document.getElementById('aboutModal');
+  var infoBtn = document.getElementById('about-info-btn');
+  var closeBtn = document.getElementById('aboutModalClose');
+  var rssBtn = document.getElementById('about-rss-btn');
+  var toast = document.getElementById('aboutToast');
+  var timer = null;
+  if (infoBtn && modal) {
+    infoBtn.onclick = function () { modal.style.display = 'flex'; };
+    closeBtn.onclick = function () { modal.style.display = 'none'; };
+    modal.onclick = function (e) { if (e.target === modal) modal.style.display = 'none'; };
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function showToast() {
+    toast.style.opacity = '1';
+    clearTimeout(timer);
+    timer = setTimeout(function () { toast.style.opacity = '0'; }, 2000);
+  }
+  if (rssBtn && toast) {
+    rssBtn.onclick = function () {
+      var url = location.origin + '/atom.xml';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(showToast, function () { fallbackCopy(url); showToast(); });
+      } else {
+        fallbackCopy(url);
+        showToast();
+      }
+    };
+  }
+})();
+</script>
