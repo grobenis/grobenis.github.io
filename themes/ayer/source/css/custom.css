@@ -209,11 +209,12 @@ html {
   color: #999;
 }
 .lyric-card-body p {
-  margin: 0 0 10px;
-  line-height: 1.9;
+  margin: 0 0 7px;
+  line-height: 1.7;
   color: #555;
   font-size: 15px;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 .lyric-card-body p:last-child {
   margin-bottom: 0;
