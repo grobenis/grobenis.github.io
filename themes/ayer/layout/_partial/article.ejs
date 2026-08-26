@@ -58,7 +58,7 @@
         </div>
         <% } %>
     <footer class="article-footer">
-      <% if (!index && theme.share_enable){ %>
+      <% if (!index && theme.share_enable && post.share !== false){ %>
           <%- partial('post/share') %>
       <% } %>
       <%- partial('post/tag') %>

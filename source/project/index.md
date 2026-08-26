@@ -1,11 +1,21 @@
 ---
 title: 旅程
 date: 2020-03-20 18:28:43
+share: false
 ---
 
 > 曾梦想仗剑走天涯，看一看世界的繁华。
 
 <div class="timeline">
+
+<div class="timeline-item">
+<div class="timeline-date">1996</div>
+<div class="timeline-logo" style="background:#49b1f5;border-color:rgba(255,255,255,0.9);"><span style="font-size:18px;font-weight:700;color:#fff;">🎂</span></div>
+<div class="timeline-content">
+<h3>出生</h3>
+<p>启程</p>
+</div>
+</div>
 
 <div class="timeline-item">
 <div class="timeline-date">2025</div>
