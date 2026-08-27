@@ -301,10 +301,10 @@ html {
   color: #999;
 }
 .lyric-card-body p {
-  margin: 0 0 7px;
-  line-height: 1.7;
-  color: #555;
-  font-size: 15px;
+  margin: 0 0 8px;
+  line-height: 1.85;
+  color: #444;
+  font-size: 16px;
   letter-spacing: 0.5px;
   text-align: center;
 }
@@ -764,7 +764,7 @@ body.page-scene-dawn #mask {
 .tv-set {
   position: relative;
   margin: 0 auto 12px;
-  max-width: 520px;       /* 缩短横向,让 TV 整体接近正方形 */
+  max-width: 620px;       /* 略扩大,留足歌词 + 卡片空间 */
   width: 100%;
   flex: 1 1 auto;
   min-width: 0;
@@ -879,8 +879,8 @@ body.page-scene-dawn #mask {
 .tv-screen {
   position: relative;
   width: 100%;
-  /* 屏高随视口自适应:小屏自动变矮,大屏最高 400px,够装下歌词即可 */
-  height: clamp(260px, 42vh, 400px);
+  /* 屏高随视口自适应:小屏自动变矮,大屏最高 440px,够装下歌词即可 */
+  height: clamp(280px, 44vh, 440px);
   border-radius: 16px;
   overflow: hidden;
   background: #000;
@@ -889,7 +889,7 @@ body.page-scene-dawn #mask {
     0 0 0 2px #1a1a20;
 }
 @media (max-width: 640px) {
-  .tv-screen { height: clamp(200px, 38vh, 280px); }
+  .tv-screen { height: clamp(220px, 40vh, 300px); }
 }
 .tv-screen-bezel {
   position: absolute;
@@ -913,7 +913,8 @@ body.page-scene-dawn #mask {
     transparent 3px
   );
   pointer-events: none;
-  z-index: 4;
+  /* 放底层(在场景上、歌词卡下),让歌词卡不被横线干扰 */
+  z-index: 1;
   mix-blend-mode: multiply;
 }
 /* 屏幕顶部高光（玻璃反光） */
@@ -922,8 +923,8 @@ body.page-scene-dawn #mask {
   top: 0;
   left: 0;
   right: 0;
-  height: 35%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+  height: 18%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
   pointer-events: none;
   z-index: 5;
   border-radius: 16px 16px 0 0;
@@ -946,19 +947,20 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 88% 92%, rgba(255,255,255,0.9) 0.5px, transparent 1px);
 }
 
-/* 频道号窗（屏幕右上角） */
+/* 频道号窗(屏幕右上角) */
 .tv-channel {
   position: absolute;
   top: 14px;
   right: 18px;
-  z-index: 6;
+  /* 提高到比歌词卡更高,避免被盖 */
+  z-index: 11;
   background: linear-gradient(180deg, #1a1a20, #0a0a10);
   color: #ff8c4a;
   font-family: "Courier New", monospace;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 4px;
   border: 1px solid #2a2a30;
   box-shadow: inset 0 0 6px rgba(255,140,74,0.35);
@@ -1664,32 +1666,32 @@ body.page-scene-dawn .tv-set {
 }
 .lyric-glow {
   position: absolute;
-  width: 360px;
-  height: 360px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   filter: blur(60px);
-  opacity: 0.55;
+  opacity: 0.45;
   animation: lyricGlow 14s ease-in-out infinite alternate;
 }
 .lyric-glow-warm {
-  top: 8%;
-  left: 10%;
+  top: -8%;
+  left: -8%;
   background: radial-gradient(circle, rgba(255, 196, 122, 0.55), transparent 70%);
 }
 .lyric-glow-warm-2 {
-  bottom: 10%;
-  right: 12%;
+  bottom: -8%;
+  right: -8%;
   background: radial-gradient(circle, rgba(255, 142, 99, 0.40), transparent 70%);
   animation-delay: -7s;
 }
 .lyric-glow-cool {
-  top: 12%;
-  right: 8%;
+  top: -8%;
+  right: -8%;
   background: radial-gradient(circle, rgba(180, 200, 255, 0.55), transparent 70%);
 }
 .lyric-glow-cool-2 {
-  bottom: 12%;
-  left: 14%;
+  bottom: -8%;
+  left: -8%;
   background: radial-gradient(circle, rgba(110, 130, 200, 0.45), transparent 70%);
   animation-delay: -7s;
 }
@@ -1718,17 +1720,18 @@ body.page-scene-dawn .tv-set {
 .lyric-stage-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.18));
+  /* 加深场景蒙版,让歌词卡文字更突出 */
+  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.32));
   pointer-events: none;
 }
 /* 卡片：玻璃磨砂半透明 */
 .lyric-cards {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   display: block;
   width: 100%;
   height: 100%;
-  padding: 32px;
+  padding: 24px;
   box-sizing: border-box;
   /* 显式开启交互:父级 .lyric-stage 用了 pointer-events:none,
      CSS 规范下子元素默认继承 none,会导致滚动条/按钮拖不动 */
@@ -1736,17 +1739,18 @@ body.page-scene-dawn .tv-set {
 }
 .lyric-card {
   position: absolute;
-  left: 32px;
-  right: 32px;
-  top: 32px;
-  bottom: 32px;
+  left: 24px;
+  right: 24px;
+  top: 24px;
+  bottom: 24px;
   margin: 0 auto;
   max-width: 860px;
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  /* 提高不透明度,减少背景场景透过影响阅读 */
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
   border-radius: 14px;
   display: none;
   flex-direction: column;
