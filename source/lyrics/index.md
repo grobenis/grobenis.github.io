@@ -401,11 +401,6 @@ share: false
 </div>
 </div>
 
-<!-- 底部铭牌 -->
-<div class="tv-footplate">
-<span>MULTI SYNC · CHANNEL SELECTOR</span>
-</div>
-
 </div>
 
 <!-- 电视柜阴影 -->
