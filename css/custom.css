@@ -1848,7 +1848,8 @@ body.page-bg-10 {
 
 /* 与 page-scene 一致地抬高电视，且盖过上面所有背景 */
 body[class*="page-bg-"] .tv-set,
-body[class*="page-scene-"] .tv-set {
+body[class*="page-scene-"] .tv-set,
+body[class*="mood-"] .tv-set {
   position: relative;
   z-index: 1;
 }
@@ -1856,6 +1857,50 @@ body[class*="page-scene-"] .tv-set {
 body {
   transition: background 1.2s ease-in-out;
 }
+
+/* ==========================================================================
+   装饰件氛围主题(mood-*):点击黑胶/麦克风/磁带/CD/霓虹切换整页氛围,覆盖歌曲背景
+   ========================================================================== */
+/* 黑胶 —— 复古暖黄 */
+body.mood-vinyl {
+  background:
+    radial-gradient(ellipse at 70% 24%, rgba(255, 207, 120, 0.30), transparent 46%),
+    radial-gradient(ellipse at 22% 80%, rgba(120, 40, 25, 0.25), transparent 48%),
+    linear-gradient(176deg, #3a1e10 0%, #703a1a 35%, #a85c24 68%, #d99a45 100%) !important;
+}
+/* 麦克风 —— 深夜电台蓝调 */
+body.mood-mic {
+  background:
+    radial-gradient(ellipse at 30% 82%, rgba(120, 150, 210, 0.22), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(90, 120, 200, 0.18), transparent 42%),
+    linear-gradient(180deg, #04060d 0%, #0a1122 50%, #17233f 100%) !important;
+}
+/* 磁带 —— 怀旧棕褐 */
+body.mood-cassette {
+  background:
+    radial-gradient(ellipse at 50% 10%, rgba(230, 205, 170, 0.18), transparent 40%),
+    linear-gradient(176deg, #2a1a10 0%, #4a2f1c 40%, #6e4a2c 72%, #8f6a40 100%) !important;
+}
+/* CD —— 冷冽科技银 */
+body.mood-cd {
+  background:
+    radial-gradient(ellipse at 72% 30%, rgba(210, 225, 245, 0.30), transparent 44%),
+    radial-gradient(ellipse at 24% 74%, rgba(90, 120, 175, 0.2), transparent 46%),
+    linear-gradient(175deg, #0d1018 0%, #20242f 45%, #3a4150 75%, #5d6677 100%) !important;
+}
+/* 霓虹 —— 赛博粉紫 */
+body.mood-neon {
+  background:
+    radial-gradient(ellipse at 24% 78%, rgba(255, 0, 150, 0.22), transparent 42%),
+    radial-gradient(ellipse at 82% 22%, rgba(90, 0, 255, 0.22), transparent 44%),
+    linear-gradient(180deg, #07020c 0%, #160a2e 48%, #2a1250 78%, #4a1f6e 100%) !important;
+}
+/* 氛围光晕:电视外壳透出对应主题色 */
+body.mood-vinyl .tv-set   { box-shadow: 0 24px 70px rgba(255, 180, 90, 0.35); }
+body.mood-mic .tv-set     { box-shadow: 0 24px 70px rgba(70, 110, 200, 0.35); }
+body.mood-cassette .tv-set{ box-shadow: 0 24px 70px rgba(160, 120, 80, 0.35); }
+body.mood-cd .tv-set      { box-shadow: 0 24px 70px rgba(150, 175, 215, 0.35); }
+body.mood-neon .tv-set    { box-shadow: 0 24px 70px rgba(200, 60, 255, 0.35); }
 
 /* ==========================================================================
    音乐页布局压缩：标题 / 引用 / 边距统统去掉，电视顶到屏幕上方
