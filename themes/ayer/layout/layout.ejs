@@ -1,6 +1,6 @@
 <%- partial('_partial/head') %>
 
-<body>
+<body class="<%- (page.path && page.path.indexOf('lyrics') === 0) ? 'is-lyrics page-locked' : '' %>">
   <div id="app">
     <main class="content">
       <%- body %>
