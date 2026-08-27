@@ -4,7 +4,10 @@ date: 2020-03-20 18:28:43
 share: false
 ---
 
-> 把听到的故事，安放在这里。
+<!-- 顶部仅保留品牌徽章，引用语和标题靠 CSS 隐藏 -->
+<div class="tv-page-mark">
+<span class="tv-page-mark-eyebrow">GroTV · LIVE MUSIC ROOM</span>
+</div>
 
 <div class="tv-set">
 

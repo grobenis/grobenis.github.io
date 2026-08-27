@@ -323,7 +323,7 @@ html {
 /* ----- 电视外壳整体 ----- */
 .tv-set {
   position: relative;
-  margin: 30px auto 50px;
+  margin: 0 auto 30px;
   max-width: 760px;
   padding-top: 78px; /* 给天线留空间 */
 }
@@ -1081,6 +1081,75 @@ body.page-scene-night .tv-set,
 body.page-scene-dawn .tv-set {
   position: relative;
   z-index: 1;
+}
+
+/* ==========================================================================
+   音乐页布局压缩：标题 / 引用 / 边距统统去掉，电视顶到屏幕上方
+   ========================================================================== */
+
+/* 文章头部标题与元信息全部隐藏 */
+body.page-scene-sunset .article-header,
+body.page-scene-night .article-header,
+body.page-scene-dawn .article-header,
+body.page-scene-sunset .article-meta,
+body.page-scene-night .article-meta,
+body.page-scene-dawn .article-meta,
+body.page-scene-sunset .article-footer,
+body.page-scene-night .article-footer,
+body.page-scene-dawn .article-footer,
+body.page-scene-sunset blockquote,
+body.page-scene-night blockquote,
+body.page-scene-dawn blockquote {
+  display: none !important;
+}
+
+/* 文章容器本身 padding/margin 收紧 */
+body.page-scene-sunset .article,
+body.page-scene-night .article,
+body.page-scene-dawn .article,
+body.page-scene-sunset .article-inner,
+body.page-scene-night .article-inner,
+body.page-scene-dawn .article-inner {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 文章正文 padding 收紧到 0（电视本来就自带间距）*/
+body.page-scene-sunset .article-entry,
+body.page-scene-night .article-entry,
+body.page-scene-dawn .article-entry {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 顶部品牌条：替换原页面标题与引用语 */
+.tv-page-mark {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 22px 16px 6px;
+  color: rgba(255,255,255,0.85);
+}
+.tv-page-mark-eyebrow {
+  display: inline-block;
+  padding: 6px 18px;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 999px;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* 电视本身再贴近顶部 */
+body.page-scene-sunset .tv-set,
+body.page-scene-night .tv-set,
+body.page-scene-dawn .tv-set {
+  margin-top: 0 !important;
 }
 .lyric-glow {
   position: absolute;
