@@ -130,6 +130,9 @@ share: false
 
           <!-- 频道号窗 -->
           <div class="tv-channel">CH <span id="tvChannelNum">01</span></div>
+
+          <!-- 滚动提示 -->
+          <div class="lyric-scroll-hint" id="lyricScrollHint">向上滑动查看完整歌词</div>
         </div>
       </div>
 
@@ -201,6 +204,7 @@ share: false
   var btnPlay = document.getElementById('tvBtnPlay');
   var powerLed = document.getElementById('tvPowerLed');
   var scenes = document.querySelectorAll('.lyric-scene');
+  var scrollHint = document.getElementById('lyricScrollHint');
   if (!cards.length) return;
   var idx = 0;
 
@@ -224,9 +228,30 @@ share: false
       knobCh.style.setProperty('--tv-rot', (idx * 180) + 'deg');
     }
 
+    // 重置新卡片的滚动位置
+    var nextBody = nextCard.querySelector('.lyric-card-body');
+    if (nextBody) {
+      nextBody.scrollTop = 0;
+      updateScrollHint(nextBody);
+      nextBody.addEventListener('scroll', function () {
+        updateScrollHint(nextBody);
+      });
+    }
+
     setTimeout(function () {
       nextCard.classList.remove('slide-in-right', 'slide-in-left');
     }, 450);
+  }
+
+  // 滚动提示：到底部时隐藏
+  function updateScrollHint(body) {
+    if (!scrollHint) return;
+    var atBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 4;
+    if (atBottom) {
+      scrollHint.classList.add('is-hidden');
+    } else {
+      scrollHint.classList.remove('is-hidden');
+    }
   }
 
   btnPrev.addEventListener('click', function () { show(idx - 1, 'prev'); });
@@ -234,6 +259,15 @@ share: false
   if (knobCh) {
     knobCh.addEventListener('click', function () { show(idx + 1, 'next'); });
   }
+
+  // 初始卡片绑定滚动监听
+  cards.forEach(function (c) {
+    var b = c.querySelector('.lyric-card-body');
+    if (b) {
+      b.addEventListener('scroll', function () { updateScrollHint(b); });
+      updateScrollHint(b);
+    }
+  });
 
   // 播放/暂停按钮（与现有 music.ejs 联动）
   if (btnPlay) {
