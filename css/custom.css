@@ -755,12 +755,12 @@ body.page-scene-dawn #mask {
 /* ----- 电视外壳整体 ----- */
 .tv-set {
   position: relative;
-  margin: 0 auto 30px;
+  margin: 0 auto 12px;
   max-width: 1100px;
   width: 100%;
   flex: 1 1 auto;
   min-width: 0;
-  padding-top: 64px; /* 给天线留空间 */
+  padding-top: 44px; /* 给天线留空间 */
 }
 .tv-antennas {
   position: absolute;
@@ -768,7 +768,7 @@ body.page-scene-dawn #mask {
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
-  height: 80px;
+  height: 58px;
   display: flex;
   justify-content: space-between;
   pointer-events: none;
@@ -776,7 +776,7 @@ body.page-scene-dawn #mask {
 .tv-antenna {
   position: relative;
   width: 4px;
-  height: 78px;
+  height: 56px;
   background: linear-gradient(180deg, #c8c8d0 0%, #6a6a72 100%);
   border-radius: 2px;
   transform-origin: bottom center;
@@ -812,7 +812,7 @@ body.page-scene-dawn #mask {
   background:
     linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
   border-radius: 18px 18px 14px 14px;
-  padding: 22px 24px 24px;
+  padding: 16px 18px 16px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.7),
     inset 0 -2px 0 rgba(0,0,0,0.15),
@@ -862,8 +862,8 @@ body.page-scene-dawn #mask {
 .tv-screen-frame {
   position: relative;
   background: linear-gradient(180deg, #1a1a20, #2a2a30);
-  border-radius: 28px;
-  padding: 24px;
+  border-radius: 22px;
+  padding: 16px;
   box-shadow:
     inset 0 2px 6px rgba(0,0,0,0.6),
     inset 0 -1px 2px rgba(255,255,255,0.08);
@@ -871,7 +871,8 @@ body.page-scene-dawn #mask {
 .tv-screen {
   position: relative;
   width: 100%;
-  height: 520px;
+  /* 屏高随视口自适应:小屏自动变矮,大屏最高 500px,保证整机一屏放完 */
+  height: clamp(300px, 56vh, 500px);
   border-radius: 16px;
   overflow: hidden;
   background: #000;
@@ -880,7 +881,7 @@ body.page-scene-dawn #mask {
     0 0 0 2px #1a1a20;
 }
 @media (max-width: 640px) {
-  .tv-screen { height: 360px; }
+  .tv-screen { height: clamp(260px, 52vh, 360px); }
 }
 .tv-screen-bezel {
   position: absolute;
@@ -1629,7 +1630,7 @@ body.page-scene-dawn .article-entry {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 22px 16px 6px;
+  padding: 10px 16px 2px;
   color: rgba(255,255,255,0.85);
 }
 .tv-page-mark-eyebrow {
