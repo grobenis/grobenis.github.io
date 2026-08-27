@@ -839,8 +839,8 @@ body.page-scene-dawn #mask {
   background:
     linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
   border-radius: 18px 18px 14px 14px;
-  /* 灰色外壳:上下留足面板空间,左右收窄 */
-  padding: 16px 18px 22px;
+  /* 灰色外壳:下边框收薄,缩小后的控件仍被完整包住 */
+  padding: 16px 18px 14px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.7),
     inset 0 -2px 0 rgba(0,0,0,0.15),
@@ -1021,17 +1021,18 @@ body.page-scene-dawn #mask {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 18px;
-  padding: 10px 4px 4px;
+  /* 下边框收窄:控件统一缩小后仍完整包住 */
+  margin-top: 10px;
+  padding: 6px 4px 2px;
 }
 .tv-panel-left {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
 }
 .tv-speaker {
-  width: 6px;
-  height: 26px;
+  width: 5px;
+  height: 20px;
   background: linear-gradient(180deg, #2a2a30, #4a4a52);
   border-radius: 3px;
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.3);
@@ -1040,14 +1041,14 @@ body.page-scene-dawn #mask {
 .tv-panel-right {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-/* 大旋钮 */
+/* 大旋钮(与按钮统一视觉高度) */
 .tv-knob {
   position: relative;
-  width: 54px;
-  height: 54px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 30% 30%, #f4f4f8 0%, #b8b8c0 60%, #888890 100%);
@@ -1064,7 +1065,7 @@ body.page-scene-dawn #mask {
 .tv-knob::before {
   content: "";
   position: absolute;
-  inset: 8px;
+  inset: 6px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #d8d8dc, #888890);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
@@ -1073,29 +1074,29 @@ body.page-scene-dawn #mask {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle, transparent 22px, currentColor 22px, currentColor 23px, transparent 24px);
+    radial-gradient(circle, transparent 15px, currentColor 15px, currentColor 16px, transparent 17px);
   color: rgba(0,0,0,0.4);
-  -webkit-mask: radial-gradient(circle, transparent 23px, #000 23px);
-          mask: radial-gradient(circle, transparent 23px, #000 23px);
+  -webkit-mask: radial-gradient(circle, transparent 16px, #000 16px);
+          mask: radial-gradient(circle, transparent 16px, #000 16px);
   pointer-events: none;
 }
 .tv-knob-pointer {
   position: absolute;
-  top: 4px;
+  top: 3px;
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  height: 12px;
+  height: 9px;
   background: #2a2a30;
   border-radius: 2px;
   box-shadow: 0 1px 0 rgba(255,255,255,0.4);
 }
 .tv-knob-label {
   position: absolute;
-  bottom: -16px;
+  bottom: -14px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   color: #2a2a30;
   letter-spacing: 1px;
@@ -1108,13 +1109,13 @@ body.page-scene-dawn #mask {
   gap: 6px;
 }
 .tv-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
   background: linear-gradient(180deg, #4a4a52, #2a2a30);
   border: 1px solid #1a1a20;
   color: #d8d8dc;
-  font-size: 12px;
+  font-size: 10px;
   cursor: pointer;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 4px rgba(0,0,0,0.3);
   display: flex;
@@ -1126,7 +1127,7 @@ body.page-scene-dawn #mask {
 .tv-btn:active { transform: translateY(1px); box-shadow: inset 0 2px 3px rgba(0,0,0,0.5); }
 .tv-btn-play { background: linear-gradient(180deg, #ff8c4a, #d96a26); color: #fff; border-color: #8a3a14; }
 .tv-btn-play:hover { background: linear-gradient(180deg, #ff9a5a, #e07a36); }
-.tv-btn-icon { font-size: 11px; line-height: 1; }
+.tv-btn-icon { font-size: 9px; line-height: 1; }
 
 /* 电源灯 */
 .tv-power-led {
