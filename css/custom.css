@@ -897,8 +897,8 @@ body.page-scene-dawn #mask {
 .tv-screen {
   position: relative;
   width: 100%;
-  /* 屏高随视口自适应:较矮窗口也收拢,大屏最高 360px,确保下方装饰区整条露出 */
-  height: clamp(225px, 35vh, 360px);
+  /* 屏高随视口自适应:大屏最多 470px,歌词显示更多,同时保证下方装饰区仍完整露出 */
+  height: clamp(290px, 44vh, 470px);
   border-radius: 16px;
   overflow: hidden;
   background: #000;
