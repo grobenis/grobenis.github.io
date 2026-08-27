@@ -318,6 +318,25 @@ share: false
 </div><!-- /.music-stage -->
 
 <script>
+/* 锁定整页滚动 - 只让 TV 内歌词卡片可滚,其他区域全部禁止 */
+(function () {
+  if (!document.body.className || !/page-scene-/.test(document.body.className)) return;
+  var SCROLLABLE = '.lyric-card-body';
+  function inScrollable(target) {
+    return target && target.closest && target.closest(SCROLLABLE);
+  }
+  function stopIfOutside(e) {
+    if (!inScrollable(e.target)) e.preventDefault();
+  }
+  ['wheel', 'mousewheel', 'DOMMouseScroll', 'touchmove'].forEach(function (evt) {
+    document.addEventListener(evt, stopIfOutside, { passive: false });
+  });
+  // 键盘上下方向键 / PgUp / PgDn / Home / End / 空格 也禁(焦点不在歌词卡时)
+  document.addEventListener('keydown', function (e) {
+    var blocked = [33, 34, 35, 36, 37, 38, 39, 40, 32];
+    if (blocked.indexOf(e.keyCode) > -1 && !inScrollable(e.target)) e.preventDefault();
+  }, { passive: false });
+})();
 (function () {
   var cards = document.querySelectorAll('.lyric-card');
   var chNum = document.getElementById('tvChannelNum');
