@@ -911,9 +911,9 @@ body.page-scene-dawn #mask {
             mask: radial-gradient(circle, transparent 17px, #000 17px);
   }
   .tv-knob-pointer { height: 9px; top: 3px; }
-  .tv-buttons { gap: 5px; }
-  .tv-btn { width: 26px; height: 26px; border-radius: 5px; }
-  .tv-btn-icon { font-size: 10px; }
+  .tv-buttons { gap: 6px; padding: 4px 8px; bottom: 8px; }
+  .tv-btn { width: 24px; height: 24px; }
+  .tv-btn-icon { font-size: 9px; }
 }
 @media (max-width: 420px) {
   /* 超窄屏隐藏 VOL 旋钮,只保留 CH + 三键 */
@@ -1083,31 +1083,50 @@ body.page-scene-dawn #mask {
 }
 .tv-knob:active { box-shadow: inset 0 3px 6px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3); }
 
-/* 按钮组 */
+/* 屏内 OSD 控制条（位于 CRT 画面底部居中,半透明玻璃质感） */
 .tv-buttons {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  z-index: 14;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(10, 10, 16, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+/* 滚动提示给 OSD 让位 */
+.lyric-scroll-hint {
+  bottom: 64px;
 }
 .tv-btn {
   width: 30px;
   height: 30px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #4a4a52, #2a2a30);
-  border: 1px solid #1a1a20;
-  color: #d8d8dc;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
   font-size: 12px;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 4px rgba(0,0,0,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.1s ease, background 0.2s ease;
+  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
-.tv-btn:hover { background: linear-gradient(180deg, #5a5a62, #3a3a40); }
-.tv-btn:active { transform: translateY(1px); box-shadow: inset 0 2px 3px rgba(0,0,0,0.5); }
-.tv-btn-play { background: linear-gradient(180deg, #ff8c4a, #d96a26); color: #fff; border-color: #8a3a14; }
-.tv-btn-play:hover { background: linear-gradient(180deg, #ff9a5a, #e07a36); }
-.tv-btn-icon { font-size: 11px; line-height: 1; }
+.tv-btn:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.10));
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.tv-btn:active { transform: translateY(1px); }
+.tv-btn-play { background: linear-gradient(180deg, #ff9a5a, #d96a26); border-color: rgba(140, 60, 20, 0.5); }
+.tv-btn-play:hover { background: linear-gradient(180deg, #ffa86a, #e07a36); box-shadow: 0 0 12px rgba(255, 140, 74, 0.55); }
+.tv-btn-icon { font-size: 11px; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
 
 /* 电源灯 */
 .tv-power-led {
