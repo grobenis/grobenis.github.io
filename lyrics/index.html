@@ -551,17 +551,14 @@
 <!-- 全屋烛光明暗层(纯黑氛围点燃蜡烛后出现) -->
 <div class="candle-glow"></div>
 
-<!-- CD 解锁场景:两个可爱小人守着看电视 -->
-<div class="cd-watch" id="cdWatch">
-  <div class="cw-p cw-p-left"><span class="cw-body"></span></div>
-  <div class="cw-tv">
-    <span class="cw-tv-screen"></span>
-    <span class="cw-tv-leg"></span>
-  </div>
-  <div class="cw-p cw-p-right"><span class="cw-body"></span></div>
+<!-- CD 解锁场景:点击出现一台大电视,屏幕为黑 -->
+<div class="cd-tv" id="cdWatch">
+  <span class="cdtv-antenna"></span>
+  <div class="cdtv-screen"></div>
+  <span class="cdtv-leg"></span>
 </div>
 
-<!-- 终章:电视机弹出 I♥你 粉色字样 -->
+<!-- 终章:点击MUSIC点亮屏幕,弹出 I♥你 粉色发光字样 -->
 <div class="finale-text" id="finaleText">I <span>♥</span> 你</div>
 
 </div><!-- /.music-stage -->
@@ -974,20 +971,24 @@ function extinguishCandle() {
     makeP(p, 'balloon');
     setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, dur * 1000 + 500);
   }
-  /* 闪光粒子:从黑胶位置向上浪漫漂浮 */
+  /* 闪光粒子:放大并铺满全屏,从画面下部浪漫上飘 */
   function spawnSparks() {
-    var c = centerOf('decoVinyl');
+    var vw = window.innerWidth || 800;
+    var vh = window.innerHeight || 600;
     var colors = ['#ffe9a0', '#ffd27a', '#fff6d6', '#ffc46a', '#fffbe6'];
-    for (var i = 0; i < 3; i++) {
-      var size = 3 + Math.random() * 5;
-      var dx = (Math.random() - 0.5) * 130;
-      var dy = -(110 + Math.random() * 160);
-      var dur = 2.4 + Math.random() * 1.6;
+    var n = 5;
+    for (var i = 0; i < n; i++) {
+      var size = 7 + Math.random() * 16;
+      var x = Math.random() * vw;
+      var y = vh * (0.45 + Math.random() * 0.5);
+      var dx = (Math.random() - 0.5) * 180;
+      var dy = -(vh * 0.5 + Math.random() * vh * 0.5);
+      var dur = 2.6 + Math.random() * 2.2;
       var p = document.createElement('div');
       p.style.cssText = '--cc1:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
         '--dx:' + dx + 'px;--dy:' + dy + 'px;--fdur:' + dur + 's;' +
         'width:' + size + 'px;height:' + size + 'px;' +
-        'left:' + (c.x + (Math.random() - 0.5) * 40) + 'px;top:' + c.y + 'px;';
+        'left:' + x + 'px;top:' + y + 'px;';
       makeP(p, 'spark');
       (function (el, d) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, d * 1000 + 300); })(p, dur);
     }
@@ -1023,7 +1024,7 @@ function extinguishCandle() {
   toggle('decoMic', spawnBalloon, 900);
   toggle('decoCassette', spawnPetals, 700);
 
-  /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;出现两个小人守着看电视 */
+  /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;点击出现一台黑屏大电视(可重复开关) */
   var cd = document.getElementById('decoCd');
   if (cd) {
     cd.style.cursor = 'pointer';
@@ -1034,9 +1035,7 @@ function extinguishCandle() {
       hideFinale();
       var cw = document.getElementById('cdWatch');
       if (!cw) return;
-      cw.classList.add('is-on');
-      if (cdTimer) clearTimeout(cdTimer);
-      cdTimer = setTimeout(function () { cw.classList.remove('is-on'); }, 5200);
+      cw.classList.toggle('is-on');
     });
   }
 
@@ -1071,7 +1070,7 @@ function extinguishCandle() {
     clearFx('heart');
     clearFx('bubble');
   }
-  /* MUSIC(霓虹):终章。电视机弹出I♥你 + 全页漂浮心形气泡 */
+  /* MUSIC(霓虹):终章。点亮黑屏大电视,弹出I♥你发光字样 + 全页心形气泡 */
   var neon = document.getElementById('decoNeon');
   if (neon) {
     neon.style.cursor = 'pointer';
@@ -1081,9 +1080,8 @@ function extinguishCandle() {
       var ft = document.getElementById('finaleText');
       if (!ft) return;
       if (ft.classList.contains('is-on')) { hideFinale(); return; }
-      if (cdTimer) { clearTimeout(cdTimer); cdTimer = null; }
       var cw = document.getElementById('cdWatch');
-      if (cw) cw.classList.remove('is-on');
+      if (cw) cw.classList.add('is-on'); /* 大电视点亮 */
       clearFx('spark'); clearFx('balloon'); clearFx('petal');
       ft.classList.add('is-on');
       spawnHeart();
