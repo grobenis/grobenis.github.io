@@ -558,8 +558,8 @@
   <span class="cdtv-leg"></span>
 </div>
 
-<!-- 终章:点击MUSIC点亮屏幕,弹出 I♥你 粉色发光字样 -->
-<div class="finale-text" id="finaleText">I <span>♥</span> 你</div>
+<!-- 终章:点击MUSIC点亮屏幕,弹出酷炫 I🩷U 字样 -->
+<div class="finale-text" id="finaleText">I <span class="fv-heart">🩷</span> U</div>
 
 </div><!-- /.music-stage -->
 
@@ -932,7 +932,7 @@ function extinguishCandle() {
   var FX = { vinyl: null, mic: null, cassette: null };
   var seen = { vinyl: false, mic: false, cassette: false, cd: false };
   var cdTimer = null, finaleTimer = null;
-  var BALL_COLORS = ['#ff8aa0', '#ffb36b', '#ffd86b', '#9ad7ff', '#c3a6ff', '#9ef0c8'];
+  var balloonEls = null;
   var TYPE = { vinyl: 'spark', mic: 'balloon', cassette: 'petal' };
 
   function canFx() {
@@ -957,25 +957,11 @@ function extinguishCandle() {
     document.body.appendChild(node);
     return node;
   }
-  /* 气球:从麦克风位置上升 */
-  function spawnBalloon() {
-    var c = centerOf('decoMic');
-    var bc = BALL_COLORS[Math.floor(Math.random() * BALL_COLORS.length)];
-    var size = 18 + Math.random() * 14;
-    var wx = (Math.random() - 0.5) * 160;
-    var dur = 4 + Math.random() * 2;
-    var p = document.createElement('div');
-    p.style.cssText = '--bc:' + bc + ';--wx:' + wx + 'px;--fdur:' + dur + 's;' +
-      'width:' + size + 'px;height:' + Math.round(size * 1.22) + 'px;' +
-      'left:' + (c.x - size / 2) + 'px;top:' + c.y + 'px;';
-    makeP(p, 'balloon');
-    setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, dur * 1000 + 500);
-  }
-  /* 闪光粒子:放大并铺满全屏,从画面下部浪漫上飘 */
+  /* 闪光粒子:粉色/白色,放大并铺满全屏,从画面下部浪漫上飘 */
   function spawnSparks() {
     var vw = window.innerWidth || 800;
     var vh = window.innerHeight || 600;
-    var colors = ['#ffe9a0', '#ffd27a', '#fff6d6', '#ffc46a', '#fffbe6'];
+    var colors = ['#ffb3d9', '#ffffff', '#ffd6ea', '#ff9fc9', '#fff2f8'];
     var n = 5;
     for (var i = 0; i < n; i++) {
       var size = 7 + Math.random() * 16;
@@ -1021,8 +1007,40 @@ function extinguishCandle() {
     el.style.cursor = 'pointer';
   }
   toggle('decoVinyl', spawnSparks, 260);
-  toggle('decoMic', spawnBalloon, 900);
   toggle('decoCassette', spawnPetals, 700);
+
+  /* 麦克风:改为页面顶部左右各两只大粉色气球(固定漂浮,不上飘),再点收回 */
+  var micEl = document.getElementById('decoMic');
+  if (micEl) {
+    micEl.style.cursor = 'pointer';
+    micEl.addEventListener('click', function () {
+      if (!canFx()) return;
+      seen.mic = true;
+      if (balloonEls) {
+        for (var i = 0; i < balloonEls.length; i++) if (balloonEls[i].parentNode) balloonEls[i].parentNode.removeChild(balloonEls[i]);
+        balloonEls = null;
+        return;
+      }
+      var poses = [
+        { left: 8,  top: 12, sc: 1.0,  delay: 0,    shade: '#ff9ecf' },
+        { left: 2,  top: 32, sc: 0.78, delay: -1.1, shade: '#ffc3e1' },
+        { right: 8, top: 12, sc: 1.0,  delay: -0.6, shade: '#ff8dc7' },
+        { right: 2, top: 32, sc: 0.78, delay: -1.6, shade: '#ffd1e8' }
+      ];
+      balloonEls = [];
+      for (var j = 0; j < poses.length; j++) {
+        var s = poses[j];
+        var w = Math.round(64 * s.sc), h = Math.round(82 * s.sc);
+        var b = document.createElement('div');
+        b.className = 'fx-bigballoon';
+        var side = (s.left != null) ? ('left:' + s.left + 'vw;') : ('right:' + s.right + 'vw;');
+        b.style.cssText = side + 'top:' + s.top + 'vh;width:' + w + 'px;height:' + h + 'px;' +
+          'animation-delay:' + s.delay + 's;background:radial-gradient(circle at 32% 28%, #fff, ' + s.shade + ' 60%, #ff6fb3);';
+        document.body.appendChild(b);
+        balloonEls.push(b);
+      }
+    });
+  }
 
   /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;点击出现一台黑屏大电视(可重复开关) */
   var cd = document.getElementById('decoCd');
@@ -1097,6 +1115,10 @@ function extinguishCandle() {
   window.clearRoomFx = function () {
     for (var k in FX) if (FX[k]) { clearInterval(FX[k]); FX[k] = null; }
     clearFx('spark'); clearFx('balloon'); clearFx('petal'); clearFx('heart'); clearFx('bubble');
+    if (balloonEls) {
+      for (var i = 0; i < balloonEls.length; i++) if (balloonEls[i].parentNode) balloonEls[i].parentNode.removeChild(balloonEls[i]);
+      balloonEls = null;
+    }
     if (cdTimer) { clearTimeout(cdTimer); cdTimer = null; }
     if (finaleTimer) { clearInterval(finaleTimer); finaleTimer = null; }
     var cw = document.getElementById('cdWatch');
