@@ -694,7 +694,7 @@ body.page-scene-dawn #mask {
 
 /* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
 @media (max-width: 760px) {
-  .music-stage { flex-direction: column; max-width: 100%; padding: 0; }
+  .music-stage { flex-direction: column; max-width: 100%; padding: 0; height: calc(100vh - 56px); }
   .deco-row { gap: 14px; max-width: 100%; padding: 0 8px; }
   .tv-set { order: 1; }
   .deco-row { order: 2; }
