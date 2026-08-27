@@ -2926,8 +2926,17 @@ body.page-scene-dawn .tv-set {
 
 /* --- 七种整页氛围(拉绳切换,覆盖 page-bg-*) --- */
 body.lamp-black {
-  background:
-    linear-gradient(180deg, #050507 0%, #101014 60%, #17171c 100%) !important;
+  background: #000000 !important;
+}
+body.lamp-black .tv-set,
+body.lamp-black .tv-page-mark {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+body.lamp-black .lyric-stage { display: none; }
+/* 纯黑时让下方装饰控件亮起来 */
+body.lamp-black .deco-row {
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.35));
 }
 body.lamp-white {
   background:
@@ -2966,6 +2975,100 @@ body.lamp-pink   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ff
 body.lamp-grey   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #eaeaf0, #b6b6be 70%); box-shadow: 0 0 16px rgba(220,220,230,0.6); }
 body.lamp-blue   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #dce8ff, #8cbaff 70%); box-shadow: 0 0 22px rgba(140,190,255,0.9); }
 body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffe0a0, #ff9a30 70%); box-shadow: 0 0 24px rgba(255,160,60,0.95); }
+
+/* ==========================================================================
+   15. 旧蜡烛(deco-candle)：纯黑氛围下点击点燃,烛光照亮全屋
+   ========================================================================== */
+.deco-candle {
+  position: relative;
+  width: 26px;
+  height: 52px;
+  cursor: pointer;
+}
+.candle-body {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 26px;
+  height: 44px;
+  border-radius: 4px 4px 3px 3px;
+  background: linear-gradient(180deg, #f2e3c0 0%, #e6cf9c 40%, #cfab6a 100%);
+  box-shadow: inset 0 -8px 10px rgba(120,80,30,0.35);
+  transition: filter 0.3s ease;
+}
+.candle-wick {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 6px;
+  background: #333;
+  border-radius: 1px;
+}
+.candle-flame {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 14px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(circle at 50% 65%, #fff1b0 0%, #ffca40 45%, #ff7a1a 78%, transparent 100%);
+  opacity: 0;
+  filter: blur(0.5px);
+  animation: candleFlicker 0.16s ease-in-out infinite alternate;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 0 18px 6px rgba(255,180,70,0.6);
+}
+@keyframes candleFlicker {
+  0%  { transform: translateX(-50%) scale(1)    rotate(-1.5deg); }
+  100%{ transform: translateX(-50%) scale(1.12) rotate(1.5deg); }
+}
+.candle-drip {
+  position: absolute;
+  left: 8px;
+  bottom: -3px;
+  width: 6px;
+  height: 12px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #e6cf9c, #cfab6a);
+  opacity: 0.5;
+}
+/* 点燃:火焰 + 全屋烛光 */
+.deco-candle.is-lit .candle-flame {
+  opacity: 1;
+}
+body.lamp-black .deco-candle.is-lit ~ *,
+body.lamp-black .deco-candle.is-lit {
+  filter: brightness(1.1);
+}
+body.lamp-black .deco-candle.is-lit .candle-body {
+  filter: brightness(1.2);
+}
+
+/* 全屋烛光:整页柔暖聚光 */
+body.lamp-black .candle-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 110% 90% at 18% 72%,
+      rgba(255, 190, 110, 0.50),
+      rgba(255, 160, 70, 0.26) 38%,
+      rgba(0, 0, 0, 0) 70%);
+  animation: candleGlowAura 5s ease-in-out infinite alternate;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+body.lamp-black .candle-glow.is-on {
+  opacity: 1;
+}
+@keyframes candleGlowAura {
+  0%   { transform: scale(1);    opacity: 0.9; }
+  100% { transform: scale(1.04); opacity: 1; }
+}
 
 @media (max-width: 640px) {
   .pull-lamp { right: 18px; }

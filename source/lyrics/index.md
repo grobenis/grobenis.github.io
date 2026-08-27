@@ -435,6 +435,13 @@ share: false
 
 <!-- 下方装饰横排:唱片 / 麦克风 / 磁带 / CD / 霓虹 / 海报 -->
 <div class="deco-row">
+  <div class="deco-candle" id="decoCandle" title="旧蜡烛">
+    <div class="candle-body">
+      <div class="candle-wick"></div>
+      <div class="candle-flame" id="candleFlame"></div>
+    </div>
+    <div class="candle-drip"></div>
+  </div>
   <div class="deco-vinyl" title="黑胶唱片"></div>
   <div class="deco-mic" title="复古麦克风">
     <div class="mic-head"></div>
@@ -467,6 +474,9 @@ share: false
     <div class="easter-modal-text" id="easterModalText"></div>
   </div>
 </div>
+
+<!-- 全屋烛光明暗层(纯黑氛围点燃蜡烛后出现) -->
+<div class="candle-glow"></div>
 
 </div><!-- /.music-stage -->
 
@@ -743,7 +753,7 @@ share: false
   });
 })();
 
-/* ===== 电视电源开关 + 拉线吊灯氛围 ===== */
+/* ===== 电视电源开关 + 拉线吊灯氛围 + 蜡烛联动 ===== */
 (function () {
   var tv = document.getElementById('tvSet');
   if (!tv) tv = document.querySelector('.tv-set');
@@ -756,6 +766,12 @@ share: false
   var lampIdx = -1; /* -1 表示未拉起(电视开着,氛围随歌曲) */
   var pull = document.getElementById('lampPull');
 
+  /* 全局房间状态:供蜡烛模块读取/联动 */
+  window.roomState = {
+    get isBlack() { return document.body.classList.contains('lamp-black'); },
+    extinguish: function () { /* 每离开黑色氛围时调用 */ }
+  };
+
   function clearLamp() {
     for (var i = 0; i < LAMPS.length; i++) {
       document.body.classList.remove('lamp-' + LAMPS[i]);
@@ -767,6 +783,8 @@ share: false
     if (idx >= 0 && idx < LAMPS.length) {
       document.body.classList.add('lamp-' + LAMPS[idx]);
     }
+    /* 非黑色氛围则熄灭蜡烛 */
+    if (LAMPS[idx] !== 'black') extinguishCandle();
   }
 
   function setPower(state) {
@@ -777,6 +795,7 @@ share: false
     if (on) {
       lampIdx = -1;
       clearLamp();
+      extinguishCandle();
     } else {
       lampIdx = 0;
       setLamp(0);
@@ -798,5 +817,24 @@ share: false
     });
     setPower(true);
   }
+})();
+
+/* ===== 蜡烛:电视关闭 + 黑色氛围下点燃,烛光照亮全屋 ===== */
+function extinguishCandle() {
+  var candle = document.getElementById('decoCandle');
+  var glow = document.querySelector('.candle-glow');
+  if (candle) candle.classList.remove('is-lit');
+  if (glow) glow.classList.remove('is-on');
+}
+(function () {
+  var candle = document.getElementById('decoCandle');
+  var glow = document.querySelector('.candle-glow');
+  if (!candle) return;
+  candle.addEventListener('click', function () {
+    /* 仅电视关闭 + 黑色氛围时点燃 */
+    if (!(window.roomState && window.roomState.isBlack)) return;
+    var lit = candle.classList.toggle('is-lit');
+    if (glow) glow.classList.toggle('is-on', lit);
+  });
 })();
 </script>
