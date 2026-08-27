@@ -2837,3 +2837,133 @@ body.page-scene-dawn .tv-set {
   0% { opacity: 0; }
   100% { opacity: 1; }
 }
+
+/* ==========================================================================
+   14. 怀旧拉线吊灯(拉动切换整页氛围) —— 电视关闭时生效
+   ========================================================================== */
+.pull-lamp {
+  position: fixed;
+  top: 0;
+  right: 46px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+/* 电线:从页面顶部垂下 */
+.lamp-cord {
+  width: 2px;
+  height: 54px;
+  background: repeating-linear-gradient(180deg, #2a2a2a 0 6px, #3a3a3a 6px 12px);
+}
+/* 灯头:灯罩 + 灯泡 */
+.lamp-head {
+  position: relative;
+  pointer-events: none;
+}
+.lamp-shade {
+  width: 42px;
+  height: 26px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #8a6a2a, #5c4518);
+  clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%);
+}
+.lamp-bulb {
+  width: 20px;
+  height: 16px;
+  margin: -2px auto 0;
+  border-radius: 50% 50% 44% 44%;
+  background: radial-gradient(circle at 50% 40%, #fff8d8, #ffd580 60%, #c88a2a);
+  box-shadow: 0 0 18px rgba(255, 200, 110, 0.8), 0 0 40px rgba(255, 190, 100, 0.4);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+/* 拉绳:可点击 */
+.lamp-pull {
+  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -2px;
+  padding-bottom: 4px;
+}
+.lamp-chain {
+  width: 2px;
+  height: 40px;
+  background: repeating-linear-gradient(180deg, #c0a860 0 5px, #8a7438 5px 10px);
+}
+.lamp-ball {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #c0a860, #7a6430 80%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  transition: transform 0.1s ease;
+}
+.lamp-pull:active .lamp-ball { transform: translateY(3px); }
+/* 拉动提示 */
+.lamp-pull::after {
+  content: "拉绳";
+  position: absolute;
+  top: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(255,255,255,0.0);
+  letter-spacing: 2px;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+.lamp-pull:hover::after { color: rgba(255,255,255,0.85); }
+
+/* --- 七种整页氛围(拉绳切换,覆盖 page-bg-*) --- */
+body.lamp-black {
+  background:
+    linear-gradient(180deg, #050507 0%, #101014 60%, #17171c 100%) !important;
+}
+body.lamp-white {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.6), transparent 60%),
+    linear-gradient(180deg, #f4efe2 0%, #e4dcc8 60%, #d6ccab 100%) !important;
+}
+body.lamp-yellow {
+  background:
+    radial-gradient(circle at 50% 32%, rgba(255,238,170,0.5), transparent 62%),
+    linear-gradient(180deg, #c99435 0%, #a97422 55%, #7c4f12 100%) !important;
+}
+body.lamp-pink {
+  background:
+    radial-gradient(circle at 55% 30%, rgba(255,180,200,0.45), transparent 62%),
+    linear-gradient(180deg, #8a4a60 0%, #6a3850 55%, #4c2238 100%) !important;
+}
+body.lamp-grey {
+  background:
+    linear-gradient(180deg, #2b2b30 0%, #3c3c44 55%, #232328 100%) !important;
+}
+body.lamp-blue {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(150,190,255,0.4), transparent 62%),
+    linear-gradient(180deg, #101a3a 0%, #0a1530 55%, #060c20 100%) !important;
+}
+body.lamp-warm {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,200,120,0.5), transparent 62%),
+    linear-gradient(180deg, #c05a1a 0%, #93420f 55%, #5c2608 100%) !important;
+}
+/* 灯泡颜色随氛围变 */
+body.lamp-black  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #e8e8e0, #9a9a90 70%); box-shadow: 0 0 14px rgba(220,220,220,0.5); }
+body.lamp-white  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff, #f2efe0 70%); box-shadow: 0 0 22px rgba(255,255,240,0.9); }
+body.lamp-yellow .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff8c0, #ffd070 70%); box-shadow: 0 0 22px rgba(255,220,120,0.9); }
+body.lamp-pink   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffd8e0, #ff88a0 70%); box-shadow: 0 0 22px rgba(255,150,180,0.9); }
+body.lamp-grey   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #eaeaf0, #b6b6be 70%); box-shadow: 0 0 16px rgba(220,220,230,0.6); }
+body.lamp-blue   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #dce8ff, #8cbaff 70%); box-shadow: 0 0 22px rgba(140,190,255,0.9); }
+body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffe0a0, #ff9a30 70%); box-shadow: 0 0 24px rgba(255,160,60,0.95); }
+
+@media (max-width: 640px) {
+  .pull-lamp { right: 18px; }
+  .lamp-cord { height: 42px; }
+  .lamp-chain { height: 30px; }
+  .lamp-pull::after { display: none; }
+}
