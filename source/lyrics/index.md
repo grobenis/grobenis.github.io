@@ -36,83 +36,36 @@ share: false
 <!-- 动态舞台（CRT 内容区） -->
 <div class="lyric-stage">
 
-<!-- 场景 1：黄昏（夕阳 + 远山 + 飞鸟） -->
-<div class="lyric-scene lyric-scene-1 is-active" data-scene="1">
-<div class="sky sky-sunset"></div>
-<div class="sun sun-sunset"></div>
-<div class="mountains mountains-sunset">
-<span class="peak peak-1"></span>
-<span class="peak peak-2"></span>
-<span class="peak peak-3"></span>
-<span class="peak peak-4"></span>
+<!-- 10 张专属 CRT 场景图，由 JS 切歌时同步切换 -->
+<div class="lyric-scene is-active" data-scene="1" data-bg-crt="crt-01-zengjingdeni.jpg">
+<div class="crt-particles" data-particles="warm"></div>
 </div>
-<div class="birds">
-<span class="bird"></span>
-<span class="bird"></span>
-<span class="bird"></span>
-<span class="bird"></span>
-<span class="bird"></span>
+<div class="lyric-scene" data-scene="2" data-bg-crt="crt-02-xiaochou.jpg">
+<div class="crt-particles" data-particles="cool"></div>
 </div>
-<div class="vignette"></div>
-<div class="lyric-glow lyric-glow-warm"></div>
-<div class="lyric-glow lyric-glow-warm-2"></div>
-<div class="lyric-particles" data-particles="warm"></div>
+<div class="lyric-scene" data-scene="3" data-bg-crt="crt-03-daoxiang.jpg">
+<div class="crt-particles" data-particles="dawn"></div>
 </div>
-
-<!-- 场景 2：深夜（月亮 + 星空 + 城市剪影） -->
-<div class="lyric-scene lyric-scene-2" data-scene="2">
-<div class="sky sky-night"></div>
-<div class="moon">
-<span class="moon-glow"></span>
-<span class="moon-crater moon-crater-1"></span>
-<span class="moon-crater moon-crater-2"></span>
-<span class="moon-crater moon-crater-3"></span>
+<div class="lyric-scene" data-scene="4" data-bg-crt="crt-04-qingtian.jpg">
+<div class="crt-particles" data-particles="warm"></div>
 </div>
-<div class="stars">
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span><span class="star"></span>
-<span class="star"></span><span class="star"></span>
+<div class="lyric-scene" data-scene="5" data-bg-crt="crt-05-qingmingyushang.jpg">
+<div class="crt-particles" data-particles="cool"></div>
 </div>
-<div class="shooting-star"></div>
-<div class="city-skyline">
-<span class="building b-1"></span>
-<span class="building b-2"></span>
-<span class="building b-3"></span>
-<span class="building b-4"></span>
-<span class="building b-5"></span>
-<span class="building b-6"></span>
-<span class="building b-7"></span>
-<span class="building b-8"></span>
+<div class="lyric-scene" data-scene="6" data-bg-crt="crt-06-qinghuaci.jpg">
+<div class="crt-particles" data-particles="dawn"></div>
 </div>
-<div class="vignette"></div>
-<div class="lyric-glow lyric-glow-cool"></div>
-<div class="lyric-glow lyric-glow-cool-2"></div>
-<div class="lyric-particles" data-particles="cool"></div>
+<div class="lyric-scene" data-scene="7" data-bg-crt="crt-07-luzhouyue.jpg">
+<div class="crt-particles" data-particles="cool"></div>
 </div>
-
-<!-- 场景 3：清晓（晨光 + 云海 + 风筝） -->
-<div class="lyric-scene lyric-scene-3" data-scene="3">
-<div class="sky sky-dawn"></div>
-<div class="sun sun-dawn"></div>
-<div class="cloud cloud-1"></div>
-<div class="cloud cloud-2"></div>
-<div class="cloud cloud-3"></div>
-<div class="cloud cloud-4"></div>
-<div class="kite">
-<span class="kite-body"></span>
-<span class="kite-string"></span>
+<div class="lyric-scene" data-scene="8" data-bg-crt="crt-08-gaobaiqiqui.jpg">
+<div class="crt-particles" data-particles="warm"></div>
 </div>
-<div class="vignette"></div>
-<div class="lyric-glow lyric-glow-dawn"></div>
-<div class="lyric-glow lyric-glow-dawn-2"></div>
-<div class="lyric-particles" data-particles="dawn"></div>
+<div class="lyric-scene" data-scene="9" data-bg-crt="crt-09-yasugongshang.jpg">
+<div class="crt-particles" data-particles="dawn"></div>
+</div>
+<div class="lyric-scene" data-scene="10" data-bg-crt="crt-10-chengfu.jpg">
+<div class="crt-particles" data-particles="cool"></div>
 </div>
 
 <div class="lyric-stage-overlay"></div>
@@ -124,7 +77,7 @@ share: false
 
 <!-- 歌词卡（玻璃磨砂） -->
 <div class="lyric-cards">
-<div class="lyric-card is-active" data-scene="1" data-bg="bg-01-zengjingdeni.jpg">
+<div class="lyric-card is-active" data-scene="1" data-bg="bg-01-zengjingdeni.jpg" data-bg-crt="crt-01-zengjingdeni.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">01</span>
 <h3>曾经的你</h3>
@@ -158,7 +111,7 @@ share: false
 </div>
 </div>
 
-<div class="lyric-card" data-scene="2" data-bg="bg-02-xiaochou.jpg">
+<div class="lyric-card" data-scene="2" data-bg="bg-02-xiaochou.jpg" data-bg-crt="crt-02-xiaochou.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">02</span>
 <h3>消愁</h3>
@@ -202,7 +155,7 @@ share: false
 </div>
 </div>
 
-<div class="lyric-card" data-scene="3" data-bg="bg-03-daoxiang.jpg">
+<div class="lyric-card" data-scene="3" data-bg="bg-03-daoxiang.jpg" data-bg-crt="crt-03-daoxiang.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">03</span>
 <h3>稻香</h3>
@@ -226,7 +179,7 @@ share: false
 </div>
 
 <!-- 第 4 首:晴天(周杰伦) - 场景 3 清晓 -->
-<div class="lyric-card" data-scene="3" data-bg="bg-04-qingtian.jpg">
+<div class="lyric-card" data-scene="4" data-bg="bg-04-qingtian.jpg" data-bg-crt="crt-04-qingtian.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">04</span>
 <h3>晴天</h3>
@@ -252,7 +205,7 @@ share: false
 </div>
 
 <!-- 第 5 首:清明雨上(许嵩) - 场景 2 深夜 -->
-<div class="lyric-card" data-scene="2" data-bg="bg-05-qingmingyushang.jpg">
+<div class="lyric-card" data-scene="5" data-bg="bg-05-qingmingyushang.jpg" data-bg-crt="crt-05-qingmingyushang.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">05</span>
 <h3>清明雨上</h3>
@@ -276,7 +229,7 @@ share: false
 </div>
 
 <!-- 第 6 首:青花瓷(周杰伦) - 场景 1 黄昏 -->
-<div class="lyric-card" data-scene="1" data-bg="bg-06-qinghuaci.jpg">
+<div class="lyric-card" data-scene="6" data-bg="bg-06-qinghuaci.jpg" data-bg-crt="crt-06-qinghuaci.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">06</span>
 <h3>青花瓷</h3>
@@ -301,7 +254,7 @@ share: false
 </div>
 
 <!-- 第 7 首:庐州月(许嵩) - 场景 2 深夜 -->
-<div class="lyric-card" data-scene="2" data-bg="bg-07-luzhouyue.jpg">
+<div class="lyric-card" data-scene="7" data-bg="bg-07-luzhouyue.jpg" data-bg-crt="crt-07-luzhouyue.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">07</span>
 <h3>庐州月</h3>
@@ -326,7 +279,7 @@ share: false
 </div>
 
 <!-- 第 8 首:告白气球(周杰伦) - 场景 3 清晓 -->
-<div class="lyric-card" data-scene="3" data-bg="bg-08-gaobaiqiqui.jpg">
+<div class="lyric-card" data-scene="8" data-bg="bg-08-gaobaiqiqui.jpg" data-bg-crt="crt-08-gaobaiqiqui.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">08</span>
 <h3>告白气球</h3>
@@ -349,7 +302,7 @@ share: false
 </div>
 
 <!-- 第 9 首:雅俗共赏(许嵩) - 场景 3 清晓 -->
-<div class="lyric-card" data-scene="3" data-bg="bg-09-yasugongshang.jpg">
+<div class="lyric-card" data-scene="9" data-bg="bg-09-yasugongshang.jpg" data-bg-crt="crt-09-yasugongshang.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">09</span>
 <h3>雅俗共赏</h3>
@@ -374,7 +327,7 @@ share: false
 </div>
 
 <!-- 第 10 首:城府(许嵩) - 场景 2 深夜 -->
-<div class="lyric-card" data-scene="2" data-bg="bg-10-chengfu.jpg">
+<div class="lyric-card" data-scene="10" data-bg="bg-10-chengfu.jpg" data-bg-crt="crt-10-chengfu.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">10</span>
 <h3>城府</h3>
@@ -666,7 +619,7 @@ share: false
     }
     host.appendChild(frag);
   }
-  document.querySelectorAll('.lyric-particles').forEach(function (el) {
+  document.querySelectorAll('.crt-particles').forEach(function (el) {
     spawnParticles(el, el.getAttribute('data-particles'));
   });
 })();

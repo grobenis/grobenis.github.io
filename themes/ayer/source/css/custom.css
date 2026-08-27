@@ -1139,9 +1139,33 @@ body.page-scene-dawn #mask {
   inset: 0;
   opacity: 0;
   transition: opacity 1.4s ease;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
 }
 .lyric-scene.is-active {
   opacity: 1;
+}
+
+/* ===== 10 张专属 CRT 场景图 ===== */
+.lyric-scene[data-bg-crt="crt-01-zengjingdeni.jpg"]      { background-image: url(/images/lyrics-bg/crt/crt-01-zengjingdeni.jpg); }
+.lyric-scene[data-bg-crt="crt-02-xiaochou.jpg"]          { background-image: url(/images/lyrics-bg/crt/crt-02-xiaochou.jpg); }
+.lyric-scene[data-bg-crt="crt-03-daoxiang.jpg"]          { background-image: url(/images/lyrics-bg/crt/crt-03-daoxiang.jpg); }
+.lyric-scene[data-bg-crt="crt-04-qingtian.jpg"]          { background-image: url(/images/lyrics-bg/crt/crt-04-qingtian.jpg); }
+.lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"]   { background-image: url(/images/lyrics-bg/crt/crt-05-qingmingyushang.jpg); }
+.lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"]         { background-image: url(/images/lyrics-bg/crt/crt-06-qinghuaci.jpg); }
+.lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"]         { background-image: url(/images/lyrics-bg/crt/crt-07-luzhouyue.jpg); }
+.lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"]       { background-image: url(/images/lyrics-bg/crt/crt-08-gaobaiqiqui.jpg); }
+.lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"]     { background-image: url(/images/lyrics-bg/crt/crt-09-yasugongshang.jpg); }
+.lyric-scene[data-bg-crt="crt-10-chengfu.jpg"]           { background-image: url(/images/lyrics-bg/crt/crt-10-chengfu.jpg); }
+
+/* CRT 粒子容器 */
+.crt-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
 }
 /* ===== 场景 1：黄昏（夕阳 + 远山 + 飞鸟） ===== */
 .lyric-scene-1 { background: #2a1d2c; }
