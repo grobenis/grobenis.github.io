@@ -326,9 +326,9 @@ html {
   align-items: center;
   justify-content: center;
   gap: 28px;
-  max-width: 1240px;
+  max-width: 1400px;
   margin: 0 auto 30px;
-  padding: 0 16px;
+  padding: 0 24px;
   position: relative;
   z-index: 1;
 }
@@ -337,7 +337,7 @@ html {
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  width: 88px;
+  width: 140px;
   flex-shrink: 0;
 }
 .deco-col .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
@@ -600,10 +600,14 @@ html {
 }
 
 /* 响应式:窄屏隐藏装饰列，但音响台需要保留（移到电视下方） */
+@media (max-width: 1200px) {
+  .music-stage { gap: 18px; }
+  .deco-col { width: 110px; gap: 14px; }
+  .deco-vinyl, .deco-cd { transform: scale(0.9); }
+}
 @media (max-width: 960px) {
   .music-stage { gap: 14px; }
-  .deco-col { width: 72px; gap: 14px; }
-  .deco-vinyl, .deco-cd { transform: scale(0.9); }
+  .deco-col { width: 90px; gap: 12px; }
 }
 @media (max-width: 760px) {
   .music-stage { flex-direction: column; align-items: center; }
@@ -618,7 +622,8 @@ html {
 .tv-set {
   position: relative;
   margin: 0 auto 30px;
-  max-width: 960px;
+  max-width: 1100px;
+  width: 100%;
   flex: 1 1 auto;
   min-width: 0;
   padding-top: 64px; /* 给天线留空间 */
@@ -668,6 +673,8 @@ html {
 
 .tv-body {
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
   background:
     linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
   border-radius: 18px 18px 14px 14px;
@@ -722,7 +729,7 @@ html {
   position: relative;
   background: linear-gradient(180deg, #1a1a20, #2a2a30);
   border-radius: 28px;
-  padding: 28px;
+  padding: 24px;
   box-shadow:
     inset 0 2px 6px rgba(0,0,0,0.6),
     inset 0 -1px 2px rgba(255,255,255,0.08);
@@ -1580,7 +1587,7 @@ body.page-scene-dawn .tv-set {
   top: 32px;
   bottom: 32px;
   margin: 0 auto;
-  max-width: 700px;
+  max-width: 860px;
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
