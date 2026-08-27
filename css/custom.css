@@ -2566,6 +2566,19 @@ body.page-scene-dawn .tv-set {
   pointer-events: none;
   overflow: hidden;
 }
+/* 小剧场蒙版：盖住下方歌词与场景，只留特效 */
+.theater-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.78) 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.theater-stage:has(.theater.is-on) .theater-dim {
+  opacity: 1;
+}
 .theater {
   position: absolute;
   inset: 0;
