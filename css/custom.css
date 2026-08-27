@@ -3202,40 +3202,78 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(calc(var(--dx, 22px) * -0.5), 112vh) rotate(calc(var(--rot, 120deg) * 2)); opacity: 0.9; }
 }
 
-/* ---- 麦克风:页面顶部左右各两只大粉色气球 ---- */
+/* ---- 麦克风:页面顶部左右各两只粉色空心大气泡 ---- */
 .fx-bigballoon {
   position: fixed;
   z-index: 65;
   pointer-events: none;
-  border-radius: 50% 50% 50% 50% / 56% 56% 44% 44%;
-  box-shadow: inset -6px -10px 16px rgba(190, 40, 100, 0.35), 0 10px 22px rgba(255, 111, 179, 0.35);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.05) 55%);
+  border: 3px solid var(--pc, #ff8dc7);
+  box-shadow: 0 0 16px rgba(255, 120, 190, 0.35), inset 0 0 14px rgba(255, 180, 215, 0.35);
   animation: ballSway 5s ease-in-out infinite;
-}
-.fx-bigballoon::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  width: 1.5px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.7);
-  transform: translateX(-50%);
 }
 .fx-bigballoon::before {
   content: "";
   position: absolute;
-  left: 50%;
-  top: 80%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 9px solid #f463a8;
+  left: 20%;
+  top: 16%;
+  width: 20%;
+  height: 24%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
 }
 @keyframes ballSway {
   0%, 100% { transform: translateY(0) rotate(-2.4deg); }
   50%      { transform: translateY(-8px) rotate(2.4deg); }
+}
+
+/* ---- CD后:海报 随机小情话 ---- */
+.poster-card {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  z-index: 80;
+  width: min(78vw, 400px);
+  padding: 26px 20px 30px;
+  text-align: center;
+  background: linear-gradient(160deg, #fff7f2 0%, #ffe3ec 100%);
+  border: 5px solid #ffb6d9;
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  animation: posterIn 0.5s ease forwards;
+}
+.poster-card .pc-close {
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  border: none;
+  background: none;
+  color: #c45a8a;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.poster-card .pc-title {
+  letter-spacing: 8px;
+  color: #c45a8a;
+  font-size: 15px;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed #ffb6d9;
+}
+.poster-card .pc-text {
+  font-family: "楷体", "KaiTi", "STKaiti", serif;
+  font-size: 24px;
+  line-height: 1.7;
+  color: #8b3a5e;
+}
+@keyframes posterIn {
+  0%   { transform: translate(-50%, -50%) scale(0.6) rotate(-8deg); opacity: 0; }
+  60%  { transform: translate(-50%, -50%) scale(1.05) rotate(-2deg); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1) rotate(-2deg); opacity: 1; }
 }
 
 /* ---- 终章漂浮:心形 & 气泡 ---- */

@@ -308,8 +308,8 @@
       <name>guoben</name>
     </author>
     <category term="工作" scheme="https://grobenis.github.io/categories/%E5%B7%A5%E4%BD%9C/"/>
-    <category term="字符串" scheme="https://grobenis.github.io/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
     <category term="排序" scheme="https://grobenis.github.io/tags/%E6%8E%92%E5%BA%8F/"/>
+    <category term="字符串" scheme="https://grobenis.github.io/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
     <category term="回溯" scheme="https://grobenis.github.io/tags/%E5%9B%9E%E6%BA%AF/"/>
     <category term="链表" scheme="https://grobenis.github.io/tags/%E9%93%BE%E8%A1%A8/"/>
     <content>
