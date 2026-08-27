@@ -822,7 +822,8 @@ body.page-scene-dawn #mask {
   background:
     linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
   border-radius: 18px 18px 14px 14px;
-  padding: 16px 18px 16px;
+  /* 加厚灰色外壳:老电视厚重塑料边框 */
+  padding: 26px 30px 22px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.7),
     inset 0 -2px 0 rgba(0,0,0,0.15),
@@ -975,14 +976,15 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 88% 92%, rgba(255,255,255,0.9) 0.5px, transparent 1px);
 }
 
-/* 频道号窗(屏幕右上角) */
+/* 频道号窗(屏幕左上角) */
 .tv-channel {
   position: absolute;
   top: 14px;
-  right: 18px;
+  left: 18px;
+  right: auto;
   /* 提高到比歌词卡更高,避免被盖 */
   z-index: 11;
-  background: linear-gradient(180deg, #1a1a20, #0a0a10);
+  background: linear-gradient(180deg, rgba(10,10,16,0.75), rgba(4,4,8,0.75));
   color: #ff8c4a;
   font-family: "Courier New", monospace;
   font-weight: 700;
