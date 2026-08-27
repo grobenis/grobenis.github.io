@@ -302,11 +302,13 @@ html {
 }
 .lyric-card-body p {
   margin: 0 0 8px;
-  line-height: 1.85;
-  color: #444;
+  line-height: 2.0;
+  color: #2a2a30;
+  font-family: "Georgia", "STKaiti", "Source Han Serif", "Songti SC", serif;
   font-size: 16px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   text-align: center;
+  /* 去掉 text-shadow,实心底不需要 */
 }
 .lyric-card-body p:last-child {
   margin-bottom: 0;
@@ -1100,20 +1102,20 @@ body.page-scene-dawn #mask {
   to   { box-shadow: 0 0 14px #ff7050, inset 0 1px 1px rgba(255,200,150,0.8); }
 }
 
-/* 底部铭牌(移到屏内顶部居中,跟频道号 CH 对称,避开控制台按钮) */
+/* 底部铭牌(放在 TV 机壳顶部,天线下方 + 屏框上方,深色字浅色金属机壳背景) */
 .tv-footplate {
   position: absolute;
-  /* 相对 .tv-set 顶部:padding-top 44 + tv-body padding-top 16 + tv-screen-frame padding 16 ≈ 76 */
-  top: 76px;
+  /* 相对 .tv-set 顶部:padding-top 44 + tv-body padding-top 16 - 8 内缩 = 52 */
+  top: 52px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 11;
+  z-index: 3;
   font-size: 9px;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 2.5px;
+  color: #3a3a42;
   font-family: "Courier New", monospace;
   text-transform: uppercase;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   pointer-events: none;
   white-space: nowrap;
 }
@@ -1750,21 +1752,80 @@ body.page-scene-dawn .tv-set {
   bottom: 24px;
   margin: 0 auto;
   max-width: 860px;
-  /* 回到 78% 半透明,场景适度透出(重排后 z-index 已修好,不会再被元素遮挡) */
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-  border-radius: 14px;
+  /* 信纸风:暖白实心 + 硬边圆角 + 双线边框(实线外框 + 虚线内框) */
+  background: #fdfaf2;
+  border: 1.5px solid #2a2a30;
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 #fdfaf2,    /* 模拟信纸外白边 */
+    0 0 0 3px #2a2a30,   /* 外层实线框 */
+    0 6px 24px rgba(0, 0, 0, 0.25);
   display: none;
   flex-direction: column;
   overflow: hidden;
-  /* 显式恢复事件穿透(被 .lyric-stage 的 pointer-events:none 继承) */
   pointer-events: auto;
+}
+/* 卡片内层虚线装饰,像档案纸 */
+.lyric-card::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(42, 42, 48, 0.35);
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 1;
+}
+/* 左侧装订孔装饰 */
+.lyric-card::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 0; bottom: 0;
+  width: 4px;
+  background-image:
+    radial-gradient(circle at 50% 18%, #2a2a30 0 1.5px, transparent 2px),
+    radial-gradient(circle at 50% 50%, #2a2a30 0 1.5px, transparent 2px),
+    radial-gradient(circle at 50% 82%, #2a2a30 0 1.5px, transparent 2px);
+  pointer-events: none;
 }
 .lyric-card-header {
   flex-shrink: 0;
+  /* 显式声明信纸风:grid 布局(左编号 / 中歌名 / 右歌手)+ 虚线分隔 */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 22px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.5);
+}
+.lyric-card-header .lyric-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: #2a2a30;
+  color: #fdfaf2;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.lyric-card-header h3 {
+  margin: 0;
+  font-family: "Georgia", "STKaiti", "Source Han Serif", serif;
+  font-size: 19px;
+  color: #2a2a30;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+.lyric-card-header .lyric-singer {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  color: #5a5a52;
+  letter-spacing: 1px;
 }
 .lyric-card-body {
   flex: 1 1 0;
@@ -1793,7 +1854,7 @@ body.page-scene-dawn .tv-set {
   border-radius: 3px;
 }
 .lyric-card-body p {
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  /* 信纸风:实心底,不再需要 text-shadow */
 }
 .lyric-controls {
   position: relative;
