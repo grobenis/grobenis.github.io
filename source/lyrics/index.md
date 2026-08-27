@@ -636,7 +636,7 @@ share: false
   });
 })();
 
-/* ===== 装饰件小彩蛋 ===== */
+/* ===== 装饰件交互:海报弹窗 + 其余控件切换整页氛围 ===== */
 (function () {
   var modal = document.getElementById('easterModal');
   if (!modal) return;
@@ -646,95 +646,71 @@ share: false
   var closeBtn = document.getElementById('easterModalClose');
   var opened = false;
 
-  var eggs = {
-    'deco-vinyl': {
-      icon: '💿',
-      title: '黑胶转动',
-      text: '吱呀——黑胶缓缓转动，整间屋子都弥漫起老唱片特有的暖意与沙沙声。'
-    },
-    'deco-mic': {
-      icon: '🎙️',
-      title: '电台在线',
-      text: '喂？喂！GroTV 电台连线成功。这里是 1986 年的深夜直播间，欢迎收听。'
-    },
-    'deco-cassette': {
-      icon: '📼',
-      title: '磁带加载',
-      text: '咔哒。一盘沾满灰尘的磁带被塞进机芯，倒带声里藏着上世纪的某段旋律。'
-    },
-    'deco-cd': {
-      icon: '💽',
-      title: '光盘洛面',
-      text: '激光扫过 CD 洛面，折射出一道彩虹。原来 90 年代的声音也能这么清澈。'
-    },
-    'deco-neon': {
-      icon: '🪧',
-      title: '霓虹闪烁',
-      text: '霓虹灯管猛地一亮，又慢慢暗下去。可惜 M 字少了一横——正如这座城少的那个夜。'
-    },
-    'deco-poster': {
-      icon: '🖼️',
-      title: '海报揭谜',
-      text: '你把海报翻过来，背面用铅笔写着：找到全部 6 个彩蛋的人，能点播任意一首歌。'
-    }
+  /* 氛围主题:控件 -> body mood 类 */
+  var moods = {
+    'deco-vinyl':    { mood: 'mood-vinyl' },
+    'deco-mic':      { mood: 'mood-mic' },
+    'deco-cassette': { mood: 'mood-cassette' },
+    'deco-cd':       { mood: 'mood-cd' },
+    'deco-neon':     { mood: 'mood-neon' }
   };
 
-  function burst(x, y) {
-    var colors = ['#ff8c4a', '#ffd166', '#06d6a0', '#4cc9f0', '#b388ff', '#ff6b6b'];
-    for (var i = 0; i < 26; i++) {
-      var p = document.createElement('span');
-      p.textContent = ['✨','🎵','🎶','💫','🌟']
-        [Math.floor(Math.random() * 5)];
-      p.style.cssText =
-        'position:fixed;left:' + (x + (Math.random() * 40 - 20)) + 'px;' +
-        'top:' + (y + (Math.random() * 40 - 20)) + 'px;' +
-        'font-size:' + (12 + Math.random() * 14) + 'px;' +
-        'color:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
-        'z-index:9999;pointer-events:none;' +
-        'transition:transform 0.9s ease-out, opacity 0.9s ease-out;';
-      var dx = (Math.random() * 2 - 1) * 140;
-      var dy = -(40 + Math.random() * 140);
-      requestAnimationFrame(function () {
-        p.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' +
-          (Math.random() * 180 - 90) + 'deg)';
-        p.style.opacity = '0';
-      });
-      document.body.appendChild(p);
-      setTimeout(function () { p.remove(); }, 950);
-    }
+  /* 海报弹窗文案 */
+  var posterEgg = {
+    icon: '🖼️',
+    title: '海报揭谜',
+    text: '你把海报翻过来，背面用铅笔写着：找到这个小房间里的每一样东西，就能拼出完整的 1986。'
+  };
+
+  function clearMoods() {
+    var b = document.body;
+    ['mood-vinyl','mood-mic','mood-cassette','mood-cd','mood-neon'].forEach(function (m) {
+      b.classList.remove(m);
+    });
   }
 
-  function open(e, key) {
-    var cur = opened ? document.querySelector('.easter-modal.is-open') : null;
-    if (cur) {
-      modal.classList.remove('is-open');
-      opened = false;
-    }
-    var cfg = eggs[key];
-    iconEl.textContent = cfg.icon;
-    titleEl.textContent = cfg.title;
-    textEl.textContent = cfg.text;
+  function applyMood(el) {
+    var m = moods[el.className.split(' ')[0].trim()];
+    if (!m) return;
+    clearMoods();
+    document.body.classList.add(m.mood);
+  }
+
+  function openPoster() {
+    iconEl.textContent = posterEgg.icon;
+    titleEl.textContent = posterEgg.title;
+    textEl.textContent = posterEgg.text;
     modal.classList.add('is-open');
     opened = true;
-    burst(e.clientX, e.clientY);
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    opened = false;
+    clearMoods();
   }
 
   document.querySelectorAll('.deco-row > div').forEach(function (el) {
     var cls = el.className.split(' ')[0].trim();
-    if (!eggs[cls]) return;
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', function (e) { open(e, cls); });
+    /* 海报:弹窗;其余:切换氛围 */
+    if (cls === 'deco-poster') {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function () {
+        if (opened) { closeModal(); return; }
+        openPoster();
+      });
+    } else if (moods[cls]) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function () {
+        if (opened) closeModal();
+        applyMood(el);
+      });
+    }
   });
 
-  closeBtn.addEventListener('click', function () {
-    modal.classList.remove('is-open');
-    opened = false;
-  });
+  closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', function (e) {
-    if (e.target === modal) {
-      modal.classList.remove('is-open');
-      opened = false;
-    }
+    if (e.target === modal) closeModal();
   });
 })();
 </script>
