@@ -514,18 +514,19 @@
     </div>
     <div class="candle-drip"></div>
   </div>
-  <div class="deco-vinyl" title="黑胶唱片"></div>
-  <div class="deco-mic" title="复古麦克风">
+  <div class="deco-vinyl" id="decoVinyl" title="黑胶唱片"></div>
+  <div class="deco-mic" id="decoMic" title="复古麦克风">
     <div class="mic-head"></div>
     <div class="mic-stem"></div>
     <div class="mic-base"></div>
   </div>
-  <div class="deco-cassette" title="老式磁带">
+  <div class="deco-cassette" id="decoCassette" title="老式磁带">
     <div class="reel-l" style="left:16px;"></div>
     <div class="reel-r" style="right:16px;"></div>
   </div>
-  <div class="deco-cd shine" title="CD 光盘"></div>
-  <div class="deco-neon" title="霓虹招牌">MUSIC</div>
+  <div class="deco-cd shine" id="decoCd" title="CD 光盘">
+  </div>
+  <div class="deco-neon" id="decoNeon" title="霓虹招牌">MUSIC</div>
   <div class="deco-poster" title="复古海报">
     <div class="poster-title">FM 87.7</div>
     <div class="poster-line">LIVE FROM</div>
@@ -549,6 +550,19 @@
 
 <!-- 全屋烛光明暗层(纯黑氛围点燃蜡烛后出现) -->
 <div class="candle-glow"></div>
+
+<!-- CD 解锁场景:两个可爱小人守着看电视 -->
+<div class="cd-watch" id="cdWatch">
+  <div class="cw-p cw-p-left"><span class="cw-body"></span></div>
+  <div class="cw-tv">
+    <span class="cw-tv-screen"></span>
+    <span class="cw-tv-leg"></span>
+  </div>
+  <div class="cw-p cw-p-right"><span class="cw-body"></span></div>
+</div>
+
+<!-- 终章:电视机弹出 I♥你 粉色字样 -->
+<div class="finale-text" id="finaleText">I <span>♥</span> 你</div>
 
 </div><!-- /.music-stage -->
 
@@ -855,8 +869,11 @@
     if (idx >= 0 && idx < LAMPS.length) {
       document.body.classList.add('lamp-' + LAMPS[idx]);
     }
-    /* 非黑色氛围则熄灭蜡烛 */
-    if (LAMPS[idx] !== 'black') extinguishCandle();
+    /* 非黑色氛围则熄灭蜡烛并清空彩蛋特效 */
+    if (LAMPS[idx] !== 'black') {
+      extinguishCandle();
+      if (window.clearRoomFx) window.clearRoomFx();
+    }
   }
 
   function setPower(state) {
@@ -868,6 +885,7 @@
       lampIdx = -1;
       clearLamp();
       extinguishCandle();
+      if (window.clearRoomFx) window.clearRoomFx();
     } else {
       lampIdx = 0;
       setLamp(0);
@@ -908,6 +926,186 @@ function extinguishCandle() {
     var lit = candle.classList.toggle('is-lit');
     if (glow) glow.classList.toggle('is-on', lit);
   });
+})();
+
+/* ===== 彩蛋持续特效:黑胶=闪光粒子 / 麦克风=气球 / 磁带=花瓣 =====
+   前置:纯黑氛围 + 蜡烛点燃;点击一次持续生成,再点停下,可同时叠加
+   序列:点过前三个后再点CD→小人看电视;最后点MUSIC→电视机弹出I♥你+漂浮心形气泡 */
+(function () {
+  var FX = { vinyl: null, mic: null, cassette: null };
+  var seen = { vinyl: false, mic: false, cassette: false, cd: false };
+  var cdTimer = null, finaleTimer = null;
+  var BALL_COLORS = ['#ff8aa0', '#ffb36b', '#ffd86b', '#9ad7ff', '#c3a6ff', '#9ef0c8'];
+  var TYPE = { vinyl: 'spark', mic: 'balloon', cassette: 'petal' };
+
+  function canFx() {
+    var candle = document.getElementById('decoCandle');
+    return !!(window.roomState && window.roomState.isBlack) && candle && candle.classList.contains('is-lit');
+  }
+  function clearFx(type) {
+    var all = document.querySelectorAll('.fx-particle[data-fx="' + type + '"]');
+    for (var i = 0; i < all.length; i++) if (all[i].parentNode) all[i].parentNode.removeChild(all[i]);
+  }
+  function stopFx(id) {
+    if (FX[id]) { clearInterval(FX[id]); FX[id] = null; }
+    clearFx(TYPE[id]);
+  }
+  function centerOf(id) {
+    var el = document.getElementById(id), r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+  function makeP(node, type) {
+    node.className += ' fx-particle';
+    node.setAttribute('data-fx', type);
+    document.body.appendChild(node);
+    return node;
+  }
+  /* 气球:从麦克风位置上升 */
+  function spawnBalloon() {
+    var c = centerOf('decoMic');
+    var bc = BALL_COLORS[Math.floor(Math.random() * BALL_COLORS.length)];
+    var size = 18 + Math.random() * 14;
+    var wx = (Math.random() - 0.5) * 160;
+    var dur = 4 + Math.random() * 2;
+    var p = document.createElement('div');
+    p.style.cssText = '--bc:' + bc + ';--wx:' + wx + 'px;--fdur:' + dur + 's;' +
+      'width:' + size + 'px;height:' + Math.round(size * 1.22) + 'px;' +
+      'left:' + (c.x - size / 2) + 'px;top:' + c.y + 'px;';
+    makeP(p, 'balloon');
+    setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, dur * 1000 + 500);
+  }
+  /* 闪光粒子:从黑胶位置向上浪漫漂浮 */
+  function spawnSparks() {
+    var c = centerOf('decoVinyl');
+    var colors = ['#ffe9a0', '#ffd27a', '#fff6d6', '#ffc46a', '#fffbe6'];
+    for (var i = 0; i < 3; i++) {
+      var size = 3 + Math.random() * 5;
+      var dx = (Math.random() - 0.5) * 130;
+      var dy = -(110 + Math.random() * 160);
+      var dur = 2.4 + Math.random() * 1.6;
+      var p = document.createElement('div');
+      p.style.cssText = '--cc1:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+        '--dx:' + dx + 'px;--dy:' + dy + 'px;--fdur:' + dur + 's;' +
+        'width:' + size + 'px;height:' + size + 'px;' +
+        'left:' + (c.x + (Math.random() - 0.5) * 40) + 'px;top:' + c.y + 'px;';
+      makeP(p, 'spark');
+      (function (el, d) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, d * 1000 + 300); })(p, dur);
+    }
+  }
+  /* 花瓣:从屏幕顶部飘落 */
+  function spawnPetals() {
+    var size = 10 + Math.random() * 8;
+    var dx = 14 + Math.random() * 36;
+    var rot = 90 + Math.random() * 200;
+    var dur = 4.5 + Math.random() * 2.5;
+    var p = document.createElement('div');
+    p.style.cssText = '--dx:' + dx + 'px;--rot:' + rot + 'deg;--fdur:' + dur + 's;' +
+      'width:' + size + 'px;height:' + Math.round(size * 0.72) + 'px;' +
+      'left:' + (Math.random() * (window.innerWidth || 800)) + 'px;top:-30px;';
+    makeP(p, 'petal');
+    setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, dur * 1000 + 400);
+  }
+
+  /* 前三个控件:开/关各不相同(可同时叠加) */
+  function toggle(id, spawn, interval) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', function () {
+      if (!canFx()) return;
+      seen[id.replace('deco', '').toLowerCase()] = true;
+      if (FX[id]) { stopFx(id); return; }
+      spawn();
+      FX[id] = setInterval(spawn, interval);
+    });
+    el.style.cursor = 'pointer';
+  }
+  toggle('decoVinyl', spawnSparks, 260);
+  toggle('decoMic', spawnBalloon, 900);
+  toggle('decoCassette', spawnPetals, 700);
+
+  /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;出现两个小人守着看电视 */
+  var cd = document.getElementById('decoCd');
+  if (cd) {
+    cd.style.cursor = 'pointer';
+    cd.addEventListener('click', function () {
+      if (!canFx()) return;
+      if (!(seen.vinyl && seen.mic && seen.cassette)) return;
+      seen.cd = true;
+      hideFinale();
+      var cw = document.getElementById('cdWatch');
+      if (!cw) return;
+      cw.classList.add('is-on');
+      if (cdTimer) clearTimeout(cdTimer);
+      cdTimer = setTimeout(function () { cw.classList.remove('is-on'); }, 5200);
+    });
+  }
+
+  /* 心形 / 气泡:终章漂浮 */
+  function spawnHeart() {
+    var size = 15 + Math.random() * 18;
+    var h = document.createElement('div');
+    h.className = 'fx-heart';
+    h.textContent = '\u2665';
+    h.style.cssText = 'left:' + (Math.random() * (window.innerWidth - 60)) + 'px;' +
+      'top:' + (72 + Math.random() * 12) + 'vh;font-size:' + size + 'px;' +
+      '--dx:' + ((Math.random() - 0.5) * 140) + 'px;--dy:-' + (62 + Math.random() * 40) + 'vh;' +
+      '--rot:' + ((Math.random() - 0.5) * 60) + 'deg;--fdur:' + (4 + Math.random() * 3) + 's;';
+    makeP(h, 'heart');
+    setTimeout(function () { if (h.parentNode) h.parentNode.removeChild(h); }, 8000);
+  }
+  function spawnBubble() {
+    var size = 8 + Math.random() * 14;
+    var b = document.createElement('div');
+    b.className = 'fx-bubble';
+    b.style.cssText = 'left:' + (Math.random() * window.innerWidth) + 'px;' +
+      'top:' + (70 + Math.random() * 14) + 'vh;width:' + size + 'px;height:' + size + 'px;' +
+      '--dx:' + ((Math.random() - 0.5) * 120) + 'px;--dy:-' + (58 + Math.random() * 40) + 'vh;' +
+      '--rot:' + ((Math.random() - 0.5) * 40) + 'deg;--fdur:' + (4 + Math.random() * 3) + 's;';
+    makeP(b, 'bubble');
+    setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 8000);
+  }
+  function hideFinale() {
+    if (finaleTimer) { clearInterval(finaleTimer); finaleTimer = null; }
+    var ft = document.getElementById('finaleText');
+    if (ft) ft.classList.remove('is-on');
+    clearFx('heart');
+    clearFx('bubble');
+  }
+  /* MUSIC(霓虹):终章。电视机弹出I♥你 + 全页漂浮心形气泡 */
+  var neon = document.getElementById('decoNeon');
+  if (neon) {
+    neon.style.cursor = 'pointer';
+    neon.addEventListener('click', function () {
+      if (!canFx()) return;
+      if (!seen.cd) return; /* 需先触发过CD场景 */
+      var ft = document.getElementById('finaleText');
+      if (!ft) return;
+      if (ft.classList.contains('is-on')) { hideFinale(); return; }
+      if (cdTimer) { clearTimeout(cdTimer); cdTimer = null; }
+      var cw = document.getElementById('cdWatch');
+      if (cw) cw.classList.remove('is-on');
+      clearFx('spark'); clearFx('balloon'); clearFx('petal');
+      ft.classList.add('is-on');
+      spawnHeart();
+      spawnBubble();
+      finaleTimer = setInterval(function () {
+        spawnHeart();
+        if (Math.random() < 0.65) spawnBubble();
+      }, 420);
+    });
+  }
+
+  /* 离开黑色氛围/开电视时清空全部 */
+  window.clearRoomFx = function () {
+    for (var k in FX) if (FX[k]) { clearInterval(FX[k]); FX[k] = null; }
+    clearFx('spark'); clearFx('balloon'); clearFx('petal'); clearFx('heart'); clearFx('bubble');
+    if (cdTimer) { clearTimeout(cdTimer); cdTimer = null; }
+    if (finaleTimer) { clearInterval(finaleTimer); finaleTimer = null; }
+    var cw = document.getElementById('cdWatch');
+    if (cw) cw.classList.remove('is-on');
+    var ft = document.getElementById('finaleText');
+    if (ft) ft.classList.remove('is-on');
+  };
 })();
 </script>
 
