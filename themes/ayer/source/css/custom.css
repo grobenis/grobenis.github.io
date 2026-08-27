@@ -320,28 +320,34 @@ html {
   isolation: isolate;
 }
 
-/* ----- 音乐页整体三栏布局:左装饰 / TV / 右装饰 ----- */
+/* ----- 音乐页整体布局:TV 在上,装饰横排在下方 ----- */
 .music-stage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  max-width: 1400px;
-  margin: 0 auto 30px;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
-}
-.deco-col {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 18px;
-  width: 140px;
-  flex-shrink: 0;
+  max-width: 800px;
+  margin: 0 auto 20px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
 }
-.deco-col .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
-.deco-col .deco-item:hover { transform: translateY(-3px) scale(1.05); filter: brightness(1.12); }
+.deco-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4px 0;
+}
+.deco-row .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
+.deco-row .deco-item:hover { transform: translateY(-3px) scale(1.05); filter: brightness(1.12); }
+/* 旧 deco-col 兼容(没用了,直接隐藏) */
+
 
 /* ===== 怀旧物品:黑胶唱片 ===== */
 .deco-vinyl {
@@ -378,7 +384,7 @@ html {
   border: 1.5px solid #b71c1c;
 }
 .deco-vinyl.spin { animation: vinylSpin 6s linear infinite; }
-.deco-col:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
+.deco-row:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
 @keyframes vinylSpin { to { transform: rotate(360deg); } }
 
 /* ===== 怀旧物品:磁带 ===== */
@@ -453,7 +459,7 @@ html {
       #e8eef5 0%, #f0f5fa 12%, #c0d0e0 25%, #d8e0ec 38%,
       #b0c0d8 50%, #e0e8f0 62%, #f0f5fa 75%, #c0d0e0 88%, #e8eef5 100%);
 }
-.deco-col:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
+.deco-row:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
 @keyframes cdShine { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(40deg) brightness(1.1); } }
 
 /* ===== 怀旧物品:老式麦克风 ===== */
@@ -491,7 +497,7 @@ html {
   border-radius: 50% 50% 4px 4px / 100% 100% 4px 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
-.deco-col:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
+.deco-row:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
 @keyframes micSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 
 /* ===== 怀旧物品:霓虹招牌 ===== */
@@ -599,15 +605,14 @@ html {
   z-index: -1;
 }
 
-/* 响应式:窄屏隐藏装饰列，但音响台需要保留（移到电视下方） */
+/* 响应式:窄屏压缩布局 */
 @media (max-width: 1200px) {
-  .music-stage { gap: 18px; }
-  .deco-col { width: 110px; gap: 14px; }
+  .music-stage { max-width: 720px; gap: 14px; }
   .deco-vinyl, .deco-cd { transform: scale(0.9); }
 }
 @media (max-width: 960px) {
-  .music-stage { gap: 14px; }
-  .deco-col { width: 90px; gap: 12px; }
+  .music-stage { max-width: 100%; gap: 12px; }
+  .deco-row { gap: 16px; }
 }
 /* ==========================================================================
    音乐页:全尺寸锁一屏,只让 TV 内歌词卡可滚
@@ -688,15 +693,12 @@ body.page-scene-dawn #mask {
 
 /* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
 @media (max-width: 760px) {
-  .music-stage {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    max-width: 100%;
-    padding: 0;
-    height: calc(100vh - 56px); /* 减去顶部品牌徽章 */
-  }
-  .deco-col { display: none !important; }
+  .music-stage { flex-direction: column; max-width: 100%; padding: 0; }
+  .deco-row { gap: 14px; max-width: 100%; padding: 0 8px; }
+  .tv-set { order: 1; }
+  .deco-row { order: 2; }
+}
+  
 
   /* TV 外壳全部隐藏/透明:外壳、边框、天线、品牌、底部铭牌、电视柜、控制台 */
   .tv-set {
@@ -752,6 +754,12 @@ body.page-scene-dawn #mask {
 }
 @media (max-width: 480px) {
   .music-stage { height: calc(100vh - 50px); }
+  .tv-page-mark { padding: 10px 12px 4px !important; }
+  .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
+  .lyric-cards { padding: 6px !important; }
+  .lyric-card { left: 3px !important; right: 3px !important; top: 3px !important; bottom: 3px !important; }
+  .lyric-card-body { padding: 4px 14px 12px !important; }
+}
   .tv-page-mark { padding: 10px 12px 4px !important; }
   .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
   .lyric-cards { padding: 6px !important; }

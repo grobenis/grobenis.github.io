@@ -11,20 +11,6 @@ share: false
 
 <div class="music-stage">
 
-<!-- 左侧装饰:黑胶 / 麦克风 / 磁带 -->
-<div class="deco-col deco-left">
-  <div class="deco-vinyl" title="黑胶唱片"></div>
-  <div class="deco-mic" title="复古麦克风">
-    <div class="mic-head"></div>
-    <div class="mic-stem"></div>
-    <div class="mic-base"></div>
-  </div>
-  <div class="deco-cassette" title="老式磁带">
-    <div class="reel-l" style="left:16px;"></div>
-    <div class="reel-r" style="right:16px;"></div>
-  </div>
-</div>
-
 <div class="tv-set">
 
 <!-- 左上品牌铭牌 -->
@@ -302,8 +288,18 @@ share: false
 
 </div>
 
-<!-- 右侧装饰:CD / 霓虹招牌 / 海报 -->
-<div class="deco-col deco-right">
+<!-- 下方装饰横排:唱片 / 麦克风 / 磁带 / CD / 霓虹 / 海报 -->
+<div class="deco-row">
+  <div class="deco-vinyl" title="黑胶唱片"></div>
+  <div class="deco-mic" title="复古麦克风">
+    <div class="mic-head"></div>
+    <div class="mic-stem"></div>
+    <div class="mic-base"></div>
+  </div>
+  <div class="deco-cassette" title="老式磁带">
+    <div class="reel-l" style="left:16px;"></div>
+    <div class="reel-r" style="right:16px;"></div>
+  </div>
   <div class="deco-cd shine" title="CD 光盘"></div>
   <div class="deco-neon" title="霓虹招牌">MUSIC</div>
   <div class="deco-poster" title="复古海报">
