@@ -2977,13 +2977,18 @@ body.lamp-blue   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #dc
 body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffe0a0, #ff9a30 70%); box-shadow: 0 0 24px rgba(255,160,60,0.95); }
 
 /* ==========================================================================
-   15. 旧蜡烛(deco-candle)：纯黑氛围下点击点燃,烛光照亮全屋
+   15. 旧蜡烛(deco-candle)：默认隐藏;电视关闭+纯黑氛围时才出现,点击点燃透光
    ========================================================================== */
 .deco-candle {
   position: relative;
   width: 26px;
   height: 52px;
   cursor: pointer;
+  display: none;
+}
+/* 电视关闭 + 纯黑氛围:蜡烛出现 */
+body.lamp-black .deco-candle {
+  display: block;
 }
 .candle-body {
   position: absolute;
