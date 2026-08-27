@@ -963,7 +963,7 @@ function extinguishCandle() {
         b.className = 'fx-bigballoon';
         var side = (s.left != null) ? ('left:' + s.left + 'vw;') : ('right:' + s.right + 'vw;');
         b.style.cssText = side + 'top:' + s.top + 'vh;width:' + w + 'px;height:' + h + 'px;' +
-          'animation-delay:' + s.delay + 's;background:radial-gradient(circle at 32% 28%, #fff, ' + s.shade + ' 60%, #ff6fb3);';
+          'animation-delay:' + s.delay + 's;--pc:' + s.shade + ';';
         document.body.appendChild(b);
         balloonEls.push(b);
       }
@@ -1039,6 +1039,35 @@ function extinguishCandle() {
     });
   }
 
+  /* 海报:触发CD(出现字样)后,点击海报弹出随机小情话海报 */
+  var LINES = [
+    '你是我生命里最亮的星光。',
+    '所有的温柔都只想给你。',
+    '遇见你，是我最好的幸运。',
+    '把世间的美好都攒成一份，送给你。',
+    '你一笑，我的世界就亮了。'
+  ];
+  var posterEl = null;
+  var poster = document.getElementById('decoPoster');
+  if (poster) {
+    poster.style.cursor = 'pointer';
+    poster.addEventListener('click', function () {
+      if (!canFx()) return;
+      if (!seen.cd) return; /* 需先触发过CD(出现字样) */
+      if (posterEl) { posterEl.remove(); posterEl = null; return; }
+      var line = LINES[Math.floor(Math.random() * LINES.length)];
+      var pc = document.createElement('div');
+      pc.className = 'poster-card';
+      pc.innerHTML = '<button type="button" class="pc-close">✕</button>' +
+        '<div class="pc-title">G r o v e 情 话</div>' +
+        '<div class="pc-text">' + line + '</div>';
+      posterEl = pc;
+      document.body.appendChild(pc);
+      pc.querySelector('.pc-close').addEventListener('click', function (ev) { ev.stopPropagation(); pc.remove(); posterEl = null; });
+      pc.addEventListener('click', function (ev) { if (ev.target === pc) { pc.remove(); posterEl = null; } });
+    });
+  }
+
   /* 离开黑色氛围/开电视时清空全部 */
   window.clearRoomFx = function () {
     for (var k in FX) if (FX[k]) { clearInterval(FX[k]); FX[k] = null; }
@@ -1053,6 +1082,7 @@ function extinguishCandle() {
     if (cw) cw.classList.remove('is-on');
     var ft = document.getElementById('finaleText');
     if (ft) ft.classList.remove('is-on');
+    if (posterEl) { posterEl.remove(); posterEl = null; }
   };
 })();
 </script>
