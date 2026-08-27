@@ -1752,10 +1752,10 @@ body.page-scene-dawn .tv-set {
   bottom: 24px;
   margin: 0 auto;
   max-width: 860px;
-  /* 磨砂玻璃:暖白半透明 + 强模糊 + 双线信纸边框 */
-  background: rgba(253, 250, 242, 0.62);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  /* 磨砂玻璃:暖白半透明 + 更强模糊 + 饱和度提亮,让背景透出"软糊"感 */
+  background: rgba(253, 250, 242, 0.58);
+  backdrop-filter: blur(24px) saturate(1.35) brightness(1.05);
+  -webkit-backdrop-filter: blur(24px) saturate(1.35) brightness(1.05);
   border: 1.5px solid #2a2a30;
   border-radius: 3px;
   box-shadow:
