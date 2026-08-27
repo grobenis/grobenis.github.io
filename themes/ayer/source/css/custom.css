@@ -883,8 +883,8 @@ body.page-scene-dawn #mask {
 .tv-screen {
   position: relative;
   width: 100%;
-  /* 屏高随视口自适应:小屏自动变矮,大屏最高 500px,保证整机一屏放完 */
-  height: clamp(300px, 56vh, 500px);
+  /* 屏高随视口自适应:小屏自动变矮,大屏最高 400px,够装下歌词即可 */
+  height: clamp(260px, 42vh, 400px);
   border-radius: 16px;
   overflow: hidden;
   background: #000;
@@ -893,7 +893,7 @@ body.page-scene-dawn #mask {
     0 0 0 2px #1a1a20;
 }
 @media (max-width: 640px) {
-  .tv-screen { height: clamp(260px, 52vh, 360px); }
+  .tv-screen { height: clamp(200px, 38vh, 280px); }
 }
 .tv-screen-bezel {
   position: absolute;
