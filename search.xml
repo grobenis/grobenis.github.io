@@ -1468,6 +1468,33 @@
     
     
     <entry>
+      <title>经典聚类算法调研</title>
+      <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
+      <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
+      
+        <content type="html"><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p><ol><li>Means-shift聚类</li><li>k-means聚类</li><li>Fuzzy C means聚类</li><li>Medoid shift算法</li><li>Turbopixel算法</li><li>SLIC算法</li></ol><p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p><blockquote><p><strong>物以类聚，算法以分见真章</strong></p></blockquote><span id="more"></span><h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p><p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p><p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p><p><strong>算法步骤</strong></p><ol><li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p></li><li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p></li><li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p></li><li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p><p>下图演示了均值漂移聚类的计算步骤：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/Meanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法" loading="lazy"></p></li></ol><p><strong>算法评价</strong></p><p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p><p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p><h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p><p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p><p><strong>算法步骤</strong></p><ol><li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li><li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li><li>计算每一类中中心点作为新的中心点。</li><li>重复以上步骤，直至聚类中心变化在一定范围内为止</li></ol><p><strong>算法评价</strong></p><p>优点：简单快速高效；对异常值不太敏感</p><p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p><p>下图演示了k均值聚类的过程：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/k%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" loading="lazy"></p><h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p><p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p><p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p><p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p><p><strong>算法思路</strong></p><p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p><p><strong>算法步骤</strong></p><ol><li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p></li><li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p></li><li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p></li></ol><p><strong>算法评价</strong></p><p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p><p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p><h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p><p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p><p><strong>算法步骤</strong></p><p><strong>算法评价</strong></p><p>优点：比Mean shift更高效</p><p>缺点：不能控制图像块数量和大小</p><h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p><p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p><p>①每个图像块尺寸大小尽可能均匀：</p><p>②各个图像块之间紧凑连接且保持连通</p><p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p><p><strong>算法步骤</strong></p><ol><li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p></li><li><p>对图像中的像素点进行标记</p></li><li><p>初始化水平集函数。</p></li><li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p></li></ol><p>⑤返回边界。</p><p><strong>算法评价</strong></p><p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p><h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p><p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p><p>像素相似性与向量距离成反比。</p><p><strong>算法步骤</strong></p><p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p><p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p><p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p><p>距离计算公式如下：<br>$$d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}$$</p><p>$$d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}$$</p><p>$$D'=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}$$</p><p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p><p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p><p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p><p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p><p><strong>算法评价</strong></p><p>优点：</p><p>1.聚类结果紧凑整齐且邻域特征明显。</p><p>2.可处理彩色图和灰度图</p><p>3.只需一个超参数。</p><p>4.运行速度较快。</p><p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 聚类 </tag>
+            
+            <tag> 图像分割 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>隐马尔可夫模型</title>
       <link href="/2020/03/10/2020-03-13-HMM_model/"/>
       <url>/2020/03/10/2020-03-13-HMM_model/</url>
@@ -1493,25 +1520,25 @@
     
     
     <entry>
-      <title>经典聚类算法调研</title>
-      <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
-      <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
+      <title>发布 IMU 信息到 ROS 系统</title>
+      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
+      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
       
-        <content type="html"><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p><ol><li>Means-shift聚类</li><li>k-means聚类</li><li>Fuzzy C means聚类</li><li>Medoid shift算法</li><li>Turbopixel算法</li><li>SLIC算法</li></ol><p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p><blockquote><p><strong>物以类聚，算法以分见真章</strong></p></blockquote><span id="more"></span><h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p><p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p><p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p><p><strong>算法步骤</strong></p><ol><li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p></li><li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p></li><li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p></li><li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p><p>下图演示了均值漂移聚类的计算步骤：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/Meanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法" loading="lazy"></p></li></ol><p><strong>算法评价</strong></p><p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p><p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p><h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p><p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p><p><strong>算法步骤</strong></p><ol><li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li><li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li><li>计算每一类中中心点作为新的中心点。</li><li>重复以上步骤，直至聚类中心变化在一定范围内为止</li></ol><p><strong>算法评价</strong></p><p>优点：简单快速高效；对异常值不太敏感</p><p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p><p>下图演示了k均值聚类的过程：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/k%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" loading="lazy"></p><h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p><p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p><p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p><p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p><p><strong>算法思路</strong></p><p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p><p><strong>算法步骤</strong></p><ol><li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p></li><li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p></li><li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p></li></ol><p><strong>算法评价</strong></p><p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p><p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p><h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p><p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p><p><strong>算法步骤</strong></p><p><strong>算法评价</strong></p><p>优点：比Mean shift更高效</p><p>缺点：不能控制图像块数量和大小</p><h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p><p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p><p>①每个图像块尺寸大小尽可能均匀：</p><p>②各个图像块之间紧凑连接且保持连通</p><p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p><p><strong>算法步骤</strong></p><ol><li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p></li><li><p>对图像中的像素点进行标记</p></li><li><p>初始化水平集函数。</p></li><li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p></li></ol><p>⑤返回边界。</p><p><strong>算法评价</strong></p><p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p><h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p><p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p><p>像素相似性与向量距离成反比。</p><p><strong>算法步骤</strong></p><p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p><p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p><p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p><p>距离计算公式如下：<br>$$d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}$$</p><p>$$d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}$$</p><p>$$D'=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}$$</p><p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p><p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p><p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p><p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p><p><strong>算法评价</strong></p><p>优点：</p><p>1.聚类结果紧凑整齐且邻域特征明显。</p><p>2.可处理彩色图和灰度图</p><p>3.只需一个超参数。</p><p>4.运行速度较快。</p><p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>]]></content>
+        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
       
       
       <categories>
           
-          <category> 学习 </category>
+          <category> 实验 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 聚类 </tag>
+            <tag> ROS </tag>
             
-            <tag> 图像分割 </tag>
+            <tag> IMU </tag>
             
         </tags>
       
@@ -1541,33 +1568,6 @@
             <tag> IMU </tag>
             
             <tag> Kalibr </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>发布 IMU 信息到 ROS 系统</title>
-      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
-      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
-      
-        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> IMU </tag>
             
         </tags>
       

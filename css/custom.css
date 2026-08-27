@@ -320,12 +320,303 @@ html {
   isolation: isolate;
 }
 
+/* ----- 音乐页整体三栏布局:左装饰 / TV / 右装饰 ----- */
+.music-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  max-width: 1080px;
+  margin: 0 auto 30px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+.deco-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 130px;
+  flex-shrink: 0;
+}
+.deco-col .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
+.deco-col .deco-item:hover { transform: translateY(-4px) scale(1.04); filter: brightness(1.12); }
+
+/* ===== 怀旧物品:黑胶唱片 ===== */
+.deco-vinyl {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #b71c1c 0 14%, #1a1a1a 14% 18%, #2a2a2a 18% 22%, #0d0d0d 22% 100%);
+  position: relative;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.06),
+    0 6px 16px rgba(0,0,0,0.35);
+}
+.deco-vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.06) 0 1px, transparent 1px 4px);
+}
+.deco-vinyl::after {
+  content: "GroTV";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  color: rgba(255,255,255,0.85);
+  font-size: 7px; font-weight: 700; letter-spacing: 0.5px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #b71c1c;
+}
+.deco-vinyl.spin { animation: vinylSpin 6s linear infinite; }
+.deco-col:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
+@keyframes vinylSpin { to { transform: rotate(360deg); } }
+
+/* ===== 怀旧物品:磁带 ===== */
+.deco-cassette {
+  width: 130px; height: 80px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #d4d2c8 0%, #b0aea3 50%, #8a8880 100%);
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 6px 16px rgba(0,0,0,0.3);
+  padding: 8px;
+  box-sizing: border-box;
+}
+.deco-cassette::before {
+  content: "SIDE A · DOUBLEDECK";
+  position: absolute;
+  top: 6px; left: 0; right: 0;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 7px; font-weight: 700;
+  color: #3a3a3a; letter-spacing: 1.5px;
+}
+.deco-cassette::after {
+  content: "";
+  position: absolute;
+  bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 28px;
+  background: #2a2a2a;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6);
+}
+.deco-cassette .reel-l, .deco-cassette .reel-r {
+  position: absolute;
+  bottom: 14px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d4d2c8 30%, #1a1a1a 30% 70%, transparent 70%);
+}
+
+/* ===== 怀旧物品:CD 盘 ===== */
+.deco-cd {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg,
+      #e0e8f0, #c0d0e0, #f5f5f8, #b0c0d8, #d0d8e8, #e0e8f0);
+  position: relative;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.5),
+    0 4px 12px rgba(0,0,0,0.3);
+}
+.deco-cd::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f8f8fa 0 40%, transparent 40%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2);
+}
+.deco-cd::after {
+  content: "";
+  position: absolute;
+  inset: 45%;
+  border-radius: 50%;
+  background: #1a1a1a;
+}
+.deco-cd.shine {
+  background:
+    conic-gradient(from 0deg,
+      #e8eef5 0%, #f0f5fa 12%, #c0d0e0 25%, #d8e0ec 38%,
+      #b0c0d8 50%, #e0e8f0 62%, #f0f5fa 75%, #c0d0e0 88%, #e8eef5 100%);
+}
+.deco-col:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
+@keyframes cdShine { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(40deg) brightness(1.1); } }
+
+/* ===== 怀旧物品:老式麦克风 ===== */
+.deco-mic {
+  width: 70px; height: 130px;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+}
+.deco-mic .mic-head {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #f0f0f0 0%, #a8a8a8 60%, #555 100%);
+  position: relative;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.5),
+    inset 0 -3px 6px rgba(0,0,0,0.4),
+    0 4px 8px rgba(0,0,0,0.4);
+}
+.deco-mic .mic-head::before {
+  content: "";
+  position: absolute; inset: 8px;
+  border-radius: 50%;
+  background: repeating-linear-gradient(45deg,
+    rgba(0,0,0,0.5) 0 1px, transparent 1px 3px);
+}
+.deco-mic .mic-stem {
+  width: 6px; height: 40px;
+  background: linear-gradient(90deg, #2a2a2a 0%, #6a6a6a 50%, #2a2a2a 100%);
+  border-radius: 0 0 3px 3px;
+}
+.deco-mic .mic-base {
+  width: 50px; height: 8px;
+  background: linear-gradient(180deg, #4a4a4a, #1a1a1a);
+  border-radius: 50% 50% 4px 4px / 100% 100% 4px 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.deco-col:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
+@keyframes micSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+
+/* ===== 怀旧物品:霓虹招牌 ===== */
+.deco-neon {
+  padding: 8px 14px;
+  border: 2px solid #ff5577;
+  border-radius: 4px;
+  background: rgba(20,10,15,0.4);
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #ff7799;
+  text-shadow:
+    0 0 4px #ff5577,
+    0 0 10px #ff5577,
+    0 0 18px rgba(255,85,119,0.6);
+  box-shadow:
+    inset 0 0 8px rgba(255,85,119,0.3),
+    0 0 12px rgba(255,85,119,0.4);
+  animation: neonFlicker 4s ease-in-out infinite;
+}
+@keyframes neonFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.78; }
+  51% { opacity: 0.92; }
+  52% { opacity: 0.8; }
+}
+
+/* ===== 怀旧物品:海报 ===== */
+.deco-poster {
+  width: 110px;
+  padding: 10px 8px;
+  background: linear-gradient(180deg, #f5e8c8 0%, #e8d4a8 100%);
+  border: 1px solid rgba(0,0,0,0.2);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.4),
+    0 6px 16px rgba(0,0,0,0.35);
+  position: relative;
+  font-family: "Courier New", monospace;
+  text-align: center;
+  color: #3a2a14;
+}
+.deco-poster .poster-title {
+  font-size: 14px; font-weight: 800; letter-spacing: 1.5px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #3a2a14;
+  padding-bottom: 4px;
+}
+.deco-poster .poster-line {
+  font-size: 8px; letter-spacing: 1px; color: #6a4a2a;
+  margin: 2px 0;
+}
+.deco-poster .poster-stars {
+  font-size: 10px; color: #b71c1c; margin-top: 4px;
+}
+
+/* ===== 怀旧物品:留声机喇叭(锥形) ===== */
+.deco-horn {
+  width: 130px; height: 110px;
+  position: relative;
+}
+.deco-horn .horn-cone {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at 30% 50%,
+    #2a2a2a 0%, #1a1a1a 40%, #4a4a4a 70%, #2a2a2a 100%);
+  clip-path: polygon(20% 50%, 100% 0%, 100% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+.deco-horn .horn-cone::before {
+  content: "";
+  position: absolute; inset: 6% 4% 6% 0;
+  background: repeating-radial-gradient(ellipse at 20% 50%,
+    rgba(255,255,255,0.05) 0 2px, transparent 2px 5px);
+}
+.deco-horn .horn-stem {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 30%; height: 6px;
+  background: linear-gradient(180deg, #6a6a6a, #2a2a2a);
+  transform: translateY(-50%);
+  border-radius: 0 3px 3px 0;
+}
+
+/* ===== 背景噪点纹理(时光沉淀感) ===== */
+.music-stage::before {
+  content: "";
+  position: absolute;
+  inset: -40px -20px;
+  background-image:
+    radial-gradient(circle at 13% 22%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 47% 18%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 82% 28%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 23% 56%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 71% 64%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 58% 81%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 33% 90%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 88% 92%, rgba(255,255,255,0.5) 0.5px, transparent 1px);
+  background-size: 200px 200px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 响应式:窄屏隐藏装饰列 */
+@media (max-width: 900px) {
+  .music-stage { gap: 16px; }
+  .deco-col { width: 90px; }
+  .deco-cassette { width: 90px; height: 60px; }
+  .deco-vinyl, .deco-cd { transform: scale(0.85); }
+  .deco-neon { font-size: 11px; padding: 6px 10px; }
+}
+@media (max-width: 720px) {
+  .deco-col { display: none; }
+}
+
 /* ----- 电视外壳整体 ----- */
 .tv-set {
   position: relative;
   margin: 0 auto 30px;
-  max-width: 760px;
-  padding-top: 78px; /* 给天线留空间 */
+  max-width: 580px;
+  flex-shrink: 0;
+  padding-top: 64px; /* 给天线留空间 */
 }
 .tv-antennas {
   position: absolute;
@@ -434,7 +725,7 @@ html {
 .tv-screen {
   position: relative;
   width: 100%;
-  height: 520px;
+  height: 420px;
   border-radius: 16px;
   overflow: hidden;
   background: #000;
@@ -443,7 +734,7 @@ html {
     0 0 0 2px #1a1a20;
 }
 @media (max-width: 640px) {
-  .tv-screen { height: 420px; }
+  .tv-screen { height: 360px; }
 }
 .tv-screen-bezel {
   position: absolute;
