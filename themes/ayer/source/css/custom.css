@@ -2934,19 +2934,25 @@ body.lamp-black .tv-page-mark {
   transition: opacity 0.6s ease;
 }
 body.lamp-black .lyric-stage { display: none; }
-/* 纯黑时让下方所有装饰控件亮起来(给每件勾勒柔和轮廓,不只蜡烛) */
-body.lamp-black .deco-row *,
-body.lamp-black .deco-row {
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.22));
+/* 纯黑氛围:只有蜡烛可见,其他物件隐去 */
+body.lamp-black .deco-vinyl,
+body.lamp-black .deco-mic,
+body.lamp-black .deco-cassette,
+body.lamp-black .deco-cd,
+body.lamp-black .deco-neon,
+body.lamp-black .deco-poster {
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
-body.lamp-black .deco-row .deco-vinyl,
-body.lamp-black .deco-row .deco-mic,
-body.lamp-black .deco-row .deco-cassette,
-body.lamp-black .deco-row .deco-cd,
-body.lamp-black .deco-row .deco-neon,
-body.lamp-black .deco-row .deco-poster {
+/* 点燃蜡烛后,其他物件在烛光中显现 */
+body.lamp-black .deco-candle.is-lit ~ .deco-vinyl,
+body.lamp-black .deco-candle.is-lit ~ .deco-mic,
+body.lamp-black .deco-candle.is-lit ~ .deco-cassette,
+body.lamp-black .deco-candle.is-lit ~ .deco-cd,
+body.lamp-black .deco-candle.is-lit ~ .deco-neon,
+body.lamp-black .deco-candle.is-lit ~ .deco-poster {
   opacity: 1;
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)) brightness(1.05);
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.25)) brightness(1.02);
 }
 body.lamp-white {
   background:
@@ -3098,7 +3104,7 @@ body.lamp-black .deco-candle.is-lit .candle-body {
   filter: brightness(1.2);
 }
 
-/* 全屋烛光:整页柔暖聚光 */
+/* 全屋烛光:整页柔暖聚光(昏暗) */
 body.lamp-black .candle-glow {
   position: fixed;
   inset: 0;
@@ -3106,9 +3112,9 @@ body.lamp-black .candle-glow {
   pointer-events: none;
   background:
     radial-gradient(ellipse 110% 90% at 18% 72%,
-      rgba(255, 190, 110, 0.50),
-      rgba(255, 160, 70, 0.26) 38%,
-      rgba(0, 0, 0, 0) 70%);
+      rgba(255, 180, 100, 0.32),
+      rgba(255, 150, 60, 0.16) 40%,
+      rgba(0, 0, 0, 0) 72%);
   animation: candleGlowAura 5s ease-in-out infinite alternate;
   opacity: 0;
   transition: opacity 0.8s ease;
@@ -3117,8 +3123,8 @@ body.lamp-black .candle-glow.is-on {
   opacity: 1;
 }
 @keyframes candleGlowAura {
-  0%   { transform: scale(1);    opacity: 0.9; }
-  100% { transform: scale(1.04); opacity: 1; }
+  0%   { transform: scale(1);    opacity: 0.6; }
+  100% { transform: scale(1.04); opacity: 0.8; }
 }
 
 @media (max-width: 640px) {
