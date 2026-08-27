@@ -892,6 +892,32 @@ body.page-scene-dawn #mask {
 }
 @media (max-width: 640px) {
   .tv-screen { height: clamp(220px, 40vh, 300px); }
+  /* 小屏时收缩控制面板,保证所有按钮都留在电视机身上不外溢 */
+  .tv-panel { margin-top: 12px; padding: 8px 2px 2px; }
+  .tv-panel-right {
+    gap: 10px;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+  .tv-panel-left { gap: 0; }
+  .tv-speaker:nth-child(3),
+  .tv-speaker:nth-child(4) { display: none; }
+  .tv-knob { width: 40px; height: 40px; }
+  .tv-knob::before { inset: 6px; }
+  .tv-knob-marks {
+    background:
+      radial-gradient(circle, transparent 16px, currentColor 16px, currentColor 17px, transparent 18px);
+    -webkit-mask: radial-gradient(circle, transparent 17px, #000 17px);
+            mask: radial-gradient(circle, transparent 17px, #000 17px);
+  }
+  .tv-knob-pointer { height: 9px; top: 3px; }
+  .tv-buttons { gap: 5px; }
+  .tv-btn { width: 26px; height: 26px; border-radius: 5px; }
+  .tv-btn-icon { font-size: 10px; }
+}
+@media (max-width: 420px) {
+  /* 超窄屏隐藏 VOL 旋钮,只保留 CH + 三键 */
+  .tv-knob-vol { display: none; }
 }
 .tv-screen-bezel {
   position: absolute;
