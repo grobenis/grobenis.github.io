@@ -360,7 +360,6 @@ share: false
 <!-- 滚动提示 -->
 <div class="lyric-scroll-hint" id="lyricScrollHint">向上滑动查看完整歌词</div>
 </div>
-</div>
 
 <!-- 屏幕四周的金属包边 -->
 <div class="tv-screen-bezel"></div>
