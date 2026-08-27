@@ -136,6 +136,12 @@ html {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
+/* 音乐页:禁用 article-inner 的 hover transform,避免 fixed 台灯的原点漂移 */
+body.is-lyrics .article-inner:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* 通用链接过渡 */
 .content a {
   transition: color 0.25s ease;
