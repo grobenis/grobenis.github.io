@@ -30,16 +30,86 @@ share: false
 
 <!-- 动态舞台（CRT 内容区） -->
 <div class="lyric-stage">
+
+<!-- 场景 1：黄昏（夕阳 + 远山 + 飞鸟） -->
 <div class="lyric-scene lyric-scene-1 is-active" data-scene="1">
+<div class="sky sky-sunset"></div>
+<div class="sun sun-sunset"></div>
+<div class="mountains mountains-sunset">
+<span class="peak peak-1"></span>
+<span class="peak peak-2"></span>
+<span class="peak peak-3"></span>
+<span class="peak peak-4"></span>
+</div>
+<div class="birds">
+<span class="bird"></span>
+<span class="bird"></span>
+<span class="bird"></span>
+<span class="bird"></span>
+<span class="bird"></span>
+</div>
+<div class="vignette"></div>
 <div class="lyric-glow lyric-glow-warm"></div>
 <div class="lyric-glow lyric-glow-warm-2"></div>
 <div class="lyric-particles" data-particles="warm"></div>
 </div>
+
+<!-- 场景 2：深夜（月亮 + 星空 + 城市剪影） -->
 <div class="lyric-scene lyric-scene-2" data-scene="2">
+<div class="sky sky-night"></div>
+<div class="moon">
+<span class="moon-glow"></span>
+<span class="moon-crater moon-crater-1"></span>
+<span class="moon-crater moon-crater-2"></span>
+<span class="moon-crater moon-crater-3"></span>
+</div>
+<div class="stars">
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span><span class="star"></span>
+<span class="star"></span><span class="star"></span>
+</div>
+<div class="shooting-star"></div>
+<div class="city-skyline">
+<span class="building b-1"></span>
+<span class="building b-2"></span>
+<span class="building b-3"></span>
+<span class="building b-4"></span>
+<span class="building b-5"></span>
+<span class="building b-6"></span>
+<span class="building b-7"></span>
+<span class="building b-8"></span>
+</div>
+<div class="vignette"></div>
 <div class="lyric-glow lyric-glow-cool"></div>
 <div class="lyric-glow lyric-glow-cool-2"></div>
 <div class="lyric-particles" data-particles="cool"></div>
 </div>
+
+<!-- 场景 3：清晓（晨光 + 云海 + 风筝） -->
+<div class="lyric-scene lyric-scene-3" data-scene="3">
+<div class="sky sky-dawn"></div>
+<div class="sun sun-dawn"></div>
+<div class="cloud cloud-1"></div>
+<div class="cloud cloud-2"></div>
+<div class="cloud cloud-3"></div>
+<div class="cloud cloud-4"></div>
+<div class="kite">
+<span class="kite-body"></span>
+<span class="kite-string"></span>
+</div>
+<div class="vignette"></div>
+<div class="lyric-glow lyric-glow-dawn"></div>
+<div class="lyric-glow lyric-glow-dawn-2"></div>
+<div class="lyric-particles" data-particles="dawn"></div>
+</div>
+
 <div class="lyric-stage-overlay"></div>
 
 <!-- CRT 扫描线 + 屏幕反光 + 雪花点 -->
@@ -126,6 +196,29 @@ share: false
 <p>清醒的人最荒唐</p>
 </div>
 </div>
+
+<div class="lyric-card" data-scene="3">
+<div class="lyric-card-header">
+<span class="lyric-num">03</span>
+<h3>稻香</h3>
+<span class="lyric-singer">周杰伦</span>
+</div>
+<div class="lyric-card-body">
+<p>对这个世界如果你有太多的抱怨</p>
+<p>跌倒了就不敢继续往前走</p>
+<p>为什么人要这么的脆弱 堕落</p>
+<p>请你打开电视看看</p>
+<p>多少人为生命在努力勇敢的走下去</p>
+<p>我们是不是该知足</p>
+<p>珍惜一切 就算没有拥有</p>
+<p>还记得你说家是唯一的城堡</p>
+<p>随着稻香河流继续奔跑</p>
+<p>微微笑 小时候的梦我知道</p>
+<p>不要哭让萤火虫带着你逃跑</p>
+<p>乡间的歌谣永远的依靠</p>
+<p>回家吧 回到最初的美好</p>
+</div>
+</div>
 </div>
 
 <!-- 频道号窗 -->
@@ -178,7 +271,9 @@ share: false
 </div>
 
 <!-- 电源指示灯 -->
+
 <span class="tv-power-led" id="tvPowerLed" title="电源"></span>
+
 </div>
 </div>
 
@@ -225,7 +320,7 @@ share: false
 
     // 旋钮视觉旋转
     if (knobCh) {
-      knobCh.style.setProperty('--tv-rot', (idx * 180) + 'deg');
+      knobCh.style.setProperty('--tv-rot', (idx * 120) + 'deg');
     }
 
     // 重置新卡片的滚动位置
@@ -289,14 +384,21 @@ share: false
     }
   }
 
-  // 动态生成粒子（暖色 / 冷色各 60 颗）
+  // 动态生成粒子（每种氛围不同颜色 + 节奏）
   function spawnParticles(host, kind) {
-    var warm = kind === 'warm';
+    var palette;
+    if (kind === 'warm') {
+      palette = ['#ffb56b', '#ffd58a', '#ff8c4a'];
+    } else if (kind === 'cool') {
+      palette = ['#cfd8ff', '#a4b4ff', '#e8eeff'];
+    } else {
+      palette = ['#ffe7c2', '#ffd5a8', '#fff5e1'];
+    }
     var frag = document.createDocumentFragment();
     for (var i = 0; i < 60; i++) {
       var p = document.createElement('span');
       p.className = 'lyric-particle';
-      var size = warm ? (1 + Math.random() * 3) : (1 + Math.random() * 2.5);
+      var size = 1 + Math.random() * 2.5;
       p.style.width = size + 'px';
       p.style.height = size + 'px';
       p.style.left = (Math.random() * 100) + '%';
@@ -304,13 +406,9 @@ share: false
       p.style.animationDelay = (Math.random() * 12).toFixed(2) + 's';
       p.style.animationDuration = (10 + Math.random() * 14).toFixed(2) + 's';
       p.style.opacity = (0.35 + Math.random() * 0.5).toFixed(2);
-      if (warm) {
-        p.style.background = Math.random() > 0.5 ? '#ffb56b' : '#ffd58a';
-        p.style.boxShadow = '0 0 6px rgba(255,181,107,.7)';
-      } else {
-        p.style.background = Math.random() > 0.5 ? '#cfd8ff' : '#a4b4ff';
-        p.style.boxShadow = '0 0 6px rgba(164,180,255,.8)';
-      }
+      var c = palette[Math.floor(Math.random() * palette.length)];
+      p.style.background = c;
+      p.style.boxShadow = '0 0 6px ' + c;
       frag.appendChild(p);
     }
     host.appendChild(frag);
