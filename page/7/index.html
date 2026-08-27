@@ -91,7 +91,7 @@
     
     
     
-    <article id="post-2020-02-15-Calibrate_IMU_Camera_by_Kalibr" class="article article-type-post" itemscope
+    <article id="post-2020-02-15-Pub_IMU_Message_To_ROS" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -99,8 +99,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
-    >使用 Kalibr 标定双目相机与 IMU</a
+  <a class="article-title" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"
+    >发布 IMU 信息到 ROS 系统</a
   >
 </h2>
   
@@ -110,7 +110,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-date">
+      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -132,19 +132,14 @@
       
 
       
-      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
-<ol>
-<li>生成标定板</li>
-<li>标定双目相机</li>
-<li>标定IMU</li>
-<li>联合标定</li>
-</ol>
-<p>本文介绍用 Kalibr 工具完成双目相机与 IMU 联合标定的完整流程，涵盖生成 AprilTag 标定板、标定双目相机内参与 IMU 噪声参数、录制数据并联合标定，最终得到相机到 IMU 的外参，同时整理了几类环境配置报错的解决办法。</p>
+      <p>以下记录是在调试树莓派3b中得到的经验</p>
+<p>​	本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
+<p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p>
 <blockquote>
-<p><strong>联合标定做好，视觉惯性方可融合</strong></p>
+<p><strong>消息结构清晰，数据方可流动</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -157,7 +152,81 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalibr/" rel="tag">Kalibr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-02-15-UbuntuBluetooth" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/15/2020-02-15-UbuntuBluetooth/"
+    >Ubuntu 连接蓝牙鼠标</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p>
+<blockquote>
+<p><strong>命令行之下，蓝牙设备亦可驯服</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-UbuntuBluetooth/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li></ul>
 
 
     </footer>
@@ -248,7 +317,7 @@
 
 </article>
     
-    <article id="post-2020-02-15-Pub_IMU_Message_To_ROS" class="article article-type-post" itemscope
+    <article id="post-2020-02-19-How_to_use_evo" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -256,8 +325,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"
-    >发布 IMU 信息到 ROS 系统</a
+  <a class="article-title" href="/2020/02/15/2020-02-19-How_to_use_evo/"
+    >使用 evo 工具评测 SLAM</a
   >
 </h2>
   
@@ -267,7 +336,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-date">
+      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -289,14 +358,14 @@
       
 
       
-      <p>以下记录是在调试树莓派3b中得到的经验</p>
-<p>​	本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
-<p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p>
+      <p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/MichaelGrupp/evo">github地址</a></p>
+<p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p>
 <blockquote>
-<p><strong>消息结构清晰，数据方可流动</strong></p>
+<p><strong>轨迹评估有据，SLAM 精度了然</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-19-How_to_use_evo/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -309,7 +378,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
 
 
     </footer>
@@ -385,82 +454,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/" rel="tag">相机标定</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-02-19-How_to_use_evo" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-19-How_to_use_evo/"
-    >使用 evo 工具评测 SLAM</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/15/2020-02-19-How_to_use_evo/" class="article-date">
-  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/MichaelGrupp/evo">github地址</a></p>
-<p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p>
-<blockquote>
-<p><strong>轨迹评估有据，SLAM 精度了然</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/02/15/2020-02-19-How_to_use_evo/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/evo/" rel="tag">evo</a></li></ul>
 
 
     </footer>

@@ -3271,19 +3271,23 @@ body.lamp-black .candle-glow.is-on {
 .cd-tv {
   display: none;
   position: fixed;
-  left: 4vw; right: 4vw; top: 5vh; bottom: 5vh;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(82vw, 660px);
+  height: min(52vh, 440px);
   z-index: 70;
   pointer-events: none;
   background: linear-gradient(180deg, #5c462e 0%, #2c1d10 55%, #1c1108 100%);
   border: 14px solid #170d06;
-  border-radius: 24px;
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.75), inset 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.5);
 }
 .cd-tv.is-on { display: block; animation: cdtvIn 0.45s ease; }
 @keyframes cdtvIn {
-  0%   { transform: scale(0.72); opacity: 0; }
-  60%  { transform: scale(1.03); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+  0%   { transform: translate(-50%, -50%) scale(0.72); opacity: 0; }
+  60%  { transform: translate(-50%, -50%) scale(1.03); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 .cdtv-screen {
   position: absolute;
