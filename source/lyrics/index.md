@@ -77,6 +77,7 @@ share: false
 
 <!-- 屏幕小剧场：点击下方控件触发（黑胶/麦克风/磁带/CD/霓虹） -->
 <div class="theater-stage">
+<div class="theater-dim"></div>
 <div class="theater theater-vinyl"><span class="th-vinyl-disc"></span><span class="th-label th-vinyl-label">VINYL · 33⅓</span></div>
 <div class="theater theater-mic"><span class="th-mic-scan th-mic-scan-1"></span><span class="th-mic-scan th-mic-scan-2"></span><span class="th-mic-scan th-mic-scan-3"></span><span class="th-label th-mic-label">GROTV · ON AIR</span></div>
 <div class="theater theater-cassette"><span class="th-cassette-reel th-cassette-reel-1"></span><span class="th-cassette-reel th-cassette-reel-2"></span><span class="th-label th-cassette-label">REW · ▶ ◀</span></div>
