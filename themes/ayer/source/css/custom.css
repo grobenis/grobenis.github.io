@@ -611,12 +611,27 @@ html {
 }
 /* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
 @media (max-width: 760px) {
+  /* 整页固定一屏,只让 TV 内部卡片可滚(去除外层整页滚动条) */
+  html, body {
+    height: 100vh;
+    overflow: hidden;
+  }
+  body.page-scene-sunset, body.page-scene-night, body.page-scene-dawn {
+    height: 100vh;
+  }
+  .outer, .wrap, #main, .article, .article-inner, .article-entry {
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
   .music-stage {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     max-width: 100%;
     padding: 0;
+    height: calc(100vh - 56px); /* 减去顶部品牌徽章 */
   }
   .deco-col { display: none !important; }
 
@@ -625,6 +640,7 @@ html {
     order: 1;
     max-width: 100% !important;
     width: 100%;
+    height: 100%;
     padding-top: 0 !important;
     margin: 0 !important;
   }
@@ -639,6 +655,7 @@ html {
     box-shadow: none !important;
     padding: 0 !important;
     border-radius: 0 !important;
+    height: 100%;
   }
   .tv-body::before { display: none !important; }
   /* 屏幕框架透明,无圆角无内边距 */
@@ -647,41 +664,39 @@ html {
     box-shadow: none !important;
     padding: 0 !important;
     border-radius: 0 !important;
+    height: 100%;
   }
-  /* 屏幕本身:占满手机宽度,高度按视口算 */
+  /* 屏幕本身:占满父容器 */
   .tv-screen {
-    height: 70vh;
-    min-height: 380px;
-    max-height: 720px;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
     background: #000 !important;
   }
   /* 歌词卡片贴边显示,不留大内边距 */
   .lyric-cards {
-    padding: 12px !important;
+    padding: 10px !important;
   }
   .lyric-card {
-    left: 8px !important;
-    right: 8px !important;
-    top: 8px !important;
-    bottom: 8px !important;
+    left: 6px !important;
+    right: 6px !important;
+    top: 6px !important;
+    bottom: 6px !important;
     max-width: none !important;
   }
 }
 @media (max-width: 480px) {
-  .tv-screen {
-    height: 75vh;
-    min-height: 360px;
-  }
-  .tv-page-mark { padding: 12px 12px 6px; }
+  .music-stage { height: calc(100vh - 50px); }
+  .tv-page-mark { padding: 10px 12px 4px !important; }
   .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
-  .lyric-cards { padding: 8px !important; }
+  .lyric-cards { padding: 6px !important; }
   .lyric-card {
-    left: 4px !important;
-    right: 4px !important;
-    top: 4px !important;
-    bottom: 4px !important;
+    left: 3px !important;
+    right: 3px !important;
+    top: 3px !important;
+    bottom: 3px !important;
   }
   .lyric-card-body { padding: 4px 14px 12px !important; }
 }
