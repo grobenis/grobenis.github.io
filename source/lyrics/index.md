@@ -77,7 +77,7 @@ share: false
 
 <!-- 歌词卡（玻璃磨砂） -->
 <div class="lyric-cards">
-<div class="lyric-card is-active" data-scene="1" data-bg="bg-01-zengjingdeni.jpg" data-bg-crt="crt-01-zengjingdeni.jpg">
+<div class="lyric-card is-active" data-scene="1" data-bg-crt="crt-01-zengjingdeni.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">01</span>
 <h3>曾经的你</h3>
@@ -111,7 +111,7 @@ share: false
 </div>
 </div>
 
-<div class="lyric-card" data-scene="2" data-bg="bg-02-xiaochou.jpg" data-bg-crt="crt-02-xiaochou.jpg">
+<div class="lyric-card" data-scene="2" data-bg-crt="crt-02-xiaochou.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">02</span>
 <h3>消愁</h3>
@@ -155,7 +155,7 @@ share: false
 </div>
 </div>
 
-<div class="lyric-card" data-scene="3" data-bg="bg-03-daoxiang.jpg" data-bg-crt="crt-03-daoxiang.jpg">
+<div class="lyric-card" data-scene="3" data-bg-crt="crt-03-daoxiang.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">03</span>
 <h3>稻香</h3>
@@ -179,7 +179,7 @@ share: false
 </div>
 
 <!-- 第 4 首:晴天(周杰伦) - 场景 3 清晓 -->
-<div class="lyric-card" data-scene="4" data-bg="bg-04-qingtian.jpg" data-bg-crt="crt-04-qingtian.jpg">
+<div class="lyric-card" data-scene="4" data-bg-crt="crt-04-qingtian.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">04</span>
 <h3>晴天</h3>
@@ -205,7 +205,7 @@ share: false
 </div>
 
 <!-- 第 5 首:清明雨上(许嵩) - 场景 2 深夜 -->
-<div class="lyric-card" data-scene="5" data-bg="bg-05-qingmingyushang.jpg" data-bg-crt="crt-05-qingmingyushang.jpg">
+<div class="lyric-card" data-scene="5" data-bg-crt="crt-05-qingmingyushang.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">05</span>
 <h3>清明雨上</h3>
@@ -229,7 +229,7 @@ share: false
 </div>
 
 <!-- 第 6 首:青花瓷(周杰伦) - 场景 1 黄昏 -->
-<div class="lyric-card" data-scene="6" data-bg="bg-06-qinghuaci.jpg" data-bg-crt="crt-06-qinghuaci.jpg">
+<div class="lyric-card" data-scene="6" data-bg-crt="crt-06-qinghuaci.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">06</span>
 <h3>青花瓷</h3>
@@ -254,7 +254,7 @@ share: false
 </div>
 
 <!-- 第 7 首:庐州月(许嵩) - 场景 2 深夜 -->
-<div class="lyric-card" data-scene="7" data-bg="bg-07-luzhouyue.jpg" data-bg-crt="crt-07-luzhouyue.jpg">
+<div class="lyric-card" data-scene="7" data-bg-crt="crt-07-luzhouyue.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">07</span>
 <h3>庐州月</h3>
@@ -279,7 +279,7 @@ share: false
 </div>
 
 <!-- 第 8 首:告白气球(周杰伦) - 场景 3 清晓 -->
-<div class="lyric-card" data-scene="8" data-bg="bg-08-gaobaiqiqui.jpg" data-bg-crt="crt-08-gaobaiqiqui.jpg">
+<div class="lyric-card" data-scene="8" data-bg-crt="crt-08-gaobaiqiqui.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">08</span>
 <h3>告白气球</h3>
@@ -302,7 +302,7 @@ share: false
 </div>
 
 <!-- 第 9 首:雅俗共赏(许嵩) - 场景 3 清晓 -->
-<div class="lyric-card" data-scene="9" data-bg="bg-09-yasugongshang.jpg" data-bg-crt="crt-09-yasugongshang.jpg">
+<div class="lyric-card" data-scene="9" data-bg-crt="crt-09-yasugongshang.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">09</span>
 <h3>雅俗共赏</h3>
@@ -327,7 +327,7 @@ share: false
 </div>
 
 <!-- 第 10 首:城府(许嵩) - 场景 2 深夜 -->
-<div class="lyric-card" data-scene="10" data-bg="bg-10-chengfu.jpg" data-bg-crt="crt-10-chengfu.jpg">
+<div class="lyric-card" data-scene="10" data-bg-crt="crt-10-chengfu.jpg">
 <div class="lyric-card-header">
 <span class="lyric-num">10</span>
 <h3>城府</h3>
@@ -475,25 +475,17 @@ share: false
   if (!cards.length) return;
   var idx = 0;
 
-  // 页面背景场景类映射：1=黄昏 2=深夜 3=清晓
-  var sceneClassMap = { 1: 'page-scene-sunset', 2: 'page-scene-night', 3: 'page-scene-dawn' };
+  // 页面外圈场景分组（按歌情绪归入黄昏/深夜/清晓，三组大氛围）
+  var sceneClassMap = {
+    1: 'page-scene-sunset',  2: 'page-scene-night', 3: 'page-scene-dawn',
+    4: 'page-scene-dawn',    5: 'page-scene-night', 6: 'page-scene-night',
+    7: 'page-scene-night',   8: 'page-scene-sunset', 9: 'page-scene-dawn',
+    10: 'page-scene-night'
+  };
   function applyPageScene(n) {
     var cls = sceneClassMap[n] || sceneClassMap[1];
     document.body.classList.remove('page-scene-sunset', 'page-scene-night', 'page-scene-dawn');
     document.body.classList.add(cls);
-  }
-
-  // 每首歌专属外圈背景图类映射：page-bg-1 ... page-bg-10
-  function applyPageBg(cardIdx, card) {
-    // 清理旧的 page-bg-*
-    for (var i = 1; i <= 10; i++) {
-      document.body.classList.remove('page-bg-' + i);
-    }
-    var bg = card && card.getAttribute('data-bg');
-    if (!bg) return;
-    // 映射 bg-XX-xxx.jpg -> page-bg-XX
-    var m = bg.match(/^bg-(\d{1,2})-/);
-    if (m) document.body.classList.add('page-bg-' + m[1]);
   }
 
   function show(n, dir) {
@@ -514,8 +506,6 @@ share: false
 
     // 同步整页背景场景
     applyPageScene(sceneIdx);
-    // 同步每首歌专属外圈背景图
-    applyPageBg(idx, nextCard);
 
     if (chNum) chNum.textContent = (idx + 1).toString().padStart(2, '0');
 
@@ -555,8 +545,6 @@ share: false
 
   // 初始化页面背景场景
   applyPageScene(parseInt(cards[idx].getAttribute('data-scene'), 10) || 1);
-  // 初始化外圈背景图
-  applyPageBg(idx, cards[idx]);
 
   // 初始卡片绑定滚动监听
   cards.forEach(function (c) {
