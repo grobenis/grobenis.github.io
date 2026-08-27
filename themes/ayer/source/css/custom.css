@@ -283,6 +283,122 @@ html {
 .lyric-card-body p:last-child {
   margin-bottom: 0;
 }
+
+/* ---------- 6b. 音乐盒：动态舞台 + 粒子（氛围感） ---------- */
+.lyric-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  isolation: isolate;
+}
+.lyric-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.lyric-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.lyric-scene.is-active {
+  opacity: 1;
+}
+/* 场景 1（曾经的你）：黄昏暖色，夕阳橙 + 沙金 */
+.lyric-scene-1 {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 196, 122, 0.35), transparent 55%),
+    radial-gradient(ellipse at 80% 75%, rgba(255, 142, 99, 0.30), transparent 60%),
+    linear-gradient(160deg, #2a1d2c 0%, #4a2c2a 40%, #6e3a2c 75%, #8a4a26 100%);
+}
+/* 场景 2（消愁）：深夜冷色，月光银蓝 */
+.lyric-scene-2 {
+  background:
+    radial-gradient(ellipse at 75% 25%, rgba(180, 200, 255, 0.35), transparent 55%),
+    radial-gradient(ellipse at 25% 80%, rgba(110, 130, 200, 0.30), transparent 60%),
+    linear-gradient(160deg, #0e1428 0%, #16204a 45%, #1e2a5e 80%, #2a3870 100%);
+}
+.lyric-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: lyricGlow 14s ease-in-out infinite alternate;
+}
+.lyric-glow-warm {
+  top: 8%;
+  left: 10%;
+  background: radial-gradient(circle, rgba(255, 196, 122, 0.55), transparent 70%);
+}
+.lyric-glow-warm-2 {
+  bottom: 10%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(255, 142, 99, 0.40), transparent 70%);
+  animation-delay: -7s;
+}
+.lyric-glow-cool {
+  top: 12%;
+  right: 8%;
+  background: radial-gradient(circle, rgba(180, 200, 255, 0.55), transparent 70%);
+}
+.lyric-glow-cool-2 {
+  bottom: 12%;
+  left: 14%;
+  background: radial-gradient(circle, rgba(110, 130, 200, 0.45), transparent 70%);
+  animation-delay: -7s;
+}
+@keyframes lyricGlow {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(40px, -30px) scale(1.08); }
+  100% { transform: translate(-30px, 25px) scale(0.95); }
+}
+.lyric-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.lyric-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: lyricFloat 18s linear infinite;
+}
+@keyframes lyricFloat {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
+}
+.lyric-stage-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.18));
+  pointer-events: none;
+}
+/* 卡片：玻璃磨砂半透明 */
+.lyric-cards {
+  position: relative;
+  z-index: 1;
+}
+.lyric-card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  border-radius: 14px;
+}
+.lyric-card-body p {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+.lyric-controls {
+  position: relative;
+  z-index: 1;
+}
 /* ---------- 7. �ó�ʱ���� ---------- */
 .timeline {
   position: relative;

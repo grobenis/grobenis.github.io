@@ -1,15 +1,31 @@
 ---
 title: 音乐
 date: 2020-03-20 18:28:43
+share: false
 ---
 
-喜欢的两首歌，记录在这里。
+> 把听到的故事，安放在这里。
 
 <div class="lyric-slider">
 
+<!-- 全屏动态背景层：根据当前歌曲切换 -->
+<div class="lyric-stage">
+  <div class="lyric-scene lyric-scene-1 is-active" data-scene="1">
+    <div class="lyric-glow lyric-glow-warm"></div>
+    <div class="lyric-glow lyric-glow-warm-2"></div>
+    <div class="lyric-particles" data-particles="warm"></div>
+  </div>
+  <div class="lyric-scene lyric-scene-2" data-scene="2">
+    <div class="lyric-glow lyric-glow-cool"></div>
+    <div class="lyric-glow lyric-glow-cool-2"></div>
+    <div class="lyric-particles" data-particles="cool"></div>
+  </div>
+  <div class="lyric-stage-overlay"></div>
+</div>
+
 <div class="lyric-cards">
 
-<div class="lyric-card is-active">
+<div class="lyric-card is-active" data-scene="1">
 <div class="lyric-card-header">
 <span class="lyric-num">01</span>
 <h3>曾经的你</h3>
@@ -43,7 +59,7 @@ date: 2020-03-20 18:28:43
 </div>
 </div>
 
-<div class="lyric-card">
+<div class="lyric-card" data-scene="2">
 <div class="lyric-card-header">
 <span class="lyric-num">02</span>
 <h3>消愁</h3>
@@ -106,6 +122,7 @@ date: 2020-03-20 18:28:43
   var dots = document.querySelectorAll('.lyric-dot');
   var prevBtn = document.querySelector('.lyric-prev');
   var nextBtn = document.querySelector('.lyric-next');
+  var scenes = document.querySelectorAll('.lyric-scene');
   if (!cards.length) return;
   var idx = 0;
 
@@ -117,6 +134,13 @@ date: 2020-03-20 18:28:43
     cur.classList.remove('is-active');
     nextCard.classList.add('is-active', dir === 'next' ? 'slide-in-right' : 'slide-in-left');
     dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
+
+    // 切换背景场景（交叉淡入）
+    var sceneIdx = parseInt(nextCard.getAttribute('data-scene'), 10) || 1;
+    scenes.forEach(function (s) {
+      s.classList.toggle('is-active', parseInt(s.getAttribute('data-scene'), 10) === sceneIdx);
+    });
+
     setTimeout(function () {
       nextCard.classList.remove('slide-in-right', 'slide-in-left');
     }, 450);
@@ -126,6 +150,36 @@ date: 2020-03-20 18:28:43
   nextBtn.addEventListener('click', function () { show(idx + 1, 'next'); });
   dots.forEach(function (d, i) {
     d.addEventListener('click', function () { show(i, i > idx ? 'next' : 'prev'); });
+  });
+
+  // 动态生成粒子（暖色 / 冷色各 60 颗）
+  function spawnParticles(host, kind) {
+    var warm = kind === 'warm';
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 60; i++) {
+      var p = document.createElement('span');
+      p.className = 'lyric-particle';
+      var size = warm ? (1 + Math.random() * 3) : (1 + Math.random() * 2.5);
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.top = (Math.random() * 100) + '%';
+      p.style.animationDelay = (Math.random() * 12).toFixed(2) + 's';
+      p.style.animationDuration = (10 + Math.random() * 14).toFixed(2) + 's';
+      p.style.opacity = (0.35 + Math.random() * 0.5).toFixed(2);
+      if (warm) {
+        p.style.background = Math.random() > 0.5 ? '#ffb56b' : '#ffd58a';
+        p.style.boxShadow = '0 0 6px rgba(255,181,107,.7)';
+      } else {
+        p.style.background = Math.random() > 0.5 ? '#cfd8ff' : '#a4b4ff';
+        p.style.boxShadow = '0 0 6px rgba(164,180,255,.8)';
+      }
+      frag.appendChild(p);
+    }
+    host.appendChild(frag);
+  }
+  document.querySelectorAll('.lyric-particles').forEach(function (el) {
+    spawnParticles(el, el.getAttribute('data-particles'));
   });
 })();
 </script>
