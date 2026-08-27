@@ -609,22 +609,44 @@ html {
   .music-stage { gap: 14px; }
   .deco-col { width: 90px; gap: 12px; }
 }
+/* ==========================================================================
+   音乐页:全尺寸锁一屏,只让 TV 内歌词卡可滚
+   (整页不出现浏览器滚动条,只留 TV 卡片内右侧的蓝色细滚动条)
+   ========================================================================== */
+body.page-scene-sunset,
+body.page-scene-night,
+body.page-scene-dawn {
+  height: 100vh;
+  overflow: hidden;
+}
+body.page-scene-sunset .outer,
+body.page-scene-night .outer,
+body.page-scene-dawn .outer,
+body.page-scene-sunset .wrap,
+body.page-scene-night .wrap,
+body.page-scene-dawn .wrap {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+body.page-scene-sunset #main,
+body.page-scene-night #main,
+body.page-scene-dawn #main,
+body.page-scene-sunset .article,
+body.page-scene-night .article,
+body.page-scene-dawn .article,
+body.page-scene-sunset .article-inner,
+body.page-scene-night .article-inner,
+body.page-scene-dawn .article-inner,
+body.page-scene-sunset .article-entry,
+body.page-scene-night .article-entry,
+body.page-scene-dawn .article-entry {
+  height: 100%;
+  overflow: hidden;
+}
+
 /* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
 @media (max-width: 760px) {
-  /* 整页固定一屏,只让 TV 内部卡片可滚(去除外层整页滚动条) */
-  html, body {
-    height: 100vh;
-    overflow: hidden;
-  }
-  body.page-scene-sunset, body.page-scene-night, body.page-scene-dawn {
-    height: 100vh;
-  }
-  .outer, .wrap, #main, .article, .article-inner, .article-entry {
-    height: 100%;
-    max-height: 100vh;
-    overflow: hidden;
-  }
-
   .music-stage {
     flex-direction: column;
     align-items: stretch;
