@@ -1938,10 +1938,10 @@ body.page-scene-dawn .tv-set {
 }
 .lyric-card {
   position: absolute;
-  /* 上下都收 24 → 32,给标题/底部铭牌让出空间 */
+  /* 顶部收到与频道号 CH01 同高,歌词整体往上延伸 */
   left: 32px;
   right: 32px;
-  top: 56px;
+  top: 14px;
   bottom: 32px;
   margin: 0 auto;
   max-width: 760px;
@@ -1982,7 +1982,7 @@ body.page-scene-dawn .tv-set {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 14px 22px 8px;
+  padding: 6px 22px 8px;
   border-bottom: 0;
   background: transparent;
 }
