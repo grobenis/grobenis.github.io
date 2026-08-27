@@ -1444,6 +1444,17 @@ body.page-scene-dawn .tv-set {
    音乐页布局压缩：标题 / 引用 / 边距统统去掉，电视顶到屏幕上方
    ========================================================================== */
 
+/* 解锁主题 70rem(1120px) 容器限制，仅音乐页放宽到 1400px */
+body.page-scene-sunset .outer,
+body.page-scene-night .outer,
+body.page-scene-dawn .outer,
+body.page-scene-sunset .wrap,
+body.page-scene-night .wrap,
+body.page-scene-dawn .wrap {
+  width: 100%;
+  max-width: 1400px;
+}
+
 /* 文章头部标题与元信息全部隐藏 */
 body.page-scene-sunset .article-header,
 body.page-scene-night .article-header,
