@@ -609,32 +609,81 @@ html {
   .music-stage { gap: 14px; }
   .deco-col { width: 90px; gap: 12px; }
 }
-/* 移动端:装饰列全部隐藏,只显示 TV(屏幕 + 控制台) */
+/* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
 @media (max-width: 760px) {
   .music-stage {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     max-width: 100%;
-    padding: 0 12px;
+    padding: 0;
   }
   .deco-col { display: none !important; }
+
+  /* TV 外壳全部隐藏/透明:外壳、边框、天线、品牌、底部铭牌、电视柜、控制台 */
   .tv-set {
     order: 1;
     max-width: 100% !important;
     width: 100%;
-    padding-top: 48px;
-    margin-bottom: 0;
+    padding-top: 0 !important;
+    margin: 0 !important;
   }
-  .tv-screen { height: 380px; }
+  .tv-antennas, .tv-brand, .tv-footplate, .tv-stand,
+  .tv-panel, .tv-screen-bezel, .tv-channel,
+  .tv-scanlines, .tv-screen-glare, .tv-snow, .lyric-scroll-hint {
+    display: none !important;
+  }
+  /* 电视主机透明,无圆角无阴影,无内边距 */
+  .tv-body {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  .tv-body::before { display: none !important; }
+  /* 屏幕框架透明,无圆角无内边距 */
+  .tv-screen-frame {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  /* 屏幕本身:占满手机宽度,高度按视口算 */
+  .tv-screen {
+    height: 70vh;
+    min-height: 380px;
+    max-height: 720px;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #000 !important;
+  }
+  /* 歌词卡片贴边显示,不留大内边距 */
+  .lyric-cards {
+    padding: 12px !important;
+  }
+  .lyric-card {
+    left: 8px !important;
+    right: 8px !important;
+    top: 8px !important;
+    bottom: 8px !important;
+    max-width: none !important;
+  }
 }
 @media (max-width: 480px) {
-  .tv-screen { height: 320px; }
-  .tv-page-mark { padding: 14px 12px 4px; }
+  .tv-screen {
+    height: 75vh;
+    min-height: 360px;
+  }
+  .tv-page-mark { padding: 12px 12px 6px; }
   .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
-  .tv-panel { padding: 8px 4px 4px; gap: 10px; }
-  .tv-knob { width: 46px; height: 46px; }
-  .tv-btn { width: 26px; height: 26px; }
+  .lyric-cards { padding: 8px !important; }
+  .lyric-card {
+    left: 4px !important;
+    right: 4px !important;
+    top: 4px !important;
+    bottom: 4px !important;
+  }
+  .lyric-card-body { padding: 4px 14px 12px !important; }
 }
 
 /* ----- 电视外壳整体 ----- */
