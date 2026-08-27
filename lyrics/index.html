@@ -624,6 +624,29 @@
     }
   });
 
+  // 移动端左右滑动切歌（横向位移显著才触发,避免与歌词上下滚动冲突）
+  (function () {
+    var stage = document.querySelector('.lyric-stage');
+    if (!stage) return;
+    var startX = 0, startY = 0, tracking = false;
+    stage.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) { tracking = false; return; }
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      tracking = true;
+    }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      if (!tracking) return;
+      tracking = false;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      // 水平滑行 >=60px 且明显比纵向位移大才算切歌
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx > 0) show(idx - 1, 'prev'); else show(idx + 1, 'next');
+    }, { passive: true });
+    stage.addEventListener('touchcancel', function () { tracking = false; });
+  })();
+
   // 播放/暂停按钮（与现有 music.ejs 联动）
   if (btnPlay) {
     var audio = document.querySelector('audio');
