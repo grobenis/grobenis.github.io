@@ -2934,9 +2934,19 @@ body.lamp-black .tv-page-mark {
   transition: opacity 0.6s ease;
 }
 body.lamp-black .lyric-stage { display: none; }
-/* 纯黑时让下方装饰控件亮起来 */
+/* 纯黑时让下方所有装饰控件亮起来(给每件勾勒柔和轮廓,不只蜡烛) */
+body.lamp-black .deco-row *,
 body.lamp-black .deco-row {
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.35));
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.22));
+}
+body.lamp-black .deco-row .deco-vinyl,
+body.lamp-black .deco-row .deco-mic,
+body.lamp-black .deco-row .deco-cassette,
+body.lamp-black .deco-row .deco-cd,
+body.lamp-black .deco-row .deco-neon,
+body.lamp-black .deco-row .deco-poster {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)) brightness(1.05);
 }
 body.lamp-white {
   background:
@@ -2981,8 +2991,8 @@ body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ff
    ========================================================================== */
 .deco-candle {
   position: relative;
-  width: 26px;
-  height: 52px;
+  width: 34px;
+  height: 60px;
   cursor: pointer;
   display: none;
 }
@@ -2990,55 +3000,91 @@ body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ff
 body.lamp-black .deco-candle {
   display: block;
 }
+@keyframes candleBob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(1.5px); }
+}
 .candle-body {
   position: absolute;
-  left: 0;
-  top: 8px;
-  width: 26px;
-  height: 44px;
-  border-radius: 4px 4px 3px 3px;
-  background: linear-gradient(180deg, #f2e3c0 0%, #e6cf9c 40%, #cfab6a 100%);
-  box-shadow: inset 0 -8px 10px rgba(120,80,30,0.35);
+  left: 3px;
+  top: 14px;
+  width: 28px;
+  height: 42px;
+  border-radius: 50% 50% 10px 10px / 42% 42% 12% 12%;
+  background: linear-gradient(180deg, #fff6e0 0%, #ffe8c0 45%, #f3cd8f 100%);
+  box-shadow:
+    inset 0 -10px 12px rgba(190,130,60,0.35),
+    inset 0 4px 6px rgba(255,255,255,0.5);
+  animation: candleBob 3.2s ease-in-out infinite;
   transition: filter 0.3s ease;
+}
+/* 可爱脸:眼睛+腮红 */
+.candle-body::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 15px;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 12px;
+  background:
+    radial-gradient(6px 8px at 4px 5px, rgba(0,0,0,0.0) 0 1.6px, #3a2a14 1.8px 3px, transparent 3.2px),
+    radial-gradient(6px 8px at 14px 5px, rgba(0,0,0,0.0) 0 1.6px, #3a2a14 1.8px 3px, transparent 3.2px),
+    radial-gradient(5px 4px at 0 11px, rgba(255,150,150,0.65), transparent 80%),
+    radial-gradient(5px 4px at 18px 11px, rgba(255,150,150,0.65), transparent 80%);
+  background-size: 18px 12px;
+  background-repeat: no-repeat;
 }
 .candle-wick {
   position: absolute;
-  top: -4px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
-  height: 6px;
-  background: #333;
-  border-radius: 1px;
+  width: 3px;
+  height: 8px;
+  background: linear-gradient(180deg, #6b4a22, #2a1a08);
+  border-radius: 2px;
 }
 .candle-flame {
   position: absolute;
-  top: -16px;
+  top: -6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 10px;
-  height: 14px;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  background: radial-gradient(circle at 50% 65%, #fff1b0 0%, #ffca40 45%, #ff7a1a 78%, transparent 100%);
+  width: 16px;
+  height: 20px;
+  border-radius: 50% 50% 50% 50% / 52% 52% 48% 48%;
+  background:
+    radial-gradient(circle at 50% 62%, #fff6c8 0%, #ffe57a 40%, #ffa530 72%, rgba(255,120,20,0) 100%);
   opacity: 0;
-  filter: blur(0.5px);
-  animation: candleFlicker 0.16s ease-in-out infinite alternate;
+  filter: blur(0.4px);
+  animation: candleFlicker 0.18s ease-in-out infinite alternate;
   transition: opacity 0.3s ease;
-  box-shadow: 0 0 18px 6px rgba(255,180,70,0.6);
+  box-shadow: 0 0 22px 8px rgba(255,190,90,0.7);
 }
 @keyframes candleFlicker {
-  0%  { transform: translateX(-50%) scale(1)    rotate(-1.5deg); }
-  100%{ transform: translateX(-50%) scale(1.12) rotate(1.5deg); }
+  0%  { transform: translateX(-50%) scale(1)    rotate(-1.2deg); }
+  100%{ transform: translateX(-50%) scale(1.08) rotate(1.2deg); }
 }
 .candle-drip {
   position: absolute;
-  left: 8px;
-  bottom: -3px;
+  left: 6px;
+  bottom: 2px;
+  width: 7px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #ffe8c0, #e6b878);
+  opacity: 0.8;
+}
+.candle-drip::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 3px;
   width: 6px;
-  height: 12px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #e6cf9c, #cfab6a);
-  opacity: 0.5;
+  height: 10px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #ffe8c0, #e6b878);
+  opacity: 0.7;
 }
 /* 点燃:火焰 + 全屋烛光 */
 .deco-candle.is-lit .candle-flame {
