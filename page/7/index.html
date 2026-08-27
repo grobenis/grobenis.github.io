@@ -91,7 +91,7 @@
     
     
     
-    <article id="post-2020-02-15-Pub_IMU_Message_To_ROS" class="article article-type-post" itemscope
+    <article id="post-2020-02-15-UbuntuBluetooth" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -99,8 +99,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"
-    >发布 IMU 信息到 ROS 系统</a
+  <a class="article-title" href="/2020/02/15/2020-02-15-UbuntuBluetooth/"
+    >Ubuntu 连接蓝牙鼠标</a
   >
 </h2>
   
@@ -110,7 +110,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-date">
+      <a href="/2020/02/15/2020-02-15-UbuntuBluetooth/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -132,14 +132,12 @@
       
 
       
-      <p>以下记录是在调试树莓派3b中得到的经验</p>
-<p>​	本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
-<p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p>
+      <p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p>
 <blockquote>
-<p><strong>消息结构清晰，数据方可流动</strong></p>
+<p><strong>命令行之下，蓝牙设备亦可驯服</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-UbuntuBluetooth/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -152,7 +150,83 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/15/2020-02-15-VIO_Framework/"
+    >VIO 主流框架</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
+  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SLAM/">SLAM</a> / <a class="article-category-link" href="/categories/SLAM/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
+<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
+<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
+<blockquote>
+<p><strong>视觉惯性融合，约束决定精度</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-VIO_Framework/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
 
 
     </footer>
@@ -318,7 +392,7 @@
 
 </article>
     
-    <article id="post-2020-02-15-VIO_Framework" class="article article-type-post" itemscope
+    <article id="post-2020-01-15-SLAM_Alg_Indirect" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -326,8 +400,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-VIO_Framework/"
-    >VIO 主流框架</a
+  <a class="article-title" href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"
+    >SLAM 各算法运行方法与过程</a
   >
 </h2>
   
@@ -337,12 +411,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-VIO_Framework/" class="article-date">
-  <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
+      <a href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/" class="article-date">
+  <time datetime="2020-01-14T16:00:00.000Z" itemprop="datePublished">2020-01-15</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/SLAM/">SLAM</a> / <a class="article-category-link" href="/categories/SLAM/%E5%AD%A6%E4%B9%A0/">学习</a>
+    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
   </div>
 
       
@@ -359,14 +433,21 @@
       
 
       
-      <p>本节主要说明当前主流的VIO算法流程。课程来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p>
-<p>需要理解约束关系的确定，以及确立相应约束的三个要素</p>
-<p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p>
+      <p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p>
+<p>主要包括以下五种算法:</p>
+<ol>
+<li>VINS_mono&#x2F;fusion</li>
+<li>OKVIS</li>
+<li>ROVIO</li>
+<li>VI_ORB-SLAM</li>
+<li>MSCKF</li>
+</ol>
+<p>本文介绍 VINS_mono&#x2F;fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。</p>
 <blockquote>
-<p><strong>视觉惯性融合，约束决定精度</strong></p>
+<p><strong>跑通五种算法，间接法体系尽收眼底</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-VIO_Framework/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -379,7 +460,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VINS/" rel="tag">VINS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VIO/" rel="tag">VIO</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
 
 
     </footer>
@@ -454,89 +535,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-01-15-SLAM_Alg_Indirect" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"
-    >SLAM 各算法运行方法与过程</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/" class="article-date">
-  <time datetime="2020-01-14T16:00:00.000Z" itemprop="datePublished">2020-01-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p>
-<p>主要包括以下五种算法:</p>
-<ol>
-<li>VINS_mono&#x2F;fusion</li>
-<li>OKVIS</li>
-<li>ROVIO</li>
-<li>VI_ORB-SLAM</li>
-<li>MSCKF</li>
-</ol>
-<p>本文介绍 VINS_mono&#x2F;fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。</p>
-<blockquote>
-<p><strong>跑通五种算法，间接法体系尽收眼底</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
 
 
     </footer>
