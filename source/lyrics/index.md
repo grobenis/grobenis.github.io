@@ -510,9 +510,9 @@ share: false
 
     if (chNum) chNum.textContent = (idx + 1).toString().padStart(2, '0');
 
-    // 旋钮视觉旋转
+    // 旋钮视觉旋转：挡位与歌曲数目相同(每首 = 360°/歌曲数)
     if (knobCh) {
-      knobCh.style.setProperty('--tv-rot', (idx * 120) + 'deg');
+      knobCh.style.setProperty('--tv-rot', (idx * (360 / cards.length)) + 'deg');
     }
 
     // 重置新卡片的滚动位置
