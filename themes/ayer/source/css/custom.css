@@ -6,6 +6,11 @@
    本文件是主题 main.css 之后的覆盖层，选择器特异性更高，安全覆盖。
    ============================================================================= */
 
+/* 音乐页：去掉顶部 GroTV·LIVE MUSIC ROOM 徽章框 */
+body.is-lyrics .tv-page-mark {
+  display: none !important;
+}
+
 /* 音乐页：隐藏顶部页面大标题"音乐",只保留品牌徽章 */
 body.is-lyrics .article-title.sea-center {
   display: none;
@@ -1973,11 +1978,11 @@ body.page-scene-dawn .tv-set {
 .lyric-card-header {
   flex-shrink: 0;
   /* 无背景透明,直接浮在场景画面上 */
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 12px 22px;
+  gap: 2px;
+  padding: 14px 22px 8px;
   border-bottom: 0;
   background: transparent;
 }
@@ -2044,7 +2049,12 @@ body.page-scene-dawn .tv-set {
   border-radius: 3px;
 }
 .lyric-card-body p {
-  /* 透出场景底:白字 + 强黑色阴影,任意背景下都清晰 */
+  /* 恢复中文楷体/衬线字体,白字+强黑阴影,任意背景下清晰且居中 */
+  margin: 0.42em 0;
+  font-family: "Kaiti SC", "STKaiti", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+  font-size: 17px;
+  line-height: 1.9;
+  text-align: center;
   color: #ffffff;
   text-shadow:
     0 0 6px rgba(0, 0, 0, 0.6),
