@@ -79,122 +79,200 @@
       <blockquote>
 <p>把听到的故事，安放在这里。</p>
 </blockquote>
-<div class="lyric-slider">
+<div class="tv-set">
 
-<!-- 全屏动态背景层：根据当前歌曲切换 -->
-<div class="lyric-stage">
-  <div class="lyric-scene lyric-scene-1 is-active" data-scene="1">
-    <div class="lyric-glow lyric-glow-warm"></div>
-    <div class="lyric-glow lyric-glow-warm-2"></div>
-    <div class="lyric-particles" data-particles="warm"></div>
+  <!-- 左上品牌铭牌 -->
+  <div class="tv-brand">
+    <span class="tv-brand-mark">GroTV</span>
+    <span class="tv-brand-sub">FM STEREO · 1986</span>
   </div>
-  <div class="lyric-scene lyric-scene-2" data-scene="2">
-    <div class="lyric-glow lyric-glow-cool"></div>
-    <div class="lyric-glow lyric-glow-cool-2"></div>
-    <div class="lyric-particles" data-particles="cool"></div>
+
+  <!-- VHF 兔耳天线 -->
+  <div class="tv-antennas">
+    <div class="tv-antenna"></div>
+    <div class="tv-antenna"></div>
+    <div class="tv-antenna-base"></div>
   </div>
-  <div class="lyric-stage-overlay"></div>
-</div>
 
-<div class="lyric-cards">
+  <!-- 主机 -->
+  <div class="tv-body">
 
-<div class="lyric-card is-active" data-scene="1">
-<div class="lyric-card-header">
-<span class="lyric-num">01</span>
-<h3>曾经的你</h3>
-<span class="lyric-singer">许巍</span>
-</div>
-<div class="lyric-card-body">
-<p>曾梦想仗剑走天涯</p>
-<p>看一看世界的繁华</p>
-<p>年少的心总有些轻狂</p>
-<p>如今你四海为家</p>
-<p>曾让你心疼的姑娘</p>
-<p>如今已悄然无踪影</p>
-<p>爱情总让你渴望又感到烦恼</p>
-<p>曾让你遍体鳞伤</p>
-<p>走在勇往直前的路上</p>
-<p>有难过也有精彩</p>
-<p>每一次难过的时候</p>
-<p>就独自看一看大海</p>
-<p>总想起身边走在路上的朋友</p>
-<p>有多少正在疗伤</p>
-<p>不知多少孤独的夜晚</p>
-<p>从昨夜酒醉醒来</p>
-<p>每一次难过的时候</p>
-<p>就独自看一看大海</p>
-<p>总想起身边走在路上的朋友</p>
-<p>有多少正在醒来</p>
-<p>让我们干了这杯酒</p>
-<p>好男儿胸怀像大海</p>
-<p>经历了人生百态世间的冷暖</p>
-<p>这笑容温暖纯真</p>
-</div>
-</div>
+<pre><code>&lt;!-- 显示屏 --&gt;
+&lt;div class=&quot;tv-screen-frame&quot;&gt;
+  &lt;div class=&quot;tv-screen&quot;&gt;
 
-<div class="lyric-card" data-scene="2">
-<div class="lyric-card-header">
-<span class="lyric-num">02</span>
-<h3>消愁</h3>
-<span class="lyric-singer">毛不易</span>
-</div>
-<div class="lyric-card-body">
-<p>当你走进这欢乐场</p>
-<p>背上所有的梦与想</p>
-<p>各色的脸上各色的妆</p>
-<p>没人记得你的模样</p>
-<p>三巡酒过你在角落</p>
-<p>固执的唱着苦涩的歌</p>
-<p>听它在喧嚣里被淹没</p>
-<p>你拿起酒杯对自己说</p>
-<p>一杯敬朝阳</p>
-<p>一杯敬月光</p>
-<p>唤醒我的向往</p>
-<p>温柔了寒窗</p>
-<p>于是可以不回头地逆风飞翔</p>
-<p>不怕心头有雨</p>
-<p>眼底有霜</p>
-<p>一杯敬故乡</p>
-<p>一杯敬远方</p>
-<p>守着我的善良</p>
-<p>催着我成长</p>
-<p>所以南北的路从此不再漫长</p>
-<p>灵魂不再无处安放</p>
-<p>一杯敬明天</p>
-<p>一杯敬过往</p>
-<p>支撑我的身体</p>
-<p>厚重了肩膀</p>
-<p>虽然从不相信所谓山高水长</p>
-<p>人生苦短</p>
-<p>何必念念不忘</p>
-<p>一杯敬自由</p>
-<p>一杯敬死亡</p>
-<p>宽恕我的平凡</p>
-<p>驱散了迷惘</p>
-<p>好吧天亮之后总是潦草离场</p>
-<p>清醒的人最荒唐</p>
-</div>
-</div>
+    &lt;!-- 动态舞台（CRT 内容区） --&gt;
+    &lt;div class=&quot;lyric-stage&quot;&gt;
+      &lt;div class=&quot;lyric-scene lyric-scene-1 is-active&quot; data-scene=&quot;1&quot;&gt;
+        &lt;div class=&quot;lyric-glow lyric-glow-warm&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;lyric-glow lyric-glow-warm-2&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;lyric-particles&quot; data-particles=&quot;warm&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;lyric-scene lyric-scene-2&quot; data-scene=&quot;2&quot;&gt;
+        &lt;div class=&quot;lyric-glow lyric-glow-cool&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;lyric-glow lyric-glow-cool-2&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;lyric-particles&quot; data-particles=&quot;cool&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;lyric-stage-overlay&quot;&gt;&lt;/div&gt;
 
-</div>
+      &lt;!-- CRT 扫描线 + 屏幕反光 + 雪花点 --&gt;
+      &lt;div class=&quot;tv-scanlines&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;tv-screen-glare&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;tv-snow&quot;&gt;&lt;/div&gt;
 
-<div class="lyric-controls">
-<button class="lyric-prev" type="button" aria-label="上一首">&#8249;</button>
-<div class="lyric-dots">
-<span class="lyric-dot is-active"></span>
-<span class="lyric-dot"></span>
-</div>
-<button class="lyric-next" type="button" aria-label="下一首">&#8250;</button>
-</div>
+      &lt;!-- 歌词卡（玻璃磨砂） --&gt;
+      &lt;div class=&quot;lyric-cards&quot;&gt;
+        &lt;div class=&quot;lyric-card is-active&quot; data-scene=&quot;1&quot;&gt;
+          &lt;div class=&quot;lyric-card-header&quot;&gt;
+            &lt;span class=&quot;lyric-num&quot;&gt;01&lt;/span&gt;
+            &lt;h3&gt;曾经的你&lt;/h3&gt;
+            &lt;span class=&quot;lyric-singer&quot;&gt;许巍&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;lyric-card-body&quot;&gt;
+            &lt;p&gt;曾梦想仗剑走天涯&lt;/p&gt;
+            &lt;p&gt;看一看世界的繁华&lt;/p&gt;
+            &lt;p&gt;年少的心总有些轻狂&lt;/p&gt;
+            &lt;p&gt;如今你四海为家&lt;/p&gt;
+            &lt;p&gt;曾让你心疼的姑娘&lt;/p&gt;
+            &lt;p&gt;如今已悄然无踪影&lt;/p&gt;
+            &lt;p&gt;爱情总让你渴望又感到烦恼&lt;/p&gt;
+            &lt;p&gt;曾让你遍体鳞伤&lt;/p&gt;
+            &lt;p&gt;走在勇往直前的路上&lt;/p&gt;
+            &lt;p&gt;有难过也有精彩&lt;/p&gt;
+            &lt;p&gt;每一次难过的时候&lt;/p&gt;
+            &lt;p&gt;就独自看一看大海&lt;/p&gt;
+            &lt;p&gt;总想起身边走在路上的朋友&lt;/p&gt;
+            &lt;p&gt;有多少正在疗伤&lt;/p&gt;
+            &lt;p&gt;不知多少孤独的夜晚&lt;/p&gt;
+            &lt;p&gt;从昨夜酒醉醒来&lt;/p&gt;
+            &lt;p&gt;每一次难过的时候&lt;/p&gt;
+            &lt;p&gt;就独自看一看大海&lt;/p&gt;
+            &lt;p&gt;总想起身边走在路上的朋友&lt;/p&gt;
+            &lt;p&gt;有多少正在醒来&lt;/p&gt;
+            &lt;p&gt;让我们干了这杯酒&lt;/p&gt;
+            &lt;p&gt;好男儿胸怀像大海&lt;/p&gt;
+            &lt;p&gt;经历了人生百态世间的冷暖&lt;/p&gt;
+            &lt;p&gt;这笑容温暖纯真&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;lyric-card&quot; data-scene=&quot;2&quot;&gt;
+          &lt;div class=&quot;lyric-card-header&quot;&gt;
+            &lt;span class=&quot;lyric-num&quot;&gt;02&lt;/span&gt;
+            &lt;h3&gt;消愁&lt;/h3&gt;
+            &lt;span class=&quot;lyric-singer&quot;&gt;毛不易&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;lyric-card-body&quot;&gt;
+            &lt;p&gt;当你走进这欢乐场&lt;/p&gt;
+            &lt;p&gt;背上所有的梦与想&lt;/p&gt;
+            &lt;p&gt;各色的脸上各色的妆&lt;/p&gt;
+            &lt;p&gt;没人记得你的模样&lt;/p&gt;
+            &lt;p&gt;三巡酒过你在角落&lt;/p&gt;
+            &lt;p&gt;固执的唱着苦涩的歌&lt;/p&gt;
+            &lt;p&gt;听它在喧嚣里被淹没&lt;/p&gt;
+            &lt;p&gt;你拿起酒杯对自己说&lt;/p&gt;
+            &lt;p&gt;一杯敬朝阳&lt;/p&gt;
+            &lt;p&gt;一杯敬月光&lt;/p&gt;
+            &lt;p&gt;唤醒我的向往&lt;/p&gt;
+            &lt;p&gt;温柔了寒窗&lt;/p&gt;
+            &lt;p&gt;于是可以不回头地逆风飞翔&lt;/p&gt;
+            &lt;p&gt;不怕心头有雨&lt;/p&gt;
+            &lt;p&gt;眼底有霜&lt;/p&gt;
+            &lt;p&gt;一杯敬故乡&lt;/p&gt;
+            &lt;p&gt;一杯敬远方&lt;/p&gt;
+            &lt;p&gt;守着我的善良&lt;/p&gt;
+            &lt;p&gt;催着我成长&lt;/p&gt;
+            &lt;p&gt;所以南北的路从此不再漫长&lt;/p&gt;
+            &lt;p&gt;灵魂不再无处安放&lt;/p&gt;
+            &lt;p&gt;一杯敬明天&lt;/p&gt;
+            &lt;p&gt;一杯敬过往&lt;/p&gt;
+            &lt;p&gt;支撑我的身体&lt;/p&gt;
+            &lt;p&gt;厚重了肩膀&lt;/p&gt;
+            &lt;p&gt;虽然从不相信所谓山高水长&lt;/p&gt;
+            &lt;p&gt;人生苦短&lt;/p&gt;
+            &lt;p&gt;何必念念不忘&lt;/p&gt;
+            &lt;p&gt;一杯敬自由&lt;/p&gt;
+            &lt;p&gt;一杯敬死亡&lt;/p&gt;
+            &lt;p&gt;宽恕我的平凡&lt;/p&gt;
+            &lt;p&gt;驱散了迷惘&lt;/p&gt;
+            &lt;p&gt;好吧天亮之后总是潦草离场&lt;/p&gt;
+            &lt;p&gt;清醒的人最荒唐&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- 频道号窗 --&gt;
+      &lt;div class=&quot;tv-channel&quot;&gt;CH &lt;span id=&quot;tvChannelNum&quot;&gt;01&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 屏幕四周的金属包边 --&gt;
+  &lt;div class=&quot;tv-screen-bezel&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 控制面板（屏幕下方） --&gt;
+&lt;div class=&quot;tv-panel&quot;&gt;
+  &lt;div class=&quot;tv-panel-left&quot;&gt;
+    &lt;div class=&quot;tv-speaker&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;tv-speaker&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;tv-speaker&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;tv-speaker&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;tv-panel-right&quot;&gt;
+    &lt;!-- 大旋钮 1：CH 频道 --&gt;
+    &lt;button class=&quot;tv-knob tv-knob-ch&quot; id=&quot;tvKnobCh&quot; type=&quot;button&quot; aria-label=&quot;切换频道&quot;&gt;
+      &lt;span class=&quot;tv-knob-marks&quot;&gt;&lt;/span&gt;
+      &lt;span class=&quot;tv-knob-pointer&quot;&gt;&lt;/span&gt;
+      &lt;span class=&quot;tv-knob-label&quot;&gt;CH&lt;/span&gt;
+    &lt;/button&gt;
+
+    &lt;!-- 大旋钮 2：VOL 音量 --&gt;
+    &lt;button class=&quot;tv-knob tv-knob-vol&quot; id=&quot;tvKnobVol&quot; type=&quot;button&quot; aria-label=&quot;音量&quot;&gt;
+      &lt;span class=&quot;tv-knob-marks&quot;&gt;&lt;/span&gt;
+      &lt;span class=&quot;tv-knob-pointer&quot;&gt;&lt;/span&gt;
+      &lt;span class=&quot;tv-knob-label&quot;&gt;VOL&lt;/span&gt;
+    &lt;/button&gt;
+
+    &lt;!-- 圆角按钮组 --&gt;
+    &lt;div class=&quot;tv-buttons&quot;&gt;
+      &lt;button class=&quot;tv-btn&quot; id=&quot;tvBtnPrev&quot; type=&quot;button&quot; aria-label=&quot;上一首&quot;&gt;
+        &lt;span class=&quot;tv-btn-icon&quot;&gt;&amp;#9198;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button class=&quot;tv-btn tv-btn-play&quot; id=&quot;tvBtnPlay&quot; type=&quot;button&quot; aria-label=&quot;播放/暂停&quot;&gt;
+        &lt;span class=&quot;tv-btn-icon&quot;&gt;&amp;#9654;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button class=&quot;tv-btn&quot; id=&quot;tvBtnNext&quot; type=&quot;button&quot; aria-label=&quot;下一首&quot;&gt;
+        &lt;span class=&quot;tv-btn-icon&quot;&gt;&amp;#9197;&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 电源指示灯 --&gt;
+    &lt;span class=&quot;tv-power-led&quot; id=&quot;tvPowerLed&quot; title=&quot;电源&quot;&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 底部铭牌 --&gt;
+&lt;div class=&quot;tv-footplate&quot;&gt;
+  &lt;span&gt;MULTI SYNC · CHANNEL SELECTOR&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+  </div>
+
+  <!-- 电视柜阴影 -->
+  <div class="tv-stand"></div>
 
 </div>
 
 <script>
 (function () {
   var cards = document.querySelectorAll('.lyric-card');
-  var dots = document.querySelectorAll('.lyric-dot');
-  var prevBtn = document.querySelector('.lyric-prev');
-  var nextBtn = document.querySelector('.lyric-next');
+  var chNum = document.getElementById('tvChannelNum');
+  var knobCh = document.getElementById('tvKnobCh');
+  var btnPrev = document.getElementById('tvBtnPrev');
+  var btnNext = document.getElementById('tvBtnNext');
+  var btnPlay = document.getElementById('tvBtnPlay');
+  var powerLed = document.getElementById('tvPowerLed');
   var scenes = document.querySelectorAll('.lyric-scene');
   if (!cards.length) return;
   var idx = 0;
@@ -206,24 +284,52 @@
     var nextCard = cards[idx];
     cur.classList.remove('is-active');
     nextCard.classList.add('is-active', dir === 'next' ? 'slide-in-right' : 'slide-in-left');
-    dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
 
-    // 切换背景场景（交叉淡入）
     var sceneIdx = parseInt(nextCard.getAttribute('data-scene'), 10) || 1;
     scenes.forEach(function (s) {
       s.classList.toggle('is-active', parseInt(s.getAttribute('data-scene'), 10) === sceneIdx);
     });
+
+    if (chNum) chNum.textContent = (idx + 1).toString().padStart(2, '0');
+
+    // 旋钮视觉旋转
+    if (knobCh) {
+      knobCh.style.setProperty('--tv-rot', (idx * 180) + 'deg');
+    }
 
     setTimeout(function () {
       nextCard.classList.remove('slide-in-right', 'slide-in-left');
     }, 450);
   }
 
-  prevBtn.addEventListener('click', function () { show(idx - 1, 'prev'); });
-  nextBtn.addEventListener('click', function () { show(idx + 1, 'next'); });
-  dots.forEach(function (d, i) {
-    d.addEventListener('click', function () { show(i, i > idx ? 'next' : 'prev'); });
-  });
+  btnPrev.addEventListener('click', function () { show(idx - 1, 'prev'); });
+  btnNext.addEventListener('click', function () { show(idx + 1, 'next'); });
+  if (knobCh) {
+    knobCh.addEventListener('click', function () { show(idx + 1, 'next'); });
+  }
+
+  // 播放/暂停按钮（与现有 music.ejs 联动）
+  if (btnPlay) {
+    var audio = document.querySelector('audio');
+    if (audio) {
+      var setIcon = function () {
+        var icon = btnPlay.querySelector('.tv-btn-icon');
+        if (!icon) return;
+        icon.innerHTML = audio.paused ? '&#9654;' : '&#10074;&#10074;';
+      };
+      btnPlay.addEventListener('click', function () {
+        if (audio.paused) audio.play(); else audio.pause();
+      });
+      audio.addEventListener('play', setIcon);
+      audio.addEventListener('pause', setIcon);
+      audio.addEventListener('ended', setIcon);
+      setIcon();
+      // 播放中点亮电源灯
+      audio.addEventListener('play', function () { powerLed.classList.add('is-on'); });
+      audio.addEventListener('pause', function () { powerLed.classList.remove('is-on'); });
+      audio.addEventListener('ended', function () { powerLed.classList.remove('is-on'); });
+    }
+  }
 
   // 动态生成粒子（暖色 / 冷色各 60 颗）
   function spawnParticles(host, kind) {

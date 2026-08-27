@@ -284,12 +284,361 @@ html {
   margin-bottom: 0;
 }
 
-/* ---------- 6b. 音乐盒：动态舞台 + 粒子（氛围感） ---------- */
+/* ---------- 6b. 音乐盒：复古电视机 + 动态舞台 ---------- */
 .lyric-slider {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
   isolation: isolate;
+}
+
+/* ----- 电视外壳整体 ----- */
+.tv-set {
+  position: relative;
+  margin: 30px auto 50px;
+  max-width: 760px;
+  padding-top: 78px; /* 给天线留空间 */
+}
+.tv-antennas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.tv-antenna {
+  position: relative;
+  width: 4px;
+  height: 78px;
+  background: linear-gradient(180deg, #c8c8d0 0%, #6a6a72 100%);
+  border-radius: 2px;
+  transform-origin: bottom center;
+}
+.tv-antenna:nth-child(1) { transform: rotate(-12deg); }
+.tv-antenna:nth-child(2) { transform: rotate(12deg); }
+.tv-antenna::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 9px;
+  background: radial-gradient(circle at 30% 30%, #f0f0f4, #6a6a72 70%);
+  border-radius: 50%;
+}
+.tv-antenna-base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 10px;
+  background: linear-gradient(180deg, #4a4a52, #2a2a32);
+  border-radius: 3px;
+}
+
+.tv-body {
+  position: relative;
+  background:
+    linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
+  border-radius: 18px 18px 14px 14px;
+  padding: 22px 24px 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 0 rgba(0,0,0,0.15),
+    0 12px 30px rgba(0,0,0,0.28);
+}
+.tv-body::before {
+  /* 表面金属拉丝纹理 */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.04) 0,
+    rgba(255,255,255,0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+.tv-brand {
+  position: absolute;
+  top: 8px;
+  left: 28px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  z-index: 3;
+}
+.tv-brand-mark {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #2a2a30;
+  letter-spacing: 2px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+.tv-brand-sub {
+  font-size: 10px;
+  color: #4a4a52;
+  letter-spacing: 1.5px;
+  font-family: "Courier New", monospace;
+}
+
+/* ----- 显示屏 ----- */
+.tv-screen-frame {
+  position: relative;
+  background: linear-gradient(180deg, #1a1a20, #2a2a30);
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.6),
+    inset 0 -1px 2px rgba(255,255,255,0.08);
+}
+.tv-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow:
+    inset 0 0 24px rgba(0,0,0,0.7),
+    0 0 0 2px #1a1a20;
+}
+.tv-screen-bezel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 28px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    inset 0 4px 10px rgba(255,255,255,0.05);
+}
+
+/* CRT 扫描线 */
+.tv-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.22) 0,
+    rgba(0,0,0,0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 4;
+  mix-blend-mode: multiply;
+}
+/* 屏幕顶部高光（玻璃反光） */
+.tv-screen-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 16px 16px 0 0;
+}
+/* 雪花点（静态噪点） */
+.tv-snow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.06;
+  background-image:
+    radial-gradient(circle at 13% 22%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 47% 18%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 82% 28%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 23% 56%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 71% 64%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 58% 81%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 33% 90%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 88% 92%, rgba(255,255,255,0.9) 0.5px, transparent 1px);
+}
+
+/* 频道号窗（屏幕右上角） */
+.tv-channel {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 6;
+  background: linear-gradient(180deg, #1a1a20, #0a0a10);
+  color: #ff8c4a;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid #2a2a30;
+  box-shadow: inset 0 0 6px rgba(255,140,74,0.35);
+  text-shadow: 0 0 6px rgba(255,140,74,0.8);
+}
+
+/* ----- 控制面板 ----- */
+.tv-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 10px 4px 4px;
+}
+.tv-panel-left {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.tv-speaker {
+  width: 6px;
+  height: 26px;
+  background: linear-gradient(180deg, #2a2a30, #4a4a52);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.tv-panel-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 大旋钮 */
+.tv-knob {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #f4f4f8 0%, #b8b8c0 60%, #888890 100%);
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 4px rgba(0,0,0,0.25),
+    0 3px 8px rgba(0,0,0,0.35);
+  transform: rotate(0deg);
+  transition: transform 0.5s ease;
+}
+.tv-knob-ch { --tv-rot: 0deg; transform: rotate(var(--tv-rot)); }
+.tv-knob::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #d8d8dc, #888890);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+.tv-knob-marks {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, transparent 22px, currentColor 22px, currentColor 23px, transparent 24px);
+  color: rgba(0,0,0,0.4);
+  -webkit-mask: radial-gradient(circle, transparent 23px, #000 23px);
+          mask: radial-gradient(circle, transparent 23px, #000 23px);
+  pointer-events: none;
+}
+.tv-knob-pointer {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 12px;
+  background: #2a2a30;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+.tv-knob-label {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #2a2a30;
+  letter-spacing: 1px;
+}
+.tv-knob:active { box-shadow: inset 0 3px 6px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3); }
+
+/* 按钮组 */
+.tv-buttons {
+  display: flex;
+  gap: 6px;
+}
+.tv-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #4a4a52, #2a2a30);
+  border: 1px solid #1a1a20;
+  color: #d8d8dc;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 4px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+.tv-btn:hover { background: linear-gradient(180deg, #5a5a62, #3a3a40); }
+.tv-btn:active { transform: translateY(1px); box-shadow: inset 0 2px 3px rgba(0,0,0,0.5); }
+.tv-btn-play { background: linear-gradient(180deg, #ff8c4a, #d96a26); color: #fff; border-color: #8a3a14; }
+.tv-btn-play:hover { background: linear-gradient(180deg, #ff9a5a, #e07a36); }
+.tv-btn-icon { font-size: 11px; line-height: 1; }
+
+/* 电源灯 */
+.tv-power-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2a0a14;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.8);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.tv-power-led.is-on {
+  background: #ff5530;
+  box-shadow: 0 0 8px #ff5530, inset 0 1px 1px rgba(255,200,150,0.6);
+  animation: tvLed 1.6s ease-in-out infinite alternate;
+}
+@keyframes tvLed {
+  from { box-shadow: 0 0 6px #ff5530, inset 0 1px 1px rgba(255,200,150,0.6); }
+  to   { box-shadow: 0 0 14px #ff7050, inset 0 1px 1px rgba(255,200,150,0.8); }
+}
+
+/* 底部铭牌 */
+.tv-footplate {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #3a3a42;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+}
+
+/* 电视柜阴影 */
+.tv-stand {
+  width: 70%;
+  height: 14px;
+  margin: 8px auto 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, transparent 70%);
+  border-radius: 50%;
 }
 .lyric-stage {
   position: absolute;
