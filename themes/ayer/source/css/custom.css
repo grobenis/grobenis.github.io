@@ -3202,6 +3202,42 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(calc(var(--dx, 22px) * -0.5), 112vh) rotate(calc(var(--rot, 120deg) * 2)); opacity: 0.9; }
 }
 
+/* ---- 麦克风:页面顶部左右各两只大粉色气球 ---- */
+.fx-bigballoon {
+  position: fixed;
+  z-index: 65;
+  pointer-events: none;
+  border-radius: 50% 50% 50% 50% / 56% 56% 44% 44%;
+  box-shadow: inset -6px -10px 16px rgba(190, 40, 100, 0.35), 0 10px 22px rgba(255, 111, 179, 0.35);
+  animation: ballSway 5s ease-in-out infinite;
+}
+.fx-bigballoon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1.5px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateX(-50%);
+}
+.fx-bigballoon::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 9px solid #f463a8;
+}
+@keyframes ballSway {
+  0%, 100% { transform: translateY(0) rotate(-2.4deg); }
+  50%      { transform: translateY(-8px) rotate(2.4deg); }
+}
+
 /* ---- 终章漂浮:心形 & 气泡 ---- */
 .fx-heart {
   position: fixed;
@@ -3319,7 +3355,11 @@ body.lamp-black .candle-glow.is-on {
   text-shadow: 0 0 20px rgba(255, 90, 150, 0.95), 0 0 50px rgba(255, 90, 150, 0.55);
   pointer-events: none;
 }
-.finale-text span { color: #ff3b6f; }
+.finale-text .fv-heart {
+  color: #ff1f6e;
+  display: inline-block;
+  text-shadow: 0 0 4px #fff, 0 0 22px rgba(255, 45, 122, 0.9);
+}
 .finale-text.is-on {
   display: block;
   animation: finaleNeon 7s ease-in-out forwards;
@@ -3331,7 +3371,7 @@ body.lamp-black .candle-glow.is-on {
   35%, 39%  { opacity: 1; }
   42%, 46%  { opacity: 0.35; }
   48%, 79%  { opacity: 1; }
-  80%, 100% { opacity: 1; text-shadow: 0 0 22px rgba(255, 90, 150, 1), 0 0 55px rgba(255, 90, 150, 0.6), 0 0 90px rgba(255, 90, 150, 0.4); }
+  80%, 100% { opacity: 1; text-shadow: 0 0 6px #fff, 0 0 22px rgba(255, 77, 154, 1), 0 0 55px rgba(255, 45, 122, 0.7), 0 0 95px rgba(255, 45, 122, 0.4); }
 }
 
 @media (max-width: 640px) {
