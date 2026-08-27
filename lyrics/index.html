@@ -546,17 +546,15 @@
   if (!cards.length) return;
   var idx = 0;
 
-  // 页面外圈场景分组（按歌情绪归入黄昏/深夜/清晓，三组大氛围）
-  var sceneClassMap = {
-    1: 'page-scene-sunset',  2: 'page-scene-night', 3: 'page-scene-dawn',
-    4: 'page-scene-dawn',    5: 'page-scene-night', 6: 'page-scene-night',
-    7: 'page-scene-night',   8: 'page-scene-sunset', 9: 'page-scene-dawn',
-    10: 'page-scene-night'
-  };
+  // 外圈氛围与 CRT 同色系：每首歌 body.page-bg-N（N 与 data-scene 一致）
   function applyPageScene(n) {
-    var cls = sceneClassMap[n] || sceneClassMap[1];
+    var i, old;
+    for (i = 1; i <= 10; i++) {
+      old = 'page-bg-' + i;
+      if (document.body.classList.contains(old)) document.body.classList.remove(old);
+    }
     document.body.classList.remove('page-scene-sunset', 'page-scene-night', 'page-scene-dawn');
-    document.body.classList.add(cls);
+    if (n >= 1 && n <= 10) document.body.classList.add('page-bg-' + n);
   }
 
   function show(n, dir) {
