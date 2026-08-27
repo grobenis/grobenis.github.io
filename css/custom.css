@@ -609,13 +609,32 @@ html {
   .music-stage { gap: 14px; }
   .deco-col { width: 90px; gap: 12px; }
 }
+/* 移动端:装饰列全部隐藏,只显示 TV(屏幕 + 控制台) */
 @media (max-width: 760px) {
-  .music-stage { flex-direction: column; align-items: center; }
-  .deco-col { display: flex; flex-direction: row; width: auto; justify-content: center; }
-  .deco-left { order: 2; margin-top: 10px; }
-  .deco-right { display: none; }
-  .tv-set { order: 1; padding-top: 48px; }
-  .sound-deck { max-width: 420px; margin: 0; }
+  .music-stage {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-width: 100%;
+    padding: 0 12px;
+  }
+  .deco-col { display: none !important; }
+  .tv-set {
+    order: 1;
+    max-width: 100% !important;
+    width: 100%;
+    padding-top: 48px;
+    margin-bottom: 0;
+  }
+  .tv-screen { height: 380px; }
+}
+@media (max-width: 480px) {
+  .tv-screen { height: 320px; }
+  .tv-page-mark { padding: 14px 12px 4px; }
+  .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
+  .tv-panel { padding: 8px 4px 4px; gap: 10px; }
+  .tv-knob { width: 46px; height: 46px; }
+  .tv-btn { width: 26px; height: 26px; }
 }
 
 /* ----- 电视外壳整体 ----- */
