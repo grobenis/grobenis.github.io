@@ -1662,6 +1662,86 @@ body.page-scene-dawn .tv-set {
 }
 
 /* ==========================================================================
+   每首歌专属外圈氛围（与 CRT 同色系的暗化低饱和版，保证内外匹配）
+   放在 page-scene-* 之后以覆盖其 !important 渐变
+   ========================================================================== */
+/* 01 曾经的你 —— 暗化暖橙夕阳 */
+body.page-bg-1 {
+  background:
+    radial-gradient(ellipse at 72% 22%, rgba(255, 180, 90, 0.28), transparent 45%),
+    linear-gradient(168deg, #241419 0%, #3a2018 30%, #6e3a26 60%, #9a5c34 85%, #c98747 100%) !important;
+}
+/* 02 消愁 —— 藏蓝夜 + 微琥珀 */
+body.page-bg-2 {
+  background:
+    radial-gradient(ellipse at 22% 78%, rgba(210, 150, 70, 0.16), transparent 45%),
+    radial-gradient(ellipse at 80% 20%, rgba(70, 100, 200, 0.2), transparent 48%),
+    linear-gradient(180deg, #050810 0%, #0e1322 50%, #1b2036 100%) !important;
+}
+/* 03 稻香 —— 暗金橄榄晨色 */
+body.page-bg-3 {
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(250, 220, 130, 0.25), transparent 52%),
+    linear-gradient(176deg, #23291c 0%, #3f4426 40%, #6e6730 72%, #a08a42 100%) !important;
+}
+/* 04 晴天 —— 中亮天蓝（外圈最亮但已压暗） */
+body.page-bg-4 {
+  background:
+    radial-gradient(ellipse at 70% 16%, rgba(235, 245, 255, 0.3), transparent 42%),
+    linear-gradient(172deg, #16304e 0%, #234b76 42%, #3f6fa3 75%, #6f97bd 100%) !important;
+}
+/* 05 清明雨上 —— 青烟冷雾 */
+body.page-bg-5 {
+  background:
+    radial-gradient(ellipse at 32% 18%, rgba(190, 210, 198, 0.14), transparent 46%),
+    linear-gradient(178deg, #18211f 0%, #2c3936 46%, #48584f 78%, #6b7d71 100%) !important;
+}
+/* 06 青花瓷 —— 暗钴蓝 */
+body.page-bg-6 {
+  background:
+    radial-gradient(ellipse at 50% 12%, rgba(215, 230, 250, 0.14), transparent 40%),
+    radial-gradient(ellipse at 18% 86%, rgba(35, 95, 175, 0.25), transparent 50%),
+    linear-gradient(172deg, #081827 0%, #123152 52%, #204d7c 100%) !important;
+}
+/* 07 庐州月 —— 暗紫月夜 */
+body.page-bg-7 {
+  background:
+    radial-gradient(ellipse at 50% 10%, rgba(228, 230, 255, 0.18), transparent 34%),
+    radial-gradient(ellipse at 78% 24%, rgba(240, 170, 110, 0.12), transparent 32%),
+    linear-gradient(180deg, #120c26 0%, #241843 52%, #3c2a58 100%) !important;
+}
+/* 08 告白气球 —— 暗玫粉 */
+body.page-bg-8 {
+  background:
+    radial-gradient(ellipse at 66% 34%, rgba(255, 175, 195, 0.24), transparent 44%),
+    linear-gradient(174deg, #3f1830 0%, #63304a 38%, #8f5262 70%, #bc7a82 100%) !important;
+}
+/* 09 雅俗共赏 —— 水墨炭灰（近无彩色） */
+body.page-bg-9 {
+  background:
+    radial-gradient(ellipse at 50% 88%, rgba(250, 248, 240, 0.14), transparent 48%),
+    linear-gradient(178deg, #101113 0%, #232529 45%, #44474e 74%, #6f7379 100%) !important;
+}
+/* 10 城府 —— 近黑蓝 + 血红霓虹晕 */
+body.page-bg-10 {
+  background:
+    radial-gradient(ellipse at 24% 76%, rgba(185, 38, 58, 0.2), transparent 36%),
+    radial-gradient(ellipse at 80% 62%, rgba(52, 118, 225, 0.18), transparent 40%),
+    linear-gradient(180deg, #04060a 0%, #0c1119 55%, #171f2b 100%) !important;
+}
+
+/* 与 page-scene 一致地抬高电视，且盖过上面所有背景 */
+body[class*="page-bg-"] .tv-set,
+body[class*="page-scene-"] .tv-set {
+  position: relative;
+  z-index: 1;
+}
+/* 外圈切换过渡 */
+body {
+  transition: background 1.2s ease-in-out;
+}
+
+/* ==========================================================================
    音乐页布局压缩：标题 / 引用 / 边距统统去掉，电视顶到屏幕上方
    ========================================================================== */
 
