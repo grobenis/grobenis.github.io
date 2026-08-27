@@ -327,9 +327,9 @@
       
         <tags>
             
-            <tag> 可穿戴 </tag>
-            
             <tag> 算法 </tag>
+            
+            <tag> 可穿戴 </tag>
             
         </tags>
       
@@ -844,9 +844,9 @@
             
             <tag> SLAM </tag>
             
-            <tag> OpenCV </tag>
-            
             <tag> ORB-SLAM2 </tag>
+            
+            <tag> OpenCV </tag>
             
         </tags>
       
@@ -1291,31 +1291,6 @@
     
     
     <entry>
-      <title>高斯混合模型</title>
-      <link href="/2020/03/14/2020-03-14-GMM/"/>
-      <url>/2020/03/14/2020-03-14-GMM/</url>
-      
-        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> GMM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Kalman 滤波器学习</title>
       <link href="/2020/03/14/2020-03-13-Kalman_Filter/"/>
       <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
@@ -1333,6 +1308,31 @@
         <tags>
             
             <tag> Kalman滤波器 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>高斯混合模型</title>
+      <link href="/2020/03/14/2020-03-14-GMM/"/>
+      <url>/2020/03/14/2020-03-14-GMM/</url>
+      
+        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GMM </tag>
             
         </tags>
       
@@ -1441,33 +1441,6 @@
     
     
     <entry>
-      <title>回环检测与 DBoW2 库</title>
-      <link href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
-      <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
-      
-        <content type="html"><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p><ol><li>回环检测</li><li>DBOW2介绍</li><li>DBOW3介绍</li></ol><p>本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。</p><blockquote><p><strong>视觉词袋，让回环检测又快又准</strong></p></blockquote><span id="more"></span><h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p><table><thead><tr><th align="center">算法结果事实</th><th align="center">是回环</th><th align="center">不是回环</th></tr></thead><tbody><tr><td align="center">是回环</td><td align="center">真阳性</td><td align="center">假阳性</td></tr><tr><td align="center">不是回环</td><td align="center">假阴性</td><td align="center">真阴性</td></tr></tbody></table><p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$准确率=N_{TP}/{N_{TP}+N_{FP}}$$</p><p>$$Recall = N_{TP}/{N_{TP}+N_{FN}}$$</p><p>准确率描述了检测到的回环中真回环的个数。</p><p>Recall描述了真回环中有多少个被检测出来了。</p><p>根据准确率和召回率可以得到ROC曲线.</p><p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p><h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p><p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img" loading="lazy"></p><p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p><h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p><h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p><h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p><h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3">Github地址</a></p><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p><ul><li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li><li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li><li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li><li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li><li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li><li>出于性能原因，DBoW2不支持停用词。</li></ul><p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p><h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p><h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p><h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedVocabulary</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedDatabase</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p><h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p><h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3"><strong>Github地址</strong></a></p><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p><ul><li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li><li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li><li>DBoW3可以在linux和Windows中进行编译。</li><li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li><li>使用二进制文件的可能性。二进制文件的加载&#x2F;保存速度比yml快4-5倍。同样，它们可以被压缩。</li><li>兼容DBoW2 yml文件</li></ul><h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p><h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p><h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p><h4 id="读取-x2F-存储-词汇"><a href="#读取-x2F-存储-词汇" class="headerlink" title="读取&#x2F;存储 词汇"></a>读取&#x2F;存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> DBoW2 </tag>
-            
-            <tag> 回环检测 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>经典聚类算法调研</title>
       <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
       <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
@@ -1487,6 +1460,33 @@
             <tag> 聚类 </tag>
             
             <tag> 图像分割 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>回环检测与 DBoW2 库</title>
+      <link href="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
+      <url>/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+      
+        <content type="html"><![CDATA[<p>本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。</p><ol><li>回环检测</li><li>DBOW2介绍</li><li>DBOW3介绍</li></ol><p>本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。</p><blockquote><p><strong>视觉词袋，让回环检测又快又准</strong></p></blockquote><span id="more"></span><h2 id="回环的评价指标"><a href="#回环的评价指标" class="headerlink" title="回环的评价指标"></a>回环的评价指标</h2><p>一个回环的结果，可能有以下四种情况出现：</p><table><thead><tr><th align="center">算法结果事实</th><th align="center">是回环</th><th align="center">不是回环</th></tr></thead><tbody><tr><td align="center">是回环</td><td align="center">真阳性</td><td align="center">假阳性</td></tr><tr><td align="center">不是回环</td><td align="center">假阴性</td><td align="center">真阴性</td></tr></tbody></table><p>回环检测算法可以输出以下结果：四种结果的数量分别为<br>$$准确率=N_{TP}/{N_{TP}+N_{FP}}$$</p><p>$$Recall = N_{TP}/{N_{TP}+N_{FN}}$$</p><p>准确率描述了检测到的回环中真回环的个数。</p><p>Recall描述了真回环中有多少个被检测出来了。</p><p>根据准确率和召回率可以得到ROC曲线.</p><p>ROC曲线越靠右上方越好，但是通常这两者是矛盾的。</p><h2 id="回环检测"><a href="#回环检测" class="headerlink" title="回环检测"></a>回环检测</h2><p>闭环检测算法指的是通过检测算法检测出之前访问过的场景。</p><p><img src="/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B.jpg" alt="img" loading="lazy"></p><p>如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。</p><h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><h4 id="一、关键帧匹配"><a href="#一、关键帧匹配" class="headerlink" title="一、关键帧匹配"></a>一、关键帧匹配</h4><p>最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。</p><h4 id="二、将特征与路标对应"><a href="#二、将特征与路标对应" class="headerlink" title="二、将特征与路标对应"></a>二、将特征与路标对应</h4><p>通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。</p><h4 id="三、视觉词袋方法"><a href="#三、视觉词袋方法" class="headerlink" title="三、视觉词袋方法"></a>三、视觉词袋方法</h4><p>基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。</p><h2 id="DBoW2视觉词袋库"><a href="#DBoW2视觉词袋库" class="headerlink" title="DBoW2视觉词袋库"></a>DBoW2视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3">Github地址</a></p><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于：</p><ul><li>DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用。</li><li>DBoW2附带了可直接与ORB或Brief描述符一起使用的类。</li><li>DBoW2将直接文件添加到图像数据库以进行快速功能比较。 DLoopDetector使用它。</li><li>DBoW2不再使用二进制格式。另一方面，它使用OpenCV存储系统来保存词汇表和数据库。这意味着这些文件可以YAML格式存储为纯文本，从而使兼容性更容易，也可以将其压缩为gunzip格式（.gz）以减少磁盘使用。</li><li>一些代码已被重写以优化速度。 DBoW2的界面已简化。</li><li>出于性能原因，DBoW2不支持停用词。</li></ul><p>DBoW2需要OpenCV和Boost :: dynamic_bitset类才能使用Brief版本。<br>DBoW2与DLoopDetector一起在多个真实数据集上进行了测试，执行时间为3毫秒，将图像的Brief特征转换为词袋矢量，执行时间为5毫秒，以在数据库中查找图像匹配项。超过19000张图像。</p><h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="加权和计分"><a href="#加权和计分" class="headerlink" title="加权和计分"></a>加权和计分</h4><p>DBoW2实现与DBow相同的加权和计分机制。在这里检查。唯一的区别是DBoW2将所有分数缩放到[0..1]，因此不再使用缩放标志。</p><h4 id="保存并加载"><a href="#保存并加载" class="headerlink" title="保存并加载"></a>保存并加载</h4><p>可以使用保存和加载成员功能将所有词汇表和数据库保存到磁盘或从磁盘加载。保存数据库时，与之关联的词汇表也嵌入到文件中，因此词汇表和数据库文件是完全独立的。<br>您还可以将词汇表或数据库数据添加到使用cv :: FileStorage结构打开的任何文件中。<br>您可以使用任何文件扩展名保存词汇表或数据库。如果使用.gz，则文件将自动压缩（OpenCV行为）。</p><h3 id="应用说明"><a href="#应用说明" class="headerlink" title="应用说明"></a>应用说明</h3><h4 id="类参数"><a href="#类参数" class="headerlink" title="类参数"></a>类参数</h4><p>DBoW2有两个主要的类：<code>TemplatedVocabulary</code>和<code>TemplatedDatabase</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。这些类是模板化的：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedVocabulary</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TDescriptor</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplatedDatabase</span></span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>两个类必须被提供：<code>TDescriptor</code>是单个描述符向量的数据类型，而<code>F</code>是具有从<code>FClass</code>派生的具有操作描述符功能的类。<br>例如，要使用<code>ORB</code>描述符，<code>TDescriptor</code>定义为<code>cv :: Mat</code>（类型为<code>CV_8UC1</code>），它是包含32个8位值的单行。从图像中提取特征时，必须获取<code>std :: vector &lt;TDescriptor&gt;</code>。对于<code>BRIEF</code>描述子，<code>TDescriptor</code>被定义为<code>boost :: dynamic_bitset &lt;&gt;</code>。<br><code>F</code>参数是实现<code>FClass</code>中定义的函数的类的名称。这些函数获取<code>TDescriptor</code>数据并计算一些结果。 <code>DBoW2</code>中已经包含了处理<code>ORB</code>和<code>Brief</code>描述符的类。 （<code>FORB</code>，<code>FBrief</code>）。</p><h4 id="预定义的词汇表和数据库"><a href="#预定义的词汇表和数据库" class="headerlink" title="预定义的词汇表和数据库"></a>预定义的词汇表和数据库</h4><p>为了便于使用，<code>DBoW2</code>定义了两种词汇表和数据库：<code>OrbVocabulary</code>，<code>OrbDatabase</code>，<code>BriefVocabulary</code>，<code>BriefDatabase</code>。请检查演示应用程序，以了解如何创建和使用它们。</p><h2 id="DBoW3视觉词袋库"><a href="#DBoW3视觉词袋库" class="headerlink" title="DBoW3视觉词袋库"></a>DBoW3视觉词袋库</h2><p><a href="https://github.com/rmsalinas/DBow3"><strong>Github地址</strong></a></p><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>​DBoW3是DBow2库的改进版本，DBow2库是一个开放源C ++库，用于将图像索引并将其转换为词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW3还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow2库的主要区别是：</p><ul><li>DBoW3仅需要OpenCV。 DLIB的DBoW2依赖性已删除。</li><li>DBoW3可以立即使用二进制和浮点描述符。无需为任何描述符重新实现任何类。</li><li>DBoW3可以在linux和Windows中进行编译。</li><li>一些代码已被重写以优化速度。 DBoW3的界面已简化。</li><li>使用二进制文件的可能性。二进制文件的加载&#x2F;保存速度比yml快4-5倍。同样，它们可以被压缩。</li><li>兼容DBoW2 yml文件</li></ul><h3 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h3><p><code>DBoW3</code>仅需要<code>OpenCV</code>。<br>要编译<code>utils / demo_general.cpp</code>，必须针对<code>OpenCV 3</code>进行编译。如果已安装<code>contrib_modules</code>，请使用<code>cmake</code>选项<code>-DUSE_CONTRIB = ON</code>启用<code>SURF</code>。</p><h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p>检查<code>utils/demo_general.cpp</code></p><h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>DBoW3主要有两个类： <code>Vocabulary</code> 和<code>Database</code>。这些工具实现了视觉词汇，可将图像转换成词袋矢量，并将数据库转换成索引图像。有关示例，请参见<code>utils / demo_general.cpp</code>。</p><h4 id="读取-x2F-存储-词汇"><a href="#读取-x2F-存储-词汇" class="headerlink" title="读取&#x2F;存储 词汇"></a>读取&#x2F;存储 词汇</h4><p>文件<code>orbvoc.dbow3</code>是<code>ORBSLAM2</code>中的<code>ORB</code>词汇，但采用<code>DBoW3</code>的二进制格式：</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> DBoW2 </tag>
+            
+            <tag> 回环检测 </tag>
             
         </tags>
       
@@ -1547,31 +1547,6 @@
     
     
     <entry>
-      <title>Ubuntu 连接蓝牙鼠标</title>
-      <link href="/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
-      <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
-      
-        <content type="html"><![CDATA[<p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p><blockquote><p><strong>命令行之下，蓝牙设备亦可驯服</strong></p></blockquote><span id="more"></span><p>$ sudo -i</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure><p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Ubuntu </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>使用 Kalibr 标定双目相机与 IMU</title>
       <link href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
       <url>/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
@@ -1622,6 +1597,31 @@
             <tag> VIO </tag>
             
             <tag> VINS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ubuntu 连接蓝牙鼠标</title>
+      <link href="/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
+      <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+      
+        <content type="html"><![CDATA[<p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p><blockquote><p><strong>命令行之下，蓝牙设备亦可驯服</strong></p></blockquote><span id="more"></span><p>$ sudo -i</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure><p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Ubuntu </tag>
             
         </tags>
       

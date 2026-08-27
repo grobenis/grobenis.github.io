@@ -698,8 +698,6 @@ body.page-scene-dawn #mask {
   .deco-row { gap: 14px; max-width: 100%; padding: 0 8px; }
   .tv-set { order: 1; }
   .deco-row { order: 2; }
-}
-  
 
   /* TV 外壳全部隐藏/透明:外壳、边框、天线、品牌、底部铭牌、电视柜、控制台 */
   .tv-set {
@@ -759,17 +757,6 @@ body.page-scene-dawn #mask {
   .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
   .lyric-cards { padding: 6px !important; }
   .lyric-card { left: 3px !important; right: 3px !important; top: 3px !important; bottom: 3px !important; }
-  .lyric-card-body { padding: 4px 14px 12px !important; }
-}
-  .tv-page-mark { padding: 10px 12px 4px !important; }
-  .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
-  .lyric-cards { padding: 6px !important; }
-  .lyric-card {
-    left: 3px !important;
-    right: 3px !important;
-    top: 3px !important;
-    bottom: 3px !important;
-  }
   .lyric-card-body { padding: 4px 14px 12px !important; }
 }
 
