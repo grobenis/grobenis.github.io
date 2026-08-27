@@ -11,6 +11,19 @@ share: false
 
 <div class="music-stage">
 
+<!-- 怀旧拉线吊灯:电视关闭时可拉动切换整页氛围 -->
+<div class="pull-lamp" id="pullLamp">
+<div class="lamp-cord"></div>
+<div class="lamp-head">
+<div class="lamp-shade"></div>
+<div class="lamp-bulb" id="lampBulb"></div>
+</div>
+<div class="lamp-pull" id="lampPull">
+<div class="lamp-chain"></div>
+<div class="lamp-ball"></div>
+</div>
+</div>
+
 <div class="tv-set" id="tvSet">
 
 <!-- 左上品牌铭牌 -->
@@ -730,7 +743,7 @@ share: false
   });
 })();
 
-/* ===== 电视电源开关 ===== */
+/* ===== 电视电源开关 + 拉线吊灯氛围 ===== */
 (function () {
   var tv = document.getElementById('tvSet');
   if (!tv) tv = document.querySelector('.tv-set');
@@ -738,10 +751,45 @@ share: false
   var led = document.getElementById('tvPowerLed');
   var on = true;
 
+  /* 七种氛围顺序 */
+  var LAMPS = ['black', 'white', 'yellow', 'pink', 'grey', 'blue', 'warm'];
+  var lampIdx = -1; /* -1 表示未拉起(电视开着,氛围随歌曲) */
+  var pull = document.getElementById('lampPull');
+
+  function clearLamp() {
+    for (var i = 0; i < LAMPS.length; i++) {
+      document.body.classList.remove('lamp-' + LAMPS[i]);
+    }
+  }
+
+  function setLamp(idx) {
+    clearLamp();
+    if (idx >= 0 && idx < LAMPS.length) {
+      document.body.classList.add('lamp-' + LAMPS[idx]);
+    }
+  }
+
   function setPower(state) {
     on = state;
     tv.classList.toggle('is-off', !on);
     if (led) led.classList.toggle('is-on', on);
+    /* 电视开启:恢复歌曲氛围;电视关闭:拉起初盏灯 */
+    if (on) {
+      lampIdx = -1;
+      clearLamp();
+    } else {
+      lampIdx = 0;
+      setLamp(0);
+    }
+  }
+
+  if (pull) {
+    pull.addEventListener('click', function () {
+      /* 只有电视关闭时才允许拉绳换氛围 */
+      if (on) return;
+      lampIdx = (lampIdx + 1) % LAMPS.length;
+      setLamp(lampIdx);
+    });
   }
 
   if (powerBtn && tv) {
