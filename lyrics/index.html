@@ -95,47 +95,6 @@
     <div class="reel-l" style="left:16px;"></div>
     <div class="reel-r" style="right:16px;"></div>
   </div>
-
-<!-- 音响台：控制面板移到左侧宽敞区域 -->
-<div class="sound-deck">
-<span class="sound-deck-title">SOUND DECK</span>
-<div class="tv-panel tv-panel-side">
-<div class="tv-knob-row">
-<button class="tv-knob tv-knob-ch" id="tvKnobCh" type="button" aria-label="切换频道">
-<span class="tv-knob-marks"></span>
-<span class="tv-knob-pointer"></span>
-<span class="tv-knob-label">CH</span>
-</button>
-
-<button class="tv-knob tv-knob-vol" id="tvKnobVol" type="button" aria-label="音量">
-<span class="tv-knob-marks"></span>
-<span class="tv-knob-pointer"></span>
-<span class="tv-knob-label">VOL</span>
-</button>
-</div>
-
-<div class="tv-speaker-row">
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-</div>
-
-<div class="tv-buttons">
-<button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
-<span class="tv-btn-icon">&#9198;</span>
-</button>
-<button class="tv-btn tv-btn-play" id="tvBtnPlay" type="button" aria-label="播放/暂停">
-<span class="tv-btn-icon">&#9654;</span>
-</button>
-<button class="tv-btn" id="tvBtnNext" type="button" aria-label="下一首">
-<span class="tv-btn-icon">&#9197;</span>
-</button>
-</div>
-
-<p><span class="tv-power-led" id="tvPowerLed" title="电源"></span></p>
-</div>
-</div>
 </div>
 
 <div class="tv-set">
@@ -363,6 +322,44 @@
 
 <!-- 屏幕四周的金属包边 -->
 <div class="tv-screen-bezel"></div>
+</div>
+
+<!-- 控制面板(屏幕下方) -->
+<div class="tv-panel">
+<div class="tv-panel-left">
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+</div>
+
+<div class="tv-panel-right">
+<button class="tv-knob tv-knob-ch" id="tvKnobCh" type="button" aria-label="切换频道">
+<span class="tv-knob-marks"></span>
+<span class="tv-knob-pointer"></span>
+<span class="tv-knob-label">CH</span>
+</button>
+
+<button class="tv-knob tv-knob-vol" id="tvKnobVol" type="button" aria-label="音量">
+<span class="tv-knob-marks"></span>
+<span class="tv-knob-pointer"></span>
+<span class="tv-knob-label">VOL</span>
+</button>
+
+<div class="tv-buttons">
+<button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
+<span class="tv-btn-icon">&#9198;</span>
+</button>
+<button class="tv-btn tv-btn-play" id="tvBtnPlay" type="button" aria-label="播放/暂停">
+<span class="tv-btn-icon">&#9654;</span>
+</button>
+<button class="tv-btn" id="tvBtnNext" type="button" aria-label="下一首">
+<span class="tv-btn-icon">&#9197;</span>
+</button>
+</div>
+
+<p><span class="tv-power-led" id="tvPowerLed" title="电源"></span></p>
+</div>
 </div>
 
 <!-- 底部铭牌 -->
