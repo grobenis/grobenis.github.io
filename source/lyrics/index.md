@@ -455,7 +455,7 @@ share: false
   <div class="deco-cd shine" id="decoCd" title="CD 光盘">
   </div>
   <div class="deco-neon" id="decoNeon" title="霓虹招牌">MUSIC</div>
-  <div class="deco-poster" title="复古海报">
+  <div class="deco-poster" id="decoPoster" title="复古海报">
     <div class="poster-title">FM 87.7</div>
     <div class="poster-line">LIVE FROM</div>
     <div class="poster-line">GROBENIS STUDIO</div>
@@ -860,7 +860,6 @@ function extinguishCandle() {
   var FX = { vinyl: null, mic: null, cassette: null };
   var seen = { vinyl: false, mic: false, cassette: false, cd: false };
   var cdTimer = null, finaleTimer = null;
-  var balloonEls = null;
   var TYPE = { vinyl: 'spark', mic: 'balloon', cassette: 'petal' };
 
   function canFx() {
@@ -937,37 +936,11 @@ function extinguishCandle() {
   toggle('decoVinyl', spawnSparks, 260);
   toggle('decoCassette', spawnPetals, 700);
 
-  /* 麦克风:改为页面顶部左右各两只大粉色气球(固定漂浮,不上飘),再点收回 */
+  /* 麦克风:气球特效已移除,仅计入解锁进度(seen.mic) */
   var micEl = document.getElementById('decoMic');
   if (micEl) {
     micEl.style.cursor = 'pointer';
-    micEl.addEventListener('click', function () {
-      if (!canFx()) return;
-      seen.mic = true;
-      if (balloonEls) {
-        for (var i = 0; i < balloonEls.length; i++) if (balloonEls[i].parentNode) balloonEls[i].parentNode.removeChild(balloonEls[i]);
-        balloonEls = null;
-        return;
-      }
-      var poses = [
-        { left: 8,  top: 12, sc: 1.0,  delay: 0,    shade: '#ff9ecf' },
-        { left: 2,  top: 32, sc: 0.78, delay: -1.1, shade: '#ffc3e1' },
-        { right: 8, top: 12, sc: 1.0,  delay: -0.6, shade: '#ff8dc7' },
-        { right: 2, top: 32, sc: 0.78, delay: -1.6, shade: '#ffd1e8' }
-      ];
-      balloonEls = [];
-      for (var j = 0; j < poses.length; j++) {
-        var s = poses[j];
-        var w = Math.round(64 * s.sc), h = Math.round(82 * s.sc);
-        var b = document.createElement('div');
-        b.className = 'fx-bigballoon';
-        var side = (s.left != null) ? ('left:' + s.left + 'vw;') : ('right:' + s.right + 'vw;');
-        b.style.cssText = side + 'top:' + s.top + 'vh;width:' + w + 'px;height:' + h + 'px;' +
-          'animation-delay:' + s.delay + 's;--pc:' + s.shade + ';';
-        document.body.appendChild(b);
-        balloonEls.push(b);
-      }
-    });
+    micEl.addEventListener('click', function () { if (canFx()) seen.mic = true; });
   }
 
   /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;点击出现一台黑屏大电视(可重复开关) */
@@ -1028,6 +1001,7 @@ function extinguishCandle() {
       if (ft.classList.contains('is-on')) { hideFinale(); return; }
       var cw = document.getElementById('cdWatch');
       if (cw) cw.classList.add('is-on'); /* 大电视点亮 */
+      seen.finale = true; /* 字样已显示,解锁海报 */
       clearFx('spark'); clearFx('balloon'); clearFx('petal');
       ft.classList.add('is-on');
       spawnHeart();
@@ -1053,7 +1027,7 @@ function extinguishCandle() {
     poster.style.cursor = 'pointer';
     poster.addEventListener('click', function () {
       if (!canFx()) return;
-      if (!seen.cd) return; /* 需先触发过CD(出现字样) */
+      if (!seen.finale) return; /* 需先点击唱片显示出字样(I🩷U)后 */
       if (posterEl) { posterEl.remove(); posterEl = null; return; }
       var line = LINES[Math.floor(Math.random() * LINES.length)];
       var pc = document.createElement('div');
@@ -1072,10 +1046,6 @@ function extinguishCandle() {
   window.clearRoomFx = function () {
     for (var k in FX) if (FX[k]) { clearInterval(FX[k]); FX[k] = null; }
     clearFx('spark'); clearFx('balloon'); clearFx('petal'); clearFx('heart'); clearFx('bubble');
-    if (balloonEls) {
-      for (var i = 0; i < balloonEls.length; i++) if (balloonEls[i].parentNode) balloonEls[i].parentNode.removeChild(balloonEls[i]);
-      balloonEls = null;
-    }
     if (cdTimer) { clearTimeout(cdTimer); cdTimer = null; }
     if (finaleTimer) { clearInterval(finaleTimer); finaleTimer = null; }
     var cw = document.getElementById('cdWatch');

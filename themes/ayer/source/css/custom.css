@@ -3202,32 +3202,6 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(calc(var(--dx, 22px) * -0.5), 112vh) rotate(calc(var(--rot, 120deg) * 2)); opacity: 0.9; }
 }
 
-/* ---- 麦克风:页面顶部左右各两只粉色空心大气泡 ---- */
-.fx-bigballoon {
-  position: fixed;
-  z-index: 65;
-  pointer-events: none;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.05) 55%);
-  border: 3px solid var(--pc, #ff8dc7);
-  box-shadow: 0 0 16px rgba(255, 120, 190, 0.35), inset 0 0 14px rgba(255, 180, 215, 0.35);
-  animation: ballSway 5s ease-in-out infinite;
-}
-.fx-bigballoon::before {
-  content: "";
-  position: absolute;
-  left: 20%;
-  top: 16%;
-  width: 20%;
-  height: 24%;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-}
-@keyframes ballSway {
-  0%, 100% { transform: translateY(0) rotate(-2.4deg); }
-  50%      { transform: translateY(-8px) rotate(2.4deg); }
-}
-
 /* ---- CD后:海报 随机小情话 ---- */
 .poster-card {
   position: fixed;
