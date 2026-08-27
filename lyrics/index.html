@@ -375,6 +375,14 @@
   if (!cards.length) return;
   var idx = 0;
 
+  // 页面背景场景类映射：1=黄昏 2=深夜 3=清晓
+  var sceneClassMap = { 1: 'page-scene-sunset', 2: 'page-scene-night', 3: 'page-scene-dawn' };
+  function applyPageScene(n) {
+    var cls = sceneClassMap[n] || sceneClassMap[1];
+    document.body.classList.remove('page-scene-sunset', 'page-scene-night', 'page-scene-dawn');
+    document.body.classList.add(cls);
+  }
+
   function show(n, dir) {
     if (n === idx) return;
     var cur = cards[idx];
@@ -387,6 +395,9 @@
     scenes.forEach(function (s) {
       s.classList.toggle('is-active', parseInt(s.getAttribute('data-scene'), 10) === sceneIdx);
     });
+
+    // 同步整页背景场景
+    applyPageScene(sceneIdx);
 
     if (chNum) chNum.textContent = (idx + 1).toString().padStart(2, '0');
 
@@ -423,6 +434,9 @@
   if (knobCh) {
     knobCh.addEventListener('click', function () { show(idx + 1, 'next'); });
   }
+
+  // 初始化页面背景场景
+  applyPageScene(parseInt(cards[idx].getAttribute('data-scene'), 10) || 1);
 
   // 初始卡片绑定滚动监听
   cards.forEach(function (c) {
