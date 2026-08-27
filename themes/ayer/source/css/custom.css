@@ -613,10 +613,23 @@ html {
    音乐页:全尺寸锁一屏,只让 TV 内歌词卡可滚
    (整页不出现浏览器滚动条,只留 TV 卡片内右侧的蓝色细滚动条)
    ========================================================================== */
+/* body 用 position:fixed 锁位置 + overflow:hidden,内容多也不会被滚动 */
 body.page-scene-sunset,
 body.page-scene-night,
 body.page-scene-dawn {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
   height: 100vh;
+  overflow: hidden;
+}
+/* html 在现代浏览器用 :has 锁,旧浏览器通过 body fixed 间接锁住(没滚动条可见) */
+html:has(body.page-scene-sunset),
+html:has(body.page-scene-night),
+html:has(body.page-scene-dawn) {
   overflow: hidden;
 }
 body.page-scene-sunset .outer,
@@ -625,8 +638,8 @@ body.page-scene-dawn .outer,
 body.page-scene-sunset .wrap,
 body.page-scene-night .wrap,
 body.page-scene-dawn .wrap {
-  height: 100vh;
-  max-height: 100vh;
+  height: 100vh !important;
+  max-height: 100vh !important;
   overflow: hidden;
 }
 body.page-scene-sunset #main,
@@ -641,8 +654,24 @@ body.page-scene-dawn .article-inner,
 body.page-scene-sunset .article-entry,
 body.page-scene-night .article-entry,
 body.page-scene-dawn .article-entry {
-  height: 100%;
+  height: 100% !important;
+  max-height: 100vh !important;
   overflow: hidden;
+}
+/* 隐藏文章页脚/分享/版权/导航,避免占高度溢出 */
+body.page-scene-sunset .article-footer,
+body.page-scene-night .article-footer,
+body.page-scene-dawn .article-footer,
+body.page-scene-sunset .article-nav,
+body.page-scene-night .article-nav,
+body.page-scene-dawn .article-nav,
+body.page-scene-sunset .copyright,
+body.page-scene-night .copyright,
+body.page-scene-dawn .copyright,
+body.page-scene-sunset #mask,
+body.page-scene-night #mask,
+body.page-scene-dawn #mask {
+  display: none !important;
 }
 
 /* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
