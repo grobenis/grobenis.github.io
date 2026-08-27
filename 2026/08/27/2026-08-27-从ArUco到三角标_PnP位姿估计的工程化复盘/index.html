@@ -6,7 +6,7 @@
    
   <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
    
-  <meta name="description" content="机器人对料盘、料盒的六自由度位姿估计从 ArUco 码迁移至无编码等边三角形标记后,PnP 流水线陆续暴露的六类工程问题与九条工程检查清单。" />
+  <meta name="description" content="机器人对料盘、料盒的六自由度位姿估计从 ArUco 码迁移至无编码等边三角形标记后,PnP 流水线陆续暴露了六类工程问题:等边歧义导致的角点对应退化、共线布局导致的姿态自由度观测缺失、歧义消除对上游契约的依赖、欧拉角表示法的值域陷阱、观测鲁棒性与闸门设计,以及阈值可调空间趋近于零的极限情况。本文逐类分析成因、特征现象与处理方式,并汇总为九条工程检查清单,供视觉引导、视觉抓取类任务的位姿估计环节参考。" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   
@@ -15,7 +15,7 @@
   
   <meta property="og:site_name" content="曾是少年" />
   <meta property="og:title" content="从 ArUco 到三角标:PnP 位姿估计的工程化复盘 | 曾是少年" />
-  <meta property="og:description" content="机器人对料盘、料盒的六自由度位姿估计从 ArUco 码迁移至无编码等边三角形标记后,PnP 流水线陆续暴露的六类工程问题与九条工程检查清单。" />
+  <meta property="og:description" content="机器人对料盘、料盒的六自由度位姿估计从 ArUco 码迁移至无编码等边三角形标记后,PnP 流水线陆续暴露了六类工程问题:等边歧义导致的角点对应退化、共线布局导致的姿态自由度观测缺失、歧义消除对上游契约的依赖、欧拉角表示法的值域陷阱、观测鲁棒性与闸门设计,以及阈值可调空间趋近于零的极限情况。本文逐类分析成因、特征现象与处理方式,并汇总为九条工程检查清单,供视觉引导、视觉抓取类任务的位姿估计环节参考。" />
   <meta property="og:url" content="https://grobenis.github.io2026/08/27/2026-08-27-从ArUco到三角标_PnP位姿估计的工程化复盘/" />
   <meta property="og:type" content="article" />
   
@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.1k字</span>
+            <span class="post-count">4.2k字</span>
         </span>
     </span>
 
@@ -117,10 +117,13 @@
       
 
       
-      <h1 id="从-ArUco-到三角标-PnP-位姿估计的工程化复盘"><a href="#从-ArUco-到三角标-PnP-位姿估计的工程化复盘" class="headerlink" title="从 ArUco 到三角标:PnP 位姿估计的工程化复盘"></a>从 ArUco 到三角标:PnP 位姿估计的工程化复盘</h1><blockquote>
-<p>机器人对料盘、料盒的六自由度位姿估计长期依赖 ArUco 码解码与 PnP 求解。当标识物迁移为无编码的等边三角形标记后,同一套 PnP 流水线陆续暴露了六类工程问题:等边歧义导致的角点对应退化、共线布局导致的姿态自由度观测缺失、歧义消除对上游契约的依赖、欧拉角表示法的值域陷阱、观测鲁棒性与闸门设计,以及阈值可调空间趋近于零的极限情况。本文逐类分析成因、特征现象与处理方式,并汇总为九条工程检查清单,供视觉引导、视觉抓取类任务的位姿估计环节参考。</p>
+      <p>机器人对料盘、料盒的六自由度位姿估计长期依赖 ArUco 码解码与 PnP 求解。当标识物迁移为无编码的等边三角形标记后,同一套 PnP 流水线陆续暴露了六类工程问题:等边歧义导致的角点对应退化、共线布局导致的姿态自由度观测缺失、歧义消除对上游契约的依赖、欧拉角表示法的值域陷阱、观测鲁棒性与闸门设计,以及阈值可调空间趋近于零的极限情况。本文逐类分析成因、特征现象与处理方式,并汇总为九条工程检查清单,供视觉引导、视觉抓取类任务的位姿估计环节参考。</p>
+<blockquote>
+<p><strong>契约消歧义,闸门替解算</strong></p>
 </blockquote>
-<hr>
+<span id="more"></span>
+
+<h1 id="从-ArUco-到三角标-PnP-位姿估计的工程化复盘"><a href="#从-ArUco-到三角标-PnP-位姿估计的工程化复盘" class="headerlink" title="从 ArUco 到三角标:PnP 位姿估计的工程化复盘"></a>从 ArUco 到三角标:PnP 位姿估计的工程化复盘</h1><hr>
 <h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>PnP(Perspective-n-Point)在标识物(fiducial marker)定位流程中常被当作成熟组件直接调用:给定若干 3D 物点与对应 2D 像素,求解相机外参 R、t。称之为”成熟”,隐含一组教科书前提成立——<strong>3D-2D 对应唯一且无歧义、标定参数与物理一致、观测误差为独立同分布高斯噪声</strong>。当这些前提被局部破坏时,问题往往不表现为求解器崩溃,而表现为解的质量在某个自由度上静默恶化。后者比显式报错难以排查得多。</p>
 <p>本文记录一次标识物迁移。料盘定位原使用 ArUco 码:检测器解码四边形,四角点像素与物点的对应由图案编码保证,位姿估计长期稳定。后因工艺与外观要求,将标识物改为无编码的等边三角形标记(下文简称”三角标”),盘面共贴 4 枚。</p>
 <p>该改动表面上只涉及检测器替换,实际触发了 PnP 流水线从对应建立到阈值设计的一系列问题。下文按问题类别逐项展开,最后汇总为工程清单。</p>
