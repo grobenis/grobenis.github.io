@@ -75,6 +75,15 @@ share: false
 <div class="tv-screen-glare"></div>
 <div class="tv-snow"></div>
 
+<!-- 屏幕小剧场：点击下方控件触发（黑胶/麦克风/磁带/CD/霓虹） -->
+<div class="theater-stage">
+<div class="theater theater-vinyl"><span class="th-vinyl-disc"></span><span class="th-label th-vinyl-label">VINYL · 33⅓</span></div>
+<div class="theater theater-mic"><span class="th-mic-scan th-mic-scan-1"></span><span class="th-mic-scan th-mic-scan-2"></span><span class="th-mic-scan th-mic-scan-3"></span><span class="th-label th-mic-label">GROTV · ON AIR</span></div>
+<div class="theater theater-cassette"><span class="th-cassette-reel th-cassette-reel-1"></span><span class="th-cassette-reel th-cassette-reel-2"></span><span class="th-label th-cassette-label">REW · ▶ ◀</span></div>
+<div class="theater theater-cd"><span class="th-cd-disc"></span><span class="th-cd-ray"></span><span class="th-label th-cd-label">CD · 44.1kHz</span></div>
+<div class="theater theater-neon"><span class="th-neon-bar th-neon-bar-1">NEON</span><span class="th-neon-bar th-neon-bar-2">MUSIC</span><span class="th-neon-bar th-neon-bar-3">1986</span></div>
+</div>
+
 <!-- 歌词卡（玻璃磨砂） -->
 <div class="lyric-cards">
 <div class="lyric-card is-active" data-scene="1" data-bg-crt="crt-01-zengjingdeni.jpg">
@@ -636,7 +645,7 @@ share: false
   });
 })();
 
-/* ===== 装饰件交互:海报弹窗 + 其余控件切换整页氛围 ===== */
+/* ===== 装饰件交互:海报弹窗 + 其余控件触发屏幕小剧场 ===== */
 (function () {
   var modal = document.getElementById('easterModal');
   if (!modal) return;
@@ -646,14 +655,33 @@ share: false
   var closeBtn = document.getElementById('easterModalClose');
   var opened = false;
 
-  /* 氛围主题:控件 -> body mood 类 */
-  var moods = {
-    'deco-vinyl':    { mood: 'mood-vinyl' },
-    'deco-mic':      { mood: 'mood-mic' },
-    'deco-cassette': { mood: 'mood-cassette' },
-    'deco-cd':       { mood: 'mood-cd' },
-    'deco-neon':     { mood: 'mood-neon' }
+  /* 控件 -> 对应剧场 */
+  var theaters = {
+    'deco-vinyl':    'theater-vinyl',
+    'deco-mic':      'theater-mic',
+    'deco-cassette': 'theater-cassette',
+    'deco-cd':       'theater-cd',
+    'deco-neon':     'theater-neon'
   };
+  var theaterTimer = null;
+  var activeTheater = null;
+
+  function playTheater(key) {
+    var target = document.querySelector('.theater.' + theaters[key]);
+    if (!target) return;
+    /* 隐藏上一个剧场 */
+    if (activeTheater && activeTheater !== target) {
+      activeTheater.classList.remove('is-on');
+    }
+    activeTheater = target;
+    target.classList.add('is-on');
+    /* 自动淡出 */
+    if (theaterTimer) clearTimeout(theaterTimer);
+    theaterTimer = setTimeout(function () {
+      target.classList.remove('is-on');
+      if (activeTheater === target) activeTheater = null;
+    }, 4200);
+  }
 
   /* 海报弹窗文案 */
   var posterEgg = {
@@ -661,20 +689,6 @@ share: false
     title: '海报揭谜',
     text: '你把海报翻过来，背面用铅笔写着：找到这个小房间里的每一样东西，就能拼出完整的 1986。'
   };
-
-  function clearMoods() {
-    var b = document.body;
-    ['mood-vinyl','mood-mic','mood-cassette','mood-cd','mood-neon'].forEach(function (m) {
-      b.classList.remove(m);
-    });
-  }
-
-  function applyMood(el) {
-    var m = moods[el.className.split(' ')[0].trim()];
-    if (!m) return;
-    clearMoods();
-    document.body.classList.add(m.mood);
-  }
 
   function openPoster() {
     iconEl.textContent = posterEgg.icon;
@@ -687,23 +701,22 @@ share: false
   function closeModal() {
     modal.classList.remove('is-open');
     opened = false;
-    clearMoods();
   }
 
   document.querySelectorAll('.deco-row > div').forEach(function (el) {
     var cls = el.className.split(' ')[0].trim();
-    /* 海报:弹窗;其余:切换氛围 */
+    /* 海报:弹窗;其余:触发屏幕小剧场 */
     if (cls === 'deco-poster') {
       el.style.cursor = 'pointer';
       el.addEventListener('click', function () {
         if (opened) { closeModal(); return; }
         openPoster();
       });
-    } else if (moods[cls]) {
+    } else if (theaters[cls]) {
       el.style.cursor = 'pointer';
       el.addEventListener('click', function () {
         if (opened) closeModal();
-        applyMood(el);
+        playTheater(cls);
       });
     }
   });
