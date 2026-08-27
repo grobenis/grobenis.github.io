@@ -9,6 +9,64 @@ share: false
 <span class="tv-page-mark-eyebrow">GroTV · LIVE MUSIC ROOM</span>
 </div>
 
+<div class="music-stage">
+
+<!-- 左侧装饰:黑胶 / 麦克风 / 磁带 -->
+<div class="deco-col deco-left">
+  <div class="deco-vinyl" title="黑胶唱片"></div>
+  <div class="deco-mic" title="复古麦克风">
+    <div class="mic-head"></div>
+    <div class="mic-stem"></div>
+    <div class="mic-base"></div>
+  </div>
+  <div class="deco-cassette" title="老式磁带">
+    <div class="reel-l" style="left:16px;"></div>
+    <div class="reel-r" style="right:16px;"></div>
+  </div>
+
+<!-- 音响台：控制面板移到左侧宽敞区域 -->
+<div class="sound-deck">
+<span class="sound-deck-title">SOUND DECK</span>
+<div class="tv-panel tv-panel-side">
+<div class="tv-knob-row">
+<button class="tv-knob tv-knob-ch" id="tvKnobCh" type="button" aria-label="切换频道">
+<span class="tv-knob-marks"></span>
+<span class="tv-knob-pointer"></span>
+<span class="tv-knob-label">CH</span>
+</button>
+
+<button class="tv-knob tv-knob-vol" id="tvKnobVol" type="button" aria-label="音量">
+<span class="tv-knob-marks"></span>
+<span class="tv-knob-pointer"></span>
+<span class="tv-knob-label">VOL</span>
+</button>
+</div>
+
+<div class="tv-speaker-row">
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+</div>
+
+<div class="tv-buttons">
+<button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
+<span class="tv-btn-icon">&#9198;</span>
+</button>
+<button class="tv-btn tv-btn-play" id="tvBtnPlay" type="button" aria-label="播放/暂停">
+<span class="tv-btn-icon">&#9654;</span>
+</button>
+<button class="tv-btn" id="tvBtnNext" type="button" aria-label="下一首">
+<span class="tv-btn-icon">&#9197;</span>
+</button>
+</div>
+
+<span class="tv-power-led" id="tvPowerLed" title="电源"></span>
+
+</div>
+</div>
+</div>
+
 <div class="tv-set">
 
 <!-- 左上品牌铭牌 -->
@@ -236,50 +294,6 @@ share: false
 <div class="tv-screen-bezel"></div>
 </div>
 
-<!-- 控制面板（屏幕下方） -->
-<div class="tv-panel">
-<div class="tv-panel-left">
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-</div>
-
-<div class="tv-panel-right">
-<!-- 大旋钮 1：CH 频道 -->
-<button class="tv-knob tv-knob-ch" id="tvKnobCh" type="button" aria-label="切换频道">
-<span class="tv-knob-marks"></span>
-<span class="tv-knob-pointer"></span>
-<span class="tv-knob-label">CH</span>
-</button>
-
-<!-- 大旋钮 2：VOL 音量 -->
-<button class="tv-knob tv-knob-vol" id="tvKnobVol" type="button" aria-label="音量">
-<span class="tv-knob-marks"></span>
-<span class="tv-knob-pointer"></span>
-<span class="tv-knob-label">VOL</span>
-</button>
-
-<!-- 圆角按钮组 -->
-<div class="tv-buttons">
-<button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
-<span class="tv-btn-icon">&#9198;</span>
-</button>
-<button class="tv-btn tv-btn-play" id="tvBtnPlay" type="button" aria-label="播放/暂停">
-<span class="tv-btn-icon">&#9654;</span>
-</button>
-<button class="tv-btn" id="tvBtnNext" type="button" aria-label="下一首">
-<span class="tv-btn-icon">&#9197;</span>
-</button>
-</div>
-
-<!-- 电源指示灯 -->
-
-<span class="tv-power-led" id="tvPowerLed" title="电源"></span>
-
-</div>
-</div>
-
 <!-- 底部铭牌 -->
 <div class="tv-footplate">
 <span>MULTI SYNC · CHANNEL SELECTOR</span>
@@ -291,6 +305,21 @@ share: false
 <div class="tv-stand"></div>
 
 </div>
+
+<!-- 右侧装饰:CD / 霓虹招牌 / 海报 -->
+<div class="deco-col deco-right">
+  <div class="deco-cd shine" title="CD 光盘"></div>
+  <div class="deco-neon" title="霓虹招牌">MUSIC</div>
+  <div class="deco-poster" title="复古海报">
+    <div class="poster-title">FM 87.7</div>
+    <div class="poster-line">LIVE FROM</div>
+    <div class="poster-line">GROBENIS STUDIO</div>
+    <div class="poster-line">1986 — ∞</div>
+    <div class="poster-stars">★ ★ ★ ★ ★</div>
+  </div>
+</div>
+
+</div><!-- /.music-stage -->
 
 <script>
 (function () {

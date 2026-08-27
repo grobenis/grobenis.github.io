@@ -320,12 +320,308 @@ html {
   isolation: isolate;
 }
 
+/* ----- 音乐页整体三栏布局:左装饰 / TV / 右装饰 ----- */
+.music-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  max-width: 1240px;
+  margin: 0 auto 30px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+.deco-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 88px;
+  flex-shrink: 0;
+}
+.deco-col .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
+.deco-col .deco-item:hover { transform: translateY(-3px) scale(1.05); filter: brightness(1.12); }
+
+/* ===== 怀旧物品:黑胶唱片 ===== */
+.deco-vinyl {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #b71c1c 0 14%, #1a1a1a 14% 18%, #2a2a2a 18% 22%, #0d0d0d 22% 100%);
+  position: relative;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.06),
+    0 4px 12px rgba(0,0,0,0.35);
+}
+.deco-vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.06) 0 1px, transparent 1px 3px);
+}
+.deco-vinyl::after {
+  content: "GroTV";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  color: rgba(255,255,255,0.85);
+  font-size: 5px; font-weight: 700; letter-spacing: 0.3px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid #b71c1c;
+}
+.deco-vinyl.spin { animation: vinylSpin 6s linear infinite; }
+.deco-col:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
+@keyframes vinylSpin { to { transform: rotate(360deg); } }
+
+/* ===== 怀旧物品:磁带 ===== */
+.deco-cassette {
+  width: 88px; height: 56px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #d4d2c8 0%, #b0aea3 50%, #8a8880 100%);
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 4px 12px rgba(0,0,0,0.3);
+  padding: 5px;
+  box-sizing: border-box;
+}
+.deco-cassette::before {
+  content: "SIDE A";
+  position: absolute;
+  top: 4px; left: 0; right: 0;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 5px; font-weight: 700;
+  color: #3a3a3a; letter-spacing: 1px;
+}
+.deco-cassette::after {
+  content: "";
+  position: absolute;
+  bottom: 5px; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 20px;
+  background: #2a2a2a;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6);
+}
+.deco-cassette .reel-l, .deco-cassette .reel-r {
+  position: absolute;
+  bottom: 10px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d4d2c8 30%, #1a1a1a 30% 70%, transparent 70%);
+}
+
+/* ===== 怀旧物品:CD 盘 ===== */
+.deco-cd {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg,
+      #e0e8f0, #c0d0e0, #f5f5f8, #b0c0d8, #d0d8e8, #e0e8f0);
+  position: relative;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.5),
+    0 3px 8px rgba(0,0,0,0.3);
+}
+.deco-cd::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f8f8fa 0 40%, transparent 40%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2);
+}
+.deco-cd::after {
+  content: "";
+  position: absolute;
+  inset: 45%;
+  border-radius: 50%;
+  background: #1a1a1a;
+}
+.deco-cd.shine {
+  background:
+    conic-gradient(from 0deg,
+      #e8eef5 0%, #f0f5fa 12%, #c0d0e0 25%, #d8e0ec 38%,
+      #b0c0d8 50%, #e0e8f0 62%, #f0f5fa 75%, #c0d0e0 88%, #e8eef5 100%);
+}
+.deco-col:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
+@keyframes cdShine { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(40deg) brightness(1.1); } }
+
+/* ===== 怀旧物品:老式麦克风 ===== */
+.deco-mic {
+  width: 50px; height: 90px;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+}
+.deco-mic .mic-head {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #f0f0f0 0%, #a8a8a8 60%, #555 100%);
+  position: relative;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.5),
+    inset 0 -3px 6px rgba(0,0,0,0.4),
+    0 3px 6px rgba(0,0,0,0.4);
+}
+.deco-mic .mic-head::before {
+  content: "";
+  position: absolute; inset: 6px;
+  border-radius: 50%;
+  background: repeating-linear-gradient(45deg,
+    rgba(0,0,0,0.5) 0 1px, transparent 1px 2px);
+}
+.deco-mic .mic-stem {
+  width: 4px; height: 28px;
+  background: linear-gradient(90deg, #2a2a2a 0%, #6a6a6a 50%, #2a2a2a 100%);
+  border-radius: 0 0 2px 2px;
+}
+.deco-mic .mic-base {
+  width: 36px; height: 6px;
+  background: linear-gradient(180deg, #4a4a4a, #1a1a1a);
+  border-radius: 50% 50% 4px 4px / 100% 100% 4px 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.deco-col:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
+@keyframes micSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+
+/* ===== 怀旧物品:霓虹招牌 ===== */
+.deco-neon {
+  padding: 5px 10px;
+  border: 1.5px solid #ff5577;
+  border-radius: 3px;
+  background: rgba(20,10,15,0.4);
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ff7799;
+  text-shadow:
+    0 0 4px #ff5577,
+    0 0 10px #ff5577,
+    0 0 18px rgba(255,85,119,0.6);
+  box-shadow:
+    inset 0 0 8px rgba(255,85,119,0.3),
+    0 0 12px rgba(255,85,119,0.4);
+  animation: neonFlicker 4s ease-in-out infinite;
+  white-space: nowrap;
+}
+@keyframes neonFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.78; }
+  51% { opacity: 0.92; }
+  52% { opacity: 0.8; }
+}
+
+/* ===== 怀旧物品:海报 ===== */
+.deco-poster {
+  width: 78px;
+  padding: 7px 5px;
+  background: linear-gradient(180deg, #f5e8c8 0%, #e8d4a8 100%);
+  border: 1px solid rgba(0,0,0,0.2);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.4),
+    0 4px 10px rgba(0,0,0,0.35);
+  position: relative;
+  font-family: "Courier New", monospace;
+  text-align: center;
+  color: #3a2a14;
+}
+.deco-poster .poster-title {
+  font-size: 10px; font-weight: 800; letter-spacing: 1px;
+  margin-bottom: 3px;
+  border-bottom: 1px solid #3a2a14;
+  padding-bottom: 3px;
+}
+.deco-poster .poster-line {
+  font-size: 6px; letter-spacing: 0.5px; color: #6a4a2a;
+  margin: 1px 0;
+}
+.deco-poster .poster-stars {
+  font-size: 7px; color: #b71c1c; margin-top: 3px;
+}
+
+/* ===== 怀旧物品:留声机喇叭(锥形) ===== */
+.deco-horn {
+  width: 90px; height: 76px;
+  position: relative;
+}
+.deco-horn .horn-cone {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at 30% 50%,
+    #2a2a2a 0%, #1a1a1a 40%, #4a4a4a 70%, #2a2a2a 100%);
+  clip-path: polygon(20% 50%, 100% 0%, 100% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+.deco-horn .horn-cone::before {
+  content: "";
+  position: absolute; inset: 6% 4% 6% 0;
+  background: repeating-radial-gradient(ellipse at 20% 50%,
+    rgba(255,255,255,0.05) 0 2px, transparent 2px 5px);
+}
+.deco-horn .horn-stem {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 30%; height: 5px;
+  background: linear-gradient(180deg, #6a6a6a, #2a2a2a);
+  transform: translateY(-50%);
+  border-radius: 0 3px 3px 0;
+}
+
+/* ===== 背景噪点纹理(时光沉淀感) ===== */
+.music-stage::before {
+  content: "";
+  position: absolute;
+  inset: -40px -20px;
+  background-image:
+    radial-gradient(circle at 13% 22%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 47% 18%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 82% 28%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 23% 56%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 71% 64%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 58% 81%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 33% 90%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+    radial-gradient(circle at 88% 92%, rgba(255,255,255,0.5) 0.5px, transparent 1px);
+  background-size: 200px 200px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 响应式:窄屏隐藏装饰列，但音响台需要保留（移到电视下方） */
+@media (max-width: 960px) {
+  .music-stage { gap: 14px; }
+  .deco-col { width: 72px; gap: 14px; }
+  .deco-vinyl, .deco-cd { transform: scale(0.9); }
+}
+@media (max-width: 760px) {
+  .music-stage { flex-direction: column; align-items: center; }
+  .deco-col { display: flex; flex-direction: row; width: auto; justify-content: center; }
+  .deco-left { order: 2; margin-top: 10px; }
+  .deco-right { display: none; }
+  .tv-set { order: 1; padding-top: 48px; }
+  .sound-deck { max-width: 420px; margin: 0; }
+}
+
 /* ----- 电视外壳整体 ----- */
 .tv-set {
   position: relative;
   margin: 0 auto 30px;
-  max-width: 760px;
-  padding-top: 78px; /* 给天线留空间 */
+  max-width: 960px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 64px; /* 给天线留空间 */
 }
 .tv-antennas {
   position: absolute;
@@ -443,7 +739,7 @@ html {
     0 0 0 2px #1a1a20;
 }
 @media (max-width: 640px) {
-  .tv-screen { height: 420px; }
+  .tv-screen { height: 360px; }
 }
 .tv-screen-bezel {
   position: absolute;
@@ -517,6 +813,8 @@ html {
   border: 1px solid #2a2a30;
   box-shadow: inset 0 0 6px rgba(255,140,74,0.35);
   text-shadow: 0 0 6px rgba(255,140,74,0.8);
+  /* 纯装饰,不需要拦截事件(避免遮挡滚动条拖拽) */
+  pointer-events: none;
 }
 
 /* ----- 控制面板 ----- */
@@ -977,6 +1275,58 @@ html {
 }
 
 /* ==========================================================================
+   音响台（Sound Deck）：控制面板从电视下方移到左侧宽敞区域
+   ========================================================================== */
+.sound-deck {
+  margin-top: 8px;
+  padding: 14px 12px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 40%, #909098 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 0 rgba(0,0,0,0.18),
+    0 6px 16px rgba(0,0,0,0.28);
+}
+.sound-deck-title {
+  display: block;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #3a3a42;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+/* 侧栏面板：纵向堆叠 */
+.tv-panel-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+.tv-knob-row {
+  display: flex;
+  gap: 14px;
+}
+.tv-speaker-row {
+  display: flex;
+  gap: 5px;
+}
+.tv-panel-side .tv-speaker {
+  width: 5px;
+  height: 22px;
+}
+.tv-panel-side .tv-power-led {
+  margin-top: -2px;
+}
+
+/* ==========================================================================
    音乐页全屏背景（电视外 / 页面整体）
    通过 body.page-scene-sunset / .page-scene-night / .page-scene-dawn 切换
    ========================================================================== */
@@ -1213,12 +1563,15 @@ body.page-scene-dawn .tv-set {
 /* 卡片：玻璃磨砂半透明 */
 .lyric-cards {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
   padding: 32px;
   box-sizing: border-box;
+  /* 显式开启交互:父级 .lyric-stage 用了 pointer-events:none,
+     CSS 规范下子元素默认继承 none,会导致滚动条/按钮拖不动 */
+  pointer-events: auto;
 }
 .lyric-card {
   position: absolute;
@@ -1227,7 +1580,7 @@ body.page-scene-dawn .tv-set {
   top: 32px;
   bottom: 32px;
   margin: 0 auto;
-  max-width: 560px;
+  max-width: 700px;
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -1237,16 +1590,27 @@ body.page-scene-dawn .tv-set {
   display: none;
   flex-direction: column;
   overflow: hidden;
+  /* 显式恢复事件穿透(被 .lyric-stage 的 pointer-events:none 继承) */
+  pointer-events: auto;
 }
 .lyric-card-header {
   flex-shrink: 0;
 }
 .lyric-card-body {
-  flex: 1;
+  flex: 1 1 0;
+  /* min-height:0 是 flex 列布局里让 overflow:auto 真正生效的关键,
+     否则会被 min-content(min-height:auto)撑大,看似"卡住"滚不动 */
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 4px 22px 18px;
   scrollbar-width: thin;
   scrollbar-color: rgba(73,177,245,0.5) transparent;
+  overscroll-behavior: contain;
+  /* 显式开启交互(滚动条/手柄/选词都需要):
+     父级 .lyric-stage 用了 pointer-events:none,
+     按规范子元素默认继承,这里强制 auto 才能让滚动条真正可拖动 */
+  pointer-events: auto;
 }
 .lyric-card-body::-webkit-scrollbar {
   width: 6px;
