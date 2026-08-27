@@ -1,6 +1,8 @@
 ---
 title: OpenCV 重要函数
 description: "本节用来总结SLAM学习过程中，用到的重要的opencv函数"
+reward: true
+copyright: true
 Author: Grobenis
 date: 2020-04-14 20:43:39
 categories: [学习]

@@ -1,8 +1,10 @@
 ---
 title: Markdown 语法简介
 description: "本文是一份 Markdown 语法速查手册，覆盖标题、引用、列表、代码块、链接、图片、强调与转义等常用语法，逐项给出书写格式与显示效果的对照示例。"
+reward: true
+copyright: true
 date: 2020-01-15
-Author: guoben 
+Author: guoben
 categories: [工具]
 tags: [markdown]
 ---

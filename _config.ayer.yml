@@ -105,7 +105,7 @@ reward_type: 1
 # 打赏wording
 reward_wording:
 # 支付宝二维码图片地址，跟你设置logo的方式一样。比如：/images/alipay.jpg
-alipay: /images/pay/alipay.jpg
+# alipay: /images/pay/alipay.jpg  # 已禁用,只保留微信打赏
 # 微信二维码图片地址
 weixin: /images/pay/wechat.jpg
 

@@ -1,6 +1,8 @@
 ---
 title: SLAM 中的后端优化
 description: "本节介绍SLAM中的后端优化过程"
+reward: true
+copyright: true
 Author: Grobenis
 date: 2020-03-30 21:52:51
 categories: 学习

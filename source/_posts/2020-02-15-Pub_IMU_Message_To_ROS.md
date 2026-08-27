@@ -2,6 +2,8 @@
 layout: post
 title: 发布 IMU 信息到 ROS 系统
 description: "以下记录是在调试树莓派3b中得到的经验"
+reward: true
+copyright: true
 date: 2020-02-15
 Author: guoben
 categories: 实验

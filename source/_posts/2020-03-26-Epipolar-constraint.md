@@ -1,6 +1,8 @@
 ---
 title: 对极约束
 description: "本文旨在了解一下几点："
+reward: true
+copyright: true
 Author: Grobenis
 date: 2020-03-26 15:19:07
 categories: 学习

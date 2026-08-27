@@ -2,6 +2,8 @@
 layout: post
 title: Kalman 滤波器学习
 description: "概率图+时间=动态系统"
+reward: true
+copyright: true
 date: 2020-03-14
 Author: guoben
 categories: 学习

@@ -2,6 +2,8 @@
 layout: post
 title: 运动一致性判断
 description: "直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文…"
+reward: true
+copyright: true
 date: 2020-03-14
 Author: guoben
 categories: 学习
