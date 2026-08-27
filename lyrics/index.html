@@ -823,8 +823,8 @@
   var led = document.getElementById('tvPowerLed');
   var on = true;
 
-  /* 七种氛围顺序 */
-  var LAMPS = ['black', 'white', 'yellow', 'pink', 'grey', 'blue', 'warm'];
+  /* 七种氛围顺序(黑色在最后) */
+  var LAMPS = ['white', 'yellow', 'pink', 'grey', 'blue', 'warm', 'black'];
   var lampIdx = -1; /* -1 表示未拉起(电视开着,氛围随歌曲) */
   var pull = document.getElementById('lampPull');
 
