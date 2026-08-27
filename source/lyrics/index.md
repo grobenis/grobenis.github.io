@@ -357,19 +357,6 @@ share: false
 <!-- 频道号窗 -->
 <div class="tv-channel">CH <span id="tvChannelNum">01</span></div>
 
-<!-- 屏内 OSD 控制条（上/播放/下） -->
-<div class="tv-buttons">
-<button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
-<span class="tv-btn-icon">&#9198;</span>
-</button>
-<button class="tv-btn tv-btn-play" id="tvBtnPlay" type="button" aria-label="播放/暂停">
-<span class="tv-btn-icon">&#9654;</span>
-</button>
-<button class="tv-btn" id="tvBtnNext" type="button" aria-label="下一首">
-<span class="tv-btn-icon">&#9197;</span>
-</button>
-</div>
-
 <!-- 滚动提示 -->
 <div class="lyric-scroll-hint" id="lyricScrollHint">向上滑动查看完整歌词</div>
 </div>
@@ -400,6 +387,18 @@ share: false
 <span class="tv-knob-pointer"></span>
 <span class="tv-knob-label">VOL</span>
 </button>
+
+<div class="tv-buttons">
+<button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
+<span class="tv-btn-icon">&#9198;</span>
+</button>
+<button class="tv-btn tv-btn-play" id="tvBtnPlay" type="button" aria-label="播放/暂停">
+<span class="tv-btn-icon">&#9654;</span>
+</button>
+<button class="tv-btn" id="tvBtnNext" type="button" aria-label="下一首">
+<span class="tv-btn-icon">&#9197;</span>
+</button>
+</div>
 
 <span class="tv-power-led" id="tvPowerLed" title="电源"></span>
 
