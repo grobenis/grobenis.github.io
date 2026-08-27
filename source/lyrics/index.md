@@ -11,7 +11,7 @@ share: false
 
 <div class="music-stage">
 
-<div class="tv-set">
+<div class="tv-set" id="tvSet">
 
 <!-- 左上品牌铭牌 -->
 <div class="tv-brand">
@@ -406,7 +406,9 @@ share: false
 </button>
 </div>
 
-<span class="tv-power-led" id="tvPowerLed" title="电源"></span>
+<button class="tv-power-btn" id="tvPowerBtn" type="button" aria-label="电源开关" title="电源开关">
+<span class="tv-power-led" id="tvPowerLed"></span>
+</button>
 
 </div>
 </div>
@@ -726,5 +728,27 @@ share: false
   modal.addEventListener('click', function (e) {
     if (e.target === modal) closeModal();
   });
+})();
+
+/* ===== 电视电源开关 ===== */
+(function () {
+  var tv = document.getElementById('tvSet');
+  if (!tv) tv = document.querySelector('.tv-set');
+  var powerBtn = document.getElementById('tvPowerBtn');
+  var led = document.getElementById('tvPowerLed');
+  var on = true;
+
+  function setPower(state) {
+    on = state;
+    tv.classList.toggle('is-off', !on);
+    if (led) led.classList.toggle('is-on', on);
+  }
+
+  if (powerBtn && tv) {
+    powerBtn.addEventListener('click', function () {
+      setPower(!on);
+    });
+    setPower(true);
+  }
 })();
 </script>
