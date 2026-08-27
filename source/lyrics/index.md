@@ -883,7 +883,7 @@ function extinguishCandle() {
     return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
   }
   function makeP(node, type) {
-    node.className += ' fx-particle';
+    node.className += ' fx-particle fx-' + type;
     node.setAttribute('data-fx', type);
     document.body.appendChild(node);
     return node;
