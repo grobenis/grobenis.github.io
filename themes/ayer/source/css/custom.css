@@ -1267,6 +1267,76 @@ body.page-scene-dawn #mask {
   overflow: hidden;
   z-index: 2;
 }
+
+/* ===== 装饰件小彩蛋弹窗 ===== */
+.easter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.easter-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.easter-modal-panel {
+  width: min(420px, 86vw);
+  padding: 18px 22px 20px;
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #2a2a30 0%, #141418 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+  transform: translateY(14px) scale(0.94);
+  transition: transform 0.25s ease;
+}
+.easter-modal.is-open .easter-modal-panel {
+  transform: translateY(0) scale(1);
+}
+.easter-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.easter-modal-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+.easter-modal-close {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.easter-modal-close:hover { background: rgba(255,255,255,0.24); }
+.easter-modal-close:active { transform: scale(0.9); }
+.easter-modal-title {
+  margin: 10px 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.easter-modal-text {
+  color: #cfcfd6;
+  font-size: 14px;
+  line-height: 1.8;
+}
 /* ===== 场景 1：黄昏（夕阳 + 远山 + 飞鸟） ===== */
 .lyric-scene-1 { background: #2a1d2c; }
 .sky-sunset {
