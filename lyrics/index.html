@@ -203,6 +203,9 @@
 
       &lt;!-- 频道号窗 --&gt;
       &lt;div class=&quot;tv-channel&quot;&gt;CH &lt;span id=&quot;tvChannelNum&quot;&gt;01&lt;/span&gt;&lt;/div&gt;
+
+      &lt;!-- 滚动提示 --&gt;
+      &lt;div class=&quot;lyric-scroll-hint&quot; id=&quot;lyricScrollHint&quot;&gt;向上滑动查看完整歌词&lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 
@@ -274,6 +277,7 @@
   var btnPlay = document.getElementById('tvBtnPlay');
   var powerLed = document.getElementById('tvPowerLed');
   var scenes = document.querySelectorAll('.lyric-scene');
+  var scrollHint = document.getElementById('lyricScrollHint');
   if (!cards.length) return;
   var idx = 0;
 
@@ -297,9 +301,30 @@
       knobCh.style.setProperty('--tv-rot', (idx * 180) + 'deg');
     }
 
+    // 重置新卡片的滚动位置
+    var nextBody = nextCard.querySelector('.lyric-card-body');
+    if (nextBody) {
+      nextBody.scrollTop = 0;
+      updateScrollHint(nextBody);
+      nextBody.addEventListener('scroll', function () {
+        updateScrollHint(nextBody);
+      });
+    }
+
     setTimeout(function () {
       nextCard.classList.remove('slide-in-right', 'slide-in-left');
     }, 450);
+  }
+
+  // 滚动提示：到底部时隐藏
+  function updateScrollHint(body) {
+    if (!scrollHint) return;
+    var atBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 4;
+    if (atBottom) {
+      scrollHint.classList.add('is-hidden');
+    } else {
+      scrollHint.classList.remove('is-hidden');
+    }
   }
 
   btnPrev.addEventListener('click', function () { show(idx - 1, 'prev'); });
@@ -307,6 +332,15 @@
   if (knobCh) {
     knobCh.addEventListener('click', function () { show(idx + 1, 'next'); });
   }
+
+  // 初始卡片绑定滚动监听
+  cards.forEach(function (c) {
+    var b = c.querySelector('.lyric-card-body');
+    if (b) {
+      b.addEventListener('scroll', function () { updateScrollHint(b); });
+      updateScrollHint(b);
+    }
+  });
 
   // 播放/暂停按钮（与现有 music.ejs 联动）
   if (btnPlay) {
