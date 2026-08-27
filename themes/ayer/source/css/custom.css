@@ -1147,17 +1147,61 @@ body.page-scene-dawn #mask {
   opacity: 1;
 }
 
-/* ===== 10 张专属 CRT 场景图 ===== */
-.lyric-scene[data-bg-crt="crt-01-zengjingdeni.jpg"]      { background-image: url(/images/lyrics-bg/crt/crt-01-zengjingdeni.jpg); }
-.lyric-scene[data-bg-crt="crt-02-xiaochou.jpg"]          { background-image: url(/images/lyrics-bg/crt/crt-02-xiaochou.jpg); }
-.lyric-scene[data-bg-crt="crt-03-daoxiang.jpg"]          { background-image: url(/images/lyrics-bg/crt/crt-03-daoxiang.jpg); }
-.lyric-scene[data-bg-crt="crt-04-qingtian.jpg"]          { background-image: url(/images/lyrics-bg/crt/crt-04-qingtian.jpg); }
-.lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"]   { background-image: url(/images/lyrics-bg/crt/crt-05-qingmingyushang.jpg); }
-.lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"]         { background-image: url(/images/lyrics-bg/crt/crt-06-qinghuaci.jpg); }
-.lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"]         { background-image: url(/images/lyrics-bg/crt/crt-07-luzhouyue.jpg); }
-.lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"]       { background-image: url(/images/lyrics-bg/crt/crt-08-gaobaiqiqui.jpg); }
-.lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"]     { background-image: url(/images/lyrics-bg/crt/crt-09-yasugongshang.jpg); }
-.lyric-scene[data-bg-crt="crt-10-chengfu.jpg"]           { background-image: url(/images/lyrics-bg/crt/crt-10-chengfu.jpg); }
+/* ===== 10 套专属 CRT 屏内氛围渐变 ===== */
+.lyric-scene[data-bg-crt="crt-01-zengjingdeni.jpg"] {
+  background:
+    radial-gradient(circle at 74% 30%, rgba(255, 200, 90, 0.85) 0%, rgba(255, 160, 70, 0.4) 22%, transparent 48%),
+    linear-gradient(180deg, #6e3060 0%, #a44f46 38%, #d97b42 66%, #f2a95c 88%, #ffd98f 100%);
+}
+.lyric-scene[data-bg-crt="crt-02-xiaochou.jpg"] {
+  background:
+    radial-gradient(circle at 24% 68%, rgba(240, 170, 70, 0.5) 0%, transparent 34%),
+    radial-gradient(circle at 76% 26%, rgba(80, 110, 230, 0.45) 0%, transparent 40%),
+    linear-gradient(180deg, #0a0d1e 0%, #1a2038 55%, #2e3050 100%);
+}
+.lyric-scene[data-bg-crt="crt-03-daoxiang.jpg"] {
+  background:
+    radial-gradient(circle at 50% 88%, rgba(255, 232, 150, 0.75) 0%, rgba(255, 210, 120, 0.35) 28%, transparent 55%),
+    linear-gradient(180deg, #31424a 0%, #57704e 40%, #9c9a52 70%, #dfbe62 92%, #f6e3a0 100%);
+}
+.lyric-scene[data-bg-crt="crt-04-qingtian.jpg"] {
+  background:
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 220, 0.8) 0%, rgba(255, 240, 180, 0.35) 25%, transparent 50%),
+    linear-gradient(180deg, #1c5898 0%, #3a82ca 45%, #7fb4e6 78%, #cfe8f8 100%);
+}
+.lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"] {
+  background:
+    radial-gradient(circle at 30% 22%, rgba(215, 228, 218, 0.4) 0%, transparent 45%),
+    linear-gradient(180deg, #202c2c 0%, #3a4c46 48%, #66796e 78%, #9bb0a2 100%);
+}
+.lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"] {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(238, 245, 252, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 22% 82%, rgba(70, 125, 185, 0.45) 0%, transparent 50%),
+    linear-gradient(175deg, #12243f 0%, #27507f 55%, #4a81b8 100%);
+}
+.lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"] {
+  background:
+    radial-gradient(circle at 76% 20%, rgba(255, 196, 120, 0.55) 0%, rgba(255, 176, 100, 0.25) 20%, transparent 42%),
+    radial-gradient(circle at 48% 10%, rgba(235, 242, 255, 0.4) 0%, transparent 32%),
+    linear-gradient(180deg, #081026 0%, #14224c 55%, #2c3d74 100%);
+}
+.lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"] {
+  background:
+    radial-gradient(circle at 70% 32%, rgba(255, 214, 224, 0.65) 0%, rgba(255, 184, 190, 0.3) 24%, transparent 48%),
+    linear-gradient(175deg, #4c2c50 0%, #964f68 38%, #dd8268 70%, #ffb286 92%, #ffddb0 100%);
+}
+.lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"] {
+  background:
+    radial-gradient(circle at 50% 82%, rgba(242, 248, 244, 0.3) 0%, transparent 50%),
+    linear-gradient(178deg, #22282c 0%, #415250 48%, #74887f 80%, #b2c4ba 100%);
+}
+.lyric-scene[data-bg-crt="crt-10-chengfu.jpg"] {
+  background:
+    radial-gradient(circle at 26% 72%, rgba(225, 65, 95, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 78% 60%, rgba(65, 130, 230, 0.42) 0%, transparent 42%),
+    linear-gradient(180deg, #0c1119 0%, #1c2636 52%, #334156 100%);
+}
 
 /* CRT 粒子容器 */
 .crt-particles {
@@ -1568,43 +1612,78 @@ body.page-scene-dawn {
 }
 
 /* ==========================================================================
-   每首歌专属外圈背景图（AI 生成，共 10 张）
+   每首歌专属外圈背景（纯 CSS 渐变，共 10 套）
    类名通过 JS 动态加到 body 上，例如 body.page-bg-1
    ========================================================================== */
 
-/* 通用：所有 page-bg-* 都用 cover+center 铺满 */
-body[class*="page-bg-"] {
-  background-size: cover !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
-}
-
-/* 顶部加一层半透明压暗，提升歌词可读性 */
-body[class*="page-bg-"]::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
+/* 01 曾经的你：暖橙夕阳公路 */
+body.page-bg-1 {
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.55) 100%);
-  z-index: 0;
+    radial-gradient(ellipse at 75% 25%, rgba(255, 214, 130, 0.5), transparent 45%),
+    linear-gradient(165deg, #3a2431 0%, #6e3a3a 30%, #b06040 60%, #e89a58 85%, #f7c67f 100%) !important;
+}
+/* 02 消愁：酒吧深夜 蓝金 */
+body.page-bg-2 {
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(220, 160, 70, 0.28), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(70, 90, 200, 0.35), transparent 50%),
+    linear-gradient(180deg, #0a0d18 0%, #141a30 45%, #23264a 100%) !important;
+}
+/* 03 稻香：稻田晨雾 金绿 */
+body.page-bg-3 {
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(255, 226, 150, 0.5), transparent 55%),
+    linear-gradient(175deg, #26313a 0%, #4a5a44 35%, #8a8a4e 65%, #d9b95e 88%, #f2dd9a 100%) !important;
+}
+/* 04 晴天：校园蓝天亮黄 */
+body.page-bg-4 {
+  background:
+    radial-gradient(ellipse at 70% 18%, rgba(255, 255, 210, 0.55), transparent 45%),
+    linear-gradient(170deg, #1e4f8f 0%, #3a78c0 40%, #82b4e4 70%, #d6e9f7 100%) !important;
+}
+/* 05 清明雨上：烟雨青灰 */
+body.page-bg-5 {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(200, 215, 205, 0.3), transparent 55%),
+    linear-gradient(178deg, #1c2626 0%, #33443f 45%, #5d7268 75%, #93a89a 100%) !important;
+}
+/* 06 青花瓷：靛蓝瓷白 */
+body.page-bg-6 {
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(235, 242, 250, 0.28), transparent 50%),
+    radial-gradient(ellipse at 20% 85%, rgba(60, 110, 170, 0.35), transparent 55%),
+    linear-gradient(172deg, #10203c 0%, #23477a 50%, #4478b4 100%) !important;
+}
+/* 07 庐州月：水乡月夜 蓝+灯笼橙 */
+body.page-bg-7 {
+  background:
+    radial-gradient(ellipse at 78% 22%, rgba(255, 190, 120, 0.32), transparent 42%),
+    radial-gradient(ellipse at 50% 12%, rgba(230, 238, 255, 0.22), transparent 38%),
+    linear-gradient(180deg, #060a1c 0%, #101c44 50%, #27356a 100%) !important;
+}
+/* 08 告白气球：塞纳河粉橙日落 */
+body.page-bg-8 {
+  background:
+    radial-gradient(ellipse at 72% 30%, rgba(255, 210, 220, 0.5), transparent 48%),
+    linear-gradient(168deg, #46284a 0%, #8a4664 35%, #d97a68 68%, #ffb08a 90%, #ffd9ad 100%) !important;
+}
+/* 09 雅俗共赏：水墨山水 灰绿 */
+body.page-bg-9 {
+  background:
+    radial-gradient(ellipse at 50% 85%, rgba(240, 245, 240, 0.22), transparent 55%),
+    linear-gradient(176deg, #20262a 0%, #3d4a4a 45%, #6c7f78 78%, #aabcb2 100%) !important;
+}
+/* 10 城府：雨巷霓虹 蓝灰 */
+body.page-bg-10 {
+  background:
+    radial-gradient(ellipse at 25% 75%, rgba(220, 60, 90, 0.22), transparent 45%),
+    radial-gradient(ellipse at 80% 65%, rgba(60, 120, 220, 0.25), transparent 48%),
+    linear-gradient(180deg, #0a0e16 0%, #18202e 50%, #2c3a4e 100%) !important;
 }
 
-body.page-bg-1  { background-image: url(/images/lyrics-bg/bg-01-zengjingdeni.jpg)     !important; }
-body.page-bg-2  { background-image: url(/images/lyrics-bg/bg-02-xiaochou.jpg)         !important; }
-body.page-bg-3  { background-image: url(/images/lyrics-bg/bg-03-daoxiang.jpg)         !important; }
-body.page-bg-4  { background-image: url(/images/lyrics-bg/bg-04-qingtian.jpg)         !important; }
-body.page-bg-5  { background-image: url(/images/lyrics-bg/bg-05-qingmingyushang.jpg)  !important; }
-body.page-bg-6  { background-image: url(/images/lyrics-bg/bg-06-qinghuaci.jpg)        !important; }
-body.page-bg-7  { background-image: url(/images/lyrics-bg/bg-07-luzhouyue.jpg)        !important; }
-body.page-bg-8  { background-image: url(/images/lyrics-bg/bg-08-gaobaiqiqui.jpg)      !important; }
-body.page-bg-9  { background-image: url(/images/lyrics-bg/bg-09-yasugongshang.jpg)    !important; }
-body.page-bg-10 { background-image: url(/images/lyrics-bg/bg-10-chengfu.jpg)         !important; }
-
-/* 切歌过渡：图片淡入 */
+/* 切歌过渡：背景平滑切换 */
 body {
-  transition: background-image 1.2s ease-in-out;
+  transition: background 1.2s ease-in-out;
 }
 
 /* 背景动效：缓慢漂浮的柔光斑 */
