@@ -768,7 +768,7 @@ body.page-scene-dawn #mask {
 .tv-set {
   position: relative;
   margin: 0 auto 12px;
-  max-width: 1100px;
+  max-width: 520px;       /* 缩短横向,让 TV 整体接近正方形 */
   width: 100%;
   flex: 1 1 auto;
   min-width: 0;
