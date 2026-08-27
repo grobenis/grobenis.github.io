@@ -1938,13 +1938,14 @@ body.page-scene-dawn .tv-set {
 }
 .lyric-card {
   position: absolute;
-  /* 顶部收到与频道号 CH01 同高,歌词整体往上延伸 */
+  /* 歌名中心线对齐 CH01 中线(28px):清掉旧信纸的 24px 内边距,卡片顶收到 4px */
   left: 32px;
   right: 32px;
-  top: 14px;
+  top: 4px;
   bottom: 32px;
   margin: 0 auto;
   max-width: 760px;
+  padding: 0;
   /* 完全透出场景:无背景、无边框、无阴影,只保留文本自身的对比 */
   background: transparent;
   border: 0;
