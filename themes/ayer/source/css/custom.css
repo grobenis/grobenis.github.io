@@ -322,28 +322,27 @@ html {
 
 /* ----- 音乐页整体布局:TV 在上,装饰横排在下方 ----- */
 .music-stage {
-  display: block;                 /* 用 block + text-align 强制子元素居中,最稳 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;             /* 关键:cross-axis 居中 */
+  gap: 16px;
   max-width: 800px;
   margin: 0 auto 20px;
   padding: 0 16px;
-  text-align: center;              /* inline 子元素居中 */
   position: relative;
   z-index: 1;
 }
-.tv-set {
-  display: inline-block;          /* TV 跟 deco-row 并列居中 */
-  vertical-align: top;
-  text-align: left;
-  margin: 0 0 16px 0;
-}
+/* .tv-set 保持默认 block(在 flex column 里被 align-items:center 居中) */
+/* .deco-row 改回 display:flex,在 flex column 里作为 flex item 也被居中 */
 .deco-row {
-  display: inline-flex;            /* 装饰容器 6 个横排 */
+  display: flex;
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
   gap: 22px;
   flex-wrap: wrap;
-  max-width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
   padding: 4px 0;
 }
 .deco-row .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
