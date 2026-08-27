@@ -1513,12 +1513,9 @@ body.page-scene-dawn .article-entry {
   border-color: transparent !important;
 }
 
-/* ===== 场景 1：黄昏 ===== */
+/* ===== 场景 1：黄昏（兜底色：图片未加载时可见） ===== */
 body.page-scene-sunset {
   background:
-    radial-gradient(ellipse at 78% 28%, rgba(255, 220, 140, 0.55) 0%, transparent 40%),
-    radial-gradient(ellipse at 18% 90%, rgba(255, 120, 80, 0.45), transparent 55%),
-    radial-gradient(ellipse at 50% 110%, rgba(255, 200, 120, 0.5), transparent 60%),
     linear-gradient(160deg,
       #2a1d2c 0%,
       #4a2c3a 25%,
@@ -1529,9 +1526,6 @@ body.page-scene-sunset {
 /* ===== 场景 2：深夜 ===== */
 body.page-scene-night {
   background:
-    radial-gradient(ellipse at 78% 18%, rgba(60, 80, 160, 0.45), transparent 50%),
-    radial-gradient(ellipse at 22% 82%, rgba(20, 30, 80, 0.55), transparent 55%),
-    radial-gradient(ellipse at 50% -10%, rgba(80, 60, 140, 0.35), transparent 60%),
     linear-gradient(180deg,
       #02030a 0%,
       #08102a 30%,
@@ -1541,15 +1535,52 @@ body.page-scene-night {
 /* ===== 场景 3：清晓 ===== */
 body.page-scene-dawn {
   background:
-    radial-gradient(ellipse at 50% 95%, rgba(255, 200, 160, 0.6) 0%, transparent 50%),
-    radial-gradient(ellipse at 20% 10%, rgba(180, 200, 240, 0.4), transparent 55%),
-    radial-gradient(ellipse at 80% 10%, rgba(255, 180, 200, 0.35), transparent 55%),
     linear-gradient(180deg,
       #2a3a5e 0%,
       #506a90 30%,
       #c89890 55%,
       #f4b890 78%,
       #ffd8a8 100%) !important;
+}
+
+/* ==========================================================================
+   每首歌专属外圈背景图（AI 生成，共 10 张）
+   类名通过 JS 动态加到 body 上，例如 body.page-bg-1
+   ========================================================================== */
+
+/* 通用：所有 page-bg-* 都用 cover+center 铺满 */
+body[class*="page-bg-"] {
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* 顶部加一层半透明压暗，提升歌词可读性 */
+body[class*="page-bg-"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.55) 100%);
+  z-index: 0;
+}
+
+body.page-bg-1  { background-image: url(/images/lyrics-bg/bg-01-zengjingdeni.jpg)     !important; }
+body.page-bg-2  { background-image: url(/images/lyrics-bg/bg-02-xiaochou.jpg)         !important; }
+body.page-bg-3  { background-image: url(/images/lyrics-bg/bg-03-daoxiang.jpg)         !important; }
+body.page-bg-4  { background-image: url(/images/lyrics-bg/bg-04-qingtian.jpg)         !important; }
+body.page-bg-5  { background-image: url(/images/lyrics-bg/bg-05-qingmingyushang.jpg)  !important; }
+body.page-bg-6  { background-image: url(/images/lyrics-bg/bg-06-qinghuaci.jpg)        !important; }
+body.page-bg-7  { background-image: url(/images/lyrics-bg/bg-07-luzhouyue.jpg)        !important; }
+body.page-bg-8  { background-image: url(/images/lyrics-bg/bg-08-gaobaiqiqui.jpg)      !important; }
+body.page-bg-9  { background-image: url(/images/lyrics-bg/bg-09-yasugongshang.jpg)    !important; }
+body.page-bg-10 { background-image: url(/images/lyrics-bg/bg-10-chengfu.jpg)         !important; }
+
+/* 切歌过渡：图片淡入 */
+body {
+  transition: background-image 1.2s ease-in-out;
 }
 
 /* 背景动效：缓慢漂浮的柔光斑 */
