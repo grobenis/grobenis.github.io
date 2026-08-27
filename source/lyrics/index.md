@@ -223,6 +223,7 @@ share: false
 <p>乡间的歌谣永远的依靠</p>
 <p>回家吧 回到最初的美好</p>
 </div>
+</div>
 
 <!-- 第 4 首:晴天(周杰伦) - 场景 3 清晓 -->
 <div class="lyric-card" data-scene="3">
@@ -447,6 +448,7 @@ share: false
 </div>
 
 <span class="tv-power-led" id="tvPowerLed" title="电源"></span>
+
 </div>
 </div>
 
@@ -529,11 +531,14 @@ share: false
   }
 
   function show(n, dir) {
-    if (n === idx) return;
+    if (!cards.length) return;
+    var nextIdx = ((n % cards.length) + cards.length) % cards.length;
+    if (nextIdx === idx) return;
     var cur = cards[idx];
-    idx = (n + cards.length) % cards.length;
+    idx = nextIdx;
     var nextCard = cards[idx];
-    cur.classList.remove('is-active');
+    if (!nextCard) { idx = 0; return; }
+    if (cur) cur.classList.remove('is-active');
     nextCard.classList.add('is-active', dir === 'next' ? 'slide-in-right' : 'slide-in-left');
 
     var sceneIdx = parseInt(nextCard.getAttribute('data-scene'), 10) || 1;
@@ -574,8 +579,8 @@ share: false
     }
   }
 
-  btnPrev.addEventListener('click', function () { show(idx - 1, 'prev'); });
-  btnNext.addEventListener('click', function () { show(idx + 1, 'next'); });
+  btnPrev.addEventListener('click', function () { console.log('[lyrics] prev', {idx: idx, len: cards.length}); show(idx - 1, 'prev'); });
+  btnNext.addEventListener('click', function () { console.log('[lyrics] next', {idx: idx, len: cards.length}); show(idx + 1, 'next'); });
   if (knobCh) {
     knobCh.addEventListener('click', function () { show(idx + 1, 'next'); });
   }
