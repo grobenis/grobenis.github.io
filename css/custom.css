@@ -612,36 +612,28 @@ html {
 /* ==========================================================================
    音乐页:全尺寸锁一屏,只让 TV 内歌词卡可滚
    (整页不出现浏览器滚动条,只留 TV 卡片内右侧的蓝色细滚动条)
+   注意:本主题的滚动容器是 main.content,而非 body/html,
+   因此必须锁 main.content(及其内容包裹层),body 本身无需动。
    ========================================================================== */
-/* body 用 position:fixed 锁位置 + overflow:hidden,内容多也不会被滚动 */
-body.page-scene-sunset,
-body.page-scene-night,
-body.page-scene-dawn {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+body.page-scene-sunset #app > .content,
+body.page-scene-night #app > .content,
+body.page-scene-dawn #app > .content,
+body.page-scene-sunset .content,
+body.page-scene-night .content,
+body.page-scene-dawn .content,
+body.page-locked #app > .content,
+body.page-locked .content {
+  overflow: hidden !important;   /* 锁住真正滚动容器 */
+  height: 100vh !important;
+  max-height: 100vh !important;
 }
-/* html 在现代浏览器用 :has 锁,旧浏览器通过 body fixed 间接锁住(没滚动条可见) */
-html:has(body.page-scene-sunset),
-html:has(body.page-scene-night),
-html:has(body.page-scene-dawn) {
-  overflow: hidden;
-}
+/* 内容包裹链也压到视口内,防止内部再溢出 */
 body.page-scene-sunset .outer,
 body.page-scene-night .outer,
 body.page-scene-dawn .outer,
 body.page-scene-sunset .wrap,
 body.page-scene-night .wrap,
-body.page-scene-dawn .wrap {
-  height: 100vh !important;
-  max-height: 100vh !important;
-  overflow: hidden;
-}
+body.page-scene-dawn .wrap,
 body.page-scene-sunset #main,
 body.page-scene-night #main,
 body.page-scene-dawn #main,
@@ -653,10 +645,30 @@ body.page-scene-night .article-inner,
 body.page-scene-dawn .article-inner,
 body.page-scene-sunset .article-entry,
 body.page-scene-night .article-entry,
-body.page-scene-dawn .article-entry {
+body.page-scene-dawn .article-entry,
+body.page-locked .outer,
+body.page-locked .wrap,
+body.page-locked #main,
+body.page-locked .article,
+body.page-locked .article-inner,
+body.page-locked .article-entry {
   height: 100% !important;
   max-height: 100vh !important;
   overflow: hidden;
+}
+/* 兜底:直接锁 document 滚动(兼容滚动不在 .content 时的旧行为) */
+html:has(body.page-scene-sunset),
+html:has(body.page-scene-night),
+html:has(body.page-scene-dawn),
+html:has(body.page-locked) {
+  overflow: hidden !important;
+}
+body.page-scene-sunset,
+body.page-scene-night,
+body.page-scene-dawn,
+body.page-locked {
+  overflow: hidden !important;
+  height: 100vh;
 }
 /* 隐藏文章页脚/分享/版权/导航,避免占高度溢出 */
 body.page-scene-sunset .article-footer,
