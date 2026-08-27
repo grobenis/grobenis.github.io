@@ -517,6 +517,8 @@ html {
   border: 1px solid #2a2a30;
   box-shadow: inset 0 0 6px rgba(255,140,74,0.35);
   text-shadow: 0 0 6px rgba(255,140,74,0.8);
+  /* 纯装饰,不需要拦截事件(避免遮挡滚动条拖拽) */
+  pointer-events: none;
 }
 
 /* ----- 控制面板 ----- */
@@ -1213,12 +1215,15 @@ body.page-scene-dawn .tv-set {
 /* 卡片：玻璃磨砂半透明 */
 .lyric-cards {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
   padding: 32px;
   box-sizing: border-box;
+  /* 显式开启交互:父级 .lyric-stage 用了 pointer-events:none,
+     CSS 规范下子元素默认继承 none,会导致滚动条/按钮拖不动 */
+  pointer-events: auto;
 }
 .lyric-card {
   position: absolute;
@@ -1237,6 +1242,8 @@ body.page-scene-dawn .tv-set {
   display: none;
   flex-direction: column;
   overflow: hidden;
+  /* 显式恢复事件穿透(被 .lyric-stage 的 pointer-events:none 继承) */
+  pointer-events: auto;
 }
 .lyric-card-header {
   flex-shrink: 0;
@@ -1252,6 +1259,10 @@ body.page-scene-dawn .tv-set {
   scrollbar-width: thin;
   scrollbar-color: rgba(73,177,245,0.5) transparent;
   overscroll-behavior: contain;
+  /* 显式开启交互(滚动条/手柄/选词都需要):
+     父级 .lyric-stage 用了 pointer-events:none,
+     按规范子元素默认继承,这里强制 auto 才能让滚动条真正可拖动 */
+  pointer-events: auto;
 }
 .lyric-card-body::-webkit-scrollbar {
   width: 6px;
