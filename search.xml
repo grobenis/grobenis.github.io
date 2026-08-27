@@ -1285,6 +1285,31 @@
     
     
     <entry>
+      <title>高斯混合模型</title>
+      <link href="/2020/03/14/2020-03-14-GMM/"/>
+      <url>/2020/03/14/2020-03-14-GMM/</url>
+      
+        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GMM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Kalman 滤波器学习</title>
       <link href="/2020/03/14/2020-03-13-Kalman_Filter/"/>
       <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
@@ -1335,31 +1360,6 @@
     
     
     <entry>
-      <title>高斯混合模型</title>
-      <link href="/2020/03/14/2020-03-14-GMM/"/>
-      <url>/2020/03/14/2020-03-14-GMM/</url>
-      
-        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> GMM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>粒子滤波器</title>
       <link href="/2020/03/14/2020-03-15-Particle_Filter/"/>
       <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
@@ -1402,31 +1402,6 @@
         <tags>
             
             <tag> SLAM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>VINS-Fusion 代码阅读</title>
-      <link href="/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
-      <url>/2020/03/10/2020-03-10-Read-VINS-Fusion/</url>
-      
-        <content type="html"><![CDATA[<p>本文记录 VINS-Fusion 源码阅读笔记，重点分析 vins_estimator 节点的程序入口 rosNodeTest.cpp 与 Estimator 类，梳理话题订阅、数据同步线程、滑窗处理及非线性优化等核心流程。</p><blockquote><p><strong>读懂源码，方知系统运转之妙</strong></p></blockquote><span id="more"></span><h2 id="Loop-Fusion"><a href="#Loop-Fusion" class="headerlink" title="Loop Fusion"></a>Loop Fusion</h2><p>Loop Fusion结点包括：</p><h2 id="VINS-estimator"><a href="#VINS-estimator" class="headerlink" title="VINS_estimator"></a>VINS_estimator</h2><p>VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。</p><h3 id="rosNodeTest-cpp"><a href="#rosNodeTest-cpp" class="headerlink" title="rosNodeTest.cpp"></a>rosNodeTest.cpp</h3><p>rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。</p><p>主程序包含以下流程：</p><ol><li><p>读取配置文件参数 readParameter()</p></li><li><p>订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理</p></li><li><p>开启一个新线程sync_process。</p><p>该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。</p></li></ol><h3 id="estimator"><a href="#estimator" class="headerlink" title="estimator"></a>estimator</h3><p>VIO系统的整个程序从Estimator estimator开启。</p><p>estimator类的定义由estimator.h和estimator.cpp两个文件完成。</p><p>包含以下重要的自定义成员：</p><table><thead><tr><th align="center">成员</th><th align="center">功能</th></tr></thead><tbody><tr><td align="center">Feature_Tracker featureTracker</td><td align="center"></td></tr><tr><td align="center">FeatureManager f_manager</td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table><p>estimator类中包含两类成员函数：</p><ol><li><p>接口函数</p><p>包括以下8个函数：</p><table><thead><tr><th align="center">函数</th><th align="left">功能</th></tr></thead><tbody><tr><td align="center">initFirstPose()</td><td align="left">初始化初始位姿</td></tr><tr><td align="center">inputIMU()</td><td align="left">输入IMU数据</td></tr><tr><td align="center">inputImage()</td><td align="left">输入图片数据</td></tr><tr><td align="center">inputFeature()</td><td align="left">输入特征</td></tr><tr><td align="center">ProcessIMU()</td><td align="left">处理IMU数据，对IMU进行预积分；</td></tr><tr><td align="center">ProcessImage()</td><td align="left">处理相机数据；<br />1. 基于特征点的视差来判断当前帧是否属于关键帧；<br />2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃；<br />3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。<br />4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃，比如非线性求解器中的解有大跳动，求解出相机IMU的外参矩阵或IMU偏移等等，系统挂掉就清空状态，重新初始化。</td></tr><tr><td align="center">ProcessMeasurements()</td><td align="left">处理测量值；处理各buffer里的数据，当featureBuf不等于空时，开始进行以下处理（为什么是featureBuf，因为当有图像buffer数据的时候，才会有featuretracker.push(make_pair(t,featureFrame))，即有图像数据后，程序才发给跟踪器叫他产生feature，因此当featureBuf不等于空，所有的buffer，包括imu,图像，都不为空）：</td></tr><tr><td align="center">changeSensrType</td><td align="left">改变传感器类型，用于确定是否使用IMU，使用单目相机还是双目相机</td></tr></tbody></table></li><li><p>内部函数</p></li></ol><p>类的初始化函数Estimator()，由于Estimator类成员内部有两个比较重要的自定义类成员：<br>（1）Feature_Tracker featuretracker;（以前vins-mono这部分是作为一个独立的Node存在）:<br>用来对原始图像进行畸变校正，特征点采集，光流跟踪<br>（2）FeatureManager f_manager;<br>用来对滑动窗口内所有特征点的管理。<br>简单设置了一些参数后，系统进入main()。</p><p>接着main()与Estimator estimator两者开始发生联系：<br>main()中estimator.setParameter()开启了滑动窗口估计的一个新线程<br>由于我们在配置文件中 多线程MULTIPLE_THREAD设置为1，因此当setParameter()时候，就开启了一个Estimator类内的新线程：processMeasurements();</p><p>pub VIO的各种话题，包括里程计信息，tf变换，相机姿态，点云信息，并且发布关键帧。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> VINS </tag>
             
         </tags>
       
@@ -1489,6 +1464,31 @@
     
     
     <entry>
+      <title>VINS-Fusion 代码阅读</title>
+      <link href="/2020/03/10/2020-03-10-Read-VINS-Fusion/"/>
+      <url>/2020/03/10/2020-03-10-Read-VINS-Fusion/</url>
+      
+        <content type="html"><![CDATA[<p>本文记录 VINS-Fusion 源码阅读笔记，重点分析 vins_estimator 节点的程序入口 rosNodeTest.cpp 与 Estimator 类，梳理话题订阅、数据同步线程、滑窗处理及非线性优化等核心流程。</p><blockquote><p><strong>读懂源码，方知系统运转之妙</strong></p></blockquote><span id="more"></span><h2 id="Loop-Fusion"><a href="#Loop-Fusion" class="headerlink" title="Loop Fusion"></a>Loop Fusion</h2><p>Loop Fusion结点包括：</p><h2 id="VINS-estimator"><a href="#VINS-estimator" class="headerlink" title="VINS_estimator"></a>VINS_estimator</h2><p>VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。</p><h3 id="rosNodeTest-cpp"><a href="#rosNodeTest-cpp" class="headerlink" title="rosNodeTest.cpp"></a>rosNodeTest.cpp</h3><p>rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。</p><p>主程序包含以下流程：</p><ol><li><p>读取配置文件参数 readParameter()</p></li><li><p>订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理</p></li><li><p>开启一个新线程sync_process。</p><p>该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。</p></li></ol><h3 id="estimator"><a href="#estimator" class="headerlink" title="estimator"></a>estimator</h3><p>VIO系统的整个程序从Estimator estimator开启。</p><p>estimator类的定义由estimator.h和estimator.cpp两个文件完成。</p><p>包含以下重要的自定义成员：</p><table><thead><tr><th align="center">成员</th><th align="center">功能</th></tr></thead><tbody><tr><td align="center">Feature_Tracker featureTracker</td><td align="center"></td></tr><tr><td align="center">FeatureManager f_manager</td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table><p>estimator类中包含两类成员函数：</p><ol><li><p>接口函数</p><p>包括以下8个函数：</p><table><thead><tr><th align="center">函数</th><th align="left">功能</th></tr></thead><tbody><tr><td align="center">initFirstPose()</td><td align="left">初始化初始位姿</td></tr><tr><td align="center">inputIMU()</td><td align="left">输入IMU数据</td></tr><tr><td align="center">inputImage()</td><td align="left">输入图片数据</td></tr><tr><td align="center">inputFeature()</td><td align="left">输入特征</td></tr><tr><td align="center">ProcessIMU()</td><td align="left">处理IMU数据，对IMU进行预积分；</td></tr><tr><td align="center">ProcessImage()</td><td align="left">处理相机数据；<br />1. 基于特征点的视差来判断当前帧是否属于关键帧；<br />2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃；<br />3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。<br />4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃，比如非线性求解器中的解有大跳动，求解出相机IMU的外参矩阵或IMU偏移等等，系统挂掉就清空状态，重新初始化。</td></tr><tr><td align="center">ProcessMeasurements()</td><td align="left">处理测量值；处理各buffer里的数据，当featureBuf不等于空时，开始进行以下处理（为什么是featureBuf，因为当有图像buffer数据的时候，才会有featuretracker.push(make_pair(t,featureFrame))，即有图像数据后，程序才发给跟踪器叫他产生feature，因此当featureBuf不等于空，所有的buffer，包括imu,图像，都不为空）：</td></tr><tr><td align="center">changeSensrType</td><td align="left">改变传感器类型，用于确定是否使用IMU，使用单目相机还是双目相机</td></tr></tbody></table></li><li><p>内部函数</p></li></ol><p>类的初始化函数Estimator()，由于Estimator类成员内部有两个比较重要的自定义类成员：<br>（1）Feature_Tracker featuretracker;（以前vins-mono这部分是作为一个独立的Node存在）:<br>用来对原始图像进行畸变校正，特征点采集，光流跟踪<br>（2）FeatureManager f_manager;<br>用来对滑动窗口内所有特征点的管理。<br>简单设置了一些参数后，系统进入main()。</p><p>接着main()与Estimator estimator两者开始发生联系：<br>main()中estimator.setParameter()开启了滑动窗口估计的一个新线程<br>由于我们在配置文件中 多线程MULTIPLE_THREAD设置为1，因此当setParameter()时候，就开启了一个Estimator类内的新线程：processMeasurements();</p><p>pub VIO的各种话题，包括里程计信息，tf变换，相机姿态，点云信息，并且发布关键帧。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> VINS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>隐马尔可夫模型</title>
       <link href="/2020/03/10/2020-03-13-HMM_model/"/>
       <url>/2020/03/10/2020-03-13-HMM_model/</url>
@@ -1543,6 +1543,31 @@
     
     
     <entry>
+      <title>Ubuntu 连接蓝牙鼠标</title>
+      <link href="/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
+      <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+      
+        <content type="html"><![CDATA[<p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p><blockquote><p><strong>命令行之下，蓝牙设备亦可驯服</strong></p></blockquote><span id="more"></span><p>$ sudo -i</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure><p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Ubuntu </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>发布 IMU 信息到 ROS 系统</title>
       <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
       <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
@@ -1570,23 +1595,19 @@
     
     
     <entry>
-      <title>Ubuntu 连接蓝牙鼠标</title>
-      <link href="/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
-      <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+      <title>VIO 主流框架</title>
+      <link href="/2020/02/15/2020-02-15-VIO_Framework/"/>
+      <url>/2020/02/15/2020-02-15-VIO_Framework/</url>
       
-        <content type="html"><![CDATA[<p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p><blockquote><p><strong>命令行之下，蓝牙设备亦可驯服</strong></p></blockquote><span id="more"></span><p>$ sudo -i</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure><p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>]]></content>
+        <content type="html"><![CDATA[<p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p><p>需要理解约束关系的确定，以及确立相应约束的三个要素</p><p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p><blockquote><p><strong>视觉惯性融合，约束决定精度</strong></p></blockquote><span id="more"></span><h2 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h2><p>定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心；</p><p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p><p><strong>核心</strong>：误差项、优化变量、协方差</p><p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p><h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933" loading="lazy"></p><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：</p><p>$$\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)$$</p><p>误差项:</p><p>$$e(x+\Delta x)=e(x)+J(x)\Delta x$$</p><p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：</p><p>$$J^T P^{-1}\Delta x = -J^TP^{-1}e$$</p><h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498" loading="lazy"></p><p>其Jacobian矩阵如下：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322" loading="lazy"></p><p>得到相应的Hession矩阵如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060" loading="lazy"></p><h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397" loading="lazy"></p><h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622" loading="lazy"></p><p>举例，其中一个T1T1的小块的数学形式如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614" loading="lazy"></p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。</p><h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013" loading="lazy"></p><h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol><li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li><li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li></ol><h4 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h4><ol><li>积分下一个时刻的PVQ作为视觉初始值</li><li>预计分相邻帧的PVQ变化量，作为IMU的约束</li><li>计算IMU误差的协方差和jacobian</li></ol><p><img src="/./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399" loading="lazy"></p><h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol><li><p>将视觉约束就加到联合优化是紧耦合</p></li><li><p>将视觉约束后的位姿加入到联合优化是松耦合</p></li></ol><p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367" loading="lazy"></p><h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p><ol><li>初始化</li><li>IMU预测</li><li>视觉跟踪</li><li>视觉增广</li><li>视觉更新—选老点或者看不见的点</li><li>视觉更新—边缘化</li><li>剔除老帧</li></ol><p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678" loading="lazy"></p><p>误差状态向量</p><p>$$\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce{^{G}\hat{p}_{c_N} \ce{G}\hat{p}_{C_N}}]$$</p><p>$$\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T$$</p><blockquote><p>每得到一个新图像以后需要对协方差矩阵做一个增广</p></blockquote><!-- 源文件缺失，已注释 -->![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)<!-- / --><p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268" loading="lazy"></p><blockquote><p>成熟的路标点 表示窗口内各帧都看得到的点</p></blockquote><p><strong>因子图</strong></p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572" loading="lazy"></p><blockquote><p>Tbc表示IMU与相机间的转换矩阵</p></blockquote><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717" loading="lazy"></p><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060" loading="lazy"></p><p>路标点边缘化完后就可以了</p><p><strong>第j个路标点的所有视觉误差为</strong></p><p>$$r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}$$</p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897" loading="lazy"></p><p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。</p><p>$$r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)$$</p><h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote><p>复杂 不常用</p></blockquote><p>流程</p><ol><li>IMU预测</li><li>视觉更新</li><li>IEKF</li><li>相机模型</li><li>像素坐标校正</li><li>光度误差</li><li>QR分解</li><li>Paych提取及Warp计算</li><li>路标点质量评价及维护</li></ol><p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738" loading="lazy"></p><blockquote><p>ROVIO使用光度误差</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499" loading="lazy"></p></blockquote><blockquote><blockquote><p>ROVIO将路标点包含到状态向量中。有因将路标点表征在当前帧的坐标系下，有范围限制，因此对其进行归一化得到无约束的状态量—方向向量Bearing Vector</p></blockquote></blockquote><p>ROVIO的创新点如下所示：</p><p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing Vector老了使得Pc平滑可导</p><p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978" loading="lazy"></p><p>状态向量：当前帧的PVQB和路标点( mu,p)</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085" loading="lazy"></p><p>因子图如下</p><p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998" loading="lazy"></p><h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722" loading="lazy"></p><p>Tracklocal map：仅优化当前帧</p><p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305" loading="lazy"></p><p>Local Map：优化华创内的所有帧的PVQB和路标点</p><p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237" loading="lazy"></p><h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p><!-- 源文件缺失，已注释 -->![image-20191202161618980](/home/guoben/ICE-BA因子图.png)<!-- / --><p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p><p>总结而言，在ICE-BA中更新Factor有三种情况：</p><ol><li>该Factor在本次迭代中没有变化，则不更新；</li><li>该Factor是新Factor，则在原来基础上+&#x3D;新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li><li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li></ol><p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352" loading="lazy"></p><h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013" loading="lazy"></p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464" loading="lazy"></p><ol><li>黄色为IMU帧间约束（PVQBaBg 15×1）</li><li>蓝色为视觉重投影误差约束（2×1）</li><li>绿色为闭环帧，用来计算相对位姿，用于闭环优化时使用</li></ol><p>VINS在前端通过光流法进行跟踪，首先检测Harris角点，跟踪相邻帧的角点，</p><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote><p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p></blockquote><p>$$X=[x_0\,x_1\,...x_n,x_c^b,\lambda_0,\lambda_1,...\lambda_m]$$</p><p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170" loading="lazy"></p><blockquote><p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p></blockquote>]]></content>
       
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
       
       
         <tags>
             
-            <tag> Ubuntu </tag>
+            <tag> VIO </tag>
+            
+            <tag> VINS </tag>
             
         </tags>
       
@@ -1614,27 +1635,6 @@
             <tag> ROS </tag>
             
             <tag> 相机标定 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>VIO 主流框架</title>
-      <link href="/2020/02/15/2020-02-15-VIO_Framework/"/>
-      <url>/2020/02/15/2020-02-15-VIO_Framework/</url>
-      
-        <content type="html"><![CDATA[<p>本节主要说明当前主流的VIO算法流程。课程来源于<a href="https://www.bilibili.com/video/av44472237?t=297">B站</a>。</p><p>需要理解约束关系的确定，以及确立相应约束的三个要素</p><p>本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。</p><blockquote><p><strong>视觉惯性融合，约束决定精度</strong></p></blockquote><span id="more"></span><h2 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h2><p>定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心；</p><p>作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏；</p><p><strong>核心</strong>：误差项、优化变量、协方差</p><p>难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。</p><h3 id="SLAM问题的整体求解思路"><a href="#SLAM问题的整体求解思路" class="headerlink" title="SLAM问题的整体求解思路"></a>SLAM问题的整体求解思路</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225528933.png" alt="image-20220713225528933" loading="lazy"></p><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="高斯牛顿法"><a href="#高斯牛顿法" class="headerlink" title="高斯牛顿法"></a>高斯牛顿法</h4><p>目标函数：</p><p>$$\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)$$</p><p>误差项:</p><p>$$e(x+\Delta x)=e(x)+J(x)\Delta x$$</p><p>令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程：</p><p>$$J^T P^{-1}\Delta x = -J^TP^{-1}e$$</p><h3 id="误差项设置"><a href="#误差项设置" class="headerlink" title="误差项设置"></a>误差项设置</h3><h4 id="一次观测"><a href="#一次观测" class="headerlink" title="一次观测"></a>一次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225233498.png" alt="image-20220713225233498" loading="lazy"></p><p>其Jacobian矩阵如下：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225308322.png" alt="image-20220713225308322" loading="lazy"></p><p>得到相应的Hession矩阵如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225407060.png" alt="image-20220713225407060" loading="lazy"></p><h4 id="多次观测"><a href="#多次观测" class="headerlink" title="多次观测"></a>多次观测</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225824397.png" alt="image-20220713225824397" loading="lazy"></p><h4 id="逆深度-VIO"><a href="#逆深度-VIO" class="headerlink" title="逆深度+VIO"></a>逆深度+VIO</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713225908622.png" alt="image-20220713225908622" loading="lazy"></p><p>举例，其中一个T1T1的小块的数学形式如下所示：</p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234040614.png" alt="image-20220713234040614" loading="lazy"></p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。</p><h3 id="视觉约束"><a href="#视觉约束" class="headerlink" title="视觉约束"></a>视觉约束</h3><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220713234517013.png" alt="image-20220713234517013" loading="lazy"></p><h3 id="IMU约束"><a href="#IMU约束" class="headerlink" title="IMU约束"></a>IMU约束</h3><h4 id="EKF滤波和优化"><a href="#EKF滤波和优化" class="headerlink" title="EKF滤波和优化"></a>EKF滤波和优化</h4><ol><li>EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响</li><li>多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小</li></ol><h4 id="IMU预积分"><a href="#IMU预积分" class="headerlink" title="IMU预积分"></a>IMU预积分</h4><ol><li>积分下一个时刻的PVQ作为视觉初始值</li><li>预计分相邻帧的PVQ变化量，作为IMU的约束</li><li>计算IMU误差的协方差和jacobian</li></ol><p><img src="/./images/SLAM/image-20191202112248399.png" alt="image-20191202112248399" loading="lazy"></p><h2 id="VIO分类"><a href="#VIO分类" class="headerlink" title="VIO分类"></a>VIO分类</h2><ol><li><p>将视觉约束就加到联合优化是紧耦合</p></li><li><p>将视觉约束后的位姿加入到联合优化是松耦合</p></li></ol><p><img src="/images/SLAM/image-20191202135710367.png" alt="image-20191202135710367" loading="lazy"></p><h3 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h3><p>具体流程如下所示:</p><ol><li>初始化</li><li>IMU预测</li><li>视觉跟踪</li><li>视觉增广</li><li>视觉更新—选老点或者看不见的点</li><li>视觉更新—边缘化</li><li>剔除老帧</li></ol><p><img src="/images/SLAM/image-20191202142230678.png" alt="image-20191202142230678" loading="lazy"></p><p>误差状态向量</p><p>$$\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce{^{G}\hat{p}_{c_N} \ce{G}\hat{p}_{C_N}}]$$</p><p>$$\hat{X}_{IMU}_k^{15\times1}=[\delta\theta_I  \hat{b_g}\space\ce{G}\hat{v}_I\hat{b}_a\space \ce{G}\hat{p}_I ]^T$$</p><blockquote><p>每得到一个新图像以后需要对协方差矩阵做一个增广</p></blockquote><!-- 源文件缺失，已注释 -->![MSCKF对协方差矩阵的增广](/images/SLAM/主流框架推导/MSCKF对协方差矩阵的增广.png)<!-- / --><p><img src="/images/SLAM/MSCKF%E6%BB%A4%E6%B3%A2.png" alt="image-20191202144228268" loading="lazy"></p><blockquote><p>成熟的路标点 表示窗口内各帧都看得到的点</p></blockquote><p><strong>因子图</strong></p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202145520572" loading="lazy"></p><blockquote><p>Tbc表示IMU与相机间的转换矩阵</p></blockquote><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%961.png" alt="image-20191202145642717" loading="lazy"></p><p><img src="/images/SLAM/%E8%BE%B9%E7%BC%98%E5%8C%962.png" alt="image-20191202145714060" loading="lazy"></p><p>路标点边缘化完后就可以了</p><p><strong>第j个路标点的所有视觉误差为</strong></p><p>$$r^{2M\times1}\cong H_x^{2M\times(15+6N)\tilde{X}^{(15+N)\times1}}+H_f^{2M\times3}\ce{G}\hat{p}_{f_j}^{3\times1}+n^{2M\times1}$$</p><p><img src="/images/SLAM/MSCKF%E5%9B%A0%E5%AD%90%E5%9B%BE3.png" alt="image-20191202150951897" loading="lazy"></p><p>将r投影到Hf的左零空间，想党羽对路标点进行边缘化，将边缘化约束来优化共视帧。</p><p>$$r_0^(2M-3M_L)\times1=A^Tr^2M\times1\cong A^TH_{x}^{2M\times(15+6N)}\tilde{X}^{(15+6N)\times1}+A^Tn^(2M\times1)$$</p><h3 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h3><blockquote><p>复杂 不常用</p></blockquote><p>流程</p><ol><li>IMU预测</li><li>视觉更新</li><li>IEKF</li><li>相机模型</li><li>像素坐标校正</li><li>光度误差</li><li>QR分解</li><li>Paych提取及Warp计算</li><li>路标点质量评价及维护</li></ol><p><img src="/images/SLAM/ROVIO%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202152338738" loading="lazy"></p><blockquote><p>ROVIO使用光度误差</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202152951499" loading="lazy"></p></blockquote><blockquote><blockquote><p>ROVIO将路标点包含到状态向量中。有因将路标点表征在当前帧的坐标系下，有范围限制，因此对其进行归一化得到无约束的状态量—方向向量Bearing Vector</p></blockquote></blockquote><p>ROVIO的创新点如下所示：</p><p>ROVIO中，路标点使用当前帧下的归一化相机系坐标Pc和你深度表示，并作为状态向量进行预测和更新。参数化不同导致预测和更新的细节不同，但总体还是EKF五大公式。又因Pc有边界约束，因此引入了Bearing Vector老了使得Pc平滑可导</p><p><img src="/images/SLAM/ROVIO%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png" alt="image-20191202153359978" loading="lazy"></p><p>状态向量：当前帧的PVQB和路标点( mu,p)</p><p><img src="/images/SLAM/ROVIO%E7%8A%B6%E6%80%81%E5%90%91%E9%87%8F.png" alt="image-20191202154121085" loading="lazy"></p><p>因子图如下</p><p><img src="/images/SLAM/ROVIO%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202154600998" loading="lazy"></p><h3 id="VI-ORB"><a href="#VI-ORB" class="headerlink" title="VI-ORB"></a>VI-ORB</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/images/SLAM/VIORB%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="image-20191202160942722" loading="lazy"></p><p>Tracklocal map：仅优化当前帧</p><p><img src="/images/SLAM/VIORB%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202160729305" loading="lazy"></p><p>Local Map：优化华创内的所有帧的PVQB和路标点</p><p><img src="/images/SLAM/VIORB_LocalBA%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202161217237" loading="lazy"></p><h3 id="ICE-BA"><a href="#ICE-BA" class="headerlink" title="ICE-BA"></a>ICE-BA</h3><p><strong>增量式BA</strong>，误差为IMU和视觉，LBA为滑窗优化，GBA为所有KF优化，速度很快。</p><!-- 源文件缺失，已注释 -->![image-20191202161618980](/home/guoben/ICE-BA因子图.png)<!-- / --><p>ICE-BA认为在建立增量方程时，对之前已经算过的且不变的那些状态向量没必要重新线性化（线性化及计算Jacobian），因为即使重新计算Jacobian也没什么变化。另外，也没必要对整体[H|b]矩阵进行消元，而是只对变化的进行更新。最后只计算变化的路标点即可。对于没有变化的状态向量的临时值则一直保存下来，避免重新计算。</p><p>总结而言，在ICE-BA中更新Factor有三种情况：</p><ol><li>该Factor在本次迭代中没有变化，则不更新；</li><li>该Factor是新Factor，则在原来基础上+&#x3D;新Factor。如新观察到一个新的路标点，则对此新路标点的观测约束就是一个新的Factor；</li><li>该Factor已存在但需要更新，则先减去旧Factor，再架上新Factor。</li></ol><p><img src="/images/SLAM/ICEBA_LocalBA%E4%B8%8EGlobalBA.png" alt="image-20191202162754352" loading="lazy"></p><h3 id="VINS论文推导与代码解析"><a href="#VINS论文推导与代码解析" class="headerlink" title="VINS论文推导与代码解析"></a>VINS论文推导与代码解析</h3><h4 id="整体框架"><a href="#整体框架" class="headerlink" title="整体框架"></a>整体框架</h4><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714081217013.png" alt="image-20220714081217013" loading="lazy"></p><p><img src="/2020/02/15/2020-02-15-VIO_Framework/image-20220714080740464.png" alt="image-20220714080740464" loading="lazy"></p><ol><li>黄色为IMU帧间约束（PVQBaBg 15×1）</li><li>蓝色为视觉重投影误差约束（2×1）</li><li>绿色为闭环帧，用来计算相对位姿，用于闭环优化时使用</li></ol><p>VINS在前端通过光流法进行跟踪，首先检测Harris角点，跟踪相邻帧的角点，</p><h4 id="优化向量"><a href="#优化向量" class="headerlink" title="优化向量"></a>优化向量</h4><blockquote><p>包括滑动窗口内的n个相机状态PVQB、Camera到IMU的外参、m个3D点的逆深度：</p></blockquote><p>$$X=[x_0\,x_1\,...x_n,x_c^b,\lambda_0,\lambda_1,...\lambda_m]$$</p><p><img src="/images/SLAM/VINS%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="image-20191202155816170" loading="lazy"></p><blockquote><p>框表示滑动窗口，T中的R、t表示P、Q ；M中的是v和b；lambda表示路标的逆深度；（外参没有考虑）</p></blockquote>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> VIO </tag>
-            
-            <tag> VINS </tag>
             
         </tags>
       

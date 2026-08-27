@@ -1242,11 +1242,16 @@ body.page-scene-dawn .tv-set {
   flex-shrink: 0;
 }
 .lyric-card-body {
-  flex: 1;
+  flex: 1 1 0;
+  /* min-height:0 是 flex 列布局里让 overflow:auto 真正生效的关键,
+     否则会被 min-content(min-height:auto)撑大,看似"卡住"滚不动 */
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 4px 22px 18px;
   scrollbar-width: thin;
   scrollbar-color: rgba(73,177,245,0.5) transparent;
+  overscroll-behavior: contain;
 }
 .lyric-card-body::-webkit-scrollbar {
   width: 6px;
