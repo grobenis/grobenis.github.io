@@ -160,6 +160,18 @@
 <div class="tv-screen-glare"></div>
 <div class="tv-snow"></div>
 
+<!-- 换台扫描动画：左右两条白线快速扫过 -->
+<div class="tv-channel-scan"></div>
+
+<!-- 信号干扰条纹：偶发短暂出现 -->
+<div class="tv-signal-glitch"></div>
+
+<!-- 无信号画面：电视关闭后短暂显示 -->
+<div class="tv-no-signal" id="tvNoSignal">
+  <div class="tns-text">NO SIGNAL</div>
+  <div class="tns-snow"></div>
+</div>
+
 <!-- 屏幕小剧场：点击下方控件触发（黑胶/麦克风/磁带/CD/霓虹） -->
 <div class="theater-stage">
 <div class="theater-dim"></div>
@@ -449,6 +461,13 @@
 </div>
 </div>
 
+<!-- 隐藏频道画面 -->
+<div class="tv-hidden-screen" id="tvHiddenScreen">
+  <div class="ths-grid"></div>
+  <div class="ths-msg">SECRET CH 11 · UNLOCKED</div>
+  <div class="ths-hint">在 5 秒内连按 CH 5 次再次关闭</div>
+</div>
+
 <!-- 频道号窗 -->
 <div class="tv-channel">CH <span id="tvChannelNum">01</span></div>
 </div>
@@ -633,6 +652,11 @@
       knobCh.style.setProperty('--tv-rot', (idx * (360 / cards.length)) + 'deg');
     }
 
+    // 换台扫描线闪烁
+    if (window._tvFlashChannel) window._tvFlashChannel();
+    // 旋钮咔哒音效
+    if (window._sfxKnob) try { window._sfxKnob(); } catch (e) {}
+
     // 重置新卡片的滚动位置
     var nextBody = nextCard.querySelector('.lyric-card-body');
     if (nextBody) {
@@ -659,8 +683,109 @@
   btnPrev.addEventListener('click', function () { console.log('[lyrics] prev', {idx: idx, len: cards.length}); show(idx - 1, 'prev'); });
   btnNext.addEventListener('click', function () { console.log('[lyrics] next', {idx: idx, len: cards.length}); show(idx + 1, 'next'); });
   if (knobCh) {
-    knobCh.addEventListener('click', function () { show(idx + 1, 'next'); });
+    knobCh.addEventListener('click', function () { show(idx + 1, 'next'); tapCh(); });
   }
+
+  /* 扫频声绑定到所有切歌动作 */
+  var origShow = show;
+  show = function (n, dir) {
+    if (window._sfxChannelTune) try { window._sfxChannelTune(); } catch (e) {}
+    return origShow(n, dir);
+  };
+
+  /* 隐藏频道:连按CH 5次(5秒内)进入神秘画面 */
+  var chTap = [];
+  var hiddenEl = document.getElementById('tvHiddenScreen');
+  function showHidden() {
+    if (!hiddenEl) return;
+    hiddenEl.classList.add('is-on');
+    if (chNum) chNum.textContent = '11';
+    if (window._sfxGlitch) try { window._sfxGlitch(); } catch (e) {}
+  }
+  function hideHidden() {
+    if (hiddenEl) hiddenEl.classList.remove('is-on');
+    if (chNum) chNum.textContent = (idx + 1).toString().padStart(2, '0');
+  }
+  function tapCh() {
+    var now = Date.now();
+    chTap = chTap.filter(function (t) { return now - t < 5000; });
+    chTap.push(now);
+    if (chTap.length >= 5) {
+      chTap = [];
+      if (hiddenEl && hiddenEl.classList.contains('is-on')) hideHidden(); else showHidden();
+    }
+  }
+
+  /* 双击屏幕:神秘闪屏 */
+  var screen = document.querySelector('.tv-screen');
+  if (screen) {
+    screen.addEventListener('dblclick', function (e) {
+      /* 在已解锁时也能触发,CD/MUSIC 那台电视除外(避免冲突) */
+      var flash = document.createElement('div');
+      flash.className = 'tv-secret-flash';
+      flash.style.left = e.clientX + 'px';
+      flash.style.top  = e.clientY + 'px';
+      document.body.appendChild(flash);
+      if (window._sfxGlitch) try { window._sfxGlitch(); } catch (e) {}
+      setTimeout(function () { if (flash.parentNode) flash.remove(); }, 900);
+    });
+  }
+
+  /* ===== 复古电视强化：换台扫描线 + 信号干扰 + 无信号 + 音量旋钮 ===== */
+  (function () {
+    var scanEl = document.querySelector('.tv-channel-scan');
+    var glitchEl = document.querySelector('.tv-signal-glitch');
+    var noSignalEl = document.getElementById('tvNoSignal');
+    var volEl = document.getElementById('tvKnobVol');
+    var audio = document.querySelector('audio');
+
+    /* 暴露给 show() 使用 */
+    window._tvFlashChannel = function () {
+      if (!scanEl) return;
+      scanEl.classList.remove('is-on');
+      void scanEl.offsetWidth; /* restart */
+      scanEl.classList.add('is-on');
+    };
+
+    /* 随机干扰：每 8~18 秒短暂抖动一次 */
+    setInterval(function () {
+      if (document.hidden) return;
+      if (Math.random() < 0.4 && glitchEl) {
+        glitchEl.classList.remove('is-on');
+        void glitchEl.offsetWidth;
+        glitchEl.classList.add('is-on');
+        if (window._sfxGlitch) try { window._sfxGlitch(); } catch (e) {}
+      }
+    }, 9000);
+
+    /* 旋钮旋转：CH 已在原 show() 中设置。VOL 旋钮点击循环 0..4 */
+    if (volEl) {
+      volEl.style.setProperty('--vol-rot', '0deg');
+      volEl.addEventListener('click', function () {
+        var cur = parseInt(volEl.getAttribute('data-vol') || '0', 10);
+        var next = (cur + 1) % 5;
+        volEl.setAttribute('data-vol', next);
+        volEl.style.setProperty('--vol-rot', (next * 72) + 'deg');
+        if (audio) audio.volume = next / 4; /* 0/0.25/0.5/0.75/1 */
+        /* 拨动音效(若存在) */
+        if (window._sfxKnob) try { window._sfxKnob(); } catch (e) {}
+      });
+      /* 初始化音量 */
+      if (audio) audio.volume = 0.75;
+    }
+
+    /* 暴露：电视关闭时短暂显示无信号画面 */
+    window._tvNoSignalOn = function () {
+      if (!noSignalEl) return;
+      noSignalEl.classList.remove('is-on');
+      void noSignalEl.offsetWidth;
+      noSignalEl.classList.add('is-on');
+      setTimeout(function () { noSignalEl.classList.remove('is-on'); }, 1800);
+    };
+    window._tvNoSignalOff = function () {
+      if (noSignalEl) noSignalEl.classList.remove('is-on');
+    };
+  })();
 
   // 初始化页面背景场景
   applyPageScene(parseInt(cards[idx].getAttribute('data-scene'), 10) || 1);
@@ -883,9 +1008,11 @@
       clearLamp();
       extinguishCandle();
       if (window.clearRoomFx) window.clearRoomFx();
+      if (window._tvNoSignalOff) window._tvNoSignalOff();
     } else {
       lampIdx = 0;
       setLamp(0);
+      if (window._tvNoSignalOn) window._tvNoSignalOn();
     }
   }
 
@@ -901,6 +1028,7 @@
   if (powerBtn && tv) {
     powerBtn.addEventListener('click', function () {
       setPower(!on);
+      if (window._sfxPowerOn) try { window._sfxPowerOn(); } catch (e) {}
     });
     setPower(true);
   }
@@ -999,14 +1127,63 @@ function extinguishCandle() {
     el.addEventListener('click', function () {
       if (!canFx()) return;
       seen[id.replace('deco', '').toLowerCase()] = true;
-      if (FX[id]) { stopFx(id); return; }
+      if (FX[id]) { stopFx(id); /* 关闭黑胶底噪 */ if (id === 'decoVinyl' && window._sfxVinylStop) try { window._sfxVinylStop(); } catch (e) {} return; }
       spawn();
       FX[id] = setInterval(spawn, interval);
+      /* 黑胶底噪启动 */
+      if (id === 'decoVinyl' && window._sfxVinylStart) try { window._sfxVinylStart(); } catch (e) {}
     });
     el.style.cursor = 'pointer';
   }
   toggle('decoVinyl', spawnSparks, 260);
   toggle('decoCassette', spawnPetals, 700);
+
+  /* 黑胶拖动:按住拖拽 → 唱片旋转 + 沙沙声 */
+  (function () {
+    var v = document.getElementById('decoVinyl');
+    if (!v) return;
+    v.style.cursor = 'grab';
+    var drag = null, lastT = 0;
+    v.addEventListener('pointerdown', function (e) {
+      drag = { x: e.clientX, y: e.clientY, rot: 0, speed: 0 };
+      v.style.cursor = 'grabbing';
+      v.setPointerCapture(e.pointerId);
+      if (window._sfxVinylStart) try { window._sfxVinylStart(); } catch (err) {}
+      lastT = performance.now();
+    });
+    v.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      var dy = e.clientY - drag.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      var ang = Math.atan2(dy, dx) * 57.2958;
+      drag.rot += ang - (drag.lastAng || ang);
+      drag.lastAng = ang;
+      var now = performance.now();
+      drag.speed = dist / Math.max(1, now - lastT);
+      lastT = now;
+      v.style.setProperty('--drag-rot', drag.rot + 'deg');
+      v.style.transform = 'rotate(' + drag.rot + 'deg)';
+      drag.x = e.clientX; drag.y = e.clientY;
+    });
+    function endDrag(e) {
+      if (!drag) return;
+      v.style.cursor = 'grab';
+      /* 惯性:松手后缓慢减速停止 */
+      var stopTimer = setInterval(function () {
+        drag.speed *= 0.92;
+        drag.rot += drag.speed * 6;
+        v.style.transform = 'rotate(' + drag.rot + 'deg)';
+        if (drag.speed < 0.05) {
+          clearInterval(stopTimer);
+          if (window._sfxVinylStop) try { window._sfxVinylStop(); } catch (err) {}
+        }
+      }, 16);
+      drag = null;
+    }
+    v.addEventListener('pointerup', endDrag);
+    v.addEventListener('pointercancel', endDrag);
+  })();
 
   /* 麦克风:气球特效已移除,仅计入解锁进度(seen.mic) */
   var micEl = document.getElementById('decoMic');
@@ -1125,7 +1302,208 @@ function extinguishCandle() {
     var ft = document.getElementById('finaleText');
     if (ft) ft.classList.remove('is-on');
     if (posterEl) { posterEl.remove(); posterEl = null; }
+    if (window._sfxVinylStop) { try { window._sfxVinylStop(); } catch (e) {} }
+    if (window._tvNoSignalOff) window._tvNoSignalOff();
   };
+})();
+
+/* ===== 复古音效（程序合成，无需音频文件） ===== */
+(function () {
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var ctx = null;
+  function ensure() {
+    if (!ctx) { try { ctx = new AC(); } catch (e) {} }
+    if (ctx && ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+  /* 用户首次点击即激活(WebAudio 自动播放策略) */
+  document.addEventListener('pointerdown', function once() {
+    ensure();
+    document.removeEventListener('pointerdown', once, true);
+  }, true);
+
+  function tone(freq, dur, type, vol) {
+    var c = ensure(); if (!c) return;
+    var o = c.createOscillator(); var g = c.createGain();
+    o.type = type || 'square'; o.frequency.value = freq;
+    g.gain.value = 0; o.connect(g); g.connect(c.destination);
+    var t = c.currentTime;
+    g.gain.linearRampToValueAtTime(vol || 0.06, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.start(t); o.stop(t + dur + 0.02);
+  }
+
+  /* 旋钮咔哒 */
+  window._sfxKnob = function () {
+    tone(820, 0.04, 'square', 0.04);
+    setTimeout(function () { tone(560, 0.05, 'square', 0.03); }, 30);
+  };
+
+  /* 频道扫频声 */
+  window._sfxChannelTune = function () {
+    var c = ensure(); if (!c) return;
+    var o = c.createOscillator(); var g = c.createGain();
+    o.type = 'sawtooth'; o.connect(g); g.connect(c.destination);
+    var t = c.currentTime;
+    g.gain.value = 0;
+    g.gain.linearRampToValueAtTime(0.05, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+    o.frequency.setValueAtTime(110, t);
+    o.frequency.exponentialRampToValueAtTime(1800, t + 0.4);
+    o.start(t); o.stop(t + 0.6);
+  };
+
+  /* 黑胶底噪（白噪声） */
+  var noiseSrc = null;
+  window._sfxVinylStart = function () {
+    var c = ensure(); if (!c) return;
+    if (noiseSrc) return;
+    var bufSize = 2 * c.sampleRate;
+    var buf = c.createBuffer(1, bufSize, c.sampleRate);
+    var data = buf.getChannelData(0);
+    for (var i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.5;
+    noiseSrc = c.createBufferSource();
+    noiseSrc.buffer = buf; noiseSrc.loop = true;
+    var filter = c.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 1400;
+    var g = c.createGain(); g.gain.value = 0;
+    noiseSrc.connect(filter); filter.connect(g); g.connect(c.destination);
+    noiseSrc.start();
+    g.gain.linearRampToValueAtTime(0.04, c.currentTime + 0.4);
+    window._sfxVinylStop = function () {
+      if (!noiseSrc || !c) return;
+      var t = c.currentTime;
+      var g2 = noiseSrc._gainNode || null;
+      /* 简易降音 */
+      try {
+        g.gain.cancelScheduledValues(t);
+        g.gain.linearRampToValueAtTime(0, t + 0.3);
+        setTimeout(function () { try { noiseSrc.stop(); } catch (e) {} noiseSrc = null; window._sfxVinylStop = null; }, 350);
+      } catch (e) { noiseSrc = null; }
+    };
+  };
+  window._sfxVinylStop = null;
+
+  /* 电视开机"嗡"声 */
+  window._sfxPowerOn = function () {
+    var c = ensure(); if (!c) return;
+    var o = c.createOscillator(); var g = c.createGain();
+    o.type = 'sine'; o.connect(g); g.connect(c.destination);
+    var t = c.currentTime;
+    g.gain.value = 0;
+    g.gain.linearRampToValueAtTime(0.05, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+    o.frequency.setValueAtTime(60, t);
+    o.frequency.exponentialRampToValueAtTime(220, t + 0.4);
+    o.start(t); o.stop(t + 0.5);
+  };
+
+  /* 信号干扰"咔嗒" */
+  window._sfxGlitch = function () {
+    tone(160, 0.04, 'sawtooth', 0.05);
+    setTimeout(function () { tone(220, 0.04, 'sawtooth', 0.04); }, 35);
+  };
+})();
+
+/* ===== 环境联动：时间感知 / 整点彩蛋 ===== */
+(function () {
+  /* 整点整刻时间胶囊:显示在频道号窗 */
+  var HOUR_NOTES = [
+    '00:00', '新的一天,愿你安眠。',
+    '01:00', '夜深了,记得喝水。',
+    '02:00', '还有人在听歌吗?',
+    '03:00', '世界的另一端,有人醒来。',
+    '04:00', '黎明前最安静的时刻。',
+    '05:00', '天快亮了。',
+    '06:00', '清晨好,新的开始。',
+    '07:00', '上班路上,戴上耳机吧。',
+    '08:00', '咖啡时间。',
+    '09:00', '泡一壶茶,慢慢来。',
+    '10:00', '状态正佳。',
+    '11:00', '快中午啦。',
+    '12:00', '午饭时间,该歇歇了。',
+    '13:00', '饭后小憩。',
+    '14:00', '下午好。',
+    '15:00', '下午茶时光。',
+    '16:00', '坚持就是胜利。',
+    '17:00', '快下班啦。',
+    '18:00', '晚饭吃了吗?',
+    '19:00', '和家人在一起真好。',
+    '20:00', '今晚的月色真美。',
+    '21:00', '最舒服的时间段。',
+    '22:00', '该准备睡觉啦。',
+    '23:00', '深夜模式已自动启动。'
+  ];
+
+  function hourNote() {
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
+    if (m !== 0) return; /* 只在整点 */
+    var chNum = document.getElementById('tvChannelNum');
+    if (!chNum) return;
+    var orig = chNum.textContent;
+    chNum.textContent = (h < 10 ? '0' : '') + h + ':00';
+    chNum.style.color = '#5cffd5';
+    setTimeout(function () {
+      chNum.textContent = orig;
+      chNum.style.color = '';
+    }, 4000);
+  }
+
+  /* 整点弹出的气泡文字 */
+  var popup = document.createElement('div');
+  popup.className = 'hour-popup';
+  document.body.appendChild(popup);
+  function showHourPopup() {
+    var d = new Date();
+    var h = d.getHours(), m = d.getMinutes();
+    if (m !== 0) return;
+    var msg = HOUR_NOTES[(h + 1) * 2 - 1] || '';
+    if (!msg) return;
+    popup.textContent = msg;
+    popup.classList.remove('is-on');
+    void popup.offsetWidth;
+    popup.classList.add('is-on');
+    setTimeout(function () { popup.classList.remove('is-on'); }, 5500);
+  }
+
+  /* 深夜自动切换:仅在电视已关闭,且 30 秒内无操作时执行 */
+  var lastInteract = Date.now();
+  ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+    document.addEventListener(ev, function () { lastInteract = Date.now(); }, { passive: true });
+  });
+  setInterval(function () {
+    var d = new Date();
+    var h = d.getHours();
+    var isLate = (h >= 23 || h < 5);
+    if (!isLate) return;
+    if (Date.now() - lastInteract < 30000) return;
+    var tv = document.getElementById('tvSet');
+    if (!tv || !tv.classList.contains('is-off')) return;
+    /* 仅当当前不是黑色氛围时拉灯切到黑 */
+    if (!document.body.classList.contains('lamp-black')) {
+      var pull = document.getElementById('lampPull');
+      if (pull) pull.click();
+      showHourPopup();
+    }
+  }, 60000);
+
+  /* 整点检查 */
+  setInterval(function () {
+    var d = new Date();
+    var m = d.getMinutes();
+    if (m === 0) {
+      hourNote();
+      showHourPopup();
+    }
+  }, 30000);
+
+  /* 启动时立即检查一次 */
+  setTimeout(function () {
+    var d = new Date();
+    if (d.getMinutes() < 1) { hourNote(); showHourPopup(); }
+  }, 1500);
 })();
 </script>
 
