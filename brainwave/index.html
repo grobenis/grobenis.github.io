@@ -165,12 +165,24 @@
 
   /* --- Web Audio 宇宙噪音合成（程序合成，零音频文件） --- */
   var actx = null;
+  var master = null;    /* 共享主输出 */
+  var analyser = null;  /* 频谱分析:驱动星空律动 */
   var activeNodes = null;
+  var vizRaf = null;    /* 律动动画循环 */
+  var vizTarget = { sky: null, stars: [] };
+  var freqData = null;
   /* 页面卸载兜底:确保任何方式退出都停止声音 */
   window.addEventListener('pagehide', stopAll);
   window.addEventListener('beforeunload', stopAll);
   function ensureCtx() {
-    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!actx) {
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+      master = actx.createGain(); master.gain.value = 1;
+      analyser = actx.createAnalyser(); analyser.fftSize = 256;
+      master.connect(analyser);
+      analyser.connect(actx.destination);
+      freqData = new Uint8Array(analyser.frequencyBinCount);
+    }
     if (actx.state === 'suspended') actx.resume();
     return actx;
   }
@@ -185,6 +197,38 @@
         });
       } catch (e) {}
       activeNodes = null;
+    }
+    /* 停止律动循环并复位画面 */
+    if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = null; }
+    if (vizTarget.sky) {
+      vizTarget.sky.style.removeProperty('--pulse');
+      vizTarget.sky.style.removeProperty('--shimmer');
+    }
+    vizTarget = { sky: null, stars: [] };
+  }
+  /* 律动循环:读频谱 → 驱动星星闪烁速度 + 光晕呼吸 */
+  function vizLoop() {
+    vizRaf = requestAnimationFrame(vizLoop);
+    if (!analyser || !freqData) return;
+    analyser.getByteFrequencyData(freqData);
+    var len = freqData.length;
+    if (!len) return;
+    /* 低频能量(前1/4) → 光晕呼吸 */
+    var lo = Math.max(1, Math.floor(len * 0.25));
+    var sumLo = 0, sumAll = 0, i;
+    for (i = 0; i < len; i++) { sumAll += freqData[i]; if (i < lo) sumLo += freqData[i]; }
+    var pulse = sumLo / lo / 255;
+    var shimmer = sumAll / len / 255;
+    var sky = vizTarget.sky;
+    if (sky) {
+      sky.style.setProperty('--pulse', pulse.toFixed(3));
+      sky.style.setProperty('--shimmer', shimmer.toFixed(3));
+    }
+    /* 星星:能量越高闪烁越快 */
+    var dur = Math.max(0.6, 3 - shimmer * 2.2);
+    var stars = vizTarget.stars;
+    for (i = 0; i < stars.length; i++) {
+      if (stars[i] && stars[i].style) stars[i].style.animationDuration = dur.toFixed(2) + 's';
     }
   }
   function noiseBuffer(ctx, type) {
@@ -203,7 +247,7 @@
     var g = actx.createGain();
     g.gain.value = 0.22;
     node.connect(g);
-    g.connect(actx.destination);
+    g.connect(master);
     return g;
   }
   var presets = {
@@ -238,7 +282,7 @@
         g.gain.setValueAtTime(0, t);
         g.gain.linearRampToValueAtTime(0.18, t + 0.01);
         g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-        osc.connect(g); g.connect(actx.destination);
+        osc.connect(g); g.connect(master);
         osc.start(t); osc.stop(t + 0.15);
       }, 900);
       nodes = [timer];
@@ -302,6 +346,12 @@
     btn.classList.add('is-on');
     var status = m.querySelector('.bw-cosmos-status');
     if (status) status.textContent = '正在播放 · ' + btn.textContent.trim();
+    /* 绑定律动目标并启动频谱循环 */
+    vizTarget = {
+      sky: m.querySelector('.bw-cosmos-sky'),
+      stars: Array.prototype.slice.call(m.querySelectorAll('.bw-cosmos-star'))
+    };
+    if (!vizRaf) vizLoop();
   }
 
   /* --- 卡片点击打开 --- */
