@@ -1254,6 +1254,16 @@ function extinguishCandle() {
     document.removeEventListener('pointerdown', once, true);
   }, true);
 
+  /* 特效音互斥:同一时间只允许一个特效音在响,新触发自动停掉前一个 */
+  var activeStop = null;
+  function releaseSfx() {
+    if (activeStop) {
+      var fn = activeStop; activeStop = null;
+      try { fn(); } catch (e) {}
+    }
+  }
+  window._sfxRelease = releaseSfx;
+
   function tone(freq, dur, type, vol) {
     var c = ensure(); if (!c) return;
     var o = c.createOscillator(); var g = c.createGain();
@@ -1265,14 +1275,16 @@ function extinguishCandle() {
     o.start(t); o.stop(t + dur + 0.02);
   }
 
-  /* 旋钮咔哒 */
+  /* 旋钮咔哒(触发前先停掉其它特效音) */
   window._sfxKnob = function () {
+    releaseSfx();
     tone(820, 0.04, 'square', 0.04);
     setTimeout(function () { tone(560, 0.05, 'square', 0.03); }, 30);
   };
 
-  /* 频道扫频声 */
+  /* 频道扫频声(触发前先停掉其它特效音) */
   window._sfxChannelTune = function () {
+    releaseSfx();
     var c = ensure(); if (!c) return;
     var o = c.createOscillator(); var g = c.createGain();
     o.type = 'sawtooth'; o.connect(g); g.connect(c.destination);
@@ -1285,10 +1297,11 @@ function extinguishCandle() {
     o.start(t); o.stop(t + 0.6);
   };
 
-  /* 黑胶底噪（白噪声） */
+  /* 黑胶底噪（白噪声）—— 唯一持续特效音,注册到互斥管理器 */
   var noiseSrc = null;
   window._sfxVinylStart = function () {
     var c = ensure(); if (!c) return;
+    releaseSfx(); /* 互斥:先停掉其它特效音 */
     if (noiseSrc) return;
     var bufSize = 2 * c.sampleRate;
     var buf = c.createBuffer(1, bufSize, c.sampleRate);
@@ -1302,22 +1315,25 @@ function extinguishCandle() {
     noiseSrc.connect(filter); filter.connect(g); g.connect(c.destination);
     noiseSrc.start();
     g.gain.linearRampToValueAtTime(0.04, c.currentTime + 0.4);
-    window._sfxVinylStop = function () {
+    var stopVinyl = function () {
       if (!noiseSrc || !c) return;
-      var t = c.currentTime;
-      var g2 = noiseSrc._gainNode || null;
-      /* 简易降音 */
       try {
-        g.gain.cancelScheduledValues(t);
-        g.gain.linearRampToValueAtTime(0, t + 0.3);
-        setTimeout(function () { try { noiseSrc.stop(); } catch (e) {} noiseSrc = null; window._sfxVinylStop = null; }, 350);
+        var g2 = noiseSrc._gainNode || null;
+        g.gain.cancelScheduledValues(c.currentTime);
+        g.gain.linearRampToValueAtTime(0, c.currentTime + 0.3);
+        setTimeout(function () { try { noiseSrc.stop(); } catch (e) {} noiseSrc = null; }, 350);
       } catch (e) { noiseSrc = null; }
+      if (activeStop === stopVinyl) activeStop = null;
+      if (window._sfxVinylStop === stopVinyl) window._sfxVinylStop = null;
     };
+    window._sfxVinylStop = stopVinyl;
+    activeStop = stopVinyl;
   };
   window._sfxVinylStop = null;
 
-  /* 电视开机"嗡"声 */
+  /* 电视开机"嗡"声(触发前先停掉其它特效音) */
   window._sfxPowerOn = function () {
+    releaseSfx();
     var c = ensure(); if (!c) return;
     var o = c.createOscillator(); var g = c.createGain();
     o.type = 'sine'; o.connect(g); g.connect(c.destination);
@@ -1330,8 +1346,9 @@ function extinguishCandle() {
     o.start(t); o.stop(t + 0.5);
   };
 
-  /* 信号干扰"咔嗒" */
+  /* 信号干扰"咔嗒"(触发前先停掉其它特效音) */
   window._sfxGlitch = function () {
+    releaseSfx();
     tone(160, 0.04, 'sawtooth', 0.05);
     setTimeout(function () { tone(220, 0.04, 'sawtooth', 0.04); }, 35);
   };
