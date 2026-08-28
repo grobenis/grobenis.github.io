@@ -1086,6 +1086,8 @@ body.page-scene-dawn #mask {
   transition: transform 0.5s ease;
 }
 .tv-knob-ch { --tv-rot: 0deg; transform: rotate(var(--tv-rot)); }
+/* CH/VOL 字样始终保持水平,不被旋转带歪 */
+.tv-knob-ch .tv-knob-label { transform: translateX(-50%) rotate(calc(-1 * var(--tv-rot))); }
 .tv-knob::before {
   content: "";
   position: absolute;
@@ -1278,6 +1280,7 @@ body.page-scene-dawn #mask {
 
 /* VOL 旋钮旋转 */
 .tv-knob-vol { --vol-rot: 0deg; transform: rotate(var(--vol-rot)); transition: transform 0.2s ease; }
+.tv-knob-vol .tv-knob-label { transform: translateX(-50%) rotate(calc(-1 * var(--vol-rot))); }
 
 /* 隐藏频道画面 */
 .tv-hidden-screen {
