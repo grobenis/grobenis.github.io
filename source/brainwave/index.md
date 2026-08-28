@@ -26,15 +26,17 @@ date: 2026-08-29 00:00:00
 </div>
 </div>
 
-<!-- 占位卡片：敬请期待 -->
-<div class="bw-card bw-card-soon" aria-disabled="true">
+<!-- 卡片 2：脑洞星系（点子库） -->
+<div class="bw-card bw-card-galaxy" data-bw-open="galaxy" role="button" tabindex="0" title="脑洞星系">
 <div class="bw-card-art">
-<span class="bw-soon-icon">✧</span>
+<span class="bw-galaxy-core"></span>
+<span class="bw-gstar"></span><span class="bw-gstar"></span><span class="bw-gstar"></span><span class="bw-gstar"></span><span class="bw-gstar"></span><span class="bw-gstar"></span><span class="bw-gstar"></span><span class="bw-gstar"></span>
 </div>
 <div class="bw-card-body">
-<span class="bw-card-tag">待解锁</span>
-<h3 class="bw-card-title">更多脑洞</h3>
-<p class="bw-card-desc">正在酝酿中……下一个奇思妙想很快就会出现。</p>
+<span class="bw-card-tag">点子库</span>
+<h3 class="bw-card-title">脑洞星系</h3>
+<p class="bw-card-desc">每一颗星星都是一个天马行空的想法，点亮它们，或把你的新点子挂上星空。</p>
+<span class="bw-card-open">进入星系 <i></i></span>
 </div>
 </div>
 
@@ -282,9 +284,158 @@ date: 2026-08-29 00:00:00
 
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
-    function open() { openCosmos(); }
+    var mode = card.getAttribute('data-bw-open');
+    var open = (mode === 'galaxy') ? openGalaxy : openCosmos;
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
+
+  /* ============ 脑洞星系（点子库） ============ */
+  /* 默认脑洞点子 */
+  var GALAXY_IDEAS = [
+    { t: '天空写诗机', d: '一架无人机在云层上用烟轨写诗，抬头就能读到天空的情书。' },
+    { t: '月光充电', d: '把所有路灯换成收集月光的装置，夜晚停电时也能温柔发亮。' },
+    { t: '时间胶囊快递', d: '寄一封给十年后自己的信，由未来的时钟亲自签收。' },
+    { t: '会飞的图书馆', d: '热气球载着旧书环游世界，每到一个城市换一批读者。' },
+    { t: '声音琥珀', d: '把重要日子的声音封进琥珀，多年后摇晃就能听见那年夏天。' },
+    { t: '云朵枕头', d: '采集午后的云做成枕头，失眠时躺进去就回到无忧无虑的童年。' },
+    { t: '星际邮箱', d: '在屋顶立一个信箱，相信的人往里投递心事，星星替你转交。' },
+    { t: '彩虹补给站', d: '雨天过后的十字路口自动洒出一道彩虹，给赶路的人一瞬的好心情。' }
+  ];
+  var galIdeas = loadGalIdeas();
+
+  function loadGalIdeas() {
+    try {
+      var raw = localStorage.getItem('bwGalaxyIdeas');
+      if (raw) { var arr = JSON.parse(raw); if (Array.isArray(arr) && arr.length) return arr; }
+    } catch (e) {}
+    return GALAXY_IDEAS.map(function (it, i) {
+      return { id: 'g' + i, t: it.t, d: it.d, x: 14 + (i * 73) % 76, y: 18 + (i * 47) % 64 };
+    });
+  }
+  function saveGalIdeas() { try { localStorage.setItem('bwGalaxyIdeas', JSON.stringify(galIdeas)); } catch (e) {} }
+
+  function openGalaxy() {
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-galaxy';
+    m.innerHTML =
+      '<div class="bw-modal-panel bw-galaxy-panel">' +
+        '<button class="bw-modal-close" type="button" data-close title="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">脑洞星系</h2>' +
+        '<p class="bw-modal-sub">每一颗星都是一个想法 · 点亮它们，或挂上新的脑洞</p>' +
+        '<div class="bw-gal-sky" id="galSky"></div>' +
+        '<div class="bw-gal-add">' +
+          '<input class="bw-gal-input" id="galInput" type="text" maxlength="18" placeholder="写下一个新的脑洞点子…" />' +
+          '<button class="bw-gal-btn" id="galAddBtn" type="button">挂上星空 ✦</button>' +
+        '</div>' +
+        '<div class="bw-gal-tip">点击星星查看想法 · 也可在下方新增</div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    /* 渲染星系 */
+    var sky = m.querySelector('#galSky');
+    renderGalaxy(sky);
+    /* 新增点子 */
+    var input = m.querySelector('#galInput');
+    var addBtn = m.querySelector('#galAddBtn');
+    function addIdea() {
+      var v = (input.value || '').trim();
+      if (!v) return;
+      var id = 'g' + Date.now();
+      galIdeas.push({ id: id, t: v, d: '刚刚挂上星空的崭新脑洞。', x: 8 + Math.random() * 82, y: 10 + Math.random() * 72 });
+      saveGalIdeas();
+      input.value = '';
+      renderGalaxy(sky);
+    }
+    addBtn.addEventListener('click', addIdea);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addIdea(); });
+  }
+
+  function renderGalaxy(sky) {
+    sky.innerHTML = '';
+    var w = sky.clientWidth || 480;
+    var h = sky.clientHeight || 260;
+    /* 背景星点 */
+    var i, bg;
+    for (i = 0; i < 40; i++) {
+      bg = document.createElement('span');
+      bg.className = 'bw-gal-bgstar';
+      bg.style.left = (Math.random() * 100) + '%';
+      bg.style.top = (Math.random() * 100) + '%';
+      bg.style.animationDelay = (Math.random() * 3) + 's';
+      bg.style.width = bg.style.height = (Math.random() < 0.6 ? 2 : 3) + 'px';
+      sky.appendChild(bg);
+    }
+    /* 连线(SVG):连接每颗星到最近的另一颗 */
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'bw-gal-lines');
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    var used = {};
+    for (i = 0; i < galIdeas.length; i++) {
+      var a = galIdeas[i], best = null, bd = 1e9;
+      for (var j = 0; j < galIdeas.length; j++) {
+        if (i === j) continue;
+        var b = galIdeas[j];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < bd) { bd = dist; best = j; }
+      }
+      if (best !== null) {
+        var key = i < best ? i + '_' + best : best + '_' + i;
+        if (!used[key] && bd < 45) {
+          used[key] = 1;
+          var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', (a.x / 100 * w)); line.setAttribute('y1', (a.y / 100 * h));
+          line.setAttribute('x2', (galIdeas[best].x / 100 * w)); line.setAttribute('y2', (galIdeas[best].y / 100 * h));
+          svg.appendChild(line);
+        }
+      }
+    }
+    sky.appendChild(svg);
+    /* 星星 */
+    for (i = 0; i < galIdeas.length; i++) {
+      var it = galIdeas[i];
+      var star = document.createElement('span');
+      star.className = 'bw-gal-star';
+      star.style.left = it.x + '%';
+      star.style.top = it.y + '%';
+      star.setAttribute('role', 'button');
+      star.setAttribute('tabindex', '0');
+      star.title = it.t;
+      star.innerHTML = '<i></i>';
+      star.addEventListener('click', function (idea) {
+        return function () { showGalIdea(sky, idea); };
+      }(it));
+      star.addEventListener('keydown', function (idea) {
+        return function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showGalIdea(sky, idea); } };
+      }(it));
+      sky.appendChild(star);
+    }
+  }
+
+  /* 查看点子详情(弹出的迷你卡片) */
+  function showGalIdea(sky, idea) {
+    var old = sky.querySelector('.bw-gal-pop');
+    if (old) old.parentNode.removeChild(old);
+    var pop = document.createElement('div');
+    pop.className = 'bw-gal-pop';
+    pop.innerHTML =
+      '<span class="bw-gal-pop-t">✦ ' + idea.t + '</span>' +
+      '<span class="bw-gal-pop-d">' + idea.d + '</span>' +
+      '<button class="bw-gal-pop-x" type="button" title="关闭">✕</button>';
+    sky.appendChild(pop);
+    pop.querySelector('.bw-gal-pop-x').addEventListener('click', function () {
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+    });
+    sky.addEventListener('click', function once(e) {
+      if (e.target.closest('.bw-gal-star') || e.target.closest('.bw-gal-pop')) return;
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+      sky.removeEventListener('click', once);
+    });
+  }
 })();
 </script>
