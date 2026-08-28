@@ -92,6 +92,9 @@ date: 2026-08-29 00:00:00
   /* --- Web Audio 宇宙噪音合成（程序合成，零音频文件） --- */
   var actx = null;
   var activeNodes = null;
+  /* 页面卸载兜底:确保任何方式退出都停止声音 */
+  window.addEventListener('pagehide', stopAll);
+  window.addEventListener('beforeunload', stopAll);
   function ensureCtx() {
     if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
     if (actx.state === 'suspended') actx.resume();
@@ -99,7 +102,14 @@ date: 2026-08-29 00:00:00
   }
   function stopAll() {
     if (activeNodes) {
-      try { activeNodes.forEach(function (n) { try { n.stop && n.stop(); } catch (e) {} try { n.disconnect(); } catch (e) {} }); } catch (e) {}
+      try {
+        activeNodes.forEach(function (n) {
+          /* interval id:clearInterval; 其它:stop+disconnect */
+          if (typeof n === 'number') { clearInterval(n); return; }
+          try { n.stop && n.stop(); } catch (e) {}
+          try { n.disconnect(); } catch (e) {}
+        });
+      } catch (e) {}
       activeNodes = null;
     }
   }
