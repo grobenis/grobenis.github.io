@@ -3933,18 +3933,24 @@ body.lamp-black .candle-glow.is-on {
 }
 
 /* ---- 脑洞星系模态 ---- */
-.bw-galaxy-panel { width: min(620px, 100%); }
-.bw-gal-sky {
+.bw-galaxy-panel {
   position: relative;
-  height: 280px;
-  border-radius: 14px;
-  margin-bottom: 14px;
+  z-index: 2;
+  width: min(620px, 100%);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(90, 120, 255, 0.18), transparent 55%),
+    rgba(13, 17, 45, 0.82);
+  backdrop-filter: blur(4px);
+}
+/* 全屏星空背景:星星悬浮其上 */
+.bw-gal-bg {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 120%, rgba(120, 90, 255, 0.4), transparent 62%),
     radial-gradient(circle at 15% 10%, rgba(90, 140, 255, 0.25), transparent 55%),
     linear-gradient(180deg, #05081f, #141a4a);
-  border: 1px solid rgba(140, 160, 255, 0.18);
 }
 .bw-gal-bgstar {
   position: absolute;
@@ -3993,14 +3999,14 @@ body.lamp-black .candle-glow.is-on {
   50% { transform: scale(1.35); }
 }
 .bw-gal-pop {
-  position: absolute;
+  position: fixed;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  width: 82%;
-  max-width: 340px;
+  z-index: 3;
+  width: min(340px, 84%);
   padding: 18px 20px;
   border-radius: 14px;
-  background: rgba(10, 14, 42, 0.92);
+  background: rgba(10, 14, 42, 0.94);
   border: 1px solid rgba(150, 170, 255, 0.35);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.6);
   display: flex;

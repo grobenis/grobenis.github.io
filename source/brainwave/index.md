@@ -319,11 +319,11 @@ date: 2026-08-29 00:00:00
     var m = document.createElement('div');
     m.className = 'bw-modal bw-galaxy';
     m.innerHTML =
+      '<div class="bw-gal-bg" id="galSky"></div>' +
       '<div class="bw-modal-panel bw-galaxy-panel">' +
         '<button class="bw-modal-close" type="button" data-close title="关闭">✕</button>' +
         '<h2 class="bw-modal-title">脑洞星系</h2>' +
         '<p class="bw-modal-sub">每一颗星都是一个想法 · 点亮它们，或挂上新的脑洞</p>' +
-        '<div class="bw-gal-sky" id="galSky"></div>' +
         '<div class="bw-gal-add">' +
           '<input class="bw-gal-input" id="galInput" type="text" maxlength="18" placeholder="写下一个新的脑洞点子…" />' +
           '<button class="bw-gal-btn" id="galAddBtn" type="button">挂上星空 ✦</button>' +
@@ -335,7 +335,7 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
-    /* 渲染星系 */
+    /* 渲染全屏星系背景 */
     var sky = m.querySelector('#galSky');
     renderGalaxy(sky);
     /* 新增点子 */
@@ -417,9 +417,10 @@ date: 2026-08-29 00:00:00
     }
   }
 
-  /* 查看点子详情(弹出的迷你卡片) */
+  /* 查看点子详情(弹出的迷你卡片,挂到模态层以盖住面板) */
   function showGalIdea(sky, idea) {
-    var old = sky.querySelector('.bw-gal-pop');
+    var modal = sky.parentNode;
+    var old = modal.querySelector('.bw-gal-pop');
     if (old) old.parentNode.removeChild(old);
     var pop = document.createElement('div');
     pop.className = 'bw-gal-pop';
@@ -427,7 +428,7 @@ date: 2026-08-29 00:00:00
       '<span class="bw-gal-pop-t">✦ ' + idea.t + '</span>' +
       '<span class="bw-gal-pop-d">' + idea.d + '</span>' +
       '<button class="bw-gal-pop-x" type="button" title="关闭">✕</button>';
-    sky.appendChild(pop);
+    modal.appendChild(pop);
     pop.querySelector('.bw-gal-pop-x').addEventListener('click', function () {
       if (pop.parentNode) pop.parentNode.removeChild(pop);
     });
