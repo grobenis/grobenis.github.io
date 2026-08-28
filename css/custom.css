@@ -1085,9 +1085,9 @@ body.page-scene-dawn #mask {
   transform: rotate(0deg);
   transition: transform 0.5s ease;
 }
-.tv-knob-ch { --tv-rot: 0deg; transform: rotate(var(--tv-rot)); }
-/* CH/VOL 字样始终保持水平,不被旋转带歪 */
-.tv-knob-ch .tv-knob-label { transform: translateX(-50%) rotate(calc(-1 * var(--tv-rot))); }
+.tv-knob-ch { --tv-rot: 0deg; }
+/* 旋转仅作用于指针,按钮本体不转 → CH/VOL 字样保持水平 */
+.tv-knob-ch .tv-knob-pointer { transform-origin: 50% 100%; transform: translateX(-50%) rotate(var(--tv-rot)); transition: transform 0.4s ease; }
 .tv-knob::before {
   content: "";
   position: absolute;
@@ -1110,12 +1110,14 @@ body.page-scene-dawn #mask {
   position: absolute;
   top: 2px;
   left: 50%;
-  transform: translateX(-50%);
+  transform-origin: 50% 100%;
   width: 2px;
   height: 7px;
   background: #2a2a30;
   border-radius: 2px;
   box-shadow: 0 1px 0 rgba(255,255,255,0.4);
+  /* 默认旋转 0deg,CH/VOL 的旋钮规则会覆盖 */
+  transform: translateX(-50%) rotate(0deg);
 }
 .tv-knob-label {
   position: absolute;
@@ -1278,9 +1280,9 @@ body.page-scene-dawn #mask {
   100% { transform: translate(-6px, 4px); }
 }
 
-/* VOL 旋钮旋转 */
-.tv-knob-vol { --vol-rot: 0deg; transform: rotate(var(--vol-rot)); transition: transform 0.2s ease; }
-.tv-knob-vol .tv-knob-label { transform: translateX(-50%) rotate(calc(-1 * var(--vol-rot))); }
+/* VOL 旋钮旋转:仅指针转动,字样保持水平 */
+.tv-knob-vol { --vol-rot: 0deg; }
+.tv-knob-vol .tv-knob-pointer { transform: translateX(-50%) rotate(var(--vol-rot)); transition: transform 0.3s ease; }
 
 /* 隐藏频道画面 */
 .tv-hidden-screen {
