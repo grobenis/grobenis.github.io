@@ -1068,6 +1068,13 @@ body.page-scene-dawn #mask {
   gap: 12px;
 }
 
+/* 旋钮包裹容器:字样不随旋钮旋转(放在旋转按钮之外) */
+.tv-knob-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
 /* 大旋钮(与按钮统一高度 30px) */
 .tv-knob {
   position: relative;
@@ -1085,9 +1092,9 @@ body.page-scene-dawn #mask {
   transform: rotate(0deg);
   transition: transform 0.5s ease;
 }
-.tv-knob-ch { --tv-rot: 0deg; }
-/* 旋转仅作用于指针,按钮本体不转 → CH/VOL 字样保持水平 */
-.tv-knob-ch .tv-knob-pointer { transform-origin: 50% 100%; transform: translateX(-50%) rotate(var(--tv-rot)); transition: transform 0.4s ease; }
+/* 旋钮整体旋转(指针跟着转),字样因在按钮外而保持水平 */
+.tv-knob-ch { --tv-rot: 0deg; transform: rotate(var(--tv-rot)); }
+.tv-knob-vol { --vol-rot: 0deg; transform: rotate(var(--vol-rot)); transition: transform 0.3s ease; }
 .tv-knob::before {
   content: "";
   position: absolute;
@@ -1110,14 +1117,12 @@ body.page-scene-dawn #mask {
   position: absolute;
   top: 2px;
   left: 50%;
-  transform-origin: 50% 100%;
+  transform: translateX(-50%);
   width: 2px;
   height: 7px;
   background: #2a2a30;
   border-radius: 2px;
   box-shadow: 0 1px 0 rgba(255,255,255,0.4);
-  /* 默认旋转 0deg,CH/VOL 的旋钮规则会覆盖 */
-  transform: translateX(-50%) rotate(0deg);
 }
 .tv-knob-label {
   position: absolute;
@@ -1279,10 +1284,6 @@ body.page-scene-dawn #mask {
   0%   { transform: translate(0,0); }
   100% { transform: translate(-6px, 4px); }
 }
-
-/* VOL 旋钮旋转:仅指针转动,字样保持水平 */
-.tv-knob-vol { --vol-rot: 0deg; }
-.tv-knob-vol .tv-knob-pointer { transform: translateX(-50%) rotate(var(--vol-rot)); transition: transform 0.3s ease; }
 
 /* 隐藏频道画面 */
 .tv-hidden-screen {
