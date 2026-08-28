@@ -3609,3 +3609,271 @@ body.lamp-black .candle-glow.is-on {
   .lamp-chain { height: 30px; }
   .lamp-pull::after { display: none; }
 }
+
+/* =============================================================================
+   脑洞页：两列卡片墙 + 全屏宇宙声音播放器
+   ========================================================================== */
+.bw-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  max-width: 860px;
+  margin: 28px auto 40px;
+}
+@media (max-width: 700px) {
+  .bw-grid { grid-template-columns: 1fr; }
+}
+.bw-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(120, 130, 160, 0.22);
+  box-shadow: 0 10px 26px rgba(30, 40, 80, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+.bw-card[data-bw-open]:hover,
+.bw-card[data-bw-open]:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 42px rgba(30, 40, 80, 0.22);
+  outline: none;
+}
+.bw-card-art {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+}
+.bw-card-cosmos .bw-card-art {
+  background:
+    radial-gradient(circle at 20% 25%, #2b3b8f 0%, transparent 60%),
+    radial-gradient(circle at 80% 75%, #3b2f8f 0%, transparent 55%),
+    linear-gradient(160deg, #0a1030 0%, #161b4d 55%, #2b1d5e 100%);
+}
+.bw-star {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  animation: bwTwinkle 2.4s ease-in-out infinite;
+}
+.bw-star-1 { left: 16%; top: 22%; }
+.bw-star-2 { left: 58%; top: 14%; width: 3px; height: 3px; animation-delay: 0.6s; }
+.bw-star-3 { left: 82%; top: 38%; width: 5px; height: 5px; animation-delay: 1.1s; }
+.bw-star-4 { left: 34%; top: 62%; width: 3px; height: 3px; animation-delay: 1.7s; }
+@keyframes bwTwinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+.bw-planet {
+  position: absolute;
+  right: 14%; bottom: -30%;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255, 220, 160, 0.9), transparent 42%),
+    repeating-radial-gradient(circle at 30% 35%, #d98a4e 0 3px, #a9632f 4px 7px, #7a4522 8px 11px);
+  box-shadow: 0 0 40px rgba(255, 150, 70, 0.35), inset -18px -14px 40px rgba(0, 0, 0, 0.5);
+  animation: bwOrbit 9s linear infinite;
+}
+@keyframes bwOrbit {
+  0% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(-14px) rotate(180deg); }
+  100% { transform: translateX(0) rotate(360deg); }
+}
+.bw-card-soon .bw-card-art {
+  background:
+    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.08), transparent 60%),
+    linear-gradient(160deg, #eceef4, #dde1ec);
+}
+.bw-soon-icon {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 34px;
+  color: #9aa2b8;
+  text-shadow: 0 0 18px rgba(140, 150, 180, 0.5);
+}
+.bw-card-body {
+  padding: 16px 18px 18px;
+  position: relative;
+}
+.bw-card-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(90deg, #4b6cf5, #8a4bf5);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.bw-card-soon .bw-card-tag { background: #aab0c2; }
+.bw-card-title {
+  margin: 10px 0 6px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #1c2135;
+}
+.bw-card-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #6a7188;
+}
+.bw-card-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4b6cf5;
+}
+.bw-card-open i {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-top: 2px solid #4b6cf5;
+  border-right: 2px solid #4b6cf5;
+  transform: rotate(45deg);
+  transition: transform 0.25s ease;
+}
+.bw-card[data-bw-open]:hover .bw-card-open i { transform: rotate(45deg) translate(3px, -3px); }
+.bw-card-soon { cursor: default; }
+.bw-card-soon .bw-card-desc { color: #98a0b4; }
+
+/* ---- 全屏宇宙声音模态 ---- */
+.bw-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: inherit;
+}
+.bw-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 8, 26, 0.88);
+  backdrop-filter: blur(6px);
+  animation: bwFadeIn 0.35s ease;
+}
+@keyframes bwFadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.bw-modal-panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 88vh;
+  overflow: auto;
+  border-radius: 20px;
+  padding: 30px 26px 26px;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(90, 120, 255, 0.22), transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(160, 80, 255, 0.18), transparent 50%),
+    linear-gradient(160deg, #101536, #1a1650);
+  border: 1px solid rgba(140, 160, 255, 0.28);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  color: #eef0ff;
+  animation: bwPanelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes bwPanelIn {
+  from { opacity: 0; transform: translateY(26px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.bw-modal-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #eef0ff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.bw-modal-close:hover { background: rgba(255, 255, 255, 0.2); transform: rotate(90deg); }
+.bw-modal-title {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-align: center;
+  background: linear-gradient(90deg, #8fb6ff, #c9a0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bw-modal-sub {
+  margin: 0 0 18px;
+  font-size: 13px;
+  text-align: center;
+  color: rgba(238, 240, 255, 0.6);
+}
+.bw-cosmos-sky {
+  position: relative;
+  height: 140px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(120, 90, 255, 0.35), transparent 60%),
+    linear-gradient(180deg, #060a22, #131540);
+}
+.bw-cosmos-star {
+  position: absolute;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: bwTwinkle 3s ease-in-out infinite;
+}
+.bw-cosmos-sky .bw-cosmos-star:nth-child(1)  { left: 12%; top: 20%; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(2)  { left: 30%; top: 64%; animation-delay: 0.4s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(3)  { left: 47%; top: 16%; width: 4px; height: 4px; animation-delay: 0.9s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(4)  { left: 62%; top: 45%; animation-delay: 1.3s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(5)  { left: 78%; top: 22%; width: 4px; height: 4px; animation-delay: 0.2s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(6)  { left: 88%; top: 62%; animation-delay: 1.6s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(7)  { left: 22%; top: 38%; animation-delay: 2.1s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(8)  { left: 55%; top: 78%; animation-delay: 0.7s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(9)  { left: 70%; top: 86%; animation-delay: 1.1s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(10) { left: 42%; top: 34%; animation-delay: 1.9s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(11) { left: 8%; top: 70%; animation-delay: 2.4s; }
+.bw-cosmos-sky .bw-cosmos-star:nth-child(12) { left: 92%; top: 12%; animation-delay: 0.5s; }
+.bw-cosmos-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+@media (max-width: 460px) {
+  .bw-cosmos-options { grid-template-columns: repeat(2, 1fr); }
+}
+.bw-cosmo-opt {
+  padding: 12px 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eef0ff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.bw-cosmo-opt:hover { border-color: rgba(150, 180, 255, 0.6); background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.bw-cosmo-opt.is-on {
+  border-color: #9fb6ff;
+  background: linear-gradient(90deg, rgba(75, 108, 245, 0.45), rgba(138, 75, 245, 0.45));
+  box-shadow: 0 0 18px rgba(120, 140, 255, 0.45);
+}
+.bw-cosmos-status {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(238, 240, 255, 0.55);
+  letter-spacing: 1px;
+}
