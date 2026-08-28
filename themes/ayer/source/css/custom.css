@@ -1167,6 +1167,213 @@ body.page-scene-dawn #mask {
   box-shadow: 0 0 8px #ff5530, inset 0 1px 1px rgba(255,200,150,0.6);
   animation: tvLed 1.6s ease-in-out infinite alternate;
 }
+
+/* ===== 复古电视强化 ===== */
+.tv-channel-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12;
+  opacity: 0;
+}
+.tv-channel-scan.is-on {
+  animation: tvChannelScan 0.5s linear;
+}
+.tv-channel-scan::before,
+.tv-channel-scan::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 22%;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.85) 50%, transparent 100%);
+  box-shadow: 0 0 12px rgba(255,255,255,0.4);
+}
+.tv-channel-scan::before { top: 0; }
+.tv-channel-scan::after  { bottom: 0; }
+@keyframes tvChannelScan {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* 信号干扰条纹 */
+.tv-signal-glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 11;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(255,255,255,0.06) 0 2px,
+      transparent 2px 6px),
+    repeating-linear-gradient(90deg,
+      rgba(255,80,80,0.12) 0 1px,
+      transparent 1px 40px),
+    repeating-linear-gradient(90deg,
+      rgba(80,180,255,0.12) 0 1px,
+      transparent 1px 35px);
+  transform: translateX(0);
+}
+.tv-signal-glitch.is-on {
+  animation: tvGlitch 0.45s steps(8) forwards;
+}
+@keyframes tvGlitch {
+  0%   { opacity: 0.0; transform: translateX(0); }
+  10%  { opacity: 0.7; transform: translateX(-6px); }
+  35%  { opacity: 0.6; transform: translateX(5px); }
+  60%  { opacity: 0.8; transform: translateX(-3px) skewX(0.5deg); }
+  85%  { opacity: 0.4; transform: translateX(2px); }
+  100% { opacity: 0;    transform: translateX(0); }
+}
+
+/* 无信号画面 */
+.tv-no-signal {
+  position: absolute;
+  inset: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 9;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.tv-no-signal.is-on { opacity: 1; }
+.tns-text {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 6px;
+  color: #ff8c4a;
+  text-shadow: 0 0 6px rgba(255,140,74,0.7);
+  animation: tnsBlink 0.9s steps(2) infinite;
+}
+@keyframes tnsBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.4; }
+}
+.tns-snow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 11% 19%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 43% 14%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 78% 24%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 19% 52%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 67% 60%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 54% 78%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 30% 86%, rgba(255,255,255,0.9) 0.5px, transparent 1px),
+    radial-gradient(circle at 84% 88%, rgba(255,255,255,0.9) 0.5px, transparent 1px);
+  animation: tnsSnowShift 0.2s steps(2) infinite;
+}
+@keyframes tnsSnowShift {
+  0%   { transform: translate(0,0); }
+  100% { transform: translate(-6px, 4px); }
+}
+
+/* VOL 旋钮旋转 */
+.tv-knob-vol { --vol-rot: 0deg; transform: rotate(var(--vol-rot)); transition: transform 0.2s ease; }
+
+/* 隐藏频道画面 */
+.tv-hidden-screen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, #0a0820 0%, #000 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 13;
+  transition: opacity 0.4s ease;
+  overflow: hidden;
+}
+.tv-hidden-screen.is-on { opacity: 1; }
+.tv-hidden-screen .ths-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(0deg, rgba(0,255,180,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,180,0.18) 1px, transparent 1px);
+  background-size: 36px 36px;
+  transform: perspective(220px) rotateX(60deg) translateY(-22%);
+  animation: thsGrid 4s linear infinite;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 70%, transparent 100%);
+}
+@keyframes thsGrid {
+  0%   { background-position: 0 0, 0 0; }
+  100% { background-position: 0 36px, 36px 0; }
+}
+.tv-hidden-screen .ths-msg {
+  position: relative;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 5px;
+  color: #5cffd5;
+  text-shadow: 0 0 6px rgba(0,255,180,0.7);
+  margin-bottom: 8px;
+}
+.tv-hidden-screen .ths-hint {
+  position: relative;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #fff;
+  opacity: 0.55;
+}
+
+/* 双击屏幕的神秘闪屏 */
+.tv-secret-flash {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  margin-left: -100px;
+  margin-top: -100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(0,255,180,0.6) 30%, transparent 70%);
+  pointer-events: none;
+  z-index: 90;
+  animation: secretFlash 0.9s ease-out forwards;
+  mix-blend-mode: screen;
+}
+@keyframes secretFlash {
+  0%   { transform: scale(0.1); opacity: 1; }
+  40%  { transform: scale(1.6); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* 整点环境联动气泡 */
+.hour-popup {
+  position: fixed;
+  left: 50%;
+  bottom: 8vh;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 80;
+  background: rgba(8, 10, 24, 0.85);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  font-size: 14px;
+  letter-spacing: 1.2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  max-width: 80vw;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.05);
+}
+.hour-popup.is-on {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 @keyframes tvLed {
   from { box-shadow: 0 0 6px #ff5530, inset 0 1px 1px rgba(255,200,150,0.6); }
   to   { box-shadow: 0 0 14px #ff7050, inset 0 1px 1px rgba(255,200,150,0.8); }
