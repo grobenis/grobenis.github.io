@@ -76,6 +76,25 @@ date: 2026-08-29 00:00:00
 </div>
 </div>
 
+<!-- 卡片 5：四季窗 -->
+<div class="bw-card bw-card-window" data-bw-open="window" role="button" tabindex="0" title="四季窗">
+<div class="bw-card-art">
+<span class="bw-win-mini">
+<span class="bw-win-mini-sash bw-win-mini-sl"></span>
+<span class="bw-win-mini-sash bw-win-mini-sr"></span>
+</span>
+<span class="bw-win-mini-float bw-win-mf1">🌸</span>
+<span class="bw-win-mini-float bw-win-mf2">🍁</span>
+<span class="bw-win-mini-float bw-win-mf3">❄️</span>
+</div>
+<div class="bw-card-body">
+<span class="bw-card-tag">四季窗</span>
+<h3 class="bw-card-title">推开一扇窗</h3>
+<p class="bw-card-desc">窗里是房间，窗外是整年。推开木窗，春天有草地和蝴蝶，冬天有雪人和炉光。</p>
+<span class="bw-card-open">推开窗户 <i></i></span>
+</div>
+</div>
+
 </div>
 
 <!-- 全屏模态容器（JS 动态填充并挂到 body，避免主题容器 transform 影响 fixed 定位） -->
@@ -321,7 +340,7 @@ date: 2026-08-29 00:00:00
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');
-    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop }[mode] || openCosmos;
+    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow }[mode] || openCosmos;
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
@@ -845,6 +864,110 @@ date: 2026-08-29 00:00:00
     box.addEventListener('click', openBox);
     box.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBox(); } });
     again.addEventListener('click', reset);
+  }
+
+  /* ============ 四季窗 ============ */
+  /* AI 生成卡通窗外景（与娃娃屋同款 text_to_image 服务，首次访问触发生成，之后 CDN 直出） */
+  function WIN_IMG(prompt) {
+    return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' +
+      encodeURIComponent(prompt) + '&image_size=square';
+  }
+  var SEASONS = {
+    spring: {
+      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, early spring, green willow trees by a winding river, peach blossoms blooming, swallows flying in the bright sky, a child flying a kite in the field, fresh soft pastel colors, idyllic chinese countryside scenery, clean poetic composition'),
+      part: '🌸',
+      caption: '春天来了，柳树绿了，溪水醒了。田里的小朋友放着风筝，燕子在蓝天上唱歌。'
+    },
+    summer: {
+      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, summer, lotus pond with pink lotus flowers and green lily pads, a frog sitting on a lotus leaf, dragonflies hovering over the water, willow branches hanging low, bright clear sky, soft watercolor, fresh summer colors, idyllic chinese countryside scenery, poetic composition'),
+      part: '☀️',
+      caption: '池塘里的荷花开得正盛，青蛙在荷叶上打盹，蜻蜓点过水面，知了在柳枝上叫个不停。'
+    },
+    autumn: {
+      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, autumn, golden rice paddies ready for harvest, geese flying south in formation across the clear sky, red maple leaves, an orchard with autumn fruits, warm amber and gold palette, idyllic chinese countryside scenery, poetic composition'),
+      part: '🍂',
+      caption: '天凉好个秋。稻田一片金黄，大雁排成行飞往南方，红红的枫叶落满小径。'
+    },
+    winter: {
+      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, winter, snow covered tiled roofs of a small chinese village, red plum blossoms on bare branches, a cute snowman in the courtyard, curling chimney smoke, white and pale blue palette, peaceful and warm, idyllic chinese countryside scenery, poetic composition'),
+      part: '❄️',
+      caption: '大雪把屋顶盖得厚厚的，腊梅在墙角悄悄开了，雪人站在院子里，等着春天。'
+    }
+  };
+  function openWindow() {
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-winmodal';
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-win-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">四季窗</h2>' +
+        '<p class="bw-modal-sub">公主屋的小窗，窗外住着春夏秋冬 · 点窗放大外景</p>' +
+        '<div class="bw-room">' +
+          '<div class="bw-win-frame" id="winFrame">' +
+            '<div class="bw-win-scene" id="winScene"></div>' +
+            '<div class="bw-win-sash bw-win-sash-l"><span class="bw-win-sash-in"></span></div>' +
+            '<div class="bw-win-sash bw-win-sash-r"><span class="bw-win-sash-in"></span></div>' +
+            '<div class="bw-win-sill"><span class="bw-win-sill-plant">🪴</span><span class="bw-win-sill-candle">🕯️</span></div>' +
+          '</div>' +
+          '<div class="bw-win-fullview" id="winFull"><img alt="" /></div>' +
+          '<div class="bw-win-tabs">' +
+            '<button class="bw-win-tab is-on" type="button" data-season="spring">🌱 春</button>' +
+            '<button class="bw-win-tab" type="button" data-season="summer">☀️ 夏</button>' +
+            '<button class="bw-win-tab" type="button" data-season="autumn">🍁 秋</button>' +
+            '<button class="bw-win-tab" type="button" data-season="winter">⛄ 冬</button>' +
+          '</div>' +
+        '</div>' +
+        '<p class="bw-win-caption" id="winCap"></p>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    var scene = m.querySelector('#winScene');
+    var cap = m.querySelector('#winCap');
+    var frame = m.querySelector('#winFrame');
+    var full = m.querySelector('#winFull');
+    var fullImg = full.querySelector('img');
+    var curSeason = 'spring';
+    var WIN_HINT = '点一点窗户，推开它，看看窗外住着谁？🪟';
+    function render(key) {
+      curSeason = key;
+      var s = SEASONS[key];
+      scene.className = 'bw-win-scene is-' + key;
+      scene.innerHTML = '<img class="bw-win-view" src="' + s.img + '" alt="' + key + '" />';
+      fullImg.src = s.img;
+      fullImg.alt = key;
+      full.style.setProperty('--bg', 'url("' + s.img + '")');
+      cap.textContent = s.caption;
+    }
+    render('spring');
+    cap.textContent = WIN_HINT;
+    m.querySelectorAll('.bw-win-tab').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        m.querySelectorAll('.bw-win-tab').forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on');
+        render(b.getAttribute('data-season'));
+        /* 放大画面上切季：保持放大态，直接切换外景 */
+      });
+    });
+    /* 点窗户：放大外景（再点还原房间）；放大时窗棂淡出 */
+    frame.addEventListener('click', function (e) {
+      e.stopPropagation();
+      /* is-zoom 加在 .bw-room 上，让 .is-zoom .bw-win-frame::before/::after 等后代选择器能命中 */
+      var zoom = frame.parentElement.classList.toggle('is-zoom');
+      /* 室内时显示引导文案，推开后显示季节旁白 */
+      cap.textContent = zoom ? SEASONS[curSeason].caption : WIN_HINT;
+    });
+    /* 放大态下点击画面任意空白处也可退出，回到室内 */
+    frame.parentElement.addEventListener('click', function () {
+      if (this.classList.contains('is-zoom')) {
+        this.classList.remove('is-zoom');
+        cap.textContent = WIN_HINT;
+      }
+    });
   }
 })();
 </script>
