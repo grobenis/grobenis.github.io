@@ -132,6 +132,24 @@
 </div>
 </div>
 
+<!-- 卡片 4：盲盒商店 -->
+<div class="bw-card bw-card-shop" data-bw-open="shop" role="button" tabindex="0" title="盲盒商店">
+<div class="bw-card-art">
+<span class="bw-box-glow"></span>
+<span class="bw-box-lid"></span>
+<span class="bw-box-body"></span>
+<span class="bw-box-q">?</span>
+<span class="bw-box-float bw-box-f1"></span>
+<span class="bw-box-float bw-box-f2"></span>
+</div>
+<div class="bw-card-body">
+<span class="bw-card-tag">盲盒商店</span>
+<h3 class="bw-card-title">拆盲盒</h3>
+<p class="bw-card-desc">摇一摇、开一开，神秘小盒子里会跳出可可爱爱的软胶小玩具。今天会开出谁呢？</p>
+<span class="bw-card-open">进入商店 <i></i></span>
+</div>
+</div>
+
 </div>
 
 <!-- 全屏模态容器（JS 动态填充并挂到 body，避免主题容器 transform 影响 fixed 定位） -->
@@ -377,7 +395,7 @@
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');
-    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls }[mode] || openCosmos;
+    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop }[mode] || openCosmos;
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
@@ -587,6 +605,27 @@
 
   /* 隐藏传说娃娃：集齐 20 只后召唤 */
   var HIDDEN = { name: '彩虹', personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
+
+  /* 盲盒商店：16 款软萌软胶玩具 + 1 款稀有隐藏 */
+  var TOYS = [
+    { name: '团子喵', line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
+    { name: '星星软糖', line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
+    { name: '小酸奶', line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
+    { name: '方方熊', line: '方方正正，也超好抱', prompt: 'one cute plush soft block bear toy, cuboid square body, soft gray plush, round happy eyes, adorable, studio product shot, pastel pink background' },
+    { name: '布丁兔', line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
+    { name: '云朵羊', line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
+    { name: '果冻龙', line: '哎呀，把爪爪掉了', prompt: 'one cute squishy jelly baby dragon soft toy, translucent green jelly body, tiny wings, big sparkly eyes, adorable, studio product shot, pastel pink background' },
+    { name: '奶泡企鹅', line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
+    { name: '西瓜猪', line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
+    { name: '芒果鸭', line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' },
+    { name: '泡泡蛙', line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
+    { name: '芝士鼠', line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
+    { name: '转圈猴', line: '转呀转呀，头晕晕', prompt: 'one cute spinning monkey soft toy, round soft brown body, long curled tail, big happy eyes, adorable, studio product shot, pastel pink background' },
+    { name: '灯泡狗', line: '打开开关，就点亮你', prompt: 'one cute light-bulb puppy soft toy, round warm glowing bulb body with tiny dog face, soft yellow plush, adorable, studio product shot, pastel pink background' },
+    { name: '小麋鹿', line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
+    { name: '曲奇牛', line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' }
+  ];
+  var HIDDEN_TOY = { name: '彩虹丸子', line: '稀有隐藏款！！遇见你是我最棒的幸运。', prompt: 'one magical rainbow squishy jelly ball soft toy, iridescent shiny surface, sparkling starry eyes, soft glowing halo, rare legendary, studio product shot, pastel pink background' };
 
   /* 图鉴收藏进度持久化 */
   var COLL_KEY = 'bw_doll_coll';
@@ -808,6 +847,77 @@
     pop.querySelector('.bw-doll-pop-x').addEventListener('click', function () {
       if (pop.parentNode) pop.parentNode.removeChild(pop);
     });
+  }
+  /* 盲盒商店：摇盒开盖，蹦出软萌小玩具(16款+1稀有隐藏，纯随机不收藏) */
+  function openToyShop() {
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-shop';
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-shop-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">盲盒商店</h2>' +
+        '<p class="bw-modal-sub">摇一摇、开一开，神秘小盒子里会蹦出可可爱爱的软胶小玩具</p>' +
+        '<div class="bw-shop-stage">' +
+          '<div class="bw-shop-box" id="shopBox" role="button" tabindex="0" title="点我开盒">' +
+            '<span class="bw-box-lid-front"></span>' +
+            '<span class="bw-shop-q">?</span>' +
+            '<span class="bw-shop-hint">点我开盒</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bw-shop-result" id="shopResult"></div>' +
+        '<button class="bw-shop-again" id="shopAgain" type="button" style="display:none">再开一盒</button>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    var panel = m.querySelector('.bw-shop-panel');
+    var box = m.querySelector('#shopBox');
+    var res = m.querySelector('#shopResult');
+    var again = m.querySelector('#shopAgain');
+
+    function pick() {
+      if (Math.random() < 0.12) return HIDDEN_TOY;
+      return TOYS[Math.floor(Math.random() * TOYS.length)];
+    }
+    function openBox() {
+      if (box.style.display === 'none') return;
+      box.classList.add('shaking');
+      setTimeout(function () {
+        box.style.display = 'none';
+        showToy(pick());
+      }, 780);
+    }
+    function showToy(t) {
+      var rare = t === HIDDEN_TOY;
+      res.innerHTML =
+        '<img class="bw-toy-img' + (rare ? ' is-rare' : '') + '" src="' + DOLL_IMG(t.prompt) + '" alt="' + t.name + '" />' +
+        '<div class="bw-toy-name' + (rare ? ' is-rare' : '') + '">' + t.name + '</div>' +
+        '<div class="bw-toy-line">' + t.line + '</div>';
+      res.classList.add('open');
+      panel.classList.toggle('rare', rare);
+      again.style.display = 'inline-block';
+      if (rare) {
+        var b = document.createElement('div');
+        b.className = 'bw-shop-rare';
+        b.textContent = '✦ 限定稀有色 ✦ 彩虹丸子出现了！';
+        panel.appendChild(b);
+        setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 4200);
+      }
+    }
+    function reset() {
+      box.style.display = '';
+      box.classList.remove('shaking');
+      res.classList.remove('open');
+      res.innerHTML = '';
+      panel.classList.remove('rare');
+      again.style.display = 'none';
+    }
+    box.addEventListener('click', openBox);
+    box.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBox(); } });
+    again.addEventListener('click', reset);
   }
 })();
 </script>
