@@ -47,7 +47,7 @@
 
 </html>
 
-<body class="">
+<body class="page-theme-brainwave">
   <div id="app">
     <main class="content">
       <section class="outer">
@@ -111,6 +111,24 @@
 <h3 class="bw-card-title">脑洞星系</h3>
 <p class="bw-card-desc">每一颗星星都是一个天马行空的想法，点亮它们，或把你的新点子挂上星空。</p>
 <span class="bw-card-open">进入星系 <i></i></span>
+</div>
+</div>
+
+<!-- 卡片 3：娃娃屋（娃娃墙） -->
+<div class="bw-card bw-card-dolls" data-bw-open="dolls" role="button" tabindex="0" title="娃娃屋">
+<div class="bw-card-art">
+<span class="bw-dolls-hook"></span>
+<span class="bw-dolls-thread"></span>
+<span class="bw-doll-preview bw-doll-p1"></span>
+<span class="bw-doll-preview bw-doll-p2"></span>
+<span class="bw-doll-preview bw-doll-p3"></span>
+<span class="bw-dolls-heart"></span>
+</div>
+<div class="bw-card-body">
+<span class="bw-card-tag">娃娃屋</span>
+<h3 class="bw-card-title">娃娃墙</h3>
+<p class="bw-card-desc">一墙毛绒绒的小可爱。点开娃娃屋，每一只娃娃都在等一个拥抱，也藏着一句悄悄话。</p>
+<span class="bw-card-open">进入娃娃屋 <i></i></span>
 </div>
 </div>
 
@@ -359,7 +377,7 @@
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');
-    var open = (mode === 'galaxy') ? openGalaxy : openCosmos;
+    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls }[mode] || openCosmos;
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
@@ -510,6 +528,76 @@
       if (e.target.closest('.bw-gal-star') || e.target.closest('.bw-gal-pop')) return;
       if (pop.parentNode) pop.parentNode.removeChild(pop);
       sky.removeEventListener('click', once);
+    });
+  }
+
+  /* ============ 娃娃屋（娃娃墙） ============ */
+  var DOLL_IMG = function (prompt) {
+    return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' +
+      encodeURIComponent(prompt) + '&image_size=square';
+  };
+  /* 每只娃娃：名字 + 悄悄话 + AI 图 prompt */
+  var DOLLS = [
+    { name: '糯米', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
+    { name: '奶糖', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '布丁', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
+    { name: '橙子', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '棉花', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
+    { name: '豆丁', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' }
+  ];
+
+  function openDolls() {
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-dolls';
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-dolls-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">娃娃墙</h2>' +
+        '<p class="bw-modal-sub">点一只娃娃，听听它藏着的悄悄话</p>' +
+        '<div class="bw-dolls-wall" id="dollsWall"></div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    renderDolls(m);
+  }
+
+  function renderDolls(m) {
+    var wall = m.querySelector('#dollsWall');
+    wall.innerHTML = '';
+    DOLLS.forEach(function (doll, i) {
+      var d = document.createElement('div');
+      d.className = 'bw-doll';
+      d.style.animationDelay = (i * 0.08) + 's';
+      d.setAttribute('role', 'button');
+      d.setAttribute('tabindex', '0');
+      d.innerHTML =
+        '<span class="bw-doll-hang"></span>' +
+        '<img class="bw-doll-img" src="' + DOLL_IMG(doll.prompt) + '" alt="' + doll.name + '" loading="lazy" />' +
+        '<span class="bw-doll-name">' + doll.name + '</span>';
+      var click = function () { showDollPop(m, doll); };
+      d.addEventListener('click', click);
+      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDollPop(m, doll); } });
+      wall.appendChild(d);
+    });
+  }
+
+  /* 点击娃娃的悄悄话弹窗 */
+  function showDollPop(m, doll) {
+    var old = m.querySelector('.bw-doll-pop');
+    if (old) old.parentNode.removeChild(old);
+    var pop = document.createElement('div');
+    pop.className = 'bw-doll-pop';
+    pop.innerHTML =
+      '<span class="bw-doll-pop-name">✿ ' + doll.name + '</span>' +
+      '<span class="bw-doll-pop-line">' + doll.line + '</span>' +
+      '<button class="bw-doll-pop-x" type="button" title="关闭">✕</button>';
+    m.appendChild(pop);
+    pop.querySelector('.bw-doll-pop-x').addEventListener('click', function () {
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
     });
   }
 })();
