@@ -486,6 +486,31 @@ date: 2026-08-29 00:00:00
     { name: '蛋挞', personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
   ];
 
+  /* 投喂动作表：每只娃娃专属食物 + 专属特效 + 专属动作动画 */
+  var ACT = {
+    '糯米': { food: '🍯', fx: '🍯', anim: 'bwA_bear' },
+    '奶糖': { food: '🥕', fx: '🥕', anim: 'bwA_bunny' },
+    '布丁': { food: '🐟', fx: '🐟', anim: 'bwA_cat' },
+    '橙子': { food: '🍊', fx: '🍊', anim: 'bwA_fox' },
+    '棉花': { food: '🍡', fx: '☁️', anim: 'bwA_lamb' },
+    '豆丁': { food: '🍖', fx: '🔥', anim: 'bwA_dino' },
+    '桃桃': { food: '🍎', fx: '😋', anim: 'bwA_pig' },
+    '西西': { food: '🐟', fx: '💤', anim: 'bwA_catSleepy' },
+    '果冻': { food: '🐌', fx: '💧', anim: 'bwA_frog' },
+    '布林': { food: '🧊', fx: '❄️', anim: 'bwA_penguin' },
+    '啾啾': { food: '🌽', fx: '🪶', anim: 'bwA_chick' },
+    '麻薯': { food: '🍡', fx: '🫧', anim: 'bwA_sticky' },
+    '泡芙': { food: '🧁', fx: '💗', anim: 'bwA_creampuff' },
+    '曲奇': { food: '🍪', fx: '🤎', anim: 'bwA_cookie' },
+    '柠檬': { food: '🌿', fx: '💧', anim: 'bwA_duck' },
+    '松果': { food: '🌰', fx: '🍂', anim: 'bwA_squirrel' },
+    '草莓': { food: '🍓', fx: '🍬', anim: 'bwA_strawberry' },
+    '芋泥': { food: '🍠', fx: '🫐', anim: 'bwA_taro' },
+    '可可': { food: '🦴', fx: '💛', anim: 'bwA_dog' },
+    '蛋挞': { food: '🥧', fx: '🌞', anim: 'bwA_golden' },
+    '彩虹': { food: '🌈', fx: '✨', anim: 'bwA_rainbow' }
+  };
+
   /* 隐藏传说娃娃：集齐 20 只后召唤 */
   var HIDDEN = { name: '彩虹', personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
 
@@ -576,7 +601,7 @@ date: 2026-08-29 00:00:00
 
   function onDollClick(m, d, doll) {
     bounceDoll(d);
-    feedDoll(d);
+    feedDoll(d, doll);
     collectDoll(m, doll);
     showDollCard(m, doll);
   }
@@ -590,17 +615,25 @@ date: 2026-08-29 00:00:00
     setTimeout(function () { if (d.__bt === t) d.classList.remove('is-bounce'); }, 900);
   }
 
-  /* 喂食彩蛋：娃娃上方冒出一块小饼干 + 一颗小爱心，娃娃柔光一笑 */
-  function feedDoll(d) {
+  /* 投喂彩蛋：按娃娃专属动作表，冒专属食物 + 专属特效，娃娃做专属动作 */
+  function feedDoll(d, doll) {
+    var a = ACT[doll && doll.name] || ACT['糯米'];
     var old = d.parentNode.querySelector('.bw-doll-yum');
     if (old) old.parentNode.removeChild(old);
     var yum = document.createElement('span');
     yum.className = 'bw-doll-yum';
-    yum.innerHTML = '<i class="y-cookie">🍪</i><i class="y-heart">💗</i>';
+    yum.innerHTML = '<i class="y-foo">' + a.food + '</i><i class="y-fx">' + a.fx + '</i>';
     d.appendChild(yum);
     d.classList.add('is-fed');
+    var img = d.querySelector('.bw-doll-img');
+    var cur = d.getAttribute('data-anim');
+    if (cur) img.classList.remove(cur);
+    void img.offsetWidth;
+    img.classList.add(a.anim);
+    d.setAttribute('data-anim', a.anim);
     setTimeout(function () {
       if (yum.parentNode) yum.parentNode.removeChild(yum);
+      img.classList.remove(a.anim);
       d.classList.remove('is-fed');
     }, 1600);
   }
@@ -652,7 +685,7 @@ date: 2026-08-29 00:00:00
       '<img class="bw-doll-img" src="' + DOLL_IMG(HIDDEN.prompt) + '" alt="彩虹宝宝" loading="lazy" />' +
       '<span class="bw-doll-name">彩虹宝宝</span>';
     d.querySelector('.bw-doll-img').style.animationDelay = '0s';
-    var open = function () { bounceDoll(d); feedDoll(d); showDollCard(m, HIDDEN); };
+    var open = function () { bounceDoll(d); feedDoll(d, HIDDEN); showDollCard(m, HIDDEN); };
     d.addEventListener('click', open);
     d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     wall.appendChild(d);
