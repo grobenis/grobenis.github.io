@@ -4258,7 +4258,7 @@ body.lamp-black .candle-glow.is-on {
 }
 .bw-dolls-panel {
   position: relative;
-  width: min(680px, 100%);
+  width: min(880px, 100%);
   border: 1px solid rgba(255, 190, 210, 0.35);
   background:
     radial-gradient(ellipse at 50% -10%, rgba(255, 220, 200, 0.5), transparent 55%),
@@ -4283,12 +4283,15 @@ body.lamp-black .candle-glow.is-on {
 /* ---- 娃娃墙 ---- */
 .bw-dolls-wall {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px 14px;
-  padding: 22px 10px 26px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px 12px;
+  padding: 22px 10px 30px;
 }
-@media (max-width: 540px) {
-  .bw-dolls-wall { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 640px) {
+  .bw-dolls-wall { grid-template-columns: repeat(4, 1fr); gap: 14px 8px; }
+}
+@media (max-width: 420px) {
+  .bw-dolls-wall { grid-template-columns: repeat(3, 1fr); }
 }
 .bw-doll {
   position: relative;
@@ -4338,6 +4341,18 @@ body.lamp-black .candle-glow.is-on {
   box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4);
   outline: none;
 }
+/* 点击：放大弹跳 + 轻轻旋转一下 */
+.bw-doll.is-bounce .bw-doll-img {
+  animation: bwDollBounce 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes bwDollBounce {
+  0%   { transform: translateY(0) scale(1) rotate(0deg); }
+  30%  { transform: translateY(-14px) scale(1.28) rotate(7deg); }
+  50%  { transform: translateY(0) scale(1.08) rotate(-4deg); }
+  68%  { transform: translateY(-6px) scale(1.16) rotate(3deg); }
+  82%  { transform: translateY(0) scale(1.04) rotate(-1deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
 .bw-doll-name {
   margin-top: 10px;
   font-size: 14px;
@@ -4347,37 +4362,85 @@ body.lamp-black .candle-glow.is-on {
   padding: 3px 12px;
   border-radius: 999px;
 }
-/* 悄悄话弹窗 */
+/* 悄悄话/档案卡弹窗 */
 .bw-doll-pop {
   position: absolute;
-  left: 50%; bottom: 26px;
-  transform: translateX(-50%);
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
-  width: min(420px, 84%);
+  width: min(430px, 86%);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px 22px 16px;
-  border-radius: 18px;
-  background: rgba(70, 40, 70, 0.96);
-  border: 1px solid rgba(255, 200, 220, 0.35);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.45);
+  gap: 12px;
+  padding: 22px 24px 20px;
+  border-radius: 20px;
+  background: rgba(70, 40, 70, 0.97);
+  border: 1px solid rgba(255, 200, 220, 0.4);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.5);
   color: #ffe9f0;
-  animation: bwPopIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: bwPopIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @keyframes bwPopIn {
-  from { opacity: 0; transform: translate(-50%, 16px) scale(0.92); }
-  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  0%   { opacity: 0; transform: translate(-50%, -40%) scale(0.7); }
+  60%  { opacity: 1; transform: translate(-50%, -52%) scale(1.06); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+/* 档案卡：左图右文 */
+.bw-doll-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+.bw-doll-card-img {
+  width: 96px;
+  height: 96px;
+  flex: none;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.bw-doll-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
 }
 .bw-doll-pop-name {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: 1px;
 }
-.bw-doll-pop-line {
+.bw-doll-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bw-doll-field {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.6;
   color: #ffd9e4;
+}
+.bw-doll-field b {
+  flex: none;
+  min-width: 44px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #ffc2d6;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.bw-doll-field span { min-width: 0; }
+.bw-doll-field-line b { background: rgba(255, 160, 190, 0.24); }
+@media (max-width: 420px) {
+  .bw-doll-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .bw-doll-card-img { width: 84px; height: 84px; }
 }
 .bw-doll-pop-x {
   position: absolute;

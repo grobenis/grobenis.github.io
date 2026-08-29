@@ -536,14 +536,28 @@
     return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' +
       encodeURIComponent(prompt) + '&image_size=square';
   };
-  /* 每只娃娃：名字 + 悄悄话 + AI 图 prompt */
+  /* 每只娃娃：名字 + 性格 + 喜欢的事 + 悄悄话 + AI 图 prompt（5×4=20 只） */
   var DOLLS = [
-    { name: '糯米', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
-    { name: '奶糖', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '布丁', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
-    { name: '橙子', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '棉花', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
-    { name: '豆丁', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' }
+    { name: '糯米', personality: '温柔爱睡', like: '抱着蜂蜜罐打盹，在你难过时递上一个抱抱', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
+    { name: '奶糖', personality: '好奇又活泼', like: '收集清晨的露珠，竖起长耳朵听风里的故事', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '布丁', personality: '慵懒小傲娇', like: '晒太阳打呼噜，偷看你认真写字的侧脸', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
+    { name: '橙子', personality: '开朗元气', like: '追着自己的尾巴转圈，把甜橙味抱抱分给大家', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '棉花', personality: '软萌害羞', like: '趴在窗边数星星，把烦心事裹进云朵里', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
+    { name: '豆丁', personality: '勇敢又逞强', like: '假装很凶地保护大家，其实最怕被搔痒痒', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' },
+    { name: '桃桃', personality: '甜甜软软', like: '每天给自己一个草莓味抱抱', line: '生活有点苦，但我是甜的。', prompt: 'one cute plush pink pig, round soft body, big glossy eyes, tiny blush, adorable smile, studio product shot, pastel pink background' },
+    { name: '西西', personality: '安静心思细', like: '收藏雨后的彩虹，画进你的梦里', line: '别看我话少，我记得你所有的好。', prompt: 'one cute plush blue kitten with sleepy soft eyes, round fluffy body, tiny blush, studio product shot, pastel pink background' },
+    { name: '果冻', personality: '活泼呱呱', like: '下雨天跳进池塘里，和雨滴排排队', line: '生活嘛，总要蹦跶两下才过瘾。', prompt: 'one cute plush green frog, round chubby body, bright wide eyes, cheerful smile, studio product shot, pastel pink background' },
+    { name: '布林', personality: '稳重慢悠悠', like: '冬天最暖的，是和朋友们挤在一起', line: '走得慢没关系，我不急着离开你。', prompt: 'one cute plush blue penguin, round belly, orange feet, big sparkly eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '啾啾', personality: '元气满满', like: '一天到晚对着太阳叽叽叫', line: '想把第一缕晨光，分一缕给你。', prompt: 'one cute plush yellow chick, chubby round body, bright joyful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '麻薯', personality: '黏人小团子', like: '不知不觉就黏在你身边不想走', line: '想你了，所以把自己变成软软的。', prompt: 'one cute plush white bear, precise soft round body, glossy gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '泡芙', personality: '甜到冒泡', like: '往平凡的日子里加一点奶油', line: '不开心的时候，请轻轻咬我一口。', prompt: 'one cute plush cream bunny with swirl creampuff look, round soft body, sweet sparkling eyes, studio product shot, pastel pink background' },
+    { name: '曲奇', personality: '踏实可靠', like: '把难题耐心烤成脆脆的曲奇', line: '慢慢来，一切都来得及。', prompt: 'one cute plush brown bear with cookie speckles, round fluffy body, warm kind eyes, studio product shot, pastel pink background' },
+    { name: '柠檬', personality: '清爽乐乐', like: '在水面划出一道道小小的涟漪', line: '酸酸的我，最配甜甜的你。', prompt: 'one cute plush yellow duck, round soft body, bright cheerful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '松果', personality: '机灵爱囤', like: '把秋天的快乐都收进小口袋', line: '你给的小确幸，我都悄悄珍藏。', prompt: 'one cute plush squirrel with big fluffy tail, round chubby body, bright clever eyes, studio product shot, pastel pink background' },
+    { name: '草莓', personality: '软fu软fu', like: '给平凡的日子撒上一层糖霜', line: '我的心，是草莓味的。', prompt: 'one cute plush pink bear with strawberry detail, round soft body, glossy happy eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '芋泥', personality: '温柔寡言', like: '把想说的话都说得很轻很暖', line: '靠近一点，就能听见我的心跳。', prompt: 'one cute plush purple bear, round chubby body, soft gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '可可', personality: '忠诚暖暖', like: '陪你到天亮，再送你安全回家', line: '无论多晚，都等你回来。', prompt: 'one cute plush brown puppy, round fluffy body, big faithful eyes, happy ears, studio product shot, pastel pink background' },
+    { name: '蛋挞', personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
   ];
 
   function openDolls() {
@@ -578,22 +592,36 @@
         '<span class="bw-doll-hang"></span>' +
         '<img class="bw-doll-img" src="' + DOLL_IMG(doll.prompt) + '" alt="' + doll.name + '" loading="lazy" />' +
         '<span class="bw-doll-name">' + doll.name + '</span>';
-      var click = function () { showDollPop(m, doll); };
+      var click = function () { bounceDoll(d); showDollCard(m, doll); };
       d.addEventListener('click', click);
-      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDollPop(m, doll); } });
+      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bounceDoll(d); showDollCard(m, doll); } });
       wall.appendChild(d);
     });
   }
 
-  /* 点击娃娃的悄悄话弹窗 */
-  function showDollPop(m, doll) {
+  /* 点击娃娃时的放大弹跳动画(重触发技巧:先移除再回流) */
+  function bounceDoll(d) {
+    d.classList.remove('is-bounce');
+    void d.offsetWidth;
+    d.classList.add('is-bounce');
+  }
+
+  /* 点击娃娃：弹出个人档案卡(名字 / 性格 / 喜欢 / 悄悄话) */
+  function showDollCard(m, doll) {
     var old = m.querySelector('.bw-doll-pop');
     if (old) old.parentNode.removeChild(old);
     var pop = document.createElement('div');
-    pop.className = 'bw-doll-pop';
+    pop.className = 'bw-doll-pop bw-doll-card';
     pop.innerHTML =
-      '<span class="bw-doll-pop-name">✿ ' + doll.name + '</span>' +
-      '<span class="bw-doll-pop-line">' + doll.line + '</span>' +
+      '<img class="bw-doll-card-img" src="' + DOLL_IMG(doll.prompt) + '" alt="' + doll.name + '" />' +
+      '<div class="bw-doll-card-body">' +
+        '<span class="bw-doll-pop-name">✿ ' + doll.name + '</span>' +
+        '<div class="bw-doll-fields">' +
+          '<div class="bw-doll-field"><b>性格</b><span>' + doll.personality + '</span></div>' +
+          '<div class="bw-doll-field"><b>喜欢</b><span>' + doll.like + '</span></div>' +
+          '<div class="bw-doll-field bw-doll-field-line"><b>悄悄话</b><span>' + doll.line + '</span></div>' +
+        '</div>' +
+      '</div>' +
       '<button class="bw-doll-pop-x" type="button" title="关闭">✕</button>';
     m.appendChild(pop);
     pop.querySelector('.bw-doll-pop-x').addEventListener('click', function () {
