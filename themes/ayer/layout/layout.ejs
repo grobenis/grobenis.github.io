@@ -1,6 +1,14 @@
 <%- partial('_partial/head') %>
 
-<body class="<%- (page.path && page.path.indexOf('lyrics') === 0) ? 'is-lyrics page-locked' : '' %>">
+<body class="<%- (function(){
+  var p = page.path || '';
+  if (p.indexOf('lyrics') === 0) return 'is-lyrics page-locked';
+  if (p.indexOf('project') === 0) return 'page-theme-journey';
+  if (p.indexOf('works') === 0) return 'page-theme-works';
+  if (p.indexOf('games') === 0) return 'page-theme-games';
+  if (p.indexOf('brainwave') === 0) return 'page-theme-brainwave';
+  return '';
+})() %>">
   <div id="app">
     <main class="content">
       <%- body %>

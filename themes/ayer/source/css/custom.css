@@ -2136,6 +2136,101 @@ body.page-bg-10 {
     linear-gradient(180deg, #04060a 0%, #0c1119 55%, #171f2b 100%) !important;
 }
 
+/* ==========================================================================
+   独立页面主题背景(page-theme-*):旅程 / 成果 / 游戏 / 脑洞
+   ========================================================================== */
+/* 旅程 —— 清晨远行:淡蓝天空 + 暖沙地平线 */
+body.page-theme-journey {
+  background:
+    radial-gradient(ellipse at 78% 16%, rgba(255, 200, 130, 0.4), transparent 44%),
+    radial-gradient(ellipse at 12% 82%, rgba(120, 180, 235, 0.35), transparent 48%),
+    radial-gradient(ellipse at 50% 105%, rgba(240, 180, 110, 0.45), transparent 55%),
+    linear-gradient(174deg, #cfe6f7 0%, #e6eef6 38%, #f6ead8 72%, #f7d9b0 100%) !important;
+}
+/* 旅程 —— 远景云层 + 飞鸟氛围 */
+body.page-theme-journey::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 18% 26%, rgba(255, 255, 255, 0.55), transparent 42%),
+    radial-gradient(ellipse at 62% 18%, rgba(255, 255, 255, 0.4), transparent 40%),
+    radial-gradient(ellipse at 88% 34%, rgba(255, 255, 255, 0.45), transparent 42%);
+  filter: blur(6px);
+}
+/* 成果 —— 聚光灯展台:冷白 + 蓝紫光斑 */
+body.page-theme-works {
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.85), transparent 46%),
+    radial-gradient(ellipse at 20% 78%, rgba(120, 150, 255, 0.3), transparent 46%),
+    radial-gradient(ellipse at 84% 70%, rgba(170, 130, 255, 0.28), transparent 46%),
+    linear-gradient(172deg, #eef2ff 0%, #e7ecff 50%, #f3f0ff 100%) !important;
+}
+/* 成果 —— 顶部聚光光束氛围 */
+body.page-theme-works::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    conic-gradient(from 90deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.5) 20deg, transparent 40deg);
+  filter: blur(10px);
+}
+/* 游戏 —— 街机霓虹:柔和霓虹光晕 */
+body.page-theme-games {
+  background:
+    radial-gradient(ellipse at 26% 22%, rgba(255, 110, 140, 0.22), transparent 42%),
+    radial-gradient(ellipse at 80% 28%, rgba(80, 160, 255, 0.25), transparent 42%),
+    radial-gradient(ellipse at 50% 88%, rgba(255, 205, 90, 0.2), transparent 46%),
+    linear-gradient(180deg, #f2f2f8 0%, #ece9f5 55%, #e6eafa 100%) !important;
+}
+/* 游戏 —— 像素网格氛围 */
+body.page-theme-games::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(120, 130, 180, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 130, 180, 0.10) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+/* 脑洞 —— 星夜创意:浅紫蓝星空 */
+body.page-theme-brainwave {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(150, 130, 255, 0.25), transparent 46%),
+    radial-gradient(ellipse at 78% 32%, rgba(110, 180, 255, 0.25), transparent 44%),
+    radial-gradient(ellipse at 50% 95%, rgba(120, 90, 255, 0.2), transparent 52%),
+    linear-gradient(176deg, #eef0ff 0%, #e6e8fb 48%, #ece6fb 100%) !important;
+}
+/* 脑洞 —— 漂浮星点氛围 */
+body.page-theme-brainwave::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 15% 22%, rgba(120, 110, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 32% 55%, rgba(150, 130, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 48% 18%, rgba(110, 150, 255, 0.55), transparent),
+    radial-gradient(3px 3px at 63% 42%, rgba(160, 130, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 78% 66%, rgba(120, 170, 255, 0.55), transparent),
+    radial-gradient(2px 2px at 88% 24%, rgba(140, 110, 255, 0.5), transparent);
+}
+/* 保证页面正文在氛围层之上 */
+body.page-theme-journey #app,
+body.page-theme-works #app,
+body.page-theme-games #app,
+body.page-theme-brainwave #app {
+  position: relative;
+  z-index: 1;
+}
+
 /* 与 page-scene 一致地抬高电视，且盖过上面所有背景 */
 body[class*="page-bg-"] .tv-set,
 body[class*="page-scene-"] .tv-set,
@@ -4085,3 +4180,214 @@ body.lamp-black .candle-glow.is-on {
   .bw-gal-sky { height: 230px; }
   .bw-gal-add { flex-direction: column; }
 }
+
+/* ==========================================================================
+   娃娃屋（娃娃墙）模态
+   ========================================================================== */
+/* ---- 卡片 3：娃娃屋 ---- */
+.bw-card-dolls .bw-card-art {
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(255, 214, 180, 0.55), transparent 55%),
+    linear-gradient(175deg, #ffe8ec 0%, #ffe1ec 45%, #ffd9e6 100%);
+}
+.bw-card-dolls .bw-card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(2px 2px at 12% 20%, rgba(220, 140, 160, 0.5), transparent),
+    radial-gradient(2px 2px at 35% 70%, rgba(220, 140, 160, 0.5), transparent),
+    radial-gradient(2px 2px at 60% 30%, rgba(220, 140, 160, 0.4), transparent),
+    radial-gradient(2px 2px at 82% 74%, rgba(220, 140, 160, 0.45), transparent);
+}
+.bw-dolls-hook {
+  position: absolute;
+  left: 50%; top: 16px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid #f0a5b8;
+  background: #fff;
+  transform: translateX(-50%);
+}
+.bw-dolls-thread {
+  position: absolute;
+  left: 50%; top: 26px;
+  width: 0; height: 56px;
+  transform: translateX(-50%);
+  border-left: 2px dashed rgba(200, 120, 145, 0.5);
+}
+.bw-doll-preview {
+  position: absolute;
+  width: 34px; height: 34px;
+  border-radius: 50% 50% 46% 46%;
+  background:
+    radial-gradient(circle at 35% 32%, rgba(255,255,255,0.85) 0 12%, transparent 13%),
+    linear-gradient(160deg, #ffc4d2, #ff9ab5);
+  box-shadow: inset -3px -4px 6px rgba(180, 80, 110, 0.25);
+}
+.bw-doll-preview::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: -14px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #e0809a;
+  transform: translateX(-50%);
+}
+.bw-doll-p1 { left: 22%; top: 58px; }
+.bw-doll-p2 { left: 47%; top: 78px; width: 40px; height: 40px; }
+.bw-doll-p3 { right: 22%; top: 58px; width: 30px; height: 30px; }
+.bw-dolls-heart {
+  position: absolute;
+  right: 16%; bottom: 14px;
+  font-size: 18px;
+  color: #f0789a;
+  filter: drop-shadow(0 0 8px rgba(240, 120, 154, 0.5));
+  animation: bwHeartBeat 1.4s ease-in-out infinite;
+}
+@keyframes bwHeartBeat {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.18); }
+  55% { transform: scale(0.95); }
+}
+
+/* ---- 娃娃屋模态 ---- */
+.bw-dolls .bw-modal-backdrop {
+  background: rgba(30, 16, 26, 0.82);
+}
+.bw-dolls-panel {
+  position: relative;
+  width: min(680px, 100%);
+  border: 1px solid rgba(255, 190, 210, 0.35);
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(255, 220, 200, 0.5), transparent 55%),
+    linear-gradient(165deg, #ffecef 0%, #ffe0ea 50%, #ffd6e3 100%);
+  color: #5c3350;
+  box-shadow: 0 30px 80px rgba(90, 30, 55, 0.5);
+}
+.bw-dolls-panel .bw-modal-title {
+  background: linear-gradient(90deg, #f2759c, #c98aff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bw-dolls-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
+.bw-dolls-panel .bw-modal-close {
+  border-color: rgba(160, 90, 120, 0.4);
+  background: rgba(255, 255, 255, 0.45);
+  color: #8a5470;
+}
+.bw-dolls-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
+
+/* ---- 娃娃墙 ---- */
+.bw-dolls-wall {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 14px;
+  padding: 22px 10px 26px;
+}
+@media (max-width: 540px) {
+  .bw-dolls-wall { grid-template-columns: repeat(2, 1fr); }
+}
+.bw-doll {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 16px;
+  cursor: pointer;
+  opacity: 0;
+  animation: bwDollIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes bwDollIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* 从顶部垂下的挂线 */
+.bw-doll-hang {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 22px;
+  border-left: 2px dashed rgba(200, 120, 145, 0.55);
+  transition: height 0.3s ease;
+}
+.bw-doll::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid #f0a5b8;
+  background: #fff;
+}
+.bw-doll-img {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(170, 90, 120, 0.28);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.bw-doll:hover .bw-doll-img,
+.bw-doll:focus-visible .bw-doll-img {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4);
+  outline: none;
+}
+.bw-doll-name {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #7a3d5c;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 3px 12px;
+  border-radius: 999px;
+}
+/* 悄悄话弹窗 */
+.bw-doll-pop {
+  position: absolute;
+  left: 50%; bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: min(420px, 84%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 22px 16px;
+  border-radius: 18px;
+  background: rgba(70, 40, 70, 0.96);
+  border: 1px solid rgba(255, 200, 220, 0.35);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.45);
+  color: #ffe9f0;
+  animation: bwPopIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes bwPopIn {
+  from { opacity: 0; transform: translate(-50%, 16px) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+.bw-doll-pop-name {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.bw-doll-pop-line {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #ffd9e4;
+}
+.bw-doll-pop-x {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 26px; height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffe9f0;
+  font-size: 13px;
+  cursor: pointer;
+}
+.bw-doll-pop-x:hover { background: rgba(255, 255, 255, 0.3); }
