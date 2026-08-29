@@ -4670,7 +4670,10 @@ body.lamp-black .candle-glow.is-on {
 .bw-shop .bw-modal-backdrop { background: rgba(40, 20, 40, 0.78); }
 .bw-shop-panel {
   position: relative;
-  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 100%);
+  height: min(88vh, 780px);
   border: 1px solid rgba(255, 170, 210, 0.35);
   background:
     radial-gradient(ellipse at 50% -8%, rgba(255, 220, 235, 0.55), transparent 55%),
@@ -4691,7 +4694,9 @@ body.lamp-black .candle-glow.is-on {
 /* ---- 盲盒与开盒 ---- */
 .bw-shop-stage {
   position: relative;
-  height: 220px; margin: 8px 0 4px;
+  flex: 1 1 auto;
+  min-height: 200px;
+  margin: 8px 0 4px;
   display: flex; align-items: center; justify-content: center;
 }
 .bw-shop-box {
@@ -4736,16 +4741,18 @@ body.lamp-black .candle-glow.is-on {
   95% { transform: translateX(6px); }
 }
 
-/* ---- 开盒结果（玩具弹出） ---- */
+/* ---- 开盒结果（玩具弹出）：占满面板主体 ---- */
 .bw-shop-result {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  min-height: 190px; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px;
+  min-height: 190px;
 }
+.bw-shop-result.open { flex: 1 1 auto; min-height: min(58vh, 520px); }
 .bw-shop-result .bw-toy-img {
-  width: 150px; height: 150px; object-fit: cover;
-  border-radius: 22px;
-  border: 3px solid rgba(255, 180, 210, 0.7);
-  box-shadow: 0 16px 34px rgba(120, 40, 85, 0.35);
+  width: min(430px, 80vw); height: min(430px, 80vw); object-fit: cover;
+  border-radius: 28px;
+  border: 4px solid rgba(255, 180, 210, 0.7);
+  box-shadow: 0 22px 48px rgba(120, 40, 85, 0.38);
   opacity: 0;
   transform: scale(0.5) rotate(-8deg);
 }
@@ -4759,12 +4766,12 @@ body.lamp-black .candle-glow.is-on {
   100% { opacity: 1; transform: scale(1) rotate(0) translateY(0); }
 }
 .bw-shop-result .bw-toy-name {
-  font-size: 20px; font-weight: 900; color: #7a2d4f;
+  font-size: 26px; font-weight: 900; color: #7a2d4f;
   opacity: 0; transform: translateY(10px);
 }
 .bw-shop-result.open .bw-toy-name { animation: bwToySlide 0.5s ease 0.42s forwards; }
 .bw-shop-result .bw-toy-line {
-  font-size: 12px; color: #9a6f86; opacity: 0;
+  font-size: 14px; color: #9a6f86; opacity: 0;
 }
 .bw-shop-result.open .bw-toy-line { animation: bwToySlide 0.5s ease 0.55s forwards; }
 @keyframes bwToySlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

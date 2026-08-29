@@ -537,7 +537,7 @@ date: 2026-08-29 00:00:00
     { name: '团子喵', line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
     { name: '星星软糖', line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
     { name: '小酸奶', line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
-    { name: '方方熊', line: '方方正正，也超好抱', prompt: 'one cute plush soft block bear toy, cuboid square body, soft gray plush, round happy eyes, adorable, studio product shot, pastel pink background' },
+    { name: '方方熊', line: '方方正正，也超好抱', prompt: 'one cute square cube-shaped polar bear plush toy with tiny round ears, soft fluffy white fur, smiling kawaii face, sitting pose, studio product shot, pastel pink background' },
     { name: '布丁兔', line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
     { name: '云朵羊', line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
     { name: '果冻龙', line: '哎呀，把爪爪掉了', prompt: 'one cute squishy jelly baby dragon soft toy, translucent green jelly body, tiny wings, big sparkly eyes, adorable, studio product shot, pastel pink background' },
@@ -546,7 +546,7 @@ date: 2026-08-29 00:00:00
     { name: '芒果鸭', line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' },
     { name: '泡泡蛙', line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
     { name: '芝士鼠', line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
-    { name: '转圈猴', line: '转呀转呀，头晕晕', prompt: 'one cute spinning monkey soft toy, round soft brown body, long curled tail, big happy eyes, adorable, studio product shot, pastel pink background' },
+    { name: '转圈猴', line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
     { name: '灯泡狗', line: '打开开关，就点亮你', prompt: 'one cute light-bulb puppy soft toy, round warm glowing bulb body with tiny dog face, soft yellow plush, adorable, studio product shot, pastel pink background' },
     { name: '小麋鹿', line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
     { name: '曲奇牛', line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' }
@@ -801,6 +801,7 @@ date: 2026-08-29 00:00:00
     });
     var panel = m.querySelector('.bw-shop-panel');
     var box = m.querySelector('#shopBox');
+    var stage = m.querySelector('.bw-shop-stage');
     var res = m.querySelector('#shopResult');
     var again = m.querySelector('#shopAgain');
 
@@ -809,10 +810,10 @@ date: 2026-08-29 00:00:00
       return TOYS[Math.floor(Math.random() * TOYS.length)];
     }
     function openBox() {
-      if (box.style.display === 'none') return;
+      if (stage.style.display === 'none') return;
       box.classList.add('shaking');
       setTimeout(function () {
-        box.style.display = 'none';
+        stage.style.display = 'none';
         showToy(pick());
       }, 780);
     }
@@ -834,7 +835,7 @@ date: 2026-08-29 00:00:00
       }
     }
     function reset() {
-      box.style.display = '';
+      stage.style.display = '';
       box.classList.remove('shaking');
       res.classList.remove('open');
       res.innerHTML = '';
