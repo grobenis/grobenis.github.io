@@ -4801,18 +4801,32 @@ body.lamp-black .candle-glow.is-on {
   95% { transform: translateX(6px); }
 }
 
-/* ---- 开盒结果（玩具弹出）：占满面板主体 ---- */
+/* ---- 开盒结果（玩具弹出）：卡片居中、信息紧凑优雅 ---- */
 .bw-shop-result {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 14px;
+  gap: 12px;
   min-height: 190px;
+  text-align: center;
 }
-.bw-shop-result.open { flex: 1 1 auto; min-height: min(58vh, 520px); }
+.bw-shop-result.open {
+  flex: 1 1 auto;
+  min-height: min(58vh, 520px);
+  padding: 4px 14px 8px;
+  gap: 14px;
+  justify-content: center;
+}
 .bw-shop-result .bw-toy-img {
-  width: min(430px, 80vw); height: min(430px, 80vw); object-fit: cover;
+  width: min(280px, 60vw);
+  height: min(280px, 60vw);
+  object-fit: cover;
   border-radius: 28px;
-  border: 4px solid rgba(255, 180, 210, 0.7);
-  box-shadow: 0 22px 48px rgba(120, 40, 85, 0.38);
+  padding: 6px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 220, 235, 0.4) 70%, transparent 100%);
+  border: 2px solid rgba(255, 180, 210, 0.55);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    0 14px 32px rgba(140, 50, 100, 0.28);
   opacity: 0;
   transform: scale(0.5) rotate(-8deg);
 }
@@ -4826,16 +4840,40 @@ body.lamp-black .candle-glow.is-on {
   100% { opacity: 1; transform: scale(1) rotate(0) translateY(0); }
 }
 .bw-shop-result .bw-toy-name {
-  font-size: 26px; font-weight: 900; color: #7a2d4f;
+  font-size: 30px; font-weight: 900; color: #7a2d4f;
+  line-height: 1.15; letter-spacing: 1px;
+  margin-top: 2px;
   opacity: 0; transform: translateY(10px);
 }
 .bw-shop-result.open .bw-toy-name { animation: bwToySlide 0.5s ease 0.42s forwards; }
+.bw-shop-result .bw-toy-cat-tag {
+  margin: -2px 0 0;
+  padding: 3px 12px;
+  font-size: 11.5px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(160, 90, 120, 0.3);
+  letter-spacing: 0.8px;
+}
 .bw-shop-result .bw-toy-line {
-  font-size: 14px; color: #9a6f86; opacity: 0;
+  font-size: 13.5px; color: #a47690;
+  line-height: 1.55; letter-spacing: 0.5px;
+  margin: 0; max-width: 320px;
+  opacity: 0;
 }
 .bw-shop-result.open .bw-toy-line { animation: bwToySlide 0.5s ease 0.55s forwards; }
+.bw-shop-result .bw-shop-again {
+  margin: 6px 0 0; padding: 9px 24px;
+  font-size: 13px;
+  opacity: 0;
+  animation: bwToySlide 0.5s ease 0.7s forwards;
+}
 @keyframes bwToySlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.bw-shop-result .bw-toy-img.is-rare { border-color: #ffd76e; box-shadow: 0 0 34px rgba(255, 210, 100, 0.8); }
+.bw-shop-result .bw-toy-img.is-rare {
+  border-color: #ffd76e;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+    0 0 36px rgba(255, 210, 100, 0.7);
+}
 .bw-shop-result .bw-toy-name.is-rare {
   background: linear-gradient(90deg, #ff8fc0, #ffd76e, #9be2ff);
   -webkit-background-clip: text; background-clip: text; color: transparent;
