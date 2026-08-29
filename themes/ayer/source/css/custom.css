@@ -4454,3 +4454,103 @@ body.lamp-black .candle-glow.is-on {
   cursor: pointer;
 }
 .bw-doll-pop-x:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* ---- 娃娃墙创意升级：今日领养 / 图鉴进度 / 喂食 / 花瓣 / 集齐彩蛋 ---- */
+.bw-dolls-top {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 4px 14px; margin-bottom: 4px;
+}
+.bw-today {
+  flex: 1 1 auto; display: flex; align-items: center; gap: 10px;
+  min-width: 0; padding: 8px 12px; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 6px 18px rgba(150, 60, 95, 0.18);
+}
+.bw-today-img img { width: 52px; height: 52px; object-fit: cover; border-radius: 12px; border: 2px solid rgba(255, 150, 185, 0.55); }
+.bw-today-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.bw-today-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #e0447a; }
+.bw-today-name { font-size: 14px; font-weight: 800; color: #7a2d4f; }
+.bw-today-line { font-size: 11px; line-height: 1.5; color: #9a6f86; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bw-collect {
+  flex: 0 0 168px; display: flex; flex-direction: column; gap: 5px;
+  padding: 8px 12px; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 6px 18px rgba(150, 60, 95, 0.18);
+}
+.bw-collect-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #c77aa0; }
+.bw-collect-num { font-size: 13px; font-weight: 800; color: #e0447a; }
+.bw-collect-rail { height: 7px; border-radius: 999px; background: rgba(224, 68, 122, 0.16); overflow: hidden; }
+.bw-collect-fill {
+  height: 100%; border-radius: 999px; width: 0%;
+  background: linear-gradient(90deg, #ff8fb3, #e0447a);
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px rgba(224, 68, 122, 0.5);
+}
+@media (max-width: 560px) {
+  .bw-dolls-top { flex-direction: column; align-items: stretch; gap: 10px; }
+  .bw-collect { flex: none; }
+  .bw-today-line { white-space: normal; }
+}
+/* 娃娃呼吸/漂浮动画，hover 时摇摆 */
+.bw-doll .bw-doll-img { animation: bwBreath 3.4s ease-in-out infinite; will-change: transform; }
+.bw-doll:hover .bw-doll-img,
+.bw-doll:focus-visible .bw-doll-img {
+  animation: none; transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4); outline: none;
+}
+@keyframes bwBreath {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+}
+/* 已收集娃娃：金色描边 + ✦ 徽标 */
+.bw-doll.is-collected .bw-doll-img { box-shadow: 0 4px 14px rgba(224, 150, 60, 0.5); }
+.bw-doll.is-collected .bw-doll-name { background: linear-gradient(90deg, #ffd99e, #ffb35c); color: #7a4a12; }
+.bw-doll.is-collected::after {
+  content: '✦'; position: absolute; top: 24px; right: 8px; z-index: 2;
+  width: 20px; height: 20px; line-height: 21px; text-align: center;
+  font-size: 12px; color: #fff; background: #ff9a3c;
+  border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+/* 喂食彩蛋：饼干 + 爱心从娃娃头顶升起 */
+.bw-doll-yum { position: absolute; left: 50%; top: 4px; transform: translateX(-50%); z-index: 4; pointer-events: none; }
+.bw-doll-yum i { position: absolute; left: 50%; display: block; opacity: 0; font-style: normal; animation: bwYum 1.3s ease-out forwards; }
+.bw-doll-yum .y-cookie { top: 0; font-size: 22px; }
+.bw-doll-yum .y-heart { top: 0; font-size: 18px; animation-delay: 0.15s; }
+@keyframes bwYum {
+  0% { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
+  20% { opacity: 1; transform: translate(-50%, -18px) scale(1.1); }
+  100% { transform: translate(-50%, -58px) scale(0.9); opacity: 0; }
+}
+.bw-doll.is-fed .bw-doll-img { filter: brightness(1.12) saturate(1.12); }
+/* 飘落花瓣 / 星光氛围 */
+.bw-doll-petals { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
+.bw-petal { position: absolute; color: rgba(255, 140, 180, 0.55); animation: bwPetalFall linear infinite; }
+@keyframes bwPetalFall {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  8% { opacity: 0.9; }
+  100% { transform: translateY(110vh) translateX(26px) rotate(220deg); opacity: 0; }
+}
+/* 集齐横幅 + 金色烟花 */
+.bw-doll-banner {
+  position: absolute; left: 50%; top: 76px; transform: translateX(-50%);
+  z-index: 8; padding: 12px 22px; border-radius: 999px;
+  background: linear-gradient(90deg, #ffd76e, #ff9a3c, #ffd76e);
+  color: #5c2f00; font-size: 14px; font-weight: 800; white-space: nowrap;
+  box-shadow: 0 10px 30px rgba(255, 154, 60, 0.6);
+  animation: bwBanner 0.6s cubic-bezier(0.22, 1, 0.36, 1), bwBannerPulse 1.6s ease-in-out 0.6s infinite;
+}
+@keyframes bwBanner {
+  from { transform: translate(-50%, -20px) scale(0.7); opacity: 0; }
+  to { transform: translate(-50%, 0) scale(1); opacity: 1; }
+}
+@keyframes bwBannerPulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
+.bw-confetti { position: fixed; z-index: 20; font-size: 18px; pointer-events: none; opacity: 0; animation: bwConfetti 1.3s ease-out forwards; }
+@keyframes bwConfetti {
+  0% { transform: translate(0, 0) rotate(0) scale(0.6); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(160deg) scale(1.2); opacity: 0; }
+}
+/* 隐藏传说娃娃 · 彩虹宝宝 */
+.bw-doll-legend .bw-doll-img { border: 3px solid #ffd76e; box-shadow: 0 0 18px rgba(255, 200, 120, 0.7); animation: bwLegend 2.2s ease-in-out infinite; }
+@keyframes bwLegend { 0%, 100% { filter: hue-rotate(0deg); } 50% { filter: hue-rotate(40deg); } }
+.bw-doll-legend-note { grid-column: 1 / -1; text-align: center; font-size: 12px; font-weight: 700; color: #c77aa0; padding: 6px 0 2px; }
