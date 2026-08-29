@@ -870,7 +870,7 @@ date: 2026-08-29 00:00:00
   /* AI 生成卡通窗外景（与娃娃屋同款 text_to_image 服务，首次访问触发生成，之后 CDN 直出） */
   function WIN_IMG(prompt) {
     return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' +
-      encodeURIComponent(prompt) + '&image_size=square';
+      encodeURIComponent(prompt) + '&image_size=landscape_16_9';
   }
   var SEASONS = {
     spring: {
@@ -939,7 +939,6 @@ date: 2026-08-29 00:00:00
       scene.innerHTML = '<img class="bw-win-view" src="' + s.img + '" alt="' + key + '" />';
       fullImg.src = s.img;
       fullImg.alt = key;
-      full.style.setProperty('--bg', 'url("' + s.img + '")');
       cap.textContent = s.caption;
     }
     render('spring');

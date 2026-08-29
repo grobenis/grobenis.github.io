@@ -5111,7 +5111,7 @@ body.lamp-black .candle-glow.is-on {
 .is-zoom .bw-win-sill {
   opacity: 0;
 }
-/* 高清外景大图：放大时完整显示整张风景（无裁切），两侧用同图模糊背景铺满 */
+/* 高清外景大图：放大时用适配横向比例的图片铺满整个房间区域 */
 .bw-win-fullview {
   position: absolute;
   inset: 0;
@@ -5121,22 +5121,12 @@ body.lamp-black .candle-glow.is-on {
   transition: opacity 0.45s ease;
   pointer-events: none;
 }
-.bw-win-fullview::before {
-  content: '';
-  position: absolute;
-  inset: -24px;
-  background-image: var(--bg);
-  background-size: cover;
-  background-position: center;
-  filter: blur(24px) brightness(0.85);
-  z-index: 0;
-}
 .bw-win-fullview img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   z-index: 1;
   filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.35));
 }
