@@ -569,32 +569,30 @@
   }
 
   /* ============ 娃娃屋（娃娃墙） ============ */
-  var DOLL_IMG = function (prompt) {
-    return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' +
-      encodeURIComponent(prompt) + '&image_size=square';
-  };
+  /* 所有 AI 配图已预生成到 source/brainwave/images/，每个数据项带 img 字段直接引用本地 */
+  var IMG = function (rel) { return '/brainwave/images/' + rel; };
   /* 每只娃娃：名字 + 性格 + 喜欢的事 + 悄悄话 + AI 图 prompt（5×4=20 只） */
   var DOLLS = [
-    { name: '糯米', personality: '温柔爱睡', like: '抱着蜂蜜罐打盹，在你难过时递上一个抱抱', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
-    { name: '奶糖', personality: '好奇又活泼', like: '收集清晨的露珠，竖起长耳朵听风里的故事', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '布丁', personality: '慵懒小傲娇', like: '晒太阳打呼噜，偷看你认真写字的侧脸', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
-    { name: '橙子', personality: '开朗元气', like: '追着自己的尾巴转圈，把甜橙味抱抱分给大家', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '棉花', personality: '软萌害羞', like: '趴在窗边数星星，把烦心事裹进云朵里', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
-    { name: '豆丁', personality: '勇敢又逞强', like: '假装很凶地保护大家，其实最怕被搔痒痒', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' },
-    { name: '桃桃', personality: '甜甜软软', like: '每天给自己一个草莓味抱抱', line: '生活有点苦，但我是甜的。', prompt: 'one cute plush pink pig, round soft body, big glossy eyes, tiny blush, adorable smile, studio product shot, pastel pink background' },
-    { name: '西西', personality: '安静心思细', like: '收藏雨后的彩虹，画进你的梦里', line: '别看我话少，我记得你所有的好。', prompt: 'one cute plush blue kitten with sleepy soft eyes, round fluffy body, tiny blush, studio product shot, pastel pink background' },
-    { name: '果冻', personality: '活泼呱呱', like: '下雨天跳进池塘里，和雨滴排排队', line: '生活嘛，总要蹦跶两下才过瘾。', prompt: 'one cute plush green frog, round chubby body, bright wide eyes, cheerful smile, studio product shot, pastel pink background' },
-    { name: '布林', personality: '稳重慢悠悠', like: '冬天最暖的，是和朋友们挤在一起', line: '走得慢没关系，我不急着离开你。', prompt: 'one cute plush blue penguin, round belly, orange feet, big sparkly eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '啾啾', personality: '元气满满', like: '一天到晚对着太阳叽叽叫', line: '想把第一缕晨光，分一缕给你。', prompt: 'one cute plush yellow chick, chubby round body, bright joyful eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '麻薯', personality: '黏人小团子', like: '不知不觉就黏在你身边不想走', line: '想你了，所以把自己变成软软的。', prompt: 'one cute plush white bear, precise soft round body, glossy gentle eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '泡芙', personality: '甜到冒泡', like: '往平凡的日子里加一点奶油', line: '不开心的时候，请轻轻咬我一口。', prompt: 'one cute plush cream bunny with swirl creampuff look, round soft body, sweet sparkling eyes, studio product shot, pastel pink background' },
-    { name: '曲奇', personality: '踏实可靠', like: '把难题耐心烤成脆脆的曲奇', line: '慢慢来，一切都来得及。', prompt: 'one cute plush brown bear with cookie speckles, round fluffy body, warm kind eyes, studio product shot, pastel pink background' },
-    { name: '柠檬', personality: '清爽乐乐', like: '在水面划出一道道小小的涟漪', line: '酸酸的我，最配甜甜的你。', prompt: 'one cute plush yellow duck, round soft body, bright cheerful eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '松果', personality: '机灵爱囤', like: '把秋天的快乐都收进小口袋', line: '你给的小确幸，我都悄悄珍藏。', prompt: 'one cute plush squirrel with big fluffy tail, round chubby body, bright clever eyes, studio product shot, pastel pink background' },
-    { name: '草莓', personality: '软fu软fu', like: '给平凡的日子撒上一层糖霜', line: '我的心，是草莓味的。', prompt: 'one cute plush pink bear with strawberry detail, round soft body, glossy happy eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '芋泥', personality: '温柔寡言', like: '把想说的话都说得很轻很暖', line: '靠近一点，就能听见我的心跳。', prompt: 'one cute plush purple bear, round chubby body, soft gentle eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '可可', personality: '忠诚暖暖', like: '陪你到天亮，再送你安全回家', line: '无论多晚，都等你回来。', prompt: 'one cute plush brown puppy, round fluffy body, big faithful eyes, happy ears, studio product shot, pastel pink background' },
-    { name: '蛋挞', personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
+    { name: '糯米', img: IMG('dolls/糯米.jpg'), personality: '温柔爱睡', like: '抱着蜂蜜罐打盹，在你难过时递上一个抱抱', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
+    { name: '奶糖', img: IMG('dolls/奶糖.jpg'), personality: '好奇又活泼', like: '收集清晨的露珠，竖起长耳朵听风里的故事', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '布丁', img: IMG('dolls/布丁.jpg'), personality: '慵懒小傲娇', like: '晒太阳打呼噜，偷看你认真写字的侧脸', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
+    { name: '橙子', img: IMG('dolls/橙子.jpg'), personality: '开朗元气', like: '追着自己的尾巴转圈，把甜橙味抱抱分给大家', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '棉花', img: IMG('dolls/棉花.jpg'), personality: '软萌害羞', like: '趴在窗边数星星，把烦心事裹进云朵里', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
+    { name: '豆丁', img: IMG('dolls/豆丁.jpg'), personality: '勇敢又逞强', like: '假装很凶地保护大家，其实最怕被搔痒痒', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' },
+    { name: '桃桃', img: IMG('dolls/桃桃.jpg'), personality: '甜甜软软', like: '每天给自己一个草莓味抱抱', line: '生活有点苦，但我是甜的。', prompt: 'one cute plush pink pig, round soft body, big glossy eyes, tiny blush, adorable smile, studio product shot, pastel pink background' },
+    { name: '西西', img: IMG('dolls/西西.jpg'), personality: '安静心思细', like: '收藏雨后的彩虹，画进你的梦里', line: '别看我话少，我记得你所有的好。', prompt: 'one cute plush blue kitten with sleepy soft eyes, round fluffy body, tiny blush, studio product shot, pastel pink background' },
+    { name: '果冻', img: IMG('dolls/果冻.jpg'), personality: '活泼呱呱', like: '下雨天跳进池塘里，和雨滴排排队', line: '生活嘛，总要蹦跶两下才过瘾。', prompt: 'one cute plush green frog, round chubby body, bright wide eyes, cheerful smile, studio product shot, pastel pink background' },
+    { name: '布林', img: IMG('dolls/布林.jpg'), personality: '稳重慢悠悠', like: '冬天最暖的，是和朋友们挤在一起', line: '走得慢没关系，我不急着离开你。', prompt: 'one cute plush blue penguin, round belly, orange feet, big sparkly eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '啾啾', img: IMG('dolls/啾啾.jpg'), personality: '元气满满', like: '一天到晚对着太阳叽叽叫', line: '想把第一缕晨光，分一缕给你。', prompt: 'one cute plush yellow chick, chubby round body, bright joyful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '麻薯', img: IMG('dolls/麻薯.jpg'), personality: '黏人小团子', like: '不知不觉就黏在你身边不想走', line: '想你了，所以把自己变成软软的。', prompt: 'one cute plush white bear, precise soft round body, glossy gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '泡芙', img: IMG('dolls/泡芙.jpg'), personality: '甜到冒泡', like: '往平凡的日子里加一点奶油', line: '不开心的时候，请轻轻咬我一口。', prompt: 'one cute plush cream bunny with swirl creampuff look, round soft body, sweet sparkling eyes, studio product shot, pastel pink background' },
+    { name: '曲奇', img: IMG('dolls/曲奇.jpg'), personality: '踏实可靠', like: '把难题耐心烤成脆脆的曲奇', line: '慢慢来，一切都来得及。', prompt: 'one cute plush brown bear with cookie speckles, round fluffy body, warm kind eyes, studio product shot, pastel pink background' },
+    { name: '柠檬', img: IMG('dolls/柠檬.jpg'), personality: '清爽乐乐', like: '在水面划出一道道小小的涟漪', line: '酸酸的我，最配甜甜的你。', prompt: 'one cute plush yellow duck, round soft body, bright cheerful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '松果', img: IMG('dolls/松果.jpg'), personality: '机灵爱囤', like: '把秋天的快乐都收进小口袋', line: '你给的小确幸，我都悄悄珍藏。', prompt: 'one cute plush squirrel with big fluffy tail, round chubby body, bright clever eyes, studio product shot, pastel pink background' },
+    { name: '草莓', img: IMG('dolls/草莓.jpg'), personality: '软fu软fu', like: '给平凡的日子撒上一层糖霜', line: '我的心，是草莓味的。', prompt: 'one cute plush pink bear with strawberry detail, round soft body, glossy happy eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '芋泥', img: IMG('dolls/芋泥.jpg'), personality: '温柔寡言', like: '把想说的话都说得很轻很暖', line: '靠近一点，就能听见我的心跳。', prompt: 'one cute plush purple bear, round chubby body, soft gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '可可', img: IMG('dolls/可可.jpg'), personality: '忠诚暖暖', like: '陪你到天亮，再送你安全回家', line: '无论多晚，都等你回来。', prompt: 'one cute plush brown puppy, round fluffy body, big faithful eyes, happy ears, studio product shot, pastel pink background' },
+    { name: '蛋挞', img: IMG('dolls/蛋挞.jpg'), personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
   ];
 
   /* 投喂动作表：每只娃娃专属食物 + 专属特效 + 专属动作动画 */
@@ -623,7 +621,7 @@
   };
 
   /* 隐藏传说娃娃：集齐 20 只后召唤 */
-  var HIDDEN = { name: '彩虹', personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
+  var HIDDEN = { name: '彩虹', img: IMG('dolls/彩虹.jpg'), personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
 
   /* 盲盒商店：16 款软萌软胶玩具 + 1 款稀有隐藏 */
   /* 拆盲盒：5 大类 ×（8 普通 + 1 隐藏）= 45 款；按当前分类抽盒 */
@@ -631,72 +629,72 @@
     {
       key: 'animal', name: '软萌动物', emoji: '🐾',
       toys: [
-        { name: '团子喵', line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
-        { name: '布丁兔', line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
-        { name: '云朵羊', line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
-        { name: '奶泡企鹅', line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
-        { name: '泡泡蛙', line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
-        { name: '转圈猴', line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
-        { name: '小麋鹿', line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
-        { name: '芒果鸭', line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' }
+        { name: '团子喵', img: IMG('toys/animal/团子喵.jpg'), line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
+        { name: '布丁兔', img: IMG('toys/animal/布丁兔.jpg'), line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
+        { name: '云朵羊', img: IMG('toys/animal/云朵羊.jpg'), line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
+        { name: '奶泡企鹅', img: IMG('toys/animal/奶泡企鹅.jpg'), line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
+        { name: '泡泡蛙', img: IMG('toys/animal/泡泡蛙.jpg'), line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
+        { name: '转圈猴', img: IMG('toys/animal/转圈猴.jpg'), line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
+        { name: '小麋鹿', img: IMG('toys/animal/小麋鹿.jpg'), line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
+        { name: '芒果鸭', img: IMG('toys/animal/芒果鸭.jpg'), line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '彩虹独角兽', line: '我可是传说中限定的彩虹独角兽！', prompt: 'one legendary cute rainbow unicorn squishy soft toy, iridescent pastel horn and mane, sparkling starry eyes, soft glowing body, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '彩虹独角兽', img: IMG('toys/animal/_彩虹独角兽.jpg'), line: '我可是传说中限定的彩虹独角兽！', prompt: 'one legendary cute rainbow unicorn squishy soft toy, iridescent pastel horn and mane, sparkling starry eyes, soft glowing body, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'dessert', name: '甜品甜点', emoji: '🍰',
       toys: [
-        { name: '星星软糖', line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
-        { name: '小酸奶', line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
-        { name: '奶黄包', line: '趁热咬一口，会流心哦', prompt: 'one cute custard bao soft toy shaped like a little bun, glossy soft golden yellow body, tiny steam swirl on top, plump round shape, adorable, studio product shot, pastel pink background' },
-        { name: '芝士鼠', line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
-        { name: '西瓜猪', line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
-        { name: '曲奇牛', line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' },
-        { name: '草莓杯', line: '一勺下去，酸酸甜甜', prompt: 'one cute strawberry parfait cup soft toy, layered pink and cream body in a tiny glass cup topped with a strawberry, adorable, studio product shot, pastel pink background' },
-        { name: '抹茶卷', line: '慢慢转出来，每一层都是绿', prompt: 'one cute matcha roll cake soft toy, green and white spiral swirl, soft sponge texture, tiny cream dollop on top, adorable, studio product shot, pastel pink background' }
+        { name: '星星软糖', img: IMG('toys/dessert/星星软糖.jpg'), line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
+        { name: '小酸奶', img: IMG('toys/dessert/小酸奶.jpg'), line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '奶黄包', img: IMG('toys/dessert/奶黄包.jpg'), line: '趁热咬一口，会流心哦', prompt: 'one cute custard bao soft toy shaped like a little bun, glossy soft golden yellow body, tiny steam swirl on top, plump round shape, adorable, studio product shot, pastel pink background' },
+        { name: '芝士鼠', img: IMG('toys/dessert/芝士鼠.jpg'), line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
+        { name: '西瓜猪', img: IMG('toys/dessert/西瓜猪.jpg'), line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '曲奇牛', img: IMG('toys/dessert/曲奇牛.jpg'), line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '草莓杯', img: IMG('toys/dessert/草莓杯.jpg'), line: '一勺下去，酸酸甜甜', prompt: 'one cute strawberry parfait cup soft toy, layered pink and cream body in a tiny glass cup topped with a strawberry, adorable, studio product shot, pastel pink background' },
+        { name: '抹茶卷', img: IMG('toys/dessert/抹茶卷.jpg'), line: '慢慢转出来，每一层都是绿', prompt: 'one cute matcha roll cake soft toy, green and white spiral swirl, soft sponge texture, tiny cream dollop on top, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '小笼包国王', line: '皮薄馅大，谁与争锋！', prompt: 'one regal cute steamed xiaolongbao king soft toy, plump translucent dumpling with a tiny golden crown on top, soft jelly texture, proud face, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '小笼包国王', img: IMG('toys/dessert/_小笼包国王.jpg'), line: '皮薄馅大，谁与争锋！', prompt: 'one regal cute steamed xiaolongbao king soft toy, plump translucent dumpling with a tiny golden crown on top, soft jelly texture, proud face, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'weird', name: '稀奇古怪', emoji: '🤪',
       toys: [
-        { name: '咬人袜', line: '「我才不是普通的袜子！」——它说', prompt: 'one cute squishy soft toy sock monster, pastel rainbow striped sock body with two tiny fangs poking out, big mischievous eyes, soft plush texture, studio product shot, pastel pink background' },
-        { name: '充电菇', line: '电量低于 20% 时会小声哭泣', prompt: 'one cute squishy soft toy mushroom, plump rounded cap with tiny USB-C port on the belly, glowing power button, soft pastel mint and lavender body, studio product shot, pastel pink background' },
-        { name: '便利贴小狗', line: '贴在你心上请轻一点，撕下来会委屈', prompt: 'one cute squishy soft toy shaped like a sticky note, dog face drawn on it, pastel yellow paper body with a tiny adhesive strip on the back, soft plush texture, studio product shot, pastel pink background' },
-        { name: '硬盘君', line: '你存的都什么乱七八糟的！', prompt: 'one cute squishy soft toy shaped like a tiny 3.5 inch hard drive, grumpy cartoon face with furrowed brow, tiny arms crossed, soft mint green body, studio product shot, pastel pink background' },
-        { name: '回形针乐手', line: '别小看我，旋律我都会', prompt: 'one cute squishy soft toy shaped like a silver paperclip, wearing tiny headphones, holding a music note, shiny silver plush body, studio product shot, pastel pink background' },
-        { name: '空盒', line: '买到就是赚到。赚到啥？问它', prompt: 'one cute squishy soft toy shaped like a small open box, with another smaller box inside, infinite russian doll nesting visible, pastel cream and pink striped box, studio product shot, pastel pink background' },
-        { name: '午睡椒', line: '再热也要冷静入睡', prompt: 'one cute squishy soft toy shaped like a tiny chili pepper, wearing a tiny sleep cap, eyes half closed yawning, soft coral red body, studio product shot, pastel pink background' },
-        { name: '海苔', line: '吃完请记得再补一片，谢谢', prompt: 'one cute squishy soft toy shaped like a tiny piece of nori seaweed, wavy and curly edges, sleepy face with one eye closed yawning, deep green body with golden edges, studio product shot, pastel pink background' }
+        { name: '咬人袜', img: IMG('toys/weird/咬人袜.jpg'), line: '「我才不是普通的袜子！」——它说', prompt: 'one cute squishy soft toy sock monster, pastel rainbow striped sock body with two tiny fangs poking out, big mischievous eyes, soft plush texture, studio product shot, pastel pink background' },
+        { name: '充电菇', img: IMG('toys/weird/充电菇.jpg'), line: '电量低于 20% 时会小声哭泣', prompt: 'one cute squishy soft toy mushroom, plump rounded cap with tiny USB-C port on the belly, glowing power button, soft pastel mint and lavender body, studio product shot, pastel pink background' },
+        { name: '便利贴小狗', img: IMG('toys/weird/便利贴小狗.jpg'), line: '贴在你心上请轻一点，撕下来会委屈', prompt: 'one cute squishy soft toy shaped like a sticky note, dog face drawn on it, pastel yellow paper body with a tiny adhesive strip on the back, soft plush texture, studio product shot, pastel pink background' },
+        { name: '硬盘君', img: IMG('toys/weird/硬盘君.jpg'), line: '你存的都什么乱七八糟的！', prompt: 'one cute squishy soft toy shaped like a tiny 3.5 inch hard drive, grumpy cartoon face with furrowed brow, tiny arms crossed, soft mint green body, studio product shot, pastel pink background' },
+        { name: '回形针乐手', img: IMG('toys/weird/回形针乐手.jpg'), line: '别小看我，旋律我都会', prompt: 'one cute squishy soft toy shaped like a silver paperclip, wearing tiny headphones, holding a music note, shiny silver plush body, studio product shot, pastel pink background' },
+        { name: '空盒', img: IMG('toys/weird/空盒.jpg'), line: '买到就是赚到。赚到啥？问它', prompt: 'one cute squishy soft toy shaped like a small open box, with another smaller box inside, infinite russian doll nesting visible, pastel cream and pink striped box, studio product shot, pastel pink background' },
+        { name: '午睡椒', img: IMG('toys/weird/午睡椒.jpg'), line: '再热也要冷静入睡', prompt: 'one cute squishy soft toy shaped like a tiny chili pepper, wearing a tiny sleep cap, eyes half closed yawning, soft coral red body, studio product shot, pastel pink background' },
+        { name: '海苔', img: IMG('toys/weird/海苔.jpg'), line: '吃完请记得再补一片，谢谢', prompt: 'one cute squishy soft toy shaped like a tiny piece of nori seaweed, wavy and curly edges, sleepy face with one eye closed yawning, deep green body with golden edges, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '愤怒便利贴', line: '别再贴了别再贴了！', prompt: 'one legendary grumpy sticky note soft toy, yellow paper with an angry cartoon face, tiny arms raised in frustration, soft plush texture, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '愤怒便利贴', img: IMG('toys/weird/_愤怒便利贴.jpg'), line: '别再贴了别再贴了！', prompt: 'one legendary grumpy sticky note soft toy, yellow paper with an angry cartoon face, tiny arms raised in frustration, soft plush texture, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'fruit', name: '蔬果派对', emoji: '🍅',
       toys: [
-        { name: '草莓', line: '红着脸说"我很甜"', prompt: 'one cute squishy soft toy strawberry, glossy red body with tiny green leaves, big happy eyes, adorable, studio product shot, pastel pink background' },
-        { name: '葡萄', line: '一串不够，再来一串', prompt: 'one cute squishy soft toy grape cluster, plump purple round berries, glossy jelly texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
-        { name: '菠萝', line: '扎手归扎手，甜是真甜', prompt: 'one cute squishy soft toy pineapple, spiky green and yellow body, friendly face, soft plush texture, adorable, studio product shot, pastel pink background' },
-        { name: '苹果', line: '一天一苹果，医生远离我', prompt: 'one cute squishy soft toy apple, glossy red round body with tiny green leaf, rosy cheek, adorable, studio product shot, pastel pink background' },
-        { name: '桃子', line: '咬一口，汁水会跑出来', prompt: 'one cute squishy soft toy peach, fuzzy pastel pink round body with a tiny green leaf, soft plush texture, adorable, studio product shot, pastel pink background' },
-        { name: '橘子', line: '一瓣一瓣，吃到见底', prompt: 'one cute squishy soft toy mandarin orange, segmented round body, soft plush texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
-        { name: '樱桃', line: '我们一直是双胞胎', prompt: 'two cute squishy soft toy cherries sharing one stem, glossy red round bodies, sweet faces, adorable, studio product shot, pastel pink background' },
-        { name: '芒果', line: '甜到忧伤', prompt: 'one cute squishy soft toy mango, plump golden yellow oval body with rosy cheeks, soft plush texture, adorable, studio product shot, pastel pink background' }
+        { name: '草莓', img: IMG('toys/fruit/草莓.jpg'), line: '红着脸说"我很甜"', prompt: 'one cute squishy soft toy strawberry, glossy red body with tiny green leaves, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '葡萄', img: IMG('toys/fruit/葡萄.jpg'), line: '一串不够，再来一串', prompt: 'one cute squishy soft toy grape cluster, plump purple round berries, glossy jelly texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '菠萝', img: IMG('toys/fruit/菠萝.jpg'), line: '扎手归扎手，甜是真甜', prompt: 'one cute squishy soft toy pineapple, spiky green and yellow body, friendly face, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '苹果', img: IMG('toys/fruit/苹果.jpg'), line: '一天一苹果，医生远离我', prompt: 'one cute squishy soft toy apple, glossy red round body with tiny green leaf, rosy cheek, adorable, studio product shot, pastel pink background' },
+        { name: '桃子', img: IMG('toys/fruit/桃子.jpg'), line: '咬一口，汁水会跑出来', prompt: 'one cute squishy soft toy peach, fuzzy pastel pink round body with a tiny green leaf, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '橘子', img: IMG('toys/fruit/橘子.jpg'), line: '一瓣一瓣，吃到见底', prompt: 'one cute squishy soft toy mandarin orange, segmented round body, soft plush texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '樱桃', img: IMG('toys/fruit/樱桃.jpg'), line: '我们一直是双胞胎', prompt: 'two cute squishy soft toy cherries sharing one stem, glossy red round bodies, sweet faces, adorable, studio product shot, pastel pink background' },
+        { name: '芒果', img: IMG('toys/fruit/芒果.jpg'), line: '甜到忧伤', prompt: 'one cute squishy soft toy mango, plump golden yellow oval body with rosy cheeks, soft plush texture, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '人参果', line: '西游记里听说过我吗？三千年一开花', prompt: 'one legendary cute ginseng fruit soft toy, plump pastel pink body shaped like a chubby baby with tiny green leaves on top, glowing aura, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '人参果', img: IMG('toys/fruit/_人参果.jpg'), line: '西游记里听说过我吗？三千年一开花', prompt: 'one legendary cute ginseng fruit soft toy, plump pastel pink body shaped like a chubby baby with tiny green leaves on top, glowing aura, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'fantasy', name: '幻想角色', emoji: '✨',
       toys: [
-        { name: '仙子', line: '挥挥手，洒下星尘', prompt: 'one cute squishy soft toy fairy, pastel pink flowing dress, tiny sparkly wings, holding a magic wand, adorable, studio product shot, pastel pink background' },
-        { name: '精灵', line: '我住在森林深处的树屋里', prompt: 'one cute squishy soft toy elf, green tunic, pointy ears, tiny wooden bow, adorable, studio product shot, pastel pink background' },
-        { name: '骑士', line: '我的剑只用来切蛋糕', prompt: 'one cute squishy soft toy knight, tiny silver armor, round helmet with a plume, holding a small sword, adorable, studio product shot, pastel pink background' },
-        { name: '巫师', line: '我挥的不是魔法，是认真', prompt: 'one cute squishy soft toy wizard, purple starry robe, pointy hat, holding a glowing wand, adorable, studio product shot, pastel pink background' },
-        { name: '忍者', line: '嘘——你看不见我', prompt: 'one cute squishy soft toy ninja, black outfit with face mask, tiny throwing stars, adorable, studio product shot, pastel pink background' },
-        { name: '机器人', line: '电量 99%，心态 0%', prompt: 'one cute squishy soft toy robot, rounded square body with antennas, glowing heart on chest, adorable, studio product shot, pastel pink background' },
-        { name: '宇航员', line: '我把星星带回来了', prompt: 'one cute squishy soft toy astronaut, white spacesuit, round helmet with star reflections, floating a tiny planet, adorable, studio product shot, pastel pink background' },
-        { name: '公主', line: '今日的皇冠也是闪闪的', prompt: 'one cute squishy soft toy princess, pastel pink ball gown, tiny golden crown, holding a heart scepter, adorable, studio product shot, pastel pink background' }
+        { name: '仙子', img: IMG('toys/fantasy/仙子.jpg'), line: '挥挥手，洒下星尘', prompt: 'one cute squishy soft toy fairy, pastel pink flowing dress, tiny sparkly wings, holding a magic wand, adorable, studio product shot, pastel pink background' },
+        { name: '精灵', img: IMG('toys/fantasy/精灵.jpg'), line: '我住在森林深处的树屋里', prompt: 'one cute squishy soft toy elf, green tunic, pointy ears, tiny wooden bow, adorable, studio product shot, pastel pink background' },
+        { name: '骑士', img: IMG('toys/fantasy/骑士.jpg'), line: '我的剑只用来切蛋糕', prompt: 'one cute squishy soft toy knight, tiny silver armor, round helmet with a plume, holding a small sword, adorable, studio product shot, pastel pink background' },
+        { name: '巫师', img: IMG('toys/fantasy/巫师.jpg'), line: '我挥的不是魔法，是认真', prompt: 'one cute squishy soft toy wizard, purple starry robe, pointy hat, holding a glowing wand, adorable, studio product shot, pastel pink background' },
+        { name: '忍者', img: IMG('toys/fantasy/忍者.jpg'), line: '嘘——你看不见我', prompt: 'one cute squishy soft toy ninja, black outfit with face mask, tiny throwing stars, adorable, studio product shot, pastel pink background' },
+        { name: '机器人', img: IMG('toys/fantasy/机器人.jpg'), line: '电量 99%，心态 0%', prompt: 'one cute squishy soft toy robot, rounded square body with antennas, glowing heart on chest, adorable, studio product shot, pastel pink background' },
+        { name: '宇航员', img: IMG('toys/fantasy/宇航员.jpg'), line: '我把星星带回来了', prompt: 'one cute squishy soft toy astronaut, white spacesuit, round helmet with star reflections, floating a tiny planet, adorable, studio product shot, pastel pink background' },
+        { name: '公主', img: IMG('toys/fantasy/公主.jpg'), line: '今日的皇冠也是闪闪的', prompt: 'one cute squishy soft toy princess, pastel pink ball gown, tiny golden crown, holding a heart scepter, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '时空旅行者', line: '我来自未来，也来自过去', prompt: 'one legendary cute time traveler soft toy, flowing cloak with clock and gear patterns, hourglass accessory, glowing aura, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '时空旅行者', img: IMG('toys/fantasy/_时空旅行者.jpg'), line: '我来自未来，也来自过去', prompt: 'one legendary cute time traveler soft toy, flowing cloak with clock and gear patterns, hourglass accessory, glowing aura, rare legendary, studio product shot, pastel pink background' }
     }
   ];
 
@@ -721,7 +719,7 @@
         '<p class="bw-modal-sub">点一只娃娃，喂它小饼干、听它说悄悄话，集齐 20 只或许有惊喜</p>' +
         '<div class="bw-dolls-top">' +
           '<div class="bw-today">' +
-            '<div class="bw-today-img"><img src="' + DOLL_IMG(t.prompt) + '" alt="" loading="lazy"></div>' +
+            '<div class="bw-today-img"><img src="' + t.img + '" alt="" loading="lazy"></div>' +
             '<div class="bw-today-body">' +
               '<span class="bw-today-tag">✦ 今日娃娃</span>' +
               '<span class="bw-today-name">' + t.name + '</span>' +
@@ -773,7 +771,7 @@
       d.setAttribute('tabindex', '0');
       d.innerHTML =
         '<span class="bw-doll-hang"></span>' +
-        '<img class="bw-doll-img" src="' + DOLL_IMG(doll.prompt) + '" alt="' + doll.name + '" loading="lazy" />' +
+        '<img class="bw-doll-img" src="' + doll.img + '" alt="' + doll.name + '" loading="lazy" />' +
         '<span class="bw-doll-name">' + doll.name + '</span>';
       d.querySelector('.bw-doll-img').style.animationDelay = ((i * 0.37) % 3) + 's';
       var click = function () { onDollClick(m, d, doll); };
@@ -868,7 +866,7 @@
     d.setAttribute('role', 'button'); d.setAttribute('tabindex', '0');
     d.innerHTML =
       '<span class="bw-doll-hang"></span>' +
-      '<img class="bw-doll-img" src="' + DOLL_IMG(HIDDEN.prompt) + '" alt="彩虹宝宝" loading="lazy" />' +
+      '<img class="bw-doll-img" src="' + HIDDEN.img + '" alt="彩虹宝宝" loading="lazy" />' +
       '<span class="bw-doll-name">彩虹宝宝</span>';
     d.querySelector('.bw-doll-img').style.animationDelay = '0s';
     var open = function () { bounceDoll(d); feedDoll(d, HIDDEN); showDollCard(m, HIDDEN); };
@@ -906,7 +904,7 @@
     var pop = document.createElement('div');
     pop.className = 'bw-doll-pop bw-doll-card';
     pop.innerHTML =
-      '<img class="bw-doll-card-img" src="' + DOLL_IMG(doll.prompt) + '" alt="' + doll.name + '" />' +
+      '<img class="bw-doll-card-img" src="' + doll.img + '" alt="' + doll.name + '" />' +
       '<div class="bw-doll-card-body">' +
         '<span class="bw-doll-pop-name">✿ ' + doll.name + '</span>' +
         '<div class="bw-doll-fields">' +
@@ -979,7 +977,7 @@
       var cat = CATEGORIES[curCat];
       var rare = t === cat.hidden;
       res.innerHTML =
-        '<img class="bw-toy-img' + (rare ? ' is-rare' : '') + '" src="' + DOLL_IMG(t.prompt) + '" alt="' + t.name + '" />' +
+        '<img class="bw-toy-img' + (rare ? ' is-rare' : '') + '" src="' + t.img + '" alt="' + t.name + '" />' +
         '<div class="bw-toy-name' + (rare ? ' is-rare' : '') + '">' + t.name + '</div>' +
         '<div class="bw-toy-cat-tag">' + cat.emoji + ' ' + cat.name + '</div>' +
         '<div class="bw-toy-line">' + t.line + '</div>';
@@ -1021,28 +1019,25 @@
 
   /* ============ 四季窗 ============ */
   /* AI 生成卡通窗外景（与娃娃屋同款 text_to_image 服务，首次访问触发生成，之后 CDN 直出） */
-  function WIN_IMG(prompt) {
-    return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' +
-      encodeURIComponent(prompt) + '&image_size=landscape_16_9';
-  }
+  /* WIN_IMG 已废弃：所有季节图预生成到 /images/seasons/ */
   var SEASONS = {
     spring: {
-      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, early spring, green willow trees by a winding river, peach blossoms blooming, swallows flying in the bright sky, a child flying a kite in the field, fresh soft pastel colors, idyllic chinese countryside scenery, clean poetic composition'),
+      img: IMG('seasons/spring.jpg'),
       part: '🌸',
       caption: '春天来了，柳树绿了，溪水醒了。田里的小朋友放着风筝，燕子在蓝天上唱歌。'
     },
     summer: {
-      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, summer, lotus pond with pink lotus flowers and green lily pads, a frog sitting on a lotus leaf, dragonflies hovering over the water, willow branches hanging low, bright clear sky, soft watercolor, fresh summer colors, idyllic chinese countryside scenery, poetic composition'),
+      img: IMG('seasons/summer.jpg'),
       part: '☀️',
       caption: '池塘里的荷花开得正盛，青蛙在荷叶上打盹，蜻蜓点过水面，知了在柳枝上叫个不停。'
     },
     autumn: {
-      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, autumn, golden rice paddies ready for harvest, geese flying south in formation across the clear sky, red maple leaves, an orchard with autumn fruits, warm amber and gold palette, idyllic chinese countryside scenery, poetic composition'),
+      img: IMG('seasons/autumn.jpg'),
       part: '🍂',
       caption: '天凉好个秋。稻田一片金黄，大雁排成行飞往南方，红红的枫叶落满小径。'
     },
     winter: {
-      img: WIN_IMG('primary school chinese textbook illustration, gentle ink and wash watercolor painting, winter, snow covered tiled roofs of a small chinese village, red plum blossoms on bare branches, a cute snowman in the courtyard, curling chimney smoke, white and pale blue palette, peaceful and warm, idyllic chinese countryside scenery, poetic composition'),
+      img: IMG('seasons/winter.jpg'),
       part: '❄️',
       caption: '大雪把屋顶盖得厚厚的，腊梅在墙角悄悄开了，雪人站在院子里，等着春天。'
     }
