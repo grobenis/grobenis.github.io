@@ -560,15 +560,43 @@
     { name: '蛋挞', personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
   ];
 
+  /* 隐藏传说娃娃：集齐 20 只后召唤 */
+  var HIDDEN = { name: '彩虹', personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
+
+  /* 图鉴收藏进度持久化 */
+  var COLL_KEY = 'bw_doll_coll';
+  var CELE_KEY = 'bw_doll_celebrated';
+  var _col = loadColl();
+  function loadColl() { try { var s = localStorage.getItem(COLL_KEY); return s ? JSON.parse(s) : []; } catch (e) { return []; } }
+  function saveColl(a) { try { localStorage.setItem(COLL_KEY, JSON.stringify(a)); } catch (e) {} }
+  function todayIndex() { var n = new Date(); return (n.getFullYear() * 10000 + (n.getMonth() + 1) * 100 + n.getDate()) % DOLLS.length; }
+
   function openDolls() {
     var m = document.createElement('div');
     m.className = 'bw-modal bw-dolls';
+    var t = DOLLS[todayIndex()];
     m.innerHTML =
       '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-doll-petals"></div>' +
       '<div class="bw-modal-panel bw-dolls-panel">' +
         '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
         '<h2 class="bw-modal-title">娃娃墙</h2>' +
-        '<p class="bw-modal-sub">点一只娃娃，听听它藏着的悄悄话</p>' +
+        '<p class="bw-modal-sub">点一只娃娃，喂它小饼干、听它说悄悄话，集齐 20 只或许有惊喜</p>' +
+        '<div class="bw-dolls-top">' +
+          '<div class="bw-today">' +
+            '<div class="bw-today-img"><img src="' + DOLL_IMG(t.prompt) + '" alt="" loading="lazy"></div>' +
+            '<div class="bw-today-body">' +
+              '<span class="bw-today-tag">✦ 今日娃娃</span>' +
+              '<span class="bw-today-name">' + t.name + '</span>' +
+              '<p class="bw-today-line">' + t.line + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="bw-collect" title="点亮你点开过档案卡的娃娃">' +
+            '<span class="bw-collect-label">图鉴收藏</span>' +
+            '<span class="bw-collect-num" id="collectNum">0 / ' + DOLLS.length + '</span>' +
+            '<div class="bw-collect-rail"><div class="bw-collect-fill" id="collectFill" style="width:' + (_col.length / DOLLS.length * 100) + '%"></div></div>' +
+          '</div>' +
+        '</div>' +
         '<div class="bw-dolls-wall" id="dollsWall"></div>' +
       '</div>';
     document.body.appendChild(m);
@@ -576,7 +604,24 @@
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
+    buildPetals(m);
     renderDolls(m);
+    updateCollect(m, _col);
+  }
+
+  function buildPetals(m) {
+    var layer = m.querySelector('.bw-doll-petals');
+    for (var i = 0; i < 14; i++) {
+      var p = document.createElement('span');
+      p.className = 'bw-petal';
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.top = (-40 - Math.random() * 30) + 'px';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      p.style.animationDuration = (8 + Math.random() * 6) + 's';
+      p.style.fontSize = (Math.random() * 9 + 11) + 'px';
+      p.textContent = Math.random() > 0.5 ? '🌸' : '✨';
+      layer.appendChild(p);
+    }
   }
 
   function renderDolls(m) {
@@ -585,6 +630,7 @@
     DOLLS.forEach(function (doll, i) {
       var d = document.createElement('div');
       d.className = 'bw-doll';
+      d.setAttribute('data-name', doll.name);
       d.style.animationDelay = (i * 0.08) + 's';
       d.setAttribute('role', 'button');
       d.setAttribute('tabindex', '0');
@@ -592,18 +638,120 @@
         '<span class="bw-doll-hang"></span>' +
         '<img class="bw-doll-img" src="' + DOLL_IMG(doll.prompt) + '" alt="' + doll.name + '" loading="lazy" />' +
         '<span class="bw-doll-name">' + doll.name + '</span>';
-      var click = function () { bounceDoll(d); showDollCard(m, doll); };
+      d.querySelector('.bw-doll-img').style.animationDelay = ((i * 0.37) % 3) + 's';
+      var click = function () { onDollClick(m, d, doll); };
       d.addEventListener('click', click);
-      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bounceDoll(d); showDollCard(m, doll); } });
+      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onDollClick(m, d, doll); } });
       wall.appendChild(d);
     });
+    /* 集齐过全部娃娃后，每次打开都召唤隐藏的彩虹宝宝 */
+    if (_col.length >= DOLLS.length) ensureLegend(m);
   }
 
-  /* 点击娃娃时的放大弹跳动画(重触发技巧:先移除再回流) */
+  function onDollClick(m, d, doll) {
+    bounceDoll(d);
+    feedDoll(d);
+    collectDoll(m, doll);
+    showDollCard(m, doll);
+  }
+
+  /* 点击娃娃时的放大弹跳动画(重触发技巧:先移除再回流,弹完恢复呼吸) */
   function bounceDoll(d) {
     d.classList.remove('is-bounce');
     void d.offsetWidth;
     d.classList.add('is-bounce');
+    var t = Date.now(); d.__bt = t;
+    setTimeout(function () { if (d.__bt === t) d.classList.remove('is-bounce'); }, 900);
+  }
+
+  /* 喂食彩蛋：娃娃上方冒出一块小饼干 + 一颗小爱心，娃娃柔光一笑 */
+  function feedDoll(d) {
+    var old = d.parentNode.querySelector('.bw-doll-yum');
+    if (old) old.parentNode.removeChild(old);
+    var yum = document.createElement('span');
+    yum.className = 'bw-doll-yum';
+    yum.innerHTML = '<i class="y-cookie">🍪</i><i class="y-heart">💗</i>';
+    d.appendChild(yum);
+    d.classList.add('is-fed');
+    setTimeout(function () {
+      if (yum.parentNode) yum.parentNode.removeChild(yum);
+      d.classList.remove('is-fed');
+    }, 1600);
+  }
+
+  function collectDoll(m, doll) {
+    if (_col.indexOf(doll.name) === -1) {
+      _col.push(doll.name);
+      saveColl(_col);
+      updateCollect(m, _col);
+    }
+  }
+
+  function updateCollect(m, collect) {
+    var num = m.querySelector('#collectNum');
+    if (!num) return;
+    num.textContent = collect.length + ' / ' + DOLLS.length;
+    var fill = m.querySelector('#collectFill');
+    if (fill) fill.style.width = (collect.length / DOLLS.length * 100) + '%';
+    m.querySelectorAll('.bw-doll').forEach(function (d) {
+      if (collect.indexOf(d.getAttribute('data-name')) > -1) d.classList.add('is-collected');
+    });
+    if (collect.length >= DOLLS.length) {
+      var done = false; try { done = !!localStorage.getItem(CELE_KEY); } catch (e) {}
+      if (!done) doCelebrate(m);
+    }
+  }
+
+  /* 集齐全部娃娃：金色烟花 + 横幅 + 召唤隐藏的彩虹宝宝 */
+  function doCelebrate(m) {
+    try { localStorage.setItem(CELE_KEY, '1'); } catch (e) {}
+    try { fireConfetti(m); } catch (e) {}
+    var banner = document.createElement('div');
+    banner.className = 'bw-doll-banner';
+    banner.innerHTML = '✦ 恭喜集齐全部小星星 ✦ 彩虹宝宝被你的爱召唤而来 ✦';
+    m.querySelector('.bw-dolls-panel').appendChild(banner);
+    setTimeout(function () { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4200);
+    ensureLegend(m);
+  }
+
+  function ensureLegend(m) {
+    var wall = m.querySelector('#dollsWall');
+    if (!wall || wall.querySelector('.bw-doll-legend')) return;
+    var d = document.createElement('div');
+    d.className = 'bw-doll bw-doll-legend';
+    d.setAttribute('data-name', '彩虹');
+    d.setAttribute('role', 'button'); d.setAttribute('tabindex', '0');
+    d.innerHTML =
+      '<span class="bw-doll-hang"></span>' +
+      '<img class="bw-doll-img" src="' + DOLL_IMG(HIDDEN.prompt) + '" alt="彩虹宝宝" loading="lazy" />' +
+      '<span class="bw-doll-name">彩虹宝宝</span>';
+    d.querySelector('.bw-doll-img').style.animationDelay = '0s';
+    var open = function () { bounceDoll(d); feedDoll(d); showDollCard(m, HIDDEN); };
+    d.addEventListener('click', open);
+    d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    wall.appendChild(d);
+    var note = document.createElement('div');
+    note.className = 'bw-doll-legend-note';
+    note.textContent = '✦ 传说中集齐所有伙伴才会现身的守护小队长 ✦';
+    wall.appendChild(note);
+  }
+
+  function fireConfetti(m) {
+    var panel = m.querySelector('.bw-dolls-panel');
+    var box = panel.getBoundingClientRect();
+    var cx = box.left + box.width / 2, cy = box.top + 44;
+    for (var i = 0; i < 26; i++) {
+      var p = document.createElement('span');
+      p.className = 'bw-confetti';
+      p.textContent = Math.random() > 0.5 ? '✨' : '⭐';
+      p.style.left = cx + 'px';
+      p.style.top = cy + 'px';
+      p.style.setProperty('--dx', (Math.random() * 220 - 110) + 'px');
+      p.style.setProperty('--dy', (Math.random() * 240 - 60) + 'px');
+      p.style.animationDelay = (i * 0.03) + 's';
+      document.body.appendChild(p);
+      (function (el) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1800 + i * 30); })(p);
+    }
   }
 
   /* 点击娃娃：弹出个人档案卡(名字 / 性格 / 喜欢 / 悄悄话) */
