@@ -537,11 +537,11 @@
       
         <tags>
             
-            <tag> 计算机网络 </tag>
-            
             <tag> TCP </tag>
             
             <tag> UDP </tag>
+            
+            <tag> 计算机网络 </tag>
             
         </tags>
       
@@ -572,9 +572,9 @@
             
             <tag> 工作 </tag>
             
-            <tag> 算法 </tag>
-            
             <tag> 计算机网络 </tag>
+            
+            <tag> 算法 </tag>
             
             <tag> 操作系统 </tag>
             
@@ -865,9 +865,9 @@
             
             <tag> SLAM </tag>
             
-            <tag> ORB-SLAM2 </tag>
-            
             <tag> OpenCV </tag>
+            
+            <tag> ORB-SLAM2 </tag>
             
         </tags>
       
@@ -1312,56 +1312,6 @@
     
     
     <entry>
-      <title>高斯混合模型</title>
-      <link href="/2020/03/14/2020-03-14-GMM/"/>
-      <url>/2020/03/14/2020-03-14-GMM/</url>
-      
-        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> GMM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>运动一致性判断</title>
-      <link href="/2020/03/14/2020-03-15-Motion_consistency/"/>
-      <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
-      
-        <content type="html"><![CDATA[<p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p><p>本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。</p><blockquote><p><strong>动静分离，方能求得位姿真值</strong></p></blockquote><span id="more"></span><h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p><p>目的：对图片中各部分进行运动一致性判断以分离出目标和背景。</p><p>下面介绍各个论文中的判断方法</p><h2 id="Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment"><a href="#Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment" class="headerlink" title="Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment"></a>Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment</h2><p>该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割</p><p>过程：</p><ol><li>进行k-means聚类</li><li>计算每一个簇的残差</li><li>根据计算出的残差建立非参数统计模型</li></ol><p>聚类的好处有两点：</p><ol><li>能够将非刚体场景表示基于聚类的刚体场景</li><li>可有效增强密集运动的分割效果，从而支持场景流估计和避障。</li></ol><p>本文使用了一个残差模型。该模型基于一个假设：</p><p>若图片对齐，则基于静态背景的聚类将会有一个很小的残差。</p><p>光照强度残差：<br>$$r^p_I(\xi）= I_k(W(x^p_{k-n},\xi^k_{k-n}))-I_{k-n}(x^p_{k-n})$$<br>图像扭曲，Warp函数：<br>$$W(x^p_{k-n},\xi^k_{k-n})=\pi(T^k_{k-n}\pi^{-1}(x^p_{k-n},Z_{k-n}(x^p_{k-n})))$$</p><p>第i个聚类的残差计算方法如下所示：<br>$$\delta^{k,i}_{k-n}=\cfrac{\sum^{S_i-O_i}_{p=1}\alpha_Ir^p_I+r^P_Z/\hat Z_i}{S_i-O_i}$$<br>其中，$S_i$是第i类的像素大小。$O_i$是第i类遮挡的区域大小。</p><p>$\hat Z_i$是第i类的平均深度，$\alpha_I$是平衡深度和广度的权重。<br>$$r_Z^P(\Chi)=Z_k(W(x^p_{k-n},\Chi^k_{k-n}))-|T^k_{k-n}|_Z$$</p><p><strong>非参数统计模型</strong></p><p>该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动</p><p>静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。</p><p>对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图2是高动态场景的统计残差直方图示例。</p><p><img src="/2020/03/14/2020-03-15-Motion_consistency/Motion_consistency.png" alt="image-20200316123237971" loading="lazy"></p><p>在概率论和统计学中，t-分布（t-distribution）用于根据小样本来估计呈正态分布且方差未知的总体的均值。</p><p>受[14，23]的启发，基于t分布的非参数统计模型构造如下：<br>$$w_i = \cfrac{v_0+1}{v_0+((\delta'_i-\mu))^2}$$</p><p>$$\delta = 1.4826 Median \{|\delta'_i-\mu|\}$$</p><p>其中，$v_0$是t分布的自由度，决定了分布曲线的陡峭程度。</p><p>实验中，$v_0$被设置为10，$\mu$是样本均值，设为0；</p><p>$\delta$是样本方差，即基于中位数绝对偏差的非参数统计。</p><p>由于统计模型的概率表示簇的运动可能性，因此它可以指导场景运动分割，并为每个聚类提供权重以估计自我运动。</p><p>聚类标签根据如下给出：<br>$$\Beta_i=\left\{\begin{array}{l}1,&amp;\delta'_i\leq1/(\min(10,\max(3.\alpha_Bv_c\delta)))\\0,&amp;\delta'_i\geq1/(\min(10,\max(3,\alpha_Bv_c\delta)))\end{array}\right.$$<br>Bi表示第i个簇的聚类标签。1表示该类属于静态背景。</p><p>0表示该类属于动态部分。$\alpha_B$是一个用来调节独立变量和残差的维度协方差，计算方法为：<br>$$\alpha_B=10^3\times\min(10^3,10^{N_d})$$<br>$N_d$是标记为移动部分的聚类数。</p><p>聚类权重参考聚类的残差来给出，如下所示：<br>$$w_i^p=\left\{\begin{array}{} w_i, &amp;Meadian(\delta'_i)&gt;0.02\or N_d&gt;5\\1-\delta'_i,&amp;Others\end{array}\right.$$<br>其中，$w_i$是第i类的权重。Median($\delta'_i$)是聚类残差的中位数。</p><p>最后将运动标记和权重模型添加到稠密视觉里程计的能量优化函数中。优化函数是根据Kerl的工作[9]基于深度和强度构建的，具有很高的稳定性，而Jaimez的工作[15]的方法表明优化过程可以在Cauchy M估计器中获得良好的结果。自运动通过以下等式估算：<br>$$\Chi = \arg \min_{\Chi}\{\sum^M_{m=1}\Beta_i[F(w^P_i)r^P_Z(\Chi)+F(\alpha_I)w^p_ir^p_I(\Chi)]$$</p><p>$$F(r)=\cfrac{c^2}{2}\log(1+(\cfrac{r}{c})^2)$$</p><p>此外，基于能量函数的视觉里程计方法只有在运动较小时才能收敛到真实值，而较大的运动通常会将收敛收敛到局部最小值。因此，我们使用金字塔模型来解决此优化问题，以获得更准确的自我运动估计。</p><h2 id="Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry"><a href="#Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry" class="headerlink" title="Dection and Resolution of Motion Conflict Inertial Odometry"></a>Dection and Resolution of Motion Conflict Inertial Odometry</h2><p>判断路标点间一致性的策略：</p><ol><li><p>基于IMU判断的运动对每一个特征点计算重投影残差<br>$$   \delta_{l_j}=\sum_{i\in S}(z_ij-h(\hat X^I_j,l_j))   $$</p></li><li><p>计算当前帧中特征点的残差不一致点的个数，如果不一致点的个数超过了一定比例，则判断发生了运动冲突。<br>$$   Mr:=\cfrac{landmarks~wihtout~confilt}{landmarks}   $$</p></li><li><p>另一方面，分别根据基于IMU和视觉的运动计算重投影误差，再计算二者的分歧度，再根据分歧度计算当前帧是否发生了冲突。<br>$$   \delta_{MC}=||{\hat p_k^V-\hat p_k^I}||_{\sum}   $$</p></li></ol><h2 id="On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions"><a href="#On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions" class="headerlink" title="On Exploting Per-Pixel Conflict to Extract Secondary Motions"></a>On Exploting Per-Pixel Conflict to Extract Secondary Motions</h2><p>基于DNN训练一个概率图，提取出概率图（Mask）</p><p>然后基于该概率图分别计算主要运动和次要运动。</p><h2 id="A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes"><a href="#A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes" class="headerlink" title="A Compatible Framework for RGB-D in Dynamic Scenes"></a>A Compatible Framework for RGB-D in Dynamic Scenes</h2><ol><li><p>首先利用CNN提取出图像中潜在的动态区域</p></li><li><p><strong>运动检测方法</strong></p><p>​本文采用基于光学流的方法来检查潜在动态区域和背景区域的一致性。光学流算法[30]在该领域已被广泛研究，该算法在运动检测中表现出色。该算法的总体思想是在两个图像的时空一致性假设下，从两个连续的图像中确定点的对应关系。提出了两种针对光流问题的解决方法，分别称为稀疏法和稠密法。稠密解决方案逐像素计算图像中的光学流值。但稀疏解决方案仅在这些兴趣点上计算流量矢量。可以通过以下公式获得一个像素的光学流值：<br>$$   \tau(\Chi,u)=\sum_{\Chi_i\in S}[I_{l-1}(X_i)-I_l(X_i+u(X_i))]^2   $$<br>​对于每一个2D再集合$S\subset R^2$的点$X_i$，$I_{l-1}(X_i)$是第l-1帧的$X_i$的雄塑强度。$I_l(X_i+u(X_I))$表示相应的第l帧中的光照强度。</p><p>$u(X_i)$是第l-1和第l帧的相应点的变化，该项根据局部窗口中基于重心$X_i$的变化而来，是使函数达到最小的变量。</p><p>为了减少上面所说的损失函数，$X_i$点的光流向量$(\frac{u_x(X_i)}{dt},\frac{u_y(X_i)}{dt})$。$\frac{u_x(X_i)}{dt}$是其沿x轴的时间随时间变化的导数，$\frac{u_y(X_i)}{dt}$是其沿y轴方向变化的倒数。沿y轴的时间。利用广泛使用的Lucas-Kanade光流法用于跟踪潜在动态对象内部和外部的稀疏点。</p><p>对于光学流向量$p =（u，v）$，其方向$\Phi$和大小$ρ$表示如下：<br>$$   \phi=\left\{   \begin{array}{}   atan2(\frac{v}{u})*180/\pi,&amp;if~atan2(\frac{v}{u})&gt;0\\   (360+atan2(\frac{v}{u}))*180/\pi,&amp;otherwise   \end{array}   \right.   $$</p><p>$$   \rho = \sqrt2{u^2+v^2}   $$</p><p>然后，类似于[15]，将为潜在的动态区域和背景区域构建标准化的直方图，其中每个单元格的范围将由如下所示的公式确定：<br>$$   2\pi*\frac{r-1}{R}&lt;\psi&lt;2\pi*{\frac{r}{R}}   $$<br>其中，$\R$是bins的数目，r是从左到右的系列字母。所有的流向量将根据它们与水平轴的夹角划分为每个容器。此外，所有流向量将分配给不同的簇。每个bin的高度将如下计算：<br>$$   H=\frac{\sum_{\xi\in bin}\rho_\xi}{\sum_{\mu\in area}\rho_\mu}   $$</p><p>其中$ρ_ξ$表示一个箱中流量矢量的大小，而$ρ_\mu$是势能动态区域或背景区域中流量矢量的大小。</p></li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> SLAM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Kalman 滤波器学习</title>
       <link href="/2020/03/14/2020-03-13-Kalman_Filter/"/>
       <url>/2020/03/14/2020-03-13-Kalman_Filter/</url>
@@ -1379,6 +1329,31 @@
         <tags>
             
             <tag> Kalman滤波器 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>高斯混合模型</title>
+      <link href="/2020/03/14/2020-03-14-GMM/"/>
+      <url>/2020/03/14/2020-03-14-GMM/</url>
+      
+        <content type="html"><![CDATA[<p>高斯混合模型</p><p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p><blockquote><p><strong>简单分布叠加，拟合复杂世界</strong></p></blockquote><span id="more"></span><h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p><strong>定义</strong></p><p>高斯混合模型是指具有如下形式的概率分布模型。<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$;<br>$$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$<br>称为第k个分模型。</p><p>一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。</p><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。</p><p>假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成，<br>$$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$<br>其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。</p><p><strong>EM（期望最大化）算法</strong></p><p>输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型；</p><p>输出：高斯混合模型参数。</p><ol><li><p>取参数的初始值开始迭代</p></li><li><p>求E步，根据当前模型参数，计算分模型k对观测数据$y_j$的相应度<br>$$   \hat{\gamma}_{jk}=\cfrac{\alpha_k\phi(y_j|\theta_k)}{\sum^K_{k=1}\alpha_k\phi(y_j|\theta_k)}，j=1,2,...N;k=1,2,..K   $$</p></li><li><p>求M步:计算新一轮的迭代的模型参数：<br>$$\hat{\mu}_k=\cfrac{\sum^N_{j=1}\hat{\gamma}_{jk}y_j}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,..,K$$</p></li></ol><p>$$\hat{\delta_k}^2=\cfrac{\sum^N_{j=1}\hat{gamma}_{jk}(y_j-\mu_k)^2}{\sum^N_{j=1}\hat{\gamma}_{jk}},k=1,2,...K$$</p><p>$$\hat{\alpha}_k=\cfrac{\sum^N_j=1\hat{\gamma_{jk}}}{N},k=1,2,...,K$$</p><ol start="4"><li>重复第二步和第三步，直至收敛。</li></ol><h2 id="GMM-HMM"><a href="#GMM-HMM" class="headerlink" title="GMM-HMM"></a>GMM-HMM</h2><p><img src="/2020/03/14/2020-03-14-GMM/20140528175313171.png" alt="20140528175313171" loading="lazy"></p><p>语音识别系统主要由信号处理和特征提取、声学模型（AM）、语言模型（LM）和解码搜索部分。</p><ul><li>信号处理和特征提取部分以音频信号为输入，通过消除噪声和信道失真对语音进行增强，将信号从时域转化到频域，并为声学模型提取合适的特征向量。</li><li>声学模型将声学和发音学（phonetics）进行整合，以特征向量作为输入，并为可变长特征序列生成声学模型分数。</li><li>语言模型学习词与词间的相互关系，来评估序列的可能性。</li><li>解码搜索对给定特征向量序列和若干假设次序列计算声学模型和语言模型分数，并输出得分最高的结果</li></ul><p>语音识别系统中经常使用基于GMM-HMM的声学模型。</p><p><strong>GMM被整合进HMM中，用来拟合基于状态的输出分布。</strong></p><p>用GMM建模声学特征（Acoustic Feature）$O_1,O_2,...,O_n$，可以理解成：</p><ul><li>每一个特征是由一个音素确定的，即不同特征可以按音素来聚类。由于在HMM中音素被表示为隐变量（状态），故等价于：</li><li>每一个特征是由某几个状态确定的，即不同特征可以按状态来聚类。</li><li>则设$P(O|S_i)$符合正态分布，则根据GMM的知识，$O_1,O_2,...,O_n$实际上就是一个混合高斯模型下的采样值。</li></ul><p>若包含了语音顺序信息，GMM不再是一个好模型，因为它不包含任何顺序信息。当给定HMM的一个状态后，若要对属于该状态的语音特征向量的概率分布进行建模，GMM仍不失为一个好的模型。因此，GMM被整合进HMM中，用来拟合基于状态的输出分布。</p><p><strong>利用声学特征训练HMM</strong></p><p>确定状态转移矩阵，是执行解码问题的基础。</p><p>而状态转移矩阵的确定即等价于HMM的训练问题（即状态转移矩阵u&#x3D;max(P(u|O))，从语音特征序列中利用EM算法学习得到状态转移矩阵。</p><h2 id="应用GMM-HMM模型识别语音"><a href="#应用GMM-HMM模型识别语音" class="headerlink" title="应用GMM-HMM模型识别语音"></a>应用GMM-HMM模型识别语音</h2><p><img src="/images/GMM/20160901093401467.png" loading="lazy"></p><ul><li><strong>对待识别语音做信号预处理</strong></li><li><strong>对待识别语音提取声学特征</strong></li><li><strong>对声学特征利用Viterbi算法解码</strong></li></ul><p>对声学特征解码后得到的是状态序列，即音素序列。</p><p>如果把声学模型的结果表示为句子，往往效果不尽如意，所以还需要用语言模型把识别出的各个音素纠正为正确的句子</p><p><strong>其它应用</strong></p><p><img src="/images/HMM/HMM_nlp.jpg" loading="lazy"></p><p>将上图中的拼音换成语音，就成了语音识别问题，转移概率仍然是二元语言模型，其输出概率则是语音模型，即语音和汉字的对应模型。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GMM </tag>
             
         </tags>
       
@@ -1412,6 +1387,31 @@
     
     
     <entry>
+      <title>运动一致性判断</title>
+      <link href="/2020/03/14/2020-03-15-Motion_consistency/"/>
+      <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
+      
+        <content type="html"><![CDATA[<p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p><p>本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。</p><blockquote><p><strong>动静分离，方能求得位姿真值</strong></p></blockquote><span id="more"></span><h1 id="运动一致性判断"><a href="#运动一致性判断" class="headerlink" title="运动一致性判断"></a>运动一致性判断</h1><p>基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。</p><p>目的：对图片中各部分进行运动一致性判断以分离出目标和背景。</p><p>下面介绍各个论文中的判断方法</p><h2 id="Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment"><a href="#Nonparametric-Statistical-and-Clustering-Based-RGB-D-Dense-Visual-Odometry-in-a-Dynamic-Environment" class="headerlink" title="Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment"></a>Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment</h2><p>该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割</p><p>过程：</p><ol><li>进行k-means聚类</li><li>计算每一个簇的残差</li><li>根据计算出的残差建立非参数统计模型</li></ol><p>聚类的好处有两点：</p><ol><li>能够将非刚体场景表示基于聚类的刚体场景</li><li>可有效增强密集运动的分割效果，从而支持场景流估计和避障。</li></ol><p>本文使用了一个残差模型。该模型基于一个假设：</p><p>若图片对齐，则基于静态背景的聚类将会有一个很小的残差。</p><p>光照强度残差：<br>$$r^p_I(\xi）= I_k(W(x^p_{k-n},\xi^k_{k-n}))-I_{k-n}(x^p_{k-n})$$<br>图像扭曲，Warp函数：<br>$$W(x^p_{k-n},\xi^k_{k-n})=\pi(T^k_{k-n}\pi^{-1}(x^p_{k-n},Z_{k-n}(x^p_{k-n})))$$</p><p>第i个聚类的残差计算方法如下所示：<br>$$\delta^{k,i}_{k-n}=\cfrac{\sum^{S_i-O_i}_{p=1}\alpha_Ir^p_I+r^P_Z/\hat Z_i}{S_i-O_i}$$<br>其中，$S_i$是第i类的像素大小。$O_i$是第i类遮挡的区域大小。</p><p>$\hat Z_i$是第i类的平均深度，$\alpha_I$是平衡深度和广度的权重。<br>$$r_Z^P(\Chi)=Z_k(W(x^p_{k-n},\Chi^k_{k-n}))-|T^k_{k-n}|_Z$$</p><p><strong>非参数统计模型</strong></p><p>该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动</p><p>静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。</p><p>对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图2是高动态场景的统计残差直方图示例。</p><p><img src="/2020/03/14/2020-03-15-Motion_consistency/Motion_consistency.png" alt="image-20200316123237971" loading="lazy"></p><p>在概率论和统计学中，t-分布（t-distribution）用于根据小样本来估计呈正态分布且方差未知的总体的均值。</p><p>受[14，23]的启发，基于t分布的非参数统计模型构造如下：<br>$$w_i = \cfrac{v_0+1}{v_0+((\delta'_i-\mu))^2}$$</p><p>$$\delta = 1.4826 Median \{|\delta'_i-\mu|\}$$</p><p>其中，$v_0$是t分布的自由度，决定了分布曲线的陡峭程度。</p><p>实验中，$v_0$被设置为10，$\mu$是样本均值，设为0；</p><p>$\delta$是样本方差，即基于中位数绝对偏差的非参数统计。</p><p>由于统计模型的概率表示簇的运动可能性，因此它可以指导场景运动分割，并为每个聚类提供权重以估计自我运动。</p><p>聚类标签根据如下给出：<br>$$\Beta_i=\left\{\begin{array}{l}1,&amp;\delta'_i\leq1/(\min(10,\max(3.\alpha_Bv_c\delta)))\\0,&amp;\delta'_i\geq1/(\min(10,\max(3,\alpha_Bv_c\delta)))\end{array}\right.$$<br>Bi表示第i个簇的聚类标签。1表示该类属于静态背景。</p><p>0表示该类属于动态部分。$\alpha_B$是一个用来调节独立变量和残差的维度协方差，计算方法为：<br>$$\alpha_B=10^3\times\min(10^3,10^{N_d})$$<br>$N_d$是标记为移动部分的聚类数。</p><p>聚类权重参考聚类的残差来给出，如下所示：<br>$$w_i^p=\left\{\begin{array}{} w_i, &amp;Meadian(\delta'_i)&gt;0.02\or N_d&gt;5\\1-\delta'_i,&amp;Others\end{array}\right.$$<br>其中，$w_i$是第i类的权重。Median($\delta'_i$)是聚类残差的中位数。</p><p>最后将运动标记和权重模型添加到稠密视觉里程计的能量优化函数中。优化函数是根据Kerl的工作[9]基于深度和强度构建的，具有很高的稳定性，而Jaimez的工作[15]的方法表明优化过程可以在Cauchy M估计器中获得良好的结果。自运动通过以下等式估算：<br>$$\Chi = \arg \min_{\Chi}\{\sum^M_{m=1}\Beta_i[F(w^P_i)r^P_Z(\Chi)+F(\alpha_I)w^p_ir^p_I(\Chi)]$$</p><p>$$F(r)=\cfrac{c^2}{2}\log(1+(\cfrac{r}{c})^2)$$</p><p>此外，基于能量函数的视觉里程计方法只有在运动较小时才能收敛到真实值，而较大的运动通常会将收敛收敛到局部最小值。因此，我们使用金字塔模型来解决此优化问题，以获得更准确的自我运动估计。</p><h2 id="Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry"><a href="#Dection-and-Resolution-of-Motion-Conflict-Inertial-Odometry" class="headerlink" title="Dection and Resolution of Motion Conflict Inertial Odometry"></a>Dection and Resolution of Motion Conflict Inertial Odometry</h2><p>判断路标点间一致性的策略：</p><ol><li><p>基于IMU判断的运动对每一个特征点计算重投影残差<br>$$   \delta_{l_j}=\sum_{i\in S}(z_ij-h(\hat X^I_j,l_j))   $$</p></li><li><p>计算当前帧中特征点的残差不一致点的个数，如果不一致点的个数超过了一定比例，则判断发生了运动冲突。<br>$$   Mr:=\cfrac{landmarks~wihtout~confilt}{landmarks}   $$</p></li><li><p>另一方面，分别根据基于IMU和视觉的运动计算重投影误差，再计算二者的分歧度，再根据分歧度计算当前帧是否发生了冲突。<br>$$   \delta_{MC}=||{\hat p_k^V-\hat p_k^I}||_{\sum}   $$</p></li></ol><h2 id="On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions"><a href="#On-Exploting-Per-Pixel-Conflict-to-Extract-Secondary-Motions" class="headerlink" title="On Exploting Per-Pixel Conflict to Extract Secondary Motions"></a>On Exploting Per-Pixel Conflict to Extract Secondary Motions</h2><p>基于DNN训练一个概率图，提取出概率图（Mask）</p><p>然后基于该概率图分别计算主要运动和次要运动。</p><h2 id="A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes"><a href="#A-Compatible-Framework-for-RGB-D-in-Dynamic-Scenes" class="headerlink" title="A Compatible Framework for RGB-D in Dynamic Scenes"></a>A Compatible Framework for RGB-D in Dynamic Scenes</h2><ol><li><p>首先利用CNN提取出图像中潜在的动态区域</p></li><li><p><strong>运动检测方法</strong></p><p>​本文采用基于光学流的方法来检查潜在动态区域和背景区域的一致性。光学流算法[30]在该领域已被广泛研究，该算法在运动检测中表现出色。该算法的总体思想是在两个图像的时空一致性假设下，从两个连续的图像中确定点的对应关系。提出了两种针对光流问题的解决方法，分别称为稀疏法和稠密法。稠密解决方案逐像素计算图像中的光学流值。但稀疏解决方案仅在这些兴趣点上计算流量矢量。可以通过以下公式获得一个像素的光学流值：<br>$$   \tau(\Chi,u)=\sum_{\Chi_i\in S}[I_{l-1}(X_i)-I_l(X_i+u(X_i))]^2   $$<br>​对于每一个2D再集合$S\subset R^2$的点$X_i$，$I_{l-1}(X_i)$是第l-1帧的$X_i$的雄塑强度。$I_l(X_i+u(X_I))$表示相应的第l帧中的光照强度。</p><p>$u(X_i)$是第l-1和第l帧的相应点的变化，该项根据局部窗口中基于重心$X_i$的变化而来，是使函数达到最小的变量。</p><p>为了减少上面所说的损失函数，$X_i$点的光流向量$(\frac{u_x(X_i)}{dt},\frac{u_y(X_i)}{dt})$。$\frac{u_x(X_i)}{dt}$是其沿x轴的时间随时间变化的导数，$\frac{u_y(X_i)}{dt}$是其沿y轴方向变化的倒数。沿y轴的时间。利用广泛使用的Lucas-Kanade光流法用于跟踪潜在动态对象内部和外部的稀疏点。</p><p>对于光学流向量$p =（u，v）$，其方向$\Phi$和大小$ρ$表示如下：<br>$$   \phi=\left\{   \begin{array}{}   atan2(\frac{v}{u})*180/\pi,&amp;if~atan2(\frac{v}{u})&gt;0\\   (360+atan2(\frac{v}{u}))*180/\pi,&amp;otherwise   \end{array}   \right.   $$</p><p>$$   \rho = \sqrt2{u^2+v^2}   $$</p><p>然后，类似于[15]，将为潜在的动态区域和背景区域构建标准化的直方图，其中每个单元格的范围将由如下所示的公式确定：<br>$$   2\pi*\frac{r-1}{R}&lt;\psi&lt;2\pi*{\frac{r}{R}}   $$<br>其中，$\R$是bins的数目，r是从左到右的系列字母。所有的流向量将根据它们与水平轴的夹角划分为每个容器。此外，所有流向量将分配给不同的簇。每个bin的高度将如下计算：<br>$$   H=\frac{\sum_{\xi\in bin}\rho_\xi}{\sum_{\mu\in area}\rho_\mu}   $$</p><p>其中$ρ_ξ$表示一个箱中流量矢量的大小，而$ρ_\mu$是势能动态区域或背景区域中流量矢量的大小。</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>粒子滤波器</title>
       <link href="/2020/03/14/2020-03-15-Particle_Filter/"/>
       <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
@@ -1429,6 +1429,33 @@
         <tags>
             
             <tag> 粒子滤波器 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>经典聚类算法调研</title>
+      <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
+      <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
+      
+        <content type="html"><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p><ol><li>Means-shift聚类</li><li>k-means聚类</li><li>Fuzzy C means聚类</li><li>Medoid shift算法</li><li>Turbopixel算法</li><li>SLIC算法</li></ol><p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p><blockquote><p><strong>物以类聚，算法以分见真章</strong></p></blockquote><span id="more"></span><h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p><p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p><p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p><p><strong>算法步骤</strong></p><ol><li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p></li><li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p></li><li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p></li><li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p><p>下图演示了均值漂移聚类的计算步骤：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/Meanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法" loading="lazy"></p></li></ol><p><strong>算法评价</strong></p><p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p><p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p><h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p><p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p><p><strong>算法步骤</strong></p><ol><li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li><li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li><li>计算每一类中中心点作为新的中心点。</li><li>重复以上步骤，直至聚类中心变化在一定范围内为止</li></ol><p><strong>算法评价</strong></p><p>优点：简单快速高效；对异常值不太敏感</p><p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p><p>下图演示了k均值聚类的过程：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/k%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" loading="lazy"></p><h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p><p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p><p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p><p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p><p><strong>算法思路</strong></p><p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p><p><strong>算法步骤</strong></p><ol><li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p></li><li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p></li><li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p></li></ol><p><strong>算法评价</strong></p><p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p><p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p><h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p><p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p><p><strong>算法步骤</strong></p><p><strong>算法评价</strong></p><p>优点：比Mean shift更高效</p><p>缺点：不能控制图像块数量和大小</p><h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p><p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p><p>①每个图像块尺寸大小尽可能均匀：</p><p>②各个图像块之间紧凑连接且保持连通</p><p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p><p><strong>算法步骤</strong></p><ol><li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p></li><li><p>对图像中的像素点进行标记</p></li><li><p>初始化水平集函数。</p></li><li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p></li></ol><p>⑤返回边界。</p><p><strong>算法评价</strong></p><p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p><h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p><p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p><p>像素相似性与向量距离成反比。</p><p><strong>算法步骤</strong></p><p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p><p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p><p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p><p>距离计算公式如下：<br>$$d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}$$</p><p>$$d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}$$</p><p>$$D'=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}$$</p><p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p><p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p><p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p><p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p><p><strong>算法评价</strong></p><p>优点：</p><p>1.聚类结果紧凑整齐且邻域特征明显。</p><p>2.可处理彩色图和灰度图</p><p>3.只需一个超参数。</p><p>4.运行速度较快。</p><p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 聚类 </tag>
+            
+            <tag> 图像分割 </tag>
             
         </tags>
       
@@ -1489,33 +1516,6 @@
     
     
     <entry>
-      <title>经典聚类算法调研</title>
-      <link href="/2020/03/10/2020-03-12-Clustering_Survey/"/>
-      <url>/2020/03/10/2020-03-12-Clustering_Survey/</url>
-      
-        <content type="html"><![CDATA[<p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p><ol><li>Means-shift聚类</li><li>k-means聚类</li><li>Fuzzy C means聚类</li><li>Medoid shift算法</li><li>Turbopixel算法</li><li>SLIC算法</li></ol><p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p><blockquote><p><strong>物以类聚，算法以分见真章</strong></p></blockquote><span id="more"></span><h2 id="Means-shift聚类（均值漂移）"><a href="#Means-shift聚类（均值漂移）" class="headerlink" title="Means-shift聚类（均值漂移）"></a>Means-shift聚类（均值漂移）</h2><p><strong>核心思想</strong></p><p>均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组&#x2F;类的中心点。</p><p>然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。</p><p><strong>算法步骤</strong></p><ol><li><p>确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。</p></li><li><p>每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。</p></li><li><p>移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。</p></li><li><p>步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。</p><p>下图演示了均值漂移聚类的计算步骤：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/Meanshift%E7%AE%97%E6%B3%95.gif" alt="Meanshift算法" loading="lazy"></p></li></ol><p><strong>算法评价</strong></p><p>优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量</p><p>缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小&#x2F;半径</p><h2 id="K-means聚类"><a href="#K-means聚类" class="headerlink" title="K-means聚类"></a>K-means聚类</h2><p><strong>核心思想</strong></p><p>输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优</p><p><strong>算法步骤</strong></p><ol><li>选择一些类&#x2F;组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。</li><li>计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。</li><li>计算每一类中中心点作为新的中心点。</li><li>重复以上步骤，直至聚类中心变化在一定范围内为止</li></ol><p><strong>算法评价</strong></p><p>优点：简单快速高效；对异常值不太敏感</p><p>缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。</p><p>下图演示了k均值聚类的过程：</p><p><img src="/images/%E8%81%9A%E7%B1%BB/k%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB.gif" loading="lazy"></p><h2 id="Fuzzy-C-means算法"><a href="#Fuzzy-C-means算法" class="headerlink" title="Fuzzy C-means算法"></a>Fuzzy C-means算法</h2><p><strong>核心思想</strong></p><p>Fuzzy C-means又名模糊C均值聚类，模糊C均值聚类融合了模糊理论的精髓，相较于k-means的硬聚类，模糊C提供了更加灵活的聚类结果。因为在大部分情况下，数据集中的对象不能划分成为明显分离的簇，指派一个对象到一个特定的簇有些生硬，也可能会出错。故，对每个对象和每个簇赋予一个权值，指明对象属于该簇的程度。当然，基于概率的方法也可以给出这样的权值，但是有时候我们很难确定一个合适的统计模型，因此使用具有自然地、非概率特性的模糊c均值就是一个比较好的选择。</p><p>简单地说，就是要最小化目标函数（即误差的平方和）：<br>$$J_m = \sum^N_{i=1}\sum^C_{j=1}U^m_{ij}||x_i-c_j||^2 ,1&lt;=m&lt;∞$$<br>其中，m是聚类的簇数；i,j是类标号；$u_{ij}$ 表示样本$x_i$ 属于j类的隶属度。i表示第i个样本，x是具有d维特征的一个样本。$c_j$是j簇的中心，也具有d维度。$||*||$是表示距离的度量。</p><p>模糊C聚类是一个不断得带隶属度$u_{ij}$ 和簇中心$c_j$ 的过程，直到达到最优。</p><p><strong>算法思路</strong></p><p>将提供的 n 个样本分为 C 组，通过迭代寻找各个组的聚类中心与隶属度值 Uij ，使非相似性指标的目标函数 J( U，V) 取最小值。该算法将隶属度 0 至 1 分别分派给每个数据对象，数据对象所属于哪类的问题是由隶属度值来决定。且规定每一个样本的隶属度值的总和是 1。</p><p><strong>算法步骤</strong></p><ol><li><p>初始化。通常采用随机初始化。即权值随机地选取。簇数需要人为选定。</p></li><li><p>计算质心。FCM中的质心有别于传统质心的地方在于，它是以隶属度为权重做一个加权平均。</p></li><li><p>更新模糊伪划分。即更新权重（隶属度）。简单地说，如果x越靠近质心c，则隶属度越高，反之越低。</p></li></ol><p><strong>算法评价</strong></p><p>优点：当聚类数量较多且类间差异明显时，简单高效效果较好</p><p>缺点：1.需要接收参数 C，若给定的参数不恰当，会对聚类结果产生负面影响。2. 当待检测数据样本总数过大并特征点过多，聚类效果不好。算法没有分析图像中各个像素间的领域关系，导致分割后的样本点易受噪声点的影响。</p><h2 id="Medoid-shift-算法"><a href="#Medoid-shift-算法" class="headerlink" title="Medoid shift 算法"></a>Medoid shift 算法</h2><p><strong>核心思想</strong></p><p>基于Means shift算法进行的改进，不同之处，MeanShift 算法经过多次迭代计算出的均值，即偏移值。相比较 Medoidshift 算法不要求求出平均值，而是从数据中将偏移值取出，但仍然需要确定两点之间距离。Medoidshift 算法每次迭代会计算出新的中心点，并非新位置，中心点可以被定义如下:</p><p><strong>算法步骤</strong></p><p><strong>算法评价</strong></p><p>优点：比Mean shift更高效</p><p>缺点：不能控制图像块数量和大小</p><h2 id="Turbo-Pixel算法"><a href="#Turbo-Pixel算法" class="headerlink" title="Turbo Pixel算法"></a>Turbo Pixel算法</h2><p><strong>核心思想</strong></p><p>该算法是一种基于几何流的超像素快速分割算法。首先，像素块应先满足以下几个条件：</p><p>①每个图像块尺寸大小尽可能均匀：</p><p>②各个图像块之间紧凑连接且保持连通</p><p>③各图像块彼此不覆盖且每块边界光滑无特殊棱角。</p><p><strong>算法步骤</strong></p><ol><li><p>首先为避免在给种子点定义时被噪声污染，特添加扰动。</p></li><li><p>对图像中的像素点进行标记</p></li><li><p>初始化水平集函数。</p></li><li><p>执行以下步骤，通过反复迭代并检验种子点膨胀边缘的演化速度是否为0，若达到则停止，反之继续，一是首先水平集曲线函数演化二是开始对未分配区域进行比较冫三是边界上的所有像素点的演化速度是由根据比较的结果进行更新</p></li></ol><p>⑤返回边界。</p><p><strong>算法评价</strong></p><p>超像素分割算法利用图像相似度将图像分割成几个同质超像素子区域。对于基于像素的处理方法，用来处理超像素的图像，可以更有助于获取的特定部分特征，从而保留更有效的信息的图像</p><h2 id="SLIC算法"><a href="#SLIC算法" class="headerlink" title="SLIC算法"></a>SLIC算法</h2><p><strong>核心思想</strong></p><p> 利用CIE-Lab 颜色空间来表示图像颜色信息，需要颜色空间转换，对应着图像中的每个像素，将其用一个由CIE-Lab 颜色空间和像素坐标 组成的 5 维向量{ L,a,b,x,y} 表示。通过向量距离来度量两个像素的相似性.</p><p>像素相似性与向量距离成反比。</p><p><strong>算法步骤</strong></p><p>1.初始化图像分割块。根据超参数生成K个种子点，计算种子点到所有像素的梯度值，搜索每个种子点周围空间里距离该点的最近的像素点。将各个像素分类。</p><p>步距设置为：$S=\sqrt{\frac{N}{K}}$ 。N是像素边，K是种子点个数</p><p>2.初始化聚类中心。将所有像素归类，计算领域内像素与种子间的距离，取最小距离作为聚类中心。</p><p>距离计算公式如下：<br>$$d_c=\sqrt{(l_j-l_i)^2+(a_j-a_i)^2+(b_j-b_i)^2}$$</p><p>$$d_s=\sqrt{(x_j-x_i)^2+(y_j-y_i)^2}$$</p><p>$$D'=\sqrt{(\frac{d_c}{N_c})^2+(\frac{d_s}{N_s})^2}$$</p><p>其中，$N_S=S=\sqrt{\frac{N}{K}}$</p><p>3.计算聚类中心到领域内所有像素点的距离。刷新原有的K个聚类重心点，再以刷新后的收敛中心点去搜索其周围与其相似度最高的点。</p><p>4.重新聚类，更新每个像素点所属的图像块，将同一个图像块的像素点取平均，得到新的聚类中心。</p><p>5.重复前面的步骤，直到两次聚类中心的距离小于某个阈值。</p><p><strong>算法评价</strong></p><p>优点：</p><p>1.聚类结果紧凑整齐且邻域特征明显。</p><p>2.可处理彩色图和灰度图</p><p>3.只需一个超参数。</p><p>4.运行速度较快。</p><p>缺点：因为对边缘的保持使用位置限制，导致超像素和图像边缘的契合度变差。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 聚类 </tag>
-            
-            <tag> 图像分割 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>隐马尔可夫模型</title>
       <link href="/2020/03/10/2020-03-13-HMM_model/"/>
       <url>/2020/03/10/2020-03-13-HMM_model/</url>
@@ -1533,114 +1533,6 @@
         <tags>
             
             <tag> HMM </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Ubuntu 连接蓝牙鼠标</title>
-      <link href="/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
-      <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
-      
-        <content type="html"><![CDATA[<p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p><blockquote><p><strong>命令行之下，蓝牙设备亦可驯服</strong></p></blockquote><span id="more"></span><p>$ sudo -i</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure><p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Ubuntu </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>发布 IMU 信息到 ROS 系统</title>
-      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
-      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
-      
-        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> IMU </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>使用 ROS 工具标定相机</title>
-      <link href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
-      <url>/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
-      
-        <content type="html"><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p><p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p><blockquote><p><strong>标定相机参数，方能还原真实世界</strong></p></blockquote><span id="more"></span><h2 id="利用-camera-calibration-标定相机流程"><a href="#利用-camera-calibration-标定相机流程" class="headerlink" title="利用 camera_calibration 标定相机流程"></a>利用 camera_calibration 标定相机流程</h2><ol><li>驱动USB摄像头</li><li>利用camera_calibration标定相机</li></ol><p>执行命令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure><ol><li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p><p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img" loading="lazy"></p></li><li><p>畸变参数向量：[k1,k2,p1,p2]</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> 相机标定 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>使用 evo 工具评测 SLAM</title>
-      <link href="/2020/02/15/2020-02-19-How_to_use_evo/"/>
-      <url>/2020/02/15/2020-02-19-How_to_use_evo/</url>
-      
-        <content type="html"><![CDATA[<p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p><p><a href="https://github.com/MichaelGrupp/evo">github地址</a></p><p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p><blockquote><p><strong>轨迹评估有据，SLAM 精度了然</strong></p></blockquote><span id="more"></span><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol><li>使用pypi直接安装：</li></ol><p><code>pip install evo --upgrade --no-binary evo</code></p><ol start="2"><li>本地编译安装</li></ol><p><code> pip install --editable . --upgrade --no-binary evo</code><br>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p><ul><li><code>evo_ape </code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；</li></ul><p>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</p><ul><li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差&#x3D;绝对误差&#x2F;真值）</li></ul><p><strong>工具命令</strong></p><ul><li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p></li><li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p></li><li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p></li><li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p></li><li><p><code>-va</code> a 对齐轨迹</p></li></ul><p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum&#x2F;kitti&#x2F;bag&#x2F;euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul><li>对比&#x2F;绘制VINS-mono&#x2F;fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html">该博客</a>.</li></ul><h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj euroc ./groundtruth/MH_01_data.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>画某一次结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./result/MH_01/loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p><h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p><ul><li><p>“vins_result_loop” : defined in [path to Vins folder]&#x2F;pose_graph&#x2F;src&#x2F;pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p></li><li><p>“vins_result_no_loop”: defined in [path to Vins folder]&#x2F;vins_estimator&#x2F;src&#x2F;utility&#x2F;visualization.cpp in function pubOdometry(). </p><p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p></li></ul><p>代码修改过程：</p><p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="type">double</span> turetime = header.stamp.<span class="built_in">toSec</span>();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">w</span>() &lt;&lt; endl; </span><br></pre></td></tr></table></figure><p>**pose_graph.cpp **</p><p>updatePath()</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">&quot;/home/guoben/Documents/output/loop_result.csv&quot;</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="type">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure><p>画某一个结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>对比结果</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_rpe euroc ./groundtruth/MH_01_data.csv ./result/MH_01/vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure><p>MSCKF</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// ofstream foutC(&quot;/home/guoben/Documents/output/result_vio.csv&quot;, ios::app);</span><br><span class="line">// foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">// foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> SLAM </tag>
-            
-            <tag> VIO </tag>
-            
-            <tag> evo </tag>
             
         </tags>
       
@@ -1678,6 +1570,58 @@
     
     
     <entry>
+      <title>发布 IMU 信息到 ROS 系统</title>
+      <link href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"/>
+      <url>/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</url>
+      
+        <content type="html"><![CDATA[<p>以下记录是在调试树莓派3b中得到的经验</p><p>​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p><p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p><blockquote><p><strong>消息结构清晰，数据方可流动</strong></p></blockquote><span id="more"></span><h2 id="发布IMU信息到ROS"><a href="#发布IMU信息到ROS" class="headerlink" title="发布IMU信息到ROS"></a>发布IMU信息到ROS</h2><h2 id="sensor-msgs-x2F-Imu-msg"><a href="#sensor-msgs-x2F-Imu-msg" class="headerlink" title="sensor_msgs&#x2F;Imu.msg"></a>sensor_msgs&#x2F;Imu.msg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Header header</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Quaternion orientation</span><br><span class="line">float64[9] orientation_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 angular_velocity</span><br><span class="line">float64[9] angular_velocity_covariance # Row major about x, y, z axes</span><br><span class="line"> </span><br><span class="line">geometry_msgs/Vector3 linear_acceleration</span><br><span class="line">float64[9] linear_acceleration_covariance # Row major x, y z</span><br></pre></td></tr></table></figure><p>其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs&#x2F;Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs&#x2F;Vector3）。</p><h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol><li><p>WiringPi未安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone WiringPi</span><br><span class="line">cd WiringPi</span><br><span class="line">sudo chmod 771 ./build</span><br><span class="line">sudo ./build</span><br></pre></td></tr></table></figure></li><li><p>I2C device</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure></li><li><p>创建ros包</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span><br></pre></td></tr></table></figure><p>然后修改XML和CMakeLists.txt</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> IMU </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ubuntu 连接蓝牙鼠标</title>
+      <link href="/2020/02/15/2020-02-15-UbuntuBluetooth/"/>
+      <url>/2020/02/15/2020-02-15-UbuntuBluetooth/</url>
+      
+        <content type="html"><![CDATA[<p>本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。</p><blockquote><p><strong>命令行之下，蓝牙设备亦可驯服</strong></p></blockquote><span id="more"></span><p>$ sudo -i</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bluetooth]# power off</span><br><span class="line">[bluetooth]# power on</span><br><span class="line">[bluetooth]# scan on</span><br><span class="line">[bluetooth]# connect XX:XX:XX:XX:XX:XX</span><br><span class="line">[Arc Touch Mouse SE]# trust</span><br><span class="line">[Arc Touch Mouse SE]# pair</span><br><span class="line">[Arc Touch Mouse SE]# unblock</span><br><span class="line">[Arc Touch Mouse SE]# power off</span><br><span class="line">[bluetooth]# power on</span><br></pre></td></tr></table></figure><p>注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 &#x2F;var&#x2F;lib&#x2F;bluetooth&#x2F;….&#x2F;XX:XX:XX:XX:XX 的老的配对文件也给删了。<br>重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Ubuntu </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>VIO 主流框架</title>
       <link href="/2020/02/15/2020-02-15-VIO_Framework/"/>
       <url>/2020/02/15/2020-02-15-VIO_Framework/</url>
@@ -1699,6 +1643,62 @@
             <tag> VIO </tag>
             
             <tag> VINS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 evo 工具评测 SLAM</title>
+      <link href="/2020/02/15/2020-02-19-How_to_use_evo/"/>
+      <url>/2020/02/15/2020-02-19-How_to_use_evo/</url>
+      
+        <content type="html"><![CDATA[<p>evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。</p><p><a href="https://github.com/MichaelGrupp/evo">github地址</a></p><p>本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。</p><blockquote><p><strong>轨迹评估有据，SLAM 精度了然</strong></p></blockquote><span id="more"></span><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol><li>使用pypi直接安装：</li></ol><p><code>pip install evo --upgrade --no-binary evo</code></p><ol start="2"><li>本地编译安装</li></ol><p><code> pip install --editable . --upgrade --no-binary evo</code><br>安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。</p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>指标</strong></p><ul><li><code>evo_ape </code> - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性；</li></ul><p>evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。</p><ul><li><code>evo_rpe</code>  - relative pose error - 相对误差 （相对误差&#x3D;绝对误差&#x2F;真值）</li></ul><p><strong>工具命令</strong></p><ul><li><p><code>evo_traj</code> - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图</p></li><li><p><code>evo_res</code> - tool for comparing one or multiple result files from <code>evo_ape</code> or <code>evo_rpe</code> 对比多个结果</p></li><li><p><code>evo_fig</code> - (experimental) tool for re-opening serialized plots (saved with <code>--serialize_plot</code>) </p></li><li><p><code>evo_config</code> - tool for global settings and config file manipulation -设置参数</p></li><li><p><code>-va</code> a 对齐轨迹</p></li></ul><p>evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum&#x2F;kitti&#x2F;bag&#x2F;euroc等），轨迹文件。轨迹文件可以有多个，例如：<br>evo_traj tum traj1.txt traj2.txt<br>这个指令只是显示轨迹的基本信息，若要绘制轨迹，则增加可选参数 -p 或 –plot<br>evo_traj tum traj1.txt –p</p><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul><li>对比&#x2F;绘制VINS-mono&#x2F;fusion的轨迹时需要对其代码进行修改，具体参考<a href="https://blog.rneko.com/posts/3937502838.html">该博客</a>.</li></ul><h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><h3 id="EuRoC"><a href="#EuRoC" class="headerlink" title="EuRoC"></a>EuRoC</h3><p>画groundtruth的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj euroc ./groundtruth/MH_01_data.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>画某一次结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./result/MH_01/loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><h3 id="TUM"><a href="#TUM" class="headerlink" title="TUM"></a>TUM</h3><p>groundtruth.txt 为外部运动捕捉系统采集到的相机位姿,格式为(time, t x , t y , t z , q x , q y , q z , q w ),</p><h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><h3 id="VINS-Mono"><a href="#VINS-Mono" class="headerlink" title="VINS-Mono"></a>VINS-Mono</h3><p>VINS-mono的估计结果需要按照TUM格式输出 因此要对代码做一些调整。在一下两个文件中修改即可。</p><ul><li><p>“vins_result_loop” : defined in [path to Vins folder]&#x2F;pose_graph&#x2F;src&#x2F;pose_graph.cpp ; line 156 or 630. The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz).</p></li><li><p>“vins_result_no_loop”: defined in [path to Vins folder]&#x2F;vins_estimator&#x2F;src&#x2F;utility&#x2F;visualization.cpp in function pubOdometry(). </p><p>The format is timestamp + position(x,y, z) + quaternion(qw, qx, qy, qz) + velocity(x,y,z).</p></li></ul><p>代码修改过程：</p><p><strong>visualization.cpp -&gt; Pubodometry ()</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// write result to file 为了按照TUM格式输出 调换了位置</span></span><br><span class="line"><span class="type">double</span> turetime = header.stamp.<span class="built_in">toSec</span>();</span><br><span class="line"><span class="function">ofstream <span class="title">foutC</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">foutC.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">foutC &lt;&lt; turetime &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; estimator.Ps[WINDOW_SIZE].<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">      &lt;&lt; tmp_Q.<span class="built_in">w</span>() &lt;&lt; endl; </span><br></pre></td></tr></table></figure><p>**pose_graph.cpp **</p><p>updatePath()</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">   &#123;        </span><br><span class="line">       <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(<span class="string">&quot;/home/guoben/Documents/output/loop_result.csv&quot;</span>, ios::app)</span></span>;</span><br><span class="line">       <span class="type">double</span> turetime = cur_kf-&gt;time_stamp;</span><br><span class="line">       loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">       loop_path_file  &lt;&lt; turetime &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">            &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;           </span><br><span class="line">      loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//一共有两处</span></span><br><span class="line">       <span class="keyword">if</span> (SAVE_LOOP_PATH)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="function">ofstream <span class="title">loop_path_file</span><span class="params">(VINS_RESULT_PATH, ios::app)</span></span>;</span><br><span class="line">           loop_path_file.<span class="built_in">setf</span>(ios::fixed, ios::floatfield);</span><br><span class="line">           loop_path_file &lt;&lt; (*it)-&gt;time_stamp &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">           loop_path_file  &lt;&lt; P.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; P.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">x</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">z</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">                 &lt;&lt; Q.<span class="built_in">w</span>() &lt;&lt; endl;</span><br><span class="line">           loop_path_file.<span class="built_in">close</span>();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure><p>画某一个结果的轨迹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_traj tum ./loop_result.csv -p --plot_mode=xyz</span><br></pre></td></tr></table></figure><p>对比结果</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">evo_rpe euroc ./groundtruth/MH_01_data.csv ./result/MH_01/vins_result_loop.csv -va -r full --plot</span><br></pre></td></tr></table></figure><p>MSCKF</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// ofstream foutC(&quot;/home/guoben/Documents/output/result_vio.csv&quot;, ios::app);</span><br><span class="line">// foutC.setf(ios::fixed, ios::floatfield);</span><br><span class="line">// foutC &lt;&lt; odom_msg.header.stamp.toSec() &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.position.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.x &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.y &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.z &lt;&lt; &quot; &quot;</span><br><span class="line">//       &lt;&lt; odom_msg.pose.pose.orientation.w &lt;&lt; endl;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> VIO </tag>
+            
+            <tag> evo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 ROS 工具标定相机</title>
+      <link href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
+      <url>/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p><p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p><blockquote><p><strong>标定相机参数，方能还原真实世界</strong></p></blockquote><span id="more"></span><h2 id="利用-camera-calibration-标定相机流程"><a href="#利用-camera-calibration-标定相机流程" class="headerlink" title="利用 camera_calibration 标定相机流程"></a>利用 camera_calibration 标定相机流程</h2><ol><li>驱动USB摄像头</li><li>利用camera_calibration标定相机</li></ol><p>执行命令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure><ol><li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p><p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img" loading="lazy"></p></li><li><p>畸变参数向量：[k1,k2,p1,p2]</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> 相机标定 </tag>
             
         </tags>
       
