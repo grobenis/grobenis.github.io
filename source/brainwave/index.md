@@ -930,6 +930,12 @@ date: 2026-08-29 00:00:00
     var frame = m.querySelector('#winFrame');
     var full = m.querySelector('#winFull');
     var fullImg = full.querySelector('img');
+    var room = frame.parentElement;
+    var panel = m.querySelector('.bw-modal-panel');
+    /* 把季节按钮从房间内部挪到 panel 容器内（房间 overflow:hidden 会切掉按钮），
+       同时把 is-zoom class 同步到 panel，使 .is-zoom .bw-win-tabs 选择器仍能命中 */
+    var tabs = room.querySelector('.bw-win-tabs');
+    if (tabs) panel.appendChild(tabs);
     var curSeason = 'spring';
     var WIN_HINT = '点一点窗户，推开它，看看窗外住着谁？🪟';
     function render(key) {
@@ -955,15 +961,19 @@ date: 2026-08-29 00:00:00
     /* 点窗户：放大外景（再点还原房间）；放大时窗棂淡出 */
     frame.addEventListener('click', function (e) {
       e.stopPropagation();
-      /* is-zoom 加在 .bw-room 上，让 .is-zoom .bw-win-frame::before/::after 等后代选择器能命中 */
-      var zoom = frame.parentElement.classList.toggle('is-zoom');
+      /* is-zoom 同时加在 .bw-room 和 .bw-modal-panel 上：
+         - .bw-room.is-zoom 让 .is-zoom .bw-win-frame::before/::after 等后代选择器命中
+         - .bw-modal-panel.is-zoom 让从房间内挪出的 .bw-win-tabs 也能被 .is-zoom 命中 */
+      var zoom = room.classList.toggle('is-zoom');
+      panel.classList.toggle('is-zoom', zoom);
       /* 室内时显示引导文案，推开后显示季节旁白 */
       cap.textContent = zoom ? SEASONS[curSeason].caption : WIN_HINT;
     });
     /* 放大态下点击画面任意空白处也可退出，回到室内 */
-    frame.parentElement.addEventListener('click', function () {
+    room.addEventListener('click', function () {
       if (this.classList.contains('is-zoom')) {
         this.classList.remove('is-zoom');
+        panel.classList.remove('is-zoom');
         cap.textContent = WIN_HINT;
       }
     });
