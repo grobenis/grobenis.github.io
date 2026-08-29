@@ -552,25 +552,79 @@ date: 2026-08-29 00:00:00
   var HIDDEN = { name: '彩虹', personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
 
   /* 盲盒商店：16 款软萌软胶玩具 + 1 款稀有隐藏 */
-  var TOYS = [
-    { name: '团子喵', line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
-    { name: '星星软糖', line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
-    { name: '小酸奶', line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
-    { name: '方方熊', line: '方方正正，也超好抱', prompt: 'one cute square cube-shaped polar bear plush toy with tiny round ears, soft fluffy white fur, smiling kawaii face, sitting pose, studio product shot, pastel pink background' },
-    { name: '布丁兔', line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
-    { name: '云朵羊', line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
-    { name: '果冻龙', line: '哎呀，把爪爪掉了', prompt: 'one cute squishy jelly baby dragon soft toy, translucent green jelly body, tiny wings, big sparkly eyes, adorable, studio product shot, pastel pink background' },
-    { name: '奶泡企鹅', line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
-    { name: '西瓜猪', line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
-    { name: '芒果鸭', line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' },
-    { name: '泡泡蛙', line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
-    { name: '芝士鼠', line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
-    { name: '转圈猴', line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
-    { name: '灯泡狗', line: '打开开关，就点亮你', prompt: 'one cute light-bulb puppy soft toy, round warm glowing bulb body with tiny dog face, soft yellow plush, adorable, studio product shot, pastel pink background' },
-    { name: '小麋鹿', line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
-    { name: '曲奇牛', line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' }
+  /* 拆盲盒：5 大类 ×（8 普通 + 1 隐藏）= 45 款；按当前分类抽盒 */
+  var CATEGORIES = [
+    {
+      key: 'animal', name: '软萌动物', emoji: '🐾',
+      toys: [
+        { name: '团子喵', line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
+        { name: '布丁兔', line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
+        { name: '云朵羊', line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
+        { name: '奶泡企鹅', line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
+        { name: '泡泡蛙', line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
+        { name: '转圈猴', line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
+        { name: '小麋鹿', line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
+        { name: '芒果鸭', line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '彩虹独角兽', line: '我可是传说中限定的彩虹独角兽！', prompt: 'one legendary cute rainbow unicorn squishy soft toy, iridescent pastel horn and mane, sparkling starry eyes, soft glowing body, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'dessert', name: '甜品甜点', emoji: '🍰',
+      toys: [
+        { name: '星星软糖', line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
+        { name: '小酸奶', line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '奶黄包', line: '趁热咬一口，会流心哦', prompt: 'one cute custard bao soft toy shaped like a little bun, glossy soft golden yellow body, tiny steam swirl on top, plump round shape, adorable, studio product shot, pastel pink background' },
+        { name: '芝士鼠', line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
+        { name: '西瓜猪', line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '曲奇牛', line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '草莓杯', line: '一勺下去，酸酸甜甜', prompt: 'one cute strawberry parfait cup soft toy, layered pink and cream body in a tiny glass cup topped with a strawberry, adorable, studio product shot, pastel pink background' },
+        { name: '抹茶卷', line: '慢慢转出来，每一层都是绿', prompt: 'one cute matcha roll cake soft toy, green and white spiral swirl, soft sponge texture, tiny cream dollop on top, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '小笼包国王', line: '皮薄馅大，谁与争锋！', prompt: 'one regal cute steamed xiaolongbao king soft toy, plump translucent dumpling with a tiny golden crown on top, soft jelly texture, proud face, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'weird', name: '稀奇古怪', emoji: '🤪',
+      toys: [
+        { name: '咬人袜', line: '「我才不是普通的袜子！」——它说', prompt: 'one cute squishy soft toy sock monster, pastel rainbow striped sock body with two tiny fangs poking out, big mischievous eyes, soft plush texture, studio product shot, pastel pink background' },
+        { name: '充电菇', line: '电量低于 20% 时会小声哭泣', prompt: 'one cute squishy soft toy mushroom, plump rounded cap with tiny USB-C port on the belly, glowing power button, soft pastel mint and lavender body, studio product shot, pastel pink background' },
+        { name: '便利贴小狗', line: '贴在你心上请轻一点，撕下来会委屈', prompt: 'one cute squishy soft toy shaped like a sticky note, dog face drawn on it, pastel yellow paper body with a tiny adhesive strip on the back, soft plush texture, studio product shot, pastel pink background' },
+        { name: '硬盘君', line: '你存的都什么乱七八糟的！', prompt: 'one cute squishy soft toy shaped like a tiny 3.5 inch hard drive, grumpy cartoon face with furrowed brow, tiny arms crossed, soft mint green body, studio product shot, pastel pink background' },
+        { name: '回形针乐手', line: '别小看我，旋律我都会', prompt: 'one cute squishy soft toy shaped like a silver paperclip, wearing tiny headphones, holding a music note, shiny silver plush body, studio product shot, pastel pink background' },
+        { name: '空盒', line: '买到就是赚到。赚到啥？问它', prompt: 'one cute squishy soft toy shaped like a small open box, with another smaller box inside, infinite russian doll nesting visible, pastel cream and pink striped box, studio product shot, pastel pink background' },
+        { name: '午睡椒', line: '再热也要冷静入睡', prompt: 'one cute squishy soft toy shaped like a tiny chili pepper, wearing a tiny sleep cap, eyes half closed yawning, soft coral red body, studio product shot, pastel pink background' },
+        { name: '海苔', line: '吃完请记得再补一片，谢谢', prompt: 'one cute squishy soft toy shaped like a tiny piece of nori seaweed, wavy and curly edges, sleepy face with one eye closed yawning, deep green body with golden edges, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '愤怒便利贴', line: '别再贴了别再贴了！', prompt: 'one legendary grumpy sticky note soft toy, yellow paper with an angry cartoon face, tiny arms raised in frustration, soft plush texture, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'fruit', name: '蔬果派对', emoji: '🍅',
+      toys: [
+        { name: '草莓', line: '红着脸说"我很甜"', prompt: 'one cute squishy soft toy strawberry, glossy red body with tiny green leaves, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '葡萄', line: '一串不够，再来一串', prompt: 'one cute squishy soft toy grape cluster, plump purple round berries, glossy jelly texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '菠萝', line: '扎手归扎手，甜是真甜', prompt: 'one cute squishy soft toy pineapple, spiky green and yellow body, friendly face, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '苹果', line: '一天一苹果，医生远离我', prompt: 'one cute squishy soft toy apple, glossy red round body with tiny green leaf, rosy cheek, adorable, studio product shot, pastel pink background' },
+        { name: '桃子', line: '咬一口，汁水会跑出来', prompt: 'one cute squishy soft toy peach, fuzzy pastel pink round body with a tiny green leaf, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '橘子', line: '一瓣一瓣，吃到见底', prompt: 'one cute squishy soft toy mandarin orange, segmented round body, soft plush texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '樱桃', line: '我们一直是双胞胎', prompt: 'two cute squishy soft toy cherries sharing one stem, glossy red round bodies, sweet faces, adorable, studio product shot, pastel pink background' },
+        { name: '芒果', line: '甜到忧伤', prompt: 'one cute squishy soft toy mango, plump golden yellow oval body with rosy cheeks, soft plush texture, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '人参果', line: '西游记里听说过我吗？三千年一开花', prompt: 'one legendary cute ginseng fruit soft toy, plump pastel pink body shaped like a chubby baby with tiny green leaves on top, glowing aura, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'fantasy', name: '幻想角色', emoji: '✨',
+      toys: [
+        { name: '仙子', line: '挥挥手，洒下星尘', prompt: 'one cute squishy soft toy fairy, pastel pink flowing dress, tiny sparkly wings, holding a magic wand, adorable, studio product shot, pastel pink background' },
+        { name: '精灵', line: '我住在森林深处的树屋里', prompt: 'one cute squishy soft toy elf, green tunic, pointy ears, tiny wooden bow, adorable, studio product shot, pastel pink background' },
+        { name: '骑士', line: '我的剑只用来切蛋糕', prompt: 'one cute squishy soft toy knight, tiny silver armor, round helmet with a plume, holding a small sword, adorable, studio product shot, pastel pink background' },
+        { name: '巫师', line: '我挥的不是魔法，是认真', prompt: 'one cute squishy soft toy wizard, purple starry robe, pointy hat, holding a glowing wand, adorable, studio product shot, pastel pink background' },
+        { name: '忍者', line: '嘘——你看不见我', prompt: 'one cute squishy soft toy ninja, black outfit with face mask, tiny throwing stars, adorable, studio product shot, pastel pink background' },
+        { name: '机器人', line: '电量 99%，心态 0%', prompt: 'one cute squishy soft toy robot, rounded square body with antennas, glowing heart on chest, adorable, studio product shot, pastel pink background' },
+        { name: '宇航员', line: '我把星星带回来了', prompt: 'one cute squishy soft toy astronaut, white spacesuit, round helmet with star reflections, floating a tiny planet, adorable, studio product shot, pastel pink background' },
+        { name: '公主', line: '今日的皇冠也是闪闪的', prompt: 'one cute squishy soft toy princess, pastel pink ball gown, tiny golden crown, holding a heart scepter, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '时空旅行者', line: '我来自未来，也来自过去', prompt: 'one legendary cute time traveler soft toy, flowing cloak with clock and gear patterns, hourglass accessory, glowing aura, rare legendary, studio product shot, pastel pink background' }
+    }
   ];
-  var HIDDEN_TOY = { name: '彩虹丸子', line: '稀有隐藏款！！遇见你是我最棒的幸运。', prompt: 'one magical rainbow squishy jelly ball soft toy, iridescent shiny surface, sparkling starry eyes, soft glowing halo, rare legendary, studio product shot, pastel pink background' };
 
   /* 图鉴收藏进度持久化 */
   var COLL_KEY = 'bw_doll_coll';
@@ -797,16 +851,24 @@ date: 2026-08-29 00:00:00
   function openToyShop() {
     var m = document.createElement('div');
     m.className = 'bw-modal bw-shop';
+    var catsHtml = CATEGORIES.map(function (c, i) {
+      return '<button class="bw-shop-cat' + (i === 0 ? ' is-on' : '') + '" type="button" data-cat="' + i + '" title="' + c.name + '">' +
+        '<span class="bw-shop-cat-emoji">' + c.emoji + '</span>' +
+        '<span class="bw-shop-cat-name">' + c.name + '</span>' +
+      '</button>';
+    }).join('');
     m.innerHTML =
       '<div class="bw-modal-backdrop" data-close></div>' +
       '<div class="bw-modal-panel bw-shop-panel">' +
         '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
         '<h2 class="bw-modal-title">盲盒商店</h2>' +
-        '<p class="bw-modal-sub">摇一摇、开一开，神秘小盒子里会蹦出可可爱爱的软胶小玩具</p>' +
+        '<p class="bw-modal-sub">5 大类 · 摇一摇、开一开 · 每类藏一只限定款</p>' +
+        '<div class="bw-shop-cats" id="shopCats">' + catsHtml + '</div>' +
         '<div class="bw-shop-stage">' +
           '<div class="bw-shop-box" id="shopBox" role="button" tabindex="0" title="点我开盒">' +
             '<span class="bw-box-lid-front"></span>' +
             '<span class="bw-shop-q">?</span>' +
+            '<span class="bw-shop-cat-tag" id="shopCatTag">🐾</span>' +
             '<span class="bw-shop-hint">点我开盒</span>' +
           '</div>' +
         '</div>' +
@@ -823,10 +885,13 @@ date: 2026-08-29 00:00:00
     var stage = m.querySelector('.bw-shop-stage');
     var res = m.querySelector('#shopResult');
     var again = m.querySelector('#shopAgain');
+    var catTag = m.querySelector('#shopCatTag');
+    var curCat = 0;  /* 当前选中的分类下标 */
 
     function pick() {
-      if (Math.random() < 0.12) return HIDDEN_TOY;
-      return TOYS[Math.floor(Math.random() * TOYS.length)];
+      var cat = CATEGORIES[curCat];
+      if (Math.random() < 0.12) return cat.hidden;
+      return cat.toys[Math.floor(Math.random() * cat.toys.length)];
     }
     function openBox() {
       if (stage.style.display === 'none') return;
@@ -837,10 +902,12 @@ date: 2026-08-29 00:00:00
       }, 780);
     }
     function showToy(t) {
-      var rare = t === HIDDEN_TOY;
+      var cat = CATEGORIES[curCat];
+      var rare = t === cat.hidden;
       res.innerHTML =
         '<img class="bw-toy-img' + (rare ? ' is-rare' : '') + '" src="' + DOLL_IMG(t.prompt) + '" alt="' + t.name + '" />' +
         '<div class="bw-toy-name' + (rare ? ' is-rare' : '') + '">' + t.name + '</div>' +
+        '<div class="bw-toy-cat-tag">' + cat.emoji + ' ' + cat.name + '</div>' +
         '<div class="bw-toy-line">' + t.line + '</div>';
       res.classList.add('open');
       panel.classList.toggle('rare', rare);
@@ -848,7 +915,7 @@ date: 2026-08-29 00:00:00
       if (rare) {
         var b = document.createElement('div');
         b.className = 'bw-shop-rare';
-        b.textContent = '✦ 限定稀有色 ✦ 彩虹丸子出现了！';
+        b.textContent = '✦ ' + cat.name + '限定款 ✦ ' + t.name + '出现了！';
         panel.appendChild(b);
         setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 4200);
       }
@@ -861,6 +928,18 @@ date: 2026-08-29 00:00:00
       panel.classList.remove('rare');
       again.style.display = 'none';
     }
+    /* 切换分类：若已经开过盒，自动重置为初始盒 */
+    m.querySelectorAll('.bw-shop-cat').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var idx = parseInt(btn.getAttribute('data-cat'), 10);
+        if (idx === curCat) return;
+        curCat = idx;
+        m.querySelectorAll('.bw-shop-cat').forEach(function (b) { b.classList.remove('is-on'); });
+        btn.classList.add('is-on');
+        catTag.textContent = CATEGORIES[curCat].emoji;
+        reset();
+      });
+    });
     box.addEventListener('click', openBox);
     box.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBox(); } });
     again.addEventListener('click', reset);

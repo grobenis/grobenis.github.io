@@ -4692,6 +4692,65 @@ body.lamp-black .candle-glow.is-on {
 .bw-shop-panel .bw-modal-close { border-color: rgba(160, 90, 120, 0.4); background: rgba(255, 255, 255, 0.45); color: #8a5470; }
 .bw-shop-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
 
+/* ---- 盲盒：5 大类分类 tab ---- */
+.bw-shop-cats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 6px 0 12px;
+}
+.bw-shop-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid rgba(160, 90, 120, 0.3);
+  background: rgba(255, 255, 255, 0.5);
+  color: #8a5470;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+.bw-shop-cat:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
+}
+.bw-shop-cat.is-on {
+  background: linear-gradient(90deg, #ffb964, #ff8fa8);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(255, 150, 90, 0.4);
+}
+.bw-shop-cat-emoji { font-size: 15px; }
+.bw-shop-cat-name { letter-spacing: 0.5px; }
+/* 盒子上的小分类角标 */
+.bw-shop-cat-tag {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(160, 90, 120, 0.3);
+  border-radius: 999px;
+  padding: 1px 8px;
+  line-height: 1.4;
+}
+/* 结果区下方的分类标签 */
+.bw-toy-cat-tag {
+  display: inline-block;
+  margin: 2px auto 4px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a5470;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
 /* ---- 盲盒与开盒 ---- */
 .bw-shop-stage {
   position: relative;
