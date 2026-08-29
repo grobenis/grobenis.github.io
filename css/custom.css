@@ -4857,11 +4857,21 @@ body.lamp-black .candle-glow.is-on {
 .bw-winmodal .bw-modal-backdrop { background: rgba(24, 20, 40, 0.8); }
 .bw-win-panel {
   width: min(880px, 100%);
+  /* 垂直 flex 布局：固定顺序 标题/副标题/房间/季节按钮/旁白
+     (季节按钮已从 .bw-room 内部挪到这里，自动出现在房间下方) */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   background:
     radial-gradient(ellipse at 50% -10%, rgba(255, 230, 190, 0.2), transparent 55%),
     linear-gradient(168deg, #241d3a 0%, #2c2447 55%, #1f2a44 100%);
   border: 1px solid rgba(255, 210, 160, 0.25);
 }
+.bw-win-panel .bw-modal-title { order: 0; }
+.bw-win-panel .bw-modal-sub { order: 1; }
+.bw-win-panel .bw-room { order: 2; flex-shrink: 0; }
+.bw-win-panel .bw-win-tabs { order: 3; }
+.bw-win-panel .bw-win-caption { order: 4; }
 .bw-win-panel .bw-modal-title {
   background: linear-gradient(90deg, #ffd9a0, #a8e6b8, #8fc7ff);
   -webkit-background-clip: text;
@@ -5184,23 +5194,18 @@ body.lamp-black .candle-glow.is-on {
   animation: bwCandleFlicker 2.2s ease-in-out infinite;
 }
 @keyframes bwCandleFlicker { 0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 190, 90, 0.7)); } 50% { filter: drop-shadow(0 0 16px rgba(255, 210, 120, 1)); } }
-/* 季节切换按钮：房间内底部覆盖层，点击窗户放大后浮现 */
+/* 季节切换按钮：JS 已将 .bw-win-tabs 从 .bw-room 内部挪到 .bw-modal-panel 容器内。
+   桌面端默认不显示（display:none 从 flex 容器 flow 移除），点窗放大后浮现。
+   .is-zoom 同时挂在 .bw-room 和 .bw-modal-panel 上，.is-zoom .bw-win-tabs 选择器即可命中。
+   移动端在下方 @media 段覆盖：始终 display:flex 让按钮永远可点 */
 .bw-win-tabs {
-  position: absolute;
-  left: 0; right: 0; bottom: 14px;
-  display: flex;
+  display: none;
   justify-content: center;
   gap: 10px;
-  z-index: 9;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  margin: 14px 0 6px;
 }
 .is-zoom .bw-win-tabs {
-  pointer-events: auto;
-  opacity: 1;
-  transform: translateY(0);
+  display: flex;
 }
 .bw-win-tab {
   border: 1px solid rgba(255, 255, 255, 0.45);
@@ -5231,3 +5236,207 @@ body.lamp-black .candle-glow.is-on {
   line-height: 1.9;
   color: rgba(255, 240, 220, 0.85);
 }
+
+/* ============================================================================
+   四季窗模态：移动端适配
+   桌面端布局：宽 880px panel + 780×500 房间 + 230×220 固定窗户 + 4 个浮于房间底部的季节按钮
+   移动端问题：房间固定 500px 高在小屏过高；窗户/床/桌固定 230/132/120px 在 300px 宽房间中太挤；
+               季节按钮默认 opacity:0 需要点窗后才出现，移动端两步走不友好
+   方案：700px 以下整体缩小；季节按钮移到房间外、永远可见，方便直接切换
+   ============================================================================ */
+@media (max-width: 700px) {
+  /* 模态自身：把内容拉到屏幕边，减少两侧空隙 */
+  .bw-modal { padding: 12px; }
+  .bw-winmodal .bw-modal-backdrop { padding: 0; }
+  .bw-win-panel {
+    /* 覆盖 .bw-modal-panel 的 30/26/26 padding */
+    padding: 16px 14px 14px !important;
+  }
+  .bw-win-panel .bw-modal-title {
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+  }
+  .bw-win-panel .bw-modal-sub {
+    font-size: 12px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .bw-modal-close {
+    width: 30px; height: 30px;
+    top: 8px; right: 8px;
+    font-size: 13px;
+  }
+  /* 房间：高度按视口缩放，避免小屏溢出 */
+  .bw-room {
+    height: clamp(320px, 64vh, 460px);
+    margin: 4px auto 10px;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 4px rgba(243, 230, 250, 0.8), 0 6px 20px rgba(90, 50, 130, 0.35);
+  }
+  /* 房间内家具：按 0.65x 缩放，避免遮挡窗户 */
+  .bw-room-bed {
+    width: 86px; height: 68px;
+    left: 4%; bottom: 7%;
+  }
+  .bw-bed-head {
+    height: 40px;
+    border-radius: 12px 12px 6px 6px;
+    border-width: 2px;
+  }
+  .bw-bed-blanket {
+    height: 22px;
+    left: -6%;
+  }
+  .bw-bed-pillow {
+    width: 28px; height: 15px;
+    top: 22px; right: 8px;
+    border-width: 1.5px;
+  }
+  .bw-bed-canopy {
+    height: 14px;
+  }
+  .bw-bed-crown {
+    font-size: 14px;
+    top: -7px;
+  }
+  .bw-bed-doll {
+    font-size: 16px;
+    top: 20px;
+  }
+  .bw-room-table {
+    width: 78px; height: 56px;
+    right: 4%; bottom: 8%;
+  }
+  .bw-table-top {
+    height: 7px;
+    border-width: 2px;
+  }
+  .bw-table-leg {
+    width: 7px;
+    border-width: 1.5px;
+  }
+  .bw-table-vase {
+    font-size: 16px;
+    left: 6px;
+  }
+  .bw-table-mirror {
+    font-size: 16px;
+  }
+  .bw-room-rug {
+    width: 86px; height: 22px;
+    bottom: 4%;
+  }
+  .bw-room-butterfly {
+    font-size: 14px;
+    left: 4%;
+  }
+  .bw-room-star {
+    font-size: 12px;
+  }
+  /* 窗户：宽度按房间比例，不超过房间宽 55% */
+  .bw-win-frame {
+    width: 56%;
+    top: 10px;
+    border-width: 6px;
+  }
+  /* 窗棂变细 */
+  .bw-win-frame::before { width: 5px; }
+  .bw-win-frame::after { height: 5px; }
+  /* 窗台、烛台、盆栽同步缩小 */
+  .bw-win-sill {
+    height: 16px;
+    bottom: -8px;
+  }
+  .bw-win-sill-plant {
+    font-size: 18px;
+    bottom: 12px;
+    left: 8%;
+  }
+  .bw-win-sill-candle {
+    font-size: 16px;
+    bottom: 12px;
+    right: 8%;
+  }
+  /* 季节按钮：移到房间外（panel 内房间下方），始终可见，避免移动端两步走 */
+  .bw-win-tabs {
+    position: static;
+    margin: 8px auto 6px;
+    padding: 0;
+    gap: 6px;
+    /* 强制覆盖桌面端的 display:none / 各种隐藏状态 */
+    display: flex !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+  .bw-win-tab {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+  .bw-win-tab.is-on {
+    box-shadow: 0 4px 10px rgba(255, 150, 90, 0.45);
+  }
+  /* 童话旁白 */
+  .bw-win-caption {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 0 4px;
+  }
+}
+
+/* 超窄屏（iPhone SE 等 ~375px）：进一步压缩 */
+@media (max-width: 420px) {
+  .bw-modal { padding: 8px; }
+  .bw-win-panel {
+    padding: 12px 10px 10px !important;
+    border-radius: 16px;
+  }
+  .bw-win-panel .bw-modal-title {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+  .bw-win-panel .bw-modal-sub {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  .bw-modal-close {
+    width: 28px; height: 28px;
+    top: 6px; right: 6px;
+  }
+  .bw-room {
+    height: clamp(280px, 58vh, 360px);
+    border-radius: 14px;
+  }
+  .bw-room-bed {
+    width: 70px; height: 56px;
+    left: 3%;
+  }
+  .bw-room-table {
+    width: 62px; height: 46px;
+    right: 3%;
+  }
+  .bw-room-rug {
+    width: 70px;
+  }
+  .bw-win-frame {
+    width: 60%;
+    top: 8px;
+    border-width: 5px;
+  }
+  .bw-win-tab {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 12px;
+  }
+  .bw-win-caption {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+}
+
+/* 防止放大态下房间外全屏图溢出：移动端不改变 .is-zoom 行为，但需要保证
+   .bw-win-fullview 仍然只铺满房间，不延伸到 panel 外部（已通过 position:absolute + inset:0
+   相对 .bw-room 限定，移动端 .bw-win-tabs 已在 .bw-room 之外，不会被覆盖） */
+
