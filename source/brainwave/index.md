@@ -940,7 +940,8 @@ date: 2026-08-29 00:00:00
     });
     box.addEventListener('click', openBox);
     box.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBox(); } });
-    again.addEventListener('click', reset);
+    /* 再开一盒：直接重置并进入开盒流程，无需再点盒子 */
+    again.addEventListener('click', function () { reset(); openBox(); });
   }
 
   /* ============ 四季窗 ============ */
