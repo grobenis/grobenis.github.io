@@ -95,6 +95,30 @@ date: 2026-08-29 00:00:00
 </div>
 </div>
 
+<!-- 卡片 6：扎小人（解压台） -->
+<div class="bw-card bw-card-voodoo" data-bw-open="voodoo" role="button" tabindex="0" title="扎小人">
+<div class="bw-card-art">
+<span class="bw-vo-covers">
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.jpg" alt="没担当" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.jpg" alt="不高兴" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.jpg" alt="小气鬼" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.jpg" alt="心机鬼" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.jpg" alt="窝囊废" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.jpg" alt="和稀泥" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span></span>
+</span>
+<span class="bw-vo-pin-prev bw-vo-pp1"></span>
+<span class="bw-vo-pin-prev bw-vo-pp2"></span>
+<span class="bw-vo-pin-prev bw-vo-pp3"></span>
+<span class="bw-vo-magic"></span>
+</div>
+<div class="bw-card-body">
+<span class="bw-card-tag">解压小铺</span>
+<h3 class="bw-card-title">扎小人</h3>
+<p class="bw-card-desc">心里憋着一口气？把"小气包"请上解压台，一针一针扎下去，气就消了。纯属娱乐，小惩大诫。</p>
+<span class="bw-card-open">开始扎 <i></i></span>
+</div>
+</div>
+
 </div>
 
 <!-- 全屏模态容器（JS 动态填充并挂到 body，避免主题容器 transform 影响 fixed 定位） -->
@@ -340,7 +364,7 @@ date: 2026-08-29 00:00:00
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');
-    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow }[mode] || openCosmos;
+    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow, voodoo: openVoodoo }[mode] || openCosmos;
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
@@ -1052,6 +1076,144 @@ date: 2026-08-29 00:00:00
         cap.textContent = WIN_HINT;
       }
     });
+  }
+
+  /* ============ 扎小人（解压台） ============ */
+  var VO_DOLLS = [
+    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.jpg'),  acc: '💦', line: '已生效：TA 的锅永远有人抢着背 🍳' },
+    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.jpg'),  acc: '😒', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏' },
+    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.jpg'),  acc: '🪙', line: '已生效：TA 的钱包总在最需要时少一张 🪙' },
+    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.jpg'),  acc: '🔍', line: '已生效：TA 的小算盘今晚全被打翻 🧮' },
+    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.jpg'),  acc: '🥺', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅' },
+    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.jpg'),  acc: '🤝', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖' }
+  ];
+  var VO_LINES = [
+    '已生效：TA 的袜子永远少一只 🧦',
+    '已生效：TA 的奶茶永远做错糖度 🧋',
+    '已生效：TA 明天会左脚踩右脚 🦶',
+    '已生效：TA 的手机电量永远卡在 1% 🔋',
+    '已生效：TA 的快递永远晚一天 📦',
+    '已生效：TA 开冰箱总忘记要拿什么 ❄️',
+    '已生效：TA 的 Wi-Fi 永远差一格 📶',
+    '已生效：TA 会被蚊子精准空投 🦟',
+    '已生效：TA 的闹钟会提前一小时响 ⏰',
+    '已生效：TA 点外卖永远没有餐具 🥢'
+  ];
+  var VO_PARTS = [
+    { k: 'head', label: '脑袋' },
+    { k: 'tum',  label: '肚子' },
+    { k: 'arml', label: '左手' },
+    { k: 'armr', label: '右手' }
+  ];
+  function openVoodoo() {
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-voodoo';
+    var pins = VO_PARTS.map(function (p, i) {
+      return '<span class="bw-vo-pin bw-vo-pin-' + p.k + '" data-i="' + i + '" title="扎' + p.label + '"></span>';
+    }).join('');
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-vo-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">扎小人 · 解压台</h2>' +
+        '<p class="bw-modal-sub">左右切换小人，找到最像 TA 的那个，扎它！</p>' +
+        '<div class="bw-vo-stage">' +
+          '<div class="bw-vo-bubble" id="voBubble">先随机一位幸运小人～</div>' +
+          '<button class="bw-vo-nav bw-vo-prev" type="button" aria-label="上一个">‹</button>' +
+          '<div class="bw-vo-view" id="voView">' +
+            '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
+            pins +
+            '<span class="bw-vo-done-badge">已生效 ✓</span>' +
+          '</div>' +
+          '<button class="bw-vo-nav bw-vo-next" type="button" aria-label="下一个">›</button>' +
+          '<div class="bw-vo-prog" id="voProg"></div>' +
+        '</div>' +
+        '<div class="bw-vo-count" id="voCount">已扎 0 / 6 个</div>' +
+        '<button class="bw-vo-again" id="voAgain" type="button" style="display:none">再扎一次</button>' +
+        '<p class="bw-vo-note">🧷 纯属娱乐 · 不针对任何人 · 扎完气消，就去吃顿好的吧 🍰</p>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    var bubble = m.querySelector('#voBubble');
+    var countEl = m.querySelector('#voCount');
+    var again = m.querySelector('#voAgain');
+    var view = m.querySelector('#voView');
+    var img = m.querySelector('#voImg');
+    var prog = m.querySelector('#voProg');
+    var prev = m.querySelector('.bw-vo-prev');
+    var next = m.querySelector('.bw-vo-next');
+    var idx = (Math.random() * VO_DOLLS.length) | 0;
+    var st = VO_DOLLS.map(function () { return { pins: [], full: false }; });
+    function say(txt) {
+      bubble.textContent = txt;
+      bubble.classList.remove('pop');
+      void bubble.offsetWidth;
+      bubble.classList.add('pop');
+    }
+    function render() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      img.src = d.img;
+      img.alt = d.name;
+      view.classList.toggle('full', s.full);
+      view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
+        var i = +pin.getAttribute('data-i');
+        pin.classList.toggle('done', s.pins.indexOf(i) >= 0);
+      });
+      prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · 已扎 ' + s.pins.length + ' / ' + VO_PARTS.length;
+      var n = st.filter(function (x) { return x.full; }).length;
+      countEl.textContent = '已扎 ' + n + ' / ' + VO_DOLLS.length + ' 个';
+      if (s.full) {
+        again.style.display = 'inline-block';
+        again.textContent = '已消气 · 再扎一次';
+      } else {
+        again.style.display = 'none';
+      }
+      if (n === VO_DOLLS.length) {
+        say('六个全扎完了！TA 的坏毛病都被扎跑了，气消了吗～✨');
+      }
+      view.classList.remove('pop');
+      void view.offsetWidth;
+      view.classList.add('pop');
+    }
+    function go(step) {
+      idx = (idx + step + VO_DOLLS.length) % VO_DOLLS.length;
+      var s = st[idx];
+      say(s.full ? VO_DOLLS[idx].name + ' 已被扎服，换下一个吧～' : '这是' + VO_DOLLS[idx].name + '，动手吧～');
+      render();
+    }
+    view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
+      pin.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var s = st[idx];
+        var i = +pin.getAttribute('data-i');
+        if (s.full) { say(VO_DOLLS[idx].name + ' 已经被扎服啦，换下一个吧～'); return; }
+        if (s.pins.indexOf(i) >= 0) { say('这里已经扎过啦，换一处～'); return; }
+        s.pins.push(i);
+        pin.classList.add('done');
+        if (s.pins.length < VO_PARTS.length) {
+          say(VO_LINES[(Math.random() * VO_LINES.length) | 0]);
+        } else {
+          s.full = true;
+          view.classList.add('full');
+          say(VO_DOLLS[idx].line + ' → ' + VO_DOLLS[idx].name + ' 被扎服了！');
+        }
+        render();
+      });
+    });
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    again.addEventListener('click', function () {
+      st.forEach(function (s) { s.pins = []; s.full = false; });
+      idx = (Math.random() * VO_DOLLS.length) | 0;
+      again.style.display = 'none';
+      say('新一轮，挑一个最像 TA 的吧 😈');
+      render();
+    });
+    render();
   }
 })();
 </script>
