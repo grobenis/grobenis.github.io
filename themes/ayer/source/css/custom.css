@@ -1,27 +1,27 @@
-/* =============================================================================
-   站点自定义样式（custom.css）
-   1) 代码高亮美化：One Dark 配色 + 代码块 UI 升级
-   2) 页面动效：卡片 hover、平滑滚动、链接过渡
+﻿/* =============================================================================
+   绔欑偣鑷畾涔夋牱寮忥紙custom.css锛?
+   1) 浠ｇ爜楂樹寒缇庡寲锛歄ne Dark 閰嶈壊 + 浠ｇ爜鍧?UI 鍗囩骇
+   2) 椤甸潰鍔ㄦ晥锛氬崱鐗?hover銆佸钩婊戞粴鍔ㄣ€侀摼鎺ヨ繃娓?
    -----------------------------------------------------------------------------
-   本文件是主题 main.css 之后的覆盖层，选择器特异性更高，安全覆盖。
+   鏈枃浠舵槸涓婚 main.css 涔嬪悗鐨勮鐩栧眰锛岄€夋嫨鍣ㄧ壒寮傛€ф洿楂橈紝瀹夊叏瑕嗙洊銆?
    ============================================================================= */
 
-/* 音乐页：去掉顶部 GroTV·LIVE MUSIC ROOM 徽章框 */
+/* 闊充箰椤碉細鍘绘帀椤堕儴 GroTV路LIVE MUSIC ROOM 寰界珷妗?*/
 body.is-lyrics .tv-page-mark {
   display: none !important;
 }
 
-/* 音乐页：隐藏顶部页面大标题"音乐",只保留品牌徽章 */
+/* 闊充箰椤碉細闅愯棌椤堕儴椤甸潰澶ф爣棰?闊充箰",鍙繚鐣欏搧鐗屽窘绔?*/
 body.is-lyrics .article-title.sea-center {
   display: none;
 }
 
-/* 音乐页：去掉歌词卡头部圆圈里的序号(01/02/...),让歌词上方完整露出 */
+/* 闊充箰椤碉細鍘绘帀姝岃瘝鍗″ご閮ㄥ渾鍦堥噷鐨勫簭鍙?01/02/...),璁╂瓕璇嶄笂鏂瑰畬鏁撮湶鍑?*/
 .lyric-num {
   display: none !important;
 }
 
-/* ---------- 1. 代码高亮：One Dark 配色（VS Code 同款） ---------- */
+/* ---------- 1. 浠ｇ爜楂樹寒锛歄ne Dark 閰嶈壊锛圴S Code 鍚屾锛?---------- */
 .article-entry .highlight {
   background: #282c34;
   border-radius: 8px;
@@ -52,7 +52,7 @@ body.is-lyrics .article-title.sea-center {
   color: #5c6370;
 }
 
-/* token 配色 */
+/* token 閰嶈壊 */
 .article-entry .highlight .comment {
   color: #5c6370;
   font-style: italic;
@@ -102,7 +102,7 @@ body.is-lyrics .article-title.sea-center {
   color: #e06c75;
 }
 
-/* 行内代码 */
+/* 琛屽唴浠ｇ爜 */
 .article-entry code {
   background: #f0f2f5;
   color: #c7254e;
@@ -110,7 +110,7 @@ body.is-lyrics .article-title.sea-center {
   padding: 0.15em 0.4em;
 }
 
-/* 代码块滚动条细化 */
+/* 浠ｇ爜鍧楁粴鍔ㄦ潯缁嗗寲 */
 .article-entry .highlight::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 6px;
@@ -119,14 +119,14 @@ body.is-lyrics .article-title.sea-center {
   background: transparent;
 }
 
-/* ---------- 2. 页面动效升级 ---------- */
+/* ---------- 2. 椤甸潰鍔ㄦ晥鍗囩骇 ---------- */
 
-/* 平滑滚动 */
+/* 骞虫粦婊氬姩 */
 html {
   scroll-behavior: smooth;
 }
 
-/* 首页文章卡片 hover：轻浮起 + 阴影 */
+/* 棣栭〉鏂囩珷鍗＄墖 hover锛氳交娴捣 + 闃村奖 */
 .article-inner {
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   border-radius: 10px;
@@ -136,18 +136,18 @@ html {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
-/* 音乐页:禁用 article-inner 的 hover transform,避免 fixed 台灯的原点漂移 */
+/* 闊充箰椤?绂佺敤 article-inner 鐨?hover transform,閬垮厤 fixed 鍙扮伅鐨勫師鐐规紓绉?*/
 body.is-lyrics .article-inner:hover {
   transform: none;
   box-shadow: none;
 }
 
-/* 通用链接过渡 */
+/* 閫氱敤閾炬帴杩囨浮 */
 .content a {
   transition: color 0.25s ease;
 }
 
-/* 封面区 hover 微动（logo 轻微放大） */
+/* 灏侀潰鍖?hover 寰姩锛坙ogo 杞诲井鏀惧ぇ锛?*/
 .cover-logo {
   transition: transform 0.35s ease;
 }
@@ -155,12 +155,12 @@ body.is-lyrics .article-inner:hover {
   transform: scale(1.05);
 }
 
-/* 图片圆角（正文插图更柔和） */
+/* 鍥剧墖鍦嗚锛堟鏂囨彃鍥炬洿鏌斿拰锛?*/
 .article-entry img {
   border-radius: 6px;
 }
 
-/* 音乐按钮 hover 过渡 */
+/* 闊充箰鎸夐挳 hover 杩囨浮 */
 .music-btn {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -168,7 +168,7 @@ body.is-lyrics .article-inner:hover {
   transform: scale(1.1);
 }
 
-/* 友链页头像：缩略为 80px 圆形 */
+/* 鍙嬮摼椤靛ご鍍忥細缂╃暐涓?80px 鍦嗗舰 */
 .article-entry img[src*="/friends/"] {
   width: 80px;
   height: 80px;
@@ -177,7 +177,7 @@ body.is-lyrics .article-inner:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-/* 歌词页滑块 */
+/* 姝岃瘝椤垫粦鍧?*/
 .lyric-slider {
   position: relative;
 }
@@ -214,7 +214,7 @@ body.is-lyrics .article-inner:hover {
 .lyric-card.slide-in-left {
   animation: lyricInLeft 0.4s ease;
 }
-/* 滚动提示样式 */
+/* 婊氬姩鎻愮ず鏍峰紡 */
 .lyric-scroll-hint {
   position: absolute;
   bottom: 10px;
@@ -233,7 +233,7 @@ body.is-lyrics .article-inner:hover {
   animation: none;
 }
 .lyric-scroll-hint::before {
-  content: "↑";
+  content: "鈫?;
   display: inline-block;
   margin-right: 4px;
 }
@@ -329,13 +329,13 @@ body.is-lyrics .article-inner:hover {
   font-size: 16px;
   letter-spacing: 0.8px;
   text-align: center;
-  /* 去掉 text-shadow,实心底不需要 */
+  /* 鍘绘帀 text-shadow,瀹炲績搴曚笉闇€瑕?*/
 }
 .lyric-card-body p:last-child {
   margin-bottom: 0;
 }
 
-/* ---------- 6b. 音乐盒：复古电视机 + 动态舞台 ---------- */
+/* ---------- 6b. 闊充箰鐩掞細澶嶅彜鐢佃鏈?+ 鍔ㄦ€佽垶鍙?---------- */
 .lyric-slider {
   position: relative;
   overflow: hidden;
@@ -343,11 +343,11 @@ body.is-lyrics .article-inner:hover {
   isolation: isolate;
 }
 
-/* ----- 音乐页整体布局:TV 在上,装饰横排在下方 ----- */
+/* ----- 闊充箰椤垫暣浣撳竷灞€:TV 鍦ㄤ笂,瑁呴グ妯帓鍦ㄤ笅鏂?----- */
 .music-stage {
   display: flex;
   flex-direction: column;
-  align-items: center;             /* 关键:cross-axis 居中 */
+  align-items: center;             /* 鍏抽敭:cross-axis 灞呬腑 */
   gap: 12px;
   max-width: 800px;
   margin: 0 auto 20px;
@@ -355,12 +355,12 @@ body.is-lyrics .article-inner:hover {
   position: relative;
   z-index: 1;
 }
-/* .tv-set 保持默认 block(在 flex column 里被 align-items:center 居中) */
-/* .deco-row 改回 display:flex,在 flex column 里作为 flex item 也被居中 */
+/* .tv-set 淇濇寔榛樿 block(鍦?flex column 閲岃 align-items:center 灞呬腑) */
+/* .deco-row 鏀瑰洖 display:flex,鍦?flex column 閲屼綔涓?flex item 涔熻灞呬腑 */
 .deco-row {
   display: flex;
   flex-direction: row;
-  align-items: center;             /* 统一垂直居中,视觉高度一致 */
+  align-items: center;             /* 缁熶竴鍨傜洿灞呬腑,瑙嗚楂樺害涓€鑷?*/
   justify-content: center;
   gap: 18px;
   flex-wrap: wrap;
@@ -370,10 +370,10 @@ body.is-lyrics .article-inner:hover {
 }
 .deco-row .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
 .deco-row .deco-item:hover { transform: translateY(-3px) scale(1.05); filter: brightness(1.12); }
-/* 旧 deco-col 兼容(没用了,直接隐藏) */
+/* 鏃?deco-col 鍏煎(娌＄敤浜?鐩存帴闅愯棌) */
 
 
-/* ===== 怀旧物品:黑胶唱片 ===== */
+/* ===== 鎬€鏃х墿鍝?榛戣兌鍞辩墖 ===== */
 .deco-vinyl {
   width: 60px;
   height: 60px;
@@ -411,7 +411,7 @@ body.is-lyrics .article-inner:hover {
 .deco-row:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
 @keyframes vinylSpin { to { transform: rotate(360deg); } }
 
-/* ===== 怀旧物品:磁带 ===== */
+/* ===== 鎬€鏃х墿鍝?纾佸甫 ===== */
 .deco-cassette {
   width: 76px; height: 48px;
   border-radius: 5px;
@@ -450,7 +450,7 @@ body.is-lyrics .article-inner:hover {
   background: radial-gradient(circle, #d4d2c8 30%, #1a1a1a 30% 70%, transparent 70%);
 }
 
-/* ===== 怀旧物品:CD 盘 ===== */
+/* ===== 鎬€鏃х墿鍝?CD 鐩?===== */
 .deco-cd {
   width: 60px; height: 60px;
   border-radius: 50%;
@@ -486,12 +486,12 @@ body.is-lyrics .article-inner:hover {
 .deco-row:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
 @keyframes cdShine { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(40deg) brightness(1.1); } }
 
-/* ===== 怀旧物品:老式麦克风 ===== */
+/* ===== 鎬€鏃х墿鍝?鑰佸紡楹﹀厠椋?===== */
 .deco-mic {
   width: 50px; height: 90px;
   position: relative;
   display: flex; flex-direction: column; align-items: center;
-  /* 与其他装饰件统一视觉高度(整体等比缩到约 63px 高) */
+  /* 涓庡叾浠栬楗颁欢缁熶竴瑙嗚楂樺害(鏁翠綋绛夋瘮缂╁埌绾?63px 楂? */
   zoom: 0.7;
 }
 .deco-mic .mic-head {
@@ -526,7 +526,7 @@ body.is-lyrics .article-inner:hover {
 .deco-row:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
 @keyframes micSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 
-/* ===== 怀旧物品:霓虹招牌 ===== */
+/* ===== 鎬€鏃х墿鍝?闇撹櫣鎷涚墝 ===== */
 .deco-neon {
   padding: 5px 10px;
   border: 1.5px solid #ff5577;
@@ -554,7 +554,7 @@ body.is-lyrics .article-inner:hover {
   52% { opacity: 0.8; }
 }
 
-/* ===== 怀旧物品:海报 ===== */
+/* ===== 鎬€鏃х墿鍝?娴锋姤 ===== */
 .deco-poster {
   width: 64px;
   padding: 6px 4px;
@@ -582,7 +582,7 @@ body.is-lyrics .article-inner:hover {
   font-size: 7px; color: #b71c1c; margin-top: 3px;
 }
 
-/* ===== 怀旧物品:留声机喇叭(锥形) ===== */
+/* ===== 鎬€鏃х墿鍝?鐣欏０鏈哄枃鍙?閿ュ舰) ===== */
 .deco-horn {
   width: 90px; height: 76px;
   position: relative;
@@ -611,7 +611,7 @@ body.is-lyrics .article-inner:hover {
   border-radius: 0 3px 3px 0;
 }
 
-/* ===== 背景噪点纹理(时光沉淀感) ===== */
+/* ===== 鑳屾櫙鍣偣绾圭悊(鏃跺厜娌夋穩鎰? ===== */
 .music-stage::before {
   content: "";
   position: absolute;
@@ -631,7 +631,7 @@ body.is-lyrics .article-inner:hover {
   z-index: -1;
 }
 
-/* 响应式:窄屏压缩布局 */
+/* 鍝嶅簲寮?绐勫睆鍘嬬缉甯冨眬 */
 @media (max-width: 1200px) {
   .music-stage { max-width: 720px; gap: 14px; }
   .deco-vinyl, .deco-cd { transform: scale(0.9); }
@@ -641,10 +641,10 @@ body.is-lyrics .article-inner:hover {
   .deco-row { gap: 16px; }
 }
 /* ==========================================================================
-   音乐页:全尺寸锁一屏,只让 TV 内歌词卡可滚
-   (整页不出现浏览器滚动条,只留 TV 卡片内右侧的蓝色细滚动条)
-   注意:本主题的滚动容器是 main.content,而非 body/html,
-   因此必须锁 main.content(及其内容包裹层),body 本身无需动。
+   闊充箰椤?鍏ㄥ昂瀵搁攣涓€灞?鍙 TV 鍐呮瓕璇嶅崱鍙粴
+   (鏁撮〉涓嶅嚭鐜版祻瑙堝櫒婊氬姩鏉?鍙暀 TV 鍗＄墖鍐呭彸渚х殑钃濊壊缁嗘粴鍔ㄦ潯)
+   娉ㄦ剰:鏈富棰樼殑婊氬姩瀹瑰櫒鏄?main.content,鑰岄潪 body/html,
+   鍥犳蹇呴』閿?main.content(鍙婂叾鍐呭鍖呰９灞?,body 鏈韩鏃犻渶鍔ㄣ€?
    ========================================================================== */
 body.page-scene-sunset #app > .content,
 body.page-scene-night #app > .content,
@@ -654,11 +654,11 @@ body.page-scene-night .content,
 body.page-scene-dawn .content,
 body.page-locked #app > .content,
 body.page-locked .content {
-  overflow: hidden !important;   /* 锁住真正滚动容器 */
+  overflow: hidden !important;   /* 閿佷綇鐪熸婊氬姩瀹瑰櫒 */
   height: 100vh !important;
   max-height: 100vh !important;
 }
-/* 内容包裹链也压到视口内,防止内部再溢出 */
+/* 鍐呭鍖呰９閾句篃鍘嬪埌瑙嗗彛鍐?闃叉鍐呴儴鍐嶆孩鍑?*/
 body.page-scene-sunset .outer,
 body.page-scene-night .outer,
 body.page-scene-dawn .outer,
@@ -687,7 +687,7 @@ body.page-locked .article-entry {
   max-height: 100vh !important;
   overflow: hidden;
 }
-/* 兜底:直接锁 document 滚动(兼容滚动不在 .content 时的旧行为) */
+/* 鍏滃簳:鐩存帴閿?document 婊氬姩(鍏煎婊氬姩涓嶅湪 .content 鏃剁殑鏃ц涓? */
 html:has(body.page-scene-sunset),
 html:has(body.page-scene-night),
 html:has(body.page-scene-dawn),
@@ -701,7 +701,7 @@ body.page-locked {
   overflow: hidden !important;
   height: 100vh;
 }
-/* 隐藏文章页脚/分享/版权/导航,避免占高度溢出 */
+/* 闅愯棌鏂囩珷椤佃剼/鍒嗕韩/鐗堟潈/瀵艰埅,閬垮厤鍗犻珮搴︽孩鍑?*/
 body.page-scene-sunset .article-footer,
 body.page-scene-night .article-footer,
 body.page-scene-dawn .article-footer,
@@ -717,14 +717,14 @@ body.page-scene-dawn #mask {
   display: none !important;
 }
 
-/* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
+/* 绉诲姩绔?瀹屽叏鍘绘帀 TV 澶栧３,鍙樉绀哄睆骞曢噷鐨勬瓕璇嶅唴瀹?鍦ㄨ儗鏅笂) */
 @media (max-width: 760px) {
   .music-stage { flex-direction: column; max-width: 100%; padding: 0; height: calc(100vh - 56px); }
   .deco-row { gap: 14px; max-width: 100%; padding: 0 8px; }
   .tv-set { order: 1; }
   .deco-row { order: 2; }
 
-  /* TV 外壳全部隐藏/透明:外壳、边框、天线、品牌、底部铭牌、电视柜、控制台 */
+  /* TV 澶栧３鍏ㄩ儴闅愯棌/閫忔槑:澶栧３銆佽竟妗嗐€佸ぉ绾裤€佸搧鐗屻€佸簳閮ㄩ摥鐗屻€佺數瑙嗘煖銆佹帶鍒跺彴 */
   .tv-set {
     order: 1;
     max-width: 100% !important;
@@ -738,7 +738,7 @@ body.page-scene-dawn #mask {
   .tv-scanlines, .tv-screen-glare, .tv-snow, .lyric-scroll-hint {
     display: none !important;
   }
-  /* 电视主机透明,无圆角无阴影,无内边距 */
+  /* 鐢佃涓绘満閫忔槑,鏃犲渾瑙掓棤闃村奖,鏃犲唴杈硅窛 */
   .tv-body {
     background: transparent !important;
     box-shadow: none !important;
@@ -747,7 +747,7 @@ body.page-scene-dawn #mask {
     height: 100%;
   }
   .tv-body::before { display: none !important; }
-  /* 屏幕框架透明,无圆角无内边距 */
+  /* 灞忓箷妗嗘灦閫忔槑,鏃犲渾瑙掓棤鍐呰竟璺?*/
   .tv-screen-frame {
     background: transparent !important;
     box-shadow: none !important;
@@ -755,7 +755,7 @@ body.page-scene-dawn #mask {
     border-radius: 0 !important;
     height: 100%;
   }
-  /* 屏幕本身:占满父容器 */
+  /* 灞忓箷鏈韩:鍗犳弧鐖跺鍣?*/
   .tv-screen {
     height: 100% !important;
     min-height: 0 !important;
@@ -764,7 +764,7 @@ body.page-scene-dawn #mask {
     box-shadow: none !important;
     background: #000 !important;
   }
-  /* 歌词卡片贴边显示,不留大内边距 */
+  /* 姝岃瘝鍗＄墖璐磋竟鏄剧ず,涓嶇暀澶у唴杈硅窛 */
   .lyric-cards {
     padding: 10px !important;
   }
@@ -785,15 +785,15 @@ body.page-scene-dawn #mask {
   .lyric-card-body { padding: 4px 14px 12px !important; }
 }
 
-/* ----- 电视外壳整体 ----- */
+/* ----- 鐢佃澶栧３鏁翠綋 ----- */
 .tv-set {
   position: relative;
   margin: 0 auto 12px;
-  max-width: 620px;       /* 略扩大,留足歌词 + 卡片空间 */
+  max-width: 620px;       /* 鐣ユ墿澶?鐣欒冻姝岃瘝 + 鍗＄墖绌洪棿 */
   width: 100%;
   flex: 1 1 auto;
   min-width: 0;
-  padding-top: 44px; /* 给天线留空间 */
+  padding-top: 44px; /* 缁欏ぉ绾跨暀绌洪棿 */
 }
 .tv-antennas {
   position: absolute;
@@ -845,7 +845,7 @@ body.page-scene-dawn #mask {
   background:
     linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
   border-radius: 18px 18px 14px 14px;
-  /* 灰色外壳:下边框收薄,缩小后的控件仍被完整包住 */
+  /* 鐏拌壊澶栧３:涓嬭竟妗嗘敹钖?缂╁皬鍚庣殑鎺т欢浠嶈瀹屾暣鍖呬綇 */
   padding: 16px 18px 14px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.7),
@@ -853,7 +853,7 @@ body.page-scene-dawn #mask {
     0 12px 30px rgba(0,0,0,0.28);
 }
 .tv-body::before {
-  /* 表面金属拉丝纹理 */
+  /* 琛ㄩ潰閲戝睘鎷変笣绾圭悊 */
   content: "";
   position: absolute;
   inset: 0;
@@ -868,7 +868,7 @@ body.page-scene-dawn #mask {
   pointer-events: none;
 }
 
-/* 黑胶小剧场播放时,电视机外壳变红 */
+/* 榛戣兌灏忓墽鍦烘挱鏀炬椂,鐢佃鏈哄澹冲彉绾?*/
 .tv-body:has(.theater-vinyl.is-on) {
   background: linear-gradient(180deg, #c1352f 0%, #a02724 45%, #6e1412 100%);
   background-image:
@@ -910,7 +910,7 @@ body.page-scene-dawn #mask {
   font-family: "Courier New", monospace;
 }
 
-/* ----- 显示屏 ----- */
+/* ----- 鏄剧ず灞?----- */
 .tv-screen-frame {
   position: relative;
   background: linear-gradient(180deg, #1a1a20, #2a2a30);
@@ -923,7 +923,7 @@ body.page-scene-dawn #mask {
 .tv-screen {
   position: relative;
   width: 100%;
-  /* 屏高随视口自适应:在原基准上纵向加高 40px,歌词显示更多 */
+  /* 灞忛珮闅忚鍙ｈ嚜閫傚簲:鍦ㄥ師鍩哄噯涓婄旱鍚戝姞楂?40px,姝岃瘝鏄剧ず鏇村 */
   height: clamp(290px, calc(44vh + 40px), 510px);
   border-radius: 16px;
   overflow: hidden;
@@ -934,7 +934,7 @@ body.page-scene-dawn #mask {
 }
 @media (max-width: 640px) {
   .tv-screen { height: clamp(220px, 40vh, 300px); }
-  /* 小屏时收缩控制面板,保证所有按钮都留在电视机身上不外溢 */
+  /* 灏忓睆鏃舵敹缂╂帶鍒堕潰鏉?淇濊瘉鎵€鏈夋寜閽兘鐣欏湪鐢佃鏈鸿韩涓婁笉澶栨孩 */
   .tv-panel { margin-top: 12px; padding: 8px 2px 2px; }
   .tv-panel-right {
     gap: 10px;
@@ -958,7 +958,7 @@ body.page-scene-dawn #mask {
   .tv-btn-icon { font-size: 10px; }
 }
 @media (max-width: 420px) {
-  /* 超窄屏隐藏 VOL 旋钮,只保留 CH + 三键 */
+  /* 瓒呯獎灞忛殣钘?VOL 鏃嬮挳,鍙繚鐣?CH + 涓夐敭 */
   .tv-knob-vol { display: none; }
 }
 .tv-screen-bezel {
@@ -971,7 +971,7 @@ body.page-scene-dawn #mask {
     inset 0 4px 10px rgba(255,255,255,0.05);
 }
 
-/* CRT 扫描线 */
+/* CRT 鎵弿绾?*/
 .tv-scanlines {
   position: absolute;
   inset: 0;
@@ -983,11 +983,11 @@ body.page-scene-dawn #mask {
     transparent 3px
   );
   pointer-events: none;
-  /* 放底层(在场景上、歌词卡下),让歌词卡不被横线干扰 */
+  /* 鏀惧簳灞?鍦ㄥ満鏅笂銆佹瓕璇嶅崱涓?,璁╂瓕璇嶅崱涓嶈妯嚎骞叉壈 */
   z-index: 1;
   mix-blend-mode: multiply;
 }
-/* 屏幕顶部高光（玻璃反光） */
+/* 灞忓箷椤堕儴楂樺厜锛堢幓鐠冨弽鍏夛級 */
 .tv-screen-glare {
   position: absolute;
   top: 0;
@@ -999,7 +999,7 @@ body.page-scene-dawn #mask {
   z-index: 5;
   border-radius: 16px 16px 0 0;
 }
-/* 雪花点（静态噪点） */
+/* 闆姳鐐癸紙闈欐€佸櫔鐐癸級 */
 .tv-snow {
   position: absolute;
   inset: 0;
@@ -1017,13 +1017,13 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 88% 92%, rgba(255,255,255,0.9) 0.5px, transparent 1px);
 }
 
-/* 频道号窗(屏幕左上角) */
+/* 棰戦亾鍙风獥(灞忓箷宸︿笂瑙? */
 .tv-channel {
   position: absolute;
   top: 14px;
   left: 18px;
   right: auto;
-  /* 提高到比歌词卡更高,避免被盖 */
+  /* 鎻愰珮鍒版瘮姝岃瘝鍗℃洿楂?閬垮厤琚洊 */
   z-index: 11;
   background: linear-gradient(180deg, rgba(10,10,16,0.75), rgba(4,4,8,0.75));
   color: #ff8c4a;
@@ -1036,16 +1036,16 @@ body.page-scene-dawn #mask {
   border: 1px solid #2a2a30;
   box-shadow: inset 0 0 6px rgba(255,140,74,0.35);
   text-shadow: 0 0 6px rgba(255,140,74,0.8);
-  /* 纯装饰,不需要拦截事件(避免遮挡滚动条拖拽) */
+  /* 绾楗?涓嶉渶瑕佹嫤鎴簨浠?閬垮厤閬尅婊氬姩鏉℃嫋鎷? */
   pointer-events: none;
 }
 
-/* ----- 控制面板 ----- */
+/* ----- 鎺у埗闈㈡澘 ----- */
 .tv-panel {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* 下边框收窄:控件统一缩小后仍完整包住 */
+  /* 涓嬭竟妗嗘敹绐?鎺т欢缁熶竴缂╁皬鍚庝粛瀹屾暣鍖呬綇 */
   margin-top: 10px;
   padding: 6px 4px 2px;
 }
@@ -1068,14 +1068,14 @@ body.page-scene-dawn #mask {
   gap: 12px;
 }
 
-/* 旋钮包裹容器:字样不随旋钮旋转(放在旋转按钮之外) */
+/* 鏃嬮挳鍖呰９瀹瑰櫒:瀛楁牱涓嶉殢鏃嬮挳鏃嬭浆(鏀惧湪鏃嬭浆鎸夐挳涔嬪) */
 .tv-knob-wrap {
   position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
 }
-/* 大旋钮(与按钮统一高度 30px) */
+/* 澶ф棆閽?涓庢寜閽粺涓€楂樺害 30px) */
 .tv-knob {
   position: relative;
   width: 30px;
@@ -1092,7 +1092,7 @@ body.page-scene-dawn #mask {
   transform: rotate(0deg);
   transition: transform 0.5s ease;
 }
-/* 旋钮整体旋转(指针跟着转),字样因在按钮外而保持水平 */
+/* 鏃嬮挳鏁翠綋鏃嬭浆(鎸囬拡璺熺潃杞?,瀛楁牱鍥犲湪鎸夐挳澶栬€屼繚鎸佹按骞?*/
 .tv-knob-ch { --tv-rot: 0deg; transform: rotate(var(--tv-rot)); }
 .tv-knob-vol { --vol-rot: 0deg; transform: rotate(var(--vol-rot)); transition: transform 0.3s ease; }
 .tv-knob::before {
@@ -1136,7 +1136,7 @@ body.page-scene-dawn #mask {
 }
 .tv-knob:active { box-shadow: inset 0 3px 6px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3); }
 
-/* 机身面板按钮组（位于屏幕下方、与旋钮同排） */
+/* 鏈鸿韩闈㈡澘鎸夐挳缁勶紙浣嶄簬灞忓箷涓嬫柟銆佷笌鏃嬮挳鍚屾帓锛?*/
 .tv-buttons {
   display: flex;
   gap: 6px;
@@ -1162,7 +1162,7 @@ body.page-scene-dawn #mask {
 .tv-btn-play:hover { background: linear-gradient(180deg, #ff9a5a, #e07a36); }
 .tv-btn-icon { font-size: 11px; line-height: 1; }
 
-/* 电源灯 */
+/* 鐢垫簮鐏?*/
 .tv-power-led {
   width: 8px;
   height: 8px;
@@ -1177,7 +1177,7 @@ body.page-scene-dawn #mask {
   animation: tvLed 1.6s ease-in-out infinite alternate;
 }
 
-/* ===== 复古电视强化 ===== */
+/* ===== 澶嶅彜鐢佃寮哄寲 ===== */
 .tv-channel-scan {
   position: absolute;
   inset: 0;
@@ -1206,7 +1206,7 @@ body.page-scene-dawn #mask {
   100% { opacity: 0; }
 }
 
-/* 信号干扰条纹 */
+/* 淇″彿骞叉壈鏉＄汗 */
 .tv-signal-glitch {
   position: absolute;
   inset: 0;
@@ -1238,7 +1238,7 @@ body.page-scene-dawn #mask {
   100% { opacity: 0;    transform: translateX(0); }
 }
 
-/* 无信号画面 */
+/* 鏃犱俊鍙风敾闈?*/
 .tv-no-signal {
   position: absolute;
   inset: 0;
@@ -1285,7 +1285,7 @@ body.page-scene-dawn #mask {
   100% { transform: translate(-6px, 4px); }
 }
 
-/* 隐藏频道画面 */
+/* 闅愯棌棰戦亾鐢婚潰 */
 .tv-hidden-screen {
   position: absolute;
   inset: 0;
@@ -1334,7 +1334,7 @@ body.page-scene-dawn #mask {
   opacity: 0.55;
 }
 
-/* 双击屏幕的神秘闪屏 */
+/* 鍙屽嚮灞忓箷鐨勭绉橀棯灞?*/
 .tv-secret-flash {
   position: fixed;
   width: 200px;
@@ -1354,7 +1354,7 @@ body.page-scene-dawn #mask {
   100% { transform: scale(2.4); opacity: 0; }
 }
 
-/* 整点环境联动气泡 */
+/* 鏁寸偣鐜鑱斿姩姘旀场 */
 .hour-popup {
   position: fixed;
   left: 50%;
@@ -1385,7 +1385,7 @@ body.page-scene-dawn #mask {
   to   { box-shadow: 0 0 14px #ff7050, inset 0 1px 1px rgba(255,200,150,0.8); }
 }
 
-/* 电源开关按钮:按钮壳包裹电源灯 */
+/* 鐢垫簮寮€鍏虫寜閽?鎸夐挳澹冲寘瑁圭數婧愮伅 */
 .tv-power-btn {
   position: relative;
   width: 34px;
@@ -1416,7 +1416,7 @@ body.page-scene-dawn #mask {
   animation: tvLed 1.6s ease-in-out infinite alternate;
 }
 
-/* ===== 电视关机状态 ===== */
+/* ===== 鐢佃鍏虫満鐘舵€?===== */
 .tv-set.is-off .tv-screen {
   filter: brightness(0.04);
   transition: filter 0.45s ease;
@@ -1438,10 +1438,10 @@ body.page-scene-dawn #mask {
 .tv-set.is-off .tv-btn-next,
 .tv-set.is-off .tv-btn-play { pointer-events: none; }
 
-/* 底部铭牌(放在 TV 机壳顶部,天线下方 + 屏框上方,深色字浅色金属机壳背景) */
+/* 搴曢儴閾墝(鏀惧湪 TV 鏈哄３椤堕儴,澶╃嚎涓嬫柟 + 灞忔涓婃柟,娣辫壊瀛楁祬鑹查噾灞炴満澹宠儗鏅? */
 .tv-footplate {
   position: absolute;
-  /* 相对 .tv-set 顶部:padding-top 44 + tv-body padding-top 16 - 8 内缩 = 52 */
+  /* 鐩稿 .tv-set 椤堕儴:padding-top 44 + tv-body padding-top 16 - 8 鍐呯缉 = 52 */
   top: 52px;
   left: 50%;
   transform: translateX(-50%);
@@ -1456,7 +1456,7 @@ body.page-scene-dawn #mask {
   white-space: nowrap;
 }
 
-/* 电视柜阴影 */
+/* 鐢佃鏌滈槾褰?*/
 .tv-stand {
   width: 70%;
   height: 14px;
@@ -1483,65 +1483,65 @@ body.page-scene-dawn #mask {
   opacity: 1;
 }
 
-/* ===== 10 套专属 CRT 屏内氛围渐变（主色调两两不同，不重复） ===== */
-/* 01 曾经的你 —— 暖橙夕阳 */
+/* ===== 10 濂椾笓灞?CRT 灞忓唴姘涘洿娓愬彉锛堜富鑹茶皟涓や袱涓嶅悓锛屼笉閲嶅锛?===== */
+/* 01 鏇剧粡鐨勪綘 鈥斺€?鏆栨澶曢槼 */
 .lyric-scene[data-bg-crt="crt-01-zengjingdeni.jpg"] {
   background:
     radial-gradient(circle at 74% 30%, rgba(255, 214, 110, 0.9) 0%, rgba(255, 160, 70, 0.4) 24%, transparent 50%),
     linear-gradient(180deg, #7a3258 0%, #b25a42 40%, #e08648 68%, #f5b264 90%, #ffdf9e 100%);
 }
-/* 02 消愁 —— 藏蓝深夜 + 琥珀酒光 */
+/* 02 娑堟剚 鈥斺€?钘忚摑娣卞 + 鐞ョ弨閰掑厜 */
 .lyric-scene[data-bg-crt="crt-02-xiaochou.jpg"] {
   background:
     radial-gradient(circle at 26% 66%, rgba(235, 165, 60, 0.55) 0%, transparent 36%),
     radial-gradient(circle at 78% 22%, rgba(64, 105, 220, 0.4) 0%, transparent 44%),
     linear-gradient(180deg, #070a16 0%, #131a2e 55%, #232a46 100%);
 }
-/* 03 稻香 —— 金黄稻田 + 晨绿 */
+/* 03 绋婚 鈥斺€?閲戦粍绋荤敯 + 鏅ㄧ豢 */
 .lyric-scene[data-bg-crt="crt-03-daoxiang.jpg"] {
   background:
     radial-gradient(circle at 50% 90%, rgba(255, 238, 160, 0.85) 0%, rgba(250, 215, 120, 0.35) 30%, transparent 58%),
     linear-gradient(180deg, #3d4f33 0%, #6d8040 45%, #b8ab4c 75%, #ecd27e 95%, #fff0b8 100%);
 }
-/* 04 晴天 —— 天蓝白云（全组最亮） */
+/* 04 鏅村ぉ 鈥斺€?澶╄摑鐧戒簯锛堝叏缁勬渶浜級 */
 .lyric-scene[data-bg-crt="crt-04-qingtian.jpg"] {
   background:
     radial-gradient(circle at 72% 16%, rgba(255, 255, 235, 0.9) 0%, rgba(255, 245, 200, 0.35) 28%, transparent 52%),
     linear-gradient(180deg, #2f74bd 0%, #5795d6 40%, #93c1ea 72%, #dff0fb 100%);
 }
-/* 05 清明雨上 —— 青烟灰绿细雨（低饱和冷调） */
+/* 05 娓呮槑闆ㄤ笂 鈥斺€?闈掔儫鐏扮豢缁嗛洦锛堜綆楗卞拰鍐疯皟锛?*/
 .lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"] {
   background:
     radial-gradient(circle at 32% 20%, rgba(205, 225, 210, 0.35) 0%, transparent 48%),
     linear-gradient(180deg, #26333a 0%, #47615c 50%, #74918a 80%, #adc4ba 100%);
 }
-/* 06 青花瓷 —— 钴蓝瓷白（高饱和对撞） */
+/* 06 闈掕姳鐡?鈥斺€?閽磋摑鐡风櫧锛堥珮楗卞拰瀵规挒锛?*/
 .lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"] {
   background:
     radial-gradient(circle at 50% 14%, rgba(240, 247, 255, 0.45) 0%, transparent 42%),
     radial-gradient(circle at 18% 84%, rgba(30, 90, 175, 0.55) 0%, transparent 52%),
     linear-gradient(170deg, #0d2b56 0%, #1c5599 50%, #3579c2 85%, #7fb3e2 100%);
 }
-/* 07 庐州月 —— 深紫夜空 + 月白银（紫调独占） */
+/* 07 搴愬窞鏈?鈥斺€?娣辩传澶滅┖ + 鏈堢櫧閾讹紙绱皟鐙崰锛?*/
 .lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"] {
   background:
     radial-gradient(circle at 50% 12%, rgba(238, 240, 255, 0.65) 0%, rgba(200, 200, 255, 0.2) 18%, transparent 38%),
     radial-gradient(circle at 76% 24%, rgba(255, 178, 100, 0.28) 0%, transparent 34%),
     linear-gradient(180deg, #191038 0%, #322152 50%, #553a78 82%, #8a67a8 100%);
 }
-/* 08 告白气球 —— 玫粉桃红（暖粉，区别于 01 的橙） */
+/* 08 鍛婄櫧姘旂悆 鈥斺€?鐜矇妗冪孩锛堟殩绮夛紝鍖哄埆浜?01 鐨勬锛?*/
 .lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"] {
   background:
     radial-gradient(circle at 66% 36%, rgba(255, 190, 205, 0.75) 0%, rgba(255, 150, 170, 0.35) 26%, transparent 50%),
     linear-gradient(172deg, #7e2e58 0%, #b44f72 38%, #e07a88 68%, #ffadae 90%, #ffd9cf 100%);
 }
-/* 09 雅俗共赏 —— 水墨黑白（宣纸米白, 全组唯一无彩色） */
+/* 09 闆呬織鍏辫祻 鈥斺€?姘村ⅷ榛戠櫧锛堝绾哥背鐧? 鍏ㄧ粍鍞竴鏃犲僵鑹诧級 */
 .lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"] {
   background:
     radial-gradient(circle at 50% 86%, rgba(255, 253, 246, 0.55) 0%, transparent 52%),
     linear-gradient(178deg, #17181a 0%, #33353a 45%, #63666d 72%, #a7aaaf 92%, #e8e6de 100%);
 }
-/* 10 城府 —— 冷蓝黑 + 血红霓虹点缀 */
+/* 10 鍩庡簻 鈥斺€?鍐疯摑榛?+ 琛€绾㈤湏铏圭偣缂€ */
 .lyric-scene[data-bg-crt="crt-10-chengfu.jpg"] {
   background:
     radial-gradient(circle at 24% 74%, rgba(198, 40, 60, 0.5) 0%, transparent 34%),
@@ -1549,7 +1549,7 @@ body.page-scene-dawn #mask {
     linear-gradient(180deg, #05070c 0%, #10161f 55%, #1f2937 100%);
 }
 
-/* CRT 粒子容器 */
+/* CRT 绮掑瓙瀹瑰櫒 */
 .crt-particles {
   position: absolute;
   inset: 0;
@@ -1558,7 +1558,7 @@ body.page-scene-dawn #mask {
   z-index: 2;
 }
 
-/* ===== 装饰件小彩蛋弹窗 ===== */
+/* ===== 瑁呴グ浠跺皬褰╄泲寮圭獥 ===== */
 .easter-modal {
   position: fixed;
   inset: 0;
@@ -1627,7 +1627,7 @@ body.page-scene-dawn #mask {
   font-size: 14px;
   line-height: 1.8;
 }
-/* ===== 场景 1：黄昏（夕阳 + 远山 + 飞鸟） ===== */
+/* ===== 鍦烘櫙 1锛氶粍鏄忥紙澶曢槼 + 杩滃北 + 椋為笩锛?===== */
 .lyric-scene-1 { background: #2a1d2c; }
 .sky-sunset {
   position: absolute; inset: 0;
@@ -1710,7 +1710,7 @@ body.page-scene-dawn #mask {
   100% { left: 110%; transform: translateY(-4px) scale(var(--s,1)); }
 }
 
-/* ===== 场景 2：深夜（月亮 + 星空 + 城市剪影） ===== */
+/* ===== 鍦烘櫙 2锛氭繁澶滐紙鏈堜寒 + 鏄熺┖ + 鍩庡競鍓奖锛?===== */
 .lyric-scene-2 { background: #0a0e22; }
 .sky-night {
   position: absolute; inset: 0;
@@ -1819,7 +1819,7 @@ body.page-scene-dawn #mask {
 .b-7 { height: 60%; }
 .b-8 { height: 75%; }
 
-/* ===== 场景 3：清晓（晨光 + 云海 + 风筝） ===== */
+/* ===== 鍦烘櫙 3锛氭竻鏅擄紙鏅ㄥ厜 + 浜戞捣 + 椋庣瓭锛?===== */
 .lyric-scene-3 { background: #2a3a52; }
 .sky-dawn {
   position: absolute; inset: 0;
@@ -1910,7 +1910,7 @@ body.page-scene-dawn #mask {
   transform: rotate(20deg);
 }
 
-/* ===== 通用：暗角（让中央歌词卡更突出） ===== */
+/* ===== 閫氱敤锛氭殫瑙掞紙璁╀腑澶瓕璇嶅崱鏇寸獊鍑猴級 ===== */
 .vignette {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.45) 100%);
@@ -1918,7 +1918,7 @@ body.page-scene-dawn #mask {
 }
 
 /* ==========================================================================
-   音响台（Sound Deck）：控制面板从电视下方移到左侧宽敞区域
+   闊冲搷鍙帮紙Sound Deck锛夛細鎺у埗闈㈡澘浠庣數瑙嗕笅鏂圭Щ鍒板乏渚у鏁炲尯鍩?
    ========================================================================== */
 .sound-deck {
   margin-top: 8px;
@@ -1944,7 +1944,7 @@ body.page-scene-dawn #mask {
   margin-bottom: 10px;
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 }
-/* 侧栏面板：纵向堆叠 */
+/* 渚ф爮闈㈡澘锛氱旱鍚戝爢鍙?*/
 .tv-panel-side {
   display: flex;
   flex-direction: column;
@@ -1970,11 +1970,11 @@ body.page-scene-dawn #mask {
 }
 
 /* ==========================================================================
-   音乐页全屏背景（电视外 / 页面整体）
-   通过 body.page-scene-sunset / .page-scene-night / .page-scene-dawn 切换
+   闊充箰椤靛叏灞忚儗鏅紙鐢佃澶?/ 椤甸潰鏁翠綋锛?
+   閫氳繃 body.page-scene-sunset / .page-scene-night / .page-scene-dawn 鍒囨崲
    ========================================================================== */
 
-/* 让音乐页 article 容器与卡片透明，背景由 body 透出 */
+/* 璁╅煶涔愰〉 article 瀹瑰櫒涓庡崱鐗囬€忔槑锛岃儗鏅敱 body 閫忓嚭 */
 body.page-scene-sunset,
 body.page-scene-night,
 body.page-scene-dawn {
@@ -1997,7 +1997,7 @@ body.page-scene-dawn .article-entry {
   border-color: transparent !important;
 }
 
-/* ===== 场景 1：黄昏（兜底色：图片未加载时可见） ===== */
+/* ===== 鍦烘櫙 1锛氶粍鏄忥紙鍏滃簳鑹诧細鍥剧墖鏈姞杞芥椂鍙锛?===== */
 body.page-scene-sunset {
   background:
     linear-gradient(160deg,
@@ -2007,7 +2007,7 @@ body.page-scene-sunset {
       #d9784a 80%,
       #f0a060 100%) !important;
 }
-/* ===== 场景 2：深夜 ===== */
+/* ===== 鍦烘櫙 2锛氭繁澶?===== */
 body.page-scene-night {
   background:
     linear-gradient(180deg,
@@ -2016,7 +2016,7 @@ body.page-scene-night {
       #16205a 65%,
       #1a2050 100%) !important;
 }
-/* ===== 场景 3：清晓 ===== */
+/* ===== 鍦烘櫙 3锛氭竻鏅?===== */
 body.page-scene-dawn {
   background:
     linear-gradient(180deg,
@@ -2027,7 +2027,7 @@ body.page-scene-dawn {
       #ffd8a8 100%) !important;
 }
 
-/* 背景动效：缓慢漂浮的柔光斑 */
+/* 鑳屾櫙鍔ㄦ晥锛氱紦鎱㈡紓娴殑鏌斿厜鏂?*/
 body.page-scene-sunset::before,
 body.page-scene-night::before,
 body.page-scene-dawn::before {
@@ -2059,7 +2059,7 @@ body.page-scene-dawn::before {
   100% { transform: translate(-2%, 1%)  scale(1.02); }
 }
 
-/* 让电视浮在背景之上（z-index 抬高） */
+/* 璁╃數瑙嗘诞鍦ㄨ儗鏅箣涓婏紙z-index 鎶珮锛?*/
 body.page-scene-sunset .tv-set,
 body.page-scene-night .tv-set,
 body.page-scene-dawn .tv-set {
@@ -2068,67 +2068,67 @@ body.page-scene-dawn .tv-set {
 }
 
 /* ==========================================================================
-   每首歌专属外圈氛围（与 CRT 同色系的暗化低饱和版，保证内外匹配）
-   放在 page-scene-* 之后以覆盖其 !important 渐变
+   姣忛姝屼笓灞炲鍦堟皼鍥达紙涓?CRT 鍚岃壊绯荤殑鏆楀寲浣庨ケ鍜岀増锛屼繚璇佸唴澶栧尮閰嶏級
+   鏀惧湪 page-scene-* 涔嬪悗浠ヨ鐩栧叾 !important 娓愬彉
    ========================================================================== */
-/* 01 曾经的你 —— 暗化暖橙夕阳 */
+/* 01 鏇剧粡鐨勪綘 鈥斺€?鏆楀寲鏆栨澶曢槼 */
 body.page-bg-1 {
   background:
     radial-gradient(ellipse at 72% 22%, rgba(255, 180, 90, 0.28), transparent 45%),
     linear-gradient(168deg, #241419 0%, #3a2018 30%, #6e3a26 60%, #9a5c34 85%, #c98747 100%) !important;
 }
-/* 02 消愁 —— 藏蓝夜 + 微琥珀 */
+/* 02 娑堟剚 鈥斺€?钘忚摑澶?+ 寰惀鐝€ */
 body.page-bg-2 {
   background:
     radial-gradient(ellipse at 22% 78%, rgba(210, 150, 70, 0.16), transparent 45%),
     radial-gradient(ellipse at 80% 20%, rgba(70, 100, 200, 0.2), transparent 48%),
     linear-gradient(180deg, #050810 0%, #0e1322 50%, #1b2036 100%) !important;
 }
-/* 03 稻香 —— 暗金橄榄晨色 */
+/* 03 绋婚 鈥斺€?鏆楅噾姗勬鏅ㄨ壊 */
 body.page-bg-3 {
   background:
     radial-gradient(ellipse at 50% 92%, rgba(250, 220, 130, 0.25), transparent 52%),
     linear-gradient(176deg, #23291c 0%, #3f4426 40%, #6e6730 72%, #a08a42 100%) !important;
 }
-/* 04 晴天 —— 中亮天蓝（外圈最亮但已压暗） */
+/* 04 鏅村ぉ 鈥斺€?涓寒澶╄摑锛堝鍦堟渶浜絾宸插帇鏆楋級 */
 body.page-bg-4 {
   background:
     radial-gradient(ellipse at 70% 16%, rgba(235, 245, 255, 0.3), transparent 42%),
     linear-gradient(172deg, #16304e 0%, #234b76 42%, #3f6fa3 75%, #6f97bd 100%) !important;
 }
-/* 05 清明雨上 —— 青烟冷雾 */
+/* 05 娓呮槑闆ㄤ笂 鈥斺€?闈掔儫鍐烽浘 */
 body.page-bg-5 {
   background:
     radial-gradient(ellipse at 32% 18%, rgba(190, 210, 198, 0.14), transparent 46%),
     linear-gradient(178deg, #18211f 0%, #2c3936 46%, #48584f 78%, #6b7d71 100%) !important;
 }
-/* 06 青花瓷 —— 暗钴蓝 */
+/* 06 闈掕姳鐡?鈥斺€?鏆楅挻钃?*/
 body.page-bg-6 {
   background:
     radial-gradient(ellipse at 50% 12%, rgba(215, 230, 250, 0.14), transparent 40%),
     radial-gradient(ellipse at 18% 86%, rgba(35, 95, 175, 0.25), transparent 50%),
     linear-gradient(172deg, #081827 0%, #123152 52%, #204d7c 100%) !important;
 }
-/* 07 庐州月 —— 暗紫月夜 */
+/* 07 搴愬窞鏈?鈥斺€?鏆楃传鏈堝 */
 body.page-bg-7 {
   background:
     radial-gradient(ellipse at 50% 10%, rgba(228, 230, 255, 0.18), transparent 34%),
     radial-gradient(ellipse at 78% 24%, rgba(240, 170, 110, 0.12), transparent 32%),
     linear-gradient(180deg, #120c26 0%, #241843 52%, #3c2a58 100%) !important;
 }
-/* 08 告白气球 —— 暗玫粉 */
+/* 08 鍛婄櫧姘旂悆 鈥斺€?鏆楃帿绮?*/
 body.page-bg-8 {
   background:
     radial-gradient(ellipse at 66% 34%, rgba(255, 175, 195, 0.24), transparent 44%),
     linear-gradient(174deg, #3f1830 0%, #63304a 38%, #8f5262 70%, #bc7a82 100%) !important;
 }
-/* 09 雅俗共赏 —— 水墨炭灰（近无彩色） */
+/* 09 闆呬織鍏辫祻 鈥斺€?姘村ⅷ鐐伆锛堣繎鏃犲僵鑹诧級 */
 body.page-bg-9 {
   background:
     radial-gradient(ellipse at 50% 88%, rgba(250, 248, 240, 0.14), transparent 48%),
     linear-gradient(178deg, #101113 0%, #232529 45%, #44474e 74%, #6f7379 100%) !important;
 }
-/* 10 城府 —— 近黑蓝 + 血红霓虹晕 */
+/* 10 鍩庡簻 鈥斺€?杩戦粦钃?+ 琛€绾㈤湏铏规檿 */
 body.page-bg-10 {
   background:
     radial-gradient(ellipse at 24% 76%, rgba(185, 38, 58, 0.2), transparent 36%),
@@ -2137,9 +2137,9 @@ body.page-bg-10 {
 }
 
 /* ==========================================================================
-   独立页面主题背景(page-theme-*):旅程 / 成果 / 游戏 / 脑洞
+   鐙珛椤甸潰涓婚鑳屾櫙(page-theme-*):鏃呯▼ / 鎴愭灉 / 娓告垙 / 鑴戞礊
    ========================================================================== */
-/* 旅程 —— 清晨远行:淡蓝天空 + 暖沙地平线 */
+/* 鏃呯▼ 鈥斺€?娓呮櫒杩滆:娣¤摑澶╃┖ + 鏆栨矙鍦板钩绾?*/
 body.page-theme-journey {
   background:
     radial-gradient(ellipse at 78% 16%, rgba(255, 200, 130, 0.4), transparent 44%),
@@ -2147,7 +2147,7 @@ body.page-theme-journey {
     radial-gradient(ellipse at 50% 105%, rgba(240, 180, 110, 0.45), transparent 55%),
     linear-gradient(174deg, #cfe6f7 0%, #e6eef6 38%, #f6ead8 72%, #f7d9b0 100%) !important;
 }
-/* 旅程 —— 远景云层 + 飞鸟氛围 */
+/* 鏃呯▼ 鈥斺€?杩滄櫙浜戝眰 + 椋為笩姘涘洿 */
 body.page-theme-journey::before {
   content: "";
   position: fixed;
@@ -2160,7 +2160,7 @@ body.page-theme-journey::before {
     radial-gradient(ellipse at 88% 34%, rgba(255, 255, 255, 0.45), transparent 42%);
   filter: blur(6px);
 }
-/* 成果 —— 聚光灯展台:冷白 + 蓝紫光斑 */
+/* 鎴愭灉 鈥斺€?鑱氬厜鐏睍鍙?鍐风櫧 + 钃濈传鍏夋枒 */
 body.page-theme-works {
   background:
     radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.85), transparent 46%),
@@ -2168,7 +2168,7 @@ body.page-theme-works {
     radial-gradient(ellipse at 84% 70%, rgba(170, 130, 255, 0.28), transparent 46%),
     linear-gradient(172deg, #eef2ff 0%, #e7ecff 50%, #f3f0ff 100%) !important;
 }
-/* 成果 —— 顶部聚光光束氛围 */
+/* 鎴愭灉 鈥斺€?椤堕儴鑱氬厜鍏夋潫姘涘洿 */
 body.page-theme-works::before {
   content: "";
   position: fixed;
@@ -2179,7 +2179,7 @@ body.page-theme-works::before {
     conic-gradient(from 90deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.5) 20deg, transparent 40deg);
   filter: blur(10px);
 }
-/* 游戏 —— 街机霓虹:柔和霓虹光晕 */
+/* 娓告垙 鈥斺€?琛楁満闇撹櫣:鏌斿拰闇撹櫣鍏夋檿 */
 body.page-theme-games {
   background:
     radial-gradient(ellipse at 26% 22%, rgba(255, 110, 140, 0.22), transparent 42%),
@@ -2187,7 +2187,7 @@ body.page-theme-games {
     radial-gradient(ellipse at 50% 88%, rgba(255, 205, 90, 0.2), transparent 46%),
     linear-gradient(180deg, #f2f2f8 0%, #ece9f5 55%, #e6eafa 100%) !important;
 }
-/* 游戏 —— 像素网格氛围 */
+/* 娓告垙 鈥斺€?鍍忕礌缃戞牸姘涘洿 */
 body.page-theme-games::before {
   content: "";
   position: fixed;
@@ -2199,7 +2199,7 @@ body.page-theme-games::before {
     linear-gradient(90deg, rgba(120, 130, 180, 0.10) 1px, transparent 1px);
   background-size: 32px 32px;
 }
-/* 脑洞 —— 星夜创意:浅紫蓝星空 */
+/* 鑴戞礊 鈥斺€?鏄熷鍒涙剰:娴呯传钃濇槦绌?*/
 body.page-theme-brainwave {
   background:
     radial-gradient(ellipse at 30% 20%, rgba(150, 130, 255, 0.25), transparent 46%),
@@ -2207,7 +2207,7 @@ body.page-theme-brainwave {
     radial-gradient(ellipse at 50% 95%, rgba(120, 90, 255, 0.2), transparent 52%),
     linear-gradient(176deg, #eef0ff 0%, #e6e8fb 48%, #ece6fb 100%) !important;
 }
-/* 脑洞 —— 漂浮星点氛围 */
+/* 鑴戞礊 鈥斺€?婕傛诞鏄熺偣姘涘洿 */
 body.page-theme-brainwave::before {
   content: "";
   position: fixed;
@@ -2222,7 +2222,7 @@ body.page-theme-brainwave::before {
     radial-gradient(2px 2px at 78% 66%, rgba(120, 170, 255, 0.55), transparent),
     radial-gradient(2px 2px at 88% 24%, rgba(140, 110, 255, 0.5), transparent);
 }
-/* 保证页面正文在氛围层之上 */
+/* 淇濊瘉椤甸潰姝ｆ枃鍦ㄦ皼鍥村眰涔嬩笂 */
 body.page-theme-journey #app,
 body.page-theme-works #app,
 body.page-theme-games #app,
@@ -2231,56 +2231,56 @@ body.page-theme-brainwave #app {
   z-index: 1;
 }
 
-/* 与 page-scene 一致地抬高电视，且盖过上面所有背景 */
+/* 涓?page-scene 涓€鑷村湴鎶珮鐢佃锛屼笖鐩栬繃涓婇潰鎵€鏈夎儗鏅?*/
 body[class*="page-bg-"] .tv-set,
 body[class*="page-scene-"] .tv-set,
 body[class*="mood-"] .tv-set {
   position: relative;
   z-index: 1;
 }
-/* 外圈切换过渡 */
+/* 澶栧湀鍒囨崲杩囨浮 */
 body {
   transition: background 1.2s ease-in-out;
 }
 
 /* ==========================================================================
-   装饰件氛围主题(mood-*):点击黑胶/麦克风/磁带/CD/霓虹切换整页氛围,覆盖歌曲背景
+   瑁呴グ浠舵皼鍥翠富棰?mood-*):鐐瑰嚮榛戣兌/楹﹀厠椋?纾佸甫/CD/闇撹櫣鍒囨崲鏁撮〉姘涘洿,瑕嗙洊姝屾洸鑳屾櫙
    ========================================================================== */
-/* 黑胶 —— 复古暖黄 */
+/* 榛戣兌 鈥斺€?澶嶅彜鏆栭粍 */
 body.mood-vinyl {
   background:
     radial-gradient(ellipse at 70% 24%, rgba(255, 207, 120, 0.30), transparent 46%),
     radial-gradient(ellipse at 22% 80%, rgba(120, 40, 25, 0.25), transparent 48%),
     linear-gradient(176deg, #3a1e10 0%, #703a1a 35%, #a85c24 68%, #d99a45 100%) !important;
 }
-/* 麦克风 —— 深夜电台蓝调 */
+/* 楹﹀厠椋?鈥斺€?娣卞鐢靛彴钃濊皟 */
 body.mood-mic {
   background:
     radial-gradient(ellipse at 30% 82%, rgba(120, 150, 210, 0.22), transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(90, 120, 200, 0.18), transparent 42%),
     linear-gradient(180deg, #04060d 0%, #0a1122 50%, #17233f 100%) !important;
 }
-/* 磁带 —— 怀旧棕褐 */
+/* 纾佸甫 鈥斺€?鎬€鏃ф瑜?*/
 body.mood-cassette {
   background:
     radial-gradient(ellipse at 50% 10%, rgba(230, 205, 170, 0.18), transparent 40%),
     linear-gradient(176deg, #2a1a10 0%, #4a2f1c 40%, #6e4a2c 72%, #8f6a40 100%) !important;
 }
-/* CD —— 冷冽科技银 */
+/* CD 鈥斺€?鍐峰喗绉戞妧閾?*/
 body.mood-cd {
   background:
     radial-gradient(ellipse at 72% 30%, rgba(210, 225, 245, 0.30), transparent 44%),
     radial-gradient(ellipse at 24% 74%, rgba(90, 120, 175, 0.2), transparent 46%),
     linear-gradient(175deg, #0d1018 0%, #20242f 45%, #3a4150 75%, #5d6677 100%) !important;
 }
-/* 霓虹 —— 赛博粉紫 */
+/* 闇撹櫣 鈥斺€?璧涘崥绮夌传 */
 body.mood-neon {
   background:
     radial-gradient(ellipse at 24% 78%, rgba(255, 0, 150, 0.22), transparent 42%),
     radial-gradient(ellipse at 82% 22%, rgba(90, 0, 255, 0.22), transparent 44%),
     linear-gradient(180deg, #07020c 0%, #160a2e 48%, #2a1250 78%, #4a1f6e 100%) !important;
 }
-/* 氛围光晕:电视外壳透出对应主题色 */
+/* 姘涘洿鍏夋檿:鐢佃澶栧３閫忓嚭瀵瑰簲涓婚鑹?*/
 body.mood-vinyl .tv-set   { box-shadow: 0 24px 70px rgba(255, 180, 90, 0.35); }
 body.mood-mic .tv-set     { box-shadow: 0 24px 70px rgba(70, 110, 200, 0.35); }
 body.mood-cassette .tv-set{ box-shadow: 0 24px 70px rgba(160, 120, 80, 0.35); }
@@ -2288,10 +2288,10 @@ body.mood-cd .tv-set      { box-shadow: 0 24px 70px rgba(150, 175, 215, 0.35); }
 body.mood-neon .tv-set    { box-shadow: 0 24px 70px rgba(200, 60, 255, 0.35); }
 
 /* ==========================================================================
-   音乐页布局压缩：标题 / 引用 / 边距统统去掉，电视顶到屏幕上方
+   闊充箰椤靛竷灞€鍘嬬缉锛氭爣棰?/ 寮曠敤 / 杈硅窛缁熺粺鍘绘帀锛岀數瑙嗛《鍒板睆骞曚笂鏂?
    ========================================================================== */
 
-/* 解锁主题 70rem(1120px) 容器限制，仅音乐页放宽到 1400px */
+/* 瑙ｉ攣涓婚 70rem(1120px) 瀹瑰櫒闄愬埗锛屼粎闊充箰椤垫斁瀹藉埌 1400px */
 body.page-scene-sunset .outer,
 body.page-scene-night .outer,
 body.page-scene-dawn .outer,
@@ -2302,7 +2302,7 @@ body.page-scene-dawn .wrap {
   max-width: 1400px;
 }
 
-/* 文章头部标题与元信息全部隐藏 */
+/* 鏂囩珷澶撮儴鏍囬涓庡厓淇℃伅鍏ㄩ儴闅愯棌 */
 body.page-scene-sunset .article-header,
 body.page-scene-night .article-header,
 body.page-scene-dawn .article-header,
@@ -2318,7 +2318,7 @@ body.page-scene-dawn blockquote {
   display: none !important;
 }
 
-/* 文章容器本身 padding/margin 收紧 */
+/* 鏂囩珷瀹瑰櫒鏈韩 padding/margin 鏀剁揣 */
 body.page-scene-sunset .article,
 body.page-scene-night .article,
 body.page-scene-dawn .article,
@@ -2329,7 +2329,7 @@ body.page-scene-dawn .article-inner {
   margin: 0 !important;
 }
 
-/* 文章正文 padding 收紧到 0（电视本来就自带间距）*/
+/* 鏂囩珷姝ｆ枃 padding 鏀剁揣鍒?0锛堢數瑙嗘湰鏉ュ氨鑷甫闂磋窛锛?/
 body.page-scene-sunset .article-entry,
 body.page-scene-night .article-entry,
 body.page-scene-dawn .article-entry {
@@ -2337,7 +2337,7 @@ body.page-scene-dawn .article-entry {
   margin: 0 !important;
 }
 
-/* 顶部品牌条：替换原页面标题与引用语 */
+/* 椤堕儴鍝佺墝鏉★細鏇挎崲鍘熼〉闈㈡爣棰樹笌寮曠敤璇?*/
 .tv-page-mark {
   position: relative;
   z-index: 2;
@@ -2360,7 +2360,7 @@ body.page-scene-dawn .article-entry {
   text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
-/* 电视本身再贴近顶部 */
+/* 鐢佃鏈韩鍐嶈创杩戦《閮?*/
 body.page-scene-sunset .tv-set,
 body.page-scene-night .tv-set,
 body.page-scene-dawn .tv-set {
@@ -2422,11 +2422,11 @@ body.page-scene-dawn .tv-set {
 .lyric-stage-overlay {
   position: absolute;
   inset: 0;
-  /* 加深场景蒙版,让歌词卡文字更突出 */
+  /* 鍔犳繁鍦烘櫙钂欑増,璁╂瓕璇嶅崱鏂囧瓧鏇寸獊鍑?*/
   background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.32));
   pointer-events: none;
 }
-/* 卡片：玻璃磨砂半透明 */
+/* 鍗＄墖锛氱幓鐠冪（鐮傚崐閫忔槑 */
 .lyric-cards {
   position: relative;
   z-index: 10;
@@ -2435,13 +2435,13 @@ body.page-scene-dawn .tv-set {
   height: 100%;
   padding: 24px;
   box-sizing: border-box;
-  /* 显式开启交互:父级 .lyric-stage 用了 pointer-events:none,
-     CSS 规范下子元素默认继承 none,会导致滚动条/按钮拖不动 */
+  /* 鏄惧紡寮€鍚氦浜?鐖剁骇 .lyric-stage 鐢ㄤ簡 pointer-events:none,
+     CSS 瑙勮寖涓嬪瓙鍏冪礌榛樿缁ф壙 none,浼氬鑷存粴鍔ㄦ潯/鎸夐挳鎷栦笉鍔?*/
   pointer-events: auto;
 }
 .lyric-card {
   position: absolute;
-  /* 歌名中心线对齐 CH01 中线(28px):清掉旧信纸的 24px 内边距,卡片顶收到 4px */
+  /* 姝屽悕涓績绾垮榻?CH01 涓嚎(28px):娓呮帀鏃т俊绾哥殑 24px 鍐呰竟璺?鍗＄墖椤舵敹鍒?4px */
   left: 32px;
   right: 32px;
   top: 4px;
@@ -2449,7 +2449,7 @@ body.page-scene-dawn .tv-set {
   margin: 0 auto;
   max-width: 760px;
   padding: 0;
-  /* 完全透出场景:无背景、无边框、无阴影,只保留文本自身的对比 */
+  /* 瀹屽叏閫忓嚭鍦烘櫙:鏃犺儗鏅€佹棤杈规銆佹棤闃村奖,鍙繚鐣欐枃鏈嚜韬殑瀵规瘮 */
   background: transparent;
   border: 0;
   border-radius: 0;
@@ -2459,7 +2459,7 @@ body.page-scene-dawn .tv-set {
   overflow: hidden;
   pointer-events: auto;
 }
-/* 底部字幕式微暗渐变:仅覆盖歌词正文下半段,避免大字"晴天"等被太阳淹没 */
+/* 搴曢儴瀛楀箷寮忓井鏆楁笎鍙?浠呰鐩栨瓕璇嶆鏂囦笅鍗婃,閬垮厤澶у瓧"鏅村ぉ"绛夎澶槼娣规病 */
 .lyric-card::after {
   content: "";
   position: absolute;
@@ -2472,16 +2472,16 @@ body.page-scene-dawn .tv-set {
   pointer-events: none;
   z-index: 0;
 }
-/* 正文内容需要浮在 ::after 渐变之上 */
+/* 姝ｆ枃鍐呭闇€瑕佹诞鍦?::after 娓愬彉涔嬩笂 */
 .lyric-card-body { position: relative; z-index: 1; }
 .lyric-card-header { position: relative; z-index: 1; }
-/* 去掉纸面虚线装饰 + 装订孔 */
+/* 鍘绘帀绾搁潰铏氱嚎瑁呴グ + 瑁呰瀛?*/
 .lyric-card::before {
   display: none;
 }
 .lyric-card-header {
   flex-shrink: 0;
-  /* 无背景透明,直接浮在场景画面上 */
+  /* 鏃犺儗鏅€忔槑,鐩存帴娴湪鍦烘櫙鐢婚潰涓?*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2528,8 +2528,8 @@ body.page-scene-dawn .tv-set {
 }
 .lyric-card-body {
   flex: 1 1 0;
-  /* min-height:0 是 flex 列布局里让 overflow:auto 真正生效的关键,
-     否则会被 min-content(min-height:auto)撑大,看似"卡住"滚不动 */
+  /* min-height:0 鏄?flex 鍒楀竷灞€閲岃 overflow:auto 鐪熸鐢熸晥鐨勫叧閿?
+     鍚﹀垯浼氳 min-content(min-height:auto)鎾戝ぇ,鐪嬩技"鍗′綇"婊氫笉鍔?*/
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -2537,9 +2537,9 @@ body.page-scene-dawn .tv-set {
   scrollbar-width: thin;
   scrollbar-color: rgba(73,177,245,0.5) transparent;
   overscroll-behavior: contain;
-  /* 显式开启交互(滚动条/手柄/选词都需要):
-     父级 .lyric-stage 用了 pointer-events:none,
-     按规范子元素默认继承,这里强制 auto 才能让滚动条真正可拖动 */
+  /* 鏄惧紡寮€鍚氦浜?婊氬姩鏉?鎵嬫焺/閫夎瘝閮介渶瑕?:
+     鐖剁骇 .lyric-stage 鐢ㄤ簡 pointer-events:none,
+     鎸夎鑼冨瓙鍏冪礌榛樿缁ф壙,杩欓噷寮哄埗 auto 鎵嶈兘璁╂粴鍔ㄦ潯鐪熸鍙嫋鍔?*/
   pointer-events: auto;
 }
 .lyric-card-body::-webkit-scrollbar {
@@ -2553,7 +2553,7 @@ body.page-scene-dawn .tv-set {
   border-radius: 3px;
 }
 .lyric-card-body p {
-  /* 恢复中文楷体/衬线字体,白字+强黑阴影,任意背景下清晰且居中 */
+  /* 鎭㈠涓枃妤蜂綋/琛嚎瀛椾綋,鐧藉瓧+寮洪粦闃村奖,浠绘剰鑳屾櫙涓嬫竻鏅颁笖灞呬腑 */
   margin: 0.42em 0;
   font-family: "Kaiti SC", "STKaiti", "Source Han Serif SC", "Songti SC", "SimSun", serif;
   font-size: 17px;
@@ -2568,7 +2568,7 @@ body.page-scene-dawn .tv-set {
   position: relative;
   z-index: 1;
 }
-/* ---------- 7. �ó�ʱ���� ---------- */
+/* ---------- 7. 锟矫筹拷时锟斤拷锟斤拷 ---------- */
 .timeline {
   position: relative;
   margin: 24px 0 8px;
@@ -2629,8 +2629,8 @@ body.page-scene-dawn .tv-set {
   color: #666;
 }
 
-/* ---------- 8. 侧边栏：技术区在上、搜索居中、生活区左下角 ---------- */
-/* 透明度自上而下渐变（技术区 1.0→0.76，生活区 0.68→0.40） */
+/* ---------- 8. 渚ц竟鏍忥細鎶€鏈尯鍦ㄤ笂銆佹悳绱㈠眳涓€佺敓娲诲尯宸︿笅瑙?---------- */
+/* 閫忔槑搴﹁嚜涓婅€屼笅娓愬彉锛堟妧鏈尯 1.0鈫?.76锛岀敓娲诲尯 0.68鈫?.40锛?*/
 .nav-main .nav-item,
 .nav-life .nav-item {
   transition: opacity 0.25s ease;
@@ -2644,17 +2644,17 @@ body.page-scene-dawn .tv-set {
 .nav-life .nav-item:nth-child(3) { opacity: 0.52; }
 .nav-life .nav-item:nth-child(4) { opacity: 0.44; }
 .nav-life .nav-item:nth-child(5) { opacity: 0.40; }
-/* 悬停恢复不透明 */
+/* 鎮仠鎭㈠涓嶉€忔槑 */
 .nav-main .nav-item:hover,
 .nav-life .nav-item:hover {
   opacity: 1 !important;
 }
-/* 覆盖主题 hover 时将链接背景置为浅色 body 色、文字降透明度 */
+/* 瑕嗙洊涓婚 hover 鏃跺皢閾炬帴鑳屾櫙缃负娴呰壊 body 鑹层€佹枃瀛楅檷閫忔槑搴?*/
 .navbar .nav-item-link:hover {
   background: transparent;
   opacity: 1;
 }
-/* 搜索按钮：位于技术区菜单下方 */
+/* 鎼滅储鎸夐挳锛氫綅浜庢妧鏈尯鑿滃崟涓嬫柟 */
 .nav-search-top {
   display: block;
   padding: 0.55rem 0;
@@ -2662,13 +2662,13 @@ body.page-scene-dawn .tv-set {
   color: #bbb;
   text-align: center;
 }
-/* 生活区（左下角）：覆盖 navbar-bottom 的 2rem 大字号 */
+/* 鐢熸椿鍖猴紙宸︿笅瑙掞級锛氳鐩?navbar-bottom 鐨?2rem 澶у瓧鍙?*/
 .navbar-bottom .nav-life .nav-item-link {
   font-size: 1.4rem;
   padding: 0.5rem 1rem;
 }
 
-/* ---------- 9. 可爱小牛装饰 ---------- */
+/* ---------- 9. 鍙埍灏忕墰瑁呴グ ---------- */
 .site-mascot {
   position: fixed;
   right: 32px;
@@ -2708,31 +2708,31 @@ body.page-scene-dawn .tv-set {
   25% { transform: rotate(-8deg); }
   75% { transform: rotate(8deg); }
 }
-/* 小屏隐藏，避免遮挡内容 */
+/* 灏忓睆闅愯棌锛岄伩鍏嶉伄鎸″唴瀹?*/
 @media (max-width: 768px) {
   .site-mascot {
     display: none;
   }
 }
 
-/* ---------- 8b. 侧边栏三组布局（覆盖第 8 区块旧规则） ---------- */
-/* 上组新增项（旅程/关于）透明度 */
+/* ---------- 8b. 渚ц竟鏍忎笁缁勫竷灞€锛堣鐩栫 8 鍖哄潡鏃ц鍒欙級 ---------- */
+/* 涓婄粍鏂板椤癸紙鏃呯▼/鍏充簬锛夐€忔槑搴?*/
 .nav-main .nav-item:nth-child(5) { opacity: 0.68; }
 .nav-main .nav-item:nth-child(6) { opacity: 0.62; }
-/* 中组（成果展示/自创游戏/音乐盒）：0.56 → 0.44 */
+/* 涓粍锛堟垚鏋滃睍绀?鑷垱娓告垙/闊充箰鐩掞級锛?.56 鈫?0.44 */
 .nav-mid .nav-item {
   transition: opacity 0.25s ease;
 }
 .nav-mid .nav-item:nth-child(1) { opacity: 0.56; }
 .nav-mid .nav-item:nth-child(2) { opacity: 0.50; }
 .nav-mid .nav-item:nth-child(3) { opacity: 0.44; }
-/* 底部（私人空间）：0.38（覆盖旧 0.68） */
+/* 搴曢儴锛堢浜虹┖闂达級锛?.38锛堣鐩栨棫 0.68锛?*/
 .nav-life .nav-item:nth-child(1) { opacity: 0.38; }
-/* 悬停恢复不透明 */
+/* 鎮仠鎭㈠涓嶉€忔槑 */
 .nav-mid .nav-item:hover {
   opacity: 1 !important;
 }
-/* 中组 / 底部：分隔线 */
+/* 涓粍 / 搴曢儴锛氬垎闅旂嚎 */
 .nav-mid {
   border-top: 1px dashed rgba(255, 255, 255, 0.18);
   margin-top: 6px;
@@ -2742,7 +2742,7 @@ body.page-scene-dawn .tv-set {
   border-top: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
-/* ---------- 9. 关于页：4 张卡片 + 底部图标排 ---------- */
+/* ---------- 9. 鍏充簬椤碉細4 寮犲崱鐗?+ 搴曢儴鍥炬爣鎺?---------- */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -2813,7 +2813,7 @@ body.page-scene-dawn .tv-set {
   border-bottom-color: #49b1f5;
 }
 
-/* ---------- 10. 关于页：底部图标排（关于本站 / 友链 / 订阅） ---------- */
+/* ---------- 10. 鍏充簬椤碉細搴曢儴鍥炬爣鎺掞紙鍏充簬鏈珯 / 鍙嬮摼 / 璁㈤槄锛?---------- */
 .about-links {
   display: flex;
   justify-content: center;
@@ -2842,7 +2842,7 @@ body.page-scene-dawn .tv-set {
 .about-links span {
   font-size: 0.85rem;
 }
-/* ---------- 10. 关于页：本站信息弹窗 + RSS 复制提示 ---------- */
+/* ---------- 10. 鍏充簬椤碉細鏈珯淇℃伅寮圭獥 + RSS 澶嶅埗鎻愮ず ---------- */
 .about-modal {
   display: none;
   position: fixed;
@@ -2918,7 +2918,7 @@ body.page-scene-dawn .tv-set {
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
-/* ---------- 11. 私人空间：隐藏入口（与背景同色、无分隔线，点击仍可进入） ---------- */
+/* ---------- 11. 绉佷汉绌洪棿锛氶殣钘忓叆鍙ｏ紙涓庤儗鏅悓鑹层€佹棤鍒嗛殧绾匡紝鐐瑰嚮浠嶅彲杩涘叆锛?---------- */
 .nav-life {
   border-top: none;
   margin-top: 0;
@@ -2932,18 +2932,18 @@ body.page-scene-dawn .tv-set {
   background: transparent !important;
   color: transparent !important;
 }
-/* ---------- 12. 侧边栏 v2：旅程移入中组（位于搜索空一格之后） ---------- */
+/* ---------- 12. 渚ц竟鏍?v2锛氭梾绋嬬Щ鍏ヤ腑缁勶紙浣嶄簬鎼滅储绌轰竴鏍间箣鍚庯級 ---------- */
 .nav-mid {
   margin-top: 1.2rem;
 }
-.nav-mid .nav-item:nth-child(1) { opacity: 0.62; } /* 旅程 */
-.nav-mid .nav-item:nth-child(2) { opacity: 0.56; } /* 成果展示 */
-.nav-mid .nav-item:nth-child(3) { opacity: 0.50; } /* 自创游戏 */
-.nav-mid .nav-item:nth-child(4) { opacity: 0.44; } /* 音乐盒 */
-.nav-mid .nav-item:nth-child(5) { opacity: 0.38; } /* 脑洞 */
+.nav-mid .nav-item:nth-child(1) { opacity: 0.62; } /* 鏃呯▼ */
+.nav-mid .nav-item:nth-child(2) { opacity: 0.56; } /* 鎴愭灉灞曠ず */
+.nav-mid .nav-item:nth-child(3) { opacity: 0.50; } /* 鑷垱娓告垙 */
+.nav-mid .nav-item:nth-child(4) { opacity: 0.44; } /* 闊充箰鐩?*/
+.nav-mid .nav-item:nth-child(5) { opacity: 0.38; } /* 鑴戞礊 */
 
 /* ==========================================================================
-   13. 音乐页屏幕小剧场(theater-*):点击下方控件触发的全屏氛围动画
+   13. 闊充箰椤靛睆骞曞皬鍓у満(theater-*):鐐瑰嚮涓嬫柟鎺т欢瑙﹀彂鐨勫叏灞忔皼鍥村姩鐢?
    ========================================================================== */
 .theater-stage {
   position: absolute;
@@ -2952,7 +2952,7 @@ body.page-scene-dawn .tv-set {
   pointer-events: none;
   overflow: hidden;
 }
-/* 小剧场蒙版：盖住下方歌词与场景，只留特效 */
+/* 灏忓墽鍦鸿挋鐗堬細鐩栦綇涓嬫柟姝岃瘝涓庡満鏅紝鍙暀鐗规晥 */
 .theater-dim {
   position: absolute;
   inset: 0;
@@ -2991,7 +2991,7 @@ body.page-scene-dawn .tv-set {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* --- 黑胶剧场：唱片旋转 + 高光扫过 --- */
+/* --- 榛戣兌鍓у満锛氬敱鐗囨棆杞?+ 楂樺厜鎵繃 --- */
 .th-vinyl-disc {
   width: 46%;
   max-width: 240px;
@@ -3036,7 +3036,7 @@ body.page-scene-dawn .tv-set {
   100% { opacity: 0; transform: rotate(30deg); }
 }
 
-/* --- 麦克风剧场：声波环形扩散 + 垂直音频条 --- */
+/* --- 楹﹀厠椋庡墽鍦猴細澹版尝鐜舰鎵╂暎 + 鍨傜洿闊抽鏉?--- */
 .th-mic-scan {
   position: absolute;
   left: 50%;
@@ -3074,7 +3074,7 @@ body.page-scene-dawn .tv-set {
   to { height: 70px; }
 }
 
-/* --- 磁带剧场：双卷轴倒带旋转 --- */
+/* --- 纾佸甫鍓у満锛氬弻鍗疯酱鍊掑甫鏃嬭浆 --- */
 .th-cassette-reel {
   position: absolute;
   top: 44%;
@@ -3098,7 +3098,7 @@ body.page-scene-dawn .tv-set {
 .th-cassette-reel-2::before { animation-direction: reverse; }
 @keyframes thRewind { to { transform: rotate(-360deg); } }
 
-/* --- CD 剧场：光盘旋转 + 光谱光晕 --- */
+/* --- CD 鍓у満锛氬厜鐩樻棆杞?+ 鍏夎氨鍏夋檿 --- */
 .th-cd-disc {
   width: 44%;
   max-width: 230px;
@@ -3128,7 +3128,7 @@ body.page-scene-dawn .tv-set {
 }
 @keyframes thRaySpin { to { transform: rotate(360deg); } }
 
-/* --- 霓虹剧场：霓虹灯管逐根点亮 + 闪烁 --- */
+/* --- 闇撹櫣鍓у満锛氶湏铏圭伅绠￠€愭牴鐐逛寒 + 闂儊 --- */
 .th-neon-bar {
   position: absolute;
   left: 50%;
@@ -3154,7 +3154,7 @@ body.page-scene-dawn .tv-set {
 }
 
 /* ==========================================================================
-   14. 怀旧拉线吊灯(拉动切换整页氛围) —— 电视关闭时生效
+   14. 鎬€鏃ф媺绾垮悐鐏?鎷夊姩鍒囨崲鏁撮〉姘涘洿) 鈥斺€?鐢佃鍏抽棴鏃剁敓鏁?
    ========================================================================== */
 .pull-lamp {
   position: fixed;
@@ -3166,13 +3166,13 @@ body.page-scene-dawn .tv-set {
   align-items: center;
   pointer-events: none;
 }
-/* 电线:从页面顶部垂下 */
+/* 鐢电嚎:浠庨〉闈㈤《閮ㄥ瀭涓?*/
 .lamp-cord {
   width: 2px;
   height: 54px;
   background: repeating-linear-gradient(180deg, #2a2a2a 0 6px, #3a3a3a 6px 12px);
 }
-/* 灯头:灯罩 + 灯泡 */
+/* 鐏ご:鐏僵 + 鐏场 */
 .lamp-head {
   position: relative;
   pointer-events: none;
@@ -3193,7 +3193,7 @@ body.page-scene-dawn .tv-set {
   box-shadow: 0 0 18px rgba(255, 200, 110, 0.8), 0 0 40px rgba(255, 190, 100, 0.4);
   transition: background 0.4s ease, box-shadow 0.4s ease;
 }
-/* 拉绳:可点击 */
+/* 鎷夌怀:鍙偣鍑?*/
 .lamp-pull {
   position: relative;
   pointer-events: auto;
@@ -3218,9 +3218,9 @@ body.page-scene-dawn .tv-set {
   transition: transform 0.1s ease;
 }
 .lamp-pull:active .lamp-ball { transform: translateY(3px); }
-/* 拉动提示 */
+/* 鎷夊姩鎻愮ず */
 .lamp-pull::after {
-  content: "拉绳";
+  content: "鎷夌怀";
   position: absolute;
   top: 46px;
   left: 50%;
@@ -3233,7 +3233,7 @@ body.page-scene-dawn .tv-set {
 }
 .lamp-pull:hover::after { color: rgba(255,255,255,0.85); }
 
-/* --- 七种整页氛围(拉绳切换,覆盖 page-bg-*) --- */
+/* --- 涓冪鏁撮〉姘涘洿(鎷夌怀鍒囨崲,瑕嗙洊 page-bg-*) --- */
 body.lamp-black {
   background: #000000 !important;
 }
@@ -3243,7 +3243,7 @@ body.lamp-black .tv-page-mark {
   transition: opacity 0.6s ease;
 }
 body.lamp-black .lyric-stage { display: none; }
-/* 纯黑氛围:只有蜡烛可见,其他物件隐去 */
+/* 绾粦姘涘洿:鍙湁铚＄儧鍙,鍏朵粬鐗╀欢闅愬幓 */
 body.lamp-black .deco-vinyl,
 body.lamp-black .deco-mic,
 body.lamp-black .deco-cassette,
@@ -3253,7 +3253,7 @@ body.lamp-black .deco-poster {
   opacity: 0;
   transition: opacity 0.8s ease;
 }
-/* 点燃蜡烛后,其他物件在烛光中显现 */
+/* 鐐圭噧铚＄儧鍚?鍏朵粬鐗╀欢鍦ㄧ儧鍏変腑鏄剧幇 */
 body.lamp-black .deco-candle.is-lit ~ .deco-vinyl,
 body.lamp-black .deco-candle.is-lit ~ .deco-mic,
 body.lamp-black .deco-candle.is-lit ~ .deco-cassette,
@@ -3292,7 +3292,7 @@ body.lamp-warm {
     radial-gradient(circle at 50% 30%, rgba(255,200,120,0.5), transparent 62%),
     linear-gradient(180deg, #c05a1a 0%, #93420f 55%, #5c2608 100%) !important;
 }
-/* 灯泡颜色随氛围变 */
+/* 鐏场棰滆壊闅忔皼鍥村彉 */
 body.lamp-black  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #e8e8e0, #9a9a90 70%); box-shadow: 0 0 14px rgba(220,220,220,0.5); }
 body.lamp-white  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff, #f2efe0 70%); box-shadow: 0 0 22px rgba(255,255,240,0.9); }
 body.lamp-yellow .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff8c0, #ffd070 70%); box-shadow: 0 0 22px rgba(255,220,120,0.9); }
@@ -3302,7 +3302,7 @@ body.lamp-blue   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #dc
 body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffe0a0, #ff9a30 70%); box-shadow: 0 0 24px rgba(255,160,60,0.95); }
 
 /* ==========================================================================
-   15. 旧蜡烛(deco-candle)：默认隐藏;电视关闭+纯黑氛围时才出现,点击点燃透光
+   15. 鏃ц湣鐑?deco-candle)锛氶粯璁ら殣钘?鐢佃鍏抽棴+绾粦姘涘洿鏃舵墠鍑虹幇,鐐瑰嚮鐐圭噧閫忓厜
    ========================================================================== */
 .deco-candle {
   position: relative;
@@ -3311,7 +3311,7 @@ body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ff
   cursor: pointer;
   display: none;
 }
-/* 电视关闭 + 纯黑氛围:蜡烛出现 */
+/* 鐢佃鍏抽棴 + 绾粦姘涘洿:铚＄儧鍑虹幇 */
 body.lamp-black .deco-candle {
   display: block;
 }
@@ -3333,7 +3333,7 @@ body.lamp-black .deco-candle {
   animation: candleBob 3.2s ease-in-out infinite;
   transition: filter 0.3s ease;
 }
-/* 可爱脸:眼睛+腮红 */
+/* 鍙埍鑴?鐪肩潧+鑵孩 */
 .candle-body::before {
   content: "";
   position: absolute;
@@ -3401,7 +3401,7 @@ body.lamp-black .deco-candle {
   background: linear-gradient(180deg, #ffe8c0, #e6b878);
   opacity: 0.7;
 }
-/* 点燃:火焰 + 全屋烛光 */
+/* 鐐圭噧:鐏劙 + 鍏ㄥ眿鐑涘厜 */
 .deco-candle.is-lit .candle-flame {
   opacity: 1;
 }
@@ -3413,7 +3413,7 @@ body.lamp-black .deco-candle.is-lit .candle-body {
   filter: brightness(1.2);
 }
 
-/* 全屋烛光:整页柔暖聚光(昏暗) */
+/* 鍏ㄥ眿鐑涘厜:鏁撮〉鏌旀殩鑱氬厜(鏄忔殫) */
 body.lamp-black .candle-glow {
   position: fixed;
   inset: 0;
@@ -3437,8 +3437,8 @@ body.lamp-black .candle-glow.is-on {
 }
 
 /* ==========================================================================
-   彩蛋持续特效:黑胶=上升闪光粒子 / 麦克风=漂浮气球 / 磁带=飘落花瓣
-   纯黑氛围+蜡烛点燃时才触发,点击一次持续生成,再点停下
+   褰╄泲鎸佺画鐗规晥:榛戣兌=涓婂崌闂厜绮掑瓙 / 楹﹀厠椋?婕傛诞姘旂悆 / 纾佸甫=椋樿惤鑺辩摚
+   绾粦姘涘洿+铚＄儧鐐圭噧鏃舵墠瑙﹀彂,鐐瑰嚮涓€娆℃寔缁敓鎴?鍐嶇偣鍋滀笅
    ========================================================================== */
 .fx-particle {
   position: fixed;
@@ -3448,7 +3448,7 @@ body.lamp-black .candle-glow.is-on {
 }
 .fx-particle[data-fx="strip"] { transition: none; }
 
-/* ---- 黑胶:上升闪光粒子(浪漫金光) ---- */
+/* ---- 榛戣兌:涓婂崌闂厜绮掑瓙(娴极閲戝厜) ---- */
 .fx-particle.fx-spark {
   border-radius: 50%;
   background: radial-gradient(circle, var(--cc1, #ffe9a0) 0%, rgba(255, 200, 110, 0.45) 60%, transparent 100%);
@@ -3461,7 +3461,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(var(--dx, 0px), var(--dy, -170px)) scale(1.15); opacity: 0; }
 }
 
-/* ---- 麦克风:漂浮升起的气球 ---- */
+/* ---- 楹﹀厠椋?婕傛诞鍗囪捣鐨勬皵鐞?---- */
 .fx-particle.fx-balloon {
   border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
   background:
@@ -3470,7 +3470,7 @@ body.lamp-black .candle-glow.is-on {
   box-shadow: inset -3px -4px 8px rgba(0, 0, 0, 0.18);
   animation: fxBalloon var(--fdur, 5s) linear forwards;
 }
-.fx-balloon::before {  /* 气球打结处 */
+.fx-balloon::before {  /* 姘旂悆鎵撶粨澶?*/
   content: "";
   position: absolute;
   bottom: -7px; left: 50%;
@@ -3480,7 +3480,7 @@ body.lamp-black .candle-glow.is-on {
   border-right: 4px solid transparent;
   border-bottom: 6px solid var(--bc, #ff8aa0);
 }
-.fx-balloon::after {   /* 下垂的线 */
+.fx-balloon::after {   /* 涓嬪瀭鐨勭嚎 */
   content: "";
   position: absolute;
   top: 100%; left: 50%;
@@ -3497,7 +3497,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(0, -110vh) rotate(0); opacity: 1; }
 }
 
-/* ---- 磁带:飘落的花瓣 ---- */
+/* ---- 纾佸甫:椋樿惤鐨勮姳鐡?---- */
 .fx-particle.fx-petal {
   border-radius: 80% 20% 80% 40% / 60% 40% 60% 40%;
   background: radial-gradient(ellipse at 34% 26%, #fff7f2, #ffd6e6 55%, #ffabc9);
@@ -3511,7 +3511,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(calc(var(--dx, 22px) * -0.5), 112vh) rotate(calc(var(--rot, 120deg) * 2)); opacity: 0.9; }
 }
 
-/* ---- CD后:海报 随机小情话 ---- */
+/* ---- CD鍚?娴锋姤 闅忔満灏忔儏璇?---- */
 .poster-card {
   position: fixed;
   left: 50%;
@@ -3548,7 +3548,7 @@ body.lamp-black .candle-glow.is-on {
   border-bottom: 1px dashed #ffb6d9;
 }
 .poster-card .pc-text {
-  font-family: "楷体", "KaiTi", "STKaiti", serif;
+  font-family: "妤蜂綋", "KaiTi", "STKaiti", serif;
   font-size: 24px;
   line-height: 1.7;
   color: #8b3a5e;
@@ -3559,7 +3559,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(-50%, -50%) scale(1) rotate(-2deg); opacity: 1; }
 }
 
-/* ---- 终章漂浮:心形 & 气泡 ---- */
+/* ---- 缁堢珷婕傛诞:蹇冨舰 & 姘旀场 ---- */
 .fx-heart {
   position: fixed;
   z-index: 74;
@@ -3588,7 +3588,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(var(--dx, 20px), var(--dy, -70vh)) scale(1) rotate(var(--rot, 20deg)); opacity: 0.4; }
 }
 
-/* ---- CD 解锁场景:点击出现大电视,屏幕为黑,MUSIC点亮后写字 ---- */
+/* ---- CD 瑙ｉ攣鍦烘櫙:鐐瑰嚮鍑虹幇澶х數瑙?灞忓箷涓洪粦,MUSIC鐐逛寒鍚庡啓瀛?---- */
 .cd-tv {
   display: none;
   position: fixed;
@@ -3662,7 +3662,7 @@ body.lamp-black .candle-glow.is-on {
 .cdtv-leg::before { left: -3px; }
 .cdtv-leg::after  { right: -3px; }
 
-/* ---- 终章:MUSIC点亮屏幕,弹出 I♥你 发光字样(如灯亮时的字体) ---- */
+/* ---- 缁堢珷:MUSIC鐐逛寒灞忓箷,寮瑰嚭 I鈾ヤ綘 鍙戝厜瀛楁牱(濡傜伅浜椂鐨勫瓧浣? ---- */
 .finale-text {
   position: fixed;
   left: 50%;
@@ -3707,2077 +3707,6 @@ body.lamp-black .candle-glow.is-on {
 }
 
 /* =============================================================================
-   脑洞页：两列卡片墙 + 全屏宇宙声音播放器
+   鑴戞礊椤碉細涓ゅ垪鍗＄墖澧?+ 鍏ㄥ睆瀹囧畽澹伴煶鎾斁鍣?
    ========================================================================== */
-.bw-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
-  max-width: 860px;
-  margin: 28px auto 40px;
-}
-@media (max-width: 700px) {
-  .bw-grid { grid-template-columns: 1fr; }
-}
-.bw-card {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  border: 1px solid rgba(120, 130, 160, 0.22);
-  box-shadow: 0 10px 26px rgba(30, 40, 80, 0.12);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: #fff;
-}
-.bw-card[data-bw-open]:hover,
-.bw-card[data-bw-open]:focus-visible {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 42px rgba(30, 40, 80, 0.22);
-  outline: none;
-}
-.bw-card-art {
-  position: relative;
-  height: 150px;
-  overflow: hidden;
-}
-.bw-card-cosmos .bw-card-art {
-  background:
-    radial-gradient(circle at 20% 25%, #2b3b8f 0%, transparent 60%),
-    radial-gradient(circle at 80% 75%, #3b2f8f 0%, transparent 55%),
-    linear-gradient(160deg, #0a1030 0%, #161b4d 55%, #2b1d5e 100%);
-}
-.bw-star {
-  position: absolute;
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-  animation: bwTwinkle 2.4s ease-in-out infinite;
-}
-.bw-star-1 { left: 16%; top: 22%; }
-.bw-star-2 { left: 58%; top: 14%; width: 3px; height: 3px; animation-delay: 0.6s; }
-.bw-star-3 { left: 82%; top: 38%; width: 5px; height: 5px; animation-delay: 1.1s; }
-.bw-star-4 { left: 34%; top: 62%; width: 3px; height: 3px; animation-delay: 1.7s; }
-@keyframes bwTwinkle {
-  0%, 100% { opacity: 0.25; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-.bw-planet {
-  position: absolute;
-  right: 14%; bottom: -30%;
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 32% 30%, rgba(255, 220, 160, 0.9), transparent 42%),
-    repeating-radial-gradient(circle at 30% 35%, #d98a4e 0 3px, #a9632f 4px 7px, #7a4522 8px 11px);
-  box-shadow: 0 0 40px rgba(255, 150, 70, 0.35), inset -18px -14px 40px rgba(0, 0, 0, 0.5);
-  animation: bwOrbit 9s linear infinite;
-}
-@keyframes bwOrbit {
-  0% { transform: translateX(0) rotate(0deg); }
-  50% { transform: translateX(-14px) rotate(180deg); }
-  100% { transform: translateX(0) rotate(360deg); }
-}
-.bw-card-soon .bw-card-art {
-  background:
-    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.08), transparent 60%),
-    linear-gradient(160deg, #eceef4, #dde1ec);
-}
-.bw-soon-icon {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 34px;
-  color: #9aa2b8;
-  text-shadow: 0 0 18px rgba(140, 150, 180, 0.5);
-}
-.bw-card-body {
-  padding: 16px 18px 18px;
-  position: relative;
-}
-.bw-card-tag {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #fff;
-  background: linear-gradient(90deg, #4b6cf5, #8a4bf5);
-  border-radius: 999px;
-  padding: 3px 10px;
-}
-.bw-card-soon .bw-card-tag { background: #aab0c2; }
-.bw-card-title {
-  margin: 10px 0 6px;
-  font-size: 19px;
-  font-weight: 800;
-  color: #1c2135;
-}
-.bw-card-desc {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.7;
-  color: #6a7188;
-}
-.bw-card-open {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #4b6cf5;
-}
-.bw-card-open i {
-  display: inline-block;
-  width: 6px; height: 6px;
-  border-top: 2px solid #4b6cf5;
-  border-right: 2px solid #4b6cf5;
-  transform: rotate(45deg);
-  transition: transform 0.25s ease;
-}
-.bw-card[data-bw-open]:hover .bw-card-open i { transform: rotate(45deg) translate(3px, -3px); }
-.bw-card-soon { cursor: default; }
-.bw-card-soon .bw-card-desc { color: #98a0b4; }
-
-/* ---- 卡片：脑洞星系 ---- */
-.bw-card-galaxy .bw-card-art {
-  background:
-    radial-gradient(circle at 30% 30%, #2f4b8f 0%, transparent 55%),
-    radial-gradient(circle at 75% 70%, #7a2f8f 0%, transparent 50%),
-    linear-gradient(160deg, #0b1033 0%, #141b4d 55%, #1e1650 100%);
-}
-.bw-galaxy-core {
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 66px; height: 66px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(255, 240, 180, 0.95) 0%, rgba(255, 190, 120, 0.35) 40%, transparent 70%);
-  box-shadow: 0 0 34px rgba(255, 210, 130, 0.55);
-  animation: bwCorePulse 3.2s ease-in-out infinite;
-}
-@keyframes bwCorePulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.14); }
-}
-.bw-gstar {
-  position: absolute;
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-  animation: bwTwinkle 2.6s ease-in-out infinite;
-}
-.bw-card-galaxy .bw-gstar:nth-child(2)  { left: 14%; top: 24%; }
-.bw-card-galaxy .bw-gstar:nth-child(3)  { left: 26%; top: 62%; animation-delay: 0.7s; }
-.bw-card-galaxy .bw-gstar:nth-child(4)  { left: 40%; top: 18%; width: 4px; height: 4px; animation-delay: 1.2s; }
-.bw-card-galaxy .bw-gstar:nth-child(5)  { left: 58%; top: 70%; animation-delay: 0.4s; }
-.bw-card-galaxy .bw-gstar:nth-child(6)  { left: 66%; top: 28%; width: 4px; height: 4px; animation-delay: 1.6s; }
-.bw-card-galaxy .bw-gstar:nth-child(7)  { left: 82%; top: 52%; animation-delay: 0.9s; }
-.bw-card-galaxy .bw-gstar:nth-child(8)  { left: 88%; top: 20%; width: 3px; height: 3px; animation-delay: 2.1s; }
-.bw-card-galaxy .bw-gstar:nth-child(9)  { left: 72%; top: 82%; animation-delay: 1.4s; }
-.bw-card-galaxy .bw-gstar:nth-child(10) { left: 10%; top: 78%; animation-delay: 1.9s; }
-
-/* ---- 全屏宇宙声音模态 ---- */
-.bw-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  font-family: inherit;
-}
-.bw-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(5, 8, 26, 0.88);
-  backdrop-filter: blur(6px);
-  animation: bwFadeIn 0.35s ease;
-}
-@keyframes bwFadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-.bw-modal-panel {
-  position: relative;
-  width: min(560px, 100%);
-  max-height: 88vh;
-  overflow: auto;
-  border-radius: 20px;
-  padding: 30px 26px 26px;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(90, 120, 255, 0.22), transparent 55%),
-    radial-gradient(circle at 85% 85%, rgba(160, 80, 255, 0.18), transparent 50%),
-    linear-gradient(160deg, #101536, #1a1650);
-  border: 1px solid rgba(140, 160, 255, 0.28);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-  color: #eef0ff;
-  animation: bwPanelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes bwPanelIn {
-  from { opacity: 0; transform: translateY(26px) scale(0.94); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.bw-modal-close {
-  position: absolute;
-  top: 12px; right: 12px;
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  color: #eef0ff;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.bw-modal-close:hover { background: rgba(255, 255, 255, 0.2); transform: rotate(90deg); }
-.bw-modal-title {
-  margin: 0 0 4px;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-align: center;
-  background: linear-gradient(90deg, #8fb6ff, #c9a0ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bw-modal-sub {
-  margin: 0 0 18px;
-  font-size: 13px;
-  text-align: center;
-  color: rgba(238, 240, 255, 0.6);
-}
-.bw-cosmos-sky {
-  position: relative;
-  height: 140px;
-  border-radius: 14px;
-  margin-bottom: 18px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 100%, rgba(120, 90, 255, 0.35), transparent 60%),
-    linear-gradient(180deg, #060a22, #131540);
-}
-/* 律动光晕:随低频能量呼吸(由 JS 注入 --pulse) */
-.bw-cosmos-sky::before {
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 64px; height: 64px;
-  margin-left: -32px; margin-top: -32px;
-  transform: scale(calc(0.6 + var(--pulse, 0) * 4));
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(170, 150, 255, 0.65), rgba(120, 90, 255, 0.15) 55%, transparent 72%);
-  opacity: calc(0.2 + var(--pulse, 0) * 0.8);
-  filter: blur(2px);
-  pointer-events: none;
-}
-.bw-cosmos-star {
-  position: absolute;
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
-  animation: bwTwinkle 3s ease-in-out infinite;
-}
-.bw-cosmos-sky .bw-cosmos-star:nth-child(1)  { left: 12%; top: 20%; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(2)  { left: 30%; top: 64%; animation-delay: 0.4s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(3)  { left: 47%; top: 16%; width: 4px; height: 4px; animation-delay: 0.9s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(4)  { left: 62%; top: 45%; animation-delay: 1.3s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(5)  { left: 78%; top: 22%; width: 4px; height: 4px; animation-delay: 0.2s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(6)  { left: 88%; top: 62%; animation-delay: 1.6s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(7)  { left: 22%; top: 38%; animation-delay: 2.1s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(8)  { left: 55%; top: 78%; animation-delay: 0.7s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(9)  { left: 70%; top: 86%; animation-delay: 1.1s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(10) { left: 42%; top: 34%; animation-delay: 1.9s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(11) { left: 8%; top: 70%; animation-delay: 2.4s; }
-.bw-cosmos-sky .bw-cosmos-star:nth-child(12) { left: 92%; top: 12%; animation-delay: 0.5s; }
-.bw-cosmos-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
-}
-@media (max-width: 460px) {
-  .bw-cosmos-options { grid-template-columns: repeat(2, 1fr); }
-}
-.bw-cosmo-opt {
-  padding: 12px 6px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #eef0ff;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-}
-.bw-cosmo-opt:hover { border-color: rgba(150, 180, 255, 0.6); background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
-.bw-cosmo-opt.is-on {
-  border-color: #9fb6ff;
-  background: linear-gradient(90deg, rgba(75, 108, 245, 0.45), rgba(138, 75, 245, 0.45));
-  box-shadow: 0 0 18px rgba(120, 140, 255, 0.45);
-}
-.bw-cosmos-status {
-  text-align: center;
-  font-size: 12px;
-  color: rgba(238, 240, 255, 0.55);
-  letter-spacing: 1px;
-}
-
-/* ---- 脑洞星系模态 ---- */
-.bw-galaxy-panel {
-  position: relative;
-  z-index: 2;
-  width: min(620px, 100%);
-  background:
-    radial-gradient(circle at 20% 15%, rgba(90, 120, 255, 0.18), transparent 55%),
-    rgba(13, 17, 45, 0.82);
-  backdrop-filter: blur(4px);
-}
-/* 全屏星空背景:星星悬浮其上 */
-.bw-gal-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 120%, rgba(120, 90, 255, 0.4), transparent 62%),
-    radial-gradient(circle at 15% 10%, rgba(90, 140, 255, 0.25), transparent 55%),
-    linear-gradient(180deg, #05081f, #141a4a);
-}
-.bw-gal-bgstar {
-  position: absolute;
-  border-radius: 50%;
-  background: #fff;
-  opacity: 0.5;
-  animation: bwTwinkle 3s ease-in-out infinite;
-}
-.bw-gal-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-}
-.bw-gal-lines line {
-  stroke: rgba(150, 170, 255, 0.35);
-  stroke-width: 1;
-  stroke-dasharray: 3 3;
-}
-.bw-gal-star {
-  position: absolute;
-  width: 16px; height: 16px;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  outline: none;
-}
-.bw-gal-star i {
-  display: block;
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, #ffe9b0 45%, rgba(255, 200, 120, 0.4) 70%, transparent 80%);
-  box-shadow: 0 0 10px rgba(255, 220, 150, 0.9);
-  animation: bwGalPulse 2.8s ease-in-out infinite;
-}
-.bw-gal-star:hover i,
-.bw-gal-star:focus-visible i {
-  transform: scale(1.7);
-  box-shadow: 0 0 16px rgba(255, 235, 180, 1);
-}
-@keyframes bwGalPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.35); }
-}
-.bw-gal-pop {
-  position: fixed;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  width: min(340px, 84%);
-  padding: 18px 20px;
-  border-radius: 14px;
-  background: rgba(10, 14, 42, 0.94);
-  border: 1px solid rgba(150, 170, 255, 0.35);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.6);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  animation: bwPanelIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.bw-gal-pop-t {
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, #ffe9b0, #ffc87a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bw-gal-pop-d {
-  font-size: 13px;
-  line-height: 1.8;
-  color: rgba(238, 240, 255, 0.85);
-}
-.bw-gal-pop-x {
-  position: absolute;
-  top: 8px; right: 8px;
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
-  color: #eef0ff;
-  font-size: 12px;
-  cursor: pointer;
-}
-.bw-gal-pop-x:hover { background: rgba(255, 255, 255, 0.2); }
-.bw-gal-add {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.bw-gal-input {
-  flex: 1;
-  min-width: 0;
-  padding: 11px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(140, 160, 255, 0.28);
-  background: rgba(255, 255, 255, 0.06);
-  color: #eef0ff;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.bw-gal-input::placeholder { color: rgba(238, 240, 255, 0.4); }
-.bw-gal-input:focus {
-  border-color: #9fb6ff;
-  box-shadow: 0 0 0 3px rgba(120, 140, 255, 0.2);
-}
-.bw-gal-btn {
-  flex-shrink: 0;
-  padding: 11px 16px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(90deg, #4b6cf5, #8a4bf5);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.bw-gal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(110, 90, 245, 0.45); }
-.bw-gal-tip {
-  text-align: center;
-  font-size: 11px;
-  color: rgba(238, 240, 255, 0.45);
-  letter-spacing: 1px;
-}
-@media (max-width: 460px) {
-  .bw-gal-sky { height: 230px; }
-  .bw-gal-add { flex-direction: column; }
-}
-
-/* ==========================================================================
-   娃娃屋（娃娃墙）模态
-   ========================================================================== */
-/* ---- 卡片 3：娃娃屋 ---- */
-.bw-card-dolls .bw-card-art {
-  background:
-    radial-gradient(ellipse at 50% 120%, rgba(255, 214, 180, 0.55), transparent 55%),
-    linear-gradient(175deg, #ffe8ec 0%, #ffe1ec 45%, #ffd9e6 100%);
-}
-.bw-card-dolls .bw-card-art::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.35;
-  background-image:
-    radial-gradient(2px 2px at 12% 20%, rgba(220, 140, 160, 0.5), transparent),
-    radial-gradient(2px 2px at 35% 70%, rgba(220, 140, 160, 0.5), transparent),
-    radial-gradient(2px 2px at 60% 30%, rgba(220, 140, 160, 0.4), transparent),
-    radial-gradient(2px 2px at 82% 74%, rgba(220, 140, 160, 0.45), transparent);
-}
-.bw-dolls-hook {
-  position: absolute;
-  left: 50%; top: 16px;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 2px solid #f0a5b8;
-  background: #fff;
-  transform: translateX(-50%);
-}
-.bw-dolls-thread {
-  position: absolute;
-  left: 50%; top: 26px;
-  width: 0; height: 56px;
-  transform: translateX(-50%);
-  border-left: 2px dashed rgba(200, 120, 145, 0.5);
-}
-.bw-doll-preview {
-  position: absolute;
-  width: 34px; height: 34px;
-  border-radius: 50% 50% 46% 46%;
-  background:
-    radial-gradient(circle at 35% 32%, rgba(255,255,255,0.85) 0 12%, transparent 13%),
-    linear-gradient(160deg, #ffc4d2, #ff9ab5);
-  box-shadow: inset -3px -4px 6px rgba(180, 80, 110, 0.25);
-}
-.bw-doll-preview::after {
-  content: '';
-  position: absolute;
-  left: 50%; top: -14px;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: #e0809a;
-  transform: translateX(-50%);
-}
-.bw-doll-p1 { left: 22%; top: 58px; }
-.bw-doll-p2 { left: 47%; top: 78px; width: 40px; height: 40px; }
-.bw-doll-p3 { right: 22%; top: 58px; width: 30px; height: 30px; }
-.bw-dolls-heart {
-  position: absolute;
-  right: 16%; bottom: 14px;
-  font-size: 18px;
-  color: #f0789a;
-  filter: drop-shadow(0 0 8px rgba(240, 120, 154, 0.5));
-  animation: bwHeartBeat 1.4s ease-in-out infinite;
-}
-@keyframes bwHeartBeat {
-  0%, 100% { transform: scale(1); }
-  30% { transform: scale(1.18); }
-  55% { transform: scale(0.95); }
-}
-
-/* ---- 娃娃屋模态 ---- */
-.bw-dolls .bw-modal-backdrop {
-  background: rgba(30, 16, 26, 0.82);
-}
-.bw-dolls-panel {
-  position: relative;
-  width: min(880px, 100%);
-  border: 1px solid rgba(255, 190, 210, 0.35);
-  background:
-    radial-gradient(ellipse at 50% -10%, rgba(255, 220, 200, 0.5), transparent 55%),
-    linear-gradient(165deg, #ffecef 0%, #ffe0ea 50%, #ffd6e3 100%);
-  color: #5c3350;
-  box-shadow: 0 30px 80px rgba(90, 30, 55, 0.5);
-}
-.bw-dolls-panel .bw-modal-title {
-  background: linear-gradient(90deg, #f2759c, #c98aff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bw-dolls-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
-.bw-dolls-panel .bw-modal-close {
-  border-color: rgba(160, 90, 120, 0.4);
-  background: rgba(255, 255, 255, 0.45);
-  color: #8a5470;
-}
-.bw-dolls-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
-
-/* ---- 娃娃墙 ---- */
-.bw-dolls-wall {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 18px 12px;
-  padding: 22px 10px 30px;
-}
-@media (max-width: 640px) {
-  .bw-dolls-wall { grid-template-columns: repeat(4, 1fr); gap: 14px 8px; }
-}
-@media (max-width: 420px) {
-  .bw-dolls-wall { grid-template-columns: repeat(3, 1fr); }
-}
-.bw-doll {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 16px;
-  cursor: pointer;
-  opacity: 0;
-  animation: bwDollIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-@keyframes bwDollIn {
-  from { opacity: 0; transform: translateY(18px) scale(0.9); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-/* 从顶部垂下的挂线 */
-.bw-doll-hang {
-  position: absolute;
-  top: 0;
-  width: 0;
-  height: 22px;
-  border-left: 2px dashed rgba(200, 120, 145, 0.55);
-  transition: height 0.3s ease;
-}
-.bw-doll::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 2px solid #f0a5b8;
-  background: #fff;
-}
-.bw-doll-img {
-  width: 92px;
-  height: 92px;
-  object-fit: cover;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 10px 22px rgba(170, 90, 120, 0.28);
-  border: 3px solid rgba(255, 255, 255, 0.9);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.bw-doll:hover .bw-doll-img,
-.bw-doll:focus-visible .bw-doll-img {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4);
-  outline: none;
-}
-/* 点击：放大弹跳 + 轻轻旋转一下 */
-.bw-doll.is-bounce .bw-doll-img {
-  animation: bwDollBounce 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes bwDollBounce {
-  0%   { transform: translateY(0) scale(1) rotate(0deg); }
-  30%  { transform: translateY(-14px) scale(1.28) rotate(7deg); }
-  50%  { transform: translateY(0) scale(1.08) rotate(-4deg); }
-  68%  { transform: translateY(-6px) scale(1.16) rotate(3deg); }
-  82%  { transform: translateY(0) scale(1.04) rotate(-1deg); }
-  100% { transform: translateY(0) scale(1) rotate(0deg); }
-}
-.bw-doll-name {
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: 800;
-  color: #7a3d5c;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 3px 12px;
-  border-radius: 999px;
-}
-/* 悄悄话/档案卡弹窗 */
-.bw-doll-pop {
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  width: min(430px, 86%);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 22px 24px 20px;
-  border-radius: 20px;
-  background: rgba(70, 40, 70, 0.97);
-  border: 1px solid rgba(255, 200, 220, 0.4);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.5);
-  color: #ffe9f0;
-  animation: bwPopIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes bwPopIn {
-  0%   { opacity: 0; transform: translate(-50%, -40%) scale(0.7); }
-  60%  { opacity: 1; transform: translate(-50%, -52%) scale(1.06); }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-/* 档案卡：左图右文 */
-.bw-doll-card {
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-}
-.bw-doll-card-img {
-  width: 96px;
-  height: 96px;
-  flex: none;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 3px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-.bw-doll-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
-.bw-doll-pop-name {
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-.bw-doll-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.bw-doll-field {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #ffd9e4;
-}
-.bw-doll-field b {
-  flex: none;
-  min-width: 44px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-align: center;
-  color: #ffc2d6;
-  background: rgba(255, 255, 255, 0.12);
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-.bw-doll-field span { min-width: 0; }
-.bw-doll-field-line b { background: rgba(255, 160, 190, 0.24); }
-@media (max-width: 420px) {
-  .bw-doll-card { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .bw-doll-card-img { width: 84px; height: 84px; }
-}
-.bw-doll-pop-x {
-  position: absolute;
-  top: 10px; right: 10px;
-  width: 26px; height: 26px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
-  color: #ffe9f0;
-  font-size: 13px;
-  cursor: pointer;
-}
-.bw-doll-pop-x:hover { background: rgba(255, 255, 255, 0.3); }
-
-/* ---- 娃娃墙创意升级：今日领养 / 图鉴进度 / 喂食 / 花瓣 / 集齐彩蛋 ---- */
-.bw-dolls-top {
-  position: sticky; top: 0; z-index: 2;
-  display: flex; align-items: center; gap: 14px;
-  padding: 0 4px 14px; margin-bottom: 4px;
-}
-.bw-today {
-  flex: 1 1 auto; display: flex; align-items: center; gap: 10px;
-  min-width: 0; padding: 8px 12px; border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 6px 18px rgba(150, 60, 95, 0.18);
-}
-.bw-today-img img { width: 52px; height: 52px; object-fit: cover; border-radius: 12px; border: 2px solid rgba(255, 150, 185, 0.55); }
-.bw-today-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.bw-today-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #e0447a; }
-.bw-today-name { font-size: 14px; font-weight: 800; color: #7a2d4f; }
-.bw-today-line { font-size: 11px; line-height: 1.5; color: #9a6f86; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bw-collect {
-  flex: 0 0 168px; display: flex; flex-direction: column; gap: 5px;
-  padding: 8px 12px; border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 6px 18px rgba(150, 60, 95, 0.18);
-}
-.bw-collect-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #c77aa0; }
-.bw-collect-num { font-size: 13px; font-weight: 800; color: #e0447a; }
-.bw-collect-rail { height: 7px; border-radius: 999px; background: rgba(224, 68, 122, 0.16); overflow: hidden; }
-.bw-collect-fill {
-  height: 100%; border-radius: 999px; width: 0%;
-  background: linear-gradient(90deg, #ff8fb3, #e0447a);
-  transition: width 0.5s ease;
-  box-shadow: 0 0 8px rgba(224, 68, 122, 0.5);
-}
-@media (max-width: 560px) {
-  .bw-dolls-top { flex-direction: column; align-items: stretch; gap: 10px; }
-  .bw-collect { flex: none; }
-  .bw-today-line { white-space: normal; }
-}
-/* 娃娃呼吸/漂浮动画，hover 时"抖一抖"摆动 */
-.bw-doll .bw-doll-img { animation: bwBreath 3.4s ease-in-out infinite; will-change: transform; }
-.bw-doll:hover .bw-doll-img,
-.bw-doll:focus-visible .bw-doll-img {
-  animation: bwDollWiggle 0.55s ease-in-out infinite;
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4); outline: none;
-}
-@keyframes bwBreath {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-5px) scale(1.05); }
-}
-@keyframes bwDollWiggle {
-  0%, 100% { transform: translateY(-4px) rotate(0deg); }
-  20% { transform: translateY(-7px) rotate(-7deg); }
-  40% { transform: translateY(-5px) rotate(6deg); }
-  60% { transform: translateY(-7px) rotate(-4deg); }
-  80% { transform: translateY(-5px) rotate(3deg); }
-}
-/* 已收集娃娃：金色描边 + ✦ 徽标 */
-.bw-doll.is-collected .bw-doll-img { box-shadow: 0 4px 14px rgba(224, 150, 60, 0.5); }
-.bw-doll.is-collected .bw-doll-name { background: linear-gradient(90deg, #ffd99e, #ffb35c); color: #7a4a12; }
-.bw-doll.is-collected::after {
-  content: '✦'; position: absolute; top: 24px; right: 8px; z-index: 2;
-  width: 20px; height: 20px; line-height: 21px; text-align: center;
-  font-size: 12px; color: #fff; background: #ff9a3c;
-  border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-/* 投喂彩蛋：专属食物 + 特效从娃娃头顶升起 */
-.bw-doll-yum { position: absolute; left: 50%; top: 4px; transform: translateX(-50%); z-index: 4; pointer-events: none; }
-.bw-doll-yum i { position: absolute; left: 50%; display: block; opacity: 0; font-style: normal; animation: bwYum 1.3s ease-out forwards; }
-.bw-doll-yum .y-foo { top: 0; font-size: 22px; }
-.bw-doll-yum .y-fx { top: 0; font-size: 16px; animation-delay: 0.12s; }
-@keyframes bwYum {
-  0% { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
-  20% { opacity: 1; transform: translate(-50%, -18px) scale(1.1); }
-  100% { transform: translate(-50%, -58px) scale(0.9); opacity: 0; }
-}
-.bw-doll.is-fed .bw-doll-img { filter: brightness(1.12) saturate(1.12); }
-/* 每只娃娃投喂专属动作动画 */
-.bw-doll .bw-doll-img.bwA_bear { animation: bwA_bear 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_bunny { animation: bwA_bunny 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_cat { animation: bwA_cat 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_fox { animation: bwA_fox 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_lamb { animation: bwA_lamb 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_dino { animation: bwA_dino 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_pig { animation: bwA_pig 1.2s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_catSleepy { animation: bwA_catSleepy 1.2s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_frog { animation: bwA_frog 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_penguin { animation: bwA_penguin 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_chick { animation: bwA_chick 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_sticky { animation: bwA_sticky 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_creampuff { animation: bwA_creampuff 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_cookie { animation: bwA_cookie 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_duck { animation: bwA_duck 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_squirrel { animation: bwA_squirrel 0.85s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_strawberry { animation: bwA_strawberry 1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_taro { animation: bwA_taro 1.1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_dog { animation: bwA_dog 0.9s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_golden { animation: bwA_golden 1.1s ease-in-out; }
-.bw-doll .bw-doll-img.bwA_rainbow { animation: bwA_rainbow 1.2s ease-in-out; }
-@keyframes bwA_bear { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 50%{transform:rotate(8deg)} 75%{transform:rotate(-6deg)} }
-@keyframes bwA_bunny { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-16px)} 55%{transform:translateY(-3px)} 80%{transform:translateY(-10px)} }
-@keyframes bwA_cat { 0%,100%{transform:scale(1,1)} 30%{transform:scale(1.25,0.75)} 60%{transform:scale(0.9,1.1)} }
-@keyframes bwA_fox { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-14deg)} 50%{transform:rotate(12deg)} 75%{transform:rotate(-10deg)} }
-@keyframes bwA_lamb { 0%,100%{transform:translateY(0) scale(1)} 35%{transform:translateY(-14px) scale(1.15)} 70%{transform:translateY(0) scale(0.95)} }
-@keyframes bwA_dino { 0%,100%{transform:translateY(0)} 20%{transform:translateY(-12px)} 40%{transform:translateY(0)} 60%{transform:translateY(-8px)} 80%{transform:translateY(0) rotate(4deg)} }
-@keyframes bwA_pig { 0%,100%{transform:rotate(0)} 50%{transform:rotate(24deg)} }
-@keyframes bwA_catSleepy { 0%,100%{transform:scale(1,1)} 40%{transform:scale(1,0.7)} 75%{transform:scale(1,1.08)} }
-@keyframes bwA_frog { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-18px) scale(0.9)} 60%{transform:translateY(2px)} }
-@keyframes bwA_penguin { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-12deg) translateX(-4px)} 50%{transform:rotate(10deg) translateX(4px)} 75%{transform:rotate(-8deg)} }
-@keyframes bwA_chick { 0%,100%{transform:scale(1,1)} 25%{transform:scale(1.15,0.65)} 50%{transform:scale(0.7,1.2)} 75%{transform:scale(1.1,0.8)} }
-@keyframes bwA_sticky { 0%,100%{transform:scale(1,1)} 30%{transform:scale(1.2,0.7)} 60%{transform:scale(0.8,1.25)} }
-@keyframes bwA_creampuff { 0%,100%{transform:translateY(0) rotate(0)} 40%{transform:translateY(-14px) rotate(12deg)} 75%{transform:translateY(0) rotate(-8deg)} }
-@keyframes bwA_cookie { 0%,100%{transform:rotate(0)} 30%{transform:rotate(18deg)} 55%{transform:rotate(-14deg)} 80%{transform:rotate(8deg)} }
-@keyframes bwA_duck { 0%,100%{transform:translateX(0) rotate(0)} 30%{transform:translateX(-8px) rotate(-8deg)} 60%{transform:translateX(8px) rotate(8deg)} }
-@keyframes bwA_squirrel { 0%,100%{transform:translateY(0)} 25%{transform:translateY(-6px)} 50%{transform:translateY(3px)} 75%{transform:translateY(-5px)} }
-@keyframes bwA_strawberry { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-15px)} 60%{transform:translateY(-2px)} }
-@keyframes bwA_taro { 0%,100%{transform:translateX(0)} 30%{transform:translateX(-10px)} 60%{transform:translateX(10px)} }
-@keyframes bwA_dog { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-16deg) scale(1.08)} 50%{transform:rotate(14deg)} 75%{transform:rotate(-10deg)} }
-@keyframes bwA_golden { 0%,100%{transform:rotate(0) scale(1)} 40%{transform:rotate(14deg) scale(1.12)} 70%{transform:rotate(-10deg) scale(1.05)} }
-@keyframes bwA_rainbow { 0%,100%{transform:rotate(0) scale(1)} 33%{transform:rotate(18deg) scale(1.15)} 66%{transform:rotate(-60deg) scale(1.05)} }
-/* 飘落花瓣 / 星光氛围 */
-.bw-doll-petals { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
-.bw-petal { position: absolute; color: rgba(255, 140, 180, 0.55); animation: bwPetalFall linear infinite; }
-@keyframes bwPetalFall {
-  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-  8% { opacity: 0.9; }
-  100% { transform: translateY(110vh) translateX(26px) rotate(220deg); opacity: 0; }
-}
-/* 集齐横幅 + 金色烟花 */
-.bw-doll-banner {
-  position: absolute; left: 50%; top: 76px; transform: translateX(-50%);
-  z-index: 8; padding: 12px 22px; border-radius: 999px;
-  background: linear-gradient(90deg, #ffd76e, #ff9a3c, #ffd76e);
-  color: #5c2f00; font-size: 14px; font-weight: 800; white-space: nowrap;
-  box-shadow: 0 10px 30px rgba(255, 154, 60, 0.6);
-  animation: bwBanner 0.6s cubic-bezier(0.22, 1, 0.36, 1), bwBannerPulse 1.6s ease-in-out 0.6s infinite;
-}
-@keyframes bwBanner {
-  from { transform: translate(-50%, -20px) scale(0.7); opacity: 0; }
-  to { transform: translate(-50%, 0) scale(1); opacity: 1; }
-}
-@keyframes bwBannerPulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
-.bw-confetti { position: fixed; z-index: 20; font-size: 18px; pointer-events: none; opacity: 0; animation: bwConfetti 1.3s ease-out forwards; }
-@keyframes bwConfetti {
-  0% { transform: translate(0, 0) rotate(0) scale(0.6); opacity: 1; }
-  100% { transform: translate(var(--dx), var(--dy)) rotate(160deg) scale(1.2); opacity: 0; }
-}
-/* 隐藏传说娃娃 · 彩虹宝宝 */
-.bw-doll-legend .bw-doll-img { border: 3px solid #ffd76e; box-shadow: 0 0 18px rgba(255, 200, 120, 0.7); animation: bwLegend 2.2s ease-in-out infinite; }
-@keyframes bwLegend { 0%, 100% { filter: hue-rotate(0deg); } 50% { filter: hue-rotate(40deg); } }
-.bw-doll-legend-note { grid-column: 1 / -1; text-align: center; font-size: 12px; font-weight: 700; color: #c77aa0; padding: 6px 0 2px; }
-
-/* ---- 盲盒商店卡片 art：粉色气泡 + 可爱盲盒 ---- */
-.bw-card-shop .bw-card-art {
-  background:
-    radial-gradient(ellipse at 50% 120%, rgba(255, 180, 200, 0.5), transparent 55%),
-    linear-gradient(175deg, #fff0f5 0%, #ffdff0 50%, #ffcfe9 100%);
-}
-.bw-card-shop .bw-card-art::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-  background-image:
-    radial-gradient(3px 3px at 18% 24%, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(3px 3px at 82% 38%, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(2px 2px at 30% 66%, rgba(240, 120, 170, 0.5), transparent);
-}
-.bw-box-glow {
-  position: absolute; left: 50%; top: 40%; width: 120px; height: 84px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.85), transparent 70%);
-  animation: bwGlowPulse 2.6s ease-in-out infinite;
-}
-@keyframes bwGlowPulse { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); } }
-.bw-box-lid {
-  position: absolute; left: 50%; top: 42px; width: 64px; height: 16px;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg, #ff9bd0, #ff7fb6);
-  border-radius: 6px 6px 3px 3px;
-  box-shadow: 0 3px 6px rgba(200, 80, 140, 0.4);
-}
-.bw-box-lid::after {
-  content: '';
-  position: absolute; left: 50%; top: -6px; width: 26px; height: 10px;
-  transform: translateX(-50%);
-  background: #fff2f8; border-radius: 5px 5px 2px 2px; border: 1px solid #ffc2dd;
-}
-.bw-box-body {
-  position: absolute; left: 50%; top: 58px; width: 68px; height: 52px;
-  transform: translateX(-50%);
-  background: linear-gradient(160deg, #ffd3ec, #ffa6d2);
-  border-radius: 6px 6px 10px 10px;
-  box-shadow: inset -5px -6px 10px rgba(200, 90, 150, 0.22), 0 8px 16px rgba(220, 100, 160, 0.4);
-}
-.bw-box-q {
-  position: absolute; left: 50%; top: 66px; transform: translateX(-50%);
-  font-size: 26px; font-weight: 900; color: #fff;
-  text-shadow: 0 2px 6px rgba(200, 80, 140, 0.5);
-  animation: bwQFloat 2.2s ease-in-out infinite;
-}
-@keyframes bwQFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-4px); } }
-.bw-box-float {
-  position: absolute; font-size: 14px; opacity: 0.85; color: #ff8fc0;
-  animation: bwFloaty 3.2s ease-in-out infinite;
-}
-.bw-box-f1 { left: 14%; top: 30px; animation-delay: 0s; }
-.bw-box-f2 { right: 13%; top: 62px; animation-delay: 1.1s; }
-.bw-box-f1::before { content: '🎀'; }
-.bw-box-f2::before { content: '✨'; }
-@keyframes bwFloaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-
-/* ---- 盲盒商店模态 ---- */
-.bw-shop .bw-modal-backdrop { background: rgba(40, 20, 40, 0.78); }
-.bw-shop-panel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: min(620px, 100%);
-  height: min(88vh, 780px);
-  border: 1px solid rgba(255, 170, 210, 0.35);
-  background:
-    radial-gradient(ellipse at 50% -8%, rgba(255, 220, 235, 0.55), transparent 55%),
-    linear-gradient(170deg, #fff2f8 0%, #ffe4f2 50%, #ffd7ec 100%);
-  color: #5c3350;
-  box-shadow: 0 30px 80px rgba(80, 20, 55, 0.5);
-}
-.bw-shop-panel .bw-modal-title {
-  background: linear-gradient(90deg, #f2759c, #c98aff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bw-shop-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
-.bw-shop-panel .bw-modal-close { border-color: rgba(160, 90, 120, 0.4); background: rgba(255, 255, 255, 0.45); color: #8a5470; }
-.bw-shop-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
-
-/* ---- 盲盒：5 大类分类 tab ---- */
-.bw-shop-cats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  margin: 6px 0 12px;
-}
-.bw-shop-cat {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
-  border: 1px solid rgba(160, 90, 120, 0.3);
-  background: rgba(255, 255, 255, 0.5);
-  color: #8a5470;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-}
-.bw-shop-cat:hover {
-  background: rgba(255, 255, 255, 0.85);
-  transform: translateY(-1px);
-}
-.bw-shop-cat.is-on {
-  background: linear-gradient(90deg, #ffb964, #ff8fa8);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 4px 10px rgba(255, 150, 90, 0.4);
-}
-.bw-shop-cat-emoji { font-size: 15px; }
-.bw-shop-cat-name { letter-spacing: 0.5px; }
-/* 盒子上的小分类角标 */
-.bw-shop-cat-tag {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(160, 90, 120, 0.3);
-  border-radius: 999px;
-  padding: 1px 8px;
-  line-height: 1.4;
-}
-/* 结果区下方的分类标签 */
-.bw-toy-cat-tag {
-  display: inline-block;
-  margin: 2px auto 4px;
-  padding: 2px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #8a5470;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 999px;
-  letter-spacing: 0.5px;
-}
-
-/* ---- 盲盒与开盒 ---- */
-.bw-shop-stage {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 200px;
-  margin: 8px 0 4px;
-  display: flex; align-items: center; justify-content: center;
-}
-.bw-shop-box {
-  position: relative;
-  width: 120px; height: 96px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  cursor: pointer;
-  background: linear-gradient(160deg, #ffd3ec 0%, #ff9fcb 100%);
-  border-radius: 16px 16px 22px 22px;
-  box-shadow: inset 0 -8px 16px rgba(200, 90, 150, 0.22), 0 14px 30px rgba(220, 80, 150, 0.45);
-  animation: bwBoxFloat 2.4s ease-in-out infinite;
-}
-@keyframes bwBoxFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-.bw-shop-box:hover { animation-play-state: paused; transform: translateY(-10px) scale(1.03); }
-.bw-box-lid-front {
-  position: absolute; left: 50%; top: -10px; width: 132px; height: 22px;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg, #ff9bd0, #ff7fb6);
-  border-radius: 8px 8px 4px 4px;
-  box-shadow: 0 4px 8px rgba(200, 80, 140, 0.35);
-}
-.bw-shop-q {
-  font-size: 40px; font-weight: 900; color: #fff;
-  text-shadow: 0 3px 10px rgba(200, 80, 140, 0.5);
-}
-.bw-shop-hint {
-  font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #8a4a72;
-  background: rgba(255, 255, 255, 0.55); padding: 2px 10px; border-radius: 999px;
-  margin-top: 6px;
-}
-.bw-shop-box.shaking {
-  animation: bwBoxShake 0.78s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-@keyframes bwBoxShake {
-  0%, 100% { transform: translateX(0); }
-  10% { transform: translateX(-12px) rotate(-4deg); }
-  25% { transform: translateX(12px) rotate(4deg); }
-  40% { transform: translateX(-16px) rotate(-6deg); }
-  55% { transform: translateX(16px) rotate(6deg); }
-  70% { transform: translateX(-10px) rotate(-3deg); }
-  85% { transform: translateX(8px) rotate(2deg); }
-  95% { transform: translateX(6px); }
-}
-
-/* ---- 开盒结果（玩具弹出）：卡片居中、信息紧凑优雅 ---- */
-.bw-shop-result {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 12px;
-  min-height: 190px;
-  text-align: center;
-}
-.bw-shop-result.open {
-  flex: 1 1 auto;
-  min-height: min(58vh, 520px);
-  padding: 4px 14px 8px;
-  gap: 14px;
-  justify-content: center;
-}
-.bw-shop-result .bw-toy-img {
-  width: min(280px, 60vw);
-  height: min(280px, 60vw);
-  object-fit: cover;
-  border-radius: 28px;
-  padding: 6px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 220, 235, 0.4) 70%, transparent 100%);
-  border: 2px solid rgba(255, 180, 210, 0.55);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-    0 14px 32px rgba(140, 50, 100, 0.28);
-  opacity: 0;
-  transform: scale(0.5) rotate(-8deg);
-}
-.bw-shop-result.open .bw-toy-img {
-  animation: bwToyPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-@keyframes bwToyPop {
-  0% { opacity: 0; transform: scale(0.3) rotate(-20deg) translateY(30px); }
-  60% { opacity: 1; transform: scale(1.12) rotate(4deg) translateY(-6px); }
-  80% { transform: scale(0.96) rotate(-2deg) translateY(2px); }
-  100% { opacity: 1; transform: scale(1) rotate(0) translateY(0); }
-}
-.bw-shop-result .bw-toy-name {
-  font-size: 30px; font-weight: 900; color: #7a2d4f;
-  line-height: 1.15; letter-spacing: 1px;
-  margin-top: 2px;
-  opacity: 0; transform: translateY(10px);
-}
-.bw-shop-result.open .bw-toy-name { animation: bwToySlide 0.5s ease 0.42s forwards; }
-.bw-shop-result .bw-toy-cat-tag {
-  margin: -2px 0 0;
-  padding: 3px 12px;
-  font-size: 11.5px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(160, 90, 120, 0.3);
-  letter-spacing: 0.8px;
-}
-.bw-shop-result .bw-toy-line {
-  font-size: 13.5px; color: #a47690;
-  line-height: 1.55; letter-spacing: 0.5px;
-  margin: 0; max-width: 320px;
-  opacity: 0;
-}
-.bw-shop-result.open .bw-toy-line { animation: bwToySlide 0.5s ease 0.55s forwards; }
-.bw-shop-result .bw-shop-again {
-  margin: 6px 0 0; padding: 9px 24px;
-  font-size: 13px;
-  opacity: 0;
-  animation: bwToySlide 0.5s ease 0.7s forwards;
-}
-@keyframes bwToySlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.bw-shop-result .bw-toy-img.is-rare {
-  border-color: #ffd76e;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
-    0 0 36px rgba(255, 210, 100, 0.7);
-}
-.bw-shop-result .bw-toy-name.is-rare {
-  background: linear-gradient(90deg, #ff8fc0, #ffd76e, #9be2ff);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.bw-shop-panel.rare .bw-shop-stage { animation: bwRareGlow 1.6s ease-in-out infinite; }
-@keyframes bwRareGlow { 0%, 100% { filter: none; } 50% { filter: brightness(1.08) drop-shadow(0 0 26px rgba(255, 210, 100, 0.8)); } }
-.bw-shop-rare {
-  position: absolute; left: 50%; top: 30px; transform: translateX(-50%);
-  padding: 8px 18px; margin-top: 8px;
-  border-radius: 999px; white-space: nowrap;
-  background: linear-gradient(90deg, #ff7fb6, #ffc960, #9be2ff);
-  color: #fff; font-size: 13px; font-weight: 900; letter-spacing: 1px;
-  box-shadow: 0 10px 30px rgba(255, 170, 60, 0.6);
-  animation: bwBanner 0.5s cubic-bezier(0.22, 1, 0.36, 1), bwBannerPulse 1.5s ease-in-out 0.5s infinite;
-}
-.bw-shop-again {
-  display: inline-block; margin: 6px auto 2px; padding: 10px 26px;
-  border: none; border-radius: 999px; cursor: pointer;
-  background: linear-gradient(90deg, #f2759c, #c98aff);
-  color: #fff; font-size: 14px; font-weight: 800; letter-spacing: 1px;
-  box-shadow: 0 10px 26px rgba(200, 90, 150, 0.4);
-  transition: transform 0.15s ease;
-}
-.bw-shop-again:hover { transform: translateY(-2px) scale(1.04); }
-
-/* ==========================================================================
-   扎小人（解压台）
-   ========================================================================== */
-/* ---- 卡片封面：魔法桌 + 五个布偶小人 + 飘浮的针 ---- */
-.bw-card-voodoo .bw-card-art {
-  background:
-    radial-gradient(circle at 50% 130%, rgba(255, 190, 110, 0.28), transparent 58%),
-    radial-gradient(circle at 78% 16%, rgba(150, 120, 255, 0.3), transparent 50%),
-    linear-gradient(160deg, #241a35 0%, #33224a 55%, #40264d 100%);
-}
-.bw-vo-magic {
-  position: absolute; left: 50%; top: 12%;
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #ffe9b0;
-  box-shadow: 0 0 12px 4px rgba(255, 210, 130, 0.5);
-  animation: bwVoMagic 2.6s ease-in-out infinite;
-  z-index: 1;
-}
-@keyframes bwVoMagic { 0%, 100% { opacity: 0.35; transform: scale(0.8); } 50% { opacity: 0.9; transform: scale(1.3); } }
-.bw-vo-pin-prev {
-  position: absolute;
-  width: 8px; height: 26px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #ffb3c8, #ff6f9c);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-  z-index: 3;
-  animation: bwVoPinFloat 3s ease-in-out infinite;
-}
-.bw-vo-pin-prev::before {
-  content: ''; position: absolute; left: 50%; top: -12px;
-  transform: translateX(-50%);
-  border: 5px solid transparent; border-bottom: 10px solid #ffb3c8;
-}
-.bw-vo-pin-prev::after {
-  content: ''; position: absolute; left: 50%; bottom: 0;
-  transform: translateX(-50%);
-  width: 10px; height: 10px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffe1ec, #ff7aa8);
-}
-.bw-vo-pp1 { left: 18%; top: 16%; animation-delay: 0.4s; }
-.bw-vo-pp2 { right: 20%; top: 24%; animation-delay: 1.1s; }
-.bw-vo-pp3 { left: 30%; bottom: 10%; animation-delay: 1.8s; }
-@keyframes bwVoPinFloat { 0%, 100% { transform: translateY(0) rotate(18deg); } 50% { transform: translateY(-10px) rotate(18deg); } }
-
-/* ---- 封面：六个圆形小人头像（重叠排列，紧凑不超宽） ---- */
-.bw-vo-covers {
-  position: absolute; left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex; align-items: center; gap: 0;
-  padding: 6px 14px;
-  background: rgba(20, 12, 30, 0.4);
-  border: 1px dashed rgba(255, 190, 130, 0.35);
-  border-radius: 999px;
-  z-index: 2;
-}
-.bw-vo-cover-wrap { position: relative; display: inline-flex; }
-.bw-vo-cover-wrap + .bw-vo-cover-wrap { margin-left: -12px; }
-.bw-vo-cover {
-  width: 46px; height: 46px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 235, 200, 0.65);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-  object-fit: cover;
-  background: #e2bd8b;
-}
-.bw-vo-cover-emoji {
-  display: none;
-  width: 46px; height: 46px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 235, 200, 0.65);
-  align-items: center; justify-content: center;
-  font-size: 20px;
-  background: #e2bd8b;
-}
-
-/* ---- 模态：单个小人 + 左右切换 + 身上扎针圈 ---- */
-.bw-vo-view {
-  position: relative;
-  flex: 0 0 auto;
-  width: 190px; height: 190px;
-}
-.bw-vo-img {
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid rgba(255, 235, 200, 0.55);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
-  background: #e2bd8b;
-  transition: filter 0.3s ease;
-}
-.bw-vo-view.full .bw-vo-img { filter: saturate(0.7) brightness(0.85); }
-.bw-vo-done-badge {
-  position: absolute; right: -6px; bottom: 10px;
-  display: none;
-  padding: 3px 10px;
-  font-size: 11px; font-weight: 800;
-  color: #2a1d3c;
-  background: linear-gradient(90deg, #ffd76e, #ffe9b0);
-  border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(255, 210, 100, 0.5);
-  z-index: 7;
-}
-.bw-vo-view.full .bw-vo-done-badge { display: inline-block; }
-.bw-vo-nav {
-  flex: 0 0 auto;
-  width: 40px; height: 40px;
-  margin: 0 10px;
-  border: 1px solid rgba(255, 200, 130, 0.4);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffe9d2;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.bw-vo-nav:hover { background: rgba(255, 200, 130, 0.22); transform: scale(1.1); }
-.bw-vo-prog {
-  width: 100%;
-  margin-top: 10px;
-  min-height: 20px;
-  font-size: 14px; font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #ffe9d2;
-}
-.bw-vo-view.pop { animation: bwVoViewPop 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
-@keyframes bwVoViewPop { from { transform: scale(0.86); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
-
-/* ---- 扎针位：分布在小人身上（头 / 肚 / 左右） ---- */
-.bw-vo-pin {
-  position: absolute;
-  width: 20px; height: 20px;
-  border: 2px dashed rgba(255, 200, 130, 0.85);
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 6;
-  transform: translate(-50%, -50%);
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-.bw-vo-pin:hover {
-  transform: translate(-50%, -50%) scale(1.3);
-  border-color: #ffd76e;
-  background: rgba(255, 210, 110, 0.2);
-}
-.bw-vo-pin-head { left: 50%; top: 8%; }
-.bw-vo-pin-tum  { left: 50%; top: 60%; }
-.bw-vo-pin-arml { left: 10%; top: 40%; }
-.bw-vo-pin-armr { left: 90%; top: 40%; }
-.bw-vo-pin.done {
-  width: 13px; height: 28px;
-  border: none; border-radius: 0;
-  background: linear-gradient(180deg, #ffb3c8, #ff6f9c);
-  box-shadow: 0 2px 8px rgba(255, 100, 150, 0.5);
-  pointer-events: none;
-  animation: bwPinWobble 0.5s ease;
-}
-.bw-vo-pin.done::after {
-  content: ''; position: absolute; left: 50%; bottom: -5px;
-  transform: translateX(-50%);
-  width: 11px; height: 11px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffe1ec, #ff6f9c);
-}
-@keyframes bwPinWobble { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 30% { transform: translate(-50%, -50%) rotate(6deg); } 70% { transform: translate(-50%, -50%) rotate(-5deg); } }
-
-/* ---- 扎小人模态面板 ---- */
-.bw-voodoo .bw-modal-backdrop { background: rgba(16, 10, 26, 0.82); }
-.bw-vo-panel {
-  width: min(540px, 100%);
-  text-align: center;
-  background:
-    radial-gradient(circle at 50% -6%, rgba(255, 200, 120, 0.22), transparent 55%),
-    radial-gradient(circle at 15% 85%, rgba(150, 120, 255, 0.22), transparent 50%),
-    linear-gradient(160deg, #1d1528 0%, #2a1d3c 55%, #3a2244 100%);
-  border: 1px solid rgba(255, 180, 130, 0.25);
-  color: #f3ecff;
-}
-.bw-vo-panel .bw-modal-title {
-  background: linear-gradient(90deg, #ffd9a0, #ff9db8, #c9a6ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bw-vo-panel .bw-modal-sub { color: rgba(255, 233, 210, 0.6); }
-.bw-vo-stage {
-  position: relative;
-  margin: 12px auto 6px;
-  width: 100%;
-  max-width: 430px;
-  min-height: 310px;
-  padding: 56px 8px 10px;
-  border-radius: 18px;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  background:
-    radial-gradient(circle at 50% 105%, rgba(90, 60, 40, 0.55), transparent 62%),
-    linear-gradient(180deg, rgba(46, 30, 70, 0.45), rgba(22, 13, 34, 0.8));
-  border: 1px dashed rgba(255, 190, 130, 0.3);
-}
-.bw-vo-bubble {
-  position: absolute;
-  left: 50%; top: 14px;
-  transform: translateX(-50%);
-  max-width: 82%;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  font-size: 13.5px;
-  color: #ffe9d2;
-  line-height: 1.5;
-  transition: opacity 0.2s ease;
-  z-index: 6;
-}
-.bw-vo-bubble.pop { animation: bwVoPop 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
-@keyframes bwVoPop { from { transform: translateX(-50%) scale(0.82); opacity: 0.4; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
-.bw-vo-count {
-  margin: 10px 0 2px;
-  font-size: 13px;
-  letter-spacing: 2px;
-  color: rgba(255, 233, 210, 0.75);
-}
-.bw-vo-again {
-  display: inline-block;
-  margin: 8px auto 0;
-  padding: 10px 26px;
-  border: none; border-radius: 999px; cursor: pointer;
-  background: linear-gradient(90deg, #ffb964, #ff8fa8);
-  color: #fff; font-size: 14px; font-weight: 800; letter-spacing: 1px;
-  box-shadow: 0 10px 26px rgba(255, 150, 90, 0.4);
-  transition: transform 0.15s ease;
-}
-.bw-vo-again:hover { transform: translateY(-2px) scale(1.04); }
-.bw-vo-note {
-  margin: 12px 0 0;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  color: rgba(255, 233, 210, 0.5);
-}
-
-/* ==========================================================================
-   四季窗（脑洞页卡片 + 推窗模态）
-   ========================================================================== */
-/* ---- 卡片封面：小窗户 + 漂浮季节元素 ---- */
-.bw-card-window .bw-card-art {
-  background:
-    radial-gradient(circle at 50% 120%, rgba(255, 200, 120, 0.25), transparent 55%),
-    linear-gradient(160deg, #dff0e4 0%, #cfe6f5 50%, #f7e8d8 100%);
-}
-.bw-win-mini {
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 86px; height: 96px;
-  transform: translate(-50%, -50%);
-  border-radius: 43px 43px 6px 6px; /* 童话风拱形窗 */
-  background:
-    url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=primary%20school%20chinese%20textbook%20illustration%2C%20gentle%20ink%20and%20wash%20watercolor%20painting%2C%20early%20spring%2C%20green%20willow%20trees%20by%20a%20winding%20river%2C%20peach%20blossoms%20blooming%2C%20swallows%20flying%20in%20the%20bright%20sky%2C%20a%20child%20flying%20a%20kite%20in%20the%20field%2C%20fresh%20soft%20pastel%20colors%2C%20idyllic%20chinese%20countryside%20scenery%2C%20clean%20poetic%20composition&image_size=square') center/cover,
-    linear-gradient(180deg, #8fd0ff 0%, #bfe8c8 78%, #7cc47f 78%, #5da963 100%);
-  border: 6px solid #a9743f;
-  box-shadow: 0 8px 18px rgba(120, 80, 30, 0.3), inset 0 0 0 3px #8a5c2e;
-  overflow: hidden;
-}
-.bw-win-mini::after {
-  content: '';
-  position: absolute;
-  left: 50%; top: 0; bottom: 0;
-  width: 5px;
-  transform: translateX(-50%);
-  background: #a9743f;
-}
-.bw-win-mini-sash {
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 4px solid #8a5c2e;
-  transition: transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-.bw-win-mini-sl { left: 0; transform-origin: left center; }
-.bw-win-mini-sr { right: 0; transform-origin: right center; }
-.bw-card-window:hover .bw-win-mini-sl { transform: perspective(300px) rotateY(-55deg); }
-.bw-card-window:hover .bw-win-mini-sr { transform: perspective(300px) rotateY(55deg); }
-.bw-win-mini-float {
-  position: absolute;
-  font-size: 18px;
-  animation: bwFloaty 3s ease-in-out infinite;
-}
-.bw-win-mf1 { left: 12%; top: 22%; }
-.bw-win-mf2 { right: 12%; top: 34%; animation-delay: 1s; }
-.bw-win-mf3 { left: 20%; bottom: 14%; animation-delay: 2s; }
-
-/* ---- 四季窗模态 ---- */
-.bw-winmodal .bw-modal-backdrop { background: rgba(24, 20, 40, 0.8); }
-.bw-win-panel {
-  width: min(880px, 100%);
-  /* 垂直 flex 布局：固定顺序 标题/副标题/房间/季节按钮/旁白
-     (季节按钮已从 .bw-room 内部挪到这里，自动出现在房间下方) */
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background:
-    radial-gradient(ellipse at 50% -10%, rgba(255, 230, 190, 0.2), transparent 55%),
-    linear-gradient(168deg, #241d3a 0%, #2c2447 55%, #1f2a44 100%);
-  border: 1px solid rgba(255, 210, 160, 0.25);
-}
-.bw-win-panel .bw-modal-title { order: 0; }
-.bw-win-panel .bw-modal-sub { order: 1; }
-.bw-win-panel .bw-room { order: 2; flex-shrink: 0; }
-.bw-win-panel .bw-win-tabs { order: 3; }
-.bw-win-panel .bw-win-caption { order: 4; }
-.bw-win-panel .bw-modal-title {
-  background: linear-gradient(90deg, #ffd9a0, #a8e6b8, #8fc7ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bw-win-panel .bw-modal-sub { color: rgba(255, 240, 220, 0.55); }
-
-/* ===== 公主房间（墙壁 / 床 / 梳妆桌 / 地毯 / 窗户） ===== */
-.bw-room {
-  position: relative;
-  width: min(780px, 96%);
-  height: 500px;
-  margin: 8px auto 14px;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: default;
-  background:
-    url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fairy%20tale%20princess%20bedroom%20interior%2C%20children%20picture%20book%20watercolor%20style%2C%20soft%20pink%20and%20lavender%20pastel%20tones%2C%20cozy%20princess%20bed%20with%20sheer%20canopy%20on%20the%20left%2C%20small%20dressing%20table%20with%20flowers%20and%20mirror%20on%20the%20right%2C%20round%20fluffy%20rug%20in%20the%20middle%2C%20decorated%20floral%20wallpaper%20wall%2C%20warm%20soft%20dreamy%20light%2C%20gentle%20and%20cozy%20atmosphere%2C%20blank%20wall%20in%20the%20middle%20upper%20area%2C%20no%20window%2C%20no%20people%2C%20no%20characters&image_size=square') center/cover,
-    linear-gradient(180deg, #e4d2f2 0%, #c79fdb 100%);
-  box-shadow: inset 0 0 0 6px rgba(243, 230, 250, 0.8), 0 6px 20px rgba(90, 50, 130, 0.35);
-  animation: bwRoomFade 0.9s ease;
-}
-@keyframes bwRoomFade { from { opacity: 0; } to { opacity: 1; } }
-/* 让 AI 房间图不被手绘地面覆盖 */
-.bw-room::after { content: none; }
-/* 墙壁：粉紫渐变 + 竖向光感 */
-.bw-room-wall {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 42%),
-    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.35), transparent 40%),
-    linear-gradient(180deg, #e4d2f2 0%, #d3b7e3 60%, #c79fdb 100%);
-}
-/* 墙纸花纹 */
-.bw-room-frame-pattern {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.5) 3px, transparent 4px),
-    radial-gradient(circle at 80% 35%, rgba(255, 255, 255, 0.45) 3px, transparent 4px),
-    radial-gradient(circle at 45% 62%, rgba(255, 255, 255, 0.4) 3px, transparent 4px);
-  background-size: 120px 120px;
-  opacity: 0.55;
-  mix-blend-mode: overlay;
-}
-/* ===== 窗户（嵌在公主房间墙面上） ===== */
-.bw-room-bed {
-  position: absolute;
-  left: 8%; bottom: 9%;
-  width: 132px; height: 104px;
-  z-index: 3;
-}
-.bw-bed-head {
-  position: absolute;
-  left: 0; bottom: 22px;
-  width: 100%; height: 60px;
-  background: linear-gradient(180deg, #ffe3f0, #ffc1de);
-  border: 3px solid #dda6c8;
-  border-radius: 16px 16px 8px 8px;
-  box-shadow: inset 0 -8px 14px rgba(214, 140, 180, 0.3), 0 6px 14px rgba(160, 90, 130, 0.3);
-}
-.bw-bed-blanket {
-  position: absolute;
-  left: -8%; bottom: 6px;
-  width: 116%; height: 34px;
-  background: linear-gradient(180deg, #f9b8d8, #ee92c0);
-  border: 3px solid #df8cb6;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(180, 90, 130, 0.3);
-}
-.bw-bed-pillow {
-  position: absolute;
-  right: 14px; top: 34px;
-  width: 44px; height: 24px;
-  background: #fff4fa;
-  border: 2px solid #f0c8e0;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-.bw-bed-canopy {
-  position: absolute;
-  left: 6%; top: -10px;
-  width: 92%; height: 22px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.5), rgba(255,190,225,0.55), rgba(255,255,255,0.5));
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-}
-.bw-bed-crown {
-  position: absolute;
-  left: 50%; top: -12px;
-  transform: translateX(-50%);
-  font-size: 20px;
-  animation: bwCrownFloat 2.4s ease-in-out infinite;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
-}
-@keyframes bwCrownFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-3px); } }
-.bw-bed-doll {
-  position: absolute;
-  right: -6px; top: 30px;
-  font-size: 24px;
-  animation: bwFloaty 3.2s ease-in-out infinite;
-}
-/* 梳妆小桌（右侧） */
-.bw-room-table {
-  position: absolute;
-  right: 9%; bottom: 12%;
-  width: 120px; height: 88px;
-  z-index: 3;
-}
-.bw-table-top {
-  position: absolute;
-  left: 0; right: 0; top: 0; height: 10px;
-  background: linear-gradient(180deg, #f4d9f0, #e3b7de);
-  border: 3px solid #c99cc4;
-  border-radius: 6px;
-}
-.bw-table-leg {
-  position: absolute;
-  top: 10px; width: 10px; bottom: 0;
-  background: linear-gradient(90deg, #e0b0da, #c998c4);
-  border: 2px solid #b889b3;
-  border-radius: 2px;
-}
-.bw-table-leg.tl { left: 14px; }
-.bw-table-leg.tr { right: 14px; }
-.bw-table-vase {
-  position: absolute;
-  left: 8px; top: 2px;
-  font-size: 22px;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
-  animation: bwFloaty 3.6s ease-in-out infinite;
-}
-.bw-table-mirror {
-  position: absolute;
-  right: 6px; top: 0;
-  font-size: 24px;
-  animation: bwFloaty 3s ease-in-out infinite;
-}
-/* 地板小毯子 */
-.bw-room-rug {
-  position: absolute;
-  left: 50%; bottom: 6%;
-  width: 120px; height: 34px;
-  transform: translateX(-50%);
-  background:
-    linear-gradient(90deg, #f7b8d2, #e9f3ff, #f7d9e8);
-  border: 3px solid #e5a9c6;
-  border-radius: 40% 40% 0 0;
-  opacity: 0.9;
-  z-index: 3;
-}
-/* 漂浮装饰 */
-.bw-room-butterfly {
-  position: absolute;
-  left: 6%; top: 12%;
-  font-size: 20px;
-  animation: bwButterfly 4.5s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-}
-@keyframes bwButterfly {
-  0%, 100% { transform: translate(0,0) rotate(-6deg); }
-  50% { transform: translate(22px,-14px) rotate(6deg); }
-}
-.bw-room-star {
-  position: absolute;
-  right: 10%; top: 16%;
-  font-size: 16px;
-  animation: bwTwinkle 2.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.9));
-}
-/* ===== 窗户（嵌在公主房间墙面上） ===== */
-.bw-win-frame {
-  position: absolute;
-  left: 50%; top: 22px;
-  transform: translateX(-50%);
-  width: 230px;
-  aspect-ratio: 230 / 220;
-  cursor: zoom-in;
-  z-index: 5;
-  transition: opacity 0.45s ease;
-  border-radius: 115px 115px 8px 8px;
-  border: 9px solid #f9eff7;
-  background: #f3e4f0;
-  box-shadow:
-    0 8px 18px rgba(150, 110, 150, 0.25),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.85),
-    0 0 0 3px rgba(214, 182, 208, 0.5);
-  overflow: visible;
-  transition: transform 0.5s ease, box-shadow 0.4s ease;
-}
-.bw-win-frame:hover {
-  transform: translateX(-50%) scale(1.03);
-  box-shadow:
-    0 14px 28px rgba(150, 110, 150, 0.34),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.9),
-    0 0 0 3px rgba(214, 182, 208, 0.7);
-}
-/* 静态窗棂：中央竖棂 + 一道横棂（绘本式拱形窗） */
-.bw-win-frame::before,
-.bw-win-frame::after {
-  content: '';
-  position: absolute;
-  z-index: 4;
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 4px;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.55);
-  transition: opacity 0.5s ease;
-}
-.bw-win-frame::before { /* 中央竖棂 */
-  left: 50%; top: 0; bottom: 0; width: 8px;
-  transform: translateX(-50%);
-}
-.bw-win-frame::after { /* 横棂 */
-  left: 0; right: 0; top: 54%; height: 8px;
-  transform: translateY(-50%);
-}
-/* 窗外场景 */
-.bw-win-scene {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: 138px 138px 0 0;
-  background: linear-gradient(180deg, #aee2ff 0%, #d8f3ff 55%, #eefbe8 100%);
-  transition: transform 1s cubic-bezier(0.3, 0.9, 0.35, 1);
-  transform-origin: 50% 42%;
-}
-/* 玻璃高光（一层淡淡的斜向反光，放大时淡出） */
-.bw-win-scene::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 138px 138px 0 0;
-  background: linear-gradient(115deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.05) 22%, transparent 40%);
-  pointer-events: none;
-  z-index: 3;
-  transition: opacity 0.5s ease;
-}
-/* 放大外景：点击窗户后整个窗框淡出，由高清大图铺满房间（直接渲染原图，不放大位图，保持细节） */
-.is-zoom .bw-win-frame {
-  opacity: 0;
-}
-.is-zoom .bw-win-frame::before,
-.is-zoom .bw-win-frame::after,
-.is-zoom .bw-win-scene::after,
-.is-zoom .bw-win-sill {
-  opacity: 0;
-}
-/* 高清外景大图：放大时用适配横向比例的图片铺满整个房间区域 */
-.bw-win-fullview {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  pointer-events: none;
-}
-.bw-win-fullview img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.35));
-}
-.is-zoom .bw-win-fullview {
-  opacity: 1;
-}
-/* AI 生成的卡通窗外景 */
-.bw-win-view {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: bwWinViewIn 0.8s ease;
-}
-@keyframes bwWinViewIn {
-  from { opacity: 0; transform: scale(1.06); }
-  to { opacity: 1; transform: scale(1); }
-}
-/* 飘落粒子（花瓣/阳光点/落叶/雪花） */
-.bw-win-part {
-  position: absolute;
-  top: -8%;
-  line-height: 1;
-  opacity: 0;
-  animation-name: bwWinFall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-@keyframes bwWinFall {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  8% { opacity: 0.95; }
-  90% { opacity: 0.9; }
-  100% { transform: translateY(540px) rotate(220deg); opacity: 0; }
-}
-/* 双开窗扇已改为静态窗棂（见 .bw-win-frame::before/::after），旋转窗扇隐藏 */
-.bw-win-sash {
-  display: none;
-}
-/* 窗台 */
-.bw-win-sill {
-  position: absolute;
-  left: -5%; right: -5%; bottom: -12px;
-  height: 24px;
-  z-index: 7;
-  background: linear-gradient(180deg, #fbf3f9, #ecd9ea);
-  border-radius: 5px;
-  box-shadow: 0 -2px 5px rgba(150, 110, 150, 0.18), 0 5px 10px rgba(150, 110, 150, 0.22);
-  transition: opacity 0.5s ease;
-}
-.bw-win-sill-plant { position: absolute; left: 9%; bottom: 22px; font-size: 26px; }
-.bw-win-sill-candle {
-  position: absolute; right: 9%; bottom: 22px; font-size: 24px;
-  filter: drop-shadow(0 0 10px rgba(255, 190, 90, 0.8));
-  animation: bwCandleFlicker 2.2s ease-in-out infinite;
-}
-@keyframes bwCandleFlicker { 0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 190, 90, 0.7)); } 50% { filter: drop-shadow(0 0 16px rgba(255, 210, 120, 1)); } }
-/* 季节切换按钮：JS 已将 .bw-win-tabs 从 .bw-room 内部挪到 .bw-modal-panel 容器内。
-   桌面端默认不显示（display:none 从 flex 容器 flow 移除），点窗放大后浮现。
-   .is-zoom 同时挂在 .bw-room 和 .bw-modal-panel 上，.is-zoom .bw-win-tabs 选择器即可命中。
-   移动端在下方 @media 段覆盖：始终 display:flex 让按钮永远可点 */
-.bw-win-tabs {
-  display: none;
-  justify-content: center;
-  gap: 10px;
-  margin: 14px 0 6px;
-}
-.is-zoom .bw-win-tabs {
-  display: flex;
-}
-.bw-win-tab {
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  background: rgba(60, 40, 70, 0.55);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  padding: 9px 22px;
-  border-radius: 999px;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-}
-.bw-win-tab:hover { transform: translateY(-2px); background: rgba(90, 60, 100, 0.75); }
-.bw-win-tab.is-on {
-  background: linear-gradient(90deg, #ffb964, #ff8fa8);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 6px 18px rgba(255, 150, 90, 0.45);
-}
-/* 童话旁白 */
-.bw-win-caption {
-  margin: 0 auto;
-  max-width: 620px;
-  text-align: center;
-  font-size: 15px;
-  line-height: 1.9;
-  color: rgba(255, 240, 220, 0.85);
-}
-
-/* ============================================================================
-   四季窗模态：移动端适配
-   桌面端布局：宽 880px panel + 780×500 房间 + 230×220 固定窗户 + 4 个浮于房间底部的季节按钮
-   移动端问题：房间固定 500px 高在小屏过高；窗户/床/桌固定 230/132/120px 在 300px 宽房间中太挤；
-               季节按钮默认 opacity:0 需要点窗后才出现，移动端两步走不友好
-   方案：700px 以下整体缩小；季节按钮移到房间外、永远可见，方便直接切换
-   ============================================================================ */
-@media (max-width: 700px) {
-  /* 模态自身：把内容拉到屏幕边，减少两侧空隙 */
-  .bw-modal { padding: 12px; }
-  .bw-winmodal .bw-modal-backdrop { padding: 0; }
-  .bw-win-panel {
-    /* 覆盖 .bw-modal-panel 的 30/26/26 padding */
-    padding: 16px 14px 14px !important;
-  }
-  .bw-win-panel .bw-modal-title {
-    font-size: 20px;
-    letter-spacing: 1.5px;
-    margin-bottom: 2px;
-  }
-  .bw-win-panel .bw-modal-sub {
-    font-size: 12px;
-    margin-bottom: 10px;
-    line-height: 1.5;
-  }
-  .bw-modal-close {
-    width: 30px; height: 30px;
-    top: 8px; right: 8px;
-    font-size: 13px;
-  }
-  /* 房间：高度按视口缩放，避免小屏溢出 */
-  .bw-room {
-    height: clamp(320px, 64vh, 460px);
-    margin: 4px auto 10px;
-    border-radius: 16px;
-    box-shadow: inset 0 0 0 4px rgba(243, 230, 250, 0.8), 0 6px 20px rgba(90, 50, 130, 0.35);
-  }
-  /* 房间内家具：按 0.65x 缩放，避免遮挡窗户 */
-  .bw-room-bed {
-    width: 86px; height: 68px;
-    left: 4%; bottom: 7%;
-  }
-  .bw-bed-head {
-    height: 40px;
-    border-radius: 12px 12px 6px 6px;
-    border-width: 2px;
-  }
-  .bw-bed-blanket {
-    height: 22px;
-    left: -6%;
-  }
-  .bw-bed-pillow {
-    width: 28px; height: 15px;
-    top: 22px; right: 8px;
-    border-width: 1.5px;
-  }
-  .bw-bed-canopy {
-    height: 14px;
-  }
-  .bw-bed-crown {
-    font-size: 14px;
-    top: -7px;
-  }
-  .bw-bed-doll {
-    font-size: 16px;
-    top: 20px;
-  }
-  .bw-room-table {
-    width: 78px; height: 56px;
-    right: 4%; bottom: 8%;
-  }
-  .bw-table-top {
-    height: 7px;
-    border-width: 2px;
-  }
-  .bw-table-leg {
-    width: 7px;
-    border-width: 1.5px;
-  }
-  .bw-table-vase {
-    font-size: 16px;
-    left: 6px;
-  }
-  .bw-table-mirror {
-    font-size: 16px;
-  }
-  .bw-room-rug {
-    width: 86px; height: 22px;
-    bottom: 4%;
-  }
-  .bw-room-butterfly {
-    font-size: 14px;
-    left: 4%;
-  }
-  .bw-room-star {
-    font-size: 12px;
-  }
-  /* 窗户：宽度按房间比例，不超过房间宽 55% */
-  .bw-win-frame {
-    width: 56%;
-    top: 10px;
-    border-width: 6px;
-  }
-  /* 窗棂变细 */
-  .bw-win-frame::before { width: 5px; }
-  .bw-win-frame::after { height: 5px; }
-  /* 窗台、烛台、盆栽同步缩小 */
-  .bw-win-sill {
-    height: 16px;
-    bottom: -8px;
-  }
-  .bw-win-sill-plant {
-    font-size: 18px;
-    bottom: 12px;
-    left: 8%;
-  }
-  .bw-win-sill-candle {
-    font-size: 16px;
-    bottom: 12px;
-    right: 8%;
-  }
-  /* 季节按钮：移到房间外（panel 内房间下方），始终可见，避免移动端两步走 */
-  .bw-win-tabs {
-    position: static;
-    margin: 8px auto 6px;
-    padding: 0;
-    gap: 6px;
-    /* 强制覆盖桌面端的 display:none / 各种隐藏状态 */
-    display: flex !important;
-    pointer-events: auto !important;
-    transform: none !important;
-  }
-  .bw-win-tab {
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 14px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  }
-  .bw-win-tab.is-on {
-    box-shadow: 0 4px 10px rgba(255, 150, 90, 0.45);
-  }
-  /* 童话旁白 */
-  .bw-win-caption {
-    font-size: 13px;
-    line-height: 1.6;
-    padding: 0 4px;
-  }
-}
-
-/* 超窄屏（iPhone SE 等 ~375px）：进一步压缩 */
-@media (max-width: 420px) {
-  .bw-modal { padding: 8px; }
-  .bw-win-panel {
-    padding: 12px 10px 10px !important;
-    border-radius: 16px;
-  }
-  .bw-win-panel .bw-modal-title {
-    font-size: 18px;
-    letter-spacing: 1px;
-  }
-  .bw-win-panel .bw-modal-sub {
-    font-size: 11px;
-    margin-bottom: 8px;
-  }
-  .bw-modal-close {
-    width: 28px; height: 28px;
-    top: 6px; right: 6px;
-  }
-  .bw-room {
-    height: clamp(280px, 58vh, 360px);
-    border-radius: 14px;
-  }
-  .bw-room-bed {
-    width: 70px; height: 56px;
-    left: 3%;
-  }
-  .bw-room-table {
-    width: 62px; height: 46px;
-    right: 3%;
-  }
-  .bw-room-rug {
-    width: 70px;
-  }
-  .bw-win-frame {
-    width: 60%;
-    top: 8px;
-    border-width: 5px;
-  }
-  .bw-win-tab {
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 12px;
-  }
-  .bw-win-caption {
-    font-size: 12px;
-    line-height: 1.55;
-  }
-}
-
-/* 防止放大态下房间外全屏图溢出：移动端不改变 .is-zoom 行为，但需要保证
-   .bw-win-fullview 仍然只铺满房间，不延伸到 panel 外部（已通过 position:absolute + inset:0
-   相对 .bw-room 限定，移动端 .bw-win-tabs 已在 .bw-room 之外，不会被覆盖） */
 
