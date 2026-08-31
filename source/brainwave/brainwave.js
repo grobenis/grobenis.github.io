@@ -1526,7 +1526,7 @@
   /* 10 位来电角色;每通电话有多句对话,接听后逐条出现 */
   var CALLERS = [
     {
-      k: 'cat', name: '邻居家橘猫', avatar: '🐱', ring: '🐱 · 喵喵来电',
+      k: 'cat', name: '邻居家橘猫', avatar: '🐱', voice: bwSfx.voiceCat, ring: '🐱 · 喵喵来电',
       line: '你阳台那个鱼干...是不是风吹下去的？',
       script: [
         '喵...你家阳台的鱼干，是不是风吹下去的？',
@@ -1536,7 +1536,7 @@
       ]
     },
     {
-      k: 'penguin', name: '南极科考员', avatar: '🐧', ring: '🐧 · 南极基站',
+      k: 'penguin', name: '南极科考员', avatar: '🐧', voice: bwSfx.voicePenguin, ring: '🐧 · 南极基站',
       line: '你家 Wi-Fi 借我用一下？',
       script: [
         '你好，我家在南极，这边5G 没覆盖...',
@@ -1546,7 +1546,7 @@
       ]
     },
     {
-      k: 'hedgehog', name: '迷路的小刺猬', avatar: '🦔', ring: '🦔 · 求助电话',
+      k: 'hedgehog', name: '迷路的小刺猬', avatar: '🦔', voice: bwSfx.voiceHedgehog, ring: '🦔 · 求助电话',
       line: '我迷路了，身上还扎着两个橘子',
       script: [
         '我迷路了，身上还扎着两个橘子，能告诉我最近的便利店怎么走吗？',
@@ -1556,7 +1556,7 @@
       ]
     },
     {
-      k: 'turtle', name: '公园慢龟', avatar: '🐢', ring: '🐢 · 物业投诉',
+      k: 'turtle', name: '公园慢龟', avatar: '🐢', voice: bwSfx.voiceTurtle, ring: '🐢 · 物业投诉',
       line: '你家楼下那辆红色的车开太快了！',
       script: [
         '我要投诉，你家楼下那辆红色的车，开得比我走路还快！',
@@ -1576,7 +1576,7 @@
       ]
     },
     {
-      k: 'owl', name: '夜行猫头鹰', avatar: '🦉', ring: '🦉 · 哲学咨询',
+      k: 'owl', name: '夜行猫头鹰', avatar: '🦉', voice: bwSfx.voiceOwl, ring: '🦉 · 哲学咨询',
       line: '你睡觉的时候梦会飘出来',
       script: [
         '你睡觉的时候，我看见你的梦从窗口飘出来。',
@@ -1596,7 +1596,7 @@
       ]
     },
     {
-      k: 'fox', name: '童话里的狐狸', avatar: '🦊', ring: '🦊 · 下午茶邀请',
+      k: 'fox', name: '童话里的狐狸', avatar: '🦊', voice: bwSfx.voiceFox, ring: '🦊 · 下午茶邀请',
       line: '我这边有个吃不到葡萄主题派对',
       script: [
         '你好，这边有个"吃不到葡萄说葡萄酸"主题派对。',
@@ -1606,7 +1606,7 @@
       ]
     },
     {
-      k: 'frog', name: '井底之蛙', avatar: '🐸', ring: '🐸 · 心理咨询',
+      k: 'frog', name: '井底之蛙', avatar: '🐸', voice: bwSfx.voiceFrog, ring: '🐸 · 心理咨询',
       line: '我想跳出井，但外面会不会没人记得我',
       script: [
         '我想跳出井，但外面世界这么大。',
@@ -1616,7 +1616,7 @@
       ]
     },
     {
-      k: 'bee', name: '加班的蜜蜂', avatar: '🐝', ring: '🐝 · 加班倾诉',
+      k: 'bee', name: '加班的蜜蜂', avatar: '🐝', voice: bwSfx.voiceBee, ring: '🐝 · 加班倾诉',
       line: '今天采了 400 朵花，但被一朵嘲笑效率低',
       script: [
         '今天采了400 朵花，但被一朵嘲笑说我效率低。',
