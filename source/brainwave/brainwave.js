@@ -171,7 +171,7 @@
     var VOODOO_SFX = { stab: sfxStab, hit: sfxHit, defeat: sfxDefeat, haptic: haptic };
 
     /* ---------- 电话音效：铃声 / 接听 / 挂断 / 忙音 / 对话气泡 ---------- */
-    /* 铃声：老式电话双频（440/480Hz）间隔 1.2s 循环,返回停止函数 */
+    /* 铃声：急促"嘟嘟"双脉冲（680Hz 方波,周期 650ms）,返回停止函数 */
     function sfxRing() {
       try {
         var ctx = ensureCtx();
@@ -180,22 +180,31 @@
         function ringOnce() {
           if (stop) return;
           var t = ctx.currentTime;
-          [440, 480].forEach(function (f) {
+          /* 每个周期两个短促脉冲,更刺耳更急促 */
+          [0, 0.13].forEach(function (d) {
             var osc = ctx.createOscillator();
             var env = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(f, t);
-            env.gain.setValueAtTime(0.0001, t);
-            env.gain.exponentialRampToValueAtTime(0.35, t + 0.05);
-            env.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(680, t + d);
+            env.gain.setValueAtTime(0.0001, t + d);
+            env.gain.exponentialRampToValueAtTime(0.38, t + d + 0.01);
+            env.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.1);
             osc.connect(env); env.connect(g);
-            osc.start(t);
-            osc.stop(t + 0.5);
+            osc.start(t + d);
+            osc.stop(t + d + 0.12);
           });
         }
         ringOnce();
-        var timer = setInterval(ringOnce, 1200);
-        return function () { stop = true; clearInterval(timer); };
+        var timer = setInterval(ringOnce, 650);
+        /* 注册进 activeNodes:页面卸载时 stopAll() 能清掉铃声定时器 */
+        if (!Array.isArray(activeNodes)) activeNodes = [];
+        activeNodes.push(timer);
+        return function () {
+          stop = true;
+          clearInterval(timer);
+          var idx = activeNodes ? activeNodes.indexOf(timer) : -1;
+          if (idx > -1) activeNodes.splice(idx, 1);
+        };
       } catch (e) { return function () {}; }
     }
     /* 接听咔哒声：短促高频 sine（1200→800Hz） */
