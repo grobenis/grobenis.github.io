@@ -94,6 +94,18 @@
   var vizRaf = null;    /* 律动动画循环 */
   var vizTarget = { sky: null, stars: [] };
   var freqData = null;
+  /* 命名空间:供后续模块（接电话等）访问 stopAll 内部定义的音效函数 */
+  var bwSfx = {};
+  function _registerSfx() {
+    bwSfx.sfxStab = sfxStab; bwSfx.sfxHit = sfxHit; bwSfx.sfxDefeat = sfxDefeat;
+    bwSfx.sfxRing = sfxRing; bwSfx.sfxPickup = sfxPickup; bwSfx.sfxHangup = sfxHangup;
+    bwSfx.sfxBusy = sfxBusy; bwSfx.sfxTalk = sfxTalk;
+    bwSfx.voiceTone = voiceTone;
+    bwSfx.voiceCat = voiceCat; bwSfx.voicePenguin = voicePenguin; bwSfx.voiceHedgehog = voiceHedgehog;
+    bwSfx.voiceTurtle = voiceTurtle; bwSfx.voiceOctopus = voiceOctopus; bwSfx.voiceOwl = voiceOwl;
+    bwSfx.voiceRaccoon = voiceRaccoon; bwSfx.voiceFox = voiceFox; bwSfx.voiceFrog = voiceFrog;
+    bwSfx.voiceBee = voiceBee;
+  }
   /* 页面卸载兜底:确保任何方式退出都停止声音 */
   window.addEventListener('pagehide', stopAll);
   window.addEventListener('beforeunload', stopAll);
@@ -345,6 +357,7 @@
       vizTarget.sky.style.removeProperty('--shimmer');
     }
     vizTarget = { sky: null, stars: [] };
+    _registerSfx();
   }
   /* 律动循环:读频谱 → 驱动星星闪烁速度 + 光晕呼吸 */
   function vizLoop() {
@@ -1530,7 +1543,7 @@
       ]
     },
     {
-      k: 'octopus', name: '深海章鱼', avatar: '🐙', voice: voiceOctopus, ring: '🐙 · 求职专线',
+      k: 'octopus', name: '深海章鱼', avatar: '🐙', voice: bwSfx.voiceOctopus, ring: '🐙 · 求职专线',
       line: '我看到你们公司在招前端工程师',
       script: [
         '你好，我看到你们公司在招前端工程师。',
@@ -1550,7 +1563,7 @@
       ]
     },
     {
-      k: 'raccoon', name: '浣熊快递员', avatar: '🦝', voice: voiceRaccoon, ring: '🦝 · 快递误投',
+      k: 'raccoon', name: '浣熊快递员', avatar: '🦝', voice: bwSfx.voiceRaccoon, ring: '🦝 · 快递误投',
       line: '你家门口的快递我拆开试吃了一下',
       script: [
         '你家门口的快递我拆开试吃了一下。',
