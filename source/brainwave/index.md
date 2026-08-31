@@ -99,12 +99,12 @@ date: 2026-08-29 00:00:00
 <div class="bw-card bw-card-voodoo" data-bw-open="voodoo" role="button" tabindex="0" title="扎小人">
 <div class="bw-card-art">
 <span class="bw-vo-covers">
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.jpg" alt="没担当" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.jpg" alt="不高兴" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.jpg" alt="小气鬼" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.jpg" alt="心机鬼" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.jpg" alt="窝囊废" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.jpg" alt="和稀泥" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.jpg" alt="没担当" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.jpg" alt="不高兴" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.jpg" alt="小气鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.jpg" alt="心机鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.jpg" alt="窝囊废" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.jpg" alt="和稀泥" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span></span>
 </span>
 <span class="bw-vo-pin-prev bw-vo-pp1"></span>
 <span class="bw-vo-pin-prev bw-vo-pp2"></span>
@@ -131,7 +131,8 @@ date: 2026-08-29 00:00:00
   if (!root) return;
 
   /* --- 打开/关闭模态 --- */
-  function openCosmos() {
+  function openCosmos(e) {
+    lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-cosmos';
     m.innerHTML =
@@ -163,11 +164,25 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('.bw-cosmo-opt').forEach(function (btn) {
       btn.addEventListener('click', function () { playSound(m, btn); });
     });
+    document.addEventListener('keydown', onModalKey);
   }
   function closeModal(m) {
     stopAll();
+    if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = null; }
     if (m && m.parentNode) m.parentNode.removeChild(m);
     document.body.classList.remove('bw-modal-open');
+    document.removeEventListener('keydown', onModalKey);
+    if (lastTrigger && typeof lastTrigger.focus === 'function') {
+      try { lastTrigger.focus(); } catch (e) {}
+    }
+    lastTrigger = null;
+  }
+  var lastTrigger = null;
+  function onModalKey(e) {
+    if (e.key === 'Escape') {
+      var m = document.querySelector('.bw-modal');
+      if (m) closeModal(m);
+    }
   }
 
   /* --- Web Audio 宇宙噪音合成（程序合成，零音频文件） --- */
@@ -394,7 +409,8 @@ date: 2026-08-29 00:00:00
   }
   function saveGalIdeas() { try { localStorage.setItem('bwGalaxyIdeas', JSON.stringify(galIdeas)); } catch (e) {} }
 
-  function openGalaxy() {
+  function openGalaxy(e) {
+    lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-galaxy';
     m.innerHTML =
@@ -414,6 +430,7 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
+    document.addEventListener('keydown', onModalKey);
     /* 渲染全屏星系背景 */
     var sky = m.querySelector('#galSky');
     renderGalaxy(sky);
@@ -656,7 +673,8 @@ date: 2026-08-29 00:00:00
   function saveColl(a) { try { localStorage.setItem(COLL_KEY, JSON.stringify(a)); } catch (e) {} }
   function todayIndex() { var n = new Date(); return (n.getFullYear() * 10000 + (n.getMonth() + 1) * 100 + n.getDate()) % DOLLS.length; }
 
-  function openDolls() {
+  function openDolls(e) {
+    lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-dolls';
     var t = DOLLS[todayIndex()];
@@ -689,6 +707,7 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
+    document.addEventListener('keydown', onModalKey);
     buildPetals(m);
     renderDolls(m);
     updateCollect(m, _col);
@@ -870,7 +889,8 @@ date: 2026-08-29 00:00:00
     });
   }
   /* 盲盒商店：摇盒开盖，蹦出软萌小玩具(16款+1稀有隐藏，纯随机不收藏) */
-  function openToyShop() {
+  function openToyShop(e) {
+    lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-shop';
     var catsHtml = CATEGORIES.map(function (c, i) {
@@ -902,6 +922,7 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
+    document.addEventListener('keydown', onModalKey);
     var panel = m.querySelector('.bw-shop-panel');
     var box = m.querySelector('#shopBox');
     var stage = m.querySelector('.bw-shop-stage');
@@ -993,7 +1014,8 @@ date: 2026-08-29 00:00:00
       caption: '大雪把屋顶盖得厚厚的，腊梅在墙角悄悄开了，雪人站在院子里，等着春天。'
     }
   };
-  function openWindow() {
+  function openWindow(e) {
+    lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-winmodal';
     m.innerHTML =
@@ -1024,6 +1046,7 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
+    document.addEventListener('keydown', onModalKey);
     var scene = m.querySelector('#winScene');
     var cap = m.querySelector('#winCap');
     var frame = m.querySelector('#winFrame');
@@ -1105,7 +1128,8 @@ date: 2026-08-29 00:00:00
     { k: 'arml', label: '左手' },
     { k: 'armr', label: '右手' }
   ];
-  function openVoodoo() {
+  function openVoodoo(e) {
+    lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-voodoo';
     var pins = VO_PARTS.map(function (p, i) {
@@ -1137,6 +1161,7 @@ date: 2026-08-29 00:00:00
     m.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', function () { closeModal(m); });
     });
+    document.addEventListener('keydown', onModalKey);
     var bubble = m.querySelector('#voBubble');
     var countEl = m.querySelector('#voCount');
     var again = m.querySelector('#voAgain');
