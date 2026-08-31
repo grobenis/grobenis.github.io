@@ -298,8 +298,21 @@
       sky: m.querySelector('.bw-cosmos-sky'),
       stars: Array.prototype.slice.call(m.querySelectorAll('.bw-cosmos-star'))
     };
-    if (!vizRaf) vizLoop();
+    if (!vizRaf && !document.body.classList.contains('bw-reduced-motion')) vizLoop();
   }
+
+  /* --- 减少动画：检测系统偏好，标记 body + 让 cosmos 不跑频谱循环 --- */
+  (function initReducedMotion() {
+    var rmq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!rmq) return;
+    function apply() {
+      if (rmq.matches) document.body.classList.add('bw-reduced-motion');
+      else document.body.classList.remove('bw-reduced-motion');
+    }
+    apply();
+    if (rmq.addEventListener) rmq.addEventListener('change', apply);
+    else if (rmq.addListener) rmq.addListener(apply);
+  })();
 
   /* --- 主题切换：localStorage 记忆，跟随系统 --- */
   (function initTheme() {
