@@ -1,4 +1,60 @@
-.bw-grid {
+
+/* ===== 脑洞页设计变量 ===== */
+:root {
+  /* 紫系（cosmos / galaxy） */
+  --bw-purple-50:  var(--bw-purple-50);
+  --bw-purple-100: var(--bw-purple-100);
+  --bw-purple-200: var(--bw-purple-200);
+  --bw-purple-400: var(--bw-purple-500);
+  --bw-purple-500: var(--bw-purple-500);
+  --bw-purple-600: var(--bw-purple-500);
+  --bw-purple-700: var(--bw-purple-500);
+  --bw-purple-800: var(--bw-purple-500);
+  --bw-purple-glow: var(--bw-purple-500);
+
+  /* 金系（voodoo / 四季窗） */
+  --bw-gold-100: var(--bw-gold-100);
+  --bw-gold-200: var(--bw-gold-200);
+  --bw-gold-300: var(--bw-gold-300);
+  --bw-gold-400: var(--bw-gold-400);
+  --bw-gold-500: var(--bw-gold-700);
+  --bw-gold-600: var(--bw-gold-600);
+  --bw-gold-700: var(--bw-gold-700);
+  --bw-gold-glow: var(--bw-gold-glow);
+
+  /* 粉系（dolls / shop） */
+  --bw-pink-100: var(--bw-pink-100);
+  --bw-pink-200: var(--bw-pink-200);
+  --bw-pink-300: var(--bw-pink-400);
+  --bw-pink-400: var(--bw-pink-400);
+  --bw-pink-500: var(--bw-pink-500);
+  --bw-pink-600: var(--bw-pink-600);
+  --bw-pink-700: var(--bw-pink-700);
+  --bw-pink-800: var(--bw-pink-800);
+  --bw-pink-900: var(--bw-pink-900);
+  --bw-pink-text: var(--bw-pink-text);
+
+  /* 中性白（通用前景 / 玻璃） */
+  --bw-white-05: var(--bw-white-05);
+  --bw-white-08: var(--bw-white-08);
+  --bw-white-12: var(--bw-white-12);
+  --bw-white-16: var(--bw-white-16);
+  --bw-white-20: var(--bw-white-20);
+  --bw-white-25: var(--bw-white-25);
+  --bw-white-55: var(--bw-white-55);
+  --bw-white-72: var(--bw-white-72);
+  --bw-white-90: var(--bw-white-90);
+  --bw-white-92: var(--bw-white-92);
+
+  /* 黑投影（卡片/弹窗） */
+  --bw-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --bw-shadow-md: 0 6px 18px rgba(0, 0, 0, 0.3);
+  --bw-shadow-lg: 0 18px 42px rgba(30, 40, 80, 0.22);
+
+  /* 缓动 */
+  --bw-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --bw-ease-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
+}bw-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;
@@ -40,7 +96,7 @@
   width: 4px; height: 4px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px var(--bw-white-90);
   animation: bwTwinkle 2.4s ease-in-out infinite;
 }
 .bw-star-1 { left: 16%; top: 22%; }
@@ -69,7 +125,7 @@
 }
 .bw-card-soon .bw-card-art {
   background:
-    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.08), transparent 60%),
+    radial-gradient(circle at 50% 60%, var(--bw-white-08), transparent 60%),
     linear-gradient(160deg, #eceef4, #dde1ec);
 }
 .bw-soon-icon {
@@ -155,7 +211,7 @@
   width: 3px; height: 3px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px var(--bw-white-90);
   animation: bwTwinkle 2.6s ease-in-out infinite;
 }
 .bw-card-galaxy .bw-gstar:nth-child(2)  { left: 14%; top: 24%; }
@@ -200,7 +256,7 @@
     radial-gradient(circle at 20% 15%, rgba(90, 120, 255, 0.22), transparent 55%),
     radial-gradient(circle at 85% 85%, rgba(160, 80, 255, 0.18), transparent 50%),
     linear-gradient(160deg, #101536, #1a1650);
-  border: 1px solid rgba(140, 160, 255, 0.28);
+  border: 1px solid var(--bw-purple-200);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
   color: #eef0ff;
   animation: bwPanelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -214,14 +270,14 @@
   top: 12px; right: 12px;
   width: 34px; height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--bw-white-25);
+  background: var(--bw-white-08);
   color: #eef0ff;
   font-size: 15px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
 }
-.bw-modal-close:hover { background: rgba(255, 255, 255, 0.2); transform: rotate(90deg); }
+.bw-modal-close:hover { background: var(--bw-white-20); transform: rotate(90deg); }
 .bw-modal-title {
   margin: 0 0 4px;
   font-size: 24px;
@@ -237,7 +293,7 @@
   margin: 0 0 18px;
   font-size: 13px;
   text-align: center;
-  color: rgba(238, 240, 255, 0.6);
+  color: var(--bw-pink-text);
 }
 .bw-cosmos-sky {
   position: relative;
@@ -246,7 +302,7 @@
   margin-bottom: 18px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 100%, rgba(120, 90, 255, 0.35), transparent 60%),
+    radial-gradient(circle at 50% 100%, var(--bw-purple-500), transparent 60%),
     linear-gradient(180deg, #060a22, #131540);
 }
 /* 寰嬪姩鍏夋檿:闅忎綆棰戣兘閲忓懠鍚?鐢?JS 娉ㄥ叆 --pulse) */
@@ -258,7 +314,7 @@
   margin-left: -32px; margin-top: -32px;
   transform: scale(calc(0.6 + var(--pulse, 0) * 4));
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(170, 150, 255, 0.65), rgba(120, 90, 255, 0.15) 55%, transparent 72%);
+  background: radial-gradient(circle, var(--bw-purple-50), rgba(120, 90, 255, 0.15) 55%, transparent 72%);
   opacity: calc(0.2 + var(--pulse, 0) * 0.8);
   filter: blur(2px);
   pointer-events: none;
@@ -295,7 +351,7 @@
 .bw-cosmo-opt {
   padding: 12px 6px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--bw-white-16);
   background: rgba(255, 255, 255, 0.06);
   color: #eef0ff;
   font-size: 14px;
@@ -304,11 +360,11 @@
   cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
-.bw-cosmo-opt:hover { border-color: rgba(150, 180, 255, 0.6); background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.bw-cosmo-opt:hover { border-color: rgba(150, 180, 255, 0.6); background: var(--bw-white-12); transform: translateY(-2px); }
 .bw-cosmo-opt.is-on {
   border-color: #9fb6ff;
-  background: linear-gradient(90deg, rgba(75, 108, 245, 0.45), rgba(138, 75, 245, 0.45));
-  box-shadow: 0 0 18px rgba(120, 140, 255, 0.45);
+  background: linear-gradient(90deg, var(--bw-purple-500), var(--bw-purple-500));
+  box-shadow: 0 0 18px var(--bw-purple-500);
 }
 .bw-cosmos-status {
   text-align: center;
@@ -333,7 +389,7 @@
   inset: 0;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 120%, rgba(120, 90, 255, 0.4), transparent 62%),
+    radial-gradient(circle at 50% 120%, var(--bw-purple-500), transparent 62%),
     radial-gradient(circle at 15% 10%, rgba(90, 140, 255, 0.25), transparent 55%),
     linear-gradient(180deg, #05081f, #141a4a);
 }
@@ -351,7 +407,7 @@
   pointer-events: none;
 }
 .bw-gal-lines line {
-  stroke: rgba(150, 170, 255, 0.35);
+  stroke: var(--bw-purple-100);
   stroke-width: 1;
   stroke-dasharray: 3 3;
 }
@@ -392,7 +448,7 @@
   padding: 18px 20px;
   border-radius: 14px;
   background: rgba(10, 14, 42, 0.94);
-  border: 1px solid rgba(150, 170, 255, 0.35);
+  border: 1px solid var(--bw-purple-100);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
@@ -418,13 +474,13 @@
   top: 8px; right: 8px;
   width: 26px; height: 26px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--bw-white-20);
+  background: var(--bw-white-08);
   color: #eef0ff;
   font-size: 12px;
   cursor: pointer;
 }
-.bw-gal-pop-x:hover { background: rgba(255, 255, 255, 0.2); }
+.bw-gal-pop-x:hover { background: var(--bw-white-20); }
 .bw-gal-add {
   display: flex;
   gap: 10px;
@@ -435,7 +491,7 @@
   min-width: 0;
   padding: 11px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(140, 160, 255, 0.28);
+  border: 1px solid var(--bw-purple-200);
   background: rgba(255, 255, 255, 0.06);
   color: #eef0ff;
   font-size: 14px;
@@ -459,7 +515,7 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.bw-gal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(110, 90, 245, 0.45); }
+.bw-gal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--bw-purple-500); }
 .bw-gal-tip {
   text-align: center;
   font-size: 11px;
@@ -549,7 +605,7 @@
 .bw-dolls-panel {
   position: relative;
   width: min(880px, 100%);
-  border: 1px solid rgba(255, 190, 210, 0.35);
+  border: 1px solid var(--bw-pink-100);
   background:
     radial-gradient(ellipse at 50% -10%, rgba(255, 220, 200, 0.5), transparent 55%),
     linear-gradient(165deg, #ffecef 0%, #ffe0ea 50%, #ffd6e3 100%);
@@ -564,7 +620,7 @@
 }
 .bw-dolls-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
 .bw-dolls-panel .bw-modal-close {
-  border-color: rgba(160, 90, 120, 0.4);
+  border-color: var(--bw-pink-800);
   background: rgba(255, 255, 255, 0.45);
   color: #8a5470;
 }
@@ -622,13 +678,13 @@
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 10px 22px rgba(170, 90, 120, 0.28);
-  border: 3px solid rgba(255, 255, 255, 0.9);
+  border: 3px solid var(--bw-white-90);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .bw-doll:hover .bw-doll-img,
 .bw-doll:focus-visible .bw-doll-img {
   transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4);
+  box-shadow: 0 16px 30px var(--bw-pink-700);
   outline: none;
 }
 /* 鐐瑰嚮锛氭斁澶у脊璺?+ 杞昏交鏃嬭浆涓€涓?*/
@@ -722,7 +778,7 @@
   letter-spacing: 1px;
   text-align: center;
   color: #ffc2d6;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--bw-white-12);
   padding: 2px 8px;
   border-radius: 999px;
 }
@@ -738,7 +794,7 @@
   width: 26px; height: 26px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
+  background: var(--bw-white-16);
   color: #ffe9f0;
   font-size: 13px;
   cursor: pointer;
@@ -754,10 +810,10 @@
 .bw-today {
   flex: 1 1 auto; display: flex; align-items: center; gap: 10px;
   min-width: 0; padding: 8px 12px; border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--bw-white-72);
   box-shadow: 0 6px 18px rgba(150, 60, 95, 0.18);
 }
-.bw-today-img img { width: 52px; height: 52px; object-fit: cover; border-radius: 12px; border: 2px solid rgba(255, 150, 185, 0.55); }
+.bw-today-img img { width: 52px; height: 52px; object-fit: cover; border-radius: 12px; border: 2px solid var(--bw-pink-400); }
 .bw-today-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .bw-today-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #e0447a; }
 .bw-today-name { font-size: 14px; font-weight: 800; color: #7a2d4f; }
@@ -765,7 +821,7 @@
 .bw-collect {
   flex: 0 0 168px; display: flex; flex-direction: column; gap: 5px;
   padding: 8px 12px; border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--bw-white-72);
   box-shadow: 0 6px 18px rgba(150, 60, 95, 0.18);
 }
 .bw-collect-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #c77aa0; }
@@ -788,7 +844,7 @@
 .bw-doll:focus-visible .bw-doll-img {
   animation: bwDollWiggle 0.55s ease-in-out infinite;
   transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 16px 30px rgba(170, 90, 120, 0.4); outline: none;
+  box-shadow: 0 16px 30px var(--bw-pink-700); outline: none;
 }
 @keyframes bwBreath {
   0%, 100% { transform: translateY(0) scale(1); }
@@ -866,7 +922,7 @@
 @keyframes bwA_rainbow { 0%,100%{transform:rotate(0) scale(1)} 33%{transform:rotate(18deg) scale(1.15)} 66%{transform:rotate(-60deg) scale(1.05)} }
 /* 椋樿惤鑺辩摚 / 鏄熷厜姘涘洿 */
 .bw-doll-petals { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
-.bw-petal { position: absolute; color: rgba(255, 140, 180, 0.55); animation: bwPetalFall linear infinite; }
+.bw-petal { position: absolute; color: var(--bw-pink-400); animation: bwPetalFall linear infinite; }
 @keyframes bwPetalFall {
   0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
   8% { opacity: 0.9; }
@@ -878,7 +934,7 @@
   z-index: 8; padding: 12px 22px; border-radius: 999px;
   background: linear-gradient(90deg, #ffd76e, #ff9a3c, #ffd76e);
   color: #5c2f00; font-size: 14px; font-weight: 800; white-space: nowrap;
-  box-shadow: 0 10px 30px rgba(255, 154, 60, 0.6);
+  box-shadow: 0 10px 30px var(--bw-gold-700);
   animation: bwBanner 0.6s cubic-bezier(0.22, 1, 0.36, 1), bwBannerPulse 1.6s ease-in-out 0.6s infinite;
 }
 @keyframes bwBanner {
@@ -908,8 +964,8 @@
   inset: 0;
   opacity: 0.5;
   background-image:
-    radial-gradient(3px 3px at 18% 24%, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(3px 3px at 82% 38%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(3px 3px at 18% 24%, var(--bw-white-90), transparent),
+    radial-gradient(3px 3px at 82% 38%, var(--bw-white-90), transparent),
     radial-gradient(2px 2px at 30% 66%, rgba(240, 120, 170, 0.5), transparent);
 }
 .bw-box-glow {
@@ -937,12 +993,12 @@
   transform: translateX(-50%);
   background: linear-gradient(160deg, #ffd3ec, #ffa6d2);
   border-radius: 6px 6px 10px 10px;
-  box-shadow: inset -5px -6px 10px rgba(200, 90, 150, 0.22), 0 8px 16px rgba(220, 100, 160, 0.4);
+  box-shadow: inset -5px -6px 10px rgba(200, 90, 150, 0.22), 0 8px 16px var(--bw-pink-500);
 }
 .bw-box-q {
   position: absolute; left: 50%; top: 66px; transform: translateX(-50%);
   font-size: 26px; font-weight: 900; color: #fff;
-  text-shadow: 0 2px 6px rgba(200, 80, 140, 0.5);
+  text-shadow: 0 2px 6px var(--bw-pink-600);
   animation: bwQFloat 2.2s ease-in-out infinite;
 }
 @keyframes bwQFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-4px); } }
@@ -978,7 +1034,7 @@
   color: transparent;
 }
 .bw-shop-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
-.bw-shop-panel .bw-modal-close { border-color: rgba(160, 90, 120, 0.4); background: rgba(255, 255, 255, 0.45); color: #8a5470; }
+.bw-shop-panel .bw-modal-close { border-color: var(--bw-pink-800); background: rgba(255, 255, 255, 0.45); color: #8a5470; }
 .bw-shop-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
 
 /* ---- 鐩茬洅锛? 澶х被鍒嗙被 tab ---- */
@@ -1069,11 +1125,11 @@
 }
 .bw-shop-q {
   font-size: 40px; font-weight: 900; color: #fff;
-  text-shadow: 0 3px 10px rgba(200, 80, 140, 0.5);
+  text-shadow: 0 3px 10px var(--bw-pink-600);
 }
 .bw-shop-hint {
   font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #8a4a72;
-  background: rgba(255, 255, 255, 0.55); padding: 2px 10px; border-radius: 999px;
+  background: var(--bw-white-55); padding: 2px 10px; border-radius: 999px;
   margin-top: 6px;
 }
 .bw-shop-box.shaking {
@@ -1111,8 +1167,8 @@
   border-radius: 28px;
   padding: 6px;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 220, 235, 0.4) 70%, transparent 100%);
-  border: 2px solid rgba(255, 180, 210, 0.55);
+    radial-gradient(circle at 30% 30%, var(--bw-white-90), rgba(255, 220, 235, 0.4) 70%, transparent 100%);
+  border: 2px solid var(--bw-pink-200);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.5),
     0 14px 32px rgba(140, 50, 100, 0.28);
@@ -1175,7 +1231,7 @@
   border-radius: 999px; white-space: nowrap;
   background: linear-gradient(90deg, #ff7fb6, #ffc960, #9be2ff);
   color: #fff; font-size: 13px; font-weight: 900; letter-spacing: 1px;
-  box-shadow: 0 10px 30px rgba(255, 170, 60, 0.6);
+  box-shadow: 0 10px 30px var(--bw-gold-600);
   animation: bwBanner 0.5s cubic-bezier(0.22, 1, 0.36, 1), bwBannerPulse 1.5s ease-in-out 0.5s infinite;
 }
 .bw-shop-again {
@@ -1202,7 +1258,7 @@
   position: absolute; left: 50%; top: 12%;
   width: 6px; height: 6px; border-radius: 50%;
   background: #ffe9b0;
-  box-shadow: 0 0 12px 4px rgba(255, 210, 130, 0.5);
+  box-shadow: 0 0 12px 4px var(--bw-gold-300);
   animation: bwVoMagic 2.6s ease-in-out infinite;
   z-index: 1;
 }
@@ -1248,7 +1304,7 @@
 .bw-vo-cover {
   width: 46px; height: 46px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 235, 200, 0.65);
+  border: 2px solid var(--bw-gold-100);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
   object-fit: cover;
   background: #e2bd8b;
@@ -1257,7 +1313,7 @@
   display: none;
   width: 46px; height: 46px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 235, 200, 0.65);
+  border: 2px solid var(--bw-gold-100);
   align-items: center; justify-content: center;
   font-size: 20px;
   background: #e2bd8b;
@@ -1297,7 +1353,7 @@
   margin: 0 10px;
   border: 1px solid rgba(255, 200, 130, 0.4);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bw-white-08);
   color: #ffe9d2;
   font-size: 22px;
   line-height: 1;
@@ -1320,7 +1376,7 @@
 .bw-vo-pin {
   position: absolute;
   width: 20px; height: 20px;
-  border: 2px dashed rgba(255, 200, 130, 0.85);
+  border: 2px dashed var(--bw-gold-200);
   border-radius: 50%;
   cursor: pointer;
   z-index: 6;
@@ -1330,7 +1386,7 @@
 .bw-vo-pin:hover {
   transform: translate(-50%, -50%) scale(1.3);
   border-color: #ffd76e;
-  background: rgba(255, 210, 110, 0.2);
+  background: var(--bw-gold-400);
 }
 .bw-vo-pin-head { left: 50%; top: 8%; }
 .bw-vo-pin-tum  { left: 50%; top: 60%; }
@@ -1340,7 +1396,7 @@
   width: 13px; height: 28px;
   border: none; border-radius: 0;
   background: linear-gradient(180deg, #ffb3c8, #ff6f9c);
-  box-shadow: 0 2px 8px rgba(255, 100, 150, 0.5);
+  box-shadow: 0 2px 8px var(--bw-pink-900);
   pointer-events: none;
   animation: bwPinWobble 0.5s ease;
 }
@@ -1397,7 +1453,7 @@
   transform: translateX(-50%);
   max-width: 82%;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--bw-white-12);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   font-size: 13.5px;
@@ -1698,7 +1754,7 @@
   transform: translateX(-50%) scale(1.03);
   box-shadow:
     0 14px 28px rgba(150, 110, 150, 0.34),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.9),
+    inset 0 0 0 2px var(--bw-white-90),
     0 0 0 3px rgba(214, 182, 208, 0.7);
 }
 /* 闈欐€佺獥妫傦細涓ぎ绔栨 + 涓€閬撴í妫傦紙缁樻湰寮忔嫳褰㈢獥锛?*/
@@ -1707,9 +1763,9 @@
   content: '';
   position: absolute;
   z-index: 4;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bw-white-92);
   border-radius: 4px;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 6px var(--bw-white-55);
   transition: opacity 0.5s ease;
 }
 .bw-win-frame::before { /* 涓ぎ绔栨 */
@@ -1820,7 +1876,7 @@
 .bw-win-sill-plant { position: absolute; left: 9%; bottom: 22px; font-size: 26px; }
 .bw-win-sill-candle {
   position: absolute; right: 9%; bottom: 22px; font-size: 24px;
-  filter: drop-shadow(0 0 10px rgba(255, 190, 90, 0.8));
+  filter: drop-shadow(0 0 10px var(--bw-gold-glow));
   animation: bwCandleFlicker 2.2s ease-in-out infinite;
 }
 @keyframes bwCandleFlicker { 0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 190, 90, 0.7)); } 50% { filter: drop-shadow(0 0 16px rgba(255, 210, 120, 1)); } }
