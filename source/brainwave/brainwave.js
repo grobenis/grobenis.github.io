@@ -1155,7 +1155,9 @@
       var d = VO_DOLLS[idx];
       img.src = d.img;
       img.alt = d.name;
-      view.classList.toggle('full', s.full);
+      /* view 类状态机:idle / struggle / full(.down 倒下呼吸) / revive */
+      view.classList.remove('idle', 'shake', 'struggle', 'full', 'down', 'revive');
+      view.classList.add(s.full ? 'full' : 'idle');
       view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
         var i = +pin.getAttribute('data-i');
         pin.classList.toggle('done', s.pins.indexOf(i) >= 0);
@@ -1173,8 +1175,18 @@
         view.appendChild(face);
       }
       face.textContent = s.full ? d.faceDown : d.faceIdle;
+      /* 头顶星星层（仅扎服后显示一次,render 重建） */
+      var stars = view.querySelector('.bw-vo-stars');
+      if (!stars) {
+        stars = document.createElement('div');
+        stars.className = 'bw-vo-stars';
+        stars.setAttribute('aria-hidden', 'true');
+        view.appendChild(stars);
+      }
+      stars.textContent = '💫 ✨ 💥';
       view.classList.toggle('show-face', true);
       prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · 已扎 ' + s.pins.length + ' / ' + VO_PARTS.length;
+      prog.classList.toggle('done', !!s.full);
       var n = st.filter(function (x) { return x.full; }).length;
       countEl.textContent = '已扎 ' + n + ' / ' + VO_DOLLS.length + ' 个';
       if (s.full) {
@@ -1225,7 +1237,7 @@
         void pin.offsetWidth;
         pin.classList.add('stab', 'hit');
         /* 小人抖动 */
-        view.classList.remove('shake');
+        view.classList.remove('shake', 'struggle', 'idle');
         void view.offsetWidth;
         view.classList.add('shake');
         /* 进度条脉冲 */
@@ -1240,7 +1252,6 @@
           say(VO_LINES[(Math.random() * VO_LINES.length) | 0]);
         } else {
           s.full = true;
-          view.classList.add('full');
           if (face) face.textContent = VO_DOLLS[idx].faceDown;
           /* 命中清脆音 + 扎服上扬音 */
           try { VOODOO_SFX.hit(); } catch (er) {}
@@ -1249,16 +1260,45 @@
           say(VO_DOLLS[idx].line + ' → ' + VO_DOLLS[idx].name + ' 被扎服了！');
         }
         render();
+        /* 中等扎针数（≥2 针但未服）触发挣扎（更剧烈、不规则抽搐） */
+        if (!s.full && s.pins.length >= 2) {
+          setTimeout(function () {
+            view.classList.remove('shake');
+            void view.offsetWidth;
+            view.classList.add('struggle');
+            setTimeout(function () {
+              view.classList.remove('struggle');
+              if (!st[idx].full) view.classList.add('idle');
+            }, 560);
+          }, 380);
+        }
+        /* 扎服后:倒下动画 1.1s,加 .down 进入倒地呼吸 */
+        if (s.full) {
+          setTimeout(function () {
+            view.classList.add('down');
+          }, 1100);
+        }
       });
     });
     prev.addEventListener('click', function () { go(-1); });
     next.addEventListener('click', function () { go(1); });
     again.addEventListener('click', function () {
+      var wasFull = !!st[idx].full;
       st.forEach(function (s) { s.pins = []; s.full = false; });
       idx = (Math.random() * VO_DOLLS.length) | 0;
       again.style.display = 'none';
-      say('新一轮，挑一个最像 TA 的吧 😈');
+      say(wasFull ? '气消了～再来一轮 🎈' : '新一轮，挑一个最像 TA 的吧 😈');
       render();
+      /* 如果之前是 full 状态,先触发一次“复活”弹起,再回到 idle */
+      if (wasFull) {
+        view.classList.remove('idle');
+        void view.offsetWidth;
+        view.classList.add('revive');
+        setTimeout(function () {
+          view.classList.remove('revive', 'full', 'down');
+          view.classList.add('idle');
+        }, 720);
+      }
     });
     render();
   }
