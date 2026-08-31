@@ -38,6 +38,7 @@
       btn.addEventListener('click', function () { playSound(m, btn); });
     });
     document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
   }
   function closeModal(m) {
     stopAll();
@@ -50,6 +51,33 @@
     }
     lastTrigger = null;
   }
+  /* 模态无障碍：role/aria + 焦点移到关闭按钮 + Tab 焦点圈 */
+  function setupModalA11y(m) {
+    m.setAttribute('role', 'dialog');
+    m.setAttribute('aria-modal', 'true');
+    m.setAttribute('tabindex', '-1');
+    var closer = m.querySelector('.bw-modal-close');
+    if (closer) setTimeout(function () { try { closer.focus(); } catch (e) {} }, 0);
+  }
+  /* 累计扎小人次数：localStorage 持久化，封面展示徽章 */
+  var VO_STAT_KEY = 'bw_voodoo_stat';
+  function loadVoodooStat() { try { return JSON.parse(localStorage.getItem(VO_STAT_KEY)) || {}; } catch (e) { return {}; } }
+  function saveVoodooStat(o) { try { localStorage.setItem(VO_STAT_KEY, JSON.stringify(o)); } catch (e) {} }
+  function bumpVoodooStat(key) {
+    var o = loadVoodooStat();
+    o[key] = (o[key] || 0) + 1;
+    saveVoodooStat(o);
+    renderVoodooStat();
+  }
+  function renderVoodooStat() {
+    var el = document.getElementById('voodooStat');
+    if (!el) return;
+    var o = loadVoodooStat();
+    var total = 0; for (var k in o) total += (o[k] | 0);
+    if (total > 0) { el.textContent = '已扎服 ' + total + ' 次'; el.removeAttribute('hidden'); }
+    else el.setAttribute('hidden', '');
+  }
+  renderVoodooStat();
   var lastTrigger = null;
   function onModalKey(e) {
     if (e.key === 'Escape') {
@@ -250,6 +278,14 @@
   function playSound(m, btn) {
     var key = btn.getAttribute('data-sound');
     var ctx = ensureCtx();
+    /* 再点同一个按钮：暂停当前声音 */
+    if (btn.classList.contains('is-on') && activeNodes) {
+      stopAll();
+      m.querySelectorAll('.bw-cosmo-opt').forEach(function (b) { b.classList.remove('is-on'); });
+      var status0 = m.querySelector('.bw-cosmos-status');
+      if (status0) status0.textContent = '已暂停 · 点击其他选项切换';
+      return;
+    }
     stopAll();
     var nodes = presets[key]();
     activeNodes = nodes;
@@ -320,6 +356,7 @@
       el.addEventListener('click', function () { closeModal(m); });
     });
     document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
     /* 娓叉煋鍏ㄥ睆鏄熺郴鑳屾櫙 */
     var sky = m.querySelector('#galSky');
     renderGalaxy(sky);
@@ -597,6 +634,7 @@
       el.addEventListener('click', function () { closeModal(m); });
     });
     document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
     buildPetals(m);
     renderDolls(m);
     updateCollect(m, _col);
@@ -812,6 +850,7 @@
       el.addEventListener('click', function () { closeModal(m); });
     });
     document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
     var panel = m.querySelector('.bw-shop-panel');
     var box = m.querySelector('#shopBox');
     var stage = m.querySelector('.bw-shop-stage');
@@ -936,6 +975,7 @@
       el.addEventListener('click', function () { closeModal(m); });
     });
     document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
     var scene = m.querySelector('#winScene');
     var cap = m.querySelector('#winCap');
     var frame = m.querySelector('#winFrame');
@@ -953,7 +993,7 @@
       curSeason = key;
       var s = SEASONS[key];
       scene.className = 'bw-win-scene is-' + key;
-      scene.innerHTML = '<img class="bw-win-view" src="' + s.img + '" alt="' + key + '" />';
+      scene.innerHTML = '<img class="bw-win-view" src="' + s.img + '" alt="' + key + '" loading="lazy" decoding="async" />';
       fullImg.src = s.img;
       fullImg.alt = key;
       cap.textContent = s.caption;
@@ -1051,6 +1091,7 @@
       el.addEventListener('click', function () { closeModal(m); });
     });
     document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
     var bubble = m.querySelector('#voBubble');
     var countEl = m.querySelector('#voCount');
     var again = m.querySelector('#voAgain');
@@ -1113,6 +1154,7 @@
         } else {
           s.full = true;
           view.classList.add('full');
+          bumpVoodooStat(VO_DOLLS[idx].k);
           say(VO_DOLLS[idx].line + ' 鈫?' + VO_DOLLS[idx].name + ' 琚墡鏈嶄簡锛?);
         }
         render();
