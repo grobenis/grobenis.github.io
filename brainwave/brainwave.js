@@ -408,7 +408,9 @@
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');
-    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow, voodoo: openVoodoo, phone: openPhone }[mode] || openCosmos;
+    var OPENERS = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow, voodoo: openVoodoo, phone: openPhone };
+    var open = OPENERS[mode];
+    if (!open) { console.warn('[brainwave] unknown card mode:', mode); return; }
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });

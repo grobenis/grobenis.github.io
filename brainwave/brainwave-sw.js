@@ -5,7 +5,7 @@
  *   - dolls/toys 图片：StaleWhileRevalidate
  *   - 导航请求：NetworkFirst，失败回退缓存（支持离线访问脑洞页）
  */
-var CACHE_NAME = 'brainwave-v1-20260831';
+var CACHE_NAME = 'brainwave-v1-20260901';
 var STATIC_CACHE = [
   '/brainwave/',
   '/brainwave/brainwave.css',
