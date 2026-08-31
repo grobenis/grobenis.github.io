@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/04/13/2020-04-13-ORBSLAM2/</loc>
+    <loc>https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/</loc>
+    <loc>https://grobenis.github.io/2020/04/13/2020-04-13-ORBSLAM2/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -137,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/30/2020-03-30-Bundle-adjustment/</loc>
+    <loc>https://grobenis.github.io/2020/03/28/2020-03-28-Cpp-String/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -146,7 +146,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/28/2020-03-28-Cpp-String/</loc>
+    <loc>https://grobenis.github.io/2020/03/30/2020-03-30-Bundle-adjustment/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -272,7 +272,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/</loc>
+    <loc>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -290,16 +290,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/10/2020-03-10-Use_DBoW2_to_Loop_Detection/</loc>
-    
-    <lastmod>2026-08-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/</loc>
+    <loc>https://grobenis.github.io/2020/03/10/2020-03-12-Clustering_Survey/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -317,6 +308,15 @@
   </url>
   
   <url>
+    <loc>https://grobenis.github.io/2020/02/15/2020-02-19-How_to_use_evo/</loc>
+    
+    <lastmod>2026-08-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://grobenis.github.io/2020/02/15/2020-02-15-VIO_Framework/</loc>
     
     <lastmod>2026-08-27</lastmod>
@@ -326,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/</loc>
+    <loc>https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -335,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/</loc>
+    <loc>https://grobenis.github.io/2020/02/15/2020-02-15-UbuntuBluetooth/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -380,7 +380,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/</loc>
+    <loc>https://grobenis.github.io/2022/07/25/2022-7-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -389,7 +389,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2022/07/25/2022-7-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/</loc>
+    <loc>https://grobenis.github.io/2022/07/25/2022-7-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -425,15 +425,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2022/04/05/2022-04-05-%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/</loc>
-    
-    <lastmod>2026-08-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/2022/03/31/2022-03-31-Big-data/</loc>
     
     <lastmod>2026-08-26</lastmod>
@@ -443,7 +434,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2022/03/24/2022-03-24-19-20-00-fedral-machine-learning/</loc>
+    <loc>https://grobenis.github.io/2022/04/05/2022-04-05-%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -453,6 +444,15 @@
   
   <url>
     <loc>https://grobenis.github.io/2022/03/16/2022-03-16-Souce_static_in_project/</loc>
+    
+    <lastmod>2026-08-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/2022/03/24/2022-03-24-19-20-00-fedral-machine-learning/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -623,7 +623,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/08/02/2020-08-02-C++%E6%A0%91/</loc>
+    <loc>https://grobenis.github.io/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -632,7 +632,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/</loc>
+    <loc>https://grobenis.github.io/2020/08/02/2020-08-02-C++%E6%A0%91/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -755,13 +755,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/VINS/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/tags/VIO/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -769,7 +762,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/evo/</loc>
+    <loc>https://grobenis.github.io/tags/VINS/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -783,21 +776,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E8%81%9A%E7%B1%BB/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/HMM/</loc>
+    <loc>https://grobenis.github.io/tags/evo/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -818,7 +797,28 @@
   </url>
   
   <url>
+    <loc>https://grobenis.github.io/tags/HMM/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://grobenis.github.io/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E8%81%9A%E7%B1%BB/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -839,6 +839,13 @@
   </url>
   
   <url>
+    <loc>https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://grobenis.github.io/tags/C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -847,13 +854,6 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/KMP/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -895,14 +895,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/BA/</loc>
+    <loc>https://grobenis.github.io/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/</loc>
+    <loc>https://grobenis.github.io/tags/BA/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -930,14 +930,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/ORB-SLAM2/</loc>
+    <loc>https://grobenis.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</loc>
+    <loc>https://grobenis.github.io/tags/ORB-SLAM2/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -958,13 +958,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -973,6 +966,13 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/CMake/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1021,14 +1021,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E9%93%BE%E8%A1%A8/</loc>
+    <loc>https://grobenis.github.io/tags/TCP/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
+    <loc>https://grobenis.github.io/tags/UDP/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1042,28 +1042,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/TCP/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/UDP/</loc>
+    <loc>https://grobenis.github.io/tags/%E9%93%BE%E8%A1%A8/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1091,6 +1070,13 @@
   </url>
   
   <url>
+    <loc>https://grobenis.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://grobenis.github.io/tags/%E5%AE%89%E5%8D%93/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1099,6 +1085,20 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1149,14 +1149,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://grobenis.github.io/categories/SLAM/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/SLAM/</loc>
+    <loc>https://grobenis.github.io/categories/%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1184,13 +1184,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/categories/C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1198,7 +1191,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/</loc>
+    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1212,6 +1205,13 @@
   </url>
   
   <url>
+    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1219,14 +1219,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E7%A7%91%E7%A0%94/</loc>
+    <loc>https://grobenis.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
+    <loc>https://grobenis.github.io/categories/%E7%A7%91%E7%A0%94/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
