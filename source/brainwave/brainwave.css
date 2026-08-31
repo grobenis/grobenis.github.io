@@ -1313,20 +1313,44 @@
   z-index: 7;
 }
 .bw-vo-view.full .bw-vo-done-badge { display: inline-block; }
+/* 切换按钮容器:水平排列,容纳左右按钮+小人 */
+.bw-vo-arrows {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
 .bw-vo-nav {
   flex: 0 0 auto;
-  width: 40px; height: 40px;
-  margin: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  min-height: 40px;
   border: 1px solid rgba(255, 200, 130, 0.4);
-  border-radius: 50%;
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
   color: #ffe9d2;
-  font-size: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
-.bw-vo-nav:hover { background: rgba(255, 200, 130, 0.22); transform: scale(1.1); }
+.bw-vo-nav-arrow { font-size: 18px; line-height: 1; opacity: 0.85; }
+.bw-vo-nav-label { display: inline-block; }
+.bw-vo-nav:hover,
+.bw-vo-nav:active {
+  background: rgba(255, 200, 130, 0.22);
+  border-color: rgba(255, 200, 130, 0.7);
+  transform: scale(1.05);
+}
+.bw-vo-nav:focus-visible { outline: 2px solid #ffd9a0; outline-offset: 2px; }
 .bw-vo-prog {
   width: 100%;
   margin-top: 10px;
@@ -2329,6 +2353,55 @@
     font-size: 12px;
     line-height: 1.55;
   }
+}
+
+/* ===== 扎小人：移动端布局优化 ===== */
+/* 中屏 (≤ 600px): stage 内边距收紧,小人缩到 160 */
+@media (max-width: 600px) {
+  .bw-vo-panel { padding: 14px 12px 10px; }
+  .bw-vo-stage { padding: 46px 6px 10px; min-height: 280px; }
+  .bw-vo-view { width: 160px; height: 160px; }
+  .bw-vo-pin { width: 32px; height: 32px; }
+  .bw-vo-pin-head { left: 50%; top: 8%; }
+  .bw-vo-pin-tum  { left: 50%; top: 60%; }
+  .bw-vo-pin-arml { left: 10%; top: 40%; }
+  .bw-vo-pin-armr { left: 90%; top: 40%; }
+  .bw-vo-pin.done { width: 11px; height: 22px; }
+  .bw-vo-arrows { gap: 10px; }
+  .bw-vo-nav { padding: 9px 12px; min-height: 38px; font-size: 13px; }
+}
+/* 小屏 (≤ 460px): 改为竖直堆叠,按钮放到下方一字排开 */
+@media (max-width: 460px) {
+  .bw-vo-panel { padding: 12px 10px 8px; }
+  .bw-vo-panel .bw-modal-title { font-size: 18px; }
+  .bw-vo-panel .bw-modal-sub { font-size: 12px; }
+  .bw-vo-stage { padding: 42px 8px 12px; min-height: 320px; }
+  .bw-vo-arrows {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .bw-vo-view { width: 150px; height: 150px; }
+  .bw-vo-nav {
+    width: 100%;
+    max-width: 260px;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+  .bw-vo-nav-label { font-size: 14px; }
+  .bw-vo-prog { font-size: 13px; margin-top: 8px; }
+  .bw-vo-bubble { font-size: 12px; padding: 5px 10px; }
+  .bw-vo-count { font-size: 12px; }
+  .bw-vo-again { padding: 10px 22px; font-size: 14px; }
+}
+/* 极小屏 (≤ 360px): 小人再缩,按钮 padding 收紧 */
+@media (max-width: 360px) {
+  .bw-vo-view { width: 130px; height: 130px; }
+  .bw-vo-pin { width: 28px; height: 28px; }
+  .bw-vo-pin.done { width: 10px; height: 20px; }
+  .bw-vo-nav { padding: 8px 10px; font-size: 12px; }
+  .bw-vo-nav-arrow { font-size: 16px; }
+  .bw-vo-panel .bw-modal-title { font-size: 16px; }
+  .bw-vo-panel .bw-modal-sub { font-size: 11px; }
 }
 
 /* 防止放大态下房间外全屏图溢出：移动端不改变 .is-zoom 行为，但需要保证

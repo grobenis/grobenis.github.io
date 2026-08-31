@@ -1114,13 +1114,19 @@
         '<p class="bw-modal-sub">左右切换小人，找到最像 TA 的那个，扎它！</p>' +
         '<div class="bw-vo-stage">' +
           '<div class="bw-vo-bubble" id="voBubble">先随机一位幸运小人～</div>' +
-          '<button class="bw-vo-nav bw-vo-prev" type="button" aria-label="上一个">‹</button>' +
-          '<div class="bw-vo-view" id="voView">' +
-            '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
-            pins +
-            '<span class="bw-vo-done-badge">已生效 ✓</span>' +
+          '<div class="bw-vo-arrows">' +
+            '<button class="bw-vo-nav bw-vo-prev" type="button" aria-label="上一位小人">' +
+              '<span class="bw-vo-nav-arrow">‹</span><span class="bw-vo-nav-label">上一位</span>' +
+            '</button>' +
+            '<div class="bw-vo-view" id="voView">' +
+              '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
+              pins +
+              '<span class="bw-vo-done-badge">已生效 ✓</span>' +
+            '</div>' +
+            '<button class="bw-vo-nav bw-vo-next" type="button" aria-label="下一位小人">' +
+              '<span class="bw-vo-nav-arrow">›</span><span class="bw-vo-nav-label">下一位</span>' +
+            '</button>' +
           '</div>' +
-          '<button class="bw-vo-nav bw-vo-next" type="button" aria-label="下一个">›</button>' +
           '<div class="bw-vo-prog" id="voProg"></div>' +
         '</div>' +
         '<div class="bw-vo-count" id="voCount">已扎 0 / 6 个</div>' +
