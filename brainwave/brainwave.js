@@ -163,6 +163,68 @@
       try { if (navigator.vibrate) navigator.vibrate(ms || 35); } catch (e) {}
     }
     var VOODOO_SFX = { stab: sfxStab, hit: sfxHit, defeat: sfxDefeat, haptic: haptic };
+
+    /* ---------- 电话音效：铃声 / 接听 / 挂断 / 忙音 / 对话气泡 ---------- */
+    /* 铃声：老式电话双频（440/480Hz）间隔 1.2s 循环,返回停止函数 */
+    function sfxRing() {
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var stop = false;
+        function ringOnce() {
+          if (stop) return;
+          var t = ctx.currentTime;
+          [440, 480].forEach(function (f) {
+            var osc = ctx.createOscillator();
+            var env = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, t);
+            env.gain.setValueAtTime(0.0001, t);
+            env.gain.exponentialRampToValueAtTime(0.35, t + 0.05);
+            env.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+            osc.connect(env); env.connect(g);
+            osc.start(t);
+            osc.stop(t + 0.5);
+          });
+        }
+        ringOnce();
+        var timer = setInterval(ringOnce, 1200);
+        return function () { stop = true; clearInterval(timer); };
+      } catch (e) { return function () {}; }
+    }
+    /* 接听咔哒声：短促高频 sine（1200→800Hz） */
+    function sfxPickup() {
+      playOne({ type: 'sine', f0: 1200, f1: 800, dur: 0.12, peak: 0.4 });
+    }
+    /* 挂断忙音：低频方波短鸣（持续到脚本结束由 sfxBusy 接管） */
+    function sfxHangup() {
+      playOne({ type: 'square', f0: 480, f1: 480, dur: 0.15, peak: 0.25 });
+    }
+    /* 忙音：循环 480Hz/620Hz 短促交替,持续约 1s */
+    function sfxBusy() {
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var t0 = ctx.currentTime;
+        for (var i = 0; i < 6; i++) {
+          var osc = ctx.createOscillator();
+          var env = ctx.createGain();
+          osc.type = 'sine';
+          var f = (i % 2 === 0) ? 480 : 620;
+          osc.frequency.setValueAtTime(f, t0 + i * 0.16);
+          env.gain.setValueAtTime(0.0001, t0 + i * 0.16);
+          env.gain.exponentialRampToValueAtTime(0.25, t0 + i * 0.16 + 0.01);
+          env.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.16 + 0.13);
+          osc.connect(env); env.connect(g);
+          osc.start(t0 + i * 0.16);
+          osc.stop(t0 + i * 0.16 + 0.14);
+        }
+      } catch (e) {}
+    }
+    /* 对话气泡出场音：高频轻点（2000Hz 短促 30ms） */
+    function sfxTalk() {
+      playOne({ type: 'sine', f0: 2000, f1: 1600, dur: 0.06, peak: 0.18 });
+    }
     /* 停止律动循环并复位画面 */
     pauseViz();
     if (vizTarget.sky) {
@@ -346,7 +408,7 @@
   /* --- 卡片点击打开 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');
-    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow, voodoo: openVoodoo }[mode] || openCosmos;
+    var open = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow, voodoo: openVoodoo, phone: openPhone }[mode] || openCosmos;
     card.addEventListener('click', open);
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
@@ -1307,5 +1369,306 @@
       }
     });
     render();
+  }
+
+  /* ============ 接电话（动物来电） ============ */
+  /* 10 位来电角色;每通电话有多句对话,接听后逐条出现 */
+  var CALLERS = [
+    {
+      k: 'cat', name: '邻居家橘猫', avatar: '🐱', ring: '🐱 · 喵喵来电',
+      line: '你阳台那个鱼干...是不是风吹下去的？',
+      script: [
+        '喵...你家阳台的鱼干，是不是风吹下去的？',
+        '不是啦，是我自己不小心碰掉的...但能不能再给一块？',
+        '你看，我就剩这一块了，今晚还要用它招待女朋友。',
+        '什么？你没有女朋友？那就...那就算了我自己吃。'
+      ]
+    },
+    {
+      k: 'penguin', name: '南极科考员', avatar: '🐧', ring: '🐧 · 南极基站',
+      line: '你家 Wi-Fi 借我用一下？',
+      script: [
+        '你好，我家在南极，这边5G 没覆盖...',
+        '你家 Wi-Fi 密码多少？我出企鹅币买。',
+        '一企鹅币等于几人民币？我也没换算过。',
+        '要不这样，你告诉我密码，我寄一箱南极磷虾给你当运费。'
+      ]
+    },
+    {
+      k: 'hedgehog', name: '迷路的小刺猬', avatar: '🦔', ring: '🦔 · 求助电话',
+      line: '我迷路了，身上还扎着两个橘子',
+      script: [
+        '我迷路了，身上还扎着两个橘子，能告诉我最近的便利店怎么走吗？',
+        '不是橘子，是橘子皮...现在已经扎进皮肤里了。',
+        '你能来接我吗？我已经三个小时没动了。',
+        '如果你来的话，请带一把镊子，谢谢。'
+      ]
+    },
+    {
+      k: 'turtle', name: '公园慢龟', avatar: '🐢', ring: '🐢 · 物业投诉',
+      line: '你家楼下那辆红色的车开太快了！',
+      script: [
+        '我要投诉，你家楼下那辆红色的车，开得比我走路还快！',
+        '好吧，严格来说是比你走路快一点。',
+        '它刚才从我壳上压过去了，只压到一点点。',
+        '我现在在公园假山后面，需要法律援助吗？'
+      ]
+    },
+    {
+      k: 'octopus', name: '深海章鱼', avatar: '🐙', ring: '🐙 · 求职专线',
+      line: '我看到你们公司在招前端工程师',
+      script: [
+        '你好，我看到你们公司在招前端工程师。',
+        '我有八只手，可以并行写八个组件。',
+        '另外两只脚可以顺便做后端。',
+        '请问贵司能否接受带薪水下办公？'
+      ]
+    },
+    {
+      k: 'owl', name: '夜行猫头鹰', avatar: '🦉', ring: '🦉 · 哲学咨询',
+      line: '你睡觉的时候梦会飘出来',
+      script: [
+        '你睡觉的时候，我看见你的梦从窗口飘出来。',
+        '今晚那个梦尤其奇怪，你居然梦到自己在写 bug。',
+        '能不能帮我翻译一下，那个梦到底想说什么？',
+        '放心，咨询费可以换成夜宵——我吃素。'
+      ]
+    },
+    {
+      k: 'raccoon', name: '浣熊快递员', avatar: '🦝', ring: '🦝 · 快递误投',
+      line: '你家门口的快递我拆开试吃了一下',
+      script: [
+        '你家门口的快递我拆开试吃了一下。',
+        '不是偷吃，是试吃，为了确保食品安全。',
+        '结果是：味道不错，建议再下一单。',
+        '对了，包装上写的是你的晚饭。'
+      ]
+    },
+    {
+      k: 'fox', name: '童话里的狐狸', avatar: '🦊', ring: '🦊 · 下午茶邀请',
+      line: '我这边有个吃不到葡萄主题派对',
+      script: [
+        '你好，这边有个"吃不到葡萄说葡萄酸"主题派对。',
+        '我们缺一位人类代表，能赏脸吗？',
+        '葡萄是假的，但吐槽是真的。',
+        '对了，甜点区有一盘葡萄，我特别酸。'
+      ]
+    },
+    {
+      k: 'frog', name: '井底之蛙', avatar: '🐸', ring: '🐸 · 心理咨询',
+      line: '我想跳出井，但外面会不会没人记得我',
+      script: [
+        '我想跳出井，但外面世界这么大。',
+        '会不会出去了，反而没人记得我？',
+        '井里至少有三十七只蚊子认得我。',
+        '你觉得，跳出去值得吗？'
+      ]
+    },
+    {
+      k: 'bee', name: '加班的蜜蜂', avatar: '🐝', ring: '🐝 · 加班倾诉',
+      line: '今天采了 400 朵花，但被一朵嘲笑效率低',
+      script: [
+        '今天采了400 朵花，但被一朵嘲笑说我效率低。',
+        '我解释说是路径优化，它说它自己开的更鲜艳。',
+        '老板是花朵，我就忍着点吧。',
+        '你呢，今天也被老板花刺过吗？'
+      ]
+    }
+  ];
+  function openPhone(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-phone';
+    /* HTML 结构:经典座机(听筒+拨号盘)+ 来电显示 + 对话气泡 + 控制按钮 */
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-phone-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">动物来电</h2>' +
+        '<p class="bw-modal-sub">想谁来电话，就让谁来 · 接不接由你</p>' +
+        '<div class="bw-phone-machine" id="phoneMachine">' +
+          /* 来电显示 */
+          '<div class="bw-phone-screen" id="phoneScreen">' +
+            '<div class="bw-phone-screen-inner">' +
+              '<div class="bw-phone-screen-label">来电中</div>' +
+              '<div class="bw-phone-screen-caller" id="phoneCaller">— · —</div>' +
+              '<div class="bw-phone-screen-line" id="phoneLine">……</div>' +
+            '</div>' +
+          '</div>' +
+          /* 听筒 */
+          '<div class="bw-phone-handset" id="phoneHandset">' +
+            '<div class="bw-phone-handset-ear"></div>' +
+            '<div class="bw-phone-handset-body"></div>' +
+            '<div class="bw-phone-handset-mic"></div>' +
+          '</div>' +
+          /* 拨号盘装饰 */
+          '<div class="bw-phone-dial">' +
+            '<span></span><span></span><span></span>' +
+            '<span></span><span></span><span></span>' +
+            '<span></span><span></span><span></span>' +
+            '<span></span>' +
+          '</div>' +
+          /* 控制按钮 */
+          '<div class="bw-phone-actions">' +
+            '<button class="bw-phone-btn bw-phone-hangup" id="phoneHangup" type="button" aria-label="挂断">挂断</button>' +
+            '<button class="bw-phone-btn bw-phone-pickup" id="phonePickup" type="button" aria-label="接听">📞 接听</button>' +
+            '<button class="bw-phone-btn bw-phone-next" id="phoneNext" type="button" aria-label="换一个">换一个 ⤳</button>' +
+          '</div>' +
+        '</div>' +
+        /* 对话气泡区 */
+        '<div class="bw-phone-chat" id="phoneChat" aria-live="polite"></div>' +
+        /* 来电记录 + 重置 */
+        '<div class="bw-phone-foot">' +
+          '<span class="bw-phone-record" id="phoneRecord">已接 0 通</span>' +
+          '<button class="bw-phone-reset" id="phoneReset" type="button">清空记录</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+       el.addEventListener('click', function () {
+         /* 挂断时停止铃声 */
+         try { ringStop && ringStop(); } catch (er) {}
+         closeModal(m);
+       });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+
+    var state = 'ringing';       /* ringing / talking / ended */
+    var cur = null;              /* 当前来电角色 */
+    var lineIdx = -1;            /* 下一条对话索引 */
+    var ringStop = null;         /* 铃声停止回调 */
+    var record = loadCallRecord();
+
+    function loadCallRecord() {
+      try { return JSON.parse(localStorage.getItem('bw_phone_record') || '{}'); } catch (e) { return {}; }
+    }
+    function saveCallRecord(o) {
+      try { localStorage.setItem('bw_phone_record', JSON.stringify(o)); } catch (e) {}
+    }
+    function renderRecord() {
+      var total = 0; for (var k in record) total += (record[k] | 0);
+      recEl.textContent = '已接 ' + total + ' 通';
+    }
+
+    var machine = m.querySelector('#phoneMachine');
+    var screen = m.querySelector('#phoneScreen');
+    var callerEl = m.querySelector('#phoneCaller');
+    var lineEl = m.querySelector('#phoneLine');
+    var handset = m.querySelector('#phoneHandset');
+    var pickup = m.querySelector('#phonePickup');
+    var hangup = m.querySelector('#phoneHangup');
+    var next = m.querySelector('#phoneNext');
+    var chat = m.querySelector('#phoneChat');
+    var recEl = m.querySelector('#phoneRecord');
+    var reset = m.querySelector('#phoneReset');
+
+    function pickCaller() {
+      /* 排除上次来电,增加重复耐受 */
+      var pool = CALLERS.filter(function (c) { return !cur || c.k !== cur.k; });
+      return pool[(Math.random() * pool.length) | 0];
+    }
+    function showBubble(text, who) {
+      var row = document.createElement('div');
+      row.className = 'bw-phone-msg ' + who;
+      var av = document.createElement('div');
+      av.className = 'bw-phone-msg-av';
+      av.textContent = who === 'me' ? '🙂' : cur.avatar;
+      var bub = document.createElement('div');
+      bub.className = 'bw-phone-msg-bub';
+      bub.textContent = text;
+      row.appendChild(av); row.appendChild(bub);
+      chat.appendChild(row);
+      /* 滚动到底 */
+      chat.scrollTop = chat.scrollHeight;
+    }
+    function nextLine() {
+      lineIdx++;
+      if (lineIdx >= cur.script.length) {
+        /* 全部台词结束 */
+        showBubble('（电话那头安静了）', 'sys');
+        try { sfxBusy(); } catch (er) {}
+        setTimeout(function () { endCall(false); }, 1200);
+        return;
+      }
+      showBubble(cur.script[lineIdx], 'them');
+      try { sfxTalk(); } catch (er) {}
+    }
+    function startRing() {
+      cur = pickCaller();
+      lineIdx = -1;
+      chat.innerHTML = '';
+      callerEl.textContent = cur.ring;
+      lineEl.textContent = cur.line;
+      machine.classList.remove('talking', 'ended');
+      machine.classList.add('ringing');
+      state = 'ringing';
+      pickup.disabled = false;
+      pickup.style.display = '';
+      hangup.style.display = 'none';
+      next.style.display = 'none';
+      try { ringStop = sfxRing(); } catch (er) {}
+    }
+    function pickUp() {
+      if (state !== 'ringing') return;
+      state = 'talking';
+      machine.classList.remove('ringing');
+      machine.classList.add('talking');
+      try { sfxPickup(); } catch (er) {}
+      try { ringStop && ringStop(); } catch (er) {}
+      ringStop = null;
+      pickup.style.display = 'none';
+      hangup.style.display = '';
+      next.style.display = '';
+      lineEl.textContent = '通话中...';
+      /* 接听音效后 350ms 显示第一条 */
+      setTimeout(nextLine, 350);
+      /* 累计记录 */
+      record[cur.k] = (record[cur.k] || 0) + 1;
+      saveCallRecord(record);
+      renderRecord();
+    }
+    function hangUp() {
+      if (state === 'ended') return;
+      showBubble('（你挂了电话）', 'sys');
+      try { sfxHangup(); } catch (er) {}
+      endCall(true);
+    }
+    function endCall(hangup) {
+      state = 'ended';
+      machine.classList.remove('ringing', 'talking');
+      machine.classList.add('ended');
+      lineEl.textContent = hangup ? '已挂断' : '通话结束';
+      hangup.style.display = 'none';
+      pickup.style.display = 'none';
+      next.textContent = '📞 再来一通';
+      next.style.display = '';
+      /* 2 秒后自动再响 */
+      setTimeout(function () { if (state === 'ended') startRing(); }, 2200);
+    }
+    pickup.addEventListener('click', pickUp);
+    hangup.addEventListener('click', hangUp);
+    next.addEventListener('click', function () {
+      if (state === 'ringing') {
+        /* 还在响,跳过这一通 */
+        try { ringStop && ringStop(); } catch (er) {}
+        ringStop = null;
+        startRing();
+      } else {
+        startRing();
+      }
+    });
+    /* 接听后再点话筒区可触发下一句 */
+    handset.addEventListener('click', function () {
+      if (state === 'talking') nextLine();
+    });
+    reset.addEventListener('click', function () {
+      record = {}; saveCallRecord(record); renderRecord();
+    });
+
+    /* 启动 */
+    renderRecord();
+    startRing();
   }
 })();
