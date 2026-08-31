@@ -1160,6 +1160,9 @@
         var i = +pin.getAttribute('data-i');
         pin.classList.toggle('done', s.pins.indexOf(i) >= 0);
         pin.classList.remove('stab', 'hit');
+        /* 清除银色针尖残留（切换小人 / 重置时） */
+        var oldTip = pin.querySelector('.bw-needle-tip');
+        if (oldTip) oldTip.remove();
       });
       /* 表情层 emoji：扎前默认、扎服换悲伤 */
       var face = view.querySelector('.bw-vo-face');
@@ -1205,8 +1208,20 @@
         /* 反馈触发：音效+触觉+抖动+表情切换 */
         try { VOODOO_SFX.stab(); } catch (er) {}
         try { VOODOO_SFX.haptic(35); } catch (er) {}
-        /* 飞针落定 + 圈本身抖动 */
+        /* 飞针落定 + 圈本身抖动 + 银色针尖三角 */
         pin.classList.remove('stab', 'hit');
+        /* 移除旧针尖（如果切换小人后还在） */
+        var oldTip = pin.querySelector('.bw-needle-tip');
+        if (oldTip) oldTip.remove();
+        /* 追加新针尖 span（CSS 动画通过 .stab 触发） */
+        var tip = document.createElement('span');
+        tip.className = 'bw-needle-tip';
+        tip.setAttribute('aria-hidden', 'true');
+        pin.appendChild(tip);
+        /* 动画结束后移除,避免残留 */
+        setTimeout(function () {
+          if (tip && tip.parentNode && !pin.classList.contains('stab')) tip.remove();
+        }, 600);
         void pin.offsetWidth;
         pin.classList.add('stab', 'hit');
         /* 小人抖动 */
