@@ -2069,3 +2069,21 @@
 /* 闃叉鏀惧ぇ鎬佷笅鎴块棿澶栧叏灞忓浘婧㈠嚭锛氱Щ鍔ㄧ涓嶆敼鍙?.is-zoom 琛屼负锛屼絾闇€瑕佷繚璇?
    .bw-win-fullview 浠嶇劧鍙摵婊℃埧闂达紝涓嶅欢浼稿埌 panel 澶栭儴锛堝凡閫氳繃 position:absolute + inset:0
    鐩稿 .bw-room 闄愬畾锛岀Щ鍔ㄧ .bw-win-tabs 宸插湪 .bw-room 涔嬪锛屼笉浼氳瑕嗙洊锛?*/
+.bw-card-stat {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff8fa3, #ffc1cc);
+  color: #fff;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(255, 143, 163, 0.45);
+  animation: bwStatPop 0.5s ease;
+}
+.bw-card-stat[hidden] { display: none; }
+@keyframes bwStatPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
