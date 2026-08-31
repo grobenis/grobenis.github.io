@@ -301,6 +301,26 @@
     if (!vizRaf && !document.body.classList.contains('bw-reduced-motion')) vizLoop();
   }
 
+  /* --- Service Worker 注册：缓存 css/js/图片，支持脑洞页离线访问 --- */
+  if ('serviceWorker' in navigator) {
+    /* 仅在 https 或 localhost 下注册；brainwave-sw.js 必须同源 */
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/brainwave/brainwave-sw.js').then(function (reg) {
+        /* 静默处理：SW 注册成功失败都不打扰用户 */
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        reg.addEventListener('updatefound', function () {
+          var nw = reg.installing;
+          if (!nw) return;
+          nw.addEventListener('statechange', function () {
+            if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+              /* 新 SW 安装就绪，下次加载生效 */
+            }
+          });
+        });
+      }).catch(function () { /* 离线/异常静默 */ });
+    });
+  }
+
   /* --- 减少动画：检测系统偏好，标记 body + 让 cosmos 不跑频谱循环 --- */
   (function initReducedMotion() {
     var rmq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
