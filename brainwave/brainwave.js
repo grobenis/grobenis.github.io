@@ -96,16 +96,10 @@
   var freqData = null;
   /* 命名空间:供后续模块（接电话等）访问 stopAll 内部定义的音效函数 */
   var bwSfx = {};
-  function _registerSfx() {
-    bwSfx.sfxStab = sfxStab; bwSfx.sfxHit = sfxHit; bwSfx.sfxDefeat = sfxDefeat;
-    bwSfx.sfxRing = sfxRing; bwSfx.sfxPickup = sfxPickup; bwSfx.sfxHangup = sfxHangup;
-    bwSfx.sfxBusy = sfxBusy; bwSfx.sfxTalk = sfxTalk;
-    bwSfx.voiceTone = voiceTone;
-    bwSfx.voiceCat = voiceCat; bwSfx.voicePenguin = voicePenguin; bwSfx.voiceHedgehog = voiceHedgehog;
-    bwSfx.voiceTurtle = voiceTurtle; bwSfx.voiceOctopus = voiceOctopus; bwSfx.voiceOwl = voiceOwl;
-    bwSfx.voiceRaccoon = voiceRaccoon; bwSfx.voiceFox = voiceFox; bwSfx.voiceFrog = voiceFrog;
-    bwSfx.voiceBee = voiceBee;
-  }
+  /* 动物拟音音量:IIFE 顶层声明,供 stopAll 内部 voice 函数与 openPhone 共享 */
+  var voiceVolume = 1;
+  /* 律动开关:IIFE 顶层声明,供 ensureSfxRegistered 读取/恢复 */
+  var vizPaused = false;
   /* 页面卸载兜底:确保任何方式退出都停止声音 */
   window.addEventListener('pagehide', stopAll);
   window.addEventListener('beforeunload', stopAll);
@@ -345,8 +339,7 @@
         osc.onended = function () { try { osc.disconnect(); env.disconnect(); lfo.disconnect(); lfoGain.disconnect(); } catch (e) {} };
       } catch (e) {}
     }
-    /* 音量调节（外层 setter） */
-    var voiceVolume = 1;
+    /* 音量:已提升到 IIFE 顶层(供 openPhone 共享),此处仅保留 setter 与音量应用函数 */
     function setVoiceVolume(v) { voiceVolume = Math.max(0, Math.min(1, v)); }
     /* 应用音量:voice 内的 peak 都乘以 voiceVolume */
     function _vp(peak) { return (peak || 0.3) * voiceVolume; }
@@ -357,8 +350,30 @@
       vizTarget.sky.style.removeProperty('--shimmer');
     }
     vizTarget = { sky: null, stars: [] };
+    /* 暴露音效函数给 IIFE 顶层（接电话等模块） */
+    function _registerSfx() {
+      bwSfx.sfxStab = sfxStab; bwSfx.sfxHit = sfxHit; bwSfx.sfxDefeat = sfxDefeat;
+      bwSfx.VOODOO_SFX = VOODOO_SFX;
+      bwSfx.sfxRing = sfxRing; bwSfx.sfxPickup = sfxPickup; bwSfx.sfxHangup = sfxHangup;
+      bwSfx.sfxBusy = sfxBusy; bwSfx.sfxTalk = sfxTalk;
+      bwSfx.voiceTone = voiceTone;
+      bwSfx.voiceCat = voiceCat; bwSfx.voicePenguin = voicePenguin; bwSfx.voiceHedgehog = voiceHedgehog;
+      bwSfx.voiceTurtle = voiceTurtle; bwSfx.voiceOctopus = voiceOctopus; bwSfx.voiceOwl = voiceOwl;
+      bwSfx.voiceRaccoon = voiceRaccoon; bwSfx.voiceFox = voiceFox; bwSfx.voiceFrog = voiceFrog;
+      bwSfx.voiceBee = voiceBee;
+    }
     _registerSfx();
   }
+  /* 惰性注册:确保 bwSfx 在接电话等模块使用前已填充。
+     首次调用 stopAll() 触发 _registerSfx,但撤销其 pauseViz 副作用
+     (openCosmos 不调用 resumeViz,不能让其暂停星空律动)。 */
+  function ensureSfxRegistered() {
+    if (bwSfx.sfxRing) return;
+    var savedPaused = vizPaused;
+    stopAll();
+    vizPaused = savedPaused;
+  }
+  ensureSfxRegistered();
   /* 律动循环:读频谱 → 驱动星星闪烁速度 + 光晕呼吸 */
   function vizLoop() {
     vizRaf = 0;
@@ -387,7 +402,6 @@
     }
   }
   /* 律动控制:页面隐藏时暂停 raf、可见时恢复;与 stopAll 复用同一个开关 */
-  var vizPaused = false;
   function pauseViz() {
     vizPaused = true;
     if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = 0; }
@@ -1414,8 +1428,8 @@
         s.pins.push(i);
         pin.classList.add('done');
         /* 反馈触发：音效+触觉+抖动+表情切换 */
-        try { VOODOO_SFX.stab(); } catch (er) {}
-        try { VOODOO_SFX.haptic(35); } catch (er) {}
+        try { bwSfx.VOODOO_SFX.stab(); } catch (er) {}
+        try { bwSfx.VOODOO_SFX.haptic(35); } catch (er) {}
         /* 飞针落定 + 圈本身抖动 + 银色针尖三角 */
         pin.classList.remove('stab', 'hit');
         /* 移除旧针尖（如果切换小人后还在） */
@@ -1450,8 +1464,8 @@
           s.full = true;
           if (face) face.textContent = VO_DOLLS[idx].faceDown;
           /* 命中清脆音 + 扎服上扬音 */
-          try { VOODOO_SFX.hit(); } catch (er) {}
-          setTimeout(function () { try { VOODOO_SFX.defeat(); } catch (er) {} VOODOO_SFX.haptic(80); }, 120);
+          try { bwSfx.VOODOO_SFX.hit(); } catch (er) {}
+          setTimeout(function () { try { bwSfx.VOODOO_SFX.defeat(); } catch (er) {} bwSfx.VOODOO_SFX.haptic(80); }, 120);
           bumpVoodooStat(VO_DOLLS[idx].k);
           say(VO_DOLLS[idx].line + ' → ' + VO_DOLLS[idx].name + ' 被扎服了！');
         }
@@ -1728,12 +1742,12 @@
       if (lineIdx >= cur.script.length) {
         /* 全部台词结束 */
         showBubble('（电话那头安静了）', 'sys');
-        try { sfxBusy(); } catch (er) {}
+        try { bwSfx.sfxBusy(); } catch (er) {}
         setTimeout(function () { endCall(false); }, 1200);
         return;
       }
       showBubble(cur.script[lineIdx], 'them');
-      try { sfxTalk(); } catch (er) {}
+      try { bwSfx.sfxTalk(); } catch (er) {}
       /* 动物拟音:在台词出现后 200ms 播放,营造"说话同时发出声音" */
       try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 200); } catch (er) {}
     }
@@ -1750,14 +1764,14 @@
       pickup.style.display = '';
       hangup.style.display = 'none';
       next.style.display = 'none';
-      try { ringStop = sfxRing(); } catch (er) {}
+      try { ringStop = bwSfx.sfxRing(); } catch (er) {}
     }
     function pickUp() {
       if (state !== 'ringing') return;
       state = 'talking';
       machine.classList.remove('ringing');
       machine.classList.add('talking');
-      try { sfxPickup(); } catch (er) {}
+      try { bwSfx.sfxPickup(); } catch (er) {}
       try { ringStop && ringStop(); } catch (er) {}
       ringStop = null;
       pickup.style.display = 'none';
@@ -1776,7 +1790,7 @@
     function hangUp() {
       if (state === 'ended') return;
       showBubble('（你挂了电话）', 'sys');
-      try { sfxHangup(); } catch (er) {}
+      try { bwSfx.sfxHangup(); } catch (er) {}
       endCall(true);
     }
     function endCall(hangup) {
