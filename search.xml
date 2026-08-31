@@ -348,9 +348,9 @@
       
         <tags>
             
-            <tag> 可穿戴 </tag>
-            
             <tag> 算法 </tag>
+            
+            <tag> 可穿戴 </tag>
             
         </tags>
       
@@ -1247,9 +1247,9 @@
             
             <tag> SLAM </tag>
             
-            <tag> 三角化 </tag>
-            
             <tag> 面试 </tag>
+            
+            <tag> 三角化 </tag>
             
         </tags>
       
@@ -1337,31 +1337,6 @@
     
     
     <entry>
-      <title>概率图模型</title>
-      <link href="/2020/03/14/2020-03-14-Probability_graph_model/"/>
-      <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
-      
-        <content type="html"><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p>本节将用来介绍概率图模型。</p><p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p><blockquote><p><strong>用图言变量，依赖一目了然</strong></p></blockquote><span id="more"></span><h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p><p><strong>分类</strong></p><p>根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p><p><strong>前提背景</strong></p><p>利用条件独立性可以降低概率模型的计算复杂度；</p><p>条件独立性要在图的结构上有所映射；</p><p><strong>图的构建方法</strong></p><p>拓扑排序;</p><p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p><p>性质：</p><p>如果父节点被观测，则其子节点独立；</p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p><p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p><p>道德图：有向图 → 无向图</p><p>出发点：</p><ol><li>引入环</li><li>简便</li></ol><p>因子图把因子引入图里边。</p><p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph" loading="lazy"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 概率图 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>高斯混合模型</title>
       <link href="/2020/03/14/2020-03-14-GMM/"/>
       <url>/2020/03/14/2020-03-14-GMM/</url>
@@ -1379,6 +1354,31 @@
         <tags>
             
             <tag> GMM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>概率图模型</title>
+      <link href="/2020/03/14/2020-03-14-Probability_graph_model/"/>
+      <url>/2020/03/14/2020-03-14-Probability_graph_model/</url>
+      
+        <content type="html"><![CDATA[<p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p><p>本节将用来介绍概率图模型。</p><p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p><blockquote><p><strong>用图言变量，依赖一目了然</strong></p></blockquote><span id="more"></span><h2 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h2><p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.</p><p><strong>分类</strong></p><p>根据边的性质不同，概率图模型可大致分为两类：</p><p>第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；</p><p>第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）；</p><p><strong>前提背景</strong></p><p>利用条件独立性可以降低概率模型的计算复杂度；</p><p>条件独立性要在图的结构上有所映射；</p><p><strong>图的构建方法</strong></p><p>拓扑排序;</p><p>根据拓扑排序构建的概率图能够得到联合概率的因子分解式；</p><p>性质：</p><p>如果父节点被观测，则其子节点独立；</p><h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2><p>有向图：$P(x)=\Pi(x_i|x_{pa_i})$</p><p>无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$</p><p>道德图：有向图 → 无向图</p><p>出发点：</p><ol><li>引入环</li><li>简便</li></ol><p>因子图把因子引入图里边。</p><p><img src="/2020/03/14/2020-03-14-Probability_graph_model/%E5%9B%A0%E5%AD%90%E5%9B%BE.png" alt="factor_graph" loading="lazy"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概率图 </tag>
             
         </tags>
       
@@ -1651,33 +1651,6 @@
     
     
     <entry>
-      <title>使用 ROS 工具标定相机</title>
-      <link href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
-      <url>/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
-      
-        <content type="html"><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p><p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p><blockquote><p><strong>标定相机参数，方能还原真实世界</strong></p></blockquote><span id="more"></span><h2 id="利用-camera-calibration-标定相机流程"><a href="#利用-camera-calibration-标定相机流程" class="headerlink" title="利用 camera_calibration 标定相机流程"></a>利用 camera_calibration 标定相机流程</h2><ol><li>驱动USB摄像头</li><li>利用camera_calibration标定相机</li></ol><p>执行命令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure><ol><li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p><p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img" loading="lazy"></p></li><li><p>畸变参数向量：[k1,k2,p1,p2]</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 实验 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> ROS </tag>
-            
-            <tag> 相机标定 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>使用 evo 工具评测 SLAM</title>
       <link href="/2020/02/15/2020-02-19-How_to_use_evo/"/>
       <url>/2020/02/15/2020-02-19-How_to_use_evo/</url>
@@ -1707,11 +1680,11 @@
     
     
     <entry>
-      <title>SLAM 各算法运行方法与过程</title>
-      <link href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
-      <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
+      <title>使用 ROS 工具标定相机</title>
+      <link href="/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
+      <url>/2020/02/15/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
       
-        <content type="html"><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p><p>主要包括以下五种算法:</p><ol><li>VINS_mono&#x2F;fusion</li><li>OKVIS</li><li>ROVIO</li><li>VI_ORB-SLAM</li><li>MSCKF</li></ol><p>本文介绍 VINS_mono&#x2F;fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。</p><blockquote><p><strong>跑通五种算法，间接法体系尽收眼底</strong></p></blockquote><span id="more"></span><h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr><h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p><hr><h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html">该博客</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON</span><br></pre></td></tr></table></figure><h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source devel/setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch </span><br></pre></td></tr></table></figure><h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;/home/guoben/Documents/output/vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure><hr><h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc</p><hr><h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~/Project/msckf_vio_workspace/src/msckf_vio/rviz/rviz_euroc_config.rviz   //rviz显示模型</span><br><span class="line">  rosbag play /home/wj/Downloads/dataset/EuRoC/ROS_bag/MH_05_difficult.bag</span><br></pre></td></tr></table></figure><p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>]]></content>
+        <content type="html"><![CDATA[<p>本文讲解利用ROS框架下的工具标定USB相机的过程。</p><p>本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。</p><blockquote><p><strong>标定相机参数，方能还原真实世界</strong></p></blockquote><span id="more"></span><h2 id="利用-camera-calibration-标定相机流程"><a href="#利用-camera-calibration-标定相机流程" class="headerlink" title="利用 camera_calibration 标定相机流程"></a>利用 camera_calibration 标定相机流程</h2><ol><li>驱动USB摄像头</li><li>利用camera_calibration标定相机</li></ol><p>执行命令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam</span><br></pre></td></tr></table></figure><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">image_width: 320</span><br><span class="line">image_height: 240</span><br><span class="line">camera_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000]</span><br><span class="line"></span><br><span class="line">distortion_coefficients:</span><br><span class="line">  rows: 1</span><br><span class="line">  cols: 5</span><br><span class="line">  data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000]</span><br><span class="line"></span><br><span class="line">rectification_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 3</span><br><span class="line">  data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680]</span><br><span class="line">  </span><br><span class="line">projection_matrix:</span><br><span class="line">  rows: 3</span><br><span class="line">  cols: 4</span><br><span class="line">  data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]</span><br></pre></td></tr></table></figure><ol><li><p>内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距</p><p><img src="https://upload-images.jianshu.io/upload_images/9565709-72d7a6aeb3e0826d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/127/format/webp" alt="img" loading="lazy"></p></li><li><p>畸变参数向量：[k1,k2,p1,p2]</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">camera matrix =</span><br><span class="line"></span><br><span class="line">[fx 0.0 cx</span><br><span class="line"></span><br><span class="line">0.0 fy cy</span><br><span class="line"></span><br><span class="line">0.0 0.0 1.0]</span><br></pre></td></tr></table></figure>]]></content>
       
       
       <categories>
@@ -1723,7 +1696,9 @@
       
         <tags>
             
-            <tag> SLAM </tag>
+            <tag> ROS </tag>
+            
+            <tag> 相机标定 </tag>
             
         </tags>
       
@@ -1749,6 +1724,31 @@
         <tags>
             
             <tag> markdown </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 各算法运行方法与过程</title>
+      <link href="/2020/01/15/2020-01-15-SLAM_Alg_Indirect/"/>
+      <url>/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</url>
+      
+        <content type="html"><![CDATA[<p>本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。</p><p>主要包括以下五种算法:</p><ol><li>VINS_mono&#x2F;fusion</li><li>OKVIS</li><li>ROVIO</li><li>VI_ORB-SLAM</li><li>MSCKF</li></ol><p>本文介绍 VINS_mono&#x2F;fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。</p><blockquote><p><strong>跑通五种算法，间接法体系尽收眼底</strong></p></blockquote><span id="more"></span><h2 id="VINS-mono"><a href="#VINS-mono" class="headerlink" title="VINS_mono"></a>VINS_mono</h2><hr><h2 id="OKVIS"><a href="#OKVIS" class="headerlink" title="OKVIS"></a>OKVIS</h2><h3 id="Run-OKVIS"><a href="#Run-OKVIS" class="headerlink" title="Run OKVIS"></a>Run OKVIS</h3><p>可能需要加入std::ftream<br>Opencv需要3.4.2或以下版本，需要opencvv模块<br>Opencv3.4.7没有这个模块</p><hr><h2 id="ROVIO"><a href="#ROVIO" class="headerlink" title="ROVIO"></a>ROVIO</h2><p>可参考：<a href="https://www.cnblogs.com/Jessica-jie/p/6607719.html">该博客</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON</span><br></pre></td></tr></table></figure><h3 id="运行ROVIO"><a href="#运行ROVIO" class="headerlink" title="运行ROVIO"></a>运行ROVIO</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source devel/setup.bash </span><br><span class="line">$ roslaunch rovio rovio_node.launch </span><br></pre></td></tr></table></figure><h3 id="修改代码以输出路径"><a href="#修改代码以输出路径" class="headerlink" title="修改代码以输出路径"></a>修改代码以输出路径</h3><p>在发送IMU数据下边添加输出到文件的代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//把数据写到文档里</span><br><span class="line"> std::ofstream vio_result_file(&quot;/home/guoben/Documents/output/vio_result.csv&quot;, ios::app);</span><br><span class="line"> vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.WrWB()(2)  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().x()  &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().y()&lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; imuOutput_.qBW().z() &lt;&lt; &quot; &quot; </span><br><span class="line"> &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl;</span><br><span class="line"> vio_result_file.close();</span><br></pre></td></tr></table></figure><hr><h2 id="VI-ORB-SLAM"><a href="#VI-ORB-SLAM" class="headerlink" title="VI-ORB_SLAM"></a>VI-ORB_SLAM</h2><p><a href="https://github.com/jingpang/LearnVIORB"> LearnVIORB 的代码地址</a><br>代码运行方法<br>轨迹生成<br>输出位置位于 System.cc</p><hr><h2 id="MSCKF"><a href="#MSCKF" class="headerlink" title="MSCKF"></a>MSCKF</h2><h3 id="运行方法"><a href="#运行方法" class="headerlink" title="运行方法"></a>运行方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">roslaunch msckf_vio msckf_vio_euroc.launch </span><br><span class="line">rosrun rviz rviz -d ~/Project/msckf_vio_workspace/src/msckf_vio/rviz/rviz_euroc_config.rviz   //rviz显示模型</span><br><span class="line">  rosbag play /home/wj/Downloads/dataset/EuRoC/ROS_bag/MH_05_difficult.bag</span><br></pre></td></tr></table></figure><p><strong>NOTE</strong><br>The software does not run on EuRoC <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code>. As explained in the README, the algorithm requires the sensor to start from staic in order to initialize the orientation and IMU bias. unfortunately, <code>MH_01_easy.bag</code> and <code>MH_02_easy.bag</code> do not have the initial static period.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
             
         </tags>
       
