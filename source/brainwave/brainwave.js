@@ -301,6 +301,39 @@
     if (!vizRaf) vizLoop();
   }
 
+  /* --- 主题切换：localStorage 记忆，跟随系统 --- */
+  (function initTheme() {
+    var KEY = 'bw_theme';
+    var saved = null; try { saved = localStorage.getItem(KEY); } catch (e) {}
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var forceDark = saved === 'dark';
+    var forceLight = saved === 'light';
+    function apply() {
+      var useDark = forceDark || (!forceLight && prefersDark);
+      document.body.classList.toggle('bw-dark', useDark && !forceLight);
+      document.body.classList.toggle('bw-auto-dark', useDark && !forceLight && !saved);
+    }
+    apply();
+    var btn = document.createElement('button');
+    btn.className = 'bw-theme-toggle';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', '切换主题');
+    btn.title = '切换主题';
+    btn.textContent = (document.body.classList.contains('bw-dark') || document.body.classList.contains('bw-auto-dark')) ? '☀️' : '🌙';
+    btn.addEventListener('click', function () {
+      var isDark = document.body.classList.contains('bw-dark') || document.body.classList.contains('bw-auto-dark');
+      if (isDark) { forceDark = false; forceLight = true; try { localStorage.setItem(KEY, 'light'); } catch (e) {} document.body.classList.remove('bw-dark', 'bw-auto-dark'); btn.textContent = '🌙'; }
+      else { forceDark = true; forceLight = false; try { localStorage.setItem(KEY, 'dark'); } catch (e) {} document.body.classList.add('bw-dark'); btn.textContent = '☀️'; }
+    });
+    document.body.appendChild(btn);
+    /* 跟随系统：用户没手动选过时，OS 切换跟着变 */
+    if (!saved && window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+        if (!forceLight && !forceDark) { prefersDark = e.matches; apply(); btn.textContent = (document.body.classList.contains('bw-dark')) ? '☀️' : '🌙'; }
+      });
+    }
+  })();
+
   /* --- 鍗＄墖鐐瑰嚮鎵撳紑 --- */
   document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
     var mode = card.getAttribute('data-bw-open');

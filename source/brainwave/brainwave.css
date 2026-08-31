@@ -54,7 +54,24 @@
   /* 缓动 */
   --bw-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --bw-ease-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
-}bw-grid {
+}
+  /* 语义色（用于面板前景/背景/边框） */
+  --bw-bg-card:        rgba(255, 255, 255, 0.92);
+  --bw-bg-modal:       rgba(255, 255, 255, 0.95);
+  --bw-bg-modal-warm:  rgba(255, 255, 255, 0.92);
+  --bw-bg-backdrop:    rgba(5, 8, 26, 0.88);
+  --bw-bg-backdrop-shop: var(--bw-bg-backdrop-shop);
+  --bw-bg-backdrop-dolls: var(--bw-bg-backdrop-dolls);
+  --bw-bg-backdrop-win:   var(--bw-bg-backdrop-win);
+  --bw-bg-backdrop-voodoo: var(--bw-bg-backdrop-voodoo);
+  --bw-bg-page:        transparent;
+  --bw-fg-strong:      rgba(238, 240, 255, 0.85);
+  --bw-fg-soft:        rgba(238, 240, 255, 0.55);
+  --bw-fg-muted:       rgba(238, 240, 255, 0.45);
+  --bw-fg-warm:        var(--bw-fg-warm);
+  --bw-fg-pink-strong: var(--bw-fg-pink-strong);
+  --bw-border-warm:    rgba(160, 90, 120, 0.4);
+  --bw-border-warm-2:  rgba(160, 90, 120, 0.3);bw-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;
@@ -600,7 +617,7 @@
 
 /* ---- 濞冨▋灞嬫ā鎬?---- */
 .bw-dolls .bw-modal-backdrop {
-  background: rgba(30, 16, 26, 0.82);
+  background: var(--bw-bg-backdrop-dolls);
 }
 .bw-dolls-panel {
   position: relative;
@@ -618,11 +635,11 @@
   background-clip: text;
   color: transparent;
 }
-.bw-dolls-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
+.bw-dolls-panel .bw-modal-sub { color: var(--bw-fg-warm); }
 .bw-dolls-panel .bw-modal-close {
   border-color: var(--bw-pink-800);
   background: rgba(255, 255, 255, 0.45);
-  color: #8a5470;
+  color: var(--bw-fg-pink-strong);
 }
 .bw-dolls-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
 
@@ -1013,7 +1030,7 @@
 @keyframes bwFloaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
 /* ---- 鐩茬洅鍟嗗簵妯℃€?---- */
-.bw-shop .bw-modal-backdrop { background: rgba(40, 20, 40, 0.78); }
+.bw-shop .bw-modal-backdrop { background: var(--bw-bg-backdrop-shop); }
 .bw-shop-panel {
   position: relative;
   display: flex;
@@ -1033,8 +1050,8 @@
   background-clip: text;
   color: transparent;
 }
-.bw-shop-panel .bw-modal-sub { color: rgba(100, 55, 85, 0.65); }
-.bw-shop-panel .bw-modal-close { border-color: var(--bw-pink-800); background: rgba(255, 255, 255, 0.45); color: #8a5470; }
+.bw-shop-panel .bw-modal-sub { color: var(--bw-fg-warm); }
+.bw-shop-panel .bw-modal-close { border-color: var(--bw-pink-800); background: rgba(255, 255, 255, 0.45); color: var(--bw-fg-pink-strong); }
 .bw-shop-panel .bw-modal-close:hover { background: rgba(255, 255, 255, 0.85); }
 
 /* ---- 鐩茬洅锛? 澶х被鍒嗙被 tab ---- */
@@ -1052,7 +1069,7 @@
   padding: 6px 12px;
   border: 1px solid rgba(160, 90, 120, 0.3);
   background: rgba(255, 255, 255, 0.5);
-  color: #8a5470;
+  color: var(--bw-fg-pink-strong);
   font-size: 13px;
   font-weight: 700;
   border-radius: 999px;
@@ -1090,7 +1107,7 @@
   padding: 2px 10px;
   font-size: 11px;
   font-weight: 700;
-  color: #8a5470;
+  color: var(--bw-fg-pink-strong);
   background: rgba(255, 255, 255, 0.6);
   border-radius: 999px;
   letter-spacing: 0.5px;
@@ -1410,7 +1427,7 @@
 @keyframes bwPinWobble { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 30% { transform: translate(-50%, -50%) rotate(6deg); } 70% { transform: translate(-50%, -50%) rotate(-5deg); } }
 
 /* ---- 鎵庡皬浜烘ā鎬侀潰鏉?---- */
-.bw-voodoo .bw-modal-backdrop { background: rgba(16, 10, 26, 0.82); }
+.bw-voodoo .bw-modal-backdrop { background: var(--bw-bg-backdrop-voodoo); }
 .bw-vo-panel {
   width: min(540px, 100%);
   text-align: center;
@@ -1540,7 +1557,7 @@
 .bw-win-mf3 { left: 20%; bottom: 14%; animation-delay: 2s; }
 
 /* ---- 鍥涘绐楁ā鎬?---- */
-.bw-winmodal .bw-modal-backdrop { background: rgba(24, 20, 40, 0.8); }
+.bw-winmodal .bw-modal-backdrop { background: var(--bw-bg-backdrop-win); }
 .bw-win-panel {
   width: min(880px, 100%);
   /* 鍨傜洿 flex 甯冨眬锛氬浐瀹氶『搴?鏍囬/鍓爣棰?鎴块棿/瀛ｈ妭鎸夐挳/鏃佺櫧
@@ -2143,3 +2160,84 @@
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+/* ===== 暗色模式 ===== */
+/* 自动响应系统设置；JS 加 .bw-dark 到 body 时强制启用 */
+@media (prefers-color-scheme: dark) {
+  body.bw-auto-dark { color-scheme: dark; }
+}
+body.bw-dark, body.bw-auto-dark {
+  color-scheme: dark;
+  /* 语义色覆盖：白底变深底，深底加深；粉/金/紫品牌色保留 */
+  --bw-bg-card:       rgba(28, 24, 40, 0.92);
+  --bw-bg-modal:      rgba(20, 16, 32, 0.95);
+  --bw-bg-modal-warm: rgba(38, 26, 44, 0.94);
+  --bw-bg-page:       #0c0a18;
+
+  /* 亮底面板（dolls / shop / winmodal）翻成深底 */
+  --bw-bg-backdrop-shop:    rgba(8, 4, 14, 0.85);
+  --bw-bg-backdrop-dolls:   rgba(8, 4, 14, 0.85);
+  --bw-bg-backdrop-win:     rgba(6, 4, 16, 0.85);
+  --bw-bg-backdrop-voodoo:  rgba(4, 2, 12, 0.88);
+
+  /* 前景文字：暖粉→冷白；冷白保持 */
+  --bw-fg-strong:      rgba(245, 240, 255, 0.92);
+  --bw-fg-soft:        rgba(220, 215, 240, 0.7);
+  --bw-fg-muted:       rgba(200, 195, 225, 0.5);
+  --bw-fg-warm:        rgba(255, 220, 235, 0.75);
+  --bw-fg-pink-strong: #ffd6e8;
+
+  /* 边框：暖粉边变亮粉边 */
+  --bw-border-warm:    rgba(255, 180, 215, 0.4);
+  --bw-border-warm-2:  rgba(255, 180, 215, 0.3);
+
+  /* 白色玻璃质感在暗色下略亮（让按钮仍能看清） */
+  --bw-white-05: rgba(255, 255, 255, 0.06);
+  --bw-white-08: rgba(255, 255, 255, 0.10);
+  --bw-white-12: rgba(255, 255, 255, 0.14);
+  --bw-white-16: rgba(255, 255, 255, 0.18);
+  --bw-white-20: rgba(255, 255, 255, 0.22);
+  --bw-white-25: rgba(255, 255, 255, 0.28);
+}
+
+/* 暗色下关闭按钮悬停需更高对比 */
+body.bw-dark .bw-modal-close:hover,
+body.bw-auto-dark .bw-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 暗色下卡片底色适配 */
+body.bw-dark .bw-card,
+body.bw-auto-dark .bw-card {
+  background: rgba(28, 24, 40, 0.6);
+  border-color: rgba(140, 160, 255, 0.18);
+}
+body.bw-dark .bw-card-desc,
+body.bw-auto-dark .bw-card-desc {
+  color: rgba(220, 215, 240, 0.7);
+}
+
+/* 暗色下页面背景 */
+body.bw-dark,
+body.bw-auto-dark {
+  background: var(--bw-bg-page);
+}
+
+/* 暗色切换按钮 */
+.bw-theme-toggle {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 999;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(28, 24, 40, 0.7);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.bw-theme-toggle:hover { transform: scale(1.1); background: rgba(60, 50, 80, 0.85); }
