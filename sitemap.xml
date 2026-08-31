@@ -218,7 +218,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</loc>
+    <loc>https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -227,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/14/2020-03-15-Particle_Filter/</loc>
+    <loc>https://grobenis.github.io/2020/03/14/2020-03-15-Motion_consistency/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -245,7 +245,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/14/2020-03-13-Kalman_Filter/</loc>
+    <loc>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -254,7 +254,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/03/14/2020-03-14-GMM/</loc>
+    <loc>https://grobenis.github.io/2020/03/14/2020-03-13-Kalman_Filter/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -344,7 +344,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</loc>
+    <loc>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -353,7 +353,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</loc>
+    <loc>https://grobenis.github.io/2020/01/15/2020-01-15-SLAM_Alg_Indirect/</loc>
     
     <lastmod>2026-08-27</lastmod>
     
@@ -443,7 +443,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2022/03/16/2022-03-16-Souce_static_in_project/</loc>
+    <loc>https://grobenis.github.io/2022/03/24/2022-03-24-19-20-00-fedral-machine-learning/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -452,7 +452,7 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/2022/03/24/2022-03-24-19-20-00-fedral-machine-learning/</loc>
+    <loc>https://grobenis.github.io/2022/03/16/2022-03-16-Souce_static_in_project/</loc>
     
     <lastmod>2026-08-26</lastmod>
     
@@ -713,20 +713,6 @@
 
   
   <url>
-    <loc>https://grobenis.github.io/tags/SLAM/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/markdown/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/tags/ROS/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -742,6 +728,20 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/Kalibr/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/SLAM/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/markdown/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -811,13 +811,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/tags/HMM/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -839,6 +832,20 @@
   </url>
   
   <url>
+    <loc>https://grobenis.github.io/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://grobenis.github.io/tags/C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -847,13 +854,6 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/KMP/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://grobenis.github.io/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -937,14 +937,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</loc>
+    <loc>https://grobenis.github.io/tags/OpenCV/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/OpenCV/</loc>
+    <loc>https://grobenis.github.io/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -986,13 +986,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/FloodFill/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/tags/%E5%B7%A5%E4%BD%9C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1001,6 +994,13 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/%E5%9B%9E%E6%BA%AF/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/FloodFill/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1042,13 +1042,6 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/tags/%E9%93%BE%E8%A1%A8/</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://grobenis.github.io/tags/HTTP/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1057,6 +1050,13 @@
   
   <url>
     <loc>https://grobenis.github.io/tags/HTTPS/</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://grobenis.github.io/tags/%E9%93%BE%E8%A1%A8/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1198,14 +1198,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/</loc>
+    <loc>https://grobenis.github.io/categories/%E5%B7%A5%E4%BD%9C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E5%B7%A5%E4%BD%9C/</loc>
+    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1219,14 +1219,14 @@
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E7%A7%91%E7%A0%94/</loc>
+    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://grobenis.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>https://grobenis.github.io/categories/%E7%A7%91%E7%A0%94/</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
