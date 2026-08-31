@@ -1621,45 +1621,41 @@
     lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-phone';
-    /* HTML 结构:经典座机(听筒+拨号盘)+ 来电显示 + 对话气泡 + 控制按钮 */
+    /* HTML 结构:第一人称通话界面(顶部状态栏 + 主画面 + 底部控制) */
     m.innerHTML =
       '<div class="bw-modal-backdrop" data-close></div>' +
       '<div class="bw-modal-panel bw-phone-panel">' +
         '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
         '<h2 class="bw-modal-title">动物来电</h2>' +
         '<p class="bw-modal-sub">想谁来电话，就让谁来 · 接不接由你</p>' +
-        '<div class="bw-phone-machine" id="phoneMachine">' +
-          /* 来电显示 */
-          '<div class="bw-phone-screen" id="phoneScreen">' +
-            '<div class="bw-phone-screen-inner">' +
-              '<div class="bw-phone-screen-label">来电中</div>' +
-              '<div class="bw-phone-screen-caller" id="phoneCaller">— · —</div>' +
-              '<div class="bw-phone-screen-line" id="phoneLine">……</div>' +
+        '<div class="bw-phone-call" id="phoneCall">' +
+          /* 顶部状态栏:对方头像 + 名字 + 通话状态/计时 */
+          '<div class="bw-phone-top">' +
+            '<div class="bw-phone-top-av" id="phoneTopAv">🐧</div>' +
+            '<div class="bw-phone-top-info">' +
+              '<div class="bw-phone-top-name" id="phoneTopName">—</div>' +
+              '<div class="bw-phone-top-status" id="phoneTopStatus">来电中</div>' +
             '</div>' +
           '</div>' +
-          /* 听筒 */
-          '<div class="bw-phone-handset" id="phoneHandset">' +
-            '<div class="bw-phone-handset-ear"></div>' +
-            '<div class="bw-phone-handset-body"></div>' +
-            '<div class="bw-phone-handset-mic"></div>' +
+          /* 主画面:来电视图 或 通话聊天 */
+          '<div class="bw-phone-stage" id="phoneStage">' +
+            '<div class="bw-phone-ringing" id="phoneRinging">' +
+              '<div class="bw-phone-ring-pulse" aria-hidden="true"></div>' +
+              '<div class="bw-phone-avatar" id="phoneAvatar">🐧</div>' +
+              '<div class="bw-phone-ringing-name" id="phoneRingName">—</div>' +
+              '<div class="bw-phone-ringing-line" id="phoneRingLine">……</div>' +
+            '</div>' +
+            '<div class="bw-phone-chat" id="phoneChat" aria-live="polite"></div>' +
           '</div>' +
-          /* 拨号盘装饰 */
-          '<div class="bw-phone-dial">' +
-            '<span></span><span></span><span></span>' +
-            '<span></span><span></span><span></span>' +
-            '<span></span><span></span><span></span>' +
-            '<span></span>' +
-          '</div>' +
-          /* 控制按钮 */
-          '<div class="bw-phone-actions">' +
-            '<button class="bw-phone-btn bw-phone-hangup" id="phoneHangup" type="button" aria-label="挂断">挂断</button>' +
-            '<button class="bw-phone-btn bw-phone-pickup" id="phonePickup" type="button" aria-label="接听">📞 接听</button>' +
-            '<button class="bw-phone-btn bw-phone-next" id="phoneNext" type="button" aria-label="换一个">换一个 ⤳</button>' +
+          /* 底部控制按钮:按状态切换显示 */
+          '<div class="bw-phone-controls">' +
+            '<button class="bw-phone-call-btn bw-phone-call-decline" id="phoneDecline" type="button" aria-label="拒接">✕ 拒接</button>' +
+            '<button class="bw-phone-call-btn bw-phone-call-answer" id="phonePickup" type="button" aria-label="接听">📞 接听</button>' +
+            '<button class="bw-phone-call-btn bw-phone-call-hangup" id="phoneHangup" type="button" aria-label="挂断">挂断</button>' +
+            '<button class="bw-phone-call-btn bw-phone-call-again" id="phoneNext" type="button" aria-label="再来一通">📞 再来一通</button>' +
           '</div>' +
         '</div>' +
-        /* 对话气泡区 */
-        '<div class="bw-phone-chat" id="phoneChat" aria-live="polite"></div>' +
-        /* 来电记录 + 重置 */
+        /* 来电记录 + 工具 */
         '<div class="bw-phone-foot">' +
           '<span class="bw-phone-record" id="phoneRecord">已接 0 通</span>' +
           '<button class="bw-phone-mute" id="phoneMute" type="button" title="开关动物声音">🔊 动物音</button>' +
@@ -1695,18 +1691,46 @@
       recEl.textContent = '已接 ' + total + ' 通';
     }
 
-    var machine = m.querySelector('#phoneMachine');
-    var screen = m.querySelector('#phoneScreen');
-    var callerEl = m.querySelector('#phoneCaller');
-    var lineEl = m.querySelector('#phoneLine');
-    var handset = m.querySelector('#phoneHandset');
+    var stage = m.querySelector('#phoneStage');
+    var ringView = m.querySelector('#phoneRinging');
+    var avatarEl = m.querySelector('#phoneAvatar');
+    var ringNameEl = m.querySelector('#phoneRingName');
+    var ringLineEl = m.querySelector('#phoneRingLine');
+    var topAv = m.querySelector('#phoneTopAv');
+    var topName = m.querySelector('#phoneTopName');
+    var topStatus = m.querySelector('#phoneTopStatus');
     var pickup = m.querySelector('#phonePickup');
+    var decline = m.querySelector('#phoneDecline');
     var hangup = m.querySelector('#phoneHangup');
     var next = m.querySelector('#phoneNext');
     var chat = m.querySelector('#phoneChat');
     var recEl = m.querySelector('#phoneRecord');
     var reset = m.querySelector('#phoneReset');
     var mute = m.querySelector('#phoneMute');
+    var callTimer = null;   /* 通话计时器 */
+    var callSec = 0;        /* 通话秒数 */
+
+    /* 状态渲染:按 ringing/talking/ended 切换界面 */
+    function renderState() {
+      var isRing = state === 'ringing';
+      var isTalk = state === 'talking';
+      ringView.style.display = isRing ? '' : 'none';
+      chat.style.display = (isTalk || state === 'ended') ? '' : 'none';
+      pickup.style.display = isRing ? '' : 'none';
+      decline.style.display = isRing ? '' : 'none';
+      hangup.style.display = isTalk ? '' : 'none';
+      next.style.display = (state === 'ended') ? '' : 'none';
+      stage.classList.toggle('ringing', isRing);
+      stage.classList.toggle('talking', isTalk);
+    }
+    function fmtTime(sec) {
+      var mm = ('0' + ((sec / 60) | 0)).slice(-2);
+      var ss = ('0' + (sec % 60)).slice(-2);
+      return mm + ':' + ss;
+    }
+    function stopCallTimer() {
+      if (callTimer) { clearInterval(callTimer); callTimer = null; }
+    }
 
     /* 加载持久化的音量偏好 */
     try {
@@ -1755,29 +1779,32 @@
       cur = pickCaller();
       lineIdx = -1;
       chat.innerHTML = '';
-      callerEl.textContent = cur.ring;
-      lineEl.textContent = cur.line;
-      machine.classList.remove('talking', 'ended');
-      machine.classList.add('ringing');
+      callSec = 0;
+      stopCallTimer();
+      topAv.textContent = cur.avatar;
+      topName.textContent = cur.name;
+      topStatus.textContent = '来电中';
+      avatarEl.textContent = cur.avatar;
+      ringNameEl.textContent = cur.name;
+      ringLineEl.textContent = cur.line;
       state = 'ringing';
-      pickup.disabled = false;
-      pickup.style.display = '';
-      hangup.style.display = 'none';
-      next.style.display = 'none';
+      renderState();
       try { ringStop = bwSfx.sfxRing(); } catch (er) {}
     }
     function pickUp() {
       if (state !== 'ringing') return;
       state = 'talking';
-      machine.classList.remove('ringing');
-      machine.classList.add('talking');
       try { bwSfx.sfxPickup(); } catch (er) {}
       try { ringStop && ringStop(); } catch (er) {}
       ringStop = null;
-      pickup.style.display = 'none';
-      hangup.style.display = '';
-      next.style.display = '';
-      lineEl.textContent = '通话中...';
+      /* 启动通话计时 */
+      callSec = 0;
+      stopCallTimer();
+      callTimer = setInterval(function () {
+        callSec++;
+        topStatus.textContent = '通话中 ' + fmtTime(callSec);
+      }, 1000);
+      renderState();
       /* 接听后 250ms 播放动物欢迎音(比第一条台词早 100ms) */
       try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 250); } catch (er) {}
       /* 接听音效后 350ms 显示第一条 */
@@ -1795,30 +1822,24 @@
     }
     function endCall(hangup) {
       state = 'ended';
-      machine.classList.remove('ringing', 'talking');
-      machine.classList.add('ended');
-      lineEl.textContent = hangup ? '已挂断' : '通话结束';
-      hangup.style.display = 'none';
-      pickup.style.display = 'none';
-      next.textContent = '📞 再来一通';
-      next.style.display = '';
-      /* 2 秒后自动再响 */
-      setTimeout(function () { if (state === 'ended') startRing(); }, 2200);
+      stopCallTimer();
+      topStatus.textContent = hangup ? '已挂断' : '通话结束';
+      renderState();
+      /* 5 秒后自动再响,给足点击"再来一通"的时间 */
+      setTimeout(function () { if (state === 'ended') startRing(); }, 5000);
     }
     pickup.addEventListener('click', pickUp);
-    hangup.addEventListener('click', hangUp);
-    next.addEventListener('click', function () {
-      if (state === 'ringing') {
-        /* 还在响,跳过这一通 */
-        try { ringStop && ringStop(); } catch (er) {}
-        ringStop = null;
-        startRing();
-      } else {
-        startRing();
-      }
+    decline.addEventListener('click', function () {
+      /* 拒接:挂断铃声,换一个来电 */
+      if (state !== 'ringing') return;
+      try { ringStop && ringStop(); } catch (er) {}
+      ringStop = null;
+      startRing();
     });
-    /* 接听后再点话筒区可触发下一句 */
-    handset.addEventListener('click', function () {
+    hangup.addEventListener('click', hangUp);
+    next.addEventListener('click', startRing);
+    /* 点击通话画面可推进下一句 */
+    chat.addEventListener('click', function () {
       if (state === 'talking') nextLine();
     });
     reset.addEventListener('click', function () {
