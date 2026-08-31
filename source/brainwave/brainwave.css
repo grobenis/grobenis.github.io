@@ -2241,3 +2241,20 @@ body.bw-auto-dark {
   transition: transform 0.2s ease, background 0.2s ease;
 }
 .bw-theme-toggle:hover { transform: scale(1.1); background: rgba(60, 50, 80, 0.85); }
+/* ===== 减少动画：响应用户系统级"减少动效"偏好 ===== */
+@media (prefers-reduced-motion: reduce) {
+  /* 一刀切：所有动画/过渡立即结束、不循环 */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* 背景层的视差/抖动由 JS 控制，加 class 让 JS 可暂停 */
+  .bw-reduced-motion .bw-cosmos-sky::before,
+  .bw-reduced-motion .bw-shop-box.shaking { animation: none !important; transform: none !important; }
+}
