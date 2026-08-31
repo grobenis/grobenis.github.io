@@ -121,6 +121,48 @@
       } catch (e) {}
       activeNodes = null;
     }
+    /* ---------- 音效合成器（扎小人反馈，复用 actx） ---------- */
+    var sfxGain = null;       /* 独立的 GainNode，避免污染宇宙声音 */
+    function ensureSfxGain() {
+      if (!sfxGain) {
+        var ctx = ensureCtx();
+        sfxGain = ctx.createGain(); sfxGain.gain.value = 0.55;
+        sfxGain.connect(ctx.destination);  /* 旁路掉 analyser，免得星座也跟着抖 */
+      }
+      return sfxGain;
+    }
+    /* 合成一次性音效：起音 5ms、衰减至 0、总时长 dur */
+    function playOne(opts) {
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var osc = ctx.createOscillator();
+        var env = ctx.createGain();
+        osc.type = opts.type || 'sine';
+        osc.frequency.setValueAtTime(opts.f0 || 440, ctx.currentTime);
+        if (opts.f1) osc.frequency.exponentialRampToValueAtTime(opts.f1, ctx.currentTime + (opts.dur || 0.18));
+        env.gain.setValueAtTime(0.0001, ctx.currentTime);
+        env.gain.exponentialRampToValueAtTime(opts.peak || 0.6, ctx.currentTime + 0.005);
+        env.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (opts.dur || 0.18));
+        osc.connect(env); env.connect(g);
+        osc.start();
+        osc.stop(ctx.currentTime + (opts.dur || 0.18) + 0.02);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 三种预设：扎针短闷 / 命中清脆 / 扎服上扬 */
+    function sfxStab()    { playOne({ type: 'square',   f0: 220, f1: 110, dur: 0.10, peak: 0.45 }); }
+    function sfxHit()     { playOne({ type: 'triangle', f0: 880, f1: 660, dur: 0.12, peak: 0.40 }); }
+    function sfxDefeat()  {
+      [880, 1100, 1320].forEach(function (f, i) {
+        setTimeout(function () { playOne({ type: 'sine', f0: f, f1: f * 1.5, dur: 0.25, peak: 0.35 }); }, i * 90);
+      });
+    }
+    /* 移动端触觉 */
+    function haptic(ms) {
+      try { if (navigator.vibrate) navigator.vibrate(ms || 35); } catch (e) {}
+    }
+    var VOODOO_SFX = { stab: sfxStab, hit: sfxHit, defeat: sfxDefeat, haptic: haptic };
     /* 停止律动循环并复位画面 */
     pauseViz();
     if (vizTarget.sky) {
@@ -1032,12 +1074,12 @@
 
   /* ============ 扎小人（解压台） ============ */
   var VO_DOLLS = [
-    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.jpg'),  acc: '💦', line: '已生效：TA 的锅永远有人抢着背 🍳' },
-    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.jpg'),  acc: '😒', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏' },
-    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.jpg'),  acc: '🪙', line: '已生效：TA 的钱包总在最需要时少一张 🪙' },
-    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.jpg'),  acc: '🔍', line: '已生效：TA 的小算盘今晚全被打翻 🧮' },
-    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.jpg'),  acc: '🥺', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅' },
-    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.jpg'),  acc: '🤝', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖' }
+    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.jpg'),  acc: '💦', faceIdle: '😐', faceHit: '😖', faceDown: '😵', line: '已生效：TA 的锅永远有人抢着背 🍳' },
+    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.jpg'),  acc: '😒', faceIdle: '😒', faceHit: '😣', faceDown: '😭', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏' },
+    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.jpg'), acc: '🪙', faceIdle: '🤨', faceHit: '😫', faceDown: '🥺', line: '已生效：TA 的钱包总在最需要时少一张 🪙' },
+    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.jpg'), acc: '🔍', faceIdle: '😏', faceHit: '😝', faceDown: '😩', line: '已生效：TA 的小算盘今晚全被打翻 🧮' },
+    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.jpg'), acc: '🥺', faceIdle: '😟', faceHit: '😢', faceDown: '😭', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅' },
+    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.jpg'), acc: '🤝', faceIdle: '😶', faceHit: '😬', faceDown: '😵', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖' }
   ];
   var VO_LINES = [
     '已生效：TA 的袜子永远少一只 🧦',
@@ -1117,7 +1159,18 @@
       view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
         var i = +pin.getAttribute('data-i');
         pin.classList.toggle('done', s.pins.indexOf(i) >= 0);
+        pin.classList.remove('stab', 'hit');
       });
+      /* 表情层 emoji：扎前默认、扎服换悲伤 */
+      var face = view.querySelector('.bw-vo-face');
+      if (!face) {
+        face = document.createElement('div');
+        face.className = 'bw-vo-face';
+        face.setAttribute('aria-hidden', 'true');
+        view.appendChild(face);
+      }
+      face.textContent = s.full ? d.faceDown : d.faceIdle;
+      view.classList.toggle('show-face', true);
       prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · 已扎 ' + s.pins.length + ' / ' + VO_PARTS.length;
       var n = st.filter(function (x) { return x.full; }).length;
       countEl.textContent = '已扎 ' + n + ' / ' + VO_DOLLS.length + ' 个';
@@ -1149,11 +1202,34 @@
         if (s.pins.indexOf(i) >= 0) { say('这里已经扎过啦，换一处～'); return; }
         s.pins.push(i);
         pin.classList.add('done');
+        /* 反馈触发：音效+触觉+抖动+表情切换 */
+        try { VOODOO_SFX.stab(); } catch (er) {}
+        try { VOODOO_SFX.haptic(35); } catch (er) {}
+        /* 飞针落定 + 圈本身抖动 */
+        pin.classList.remove('stab', 'hit');
+        void pin.offsetWidth;
+        pin.classList.add('stab', 'hit');
+        /* 小人抖动 */
+        view.classList.remove('shake');
+        void view.offsetWidth;
+        view.classList.add('shake');
+        /* 进度条脉冲 */
+        prog.classList.remove('bump');
+        void prog.offsetWidth;
+        prog.classList.add('bump');
+        setTimeout(function () { prog.classList.remove('bump'); }, 520);
+        /* 扎中一瞬间更换表情为"扎后" */
+        var face = view.querySelector('.bw-vo-face');
+        if (face && !s.full) face.textContent = VO_DOLLS[idx].faceHit;
         if (s.pins.length < VO_PARTS.length) {
           say(VO_LINES[(Math.random() * VO_LINES.length) | 0]);
         } else {
           s.full = true;
           view.classList.add('full');
+          if (face) face.textContent = VO_DOLLS[idx].faceDown;
+          /* 命中清脆音 + 扎服上扬音 */
+          try { VOODOO_SFX.hit(); } catch (er) {}
+          setTimeout(function () { try { VOODOO_SFX.defeat(); } catch (er) {} VOODOO_SFX.haptic(80); }, 120);
           bumpVoodooStat(VO_DOLLS[idx].k);
           say(VO_DOLLS[idx].line + ' → ' + VO_DOLLS[idx].name + ' 被扎服了！');
         }
