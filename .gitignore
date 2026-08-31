@@ -10,3 +10,5 @@ _multiconfig.yml
 source/_posts/private-*.md
 # 私密空间页面（明文源码仅本地，构建产物为加密版）
 source/private/
+# 本次清理的临时回收站（确认无误后删除）
+.trash-2026-08-30/
