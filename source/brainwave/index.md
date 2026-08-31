@@ -221,7 +221,7 @@ date: 2026-08-29 00:00:00
       activeNodes = null;
     }
     /* 停止律动循环并复位画面 */
-    if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = null; }
+    pauseViz();
     if (vizTarget.sky) {
       vizTarget.sky.style.removeProperty('--pulse');
       vizTarget.sky.style.removeProperty('--shimmer');
@@ -230,6 +230,8 @@ date: 2026-08-29 00:00:00
   }
   /* 律动循环:读频谱 → 驱动星星闪烁速度 + 光晕呼吸 */
   function vizLoop() {
+    vizRaf = 0;
+    if (vizPaused) return;
     vizRaf = requestAnimationFrame(vizLoop);
     if (!analyser || !freqData) return;
     analyser.getByteFrequencyData(freqData);
@@ -253,6 +255,20 @@ date: 2026-08-29 00:00:00
       if (stars[i] && stars[i].style) stars[i].style.animationDuration = dur.toFixed(2) + 's';
     }
   }
+  /* 律动控制:页面隐藏时暂停 raf、可见时恢复;与 stopAll 复用同一个开关 */
+  var vizPaused = false;
+  function pauseViz() {
+    vizPaused = true;
+    if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = 0; }
+  }
+  function resumeViz() {
+    if (!vizPaused) return;
+    vizPaused = false;
+    if (activeNodes && analyser && freqData && !vizRaf) vizLoop();
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) pauseViz(); else resumeViz();
+  });
   function noiseBuffer(ctx, type) {
     var len = ctx.sampleRate * 2;
     var buf = ctx.createBuffer(1, len, ctx.sampleRate);
