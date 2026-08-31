@@ -2039,6 +2039,19 @@
   transition: background 0.2s ease;
 }
 .bw-phone-reset:hover { background: rgba(255, 200, 130, 0.15); color: #ffe9d2; }
+.bw-phone-mute {
+  background: none;
+  border: 1px solid rgba(255, 200, 130, 0.3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: rgba(255, 233, 210, 0.7);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.bw-phone-mute:hover { background: rgba(255, 200, 130, 0.15); color: #ffe9d2; }
 
 /* 移动端 */
 @media (max-width: 500px) {

@@ -225,6 +225,119 @@
     function sfxTalk() {
       playOne({ type: 'sine', f0: 2000, f1: 1600, dur: 0.06, peak: 0.18 });
     }
+
+    /* ---------- 10种动物拟音（Web Audio 合成） ---------- */
+    /* 通用工具：单音 ADSR 包络 */
+    function voiceTone(opts) {
+      /* opts: {type, f0, f1, dur, peak, vibrato?} */
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var t = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var env = ctx.createGain();
+        osc.type = opts.type || 'sine';
+        osc.frequency.setValueAtTime(opts.f0, t);
+        if (opts.f1) osc.frequency.exponentialRampToValueAtTime(opts.f1, t + opts.dur);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(opts.peak || 0.3, t + 0.01);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + opts.dur);
+        osc.connect(env); env.connect(g);
+        osc.start(t);
+        osc.stop(t + opts.dur + 0.02);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 猫：高频颤音喵喵（vibrato sine + 频率滑降） */
+    function voiceCat() {
+      try {
+        var ctx = ensureCtx(); var g = ensureSfxGain(); var t = ctx.currentTime;
+        var osc = ctx.createOscillator(); var env = ctx.createGain(); var lfo = ctx.createOscillator(); var lfoGain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(800, t);
+        osc.frequency.exponentialRampToValueAtTime(500, t + 0.3);
+        lfo.frequency.value = 18; lfoGain.gain.value = 60;
+        lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(0.35, t + 0.02);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+        osc.connect(env); env.connect(g);
+        osc.start(t); lfo.start(t);
+        osc.stop(t + 0.4); lfo.stop(t + 0.4);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); lfo.disconnect(); lfoGain.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 企鹅：3 次嘎嘎短脉冲 */
+    function voicePenguin() {
+      [0, 0.1, 0.2].forEach(function (d) {
+        setTimeout(function () { voiceTone({ type: 'square', f0: 400, f1: 350, dur: 0.05, peak: _vp(0.25) }); }, d * 1000);
+      });
+    }
+    /* 刺猬：高频碎裂 saw */
+    function voiceHedgehog() {
+      voiceTone({ type: 'sawtooth', f0: 3000, f1: 1500, dur: 0.2, peak: _vp(0.18) });
+    }
+    /* 慢龟：极低频呻吟（sine sweep） */
+    function voiceTurtle() {
+      voiceTone({ type: 'sine', f0: 80, f1: 40, dur: 0.6, peak: _vp(0.4) });
+    }
+    /* 章鱼：湿黏低音（sine + 滤波衰减） */
+    function voiceOctopus() {
+      try {
+        var ctx = ensureCtx(); var g = ensureSfxGain(); var t = ctx.currentTime;
+        var osc = ctx.createOscillator(); var env = ctx.createGain(); var filt = ctx.createBiquadFilter();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(100, t); osc.frequency.linearRampToValueAtTime(60, t + 0.4);
+        filt.type = 'lowpass'; filt.frequency.setValueAtTime(400, t); filt.frequency.exponentialRampToValueAtTime(80, t + 0.4);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(0.35, t + 0.05);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+        osc.connect(filt); filt.connect(env); env.connect(g);
+        osc.start(t); osc.stop(t + 0.45);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); filt.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 猫头鹰：双音呼呼 */
+    function voiceOwl() {
+      [0, 0.18].forEach(function (d) {
+        setTimeout(function () { voiceTone({ type: 'sine', f0: 350, f1: 250, dur: 0.16, peak: 0.3 }); }, d * 1000);
+      });
+    }
+    /* 浣熊：贼笑（短频率滑降） */
+    function voiceRaccoon() {
+      voiceTone({ type: 'sine', f0: 1200, f1: 600, dur: 0.25, peak: 0.28 });
+    }
+    /* 狐狸：尖利叫声 */
+    function voiceFox() {
+      voiceTone({ type: 'sawtooth', f0: 500, f1: 1500, dur: 0.35, peak: 0.25 });
+    }
+    /* 青蛙：呱呱双音 */
+    function voiceFrog() {
+      [0, 0.18].forEach(function (d) {
+        setTimeout(function () { voiceTone({ type: 'square', f0: d === 0 ? 300 : 400, f1: d === 0 ? 250 : 350, dur: 0.12, peak: 0.3 }); }, d * 1000);
+      });
+    }
+    /* 蜜蜂：嗡嗡声（持续 + 颤音） */
+    function voiceBee() {
+      try {
+        var ctx = ensureCtx(); var g = ensureSfxGain(); var t = ctx.currentTime;
+        var osc = ctx.createOscillator(); var env = ctx.createGain(); var lfo = ctx.createOscillator(); var lfoGain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(220, t);
+        lfo.frequency.value = 25; lfoGain.gain.value = 12;
+        lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(_vp(0.22), t + 0.04);
+        env.gain.exponentialRampToValueAtTime(_vp(0.18), t + 0.5);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+        osc.connect(env); env.connect(g);
+        osc.start(t); lfo.start(t);
+        osc.stop(t + 0.75); lfo.stop(t + 0.75);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); lfo.disconnect(); lfoGain.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 音量调节（外层 setter） */
+    var voiceVolume = 1;
+    function setVoiceVolume(v) { voiceVolume = Math.max(0, Math.min(1, v)); }
+    /* 应用音量:voice 内的 peak 都乘以 voiceVolume */
+    function _vp(peak) { return (peak || 0.3) * voiceVolume; }
     /* 停止律动循环并复位画面 */
     pauseViz();
     if (vizTarget.sky) {
@@ -1417,7 +1530,7 @@
       ]
     },
     {
-      k: 'octopus', name: '深海章鱼', avatar: '🐙', ring: '🐙 · 求职专线',
+      k: 'octopus', name: '深海章鱼', avatar: '🐙', voice: voiceOctopus, ring: '🐙 · 求职专线',
       line: '我看到你们公司在招前端工程师',
       script: [
         '你好，我看到你们公司在招前端工程师。',
@@ -1437,7 +1550,7 @@
       ]
     },
     {
-      k: 'raccoon', name: '浣熊快递员', avatar: '🦝', ring: '🦝 · 快递误投',
+      k: 'raccoon', name: '浣熊快递员', avatar: '🦝', voice: voiceRaccoon, ring: '🦝 · 快递误投',
       line: '你家门口的快递我拆开试吃了一下',
       script: [
         '你家门口的快递我拆开试吃了一下。',
@@ -1522,6 +1635,7 @@
         /* 来电记录 + 重置 */
         '<div class="bw-phone-foot">' +
           '<span class="bw-phone-record" id="phoneRecord">已接 0 通</span>' +
+          '<button class="bw-phone-mute" id="phoneMute" type="button" title="开关动物声音">🔊 动物音</button>' +
           '<button class="bw-phone-reset" id="phoneReset" type="button">清空记录</button>' +
         '</div>' +
       '</div>';
@@ -1565,6 +1679,17 @@
     var chat = m.querySelector('#phoneChat');
     var recEl = m.querySelector('#phoneRecord');
     var reset = m.querySelector('#phoneReset');
+    var mute = m.querySelector('#phoneMute');
+
+    /* 加载持久化的音量偏好 */
+    try {
+      var savedVol = parseFloat(localStorage.getItem('bw_phone_voice'));
+      if (!isNaN(savedVol)) voiceVolume = savedVol > 0.05 ? 1 : 0;
+    } catch (e) {}
+    function updateMuteBtn() {
+      mute.textContent = voiceVolume > 0 ? '🔊 动物音' : '🔇 已静音';
+    }
+    updateMuteBtn();
 
     function pickCaller() {
       /* 排除上次来电,增加重复耐受 */
@@ -1596,6 +1721,8 @@
       }
       showBubble(cur.script[lineIdx], 'them');
       try { sfxTalk(); } catch (er) {}
+      /* 动物拟音:在台词出现后 200ms 播放,营造"说话同时发出声音" */
+      try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 200); } catch (er) {}
     }
     function startRing() {
       cur = pickCaller();
@@ -1624,6 +1751,8 @@
       hangup.style.display = '';
       next.style.display = '';
       lineEl.textContent = '通话中...';
+      /* 接听后 250ms 播放动物欢迎音(比第一条台词早 100ms) */
+      try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 250); } catch (er) {}
       /* 接听音效后 350ms 显示第一条 */
       setTimeout(nextLine, 350);
       /* 累计记录 */
@@ -1667,6 +1796,11 @@
     });
     reset.addEventListener('click', function () {
       record = {}; saveCallRecord(record); renderRecord();
+    });
+    mute.addEventListener('click', function () {
+      voiceVolume = voiceVolume > 0 ? 0 : 1;
+      try { localStorage.setItem('bw_phone_voice', String(voiceVolume)); } catch (e) {}
+      updateMuteBtn();
     });
 
     /* 启动 */
