@@ -1210,6 +1210,85 @@
   z-index: 1;
 }
 @keyframes bwVoMagic { 0%, 100% { opacity: 0.35; transform: scale(0.8); } 50% { opacity: 0.9; transform: scale(1.3); } }
+
+/* ---- 卡片 7：接电话（动物来电） ---- */
+.bw-card-phone .bw-card-art {
+  background:
+    radial-gradient(circle at 50% 60%, rgba(255, 220, 150, 0.35), transparent 65%),
+    linear-gradient(160deg, #3a2a55 0%, #1f1635 100%);
+}
+.bw-card-phone .bw-card-title {
+  background: linear-gradient(90deg, #ffe9b0, #ffb380, #ffd76e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* 小型座机 */
+.bw-ph-artphone {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -45%);
+  width: 100px; height: 80px;
+}
+.bw-ph-base {
+  position: absolute; left: 50%; bottom: 0;
+  transform: translateX(-50%);
+  width: 80px; height: 28px;
+  border-radius: 8px 8px 14px 14px;
+  background: linear-gradient(180deg, #d8a868 0%, #a87a3a 100%);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35), inset 0 -2px 4px rgba(0,0,0,0.2);
+}
+.bw-ph-receiver {
+  position: absolute; left: 50%; top: 6px;
+  transform: translateX(-50%) rotate(-22deg);
+  width: 70px; height: 18px;
+  border-radius: 9px 9px 8px 8px;
+  background: linear-gradient(180deg, #f0c890 0%, #c89456 100%);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  animation: bwPhShake 1.4s ease-in-out infinite;
+  transform-origin: 90% 50%;
+}
+.bw-ph-dial {
+  position: absolute; left: 50%; bottom: 6px;
+  transform: translateX(-50%);
+  width: 36px; height: 18px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.35);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  padding: 2px;
+}
+.bw-ph-dial span {
+  width: 100%; height: 4px;
+  background: #ffe9b0;
+  border-radius: 1px;
+  opacity: 0.5;
+}
+.bw-ph-dial span:nth-child(3n) { opacity: 1; }
+@keyframes bwPhShake {
+  0%, 100% { transform: translateX(-50%) rotate(-22deg); }
+  20% { transform: translateX(-50%) rotate(-25deg) translateY(2px); }
+  40% { transform: translateX(-50%) rotate(-19deg) translateY(0); }
+  60% { transform: translateX(-50%) rotate(-25deg) translateY(2px); }
+  80% { transform: translateX(-50%) rotate(-20deg) translateY(0); }
+}
+/* 信号波 */
+.bw-ph-signal {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 210, 130, 0.5);
+  opacity: 0;
+  animation: bwPhSignal 1.6s ease-out infinite;
+  pointer-events: none;
+}
+.bw-ph-s1 { left: 12%; top: 30%; width: 14px; height: 14px; animation-delay: 0s; }
+.bw-ph-s2 { left: 8%; top: 26%; width: 24px; height: 24px; animation-delay: 0.2s; }
+.bw-ph-s3 { left: 4%; top: 22%; width: 36px; height: 36px; animation-delay: 0.4s; }
+@keyframes bwPhSignal {
+  0%   { opacity: 0; transform: scale(0.6); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.4); }
+}
 .bw-vo-pin-prev {
   position: absolute;
   width: 8px; height: 26px;
@@ -1640,6 +1719,350 @@
   .bw-vo-view.revive .bw-vo-face { animation: none; }
   .bw-vo-prog.bump { animation: none; }
   .bw-vo-face { transition: none; }
+}
+
+/* ---- 接电话模态面板 ---- */
+.bw-phone .bw-modal-backdrop { background: rgba(16, 10, 26, 0.82); }
+.bw-phone-panel {
+  width: min(620px, 100%);
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% -6%, rgba(255, 200, 120, 0.22), transparent 55%),
+    radial-gradient(circle at 15% 85%, rgba(150, 120, 255, 0.22), transparent 50%),
+    linear-gradient(160deg, #1d1528 0%, #2a1d3c 55%, #3a2244 100%);
+  border: 1px solid rgba(255, 180, 130, 0.25);
+  color: #f3ecff;
+}
+.bw-phone-panel .bw-modal-title {
+  background: linear-gradient(90deg, #ffe9b0, #ffb380, #ffd76e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bw-phone-panel .bw-modal-sub { color: rgba(255, 233, 210, 0.6); }
+
+/* 电话机容器 */
+.bw-phone-machine {
+  position: relative;
+  margin: 12px auto 6px;
+  width: 100%;
+  max-width: 480px;
+  min-height: 220px;
+  padding: 30px 12px 12px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 105%, rgba(90, 60, 40, 0.55), transparent 62%),
+    linear-gradient(180deg, rgba(46, 30, 70, 0.45), rgba(22, 13, 34, 0.8));
+  border: 1px dashed rgba(255, 190, 130, 0.3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+/* 来电显示屏幕（LCD 风格） */
+.bw-phone-screen {
+  position: relative;
+  width: 220px;
+  min-height: 84px;
+  padding: 6px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #2a1d3c 0%, #1a1024 100%);
+  border: 1px solid rgba(255, 190, 130, 0.4);
+  box-shadow:
+    inset 0 0 8px rgba(0, 0, 0, 0.5),
+    inset 0 0 2px rgba(255, 210, 130, 0.15);
+  font-family: 'Menlo', 'Consolas', monospace;
+}
+.bw-phone-screen-inner {
+  background:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(255, 210, 130, 0.06) 2px, rgba(255, 210, 130, 0.06) 3px),
+    linear-gradient(180deg, #6e6240 0%, #5a4e30 100%);
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #ffe9b0;
+  text-shadow: 0 0 6px rgba(255, 210, 130, 0.5);
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+.bw-phone-screen-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+.bw-phone-screen-caller {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+.bw-phone-screen-line {
+  font-size: 12px;
+  opacity: 0.85;
+  line-height: 1.3;
+  min-height: 16px;
+}
+/* ringing: 屏幕闪烁 */
+.bw-phone-machine.ringing .bw-phone-screen-inner {
+  animation: bwPhoneFlicker 1.2s ease-in-out infinite;
+}
+@keyframes bwPhoneFlicker {
+  0%, 100% { background-color: #6e6240; box-shadow: 0 0 6px rgba(255, 210, 130, 0.4); }
+  50%      { background-color: #8a7e58; box-shadow: 0 0 14px rgba(255, 210, 130, 0.7); }
+}
+/* talking: 屏幕稳定显示通话中 */
+.bw-phone-machine.talking .bw-phone-screen-label::before {
+  content: "●  ";
+  color: #6dd66d;
+  animation: bwPhoneBlink 1.2s ease-in-out infinite;
+}
+@keyframes bwPhoneBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* 听筒 */
+.bw-phone-handset {
+  position: relative;
+  width: 130px;
+  height: 28px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bw-phone-handset-ear,
+.bw-phone-handset-mic {
+  position: absolute;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f0c890 0%, #c89456 100%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 -2px 3px rgba(0,0,0,0.2);
+}
+.bw-phone-handset-ear { left: 0; top: 50%; transform: translateY(-50%); }
+.bw-phone-handset-mic { right: 0; top: 50%; transform: translateY(-50%); }
+.bw-phone-handset-ear::after,
+.bw-phone-handset-mic::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 12px; height: 12px; transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #2a1d3c 0%, #1a1024 100%);
+}
+.bw-phone-handset-body {
+  position: absolute;
+  left: 24px; right: 24px; top: 0; bottom: 0;
+  background: linear-gradient(180deg, #f0c890 0%, #d8a868 100%);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+}
+/* ringing: 听筒摇铃晃动 */
+.bw-phone-machine.ringing .bw-phone-handset {
+  animation: bwPhoneRing 0.6s ease-in-out infinite;
+}
+@keyframes bwPhoneRing {
+  0%, 100% { transform: rotate(-22deg); }
+  20% { transform: rotate(-28deg) translateY(2px); }
+  40% { transform: rotate(-16deg) translateY(-2px); }
+  60% { transform: rotate(-28deg) translateY(2px); }
+  80% { transform: rotate(-18deg) translateY(-1px); }
+}
+/* talking: 听筒立起来 */
+.bw-phone-machine.talking .bw-phone-handset {
+  transform: rotate(78deg) translateX(40px);
+  transform-origin: 50% 50%;
+}
+/* ended: 听筒回原位 */
+.bw-phone-machine.ended .bw-phone-handset {
+  transform: rotate(-22deg);
+}
+
+/* 拨号盘装饰 */
+.bw-phone-dial {
+  position: relative;
+  width: 200px; height: 32px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.3);
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  padding: 4px;
+}
+.bw-phone-dial span {
+  background: rgba(255, 220, 150, 0.45);
+  border-radius: 1px;
+}
+.bw-phone-machine.ringing .bw-phone-dial {
+  animation: bwDialShake 0.4s ease-in-out infinite;
+}
+@keyframes bwDialShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1.5px); }
+  75% { transform: translateX(1.5px); }
+}
+
+/* 控制按钮 */
+.bw-phone-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.bw-phone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 18px;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 200, 130, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffe9d2;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+.bw-phone-btn:hover,
+.bw-phone-btn:active { background: rgba(255, 200, 130, 0.22); transform: scale(1.05); }
+.bw-phone-btn:focus-visible { outline: 2px solid #ffd9a0; outline-offset: 2px; }
+.bw-phone-pickup {
+  background: linear-gradient(135deg, #6dd66d, #3da83d);
+  border-color: #6dd66d;
+  color: #fff;
+  font-weight: 700;
+}
+.bw-phone-pickup:hover,
+.bw-phone-pickup:active {
+  background: linear-gradient(135deg, #7ee67e, #4dc24d);
+  border-color: #7ee67e;
+}
+.bw-phone-hangup {
+  background: linear-gradient(135deg, #ff6b6b, #d94545);
+  border-color: #ff6b6b;
+  color: #fff;
+  font-weight: 700;
+}
+.bw-phone-hangup:hover,
+.bw-phone-hangup:active {
+  background: linear-gradient(135deg, #ff7e7e, #e55959);
+  border-color: #ff7e7e;
+}
+
+/* 对话气泡区 */
+.bw-phone-chat {
+  width: 100%;
+  max-width: 480px;
+  margin: 12px auto 0;
+  padding: 14px 12px;
+  min-height: 140px;
+  max-height: 240px;
+  overflow-y: auto;
+  border-radius: 14px;
+  background: rgba(20, 14, 32, 0.55);
+  border: 1px solid rgba(255, 190, 130, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+.bw-phone-chat::-webkit-scrollbar { width: 6px; }
+.bw-phone-chat::-webkit-scrollbar-thumb { background: rgba(255, 190, 130, 0.3); border-radius: 3px; }
+.bw-phone-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  animation: bwPhoneMsgIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bw-phone-msg.them { flex-direction: row; }
+.bw-phone-msg.sys  { justify-content: center; }
+.bw-phone-msg.sys .bw-phone-msg-bub {
+  background: rgba(255, 200, 130, 0.15);
+  border: 1px dashed rgba(255, 200, 130, 0.4);
+  color: rgba(255, 220, 150, 0.8);
+  font-style: italic;
+}
+.bw-phone-msg-av {
+  width: 36px; height: 36px;
+  flex: 0 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+.bw-phone-msg-bub {
+  padding: 8px 12px;
+  border-radius: 14px 14px 14px 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 200, 130, 0.25);
+  color: #ffe9d2;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 78%;
+  text-align: left;
+}
+@keyframes bwPhoneMsgIn {
+  0%   { opacity: 0; transform: translateY(8px) scale(0.92); }
+  60%  { transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 来电记录 + 重置 */
+.bw-phone-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 10px auto 0;
+  padding: 0 6px;
+  font-size: 12px;
+}
+.bw-phone-record {
+  color: rgba(255, 233, 210, 0.6);
+  letter-spacing: 0.5px;
+}
+.bw-phone-reset {
+  background: none;
+  border: 1px solid rgba(255, 200, 130, 0.3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: rgba(255, 233, 210, 0.7);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.bw-phone-reset:hover { background: rgba(255, 200, 130, 0.15); color: #ffe9d2; }
+
+/* 移动端 */
+@media (max-width: 500px) {
+  .bw-phone-machine { max-width: 100%; min-height: 200px; padding: 22px 8px 10px; }
+  .bw-phone-screen { width: 200px; }
+  .bw-phone-screen-caller { font-size: 15px; }
+  .bw-phone-screen-line { font-size: 11px; }
+  .bw-phone-handset { width: 110px; height: 24px; }
+  .bw-phone-handset-ear, .bw-phone-handset-mic { width: 20px; height: 20px; }
+  .bw-phone-handset-ear::after, .bw-phone-handset-mic::after { width: 10px; height: 10px; }
+  .bw-phone-dial { width: 160px; }
+  .bw-phone-btn { padding: 9px 14px; font-size: 13px; min-height: 40px; }
+  .bw-phone-chat { max-height: 180px; padding: 10px 8px; }
+  .bw-phone-msg-bub { font-size: 12px; }
+}
+
+/* reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .bw-phone-machine.ringing .bw-phone-screen-inner,
+  .bw-phone-machine.ringing .bw-phone-handset,
+  .bw-phone-machine.ringing .bw-phone-dial { animation: none; }
+  .bw-phone-machine.talking .bw-phone-screen-label::before { animation: none; }
+  .bw-phone-msg { animation: none; }
+  .bw-phone-handset { transition: none; }
 }
 
 /* ---- 扎小人模态面板 ---- */
