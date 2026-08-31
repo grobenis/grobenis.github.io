@@ -91,7 +91,7 @@
     
     
     
-    <article id="post-2020-03-14-GMM" class="article article-type-post" itemscope
+    <article id="post-2020-03-14-Probability_graph_model" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -99,8 +99,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-14-GMM/"
-    >高斯混合模型</a
+  <a class="article-title" href="/2020/03/14/2020-03-14-Probability_graph_model/"
+    >概率图模型</a
   >
 </h2>
   
@@ -110,7 +110,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/14/2020-03-14-GMM/" class="article-date">
+      <a href="/2020/03/14/2020-03-14-Probability_graph_model/" class="article-date">
   <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
 </a>
       
@@ -132,13 +132,14 @@
       
 
       
-      <p>高斯混合模型</p>
-<p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p>
+      <p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p>本节将用来介绍概率图模型。</p>
+<p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p>
 <blockquote>
-<p><strong>简单分布叠加，拟合复杂世界</strong></p>
+<p><strong>用图言变量，依赖一目了然</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/03/14/2020-03-14-GMM/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/03/14/2020-03-14-Probability_graph_model/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -151,7 +152,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GMM/" rel="tag">GMM</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
 
 
     </footer>
@@ -248,7 +249,7 @@
 
 </article>
     
-    <article id="post-2020-03-14-Probability_graph_model" class="article article-type-post" itemscope
+    <article id="post-2020-03-14-GMM" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -256,8 +257,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-14-Probability_graph_model/"
-    >概率图模型</a
+  <a class="article-title" href="/2020/03/14/2020-03-14-GMM/"
+    >高斯混合模型</a
   >
 </h2>
   
@@ -267,7 +268,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/14/2020-03-14-Probability_graph_model/" class="article-date">
+      <a href="/2020/03/14/2020-03-14-GMM/" class="article-date">
   <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
 </a>
       
@@ -289,14 +290,13 @@
       
 
       
-      <p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
-<p>本节将用来介绍概率图模型。</p>
-<p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p>
+      <p>高斯混合模型</p>
+<p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p>
 <blockquote>
-<p><strong>用图言变量，依赖一目了然</strong></p>
+<p><strong>简单分布叠加，拟合复杂世界</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/03/14/2020-03-14-Probability_graph_model/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/03/14/2020-03-14-GMM/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -309,7 +309,81 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GMM/" rel="tag">GMM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-15-Particle_Filter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/14/2020-03-15-Particle_Filter/"
+    >粒子滤波器</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-date">
+  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。</p>
+<blockquote>
+<p><strong>以粒子之众，逼近状态之真</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Particle_Filter/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">粒子滤波器</a></li></ul>
 
 
     </footer>
@@ -385,80 +459,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-03-15-Particle_Filter" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-15-Particle_Filter/"
-    >粒子滤波器</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-date">
-  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。</p>
-<blockquote>
-<p><strong>以粒子之众，逼近状态之真</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/03/14/2020-03-15-Particle_Filter/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">粒子滤波器</a></li></ul>
 
 
     </footer>
@@ -627,83 +627,6 @@
 
 </article>
     
-    <article id="post-2020-03-13-HMM_model" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/10/2020-03-13-HMM_model/"
-    >隐马尔可夫模型</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-date">
-  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
-<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
-<p>来源：李航的《统计学习方法》</p>
-<p>本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。</p>
-<blockquote>
-<p><strong>看不见的状态，可观测的序列</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/03/10/2020-03-13-HMM_model/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
     <article id="post-2020-03-12-Clustering_Survey" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -773,6 +696,83 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/" rel="tag">图像分割</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%81%9A%E7%B1%BB/" rel="tag">聚类</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-13-HMM_model" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/10/2020-03-13-HMM_model/"
+    >隐马尔可夫模型</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-date">
+  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
+<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
+<p>来源：李航的《统计学习方法》</p>
+<p>本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。</p>
+<blockquote>
+<p><strong>看不见的状态，可观测的序列</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/10/2020-03-13-HMM_model/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li></ul>
 
 
     </footer>
