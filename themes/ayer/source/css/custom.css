@@ -1,27 +1,27 @@
-﻿/* =============================================================================
-   绔欑偣鑷畾涔夋牱寮忥紙custom.css锛?
-   1) 浠ｇ爜楂樹寒缇庡寲锛歄ne Dark 閰嶈壊 + 浠ｇ爜鍧?UI 鍗囩骇
-   2) 椤甸潰鍔ㄦ晥锛氬崱鐗?hover銆佸钩婊戞粴鍔ㄣ€侀摼鎺ヨ繃娓?
+/* =============================================================================
+   站点自定义样式（custom.css）
+   1) 代码高亮美化：One Dark 配色 + 代码块 UI 升级
+   2) 页面动效：卡片 hover、平滑滚动、链接过渡
    -----------------------------------------------------------------------------
-   鏈枃浠舵槸涓婚 main.css 涔嬪悗鐨勮鐩栧眰锛岄€夋嫨鍣ㄧ壒寮傛€ф洿楂橈紝瀹夊叏瑕嗙洊銆?
+   本文件是主题 main.css 之后的覆盖层，选择器特异性更高，安全覆盖。
    ============================================================================= */
 
-/* 闊充箰椤碉細鍘绘帀椤堕儴 GroTV路LIVE MUSIC ROOM 寰界珷妗?*/
+/* 音乐页：去掉顶部 GroTV·LIVE MUSIC ROOM 徽章框 */
 body.is-lyrics .tv-page-mark {
   display: none !important;
 }
 
-/* 闊充箰椤碉細闅愯棌椤堕儴椤甸潰澶ф爣棰?闊充箰",鍙繚鐣欏搧鐗屽窘绔?*/
+/* 音乐页：隐藏顶部页面大标题"音乐",只保留品牌徽章 */
 body.is-lyrics .article-title.sea-center {
   display: none;
 }
 
-/* 闊充箰椤碉細鍘绘帀姝岃瘝鍗″ご閮ㄥ渾鍦堥噷鐨勫簭鍙?01/02/...),璁╂瓕璇嶄笂鏂瑰畬鏁撮湶鍑?*/
+/* 音乐页：去掉歌词卡头部圆圈里的序号(01/02/...),让歌词上方完整露出 */
 .lyric-num {
   display: none !important;
 }
 
-/* ---------- 1. 浠ｇ爜楂樹寒锛歄ne Dark 閰嶈壊锛圴S Code 鍚屾锛?---------- */
+/* ---------- 1. 代码高亮：One Dark 配色（VS Code 同款） ---------- */
 .article-entry .highlight {
   background: #282c34;
   border-radius: 8px;
@@ -52,7 +52,7 @@ body.is-lyrics .article-title.sea-center {
   color: #5c6370;
 }
 
-/* token 閰嶈壊 */
+/* token 配色 */
 .article-entry .highlight .comment {
   color: #5c6370;
   font-style: italic;
@@ -102,7 +102,7 @@ body.is-lyrics .article-title.sea-center {
   color: #e06c75;
 }
 
-/* 琛屽唴浠ｇ爜 */
+/* 行内代码 */
 .article-entry code {
   background: #f0f2f5;
   color: #c7254e;
@@ -110,7 +110,7 @@ body.is-lyrics .article-title.sea-center {
   padding: 0.15em 0.4em;
 }
 
-/* 浠ｇ爜鍧楁粴鍔ㄦ潯缁嗗寲 */
+/* 代码块滚动条细化 */
 .article-entry .highlight::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 6px;
@@ -119,14 +119,14 @@ body.is-lyrics .article-title.sea-center {
   background: transparent;
 }
 
-/* ---------- 2. 椤甸潰鍔ㄦ晥鍗囩骇 ---------- */
+/* ---------- 2. 页面动效升级 ---------- */
 
-/* 骞虫粦婊氬姩 */
+/* 平滑滚动 */
 html {
   scroll-behavior: smooth;
 }
 
-/* 棣栭〉鏂囩珷鍗＄墖 hover锛氳交娴捣 + 闃村奖 */
+/* 首页文章卡片 hover：轻浮起 + 阴影 */
 .article-inner {
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   border-radius: 10px;
@@ -136,18 +136,18 @@ html {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
-/* 闊充箰椤?绂佺敤 article-inner 鐨?hover transform,閬垮厤 fixed 鍙扮伅鐨勫師鐐规紓绉?*/
+/* 音乐页:禁用 article-inner 的 hover transform,避免 fixed 台灯的原点漂移 */
 body.is-lyrics .article-inner:hover {
   transform: none;
   box-shadow: none;
 }
 
-/* 閫氱敤閾炬帴杩囨浮 */
+/* 通用链接过渡 */
 .content a {
   transition: color 0.25s ease;
 }
 
-/* 灏侀潰鍖?hover 寰姩锛坙ogo 杞诲井鏀惧ぇ锛?*/
+/* 封面区 hover 微动（logo 轻微放大） */
 .cover-logo {
   transition: transform 0.35s ease;
 }
@@ -155,12 +155,12 @@ body.is-lyrics .article-inner:hover {
   transform: scale(1.05);
 }
 
-/* 鍥剧墖鍦嗚锛堟鏂囨彃鍥炬洿鏌斿拰锛?*/
+/* 图片圆角（正文插图更柔和） */
 .article-entry img {
   border-radius: 6px;
 }
 
-/* 闊充箰鎸夐挳 hover 杩囨浮 */
+/* 音乐按钮 hover 过渡 */
 .music-btn {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -168,7 +168,7 @@ body.is-lyrics .article-inner:hover {
   transform: scale(1.1);
 }
 
-/* 鍙嬮摼椤靛ご鍍忥細缂╃暐涓?80px 鍦嗗舰 */
+/* 友链页头像：缩略为 80px 圆形 */
 .article-entry img[src*="/friends/"] {
   width: 80px;
   height: 80px;
@@ -177,7 +177,7 @@ body.is-lyrics .article-inner:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-/* 姝岃瘝椤垫粦鍧?*/
+/* 歌词页滑块 */
 .lyric-slider {
   position: relative;
 }
@@ -214,7 +214,7 @@ body.is-lyrics .article-inner:hover {
 .lyric-card.slide-in-left {
   animation: lyricInLeft 0.4s ease;
 }
-/* 婊氬姩鎻愮ず鏍峰紡 */
+/* 滚动提示样式 */
 .lyric-scroll-hint {
   position: absolute;
   bottom: 10px;
@@ -233,7 +233,7 @@ body.is-lyrics .article-inner:hover {
   animation: none;
 }
 .lyric-scroll-hint::before {
-  content: "鈫?;
+  content: "↑";
   display: inline-block;
   margin-right: 4px;
 }
@@ -329,13 +329,13 @@ body.is-lyrics .article-inner:hover {
   font-size: 16px;
   letter-spacing: 0.8px;
   text-align: center;
-  /* 鍘绘帀 text-shadow,瀹炲績搴曚笉闇€瑕?*/
+  /* 去掉 text-shadow,实心底不需要 */
 }
 .lyric-card-body p:last-child {
   margin-bottom: 0;
 }
 
-/* ---------- 6b. 闊充箰鐩掞細澶嶅彜鐢佃鏈?+ 鍔ㄦ€佽垶鍙?---------- */
+/* ---------- 6b. 音乐盒：复古电视机 + 动态舞台 ---------- */
 .lyric-slider {
   position: relative;
   overflow: hidden;
@@ -343,11 +343,11 @@ body.is-lyrics .article-inner:hover {
   isolation: isolate;
 }
 
-/* ----- 闊充箰椤垫暣浣撳竷灞€:TV 鍦ㄤ笂,瑁呴グ妯帓鍦ㄤ笅鏂?----- */
+/* ----- 音乐页整体布局:TV 在上,装饰横排在下方 ----- */
 .music-stage {
   display: flex;
   flex-direction: column;
-  align-items: center;             /* 鍏抽敭:cross-axis 灞呬腑 */
+  align-items: center;             /* 关键:cross-axis 居中 */
   gap: 12px;
   max-width: 800px;
   margin: 0 auto 20px;
@@ -355,12 +355,12 @@ body.is-lyrics .article-inner:hover {
   position: relative;
   z-index: 1;
 }
-/* .tv-set 淇濇寔榛樿 block(鍦?flex column 閲岃 align-items:center 灞呬腑) */
-/* .deco-row 鏀瑰洖 display:flex,鍦?flex column 閲屼綔涓?flex item 涔熻灞呬腑 */
+/* .tv-set 保持默认 block(在 flex column 里被 align-items:center 居中) */
+/* .deco-row 改回 display:flex,在 flex column 里作为 flex item 也被居中 */
 .deco-row {
   display: flex;
   flex-direction: row;
-  align-items: center;             /* 缁熶竴鍨傜洿灞呬腑,瑙嗚楂樺害涓€鑷?*/
+  align-items: center;             /* 统一垂直居中,视觉高度一致 */
   justify-content: center;
   gap: 18px;
   flex-wrap: wrap;
@@ -370,10 +370,10 @@ body.is-lyrics .article-inner:hover {
 }
 .deco-row .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
 .deco-row .deco-item:hover { transform: translateY(-3px) scale(1.05); filter: brightness(1.12); }
-/* 鏃?deco-col 鍏煎(娌＄敤浜?鐩存帴闅愯棌) */
+/* 旧 deco-col 兼容(没用了,直接隐藏) */
 
 
-/* ===== 鎬€鏃х墿鍝?榛戣兌鍞辩墖 ===== */
+/* ===== 怀旧物品:黑胶唱片 ===== */
 .deco-vinyl {
   width: 60px;
   height: 60px;
@@ -411,7 +411,7 @@ body.is-lyrics .article-inner:hover {
 .deco-row:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
 @keyframes vinylSpin { to { transform: rotate(360deg); } }
 
-/* ===== 鎬€鏃х墿鍝?纾佸甫 ===== */
+/* ===== 怀旧物品:磁带 ===== */
 .deco-cassette {
   width: 76px; height: 48px;
   border-radius: 5px;
@@ -450,7 +450,7 @@ body.is-lyrics .article-inner:hover {
   background: radial-gradient(circle, #d4d2c8 30%, #1a1a1a 30% 70%, transparent 70%);
 }
 
-/* ===== 鎬€鏃х墿鍝?CD 鐩?===== */
+/* ===== 怀旧物品:CD 盘 ===== */
 .deco-cd {
   width: 60px; height: 60px;
   border-radius: 50%;
@@ -486,12 +486,12 @@ body.is-lyrics .article-inner:hover {
 .deco-row:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
 @keyframes cdShine { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(40deg) brightness(1.1); } }
 
-/* ===== 鎬€鏃х墿鍝?鑰佸紡楹﹀厠椋?===== */
+/* ===== 怀旧物品:老式麦克风 ===== */
 .deco-mic {
   width: 50px; height: 90px;
   position: relative;
   display: flex; flex-direction: column; align-items: center;
-  /* 涓庡叾浠栬楗颁欢缁熶竴瑙嗚楂樺害(鏁翠綋绛夋瘮缂╁埌绾?63px 楂? */
+  /* 与其他装饰件统一视觉高度(整体等比缩到约 63px 高) */
   zoom: 0.7;
 }
 .deco-mic .mic-head {
@@ -526,7 +526,7 @@ body.is-lyrics .article-inner:hover {
 .deco-row:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
 @keyframes micSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 
-/* ===== 鎬€鏃х墿鍝?闇撹櫣鎷涚墝 ===== */
+/* ===== 怀旧物品:霓虹招牌 ===== */
 .deco-neon {
   padding: 5px 10px;
   border: 1.5px solid #ff5577;
@@ -554,7 +554,7 @@ body.is-lyrics .article-inner:hover {
   52% { opacity: 0.8; }
 }
 
-/* ===== 鎬€鏃х墿鍝?娴锋姤 ===== */
+/* ===== 怀旧物品:海报 ===== */
 .deco-poster {
   width: 64px;
   padding: 6px 4px;
@@ -582,7 +582,7 @@ body.is-lyrics .article-inner:hover {
   font-size: 7px; color: #b71c1c; margin-top: 3px;
 }
 
-/* ===== 鎬€鏃х墿鍝?鐣欏０鏈哄枃鍙?閿ュ舰) ===== */
+/* ===== 怀旧物品:留声机喇叭(锥形) ===== */
 .deco-horn {
   width: 90px; height: 76px;
   position: relative;
@@ -611,7 +611,7 @@ body.is-lyrics .article-inner:hover {
   border-radius: 0 3px 3px 0;
 }
 
-/* ===== 鑳屾櫙鍣偣绾圭悊(鏃跺厜娌夋穩鎰? ===== */
+/* ===== 背景噪点纹理(时光沉淀感) ===== */
 .music-stage::before {
   content: "";
   position: absolute;
@@ -631,7 +631,7 @@ body.is-lyrics .article-inner:hover {
   z-index: -1;
 }
 
-/* 鍝嶅簲寮?绐勫睆鍘嬬缉甯冨眬 */
+/* 响应式:窄屏压缩布局 */
 @media (max-width: 1200px) {
   .music-stage { max-width: 720px; gap: 14px; }
   .deco-vinyl, .deco-cd { transform: scale(0.9); }
@@ -641,10 +641,10 @@ body.is-lyrics .article-inner:hover {
   .deco-row { gap: 16px; }
 }
 /* ==========================================================================
-   闊充箰椤?鍏ㄥ昂瀵搁攣涓€灞?鍙 TV 鍐呮瓕璇嶅崱鍙粴
-   (鏁撮〉涓嶅嚭鐜版祻瑙堝櫒婊氬姩鏉?鍙暀 TV 鍗＄墖鍐呭彸渚х殑钃濊壊缁嗘粴鍔ㄦ潯)
-   娉ㄦ剰:鏈富棰樼殑婊氬姩瀹瑰櫒鏄?main.content,鑰岄潪 body/html,
-   鍥犳蹇呴』閿?main.content(鍙婂叾鍐呭鍖呰９灞?,body 鏈韩鏃犻渶鍔ㄣ€?
+   音乐页:全尺寸锁一屏,只让 TV 内歌词卡可滚
+   (整页不出现浏览器滚动条,只留 TV 卡片内右侧的蓝色细滚动条)
+   注意:本主题的滚动容器是 main.content,而非 body/html,
+   因此必须锁 main.content(及其内容包裹层),body 本身无需动。
    ========================================================================== */
 body.page-scene-sunset #app > .content,
 body.page-scene-night #app > .content,
@@ -654,11 +654,11 @@ body.page-scene-night .content,
 body.page-scene-dawn .content,
 body.page-locked #app > .content,
 body.page-locked .content {
-  overflow: hidden !important;   /* 閿佷綇鐪熸婊氬姩瀹瑰櫒 */
+  overflow: hidden !important;   /* 锁住真正滚动容器 */
   height: 100vh !important;
   max-height: 100vh !important;
 }
-/* 鍐呭鍖呰９閾句篃鍘嬪埌瑙嗗彛鍐?闃叉鍐呴儴鍐嶆孩鍑?*/
+/* 内容包裹链也压到视口内,防止内部再溢出 */
 body.page-scene-sunset .outer,
 body.page-scene-night .outer,
 body.page-scene-dawn .outer,
@@ -687,7 +687,7 @@ body.page-locked .article-entry {
   max-height: 100vh !important;
   overflow: hidden;
 }
-/* 鍏滃簳:鐩存帴閿?document 婊氬姩(鍏煎婊氬姩涓嶅湪 .content 鏃剁殑鏃ц涓? */
+/* 兜底:直接锁 document 滚动(兼容滚动不在 .content 时的旧行为) */
 html:has(body.page-scene-sunset),
 html:has(body.page-scene-night),
 html:has(body.page-scene-dawn),
@@ -701,7 +701,7 @@ body.page-locked {
   overflow: hidden !important;
   height: 100vh;
 }
-/* 闅愯棌鏂囩珷椤佃剼/鍒嗕韩/鐗堟潈/瀵艰埅,閬垮厤鍗犻珮搴︽孩鍑?*/
+/* 隐藏文章页脚/分享/版权/导航,避免占高度溢出 */
 body.page-scene-sunset .article-footer,
 body.page-scene-night .article-footer,
 body.page-scene-dawn .article-footer,
@@ -717,14 +717,14 @@ body.page-scene-dawn #mask {
   display: none !important;
 }
 
-/* 绉诲姩绔?瀹屽叏鍘绘帀 TV 澶栧３,鍙樉绀哄睆骞曢噷鐨勬瓕璇嶅唴瀹?鍦ㄨ儗鏅笂) */
+/* 移动端:完全去掉 TV 外壳,只显示屏幕里的歌词内容(在背景上) */
 @media (max-width: 760px) {
   .music-stage { flex-direction: column; max-width: 100%; padding: 0; height: calc(100vh - 56px); }
   .deco-row { gap: 14px; max-width: 100%; padding: 0 8px; }
   .tv-set { order: 1; }
   .deco-row { order: 2; }
 
-  /* TV 澶栧３鍏ㄩ儴闅愯棌/閫忔槑:澶栧３銆佽竟妗嗐€佸ぉ绾裤€佸搧鐗屻€佸簳閮ㄩ摥鐗屻€佺數瑙嗘煖銆佹帶鍒跺彴 */
+  /* TV 外壳全部隐藏/透明:外壳、边框、天线、品牌、底部铭牌、电视柜、控制台 */
   .tv-set {
     order: 1;
     max-width: 100% !important;
@@ -738,7 +738,7 @@ body.page-scene-dawn #mask {
   .tv-scanlines, .tv-screen-glare, .tv-snow, .lyric-scroll-hint {
     display: none !important;
   }
-  /* 鐢佃涓绘満閫忔槑,鏃犲渾瑙掓棤闃村奖,鏃犲唴杈硅窛 */
+  /* 电视主机透明,无圆角无阴影,无内边距 */
   .tv-body {
     background: transparent !important;
     box-shadow: none !important;
@@ -747,7 +747,7 @@ body.page-scene-dawn #mask {
     height: 100%;
   }
   .tv-body::before { display: none !important; }
-  /* 灞忓箷妗嗘灦閫忔槑,鏃犲渾瑙掓棤鍐呰竟璺?*/
+  /* 屏幕框架透明,无圆角无内边距 */
   .tv-screen-frame {
     background: transparent !important;
     box-shadow: none !important;
@@ -755,7 +755,7 @@ body.page-scene-dawn #mask {
     border-radius: 0 !important;
     height: 100%;
   }
-  /* 灞忓箷鏈韩:鍗犳弧鐖跺鍣?*/
+  /* 屏幕本身:占满父容器 */
   .tv-screen {
     height: 100% !important;
     min-height: 0 !important;
@@ -764,7 +764,7 @@ body.page-scene-dawn #mask {
     box-shadow: none !important;
     background: #000 !important;
   }
-  /* 姝岃瘝鍗＄墖璐磋竟鏄剧ず,涓嶇暀澶у唴杈硅窛 */
+  /* 歌词卡片贴边显示,不留大内边距 */
   .lyric-cards {
     padding: 10px !important;
   }
@@ -785,15 +785,15 @@ body.page-scene-dawn #mask {
   .lyric-card-body { padding: 4px 14px 12px !important; }
 }
 
-/* ----- 鐢佃澶栧３鏁翠綋 ----- */
+/* ----- 电视外壳整体 ----- */
 .tv-set {
   position: relative;
   margin: 0 auto 12px;
-  max-width: 620px;       /* 鐣ユ墿澶?鐣欒冻姝岃瘝 + 鍗＄墖绌洪棿 */
+  max-width: 620px;       /* 略扩大,留足歌词 + 卡片空间 */
   width: 100%;
   flex: 1 1 auto;
   min-width: 0;
-  padding-top: 44px; /* 缁欏ぉ绾跨暀绌洪棿 */
+  padding-top: 44px; /* 给天线留空间 */
 }
 .tv-antennas {
   position: absolute;
@@ -845,7 +845,7 @@ body.page-scene-dawn #mask {
   background:
     linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
   border-radius: 18px 18px 14px 14px;
-  /* 鐏拌壊澶栧３:涓嬭竟妗嗘敹钖?缂╁皬鍚庣殑鎺т欢浠嶈瀹屾暣鍖呬綇 */
+  /* 灰色外壳:下边框收薄,缩小后的控件仍被完整包住 */
   padding: 16px 18px 14px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.7),
@@ -853,7 +853,7 @@ body.page-scene-dawn #mask {
     0 12px 30px rgba(0,0,0,0.28);
 }
 .tv-body::before {
-  /* 琛ㄩ潰閲戝睘鎷変笣绾圭悊 */
+  /* 表面金属拉丝纹理 */
   content: "";
   position: absolute;
   inset: 0;
@@ -868,7 +868,7 @@ body.page-scene-dawn #mask {
   pointer-events: none;
 }
 
-/* 榛戣兌灏忓墽鍦烘挱鏀炬椂,鐢佃鏈哄澹冲彉绾?*/
+/* 黑胶小剧场播放时,电视机外壳变红 */
 .tv-body:has(.theater-vinyl.is-on) {
   background: linear-gradient(180deg, #c1352f 0%, #a02724 45%, #6e1412 100%);
   background-image:
@@ -910,7 +910,7 @@ body.page-scene-dawn #mask {
   font-family: "Courier New", monospace;
 }
 
-/* ----- 鏄剧ず灞?----- */
+/* ----- 显示屏 ----- */
 .tv-screen-frame {
   position: relative;
   background: linear-gradient(180deg, #1a1a20, #2a2a30);
@@ -923,7 +923,7 @@ body.page-scene-dawn #mask {
 .tv-screen {
   position: relative;
   width: 100%;
-  /* 灞忛珮闅忚鍙ｈ嚜閫傚簲:鍦ㄥ師鍩哄噯涓婄旱鍚戝姞楂?40px,姝岃瘝鏄剧ず鏇村 */
+  /* 屏高随视口自适应:在原基准上纵向加高 40px,歌词显示更多 */
   height: clamp(290px, calc(44vh + 40px), 510px);
   border-radius: 16px;
   overflow: hidden;
@@ -934,7 +934,7 @@ body.page-scene-dawn #mask {
 }
 @media (max-width: 640px) {
   .tv-screen { height: clamp(220px, 40vh, 300px); }
-  /* 灏忓睆鏃舵敹缂╂帶鍒堕潰鏉?淇濊瘉鎵€鏈夋寜閽兘鐣欏湪鐢佃鏈鸿韩涓婁笉澶栨孩 */
+  /* 小屏时收缩控制面板,保证所有按钮都留在电视机身上不外溢 */
   .tv-panel { margin-top: 12px; padding: 8px 2px 2px; }
   .tv-panel-right {
     gap: 10px;
@@ -958,7 +958,7 @@ body.page-scene-dawn #mask {
   .tv-btn-icon { font-size: 10px; }
 }
 @media (max-width: 420px) {
-  /* 瓒呯獎灞忛殣钘?VOL 鏃嬮挳,鍙繚鐣?CH + 涓夐敭 */
+  /* 超窄屏隐藏 VOL 旋钮,只保留 CH + 三键 */
   .tv-knob-vol { display: none; }
 }
 .tv-screen-bezel {
@@ -971,7 +971,7 @@ body.page-scene-dawn #mask {
     inset 0 4px 10px rgba(255,255,255,0.05);
 }
 
-/* CRT 鎵弿绾?*/
+/* CRT 扫描线 */
 .tv-scanlines {
   position: absolute;
   inset: 0;
@@ -983,11 +983,11 @@ body.page-scene-dawn #mask {
     transparent 3px
   );
   pointer-events: none;
-  /* 鏀惧簳灞?鍦ㄥ満鏅笂銆佹瓕璇嶅崱涓?,璁╂瓕璇嶅崱涓嶈妯嚎骞叉壈 */
+  /* 放底层(在场景上、歌词卡下),让歌词卡不被横线干扰 */
   z-index: 1;
   mix-blend-mode: multiply;
 }
-/* 灞忓箷椤堕儴楂樺厜锛堢幓鐠冨弽鍏夛級 */
+/* 屏幕顶部高光（玻璃反光） */
 .tv-screen-glare {
   position: absolute;
   top: 0;
@@ -999,7 +999,7 @@ body.page-scene-dawn #mask {
   z-index: 5;
   border-radius: 16px 16px 0 0;
 }
-/* 闆姳鐐癸紙闈欐€佸櫔鐐癸級 */
+/* 雪花点（静态噪点） */
 .tv-snow {
   position: absolute;
   inset: 0;
@@ -1017,13 +1017,13 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 88% 92%, rgba(255,255,255,0.9) 0.5px, transparent 1px);
 }
 
-/* 棰戦亾鍙风獥(灞忓箷宸︿笂瑙? */
+/* 频道号窗(屏幕左上角) */
 .tv-channel {
   position: absolute;
   top: 14px;
   left: 18px;
   right: auto;
-  /* 鎻愰珮鍒版瘮姝岃瘝鍗℃洿楂?閬垮厤琚洊 */
+  /* 提高到比歌词卡更高,避免被盖 */
   z-index: 11;
   background: linear-gradient(180deg, rgba(10,10,16,0.75), rgba(4,4,8,0.75));
   color: #ff8c4a;
@@ -1036,16 +1036,16 @@ body.page-scene-dawn #mask {
   border: 1px solid #2a2a30;
   box-shadow: inset 0 0 6px rgba(255,140,74,0.35);
   text-shadow: 0 0 6px rgba(255,140,74,0.8);
-  /* 绾楗?涓嶉渶瑕佹嫤鎴簨浠?閬垮厤閬尅婊氬姩鏉℃嫋鎷? */
+  /* 纯装饰,不需要拦截事件(避免遮挡滚动条拖拽) */
   pointer-events: none;
 }
 
-/* ----- 鎺у埗闈㈡澘 ----- */
+/* ----- 控制面板 ----- */
 .tv-panel {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* 涓嬭竟妗嗘敹绐?鎺т欢缁熶竴缂╁皬鍚庝粛瀹屾暣鍖呬綇 */
+  /* 下边框收窄:控件统一缩小后仍完整包住 */
   margin-top: 10px;
   padding: 6px 4px 2px;
 }
@@ -1068,14 +1068,14 @@ body.page-scene-dawn #mask {
   gap: 12px;
 }
 
-/* 鏃嬮挳鍖呰９瀹瑰櫒:瀛楁牱涓嶉殢鏃嬮挳鏃嬭浆(鏀惧湪鏃嬭浆鎸夐挳涔嬪) */
+/* 旋钮包裹容器:字样不随旋钮旋转(放在旋转按钮之外) */
 .tv-knob-wrap {
   position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
 }
-/* 澶ф棆閽?涓庢寜閽粺涓€楂樺害 30px) */
+/* 大旋钮(与按钮统一高度 30px) */
 .tv-knob {
   position: relative;
   width: 30px;
@@ -1092,7 +1092,7 @@ body.page-scene-dawn #mask {
   transform: rotate(0deg);
   transition: transform 0.5s ease;
 }
-/* 鏃嬮挳鏁翠綋鏃嬭浆(鎸囬拡璺熺潃杞?,瀛楁牱鍥犲湪鎸夐挳澶栬€屼繚鎸佹按骞?*/
+/* 旋钮整体旋转(指针跟着转),字样因在按钮外而保持水平 */
 .tv-knob-ch { --tv-rot: 0deg; transform: rotate(var(--tv-rot)); }
 .tv-knob-vol { --vol-rot: 0deg; transform: rotate(var(--vol-rot)); transition: transform 0.3s ease; }
 .tv-knob::before {
@@ -1136,7 +1136,7 @@ body.page-scene-dawn #mask {
 }
 .tv-knob:active { box-shadow: inset 0 3px 6px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3); }
 
-/* 鏈鸿韩闈㈡澘鎸夐挳缁勶紙浣嶄簬灞忓箷涓嬫柟銆佷笌鏃嬮挳鍚屾帓锛?*/
+/* 机身面板按钮组（位于屏幕下方、与旋钮同排） */
 .tv-buttons {
   display: flex;
   gap: 6px;
@@ -1162,7 +1162,7 @@ body.page-scene-dawn #mask {
 .tv-btn-play:hover { background: linear-gradient(180deg, #ff9a5a, #e07a36); }
 .tv-btn-icon { font-size: 11px; line-height: 1; }
 
-/* 鐢垫簮鐏?*/
+/* 电源灯 */
 .tv-power-led {
   width: 8px;
   height: 8px;
@@ -1177,7 +1177,7 @@ body.page-scene-dawn #mask {
   animation: tvLed 1.6s ease-in-out infinite alternate;
 }
 
-/* ===== 澶嶅彜鐢佃寮哄寲 ===== */
+/* ===== 复古电视强化 ===== */
 .tv-channel-scan {
   position: absolute;
   inset: 0;
@@ -1206,7 +1206,7 @@ body.page-scene-dawn #mask {
   100% { opacity: 0; }
 }
 
-/* 淇″彿骞叉壈鏉＄汗 */
+/* 信号干扰条纹 */
 .tv-signal-glitch {
   position: absolute;
   inset: 0;
@@ -1238,7 +1238,7 @@ body.page-scene-dawn #mask {
   100% { opacity: 0;    transform: translateX(0); }
 }
 
-/* 鏃犱俊鍙风敾闈?*/
+/* 无信号画面 */
 .tv-no-signal {
   position: absolute;
   inset: 0;
@@ -1285,7 +1285,7 @@ body.page-scene-dawn #mask {
   100% { transform: translate(-6px, 4px); }
 }
 
-/* 闅愯棌棰戦亾鐢婚潰 */
+/* 隐藏频道画面 */
 .tv-hidden-screen {
   position: absolute;
   inset: 0;
@@ -1334,7 +1334,7 @@ body.page-scene-dawn #mask {
   opacity: 0.55;
 }
 
-/* 鍙屽嚮灞忓箷鐨勭绉橀棯灞?*/
+/* 双击屏幕的神秘闪屏 */
 .tv-secret-flash {
   position: fixed;
   width: 200px;
@@ -1354,7 +1354,7 @@ body.page-scene-dawn #mask {
   100% { transform: scale(2.4); opacity: 0; }
 }
 
-/* 鏁寸偣鐜鑱斿姩姘旀场 */
+/* 整点环境联动气泡 */
 .hour-popup {
   position: fixed;
   left: 50%;
@@ -1385,7 +1385,7 @@ body.page-scene-dawn #mask {
   to   { box-shadow: 0 0 14px #ff7050, inset 0 1px 1px rgba(255,200,150,0.8); }
 }
 
-/* 鐢垫簮寮€鍏虫寜閽?鎸夐挳澹冲寘瑁圭數婧愮伅 */
+/* 电源开关按钮:按钮壳包裹电源灯 */
 .tv-power-btn {
   position: relative;
   width: 34px;
@@ -1416,7 +1416,7 @@ body.page-scene-dawn #mask {
   animation: tvLed 1.6s ease-in-out infinite alternate;
 }
 
-/* ===== 鐢佃鍏虫満鐘舵€?===== */
+/* ===== 电视关机状态 ===== */
 .tv-set.is-off .tv-screen {
   filter: brightness(0.04);
   transition: filter 0.45s ease;
@@ -1438,10 +1438,10 @@ body.page-scene-dawn #mask {
 .tv-set.is-off .tv-btn-next,
 .tv-set.is-off .tv-btn-play { pointer-events: none; }
 
-/* 搴曢儴閾墝(鏀惧湪 TV 鏈哄３椤堕儴,澶╃嚎涓嬫柟 + 灞忔涓婃柟,娣辫壊瀛楁祬鑹查噾灞炴満澹宠儗鏅? */
+/* 底部铭牌(放在 TV 机壳顶部,天线下方 + 屏框上方,深色字浅色金属机壳背景) */
 .tv-footplate {
   position: absolute;
-  /* 鐩稿 .tv-set 椤堕儴:padding-top 44 + tv-body padding-top 16 - 8 鍐呯缉 = 52 */
+  /* 相对 .tv-set 顶部:padding-top 44 + tv-body padding-top 16 - 8 内缩 = 52 */
   top: 52px;
   left: 50%;
   transform: translateX(-50%);
@@ -1456,7 +1456,7 @@ body.page-scene-dawn #mask {
   white-space: nowrap;
 }
 
-/* 鐢佃鏌滈槾褰?*/
+/* 电视柜阴影 */
 .tv-stand {
   width: 70%;
   height: 14px;
@@ -1483,65 +1483,65 @@ body.page-scene-dawn #mask {
   opacity: 1;
 }
 
-/* ===== 10 濂椾笓灞?CRT 灞忓唴姘涘洿娓愬彉锛堜富鑹茶皟涓や袱涓嶅悓锛屼笉閲嶅锛?===== */
-/* 01 鏇剧粡鐨勪綘 鈥斺€?鏆栨澶曢槼 */
+/* ===== 10 套专属 CRT 屏内氛围渐变（主色调两两不同，不重复） ===== */
+/* 01 曾经的你 —— 暖橙夕阳 */
 .lyric-scene[data-bg-crt="crt-01-zengjingdeni.jpg"] {
   background:
     radial-gradient(circle at 74% 30%, rgba(255, 214, 110, 0.9) 0%, rgba(255, 160, 70, 0.4) 24%, transparent 50%),
     linear-gradient(180deg, #7a3258 0%, #b25a42 40%, #e08648 68%, #f5b264 90%, #ffdf9e 100%);
 }
-/* 02 娑堟剚 鈥斺€?钘忚摑娣卞 + 鐞ョ弨閰掑厜 */
+/* 02 消愁 —— 藏蓝深夜 + 琥珀酒光 */
 .lyric-scene[data-bg-crt="crt-02-xiaochou.jpg"] {
   background:
     radial-gradient(circle at 26% 66%, rgba(235, 165, 60, 0.55) 0%, transparent 36%),
     radial-gradient(circle at 78% 22%, rgba(64, 105, 220, 0.4) 0%, transparent 44%),
     linear-gradient(180deg, #070a16 0%, #131a2e 55%, #232a46 100%);
 }
-/* 03 绋婚 鈥斺€?閲戦粍绋荤敯 + 鏅ㄧ豢 */
+/* 03 稻香 —— 金黄稻田 + 晨绿 */
 .lyric-scene[data-bg-crt="crt-03-daoxiang.jpg"] {
   background:
     radial-gradient(circle at 50% 90%, rgba(255, 238, 160, 0.85) 0%, rgba(250, 215, 120, 0.35) 30%, transparent 58%),
     linear-gradient(180deg, #3d4f33 0%, #6d8040 45%, #b8ab4c 75%, #ecd27e 95%, #fff0b8 100%);
 }
-/* 04 鏅村ぉ 鈥斺€?澶╄摑鐧戒簯锛堝叏缁勬渶浜級 */
+/* 04 晴天 —— 天蓝白云（全组最亮） */
 .lyric-scene[data-bg-crt="crt-04-qingtian.jpg"] {
   background:
     radial-gradient(circle at 72% 16%, rgba(255, 255, 235, 0.9) 0%, rgba(255, 245, 200, 0.35) 28%, transparent 52%),
     linear-gradient(180deg, #2f74bd 0%, #5795d6 40%, #93c1ea 72%, #dff0fb 100%);
 }
-/* 05 娓呮槑闆ㄤ笂 鈥斺€?闈掔儫鐏扮豢缁嗛洦锛堜綆楗卞拰鍐疯皟锛?*/
+/* 05 清明雨上 —— 青烟灰绿细雨（低饱和冷调） */
 .lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"] {
   background:
     radial-gradient(circle at 32% 20%, rgba(205, 225, 210, 0.35) 0%, transparent 48%),
     linear-gradient(180deg, #26333a 0%, #47615c 50%, #74918a 80%, #adc4ba 100%);
 }
-/* 06 闈掕姳鐡?鈥斺€?閽磋摑鐡风櫧锛堥珮楗卞拰瀵规挒锛?*/
+/* 06 青花瓷 —— 钴蓝瓷白（高饱和对撞） */
 .lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"] {
   background:
     radial-gradient(circle at 50% 14%, rgba(240, 247, 255, 0.45) 0%, transparent 42%),
     radial-gradient(circle at 18% 84%, rgba(30, 90, 175, 0.55) 0%, transparent 52%),
     linear-gradient(170deg, #0d2b56 0%, #1c5599 50%, #3579c2 85%, #7fb3e2 100%);
 }
-/* 07 搴愬窞鏈?鈥斺€?娣辩传澶滅┖ + 鏈堢櫧閾讹紙绱皟鐙崰锛?*/
+/* 07 庐州月 —— 深紫夜空 + 月白银（紫调独占） */
 .lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"] {
   background:
     radial-gradient(circle at 50% 12%, rgba(238, 240, 255, 0.65) 0%, rgba(200, 200, 255, 0.2) 18%, transparent 38%),
     radial-gradient(circle at 76% 24%, rgba(255, 178, 100, 0.28) 0%, transparent 34%),
     linear-gradient(180deg, #191038 0%, #322152 50%, #553a78 82%, #8a67a8 100%);
 }
-/* 08 鍛婄櫧姘旂悆 鈥斺€?鐜矇妗冪孩锛堟殩绮夛紝鍖哄埆浜?01 鐨勬锛?*/
+/* 08 告白气球 —— 玫粉桃红（暖粉，区别于 01 的橙） */
 .lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"] {
   background:
     radial-gradient(circle at 66% 36%, rgba(255, 190, 205, 0.75) 0%, rgba(255, 150, 170, 0.35) 26%, transparent 50%),
     linear-gradient(172deg, #7e2e58 0%, #b44f72 38%, #e07a88 68%, #ffadae 90%, #ffd9cf 100%);
 }
-/* 09 闆呬織鍏辫祻 鈥斺€?姘村ⅷ榛戠櫧锛堝绾哥背鐧? 鍏ㄧ粍鍞竴鏃犲僵鑹诧級 */
+/* 09 雅俗共赏 —— 水墨黑白（宣纸米白, 全组唯一无彩色） */
 .lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"] {
   background:
     radial-gradient(circle at 50% 86%, rgba(255, 253, 246, 0.55) 0%, transparent 52%),
     linear-gradient(178deg, #17181a 0%, #33353a 45%, #63666d 72%, #a7aaaf 92%, #e8e6de 100%);
 }
-/* 10 鍩庡簻 鈥斺€?鍐疯摑榛?+ 琛€绾㈤湏铏圭偣缂€ */
+/* 10 城府 —— 冷蓝黑 + 血红霓虹点缀 */
 .lyric-scene[data-bg-crt="crt-10-chengfu.jpg"] {
   background:
     radial-gradient(circle at 24% 74%, rgba(198, 40, 60, 0.5) 0%, transparent 34%),
@@ -1549,7 +1549,7 @@ body.page-scene-dawn #mask {
     linear-gradient(180deg, #05070c 0%, #10161f 55%, #1f2937 100%);
 }
 
-/* CRT 绮掑瓙瀹瑰櫒 */
+/* CRT 粒子容器 */
 .crt-particles {
   position: absolute;
   inset: 0;
@@ -1558,7 +1558,7 @@ body.page-scene-dawn #mask {
   z-index: 2;
 }
 
-/* ===== 瑁呴グ浠跺皬褰╄泲寮圭獥 ===== */
+/* ===== 装饰件小彩蛋弹窗 ===== */
 .easter-modal {
   position: fixed;
   inset: 0;
@@ -1627,7 +1627,7 @@ body.page-scene-dawn #mask {
   font-size: 14px;
   line-height: 1.8;
 }
-/* ===== 鍦烘櫙 1锛氶粍鏄忥紙澶曢槼 + 杩滃北 + 椋為笩锛?===== */
+/* ===== 场景 1：黄昏（夕阳 + 远山 + 飞鸟） ===== */
 .lyric-scene-1 { background: #2a1d2c; }
 .sky-sunset {
   position: absolute; inset: 0;
@@ -1710,7 +1710,7 @@ body.page-scene-dawn #mask {
   100% { left: 110%; transform: translateY(-4px) scale(var(--s,1)); }
 }
 
-/* ===== 鍦烘櫙 2锛氭繁澶滐紙鏈堜寒 + 鏄熺┖ + 鍩庡競鍓奖锛?===== */
+/* ===== 场景 2：深夜（月亮 + 星空 + 城市剪影） ===== */
 .lyric-scene-2 { background: #0a0e22; }
 .sky-night {
   position: absolute; inset: 0;
@@ -1819,7 +1819,7 @@ body.page-scene-dawn #mask {
 .b-7 { height: 60%; }
 .b-8 { height: 75%; }
 
-/* ===== 鍦烘櫙 3锛氭竻鏅擄紙鏅ㄥ厜 + 浜戞捣 + 椋庣瓭锛?===== */
+/* ===== 场景 3：清晓（晨光 + 云海 + 风筝） ===== */
 .lyric-scene-3 { background: #2a3a52; }
 .sky-dawn {
   position: absolute; inset: 0;
@@ -1910,7 +1910,7 @@ body.page-scene-dawn #mask {
   transform: rotate(20deg);
 }
 
-/* ===== 閫氱敤锛氭殫瑙掞紙璁╀腑澶瓕璇嶅崱鏇寸獊鍑猴級 ===== */
+/* ===== 通用：暗角（让中央歌词卡更突出） ===== */
 .vignette {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.45) 100%);
@@ -1918,7 +1918,7 @@ body.page-scene-dawn #mask {
 }
 
 /* ==========================================================================
-   闊冲搷鍙帮紙Sound Deck锛夛細鎺у埗闈㈡澘浠庣數瑙嗕笅鏂圭Щ鍒板乏渚у鏁炲尯鍩?
+   音响台（Sound Deck）：控制面板从电视下方移到左侧宽敞区域
    ========================================================================== */
 .sound-deck {
   margin-top: 8px;
@@ -1944,7 +1944,7 @@ body.page-scene-dawn #mask {
   margin-bottom: 10px;
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
 }
-/* 渚ф爮闈㈡澘锛氱旱鍚戝爢鍙?*/
+/* 侧栏面板：纵向堆叠 */
 .tv-panel-side {
   display: flex;
   flex-direction: column;
@@ -1970,11 +1970,11 @@ body.page-scene-dawn #mask {
 }
 
 /* ==========================================================================
-   闊充箰椤靛叏灞忚儗鏅紙鐢佃澶?/ 椤甸潰鏁翠綋锛?
-   閫氳繃 body.page-scene-sunset / .page-scene-night / .page-scene-dawn 鍒囨崲
+   音乐页全屏背景（电视外 / 页面整体）
+   通过 body.page-scene-sunset / .page-scene-night / .page-scene-dawn 切换
    ========================================================================== */
 
-/* 璁╅煶涔愰〉 article 瀹瑰櫒涓庡崱鐗囬€忔槑锛岃儗鏅敱 body 閫忓嚭 */
+/* 让音乐页 article 容器与卡片透明，背景由 body 透出 */
 body.page-scene-sunset,
 body.page-scene-night,
 body.page-scene-dawn {
@@ -1997,7 +1997,7 @@ body.page-scene-dawn .article-entry {
   border-color: transparent !important;
 }
 
-/* ===== 鍦烘櫙 1锛氶粍鏄忥紙鍏滃簳鑹诧細鍥剧墖鏈姞杞芥椂鍙锛?===== */
+/* ===== 场景 1：黄昏（兜底色：图片未加载时可见） ===== */
 body.page-scene-sunset {
   background:
     linear-gradient(160deg,
@@ -2007,7 +2007,7 @@ body.page-scene-sunset {
       #d9784a 80%,
       #f0a060 100%) !important;
 }
-/* ===== 鍦烘櫙 2锛氭繁澶?===== */
+/* ===== 场景 2：深夜 ===== */
 body.page-scene-night {
   background:
     linear-gradient(180deg,
@@ -2016,7 +2016,7 @@ body.page-scene-night {
       #16205a 65%,
       #1a2050 100%) !important;
 }
-/* ===== 鍦烘櫙 3锛氭竻鏅?===== */
+/* ===== 场景 3：清晓 ===== */
 body.page-scene-dawn {
   background:
     linear-gradient(180deg,
@@ -2027,7 +2027,7 @@ body.page-scene-dawn {
       #ffd8a8 100%) !important;
 }
 
-/* 鑳屾櫙鍔ㄦ晥锛氱紦鎱㈡紓娴殑鏌斿厜鏂?*/
+/* 背景动效：缓慢漂浮的柔光斑 */
 body.page-scene-sunset::before,
 body.page-scene-night::before,
 body.page-scene-dawn::before {
@@ -2059,7 +2059,7 @@ body.page-scene-dawn::before {
   100% { transform: translate(-2%, 1%)  scale(1.02); }
 }
 
-/* 璁╃數瑙嗘诞鍦ㄨ儗鏅箣涓婏紙z-index 鎶珮锛?*/
+/* 让电视浮在背景之上（z-index 抬高） */
 body.page-scene-sunset .tv-set,
 body.page-scene-night .tv-set,
 body.page-scene-dawn .tv-set {
@@ -2068,67 +2068,67 @@ body.page-scene-dawn .tv-set {
 }
 
 /* ==========================================================================
-   姣忛姝屼笓灞炲鍦堟皼鍥达紙涓?CRT 鍚岃壊绯荤殑鏆楀寲浣庨ケ鍜岀増锛屼繚璇佸唴澶栧尮閰嶏級
-   鏀惧湪 page-scene-* 涔嬪悗浠ヨ鐩栧叾 !important 娓愬彉
+   每首歌专属外圈氛围（与 CRT 同色系的暗化低饱和版，保证内外匹配）
+   放在 page-scene-* 之后以覆盖其 !important 渐变
    ========================================================================== */
-/* 01 鏇剧粡鐨勪綘 鈥斺€?鏆楀寲鏆栨澶曢槼 */
+/* 01 曾经的你 —— 暗化暖橙夕阳 */
 body.page-bg-1 {
   background:
     radial-gradient(ellipse at 72% 22%, rgba(255, 180, 90, 0.28), transparent 45%),
     linear-gradient(168deg, #241419 0%, #3a2018 30%, #6e3a26 60%, #9a5c34 85%, #c98747 100%) !important;
 }
-/* 02 娑堟剚 鈥斺€?钘忚摑澶?+ 寰惀鐝€ */
+/* 02 消愁 —— 藏蓝夜 + 微琥珀 */
 body.page-bg-2 {
   background:
     radial-gradient(ellipse at 22% 78%, rgba(210, 150, 70, 0.16), transparent 45%),
     radial-gradient(ellipse at 80% 20%, rgba(70, 100, 200, 0.2), transparent 48%),
     linear-gradient(180deg, #050810 0%, #0e1322 50%, #1b2036 100%) !important;
 }
-/* 03 绋婚 鈥斺€?鏆楅噾姗勬鏅ㄨ壊 */
+/* 03 稻香 —— 暗金橄榄晨色 */
 body.page-bg-3 {
   background:
     radial-gradient(ellipse at 50% 92%, rgba(250, 220, 130, 0.25), transparent 52%),
     linear-gradient(176deg, #23291c 0%, #3f4426 40%, #6e6730 72%, #a08a42 100%) !important;
 }
-/* 04 鏅村ぉ 鈥斺€?涓寒澶╄摑锛堝鍦堟渶浜絾宸插帇鏆楋級 */
+/* 04 晴天 —— 中亮天蓝（外圈最亮但已压暗） */
 body.page-bg-4 {
   background:
     radial-gradient(ellipse at 70% 16%, rgba(235, 245, 255, 0.3), transparent 42%),
     linear-gradient(172deg, #16304e 0%, #234b76 42%, #3f6fa3 75%, #6f97bd 100%) !important;
 }
-/* 05 娓呮槑闆ㄤ笂 鈥斺€?闈掔儫鍐烽浘 */
+/* 05 清明雨上 —— 青烟冷雾 */
 body.page-bg-5 {
   background:
     radial-gradient(ellipse at 32% 18%, rgba(190, 210, 198, 0.14), transparent 46%),
     linear-gradient(178deg, #18211f 0%, #2c3936 46%, #48584f 78%, #6b7d71 100%) !important;
 }
-/* 06 闈掕姳鐡?鈥斺€?鏆楅挻钃?*/
+/* 06 青花瓷 —— 暗钴蓝 */
 body.page-bg-6 {
   background:
     radial-gradient(ellipse at 50% 12%, rgba(215, 230, 250, 0.14), transparent 40%),
     radial-gradient(ellipse at 18% 86%, rgba(35, 95, 175, 0.25), transparent 50%),
     linear-gradient(172deg, #081827 0%, #123152 52%, #204d7c 100%) !important;
 }
-/* 07 搴愬窞鏈?鈥斺€?鏆楃传鏈堝 */
+/* 07 庐州月 —— 暗紫月夜 */
 body.page-bg-7 {
   background:
     radial-gradient(ellipse at 50% 10%, rgba(228, 230, 255, 0.18), transparent 34%),
     radial-gradient(ellipse at 78% 24%, rgba(240, 170, 110, 0.12), transparent 32%),
     linear-gradient(180deg, #120c26 0%, #241843 52%, #3c2a58 100%) !important;
 }
-/* 08 鍛婄櫧姘旂悆 鈥斺€?鏆楃帿绮?*/
+/* 08 告白气球 —— 暗玫粉 */
 body.page-bg-8 {
   background:
     radial-gradient(ellipse at 66% 34%, rgba(255, 175, 195, 0.24), transparent 44%),
     linear-gradient(174deg, #3f1830 0%, #63304a 38%, #8f5262 70%, #bc7a82 100%) !important;
 }
-/* 09 闆呬織鍏辫祻 鈥斺€?姘村ⅷ鐐伆锛堣繎鏃犲僵鑹诧級 */
+/* 09 雅俗共赏 —— 水墨炭灰（近无彩色） */
 body.page-bg-9 {
   background:
     radial-gradient(ellipse at 50% 88%, rgba(250, 248, 240, 0.14), transparent 48%),
     linear-gradient(178deg, #101113 0%, #232529 45%, #44474e 74%, #6f7379 100%) !important;
 }
-/* 10 鍩庡簻 鈥斺€?杩戦粦钃?+ 琛€绾㈤湏铏规檿 */
+/* 10 城府 —— 近黑蓝 + 血红霓虹晕 */
 body.page-bg-10 {
   background:
     radial-gradient(ellipse at 24% 76%, rgba(185, 38, 58, 0.2), transparent 36%),
@@ -2137,9 +2137,9 @@ body.page-bg-10 {
 }
 
 /* ==========================================================================
-   鐙珛椤甸潰涓婚鑳屾櫙(page-theme-*):鏃呯▼ / 鎴愭灉 / 娓告垙 / 鑴戞礊
+   独立页面主题背景(page-theme-*):旅程 / 成果 / 游戏 / 脑洞
    ========================================================================== */
-/* 鏃呯▼ 鈥斺€?娓呮櫒杩滆:娣¤摑澶╃┖ + 鏆栨矙鍦板钩绾?*/
+/* 旅程 —— 清晨远行:淡蓝天空 + 暖沙地平线 */
 body.page-theme-journey {
   background:
     radial-gradient(ellipse at 78% 16%, rgba(255, 200, 130, 0.4), transparent 44%),
@@ -2147,7 +2147,7 @@ body.page-theme-journey {
     radial-gradient(ellipse at 50% 105%, rgba(240, 180, 110, 0.45), transparent 55%),
     linear-gradient(174deg, #cfe6f7 0%, #e6eef6 38%, #f6ead8 72%, #f7d9b0 100%) !important;
 }
-/* 鏃呯▼ 鈥斺€?杩滄櫙浜戝眰 + 椋為笩姘涘洿 */
+/* 旅程 —— 远景云层 + 飞鸟氛围 */
 body.page-theme-journey::before {
   content: "";
   position: fixed;
@@ -2160,7 +2160,7 @@ body.page-theme-journey::before {
     radial-gradient(ellipse at 88% 34%, rgba(255, 255, 255, 0.45), transparent 42%);
   filter: blur(6px);
 }
-/* 鎴愭灉 鈥斺€?鑱氬厜鐏睍鍙?鍐风櫧 + 钃濈传鍏夋枒 */
+/* 成果 —— 聚光灯展台:冷白 + 蓝紫光斑 */
 body.page-theme-works {
   background:
     radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.85), transparent 46%),
@@ -2168,7 +2168,7 @@ body.page-theme-works {
     radial-gradient(ellipse at 84% 70%, rgba(170, 130, 255, 0.28), transparent 46%),
     linear-gradient(172deg, #eef2ff 0%, #e7ecff 50%, #f3f0ff 100%) !important;
 }
-/* 鎴愭灉 鈥斺€?椤堕儴鑱氬厜鍏夋潫姘涘洿 */
+/* 成果 —— 顶部聚光光束氛围 */
 body.page-theme-works::before {
   content: "";
   position: fixed;
@@ -2179,7 +2179,7 @@ body.page-theme-works::before {
     conic-gradient(from 90deg at 50% -20%, transparent 0deg, rgba(255, 255, 255, 0.5) 20deg, transparent 40deg);
   filter: blur(10px);
 }
-/* 娓告垙 鈥斺€?琛楁満闇撹櫣:鏌斿拰闇撹櫣鍏夋檿 */
+/* 游戏 —— 街机霓虹:柔和霓虹光晕 */
 body.page-theme-games {
   background:
     radial-gradient(ellipse at 26% 22%, rgba(255, 110, 140, 0.22), transparent 42%),
@@ -2187,7 +2187,7 @@ body.page-theme-games {
     radial-gradient(ellipse at 50% 88%, rgba(255, 205, 90, 0.2), transparent 46%),
     linear-gradient(180deg, #f2f2f8 0%, #ece9f5 55%, #e6eafa 100%) !important;
 }
-/* 娓告垙 鈥斺€?鍍忕礌缃戞牸姘涘洿 */
+/* 游戏 —— 像素网格氛围 */
 body.page-theme-games::before {
   content: "";
   position: fixed;
@@ -2199,7 +2199,7 @@ body.page-theme-games::before {
     linear-gradient(90deg, rgba(120, 130, 180, 0.10) 1px, transparent 1px);
   background-size: 32px 32px;
 }
-/* 鑴戞礊 鈥斺€?鏄熷鍒涙剰:娴呯传钃濇槦绌?*/
+/* 脑洞 —— 星夜创意:浅紫蓝星空 */
 body.page-theme-brainwave {
   background:
     radial-gradient(ellipse at 30% 20%, rgba(150, 130, 255, 0.25), transparent 46%),
@@ -2207,7 +2207,7 @@ body.page-theme-brainwave {
     radial-gradient(ellipse at 50% 95%, rgba(120, 90, 255, 0.2), transparent 52%),
     linear-gradient(176deg, #eef0ff 0%, #e6e8fb 48%, #ece6fb 100%) !important;
 }
-/* 鑴戞礊 鈥斺€?婕傛诞鏄熺偣姘涘洿 */
+/* 脑洞 —— 漂浮星点氛围 */
 body.page-theme-brainwave::before {
   content: "";
   position: fixed;
@@ -2222,7 +2222,7 @@ body.page-theme-brainwave::before {
     radial-gradient(2px 2px at 78% 66%, rgba(120, 170, 255, 0.55), transparent),
     radial-gradient(2px 2px at 88% 24%, rgba(140, 110, 255, 0.5), transparent);
 }
-/* 淇濊瘉椤甸潰姝ｆ枃鍦ㄦ皼鍥村眰涔嬩笂 */
+/* 保证页面正文在氛围层之上 */
 body.page-theme-journey #app,
 body.page-theme-works #app,
 body.page-theme-games #app,
@@ -2231,56 +2231,56 @@ body.page-theme-brainwave #app {
   z-index: 1;
 }
 
-/* 涓?page-scene 涓€鑷村湴鎶珮鐢佃锛屼笖鐩栬繃涓婇潰鎵€鏈夎儗鏅?*/
+/* 与 page-scene 一致地抬高电视，且盖过上面所有背景 */
 body[class*="page-bg-"] .tv-set,
 body[class*="page-scene-"] .tv-set,
 body[class*="mood-"] .tv-set {
   position: relative;
   z-index: 1;
 }
-/* 澶栧湀鍒囨崲杩囨浮 */
+/* 外圈切换过渡 */
 body {
   transition: background 1.2s ease-in-out;
 }
 
 /* ==========================================================================
-   瑁呴グ浠舵皼鍥翠富棰?mood-*):鐐瑰嚮榛戣兌/楹﹀厠椋?纾佸甫/CD/闇撹櫣鍒囨崲鏁撮〉姘涘洿,瑕嗙洊姝屾洸鑳屾櫙
+   装饰件氛围主题(mood-*):点击黑胶/麦克风/磁带/CD/霓虹切换整页氛围,覆盖歌曲背景
    ========================================================================== */
-/* 榛戣兌 鈥斺€?澶嶅彜鏆栭粍 */
+/* 黑胶 —— 复古暖黄 */
 body.mood-vinyl {
   background:
     radial-gradient(ellipse at 70% 24%, rgba(255, 207, 120, 0.30), transparent 46%),
     radial-gradient(ellipse at 22% 80%, rgba(120, 40, 25, 0.25), transparent 48%),
     linear-gradient(176deg, #3a1e10 0%, #703a1a 35%, #a85c24 68%, #d99a45 100%) !important;
 }
-/* 楹﹀厠椋?鈥斺€?娣卞鐢靛彴钃濊皟 */
+/* 麦克风 —— 深夜电台蓝调 */
 body.mood-mic {
   background:
     radial-gradient(ellipse at 30% 82%, rgba(120, 150, 210, 0.22), transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(90, 120, 200, 0.18), transparent 42%),
     linear-gradient(180deg, #04060d 0%, #0a1122 50%, #17233f 100%) !important;
 }
-/* 纾佸甫 鈥斺€?鎬€鏃ф瑜?*/
+/* 磁带 —— 怀旧棕褐 */
 body.mood-cassette {
   background:
     radial-gradient(ellipse at 50% 10%, rgba(230, 205, 170, 0.18), transparent 40%),
     linear-gradient(176deg, #2a1a10 0%, #4a2f1c 40%, #6e4a2c 72%, #8f6a40 100%) !important;
 }
-/* CD 鈥斺€?鍐峰喗绉戞妧閾?*/
+/* CD —— 冷冽科技银 */
 body.mood-cd {
   background:
     radial-gradient(ellipse at 72% 30%, rgba(210, 225, 245, 0.30), transparent 44%),
     radial-gradient(ellipse at 24% 74%, rgba(90, 120, 175, 0.2), transparent 46%),
     linear-gradient(175deg, #0d1018 0%, #20242f 45%, #3a4150 75%, #5d6677 100%) !important;
 }
-/* 闇撹櫣 鈥斺€?璧涘崥绮夌传 */
+/* 霓虹 —— 赛博粉紫 */
 body.mood-neon {
   background:
     radial-gradient(ellipse at 24% 78%, rgba(255, 0, 150, 0.22), transparent 42%),
     radial-gradient(ellipse at 82% 22%, rgba(90, 0, 255, 0.22), transparent 44%),
     linear-gradient(180deg, #07020c 0%, #160a2e 48%, #2a1250 78%, #4a1f6e 100%) !important;
 }
-/* 姘涘洿鍏夋檿:鐢佃澶栧３閫忓嚭瀵瑰簲涓婚鑹?*/
+/* 氛围光晕:电视外壳透出对应主题色 */
 body.mood-vinyl .tv-set   { box-shadow: 0 24px 70px rgba(255, 180, 90, 0.35); }
 body.mood-mic .tv-set     { box-shadow: 0 24px 70px rgba(70, 110, 200, 0.35); }
 body.mood-cassette .tv-set{ box-shadow: 0 24px 70px rgba(160, 120, 80, 0.35); }
@@ -2288,10 +2288,10 @@ body.mood-cd .tv-set      { box-shadow: 0 24px 70px rgba(150, 175, 215, 0.35); }
 body.mood-neon .tv-set    { box-shadow: 0 24px 70px rgba(200, 60, 255, 0.35); }
 
 /* ==========================================================================
-   闊充箰椤靛竷灞€鍘嬬缉锛氭爣棰?/ 寮曠敤 / 杈硅窛缁熺粺鍘绘帀锛岀數瑙嗛《鍒板睆骞曚笂鏂?
+   音乐页布局压缩：标题 / 引用 / 边距统统去掉，电视顶到屏幕上方
    ========================================================================== */
 
-/* 瑙ｉ攣涓婚 70rem(1120px) 瀹瑰櫒闄愬埗锛屼粎闊充箰椤垫斁瀹藉埌 1400px */
+/* 解锁主题 70rem(1120px) 容器限制，仅音乐页放宽到 1400px */
 body.page-scene-sunset .outer,
 body.page-scene-night .outer,
 body.page-scene-dawn .outer,
@@ -2302,7 +2302,7 @@ body.page-scene-dawn .wrap {
   max-width: 1400px;
 }
 
-/* 鏂囩珷澶撮儴鏍囬涓庡厓淇℃伅鍏ㄩ儴闅愯棌 */
+/* 文章头部标题与元信息全部隐藏 */
 body.page-scene-sunset .article-header,
 body.page-scene-night .article-header,
 body.page-scene-dawn .article-header,
@@ -2318,7 +2318,7 @@ body.page-scene-dawn blockquote {
   display: none !important;
 }
 
-/* 鏂囩珷瀹瑰櫒鏈韩 padding/margin 鏀剁揣 */
+/* 文章容器本身 padding/margin 收紧 */
 body.page-scene-sunset .article,
 body.page-scene-night .article,
 body.page-scene-dawn .article,
@@ -2329,7 +2329,7 @@ body.page-scene-dawn .article-inner {
   margin: 0 !important;
 }
 
-/* 鏂囩珷姝ｆ枃 padding 鏀剁揣鍒?0锛堢數瑙嗘湰鏉ュ氨鑷甫闂磋窛锛?/
+/* 文章正文 padding 收紧到 0（电视本来就自带间距）*/
 body.page-scene-sunset .article-entry,
 body.page-scene-night .article-entry,
 body.page-scene-dawn .article-entry {
@@ -2337,7 +2337,7 @@ body.page-scene-dawn .article-entry {
   margin: 0 !important;
 }
 
-/* 椤堕儴鍝佺墝鏉★細鏇挎崲鍘熼〉闈㈡爣棰樹笌寮曠敤璇?*/
+/* 顶部品牌条：替换原页面标题与引用语 */
 .tv-page-mark {
   position: relative;
   z-index: 2;
@@ -2360,7 +2360,7 @@ body.page-scene-dawn .article-entry {
   text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
-/* 鐢佃鏈韩鍐嶈创杩戦《閮?*/
+/* 电视本身再贴近顶部 */
 body.page-scene-sunset .tv-set,
 body.page-scene-night .tv-set,
 body.page-scene-dawn .tv-set {
@@ -2422,11 +2422,11 @@ body.page-scene-dawn .tv-set {
 .lyric-stage-overlay {
   position: absolute;
   inset: 0;
-  /* 鍔犳繁鍦烘櫙钂欑増,璁╂瓕璇嶅崱鏂囧瓧鏇寸獊鍑?*/
+  /* 加深场景蒙版,让歌词卡文字更突出 */
   background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.32));
   pointer-events: none;
 }
-/* 鍗＄墖锛氱幓鐠冪（鐮傚崐閫忔槑 */
+/* 卡片：玻璃磨砂半透明 */
 .lyric-cards {
   position: relative;
   z-index: 10;
@@ -2435,13 +2435,13 @@ body.page-scene-dawn .tv-set {
   height: 100%;
   padding: 24px;
   box-sizing: border-box;
-  /* 鏄惧紡寮€鍚氦浜?鐖剁骇 .lyric-stage 鐢ㄤ簡 pointer-events:none,
-     CSS 瑙勮寖涓嬪瓙鍏冪礌榛樿缁ф壙 none,浼氬鑷存粴鍔ㄦ潯/鎸夐挳鎷栦笉鍔?*/
+  /* 显式开启交互:父级 .lyric-stage 用了 pointer-events:none,
+     CSS 规范下子元素默认继承 none,会导致滚动条/按钮拖不动 */
   pointer-events: auto;
 }
 .lyric-card {
   position: absolute;
-  /* 姝屽悕涓績绾垮榻?CH01 涓嚎(28px):娓呮帀鏃т俊绾哥殑 24px 鍐呰竟璺?鍗＄墖椤舵敹鍒?4px */
+  /* 歌名中心线对齐 CH01 中线(28px):清掉旧信纸的 24px 内边距,卡片顶收到 4px */
   left: 32px;
   right: 32px;
   top: 4px;
@@ -2449,7 +2449,7 @@ body.page-scene-dawn .tv-set {
   margin: 0 auto;
   max-width: 760px;
   padding: 0;
-  /* 瀹屽叏閫忓嚭鍦烘櫙:鏃犺儗鏅€佹棤杈规銆佹棤闃村奖,鍙繚鐣欐枃鏈嚜韬殑瀵规瘮 */
+  /* 完全透出场景:无背景、无边框、无阴影,只保留文本自身的对比 */
   background: transparent;
   border: 0;
   border-radius: 0;
@@ -2459,7 +2459,7 @@ body.page-scene-dawn .tv-set {
   overflow: hidden;
   pointer-events: auto;
 }
-/* 搴曢儴瀛楀箷寮忓井鏆楁笎鍙?浠呰鐩栨瓕璇嶆鏂囦笅鍗婃,閬垮厤澶у瓧"鏅村ぉ"绛夎澶槼娣规病 */
+/* 底部字幕式微暗渐变:仅覆盖歌词正文下半段,避免大字"晴天"等被太阳淹没 */
 .lyric-card::after {
   content: "";
   position: absolute;
@@ -2472,16 +2472,16 @@ body.page-scene-dawn .tv-set {
   pointer-events: none;
   z-index: 0;
 }
-/* 姝ｆ枃鍐呭闇€瑕佹诞鍦?::after 娓愬彉涔嬩笂 */
+/* 正文内容需要浮在 ::after 渐变之上 */
 .lyric-card-body { position: relative; z-index: 1; }
 .lyric-card-header { position: relative; z-index: 1; }
-/* 鍘绘帀绾搁潰铏氱嚎瑁呴グ + 瑁呰瀛?*/
+/* 去掉纸面虚线装饰 + 装订孔 */
 .lyric-card::before {
   display: none;
 }
 .lyric-card-header {
   flex-shrink: 0;
-  /* 鏃犺儗鏅€忔槑,鐩存帴娴湪鍦烘櫙鐢婚潰涓?*/
+  /* 无背景透明,直接浮在场景画面上 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2528,8 +2528,8 @@ body.page-scene-dawn .tv-set {
 }
 .lyric-card-body {
   flex: 1 1 0;
-  /* min-height:0 鏄?flex 鍒楀竷灞€閲岃 overflow:auto 鐪熸鐢熸晥鐨勫叧閿?
-     鍚﹀垯浼氳 min-content(min-height:auto)鎾戝ぇ,鐪嬩技"鍗′綇"婊氫笉鍔?*/
+  /* min-height:0 是 flex 列布局里让 overflow:auto 真正生效的关键,
+     否则会被 min-content(min-height:auto)撑大,看似"卡住"滚不动 */
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -2537,9 +2537,9 @@ body.page-scene-dawn .tv-set {
   scrollbar-width: thin;
   scrollbar-color: rgba(73,177,245,0.5) transparent;
   overscroll-behavior: contain;
-  /* 鏄惧紡寮€鍚氦浜?婊氬姩鏉?鎵嬫焺/閫夎瘝閮介渶瑕?:
-     鐖剁骇 .lyric-stage 鐢ㄤ簡 pointer-events:none,
-     鎸夎鑼冨瓙鍏冪礌榛樿缁ф壙,杩欓噷寮哄埗 auto 鎵嶈兘璁╂粴鍔ㄦ潯鐪熸鍙嫋鍔?*/
+  /* 显式开启交互(滚动条/手柄/选词都需要):
+     父级 .lyric-stage 用了 pointer-events:none,
+     按规范子元素默认继承,这里强制 auto 才能让滚动条真正可拖动 */
   pointer-events: auto;
 }
 .lyric-card-body::-webkit-scrollbar {
@@ -2553,7 +2553,7 @@ body.page-scene-dawn .tv-set {
   border-radius: 3px;
 }
 .lyric-card-body p {
-  /* 鎭㈠涓枃妤蜂綋/琛嚎瀛椾綋,鐧藉瓧+寮洪粦闃村奖,浠绘剰鑳屾櫙涓嬫竻鏅颁笖灞呬腑 */
+  /* 恢复中文楷体/衬线字体,白字+强黑阴影,任意背景下清晰且居中 */
   margin: 0.42em 0;
   font-family: "Kaiti SC", "STKaiti", "Source Han Serif SC", "Songti SC", "SimSun", serif;
   font-size: 17px;
@@ -2568,7 +2568,7 @@ body.page-scene-dawn .tv-set {
   position: relative;
   z-index: 1;
 }
-/* ---------- 7. 锟矫筹拷时锟斤拷锟斤拷 ---------- */
+/* ---------- 7. 时间线 ---------- */
 .timeline {
   position: relative;
   margin: 24px 0 8px;
@@ -2629,8 +2629,8 @@ body.page-scene-dawn .tv-set {
   color: #666;
 }
 
-/* ---------- 8. 渚ц竟鏍忥細鎶€鏈尯鍦ㄤ笂銆佹悳绱㈠眳涓€佺敓娲诲尯宸︿笅瑙?---------- */
-/* 閫忔槑搴﹁嚜涓婅€屼笅娓愬彉锛堟妧鏈尯 1.0鈫?.76锛岀敓娲诲尯 0.68鈫?.40锛?*/
+/* ---------- 8. 侧边栏：技术区在上、搜索居中、生活区左下角 ---------- */
+/* 透明度自上而下渐变（技术区 1.0→0.76，生活区 0.68→0.40） */
 .nav-main .nav-item,
 .nav-life .nav-item {
   transition: opacity 0.25s ease;
@@ -2644,17 +2644,17 @@ body.page-scene-dawn .tv-set {
 .nav-life .nav-item:nth-child(3) { opacity: 0.52; }
 .nav-life .nav-item:nth-child(4) { opacity: 0.44; }
 .nav-life .nav-item:nth-child(5) { opacity: 0.40; }
-/* 鎮仠鎭㈠涓嶉€忔槑 */
+/* 悬停恢复不透明 */
 .nav-main .nav-item:hover,
 .nav-life .nav-item:hover {
   opacity: 1 !important;
 }
-/* 瑕嗙洊涓婚 hover 鏃跺皢閾炬帴鑳屾櫙缃负娴呰壊 body 鑹层€佹枃瀛楅檷閫忔槑搴?*/
+/* 覆盖主题 hover 时将链接背景置为浅色 body 色、文字降透明度 */
 .navbar .nav-item-link:hover {
   background: transparent;
   opacity: 1;
 }
-/* 鎼滅储鎸夐挳锛氫綅浜庢妧鏈尯鑿滃崟涓嬫柟 */
+/* 搜索按钮：位于技术区菜单下方 */
 .nav-search-top {
   display: block;
   padding: 0.55rem 0;
@@ -2662,13 +2662,13 @@ body.page-scene-dawn .tv-set {
   color: #bbb;
   text-align: center;
 }
-/* 鐢熸椿鍖猴紙宸︿笅瑙掞級锛氳鐩?navbar-bottom 鐨?2rem 澶у瓧鍙?*/
+/* 生活区（左下角）：覆盖 navbar-bottom 的 2rem 大字号 */
 .navbar-bottom .nav-life .nav-item-link {
   font-size: 1.4rem;
   padding: 0.5rem 1rem;
 }
 
-/* ---------- 9. 鍙埍灏忕墰瑁呴グ ---------- */
+/* ---------- 9. 可爱小牛装饰 ---------- */
 .site-mascot {
   position: fixed;
   right: 32px;
@@ -2708,31 +2708,31 @@ body.page-scene-dawn .tv-set {
   25% { transform: rotate(-8deg); }
   75% { transform: rotate(8deg); }
 }
-/* 灏忓睆闅愯棌锛岄伩鍏嶉伄鎸″唴瀹?*/
+/* 小屏隐藏，避免遮挡内容 */
 @media (max-width: 768px) {
   .site-mascot {
     display: none;
   }
 }
 
-/* ---------- 8b. 渚ц竟鏍忎笁缁勫竷灞€锛堣鐩栫 8 鍖哄潡鏃ц鍒欙級 ---------- */
-/* 涓婄粍鏂板椤癸紙鏃呯▼/鍏充簬锛夐€忔槑搴?*/
+/* ---------- 8b. 侧边栏三组布局（覆盖第 8 区块旧规则） ---------- */
+/* 上组新增项（旅程/关于）透明度 */
 .nav-main .nav-item:nth-child(5) { opacity: 0.68; }
 .nav-main .nav-item:nth-child(6) { opacity: 0.62; }
-/* 涓粍锛堟垚鏋滃睍绀?鑷垱娓告垙/闊充箰鐩掞級锛?.56 鈫?0.44 */
+/* 中组（成果展示/自创游戏/音乐盒）：0.56 → 0.44 */
 .nav-mid .nav-item {
   transition: opacity 0.25s ease;
 }
 .nav-mid .nav-item:nth-child(1) { opacity: 0.56; }
 .nav-mid .nav-item:nth-child(2) { opacity: 0.50; }
 .nav-mid .nav-item:nth-child(3) { opacity: 0.44; }
-/* 搴曢儴锛堢浜虹┖闂达級锛?.38锛堣鐩栨棫 0.68锛?*/
+/* 底部（私人空间）：0.38（覆盖旧 0.68） */
 .nav-life .nav-item:nth-child(1) { opacity: 0.38; }
-/* 鎮仠鎭㈠涓嶉€忔槑 */
+/* 悬停恢复不透明 */
 .nav-mid .nav-item:hover {
   opacity: 1 !important;
 }
-/* 涓粍 / 搴曢儴锛氬垎闅旂嚎 */
+/* 中组 / 底部：分隔线 */
 .nav-mid {
   border-top: 1px dashed rgba(255, 255, 255, 0.18);
   margin-top: 6px;
@@ -2742,7 +2742,7 @@ body.page-scene-dawn .tv-set {
   border-top: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
-/* ---------- 9. 鍏充簬椤碉細4 寮犲崱鐗?+ 搴曢儴鍥炬爣鎺?---------- */
+/* ---------- 9. 关于页：4 张卡片 + 底部图标排 ---------- */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -2813,7 +2813,7 @@ body.page-scene-dawn .tv-set {
   border-bottom-color: #49b1f5;
 }
 
-/* ---------- 10. 鍏充簬椤碉細搴曢儴鍥炬爣鎺掞紙鍏充簬鏈珯 / 鍙嬮摼 / 璁㈤槄锛?---------- */
+/* ---------- 10. 关于页：底部图标排（关于本站 / 友链 / 订阅） ---------- */
 .about-links {
   display: flex;
   justify-content: center;
@@ -2842,7 +2842,7 @@ body.page-scene-dawn .tv-set {
 .about-links span {
   font-size: 0.85rem;
 }
-/* ---------- 10. 鍏充簬椤碉細鏈珯淇℃伅寮圭獥 + RSS 澶嶅埗鎻愮ず ---------- */
+/* ---------- 10. 关于页：本站信息弹窗 + RSS 复制提示 ---------- */
 .about-modal {
   display: none;
   position: fixed;
@@ -2918,7 +2918,7 @@ body.page-scene-dawn .tv-set {
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
-/* ---------- 11. 绉佷汉绌洪棿锛氶殣钘忓叆鍙ｏ紙涓庤儗鏅悓鑹层€佹棤鍒嗛殧绾匡紝鐐瑰嚮浠嶅彲杩涘叆锛?---------- */
+/* ---------- 11. 私人空间：隐藏入口（与背景同色、无分隔线，点击仍可进入） ---------- */
 .nav-life {
   border-top: none;
   margin-top: 0;
@@ -2932,18 +2932,18 @@ body.page-scene-dawn .tv-set {
   background: transparent !important;
   color: transparent !important;
 }
-/* ---------- 12. 渚ц竟鏍?v2锛氭梾绋嬬Щ鍏ヤ腑缁勶紙浣嶄簬鎼滅储绌轰竴鏍间箣鍚庯級 ---------- */
+/* ---------- 12. 侧边栏 v2：旅程移入中组（位于搜索空一格之后） ---------- */
 .nav-mid {
   margin-top: 1.2rem;
 }
-.nav-mid .nav-item:nth-child(1) { opacity: 0.62; } /* 鏃呯▼ */
-.nav-mid .nav-item:nth-child(2) { opacity: 0.56; } /* 鎴愭灉灞曠ず */
-.nav-mid .nav-item:nth-child(3) { opacity: 0.50; } /* 鑷垱娓告垙 */
-.nav-mid .nav-item:nth-child(4) { opacity: 0.44; } /* 闊充箰鐩?*/
-.nav-mid .nav-item:nth-child(5) { opacity: 0.38; } /* 鑴戞礊 */
+.nav-mid .nav-item:nth-child(1) { opacity: 0.62; } /* 旅程 */
+.nav-mid .nav-item:nth-child(2) { opacity: 0.56; } /* 成果展示 */
+.nav-mid .nav-item:nth-child(3) { opacity: 0.50; } /* 自创游戏 */
+.nav-mid .nav-item:nth-child(4) { opacity: 0.44; } /* 音乐盒 */
+.nav-mid .nav-item:nth-child(5) { opacity: 0.38; } /* 脑洞 */
 
 /* ==========================================================================
-   13. 闊充箰椤靛睆骞曞皬鍓у満(theater-*):鐐瑰嚮涓嬫柟鎺т欢瑙﹀彂鐨勫叏灞忔皼鍥村姩鐢?
+   13. 音乐页屏幕小剧场(theater-*):点击下方控件触发的全屏氛围动画
    ========================================================================== */
 .theater-stage {
   position: absolute;
@@ -2952,7 +2952,7 @@ body.page-scene-dawn .tv-set {
   pointer-events: none;
   overflow: hidden;
 }
-/* 灏忓墽鍦鸿挋鐗堬細鐩栦綇涓嬫柟姝岃瘝涓庡満鏅紝鍙暀鐗规晥 */
+/* 小剧场蒙版：盖住下方歌词与场景，只留特效 */
 .theater-dim {
   position: absolute;
   inset: 0;
@@ -2991,7 +2991,7 @@ body.page-scene-dawn .tv-set {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* --- 榛戣兌鍓у満锛氬敱鐗囨棆杞?+ 楂樺厜鎵繃 --- */
+/* --- 黑胶剧场：唱片旋转 + 高光扫过 --- */
 .th-vinyl-disc {
   width: 46%;
   max-width: 240px;
@@ -3036,7 +3036,7 @@ body.page-scene-dawn .tv-set {
   100% { opacity: 0; transform: rotate(30deg); }
 }
 
-/* --- 楹﹀厠椋庡墽鍦猴細澹版尝鐜舰鎵╂暎 + 鍨傜洿闊抽鏉?--- */
+/* --- 麦克风剧场：声波环形扩散 + 垂直音频条 --- */
 .th-mic-scan {
   position: absolute;
   left: 50%;
@@ -3074,7 +3074,7 @@ body.page-scene-dawn .tv-set {
   to { height: 70px; }
 }
 
-/* --- 纾佸甫鍓у満锛氬弻鍗疯酱鍊掑甫鏃嬭浆 --- */
+/* --- 磁带剧场：双卷轴倒带旋转 --- */
 .th-cassette-reel {
   position: absolute;
   top: 44%;
@@ -3098,7 +3098,7 @@ body.page-scene-dawn .tv-set {
 .th-cassette-reel-2::before { animation-direction: reverse; }
 @keyframes thRewind { to { transform: rotate(-360deg); } }
 
-/* --- CD 鍓у満锛氬厜鐩樻棆杞?+ 鍏夎氨鍏夋檿 --- */
+/* --- CD 剧场：光盘旋转 + 光谱光晕 --- */
 .th-cd-disc {
   width: 44%;
   max-width: 230px;
@@ -3128,7 +3128,7 @@ body.page-scene-dawn .tv-set {
 }
 @keyframes thRaySpin { to { transform: rotate(360deg); } }
 
-/* --- 闇撹櫣鍓у満锛氶湏铏圭伅绠￠€愭牴鐐逛寒 + 闂儊 --- */
+/* --- 霓虹剧场：霓虹灯管逐根点亮 + 闪烁 --- */
 .th-neon-bar {
   position: absolute;
   left: 50%;
@@ -3154,7 +3154,7 @@ body.page-scene-dawn .tv-set {
 }
 
 /* ==========================================================================
-   14. 鎬€鏃ф媺绾垮悐鐏?鎷夊姩鍒囨崲鏁撮〉姘涘洿) 鈥斺€?鐢佃鍏抽棴鏃剁敓鏁?
+   14. 怀旧拉线吊灯(拉动切换整页氛围) —— 电视关闭时生效
    ========================================================================== */
 .pull-lamp {
   position: fixed;
@@ -3166,13 +3166,13 @@ body.page-scene-dawn .tv-set {
   align-items: center;
   pointer-events: none;
 }
-/* 鐢电嚎:浠庨〉闈㈤《閮ㄥ瀭涓?*/
+/* 电线:从页面顶部垂下 */
 .lamp-cord {
   width: 2px;
   height: 54px;
   background: repeating-linear-gradient(180deg, #2a2a2a 0 6px, #3a3a3a 6px 12px);
 }
-/* 鐏ご:鐏僵 + 鐏场 */
+/* 灯头:灯罩 + 灯泡 */
 .lamp-head {
   position: relative;
   pointer-events: none;
@@ -3193,7 +3193,7 @@ body.page-scene-dawn .tv-set {
   box-shadow: 0 0 18px rgba(255, 200, 110, 0.8), 0 0 40px rgba(255, 190, 100, 0.4);
   transition: background 0.4s ease, box-shadow 0.4s ease;
 }
-/* 鎷夌怀:鍙偣鍑?*/
+/* 拉绳:可点击 */
 .lamp-pull {
   position: relative;
   pointer-events: auto;
@@ -3218,9 +3218,9 @@ body.page-scene-dawn .tv-set {
   transition: transform 0.1s ease;
 }
 .lamp-pull:active .lamp-ball { transform: translateY(3px); }
-/* 鎷夊姩鎻愮ず */
+/* 拉动提示 */
 .lamp-pull::after {
-  content: "鎷夌怀";
+  content: "拉绳";
   position: absolute;
   top: 46px;
   left: 50%;
@@ -3233,7 +3233,7 @@ body.page-scene-dawn .tv-set {
 }
 .lamp-pull:hover::after { color: rgba(255,255,255,0.85); }
 
-/* --- 涓冪鏁撮〉姘涘洿(鎷夌怀鍒囨崲,瑕嗙洊 page-bg-*) --- */
+/* --- 七种整页氛围(拉绳切换,覆盖 page-bg-*) --- */
 body.lamp-black {
   background: #000000 !important;
 }
@@ -3243,7 +3243,7 @@ body.lamp-black .tv-page-mark {
   transition: opacity 0.6s ease;
 }
 body.lamp-black .lyric-stage { display: none; }
-/* 绾粦姘涘洿:鍙湁铚＄儧鍙,鍏朵粬鐗╀欢闅愬幓 */
+/* 纯黑氛围:只有蜡烛可见,其他物件隐去 */
 body.lamp-black .deco-vinyl,
 body.lamp-black .deco-mic,
 body.lamp-black .deco-cassette,
@@ -3253,7 +3253,7 @@ body.lamp-black .deco-poster {
   opacity: 0;
   transition: opacity 0.8s ease;
 }
-/* 鐐圭噧铚＄儧鍚?鍏朵粬鐗╀欢鍦ㄧ儧鍏変腑鏄剧幇 */
+/* 点燃蜡烛后,其他物件在烛光中显现 */
 body.lamp-black .deco-candle.is-lit ~ .deco-vinyl,
 body.lamp-black .deco-candle.is-lit ~ .deco-mic,
 body.lamp-black .deco-candle.is-lit ~ .deco-cassette,
@@ -3292,7 +3292,7 @@ body.lamp-warm {
     radial-gradient(circle at 50% 30%, rgba(255,200,120,0.5), transparent 62%),
     linear-gradient(180deg, #c05a1a 0%, #93420f 55%, #5c2608 100%) !important;
 }
-/* 鐏场棰滆壊闅忔皼鍥村彉 */
+/* 灯泡颜色随氛围变 */
 body.lamp-black  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #e8e8e0, #9a9a90 70%); box-shadow: 0 0 14px rgba(220,220,220,0.5); }
 body.lamp-white  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff, #f2efe0 70%); box-shadow: 0 0 22px rgba(255,255,240,0.9); }
 body.lamp-yellow .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff8c0, #ffd070 70%); box-shadow: 0 0 22px rgba(255,220,120,0.9); }
@@ -3302,7 +3302,7 @@ body.lamp-blue   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #dc
 body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffe0a0, #ff9a30 70%); box-shadow: 0 0 24px rgba(255,160,60,0.95); }
 
 /* ==========================================================================
-   15. 鏃ц湣鐑?deco-candle)锛氶粯璁ら殣钘?鐢佃鍏抽棴+绾粦姘涘洿鏃舵墠鍑虹幇,鐐瑰嚮鐐圭噧閫忓厜
+   15. 旧蜡烛(deco-candle)：默认隐藏;电视关闭+纯黑氛围时才出现,点击点燃透光
    ========================================================================== */
 .deco-candle {
   position: relative;
@@ -3311,7 +3311,7 @@ body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ff
   cursor: pointer;
   display: none;
 }
-/* 鐢佃鍏抽棴 + 绾粦姘涘洿:铚＄儧鍑虹幇 */
+/* 电视关闭 + 纯黑氛围:蜡烛出现 */
 body.lamp-black .deco-candle {
   display: block;
 }
@@ -3333,7 +3333,7 @@ body.lamp-black .deco-candle {
   animation: candleBob 3.2s ease-in-out infinite;
   transition: filter 0.3s ease;
 }
-/* 鍙埍鑴?鐪肩潧+鑵孩 */
+/* 可爱脸:眼睛+腮红 */
 .candle-body::before {
   content: "";
   position: absolute;
@@ -3401,7 +3401,7 @@ body.lamp-black .deco-candle {
   background: linear-gradient(180deg, #ffe8c0, #e6b878);
   opacity: 0.7;
 }
-/* 鐐圭噧:鐏劙 + 鍏ㄥ眿鐑涘厜 */
+/* 点燃:火焰 + 全屋烛光 */
 .deco-candle.is-lit .candle-flame {
   opacity: 1;
 }
@@ -3413,7 +3413,7 @@ body.lamp-black .deco-candle.is-lit .candle-body {
   filter: brightness(1.2);
 }
 
-/* 鍏ㄥ眿鐑涘厜:鏁撮〉鏌旀殩鑱氬厜(鏄忔殫) */
+/* 全屋烛光:整页柔暖聚光(昏暗) */
 body.lamp-black .candle-glow {
   position: fixed;
   inset: 0;
@@ -3437,8 +3437,8 @@ body.lamp-black .candle-glow.is-on {
 }
 
 /* ==========================================================================
-   褰╄泲鎸佺画鐗规晥:榛戣兌=涓婂崌闂厜绮掑瓙 / 楹﹀厠椋?婕傛诞姘旂悆 / 纾佸甫=椋樿惤鑺辩摚
-   绾粦姘涘洿+铚＄儧鐐圭噧鏃舵墠瑙﹀彂,鐐瑰嚮涓€娆℃寔缁敓鎴?鍐嶇偣鍋滀笅
+   彩蛋持续特效:黑胶=上升闪光粒子 / 麦克风=漂浮气球 / 磁带=飘落花瓣
+   纯黑氛围+蜡烛点燃时才触发,点击一次持续生成,再点停下
    ========================================================================== */
 .fx-particle {
   position: fixed;
@@ -3448,7 +3448,7 @@ body.lamp-black .candle-glow.is-on {
 }
 .fx-particle[data-fx="strip"] { transition: none; }
 
-/* ---- 榛戣兌:涓婂崌闂厜绮掑瓙(娴极閲戝厜) ---- */
+/* ---- 黑胶:上升闪光粒子(浪漫金光) ---- */
 .fx-particle.fx-spark {
   border-radius: 50%;
   background: radial-gradient(circle, var(--cc1, #ffe9a0) 0%, rgba(255, 200, 110, 0.45) 60%, transparent 100%);
@@ -3461,7 +3461,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(var(--dx, 0px), var(--dy, -170px)) scale(1.15); opacity: 0; }
 }
 
-/* ---- 楹﹀厠椋?婕傛诞鍗囪捣鐨勬皵鐞?---- */
+/* ---- 麦克风:漂浮升起的气球 ---- */
 .fx-particle.fx-balloon {
   border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
   background:
@@ -3470,7 +3470,7 @@ body.lamp-black .candle-glow.is-on {
   box-shadow: inset -3px -4px 8px rgba(0, 0, 0, 0.18);
   animation: fxBalloon var(--fdur, 5s) linear forwards;
 }
-.fx-balloon::before {  /* 姘旂悆鎵撶粨澶?*/
+.fx-balloon::before {  /* 气球打结处 */
   content: "";
   position: absolute;
   bottom: -7px; left: 50%;
@@ -3480,7 +3480,7 @@ body.lamp-black .candle-glow.is-on {
   border-right: 4px solid transparent;
   border-bottom: 6px solid var(--bc, #ff8aa0);
 }
-.fx-balloon::after {   /* 涓嬪瀭鐨勭嚎 */
+.fx-balloon::after {   /* 下垂的线 */
   content: "";
   position: absolute;
   top: 100%; left: 50%;
@@ -3497,7 +3497,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(0, -110vh) rotate(0); opacity: 1; }
 }
 
-/* ---- 纾佸甫:椋樿惤鐨勮姳鐡?---- */
+/* ---- 磁带:飘落的花瓣 ---- */
 .fx-particle.fx-petal {
   border-radius: 80% 20% 80% 40% / 60% 40% 60% 40%;
   background: radial-gradient(ellipse at 34% 26%, #fff7f2, #ffd6e6 55%, #ffabc9);
@@ -3511,7 +3511,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(calc(var(--dx, 22px) * -0.5), 112vh) rotate(calc(var(--rot, 120deg) * 2)); opacity: 0.9; }
 }
 
-/* ---- CD鍚?娴锋姤 闅忔満灏忔儏璇?---- */
+/* ---- CD后:海报 随机小情话 ---- */
 .poster-card {
   position: fixed;
   left: 50%;
@@ -3548,7 +3548,7 @@ body.lamp-black .candle-glow.is-on {
   border-bottom: 1px dashed #ffb6d9;
 }
 .poster-card .pc-text {
-  font-family: "妤蜂綋", "KaiTi", "STKaiti", serif;
+  font-family: "楷体", "KaiTi", "STKaiti", serif;
   font-size: 24px;
   line-height: 1.7;
   color: #8b3a5e;
@@ -3559,7 +3559,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(-50%, -50%) scale(1) rotate(-2deg); opacity: 1; }
 }
 
-/* ---- 缁堢珷婕傛诞:蹇冨舰 & 姘旀场 ---- */
+/* ---- 终章漂浮:心形 & 气泡 ---- */
 .fx-heart {
   position: fixed;
   z-index: 74;
@@ -3588,7 +3588,7 @@ body.lamp-black .candle-glow.is-on {
   100% { transform: translate(var(--dx, 20px), var(--dy, -70vh)) scale(1) rotate(var(--rot, 20deg)); opacity: 0.4; }
 }
 
-/* ---- CD 瑙ｉ攣鍦烘櫙:鐐瑰嚮鍑虹幇澶х數瑙?灞忓箷涓洪粦,MUSIC鐐逛寒鍚庡啓瀛?---- */
+/* ---- CD 解锁场景:点击出现大电视,屏幕为黑,MUSIC点亮后写字 ---- */
 .cd-tv {
   display: none;
   position: fixed;
@@ -3662,7 +3662,7 @@ body.lamp-black .candle-glow.is-on {
 .cdtv-leg::before { left: -3px; }
 .cdtv-leg::after  { right: -3px; }
 
-/* ---- 缁堢珷:MUSIC鐐逛寒灞忓箷,寮瑰嚭 I鈾ヤ綘 鍙戝厜瀛楁牱(濡傜伅浜椂鐨勫瓧浣? ---- */
+/* ---- 终章:MUSIC点亮屏幕,弹出 I♥你 发光字样(如灯亮时的字体) ---- */
 .finale-text {
   position: fixed;
   left: 50%;
@@ -3705,8 +3705,3 @@ body.lamp-black .candle-glow.is-on {
   .lamp-chain { height: 30px; }
   .lamp-pull::after { display: none; }
 }
-
-/* =============================================================================
-   鑴戞礊椤碉細涓ゅ垪鍗＄墖澧?+ 鍏ㄥ睆瀹囧畽澹伴煶鎾斁鍣?
-   ========================================================================== */
-
