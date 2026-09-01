@@ -1349,12 +1349,15 @@
   width: 54px; height: 54px;
   border-radius: 50%;
   border: 2px solid rgba(255, 235, 200, 0.7);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 2px rgba(58, 40, 84, 0.18);   /* 内环：圆片像相框，弱化浅色脸的"空白圆片"感 */
   object-fit: cover;
   background: #e2bd8b;
+  filter: saturate(1.18) contrast(1.14);       /* 加深毛绒色彩，避免五官在 54px 下发晕成白片 */
   transition: transform 0.2s ease;
 }
-.bw-vo-row-back .bw-vo-cover { width: 46px; height: 46px; opacity: 0.92; filter: brightness(0.9) saturate(0.9); }
+.bw-vo-row-back .bw-vo-cover { width: 46px; height: 46px; opacity: 0.92; filter: brightness(0.9) saturate(1.02) contrast(1.08); }
 .bw-vo-cover-emoji {
   display: none;
   width: 54px; height: 54px;
@@ -1365,6 +1368,31 @@
   background: #e2bd8b;
 }
 .bw-vo-row-back .bw-vo-cover-emoji { width: 46px; height: 46px; font-size: 20px; }
+/* 封面角标：每只娃娃右下角挂一颗"罪名"小表情，给浅色毛绒脸补上明确内容，不再读成空白的圈 */
+.bw-vo-doll::after {
+  content: '💦';
+  position: absolute;
+  right: -3px; bottom: 10px;
+  width: 18px; height: 18px;
+  line-height: 18px;
+  border-radius: 50%;
+  background: rgba(40, 28, 62, 0.74);
+  color: #ffecc0;
+  font-size: 11px;
+  text-align: center;
+  z-index: 4;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
+}
+.bw-vo-row-back .bw-vo-doll::after {
+  width: 15px; height: 15px; line-height: 15px;
+  font-size: 9px; right: -2px; bottom: 8px;
+}
+.bw-vo-row-front .bw-vo-doll:nth-child(1)::after { content: '💦'; }
+.bw-vo-row-front .bw-vo-doll:nth-child(2)::after { content: '🥺'; }
+.bw-vo-row-front .bw-vo-doll:nth-child(3)::after { content: '🤝'; }
+.bw-vo-row-back .bw-vo-doll:nth-child(1)::after { content: '😒'; }
+.bw-vo-row-back .bw-vo-doll:nth-child(2)::after { content: '🪙'; }
+.bw-vo-row-back .bw-vo-doll:nth-child(3)::after { content: '🔍'; }
 .bw-vo-shadow {
   display: block; width: 34px; height: 7px; border-radius: 50%;
   background: rgba(0, 0, 0, 0.35); margin-top: -4px; filter: blur(1px);
