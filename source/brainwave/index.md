@@ -118,13 +118,19 @@ date: 2026-08-29 00:00:00
 <!-- 卡片 7：扎小人（解压台） -->
 <div class="bw-card bw-card-voodoo" data-bw-open="voodoo" role="button" tabindex="0" title="扎小人">
 <div class="bw-card-art">
-<span class="bw-vo-covers">
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.webp" alt="没担当" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.webp" alt="不高兴" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.webp" alt="小气鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.webp" alt="心机鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.webp" alt="窝囊废" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.webp" alt="和稀泥" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span></span>
+<span class="bw-vo-bench">
+<span class="bw-vo-bench-wood"></span>
+<span class="bw-vo-bench-glow"></span>
+<span class="bw-vo-row bw-vo-row-back">
+<span class="bw-vo-doll"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.webp" alt="不高兴" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span><i class="bw-vo-shadow"></i></span>
+<span class="bw-vo-doll"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.webp" alt="小气鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span><i class="bw-vo-shadow"></i></span>
+<span class="bw-vo-doll"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.webp" alt="心机鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span><i class="bw-vo-shadow"></i></span>
+</span>
+<span class="bw-vo-row bw-vo-row-front">
+<span class="bw-vo-doll"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.webp" alt="没担当" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span><i class="bw-vo-shadow"></i></span>
+<span class="bw-vo-doll"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.webp" alt="窝囊废" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span><i class="bw-vo-shadow"></i></span>
+<span class="bw-vo-doll"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.webp" alt="和稀泥" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span><i class="bw-vo-shadow"></i></span>
+</span>
 </span>
 <span class="bw-vo-pin-prev bw-vo-pp1"></span>
 <span class="bw-vo-pin-prev bw-vo-pp2"></span>
@@ -158,11 +164,17 @@ date: 2026-08-29 00:00:00
 .bw-card-desc{margin:0;font-size:13px;line-height:1.7;color:#6a7188}
 .bw-card-open{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:#4b6cf5}
 .bw-card-open i{display:inline-block;width:6px;height:6px;border-top:2px solid #4b6cf5;border-right:2px solid #4b6cf5;transform:rotate(45deg);transition:transform .25s ease}
-/* 扎小人封面头像：先约束为 46px 圆，防止 CSS 加载前以原图尺寸撑爆卡片 */
-.bw-vo-covers{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;padding:6px 14px;background:rgba(20,12,30,.4);border:1px dashed rgba(255,190,130,.35);border-radius:999px;z-index:2}
-.bw-vo-cover-wrap{position:relative;display:inline-flex}
-.bw-vo-cover-wrap+.bw-vo-cover-wrap{margin-left:-12px}
-.bw-vo-cover{width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,235,200,.65);object-fit:cover;background:#e2bd8b}
+/* 扎小人封面：解压工作台骨架（两排错位小人立在木桌上，防 CSS 加载前撑爆卡片） */
+.bw-vo-bench{position:absolute;left:0;right:0;bottom:0;height:58px;z-index:0}
+.bw-vo-row{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:14px}
+.bw-vo-row-back{top:14px;z-index:1}
+.bw-vo-row-front{bottom:4px;z-index:3}
+.bw-vo-doll{position:relative;display:inline-flex;flex-direction:column;align-items:center}
+.bw-vo-cover{width:54px;height:54px;border-radius:50%;border:2px solid rgba(255,235,200,.7);object-fit:cover;background:#e2bd8b;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.bw-vo-row-back .bw-vo-cover{width:46px;height:46px}
+.bw-vo-cover-emoji{display:none;width:54px;height:54px;border-radius:50%;border:2px solid rgba(255,235,200,.7);align-items:center;justify-content:center;font-size:22px;background:#e2bd8b}
+.bw-vo-row-back .bw-vo-cover-emoji{width:46px;height:46px}
+.bw-vo-shadow{display:block;width:30px;height:7px;border-radius:50%;background:rgba(0,0,0,.35);margin-top:-3px;opacity:.8}
 </style>
 
 <!-- 完整样式非阻塞加载（.min 为构建产物，由 scripts/minify-brainwave.js 生成后提交）：

@@ -1304,13 +1304,21 @@
   }
 
   /* ============ 扎小人（解压台） ============ */
+  /* 每小人扎满 6 针即"扎服"；pins 记录自由落点 {x, y, a}，pleas 为专属求饶台词 */
+  var VO_TOTAL = 6;
   var VO_DOLLS = [
-    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.webp'),  acc: '💦', faceIdle: '😐', faceHit: '😖', faceDown: '😵', line: '已生效：TA 的锅永远有人抢着背 🍳' },
-    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.webp'),  acc: '😒', faceIdle: '😒', faceHit: '😣', faceDown: '😭', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏' },
-    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.webp'), acc: '🪙', faceIdle: '🤨', faceHit: '😫', faceDown: '🥺', line: '已生效：TA 的钱包总在最需要时少一张 🪙' },
-    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.webp'), acc: '🔍', faceIdle: '😏', faceHit: '😝', faceDown: '😩', line: '已生效：TA 的小算盘今晚全被打翻 🧮' },
-    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.webp'), acc: '🥺', faceIdle: '😟', faceHit: '😢', faceDown: '😭', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅' },
-    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.webp'), acc: '🤝', faceIdle: '😶', faceHit: '😬', faceDown: '😵', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖' }
+    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.webp'),  acc: '💦', faceIdle: '😐', faceHit: '😖', faceDown: '😵', line: '已生效：TA 的锅永远有人抢着背 🍳',
+      pleas: ['锅我背的，针能不能少扎两下？', '领导说了，这个锅…就，先让你扎着。', '等、等我把锅放下再扎！'] },
+    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.webp'),  acc: '😒', faceIdle: '😒', faceHit: '😣', faceDown: '😭', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏',
+      pleas: ['我不高兴，但现在更不高兴了！', '哼…你扎我，我就——就哼！', '别扎脸，明天还要假装热爱生活。'] },
+    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.webp'), acc: '🪙', faceIdle: '🤨', faceHit: '😫', faceDown: '🥺', line: '已生效：TA 的钱包总在最需要时少一张 🪙',
+      pleas: ['别扎我结账的那个口袋…求你了！', '你扎一针，我少一块红包 🫣', 'AA 制行不行？你扎，我记账。'] },
+    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.webp'), acc: '🔍', faceIdle: '😏', faceHit: '😝', faceDown: '😩', line: '已生效：TA 的小算盘今晚全被打翻 🧮',
+      pleas: ['你这一针，正好打翻我的棋局…', '算准了你会扎这儿，我偏不喊疼。', '疼，但锅已经甩出去了，值！'] },
+    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.webp'), acc: '🥺', faceIdle: '😟', faceHit: '😢', faceDown: '😭', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅',
+      pleas: ['下、下次一定让我先躲…', '别一次性扎太狠，我缓一缓。', '我很想硬气，但…还是缩一缩吧。'] },
+    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.webp'), acc: '🤝', faceIdle: '😶', faceHit: '😬', faceDown: '😵', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖',
+      pleas: ['各退一步，你少扎一针，我当你没扎～', '别别别，这针咱俩各认一半？', '要不这口锅…也各退一步？'] }
   ];
   var VO_LINES = [
     '已生效：TA 的袜子永远少一只 🧦',
@@ -1324,44 +1332,40 @@
     '已生效：TA 的闹钟会提前一小时响 ⏰',
     '已生效：TA 点外卖永远没有餐具 🥢'
   ];
-  var VO_PARTS = [
-    { k: 'head', label: '脑袋' },
-    { k: 'tum',  label: '肚子' },
-    { k: 'arml', label: '左手' },
-    { k: 'armr', label: '右手' }
-  ];
   function openVoodoo(e) {
     lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-voodoo';
-    var pins = VO_PARTS.map(function (p, i) {
-      return '<span class="bw-vo-pin bw-vo-pin-' + p.k + '" data-i="' + i + '" title="扎' + p.label + '"></span>';
-    }).join('');
+    var boxN = '';
+    for (var bi = 0; bi < VO_TOTAL; bi++) boxN += '<span class="bw-vo-boxneedle" data-i="' + bi + '"></span>';
     m.innerHTML =
       '<div class="bw-modal-backdrop" data-close></div>' +
       '<div class="bw-modal-panel bw-vo-panel">' +
         '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
         '<h2 class="bw-modal-title">扎小人 · 解压台</h2>' +
-        '<p class="bw-modal-sub">左右切换小人，找到最像 TA 的那个，扎它！</p>' +
-        '<div class="bw-vo-stage">' +
+        '<p class="bw-modal-sub">从针盒拔一根针，拖到小人身上扎下去；扎满 ' + VO_TOTAL + ' 针，TA 就服了。</p>' +
+        '<div class="bw-vo-stage" id="voStage">' +
           '<div class="bw-vo-bubble" id="voBubble">先随机一位幸运小人～</div>' +
-          '<div class="bw-vo-arrows">' +
-            '<button class="bw-vo-nav bw-vo-prev" type="button" aria-label="上一位小人">' +
-              '<span class="bw-vo-nav-arrow">‹</span><span class="bw-vo-nav-label">上一位</span>' +
-            '</button>' +
-            '<div class="bw-vo-view" id="voView">' +
-              '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
-              pins +
-              '<span class="bw-vo-done-badge">已生效 ✓</span>' +
-            '</div>' +
-            '<button class="bw-vo-nav bw-vo-next" type="button" aria-label="下一位小人">' +
-              '<span class="bw-vo-nav-arrow">›</span><span class="bw-vo-nav-label">下一位</span>' +
-            '</button>' +
+          '<div class="bw-vo-boxwrap">' +
+            '<div class="bw-vo-box" id="voBox" title="按住这里拔针，拖到小人身上扎下去">' + boxN + '</div>' +
+            '<span class="bw-vo-boxtip" aria-hidden="true">拔针<br>扎TA</span>' +
           '</div>' +
-          '<div class="bw-vo-prog" id="voProg"></div>' +
+          '<div class="bw-vo-view" id="voView">' +
+            '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
+            '<div class="bw-vo-face" aria-hidden="true"><span class="bw-vo-face-i"></span></div>' +
+            '<div class="bw-vo-stars" aria-hidden="true"></div>' +
+            '<span class="bw-vo-done-badge">已生效 ✓</span>' +
+            '<button class="bw-vo-prev" type="button" aria-label="上一位小人" title="上一位小人">‹</button>' +
+            '<button class="bw-vo-next" type="button" aria-label="下一位小人" title="下一位小人">›</button>' +
+          '</div>' +
+          '<div class="bw-vo-side">' +
+            '<div class="bw-vo-prog" id="voProg"></div>' +
+            '<div class="bw-vo-pips" id="voPips"></div>' +
+            '<button class="bw-vo-stab" id="voStab" type="button">扎一针</button>' +
+            '<button class="bw-vo-again" id="voAgain" type="button" style="display:none">再扎一次</button>' +
+          '</div>' +
         '</div>' +
-        '<div class="bw-vo-count" id="voCount">已扎 0 / 6 个</div>' +
-        '<button class="bw-vo-again" id="voAgain" type="button" style="display:none">再扎一次</button>' +
+        '<div class="bw-vo-count" id="voCount">已扎 0 / ' + VO_DOLLS.length + ' 个</div>' +
         '<p class="bw-vo-note">🧷 纯属娱乐 · 不针对任何人 · 扎完气消，就去吃顿好的吧 🍰</p>' +
       '</div>';
     document.body.appendChild(m);
@@ -1371,162 +1375,279 @@
     });
     document.addEventListener('keydown', onModalKey);
     setupModalA11y(m);
-    var bubble = m.querySelector('#voBubble');
-    var countEl = m.querySelector('#voCount');
-    var again = m.querySelector('#voAgain');
+
+    /* 组件引用 */
+    var stage = m.querySelector('#voStage');
+    var box = m.querySelector('#voBox');
     var view = m.querySelector('#voView');
     var img = m.querySelector('#voImg');
+    var face = m.querySelector('.bw-vo-face');
+    var faceI = m.querySelector('.bw-vo-face-i');
+    var stars = m.querySelector('.bw-vo-stars');
     var prog = m.querySelector('#voProg');
+    var pips = m.querySelector('#voPips');
+    var countEl = m.querySelector('#voCount');
+    var stabBtn = m.querySelector('#voStab');
+    var again = m.querySelector('#voAgain');
+    var bubble = m.querySelector('#voBubble');
     var prev = m.querySelector('.bw-vo-prev');
     var next = m.querySelector('.bw-vo-next');
+
     var idx = (Math.random() * VO_DOLLS.length) | 0;
     var st = VO_DOLLS.map(function () { return { pins: [], full: false }; });
+
+    /* 飞针：固定定位跟随光标（挂 body，跨出舞台仍可见） */
+    var fly = document.createElement('span');
+    fly.className = 'bw-vo-flying';
+    fly.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(fly);
+    /* 模态移除时顺带清掉飞针节点 */
+    var flyGuard = setInterval(function () {
+      if (!document.body.contains(m)) {
+        if (fly && fly.parentNode) fly.parentNode.removeChild(fly);
+        clearInterval(flyGuard);
+      }
+    }, 300);
+
     function say(txt) {
       bubble.textContent = txt;
       bubble.classList.remove('pop');
       void bubble.offsetWidth;
       bubble.classList.add('pop');
     }
-    function render() {
+
+    function drawPins(s) {
+      view.querySelectorAll('.bw-vo-pin, .bw-vo-hit').forEach(function (el) { el.remove(); });
+      s.pins.forEach(function (p) {
+        var pin = document.createElement('span');
+        pin.className = 'bw-vo-pin';
+        pin.style.left = p.x + 'px';
+        pin.style.top = p.y + 'px';
+        pin.style.setProperty('--a', p.a + 'deg');
+        view.appendChild(pin);
+      });
+    }
+    function updPips(animateLast) {
+      var els = pips.children;
+      for (var i = 0; i < els.length; i++) {
+        var on = i < st[idx].pins.length;
+        els[i].classList.toggle('on', on);
+        els[i].classList.remove('pop');
+        if (on && animateLast && i === st[idx].pins.length - 1) {
+          void els[i].offsetWidth;
+          els[i].classList.add('pop');
+        }
+      }
+    }
+    function updChrome() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · ' + s.pins.length + ' / ' + VO_TOTAL + ' 针';
+      prog.classList.toggle('done', !!s.full);
+      countEl.textContent = '已扎 ' + st.filter(function (x) { return x.full; }).length + ' / ' + VO_DOLLS.length + ' 个';
+      stabBtn.style.display = s.full ? 'none' : 'inline-block';
+      again.style.display = s.full ? 'inline-block' : 'none';
+      if (s.full) again.textContent = '已消气 · 再扎一次';
+    }
+    function syncView() {
       var s = st[idx];
       var d = VO_DOLLS[idx];
       img.src = d.img;
       img.alt = d.name;
-      /* view 类状态机:idle / struggle / full(.down 倒下呼吸) / revive */
-      view.classList.remove('idle', 'shake', 'struggle', 'full', 'down', 'revive');
-      view.classList.add(s.full ? 'full' : 'idle');
-      view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
-        var i = +pin.getAttribute('data-i');
-        pin.classList.toggle('done', s.pins.indexOf(i) >= 0);
-        pin.classList.remove('stab', 'hit');
-        /* 清除银色针尖残留（切换小人 / 重置时） */
-        var oldTip = pin.querySelector('.bw-needle-tip');
-        if (oldTip) oldTip.remove();
-      });
-      /* 表情层 emoji：扎前默认、扎服换悲伤 */
-      var face = view.querySelector('.bw-vo-face');
-      if (!face) {
-        face = document.createElement('div');
-        face.className = 'bw-vo-face';
-        face.setAttribute('aria-hidden', 'true');
-        view.appendChild(face);
-      }
-      face.textContent = s.full ? d.faceDown : d.faceIdle;
-      /* 头顶星星层（仅扎服后显示一次,render 重建） */
-      var stars = view.querySelector('.bw-vo-stars');
-      if (!stars) {
-        stars = document.createElement('div');
-        stars.className = 'bw-vo-stars';
-        stars.setAttribute('aria-hidden', 'true');
-        view.appendChild(stars);
-      }
+      /* view 类状态机：idle / struggle / full(.down 倒下呼吸) / revive */
+      view.classList.remove('shake', 'struggle', 'down', 'revive');
+      view.classList.toggle('full', !!s.full);
+      view.classList.toggle('idle', !s.full);
+      view.classList.add('show-face');
+      faceI.textContent = s.full ? d.faceDown : d.faceIdle;
       stars.textContent = '💫 ✨ 💥';
-      view.classList.toggle('show-face', true);
-      prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · 已扎 ' + s.pins.length + ' / ' + VO_PARTS.length;
-      prog.classList.toggle('done', !!s.full);
-      var n = st.filter(function (x) { return x.full; }).length;
-      countEl.textContent = '已扎 ' + n + ' / ' + VO_DOLLS.length + ' 个';
-      if (s.full) {
-        again.style.display = 'inline-block';
-        again.textContent = '已消气 · 再扎一次';
-      } else {
-        again.style.display = 'none';
-      }
-      if (n === VO_DOLLS.length) {
-        say('六个全扎完了！TA 的坏毛病都被扎跑了，气消了吗～✨');
-      }
+      drawPins(s);
+      updPips(false);
+      updChrome();
+    }
+    function render() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      syncView();
+      if (s.full) say(d.name + ' 已被扎服 · ' + d.line);
+      else if (s.pins.length === 0) say('这位是 ' + d.name + '，动手吧～');
       view.classList.remove('pop');
       void view.offsetWidth;
       view.classList.add('pop');
     }
     function go(step) {
       idx = (idx + step + VO_DOLLS.length) % VO_DOLLS.length;
-      var s = st[idx];
-      say(s.full ? VO_DOLLS[idx].name + ' 已被扎服，换下一个吧～' : '这是' + VO_DOLLS[idx].name + '，动手吧～');
       render();
     }
-    view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
-      pin.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var s = st[idx];
-        var i = +pin.getAttribute('data-i');
-        if (s.full) { say(VO_DOLLS[idx].name + ' 已经被扎服啦，换下一个吧～'); return; }
-        if (s.pins.indexOf(i) >= 0) { say('这里已经扎过啦，换一处～'); return; }
-        s.pins.push(i);
-        pin.classList.add('done');
-        /* 反馈触发：音效+触觉+抖动+表情切换 */
-        try { bwSfx.VOODOO_SFX.stab(); } catch (er) {}
-        try { bwSfx.VOODOO_SFX.haptic(35); } catch (er) {}
-        /* 飞针落定 + 圈本身抖动 + 银色针尖三角 */
-        pin.classList.remove('stab', 'hit');
-        /* 移除旧针尖（如果切换小人后还在） */
-        var oldTip = pin.querySelector('.bw-needle-tip');
-        if (oldTip) oldTip.remove();
-        /* 追加新针尖 span（CSS 动画通过 .stab 触发） */
-        var tip = document.createElement('span');
-        tip.className = 'bw-needle-tip';
-        tip.setAttribute('aria-hidden', 'true');
-        pin.appendChild(tip);
-        /* 动画结束后移除,避免残留 */
-        setTimeout(function () {
-          if (tip && tip.parentNode && !pin.classList.contains('stab')) tip.remove();
-        }, 600);
-        void pin.offsetWidth;
-        pin.classList.add('stab', 'hit');
-        /* 小人抖动 */
-        view.classList.remove('shake', 'struggle', 'idle');
-        void view.offsetWidth;
-        view.classList.add('shake');
-        /* 进度条脉冲 */
-        prog.classList.remove('bump');
-        void prog.offsetWidth;
-        prog.classList.add('bump');
-        setTimeout(function () { prog.classList.remove('bump'); }, 520);
-        /* 扎中一瞬间更换表情为"扎后" */
-        var face = view.querySelector('.bw-vo-face');
-        if (face && !s.full) face.textContent = VO_DOLLS[idx].faceHit;
-        if (s.pins.length < VO_PARTS.length) {
-          say(VO_LINES[(Math.random() * VO_LINES.length) | 0]);
-        } else {
-          s.full = true;
-          if (face) face.textContent = VO_DOLLS[idx].faceDown;
-          /* 命中清脆音 + 扎服上扬音 */
-          try { bwSfx.VOODOO_SFX.hit(); } catch (er) {}
-          setTimeout(function () { try { bwSfx.VOODOO_SFX.defeat(); } catch (er) {} bwSfx.VOODOO_SFX.haptic(80); }, 120);
-          bumpVoodooStat(VO_DOLLS[idx].k);
-          say(VO_DOLLS[idx].line + ' → ' + VO_DOLLS[idx].name + ' 被扎服了！');
-        }
-        render();
-        /* 中等扎针数（≥2 针但未服）触发挣扎（更剧烈、不规则抽搐） */
-        if (!s.full && s.pins.length >= 2) {
-          setTimeout(function () {
-            view.classList.remove('shake');
-            void view.offsetWidth;
-            view.classList.add('struggle');
-            setTimeout(function () {
-              view.classList.remove('struggle');
-              if (!st[idx].full) view.classList.add('idle');
-            }, 560);
-          }, 380);
-        }
-        /* 扎服后:倒下动画 1.1s,加 .down 进入倒地呼吸 */
-        if (s.full) {
-          setTimeout(function () {
-            view.classList.add('down');
-          }, 1100);
-        }
-      });
+
+    /* ---------- 拖针自由扎 ---------- */
+    function pt(ev) {
+      if (ev.touches && ev.touches.length) return { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
+      if (ev.changedTouches && ev.changedTouches.length) return { x: ev.changedTouches[0].clientX, y: ev.changedTouches[0].clientY };
+      return { x: ev.clientX, y: ev.clientY };
+    }
+    function inRect(r, p) { return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom; }
+    function isBtn(ev) { return ev.target && ev.target.closest && ev.target.closest('button'); }
+    function showFly(p) {
+      fly.style.transition = 'none';
+      fly.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) rotate(10deg)';
+      fly.style.opacity = '1';
+    }
+    function hideFly() {
+      fly.style.opacity = '0';
+    }
+    function flyBack(p) {
+      var r = box.getBoundingClientRect();
+      var cx = r.left + r.width / 2;
+      var cy = r.top + r.height / 2;
+      fly.style.transition = 'transform .3s ease, opacity .3s ease';
+      fly.style.transform = 'translate(' + cx + 'px,' + cy + 'px) rotate(-70deg)';
+      fly.style.opacity = '0';
+    }
+    /* 坐标转小人内部相对位置（带内边距防落到空边角） */
+    function viewLocal(p) {
+      var r = view.getBoundingClientRect();
+      var x = p.x - r.left, y = p.y - r.top;
+      x = Math.max(16, Math.min(r.width - 16, x));
+      y = Math.max(22, Math.min(r.height - 24, y));
+      return { x: x, y: y };
+    }
+    /* 眼睛表情贴偷瞄光标（鼠标） */
+    function lookAt(p) {
+      var r = view.getBoundingClientRect();
+      var dx = (p.x - (r.left + r.width / 2)) / r.width;
+      var dy = (p.y - (r.top + r.height / 2)) / r.height;
+      face.style.transform = 'translate(calc(-50% + ' + (dx * 12) + 'px), ' + (dy * 9) + 'px)';
+    }
+    function resetLook() { face.style.transform = 'translate(-50%, 0)'; }
+
+    var dragMode = null;   /* 'needle' | 'stab' | null */
+    var downP = null;
+    var downT = 0;
+    stage.addEventListener('pointerdown', function (ev) {
+      if (isBtn(ev)) return;
+      var p = pt(ev);
+      downP = p;
+      downT = Date.now();
+      var vrect = view.getBoundingClientRect();
+      if (inRect(box.getBoundingClientRect(), p)) {
+        dragMode = 'needle';
+        try { stage.setPointerCapture(ev.pointerId); } catch (er) {}
+        showFly(p);
+      } else if (inRect(vrect, p)) {
+        dragMode = 'stab';
+      } else {
+        dragMode = null;
+      }
+      ev.preventDefault();
     });
+    stage.addEventListener('pointermove', function (ev) {
+      var p = pt(ev);
+      if (dragMode === 'needle') {
+        showFly(p);
+      } else if (dragMode === 'stab' && downP && (Math.abs(p.x - downP.x) > 8 || Math.abs(p.y - downP.y) > 8)) {
+        dragMode = null; /* 拖离原位 → 取消直点 */
+      }
+      if (ev.pointerType !== 'touch') lookAt(p);
+    });
+    stage.addEventListener('pointerup', function (ev) {
+      var p = pt(ev);
+      var vrect = view.getBoundingClientRect();
+      if (dragMode === 'needle') {
+        hideFly();
+        if (inRect(vrect, p) && !st[idx].full) addPin(viewLocal(p));
+        else flyBack(p);
+      } else if (dragMode === 'stab') {
+        if (Date.now() - downT < 700 && inRect(vrect, p)) addPin(viewLocal(p));
+      }
+      dragMode = null;
+    });
+    stage.addEventListener('pointercancel', function () { hideFly(); dragMode = null; });
+    stage.addEventListener('mouseleave', resetLook);
+
+    /* ---------- 扎一针：核心反馈 ---------- */
+    function addPin(local) {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      if (s.full) { say(d.name + ' 已经被扎服啦，换一个吧～'); return; }
+      var pin = { x: Math.round(local.x), y: Math.round(local.y), a: Math.round((Math.random() * 22) - 11) };
+      s.pins.push(pin);
+      /* 落针元素（fresh 飞落动画） */
+      var el = document.createElement('span');
+      el.className = 'bw-vo-pin fresh';
+      el.style.left = pin.x + 'px';
+      el.style.top = pin.y + 'px';
+      el.style.setProperty('--a', pin.a + 'deg');
+      view.appendChild(el);
+      setTimeout(function () { if (el && el.parentNode) el.classList.remove('fresh'); }, 460);
+      /* 扎中爆闪环 */
+      var hit = document.createElement('span');
+      hit.className = 'bw-vo-hit';
+      hit.style.left = pin.x + 'px';
+      hit.style.top = pin.y + 'px';
+      view.appendChild(hit);
+      setTimeout(function () { if (hit && hit.parentNode) hit.remove(); }, 520);
+      /* 反馈：音效 + 触觉 + 抖动 + 表情切换 */
+      try { bwSfx.VOODOO_SFX.stab(); } catch (er) {}
+      try { bwSfx.VOODOO_SFX.haptic(35); } catch (er) {}
+      view.classList.remove('shake', 'struggle', 'idle');
+      void view.offsetWidth;
+      view.classList.add('shake');
+      prog.classList.remove('bump');
+      void prog.offsetWidth;
+      prog.classList.add('bump');
+      setTimeout(function () { prog.classList.remove('bump'); }, 520);
+      faceI.textContent = d.faceHit;
+      /* 台词：第一针通用梗，之后专属求饶 */
+      if (s.pins.length < VO_TOTAL) {
+        var pool = s.pins.length === 1 ? VO_LINES : (d.pleas && d.pleas.length ? d.pleas : VO_LINES);
+        say(pool[(Math.random() * pool.length) | 0]);
+      }
+      if (s.pins.length >= VO_TOTAL) {
+        s.full = true;
+        faceI.textContent = d.faceDown;
+        /* 命中清脆音 + 扎服上扬音 */
+        try { bwSfx.VOODOO_SFX.hit(); } catch (er) {}
+        setTimeout(function () { try { bwSfx.VOODOO_SFX.defeat(); } catch (er) {} bwSfx.VOODOO_SFX.haptic(80); }, 120);
+        bumpVoodooStat(d.k);
+        view.classList.remove('idle');
+        view.classList.add('full');
+        say(d.name + ' 被扎服了！' + d.line);
+        /* 倒下动画 1.1s 后进入倒地呼吸 */
+        setTimeout(function () { view.classList.add('down'); }, 1100);
+      }
+      updPips(true);
+      updChrome();
+      /* ≥3 针未服 → 挣扎（更剧烈、不规则抽搐） */
+      if (!s.full && s.pins.length >= 3) {
+        setTimeout(function () {
+          view.classList.remove('shake');
+          void view.offsetWidth;
+          view.classList.add('struggle');
+          setTimeout(function () {
+            view.classList.remove('struggle');
+            if (!st[idx].full) view.classList.add('idle');
+          }, 560);
+        }, 380);
+      }
+    }
+
     prev.addEventListener('click', function () { go(-1); });
     next.addEventListener('click', function () { go(1); });
+    stabBtn.addEventListener('click', function () {
+      if (st[idx].full) return;
+      addPin({
+        x: 26 + Math.round(Math.random() * (view.clientWidth - 52)),
+        y: 22 + Math.round(Math.random() * (view.clientHeight - 60))
+      });
+    });
     again.addEventListener('click', function () {
       var wasFull = !!st[idx].full;
       st.forEach(function (s) { s.pins = []; s.full = false; });
       idx = (Math.random() * VO_DOLLS.length) | 0;
-      again.style.display = 'none';
       say(wasFull ? '气消了～再来一轮 🎈' : '新一轮，挑一个最像 TA 的吧 😈');
       render();
-      /* 如果之前是 full 状态,先触发一次“复活”弹起,再回到 idle */
+      /* 如果之前是 full 状态，先触发一次"复活"弹起，再回到 idle */
       if (wasFull) {
         view.classList.remove('idle');
         void view.offsetWidth;
@@ -1537,6 +1658,10 @@
         }, 720);
       }
     });
+    /* 针痕占位 */
+    var pipsHtml = '';
+    for (var pi = 0; pi < VO_TOTAL; pi++) pipsHtml += '<span class="bw-vo-pip"></span>';
+    pips.innerHTML = pipsHtml;
     render();
   }
 
