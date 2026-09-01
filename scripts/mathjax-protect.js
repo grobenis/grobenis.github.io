@@ -8,7 +8,18 @@
 //
 // 注意：占位符必须挂在 data 对象上（而非模块级变量），否则 hexo 并行渲染
 // 多篇文章时会出现竞态覆盖。
+//
+// 扩展名守卫：hexo 6 会把 source 下拥有渲染器的 .js/.css 等文件也当作可渲染
+// Page 走 post.render 流水线。若不对 Markdown 文档做限定，压缩后的单行 JS
+// 里出现的 $…$ 会被误判为行内公式，恢复时会对其中的 & < > 做整段 HTML 转义
+// （&& -> &amp;&amp;），直接破坏 JavaScript/CSS。因此只对 Markdown 类文档生效。
 // =============================================================================
+
+const rMarkdown = /\.(md|markdown|mkd|mkdn|mdwn|mdtxt|mdtext|markdown)$/i;
+function isMarkdownish(data) {
+  const src = (data && (data.full_source || data.source || data.path || '')) || '';
+  return rMarkdown.test(src);
+}
 
 // 渲染前：保护公式，返回 { content, placeholders }
 function protect(content) {
@@ -61,6 +72,7 @@ function restore(content, placeholders) {
 }
 
 hexo.extend.filter.register('before_post_render', (data) => {
+  if (!isMarkdownish(data)) return;
   if (!data.content) return;
   const r = protect(data.content);
   data.content = r.content;
@@ -68,6 +80,7 @@ hexo.extend.filter.register('before_post_render', (data) => {
 }, 1);
 
 hexo.extend.filter.register('after_post_render', (data) => {
+  if (!isMarkdownish(data)) return;
   if (!data.content || !Array.isArray(data._mathjaxPlaceholders)) return;
   data.content = restore(data.content, data._mathjaxPlaceholders);
 }, 99);

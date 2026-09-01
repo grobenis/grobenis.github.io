@@ -12,3 +12,5 @@ source/_posts/private-*.md
 source/private/
 # 本次清理的临时回收站（确认无误后删除）
 .trash-2026-08-30/
+# 脑洞页 jpg 原始图备份（已本地化转 WebP，jpg 仅作本地留底，不进仓库）
+backup/

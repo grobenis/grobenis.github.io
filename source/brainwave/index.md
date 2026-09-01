@@ -95,7 +95,7 @@ date: 2026-08-29 00:00:00
 </div>
 </div>
 
-<!-- 卡片 7：接电话（动物来电） -->
+<!-- 卡片 6：接电话（动物来电） -->
 <div class="bw-card bw-card-phone" data-bw-open="phone" role="button" tabindex="0" title="接电话">
 <div class="bw-card-art">
 <span class="bw-ph-artphone">
@@ -115,16 +115,16 @@ date: 2026-08-29 00:00:00
 </div>
 </div>
 
-<!-- 卡片 6：扎小人（解压台） -->
+<!-- 卡片 7：扎小人（解压台） -->
 <div class="bw-card bw-card-voodoo" data-bw-open="voodoo" role="button" tabindex="0" title="扎小人">
 <div class="bw-card-art">
 <span class="bw-vo-covers">
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.jpg" alt="没担当" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.jpg" alt="不高兴" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.jpg" alt="小气鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.jpg" alt="心机鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.jpg" alt="窝囊废" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span></span>
-<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.jpg" alt="和稀泥" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/没担当.webp" alt="没担当" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">💦</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/不高兴.webp" alt="不高兴" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">😒</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/小气鬼.webp" alt="小气鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🪙</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/心机鬼.webp" alt="心机鬼" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🔍</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/窝囊废.webp" alt="窝囊废" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🥺</span></span>
+<span class="bw-vo-cover-wrap"><img class="bw-vo-cover" src="/brainwave/images/voodoo/和稀泥.webp" alt="和稀泥" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="bw-vo-cover-emoji">🤝</span></span>
 </span>
 <span class="bw-vo-pin-prev bw-vo-pp1"></span>
 <span class="bw-vo-pin-prev bw-vo-pp2"></span>
@@ -145,6 +145,29 @@ date: 2026-08-29 00:00:00
 <!-- 全屏模态容器（JS 动态填充并挂到 body，避免主题容器 transform 影响 fixed 定位） -->
 <div class="bw-modal-root" id="bwModalRoot"></div>
 
-<link rel="stylesheet" href="/brainwave/brainwave.css">
+<!-- 首屏关键 CSS（内联：仅卡片墙骨架与布局，保证无样式闪烁；完整样式见下方非阻塞加载的 brainwave.css） -->
+<style>
+.bw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:860px;margin:28px auto 40px}
+@media(max-width:700px){.bw-grid{grid-template-columns:1fr}}
+.bw-card{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid rgba(120,130,160,.22);box-shadow:0 10px 26px rgba(30,40,80,.12);transition:transform .3s ease,box-shadow .3s ease;background:#fff}
+.bw-card[data-bw-open]:hover,.bw-card[data-bw-open]:focus-visible{transform:translateY(-6px);box-shadow:0 18px 42px rgba(30,40,80,.22);outline:none}
+.bw-card-art{position:relative;height:150px;overflow:hidden}
+.bw-card-body{padding:16px 18px 18px;position:relative}
+.bw-card-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;color:#fff;background:linear-gradient(90deg,#4b6cf5,#8a4bf5);border-radius:999px;padding:3px 10px}
+.bw-card-title{margin:10px 0 6px;font-size:19px;font-weight:800;color:#1c2135}
+.bw-card-desc{margin:0;font-size:13px;line-height:1.7;color:#6a7188}
+.bw-card-open{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:#4b6cf5}
+.bw-card-open i{display:inline-block;width:6px;height:6px;border-top:2px solid #4b6cf5;border-right:2px solid #4b6cf5;transform:rotate(45deg);transition:transform .25s ease}
+/* 扎小人封面头像：先约束为 46px 圆，防止 CSS 加载前以原图尺寸撑爆卡片 */
+.bw-vo-covers{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;padding:6px 14px;background:rgba(20,12,30,.4);border:1px dashed rgba(255,190,130,.35);border-radius:999px;z-index:2}
+.bw-vo-cover-wrap{position:relative;display:inline-flex}
+.bw-vo-cover-wrap+.bw-vo-cover-wrap{margin-left:-12px}
+.bw-vo-cover{width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,235,200,.65);object-fit:cover;background:#e2bd8b}
+</style>
 
-<script src="/brainwave/brainwave.js" defer></script>
+<!-- 完整样式非阻塞加载（.min 为构建产物，由 scripts/minify-brainwave.js 生成后提交）：
+     media="print" 先占位不阻塞首绘，加载完成后切回 all -->
+<link rel="stylesheet" href="/brainwave/brainwave.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/brainwave/brainwave.min.css" media="all"></noscript>
+
+<script src="/brainwave/brainwave.min.js" defer></script>

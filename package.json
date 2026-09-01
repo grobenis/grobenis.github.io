@@ -6,6 +6,7 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
+    "minify:brainwave": "node scripts/minify-brainwave.js",
     "server": "hexo server"
   },
   "hexo": {
@@ -26,5 +27,9 @@
     "hexo-renderer-marked": "^5.0.0",
     "hexo-renderer-stylus": "^2.0.0",
     "hexo-server": "^3.0.0"
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "terser": "^5.51.2"
   }
 }

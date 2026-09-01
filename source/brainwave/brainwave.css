@@ -70,19 +70,7 @@
   50% { transform: translateX(-14px) rotate(180deg); }
   100% { transform: translateX(0) rotate(360deg); }
 }
-.bw-card-soon .bw-card-art {
-  background:
-    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.08), transparent 60%),
-    linear-gradient(160deg, #eceef4, #dde1ec);
-}
-.bw-soon-icon {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 34px;
-  color: #9aa2b8;
-  text-shadow: 0 0 18px rgba(140, 150, 180, 0.5);
-}
+
 .bw-card-body {
   padding: 16px 18px 18px;
   position: relative;
@@ -97,7 +85,6 @@
   border-radius: 999px;
   padding: 3px 10px;
 }
-.bw-card-soon .bw-card-tag { background: #aab0c2; }
 .bw-card-title {
   margin: 10px 0 6px;
   font-size: 19px;
@@ -128,8 +115,6 @@
   transition: transform 0.25s ease;
 }
 .bw-card[data-bw-open]:hover .bw-card-open i { transform: rotate(45deg) translate(3px, -3px); }
-.bw-card-soon { cursor: default; }
-.bw-card-soon .bw-card-desc { color: #98a0b4; }
 
 /* ---- 卡片：脑洞星系 ---- */
 .bw-card-galaxy .bw-card-art {
@@ -2153,7 +2138,7 @@
   transform: translate(-50%, -50%);
   border-radius: 43px 43px 6px 6px; /* 童话风拱形窗 */
   background:
-    url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=primary%20school%20chinese%20textbook%20illustration%2C%20gentle%20ink%20and%20wash%20watercolor%20painting%2C%20early%20spring%2C%20green%20willow%20trees%20by%20a%20winding%20river%2C%20peach%20blossoms%20blooming%2C%20swallows%20flying%20in%20the%20bright%20sky%2C%20a%20child%20flying%20a%20kite%20in%20the%20field%2C%20fresh%20soft%20pastel%20colors%2C%20idyllic%20chinese%20countryside%20scenery%2C%20clean%20poetic%20composition&image_size=square') center/cover,
+    url('/brainwave/images/os-window-mini.webp') center/cover,
     linear-gradient(180deg, #8fd0ff 0%, #bfe8c8 78%, #7cc47f 78%, #5da963 100%);
   border: 6px solid #a9743f;
   box-shadow: 0 8px 18px rgba(120, 80, 30, 0.3), inset 0 0 0 3px #8a5c2e;
@@ -2225,160 +2210,12 @@
   overflow: hidden;
   cursor: default;
   background:
-    url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fairy%20tale%20princess%20bedroom%20interior%2C%20children%20picture%20book%20watercolor%20style%2C%20soft%20pink%20and%20lavender%20pastel%20tones%2C%20cozy%20princess%20bed%20with%20sheer%20canopy%20on%20the%20left%2C%20small%20dressing%20table%20with%20flowers%20and%20mirror%20on%20the%20right%2C%20round%20fluffy%20rug%20in%20the%20middle%2C%20decorated%20floral%20wallpaper%20wall%2C%20warm%20soft%20dreamy%20light%2C%20gentle%20and%20cozy%20atmosphere%2C%20blank%20wall%20in%20the%20middle%20upper%20area%2C%20no%20window%2C%20no%20people%2C%20no%20characters&image_size=square') center/cover,
+    url('/brainwave/images/os-room.webp') center/cover,
     linear-gradient(180deg, #e4d2f2 0%, #c79fdb 100%);
   box-shadow: inset 0 0 0 6px rgba(243, 230, 250, 0.8), 0 6px 20px rgba(90, 50, 130, 0.35);
   animation: bwRoomFade 0.9s ease;
 }
 @keyframes bwRoomFade { from { opacity: 0; } to { opacity: 1; } }
-/* 让 AI 房间图不被手绘地面覆盖 */
-.bw-room::after { content: none; }
-/* 墙壁：粉紫渐变 + 竖向光感 */
-.bw-room-wall {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 42%),
-    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.35), transparent 40%),
-    linear-gradient(180deg, #e4d2f2 0%, #d3b7e3 60%, #c79fdb 100%);
-}
-/* 墙纸花纹 */
-.bw-room-frame-pattern {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.5) 3px, transparent 4px),
-    radial-gradient(circle at 80% 35%, rgba(255, 255, 255, 0.45) 3px, transparent 4px),
-    radial-gradient(circle at 45% 62%, rgba(255, 255, 255, 0.4) 3px, transparent 4px);
-  background-size: 120px 120px;
-  opacity: 0.55;
-  mix-blend-mode: overlay;
-}
-/* ===== 窗户（嵌在公主房间墙面上） ===== */
-.bw-room-bed {
-  position: absolute;
-  left: 8%; bottom: 9%;
-  width: 132px; height: 104px;
-  z-index: 3;
-}
-.bw-bed-head {
-  position: absolute;
-  left: 0; bottom: 22px;
-  width: 100%; height: 60px;
-  background: linear-gradient(180deg, #ffe3f0, #ffc1de);
-  border: 3px solid #dda6c8;
-  border-radius: 16px 16px 8px 8px;
-  box-shadow: inset 0 -8px 14px rgba(214, 140, 180, 0.3), 0 6px 14px rgba(160, 90, 130, 0.3);
-}
-.bw-bed-blanket {
-  position: absolute;
-  left: -8%; bottom: 6px;
-  width: 116%; height: 34px;
-  background: linear-gradient(180deg, #f9b8d8, #ee92c0);
-  border: 3px solid #df8cb6;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(180, 90, 130, 0.3);
-}
-.bw-bed-pillow {
-  position: absolute;
-  right: 14px; top: 34px;
-  width: 44px; height: 24px;
-  background: #fff4fa;
-  border: 2px solid #f0c8e0;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-.bw-bed-canopy {
-  position: absolute;
-  left: 6%; top: -10px;
-  width: 92%; height: 22px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.5), rgba(255,190,225,0.55), rgba(255,255,255,0.5));
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-}
-.bw-bed-crown {
-  position: absolute;
-  left: 50%; top: -12px;
-  transform: translateX(-50%);
-  font-size: 20px;
-  animation: bwCrownFloat 2.4s ease-in-out infinite;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
-}
-@keyframes bwCrownFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-3px); } }
-.bw-bed-doll {
-  position: absolute;
-  right: -6px; top: 30px;
-  font-size: 24px;
-  animation: bwFloaty 3.2s ease-in-out infinite;
-}
-/* 梳妆小桌（右侧） */
-.bw-room-table {
-  position: absolute;
-  right: 9%; bottom: 12%;
-  width: 120px; height: 88px;
-  z-index: 3;
-}
-.bw-table-top {
-  position: absolute;
-  left: 0; right: 0; top: 0; height: 10px;
-  background: linear-gradient(180deg, #f4d9f0, #e3b7de);
-  border: 3px solid #c99cc4;
-  border-radius: 6px;
-}
-.bw-table-leg {
-  position: absolute;
-  top: 10px; width: 10px; bottom: 0;
-  background: linear-gradient(90deg, #e0b0da, #c998c4);
-  border: 2px solid #b889b3;
-  border-radius: 2px;
-}
-.bw-table-leg.tl { left: 14px; }
-.bw-table-leg.tr { right: 14px; }
-.bw-table-vase {
-  position: absolute;
-  left: 8px; top: 2px;
-  font-size: 22px;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
-  animation: bwFloaty 3.6s ease-in-out infinite;
-}
-.bw-table-mirror {
-  position: absolute;
-  right: 6px; top: 0;
-  font-size: 24px;
-  animation: bwFloaty 3s ease-in-out infinite;
-}
-/* 地板小毯子 */
-.bw-room-rug {
-  position: absolute;
-  left: 50%; bottom: 6%;
-  width: 120px; height: 34px;
-  transform: translateX(-50%);
-  background:
-    linear-gradient(90deg, #f7b8d2, #e9f3ff, #f7d9e8);
-  border: 3px solid #e5a9c6;
-  border-radius: 40% 40% 0 0;
-  opacity: 0.9;
-  z-index: 3;
-}
-/* 漂浮装饰 */
-.bw-room-butterfly {
-  position: absolute;
-  left: 6%; top: 12%;
-  font-size: 20px;
-  animation: bwButterfly 4.5s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-}
-@keyframes bwButterfly {
-  0%, 100% { transform: translate(0,0) rotate(-6deg); }
-  50% { transform: translate(22px,-14px) rotate(6deg); }
-}
-.bw-room-star {
-  position: absolute;
-  right: 10%; top: 16%;
-  font-size: 16px;
-  animation: bwTwinkle 2.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.9));
-}
 /* ===== 窗户（嵌在公主房间墙面上） ===== */
 .bw-win-frame {
   position: absolute;
@@ -2491,22 +2328,7 @@
   from { opacity: 0; transform: scale(1.06); }
   to { opacity: 1; transform: scale(1); }
 }
-/* 飘落粒子（花瓣/阳光点/落叶/雪花） */
-.bw-win-part {
-  position: absolute;
-  top: -8%;
-  line-height: 1;
-  opacity: 0;
-  animation-name: bwWinFall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-@keyframes bwWinFall {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  8% { opacity: 0.95; }
-  90% { opacity: 0.9; }
-  100% { transform: translateY(540px) rotate(220deg); opacity: 0; }
-}
+
 /* 双开窗扇已改为静态窗棂（见 .bw-win-frame::before/::after），旋转窗扇隐藏 */
 .bw-win-sash {
   display: none;
@@ -2609,66 +2431,6 @@
     border-radius: 16px;
     box-shadow: inset 0 0 0 4px rgba(243, 230, 250, 0.8), 0 6px 20px rgba(90, 50, 130, 0.35);
   }
-  /* 房间内家具：按 0.65x 缩放，避免遮挡窗户 */
-  .bw-room-bed {
-    width: 86px; height: 68px;
-    left: 4%; bottom: 7%;
-  }
-  .bw-bed-head {
-    height: 40px;
-    border-radius: 12px 12px 6px 6px;
-    border-width: 2px;
-  }
-  .bw-bed-blanket {
-    height: 22px;
-    left: -6%;
-  }
-  .bw-bed-pillow {
-    width: 28px; height: 15px;
-    top: 22px; right: 8px;
-    border-width: 1.5px;
-  }
-  .bw-bed-canopy {
-    height: 14px;
-  }
-  .bw-bed-crown {
-    font-size: 14px;
-    top: -7px;
-  }
-  .bw-bed-doll {
-    font-size: 16px;
-    top: 20px;
-  }
-  .bw-room-table {
-    width: 78px; height: 56px;
-    right: 4%; bottom: 8%;
-  }
-  .bw-table-top {
-    height: 7px;
-    border-width: 2px;
-  }
-  .bw-table-leg {
-    width: 7px;
-    border-width: 1.5px;
-  }
-  .bw-table-vase {
-    font-size: 16px;
-    left: 6px;
-  }
-  .bw-table-mirror {
-    font-size: 16px;
-  }
-  .bw-room-rug {
-    width: 86px; height: 22px;
-    bottom: 4%;
-  }
-  .bw-room-butterfly {
-    font-size: 14px;
-    left: 4%;
-  }
-  .bw-room-star {
-    font-size: 12px;
-  }
   /* 窗户：宽度按房间比例，不超过房间宽 55% */
   .bw-win-frame {
     width: 56%;
@@ -2743,17 +2505,6 @@
   .bw-room {
     height: clamp(280px, 58vh, 360px);
     border-radius: 14px;
-  }
-  .bw-room-bed {
-    width: 70px; height: 56px;
-    left: 3%;
-  }
-  .bw-room-table {
-    width: 62px; height: 46px;
-    right: 3%;
-  }
-  .bw-room-rug {
-    width: 70px;
   }
   .bw-win-frame {
     width: 60%;
@@ -2844,4 +2595,9 @@
   0% { transform: scale(0.7); opacity: 0; }
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+/* 模态打开：锁定 body 滚动（JS 在开/关时增删 body.bw-modal-open） */
+body.bw-modal-open {
+  overflow: hidden;
 }
