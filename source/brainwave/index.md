@@ -179,7 +179,9 @@ date: 2026-08-29 00:00:00
 
 <!-- 完整样式非阻塞加载（.min 为构建产物，由 scripts/minify-brainwave.js 生成后提交）：
      media="print" 先占位不阻塞首绘，加载完成后切回 all -->
-<link rel="stylesheet" href="/brainwave/brainwave.min.css" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="/brainwave/brainwave.min.css" media="all"></noscript>
+<!-- v 参数是缓存破题：SW 对 min.css 走 CacheFirst，老 SW/浏览器按 URL 精确匹配缓存；
+     换版本号让新旧 SW 的缓存都 miss，直接落回网络拿当前版，不再依赖 SW 自身更新时机 -->
+<link rel="stylesheet" href="/brainwave/brainwave.min.css?v4-20260901" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/brainwave/brainwave.min.css?v4-20260901" media="all"></noscript>
 
 <script src="/brainwave/brainwave.min.js" defer></script>
