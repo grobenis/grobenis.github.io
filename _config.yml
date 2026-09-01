@@ -109,7 +109,7 @@ theme: ayer
 
 deploy:
   type: git
-  repo: https://github.com/grobenis/grobenis.github.io.git
+  repo: git@github-blog:grobenis/grobenis.github.io.git
   branch: master
 
 # Hexo-generator-search
