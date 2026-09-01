@@ -6,7 +6,7 @@
  *   - 导航请求：NetworkFirst，失败回退缓存（支持离线访问脑洞页）
  * 注：.min.js/.min.css 是 scripts/minify-brainwave.js 的构建产物，随仓库提交。
  */
-var CACHE_NAME = 'brainwave-v3-20260901';
+var CACHE_NAME = 'brainwave-v4-20260901';
 var STATIC_CACHE = [
   '/brainwave/',
   // 构建产物（scripts/minify-brainwave.js 生成）

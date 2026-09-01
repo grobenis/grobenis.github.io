@@ -1526,6 +1526,7 @@
   width: 96px; height: 96px; border-radius: 50%;
   background: radial-gradient(circle at 50% 38%, #ffffff, #f4edf6 75%);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+  z-index: -1;   /* 圆片退到 emoji 文本后面，否则绝对定位元素会盖住表情（白圈无表情） */
 }
 @keyframes bwVoBlink {
   0%, 91%, 97%, 100% { transform: scaleY(1); }
