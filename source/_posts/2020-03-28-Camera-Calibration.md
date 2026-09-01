@@ -60,7 +60,7 @@ tags: [相机标定,面试]
 
 刚体从世界坐标系转换到相机坐标系的过程，可以通过旋转和平移来得到，我们将其变换矩阵由一个旋转矩阵和平移向量组合成的齐次坐标矩阵（为什么要引入齐次坐标可见后续文章）来表示：
 
-![img](https://img-blog.csdn.net/20180204203239598?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203239598.png)
 
 其中，R为旋转矩阵，t为平移向量，因为假定在世界坐标系中物点所在平面过世界坐标系原点且与Zw轴垂直（也即棋盘平面与Xw-Yw平面重合，目的在于方便后续计算），所以`zw=0`，可直接转换成式1的形式。其中变换矩阵
 $$
@@ -73,7 +73,7 @@ R&t\\
 $$
 即为前文提到的外参矩阵，之所称之为外参矩阵可以理解为只与相机外部参数有关，且外参矩阵随刚体位置的变化而变化。
 
-![img](https://img-blog.csdn.net/20180204203322511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203322511.png)
 
 #### B. 从相机坐标系到理想图像坐标系（不考虑畸变）
 
@@ -81,12 +81,12 @@ $$
 
 针孔面（相机坐标系）在图像平面（图像坐标系）和物点平面（棋盘平面）之间，所成图像为倒立实像。
 
-![img](https://img-blog.csdn.net/20180204203348763?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203348763.png)
 
 为了在数学上更方便描述，我们将相机坐标系和图像坐标系位置对调，变成图三所示的布置方式（没有实际的物理意义，只是方便计算）：
 
 
-![img](https://img-blog.csdn.net/20180204203408825?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203408825.png)
 
 此时，假设相机坐标系中有一点M，则在理想图像坐标系下（无畸变）的成像点P的坐标为（可由相似三角形原则得出）：
 $$
@@ -110,7 +110,7 @@ $$
 
 由于透镜形状的制造工艺导致。且越向透镜边缘移动径向畸变越严重。下图所示是径向畸变的两种类型：桶形畸变和枕形畸变。
 
-![img](https://img-blog.csdn.net/20180204203515701?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203515701.png)
 
 实际情况中我们常用r=0处的泰勒级数展开的前几项来近似描述径向畸变。矫正径向畸变前后的坐标关系为：
 $$
@@ -121,7 +121,7 @@ $$
 $$
 
 
-![img](https://img-blog.csdn.net/20180204203540542?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203540542.png)
 
 由此可知对于径向畸变，我们有3个畸变参数需要求解。
 
@@ -129,7 +129,7 @@ $$
 
 由于透镜和CMOS或者CCD的安装位置误差导致。因此，如果存在切向畸变，一个矩形被投影到成像平面上时，很可能会变成一个梯形。切向畸变需要两个额外的畸变参数来描述，矫正前后的坐标关系为：
 
-![img](https://img-blog.csdn.net/20180204203600045?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203600045.png)
 
 由此可知对于切向畸变，我们有2个畸变参数需要求解。
 
@@ -157,7 +157,7 @@ $$
 
 
 
-![img](https://img-blog.csdn.net/20180204203659583?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDM2ODU1Ng==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![img](csdn-20180204203659583.png)
 
 之所以称之为内参矩阵可以理解为矩阵内各值只与相机内部参数有关，且不随物体位置变化而变化。
 

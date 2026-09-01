@@ -105,7 +105,7 @@ $$
 2. 预计分相邻帧的PVQ变化量，作为IMU的约束
 3. 计算IMU误差的协方差和jacobian
 
-![image-20191202112248399](./images/SLAM/image-20191202112248399.png)
+![image-20191202112248399](/images/SLAM/image-20191202112248399.png)
 
 ## VIO分类
 
