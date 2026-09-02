@@ -81,8 +81,9 @@ share: false
 <div class="journey-detail">
 <div class="journey-detail-inner">
 <ul class="journey-detail-list">
-<li>一句话成就（占位）——把它替换成你的真实成就</li>
-<li>一句话成就（占位）——同上，写完发我帮你填</li>
+<li>AutoGT</li>
+<li>多视图标定</li>
+<li>世界模型</li>
 </ul>
 </div>
 </div>
