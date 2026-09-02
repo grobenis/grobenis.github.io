@@ -47,7 +47,6 @@ share: false
 </div>
 <p class="journey-role">感知部 · SLAM算法工程师</p>
 <p class="journey-note">继续在 SLAM 路上，回答“我在哪”</p>
-<div class="journey-toggle"><span>成就</span><span class="journey-toggle-arrow">▾</span></div>
 </div>
 </div>
 <div class="journey-detail">
@@ -77,7 +76,6 @@ share: false
 </div>
 <p class="journey-role">感知部 · SLAM算法工程师</p>
 <p class="journey-note">转战自动驾驶，让机器知道自己在哪</p>
-<div class="journey-toggle"><span>成就</span><span class="journey-toggle-arrow">▾</span></div>
 </div>
 </div>
 <div class="journey-detail">
@@ -107,7 +105,6 @@ share: false
 </div>
 <p class="journey-role">手机部 · 可穿戴算法工程师</p>
 <p class="journey-note">做可穿戴算法，让设备学会感知</p>
-<div class="journey-toggle"><span>成就</span><span class="journey-toggle-arrow">▾</span></div>
 </div>
 </div>
 <div class="journey-detail">

@@ -2886,23 +2886,6 @@ body.page-scene-dawn .tv-set {
 .journey-ticket.has-detail {
   cursor: pointer;
 }
-.journey-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 9px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: #3aa0e8;
-}
-.journey-toggle-arrow {
-  font-size: 10px;
-  transition: transform 0.3s ease;
-}
-.journey-ticket.is-open .journey-toggle-arrow {
-  transform: rotate(180deg);
-}
 .journey-detail {
   display: grid;
   grid-template-rows: 0fr;
@@ -3045,8 +3028,7 @@ body.page-scene-dawn .tv-set {
     animation: none;
     opacity: 0.45;
   }
-  .journey-detail,
-  .journey-toggle-arrow {
+  .journey-detail {
     transition: none;
   }
 }
