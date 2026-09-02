@@ -51,13 +51,24 @@
     }
     lastTrigger = null;
   }
-  /* 模态无障碍：role/aria + 焦点移到关闭按钮 + Tab 焦点圈 */
+  /* 模态无障碍：role/aria + 焦点移到关闭按钮 + Tab 焦点圈闭（不逃逸到背后页面） */
   function setupModalA11y(m) {
     m.setAttribute('role', 'dialog');
     m.setAttribute('aria-modal', 'true');
     m.setAttribute('tabindex', '-1');
     var closer = m.querySelector('.bw-modal-close');
     if (closer) setTimeout(function () { try { closer.focus(); } catch (e) {} }, 0);
+    m.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var els = Array.prototype.filter.call(
+        m.querySelectorAll('button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])'),
+        function (el) { return !el.disabled && el.type !== 'hidden' && el.offsetParent !== null; }
+      );
+      if (!els.length) { e.preventDefault(); return; }
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
   }
   /* 累计扎小人次数：localStorage 持久化，封面展示徽章 */
   var VO_STAT_KEY = 'bw_voodoo_stat';
@@ -632,19 +643,26 @@
   }
 
   function renderGalaxy(sky) {
-    sky.innerHTML = '';
     var w = sky.clientWidth || 480;
     var h = sky.clientHeight || 260;
-    /* 背景星点 */
-    var i, bg;
-    for (i = 0; i < 40; i++) {
-      bg = document.createElement('span');
-      bg.className = 'bw-gal-bgstar';
-      bg.style.left = (Math.random() * 100) + '%';
-      bg.style.top = (Math.random() * 100) + '%';
-      bg.style.animationDelay = (Math.random() * 3) + 's';
-      bg.style.width = bg.style.height = (Math.random() < 0.6 ? 2 : 3) + 'px';
-      sky.appendChild(bg);
+    var i, j;
+    /* 只清点子和连线，保留背景星点（避免每次加点子背景都重新随机闪烁） */
+    var oldNodes = sky.querySelectorAll('.bw-gal-star, .bw-gal-lines');
+    for (i = 0; i < oldNodes.length; i++) {
+      if (oldNodes[i].parentNode) oldNodes[i].parentNode.removeChild(oldNodes[i]);
+    }
+    /* 背景星点：仅在首次生成 */
+    if (!sky.querySelector('.bw-gal-bgstar')) {
+      var bg;
+      for (i = 0; i < 40; i++) {
+        bg = document.createElement('span');
+        bg.className = 'bw-gal-bgstar';
+        bg.style.left = (Math.random() * 100) + '%';
+        bg.style.top = (Math.random() * 100) + '%';
+        bg.style.animationDelay = (Math.random() * 3) + 's';
+        bg.style.width = bg.style.height = (Math.random() < 0.6 ? 2 : 3) + 'px';
+        sky.appendChild(bg);
+      }
     }
     /* 连线(SVG):连接每颗星到最近的另一颗 */
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -721,26 +739,26 @@
   var IMG = function (rel) { return '/brainwave/images/' + rel; };
   /* 每只娃娃：名字 + 性格 + 喜欢的事 + 悄悄话 + AI 图 prompt（5×4=20 只） */
   var DOLLS = [
-    { name: '糯米', img: IMG('dolls/糯米.jpg'), personality: '温柔爱睡', like: '抱着蜂蜜罐打盹，在你难过时递上一个抱抱', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
-    { name: '奶糖', img: IMG('dolls/奶糖.jpg'), personality: '好奇又活泼', like: '收集清晨的露珠，竖起长耳朵听风里的故事', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '布丁', img: IMG('dolls/布丁.jpg'), personality: '慵懒小傲娇', like: '晒太阳打呼噜，偷看你认真写字的侧脸', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
-    { name: '橙子', img: IMG('dolls/橙子.jpg'), personality: '开朗元气', like: '追着自己的尾巴转圈，把甜橙味抱抱分给大家', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '棉花', img: IMG('dolls/棉花.jpg'), personality: '软萌害羞', like: '趴在窗边数星星，把烦心事裹进云朵里', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
-    { name: '豆丁', img: IMG('dolls/豆丁.jpg'), personality: '勇敢又逞强', like: '假装很凶地保护大家，其实最怕被搔痒痒', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' },
-    { name: '桃桃', img: IMG('dolls/桃桃.jpg'), personality: '甜甜软软', like: '每天给自己一个草莓味抱抱', line: '生活有点苦，但我是甜的。', prompt: 'one cute plush pink pig, round soft body, big glossy eyes, tiny blush, adorable smile, studio product shot, pastel pink background' },
-    { name: '西西', img: IMG('dolls/西西.jpg'), personality: '安静心思细', like: '收藏雨后的彩虹，画进你的梦里', line: '别看我话少，我记得你所有的好。', prompt: 'one cute plush blue kitten with sleepy soft eyes, round fluffy body, tiny blush, studio product shot, pastel pink background' },
-    { name: '果冻', img: IMG('dolls/果冻.jpg'), personality: '活泼呱呱', like: '下雨天跳进池塘里，和雨滴排排队', line: '生活嘛，总要蹦跶两下才过瘾。', prompt: 'one cute plush green frog, round chubby body, bright wide eyes, cheerful smile, studio product shot, pastel pink background' },
-    { name: '布林', img: IMG('dolls/布林.jpg'), personality: '稳重慢悠悠', like: '冬天最暖的，是和朋友们挤在一起', line: '走得慢没关系，我不急着离开你。', prompt: 'one cute plush blue penguin, round belly, orange feet, big sparkly eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '啾啾', img: IMG('dolls/啾啾.jpg'), personality: '元气满满', like: '一天到晚对着太阳叽叽叫', line: '想把第一缕晨光，分一缕给你。', prompt: 'one cute plush yellow chick, chubby round body, bright joyful eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '麻薯', img: IMG('dolls/麻薯.jpg'), personality: '黏人小团子', like: '不知不觉就黏在你身边不想走', line: '想你了，所以把自己变成软软的。', prompt: 'one cute plush white bear, precise soft round body, glossy gentle eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '泡芙', img: IMG('dolls/泡芙.jpg'), personality: '甜到冒泡', like: '往平凡的日子里加一点奶油', line: '不开心的时候，请轻轻咬我一口。', prompt: 'one cute plush cream bunny with swirl creampuff look, round soft body, sweet sparkling eyes, studio product shot, pastel pink background' },
-    { name: '曲奇', img: IMG('dolls/曲奇.jpg'), personality: '踏实可靠', like: '把难题耐心烤成脆脆的曲奇', line: '慢慢来，一切都来得及。', prompt: 'one cute plush brown bear with cookie speckles, round fluffy body, warm kind eyes, studio product shot, pastel pink background' },
-    { name: '柠檬', img: IMG('dolls/柠檬.jpg'), personality: '清爽乐乐', like: '在水面划出一道道小小的涟漪', line: '酸酸的我，最配甜甜的你。', prompt: 'one cute plush yellow duck, round soft body, bright cheerful eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '松果', img: IMG('dolls/松果.jpg'), personality: '机灵爱囤', like: '把秋天的快乐都收进小口袋', line: '你给的小确幸，我都悄悄珍藏。', prompt: 'one cute plush squirrel with big fluffy tail, round chubby body, bright clever eyes, studio product shot, pastel pink background' },
-    { name: '草莓', img: IMG('dolls/草莓.jpg'), personality: '软fu软fu', like: '给平凡的日子撒上一层糖霜', line: '我的心，是草莓味的。', prompt: 'one cute plush pink bear with strawberry detail, round soft body, glossy happy eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '芋泥', img: IMG('dolls/芋泥.jpg'), personality: '温柔寡言', like: '把想说的话都说得很轻很暖', line: '靠近一点，就能听见我的心跳。', prompt: 'one cute plush purple bear, round chubby body, soft gentle eyes, tiny blush, studio product shot, pastel pink background' },
-    { name: '可可', img: IMG('dolls/可可.jpg'), personality: '忠诚暖暖', like: '陪你到天亮，再送你安全回家', line: '无论多晚，都等你回来。', prompt: 'one cute plush brown puppy, round fluffy body, big faithful eyes, happy ears, studio product shot, pastel pink background' },
-    { name: '蛋挞', img: IMG('dolls/蛋挞.jpg'), personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
+    { name: '糯米', img: IMG('dolls/糯米.webp'), personality: '温柔爱睡', like: '抱着蜂蜜罐打盹，在你难过时递上一个抱抱', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
+    { name: '奶糖', img: IMG('dolls/奶糖.webp'), personality: '好奇又活泼', like: '收集清晨的露珠，竖起长耳朵听风里的故事', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '布丁', img: IMG('dolls/布丁.webp'), personality: '慵懒小傲娇', like: '晒太阳打呼噜，偷看你认真写字的侧脸', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
+    { name: '橙子', img: IMG('dolls/橙子.webp'), personality: '开朗元气', like: '追着自己的尾巴转圈，把甜橙味抱抱分给大家', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '棉花', img: IMG('dolls/棉花.webp'), personality: '软萌害羞', like: '趴在窗边数星星，把烦心事裹进云朵里', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
+    { name: '豆丁', img: IMG('dolls/豆丁.webp'), personality: '勇敢又逞强', like: '假装很凶地保护大家，其实最怕被搔痒痒', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' },
+    { name: '桃桃', img: IMG('dolls/桃桃.webp'), personality: '甜甜软软', like: '每天给自己一个草莓味抱抱', line: '生活有点苦，但我是甜的。', prompt: 'one cute plush pink pig, round soft body, big glossy eyes, tiny blush, adorable smile, studio product shot, pastel pink background' },
+    { name: '西西', img: IMG('dolls/西西.webp'), personality: '安静心思细', like: '收藏雨后的彩虹，画进你的梦里', line: '别看我话少，我记得你所有的好。', prompt: 'one cute plush blue kitten with sleepy soft eyes, round fluffy body, tiny blush, studio product shot, pastel pink background' },
+    { name: '果冻', img: IMG('dolls/果冻.webp'), personality: '活泼呱呱', like: '下雨天跳进池塘里，和雨滴排排队', line: '生活嘛，总要蹦跶两下才过瘾。', prompt: 'one cute plush green frog, round chubby body, bright wide eyes, cheerful smile, studio product shot, pastel pink background' },
+    { name: '布林', img: IMG('dolls/布林.webp'), personality: '稳重慢悠悠', like: '冬天最暖的，是和朋友们挤在一起', line: '走得慢没关系，我不急着离开你。', prompt: 'one cute plush blue penguin, round belly, orange feet, big sparkly eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '啾啾', img: IMG('dolls/啾啾.webp'), personality: '元气满满', like: '一天到晚对着太阳叽叽叫', line: '想把第一缕晨光，分一缕给你。', prompt: 'one cute plush yellow chick, chubby round body, bright joyful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '麻薯', img: IMG('dolls/麻薯.webp'), personality: '黏人小团子', like: '不知不觉就黏在你身边不想走', line: '想你了，所以把自己变成软软的。', prompt: 'one cute plush white bear, precise soft round body, glossy gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '泡芙', img: IMG('dolls/泡芙.webp'), personality: '甜到冒泡', like: '往平凡的日子里加一点奶油', line: '不开心的时候，请轻轻咬我一口。', prompt: 'one cute plush cream bunny with swirl creampuff look, round soft body, sweet sparkling eyes, studio product shot, pastel pink background' },
+    { name: '曲奇', img: IMG('dolls/曲奇.webp'), personality: '踏实可靠', like: '把难题耐心烤成脆脆的曲奇', line: '慢慢来，一切都来得及。', prompt: 'one cute plush brown bear with cookie speckles, round fluffy body, warm kind eyes, studio product shot, pastel pink background' },
+    { name: '柠檬', img: IMG('dolls/柠檬.webp'), personality: '清爽乐乐', like: '在水面划出一道道小小的涟漪', line: '酸酸的我，最配甜甜的你。', prompt: 'one cute plush yellow duck, round soft body, bright cheerful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '松果', img: IMG('dolls/松果.webp'), personality: '机灵爱囤', like: '把秋天的快乐都收进小口袋', line: '你给的小确幸，我都悄悄珍藏。', prompt: 'one cute plush squirrel with big fluffy tail, round chubby body, bright clever eyes, studio product shot, pastel pink background' },
+    { name: '草莓', img: IMG('dolls/草莓.webp'), personality: '软fu软fu', like: '给平凡的日子撒上一层糖霜', line: '我的心，是草莓味的。', prompt: 'one cute plush pink bear with strawberry detail, round soft body, glossy happy eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '芋泥', img: IMG('dolls/芋泥.webp'), personality: '温柔寡言', like: '把想说的话都说得很轻很暖', line: '靠近一点，就能听见我的心跳。', prompt: 'one cute plush purple bear, round chubby body, soft gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '可可', img: IMG('dolls/可可.webp'), personality: '忠诚暖暖', like: '陪你到天亮，再送你安全回家', line: '无论多晚，都等你回来。', prompt: 'one cute plush brown puppy, round fluffy body, big faithful eyes, happy ears, studio product shot, pastel pink background' },
+    { name: '蛋挞', img: IMG('dolls/蛋挞.webp'), personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
   ];
 
   /* 投喂动作表：每只娃娃专属食物 + 专属特效 + 专属动作动画 */
@@ -769,7 +787,7 @@
   };
 
   /* 隐藏传说娃娃：集齐 20 只后召唤 */
-  var HIDDEN = { name: '彩虹', img: IMG('dolls/彩虹.jpg'), personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
+  var HIDDEN = { name: '彩虹', img: IMG('dolls/彩虹.webp'), personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
 
   /* 盲盒商店：16 款软萌软胶玩具 + 1 款稀有隐藏 */
   /* 拆盲盒：5 大类 ×（8 普通 + 1 隐藏）= 45 款；按当前分类抽盒 */
@@ -777,72 +795,72 @@
     {
       key: 'animal', name: '软萌动物', emoji: '🐾',
       toys: [
-        { name: '团子喵', img: IMG('toys/animal/团子喵.jpg'), line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
-        { name: '布丁兔', img: IMG('toys/animal/布丁兔.jpg'), line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
-        { name: '云朵羊', img: IMG('toys/animal/云朵羊.jpg'), line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
-        { name: '奶泡企鹅', img: IMG('toys/animal/奶泡企鹅.jpg'), line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
-        { name: '泡泡蛙', img: IMG('toys/animal/泡泡蛙.jpg'), line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
-        { name: '转圈猴', img: IMG('toys/animal/转圈猴.jpg'), line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
-        { name: '小麋鹿', img: IMG('toys/animal/小麋鹿.jpg'), line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
-        { name: '芒果鸭', img: IMG('toys/animal/芒果鸭.jpg'), line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' }
+        { name: '团子喵', img: IMG('toys/animal/团子喵.webp'), line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
+        { name: '布丁兔', img: IMG('toys/animal/布丁兔.webp'), line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
+        { name: '云朵羊', img: IMG('toys/animal/云朵羊.webp'), line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
+        { name: '奶泡企鹅', img: IMG('toys/animal/奶泡企鹅.webp'), line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
+        { name: '泡泡蛙', img: IMG('toys/animal/泡泡蛙.webp'), line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
+        { name: '转圈猴', img: IMG('toys/animal/转圈猴.webp'), line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
+        { name: '小麋鹿', img: IMG('toys/animal/小麋鹿.webp'), line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
+        { name: '芒果鸭', img: IMG('toys/animal/芒果鸭.webp'), line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '彩虹独角兽', img: IMG('toys/animal/z-彩虹独角兽.jpg'), line: '我可是传说中限定的彩虹独角兽！', prompt: 'one legendary cute rainbow unicorn squishy soft toy, iridescent pastel horn and mane, sparkling starry eyes, soft glowing body, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '彩虹独角兽', img: IMG('toys/animal/z-彩虹独角兽.webp'), line: '我可是传说中限定的彩虹独角兽！', prompt: 'one legendary cute rainbow unicorn squishy soft toy, iridescent pastel horn and mane, sparkling starry eyes, soft glowing body, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'dessert', name: '甜品甜点', emoji: '🍰',
       toys: [
-        { name: '星星软糖', img: IMG('toys/dessert/星星软糖.jpg'), line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
-        { name: '小酸奶', img: IMG('toys/dessert/小酸奶.jpg'), line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
-        { name: '奶黄包', img: IMG('toys/dessert/奶黄包.jpg'), line: '趁热咬一口，会流心哦', prompt: 'one cute custard bao soft toy shaped like a little bun, glossy soft golden yellow body, tiny steam swirl on top, plump round shape, adorable, studio product shot, pastel pink background' },
-        { name: '芝士鼠', img: IMG('toys/dessert/芝士鼠.jpg'), line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
-        { name: '西瓜猪', img: IMG('toys/dessert/西瓜猪.jpg'), line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
-        { name: '曲奇牛', img: IMG('toys/dessert/曲奇牛.jpg'), line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' },
-        { name: '草莓杯', img: IMG('toys/dessert/草莓杯.jpg'), line: '一勺下去，酸酸甜甜', prompt: 'one cute strawberry parfait cup soft toy, layered pink and cream body in a tiny glass cup topped with a strawberry, adorable, studio product shot, pastel pink background' },
-        { name: '抹茶卷', img: IMG('toys/dessert/抹茶卷.jpg'), line: '慢慢转出来，每一层都是绿', prompt: 'one cute matcha roll cake soft toy, green and white spiral swirl, soft sponge texture, tiny cream dollop on top, adorable, studio product shot, pastel pink background' }
+        { name: '星星软糖', img: IMG('toys/dessert/星星软糖.webp'), line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
+        { name: '小酸奶', img: IMG('toys/dessert/小酸奶.webp'), line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '奶黄包', img: IMG('toys/dessert/奶黄包.webp'), line: '趁热咬一口，会流心哦', prompt: 'one cute custard bao soft toy shaped like a little bun, glossy soft golden yellow body, tiny steam swirl on top, plump round shape, adorable, studio product shot, pastel pink background' },
+        { name: '芝士鼠', img: IMG('toys/dessert/芝士鼠.webp'), line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
+        { name: '西瓜猪', img: IMG('toys/dessert/西瓜猪.webp'), line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '曲奇牛', img: IMG('toys/dessert/曲奇牛.webp'), line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '草莓杯', img: IMG('toys/dessert/草莓杯.webp'), line: '一勺下去，酸酸甜甜', prompt: 'one cute strawberry parfait cup soft toy, layered pink and cream body in a tiny glass cup topped with a strawberry, adorable, studio product shot, pastel pink background' },
+        { name: '抹茶卷', img: IMG('toys/dessert/抹茶卷.webp'), line: '慢慢转出来，每一层都是绿', prompt: 'one cute matcha roll cake soft toy, green and white spiral swirl, soft sponge texture, tiny cream dollop on top, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '小笼包国王', img: IMG('toys/dessert/z-小笼包国王.jpg'), line: '皮薄馅大，谁与争锋！', prompt: 'one regal cute steamed xiaolongbao king soft toy, plump translucent dumpling with a tiny golden crown on top, soft jelly texture, proud face, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '小笼包国王', img: IMG('toys/dessert/z-小笼包国王.webp'), line: '皮薄馅大，谁与争锋！', prompt: 'one regal cute steamed xiaolongbao king soft toy, plump translucent dumpling with a tiny golden crown on top, soft jelly texture, proud face, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'weird', name: '稀奇古怪', emoji: '🤪',
       toys: [
-        { name: '咬人袜', img: IMG('toys/weird/咬人袜.jpg'), line: '「我才不是普通的袜子！」——它说', prompt: 'one cute squishy soft toy sock monster, pastel rainbow striped sock body with two tiny fangs poking out, big mischievous eyes, soft plush texture, studio product shot, pastel pink background' },
-        { name: '充电菇', img: IMG('toys/weird/充电菇.jpg'), line: '电量低于 20% 时会小声哭泣', prompt: 'one cute squishy soft toy mushroom, plump rounded cap with tiny USB-C port on the belly, glowing power button, soft pastel mint and lavender body, studio product shot, pastel pink background' },
-        { name: '便利贴小狗', img: IMG('toys/weird/便利贴小狗.jpg'), line: '贴在你心上请轻一点，撕下来会委屈', prompt: 'one cute squishy soft toy shaped like a sticky note, dog face drawn on it, pastel yellow paper body with a tiny adhesive strip on the back, soft plush texture, studio product shot, pastel pink background' },
-        { name: '硬盘君', img: IMG('toys/weird/硬盘君.jpg'), line: '你存的都什么乱七八糟的！', prompt: 'one cute squishy soft toy shaped like a tiny 3.5 inch hard drive, grumpy cartoon face with furrowed brow, tiny arms crossed, soft mint green body, studio product shot, pastel pink background' },
-        { name: '回形针乐手', img: IMG('toys/weird/回形针乐手.jpg'), line: '别小看我，旋律我都会', prompt: 'one cute squishy soft toy shaped like a silver paperclip, wearing tiny headphones, holding a music note, shiny silver plush body, studio product shot, pastel pink background' },
-        { name: '空盒', img: IMG('toys/weird/空盒.jpg'), line: '买到就是赚到。赚到啥？问它', prompt: 'one cute squishy soft toy shaped like a small open box, with another smaller box inside, infinite russian doll nesting visible, pastel cream and pink striped box, studio product shot, pastel pink background' },
-        { name: '午睡椒', img: IMG('toys/weird/午睡椒.jpg'), line: '再热也要冷静入睡', prompt: 'one cute squishy soft toy shaped like a tiny chili pepper, wearing a tiny sleep cap, eyes half closed yawning, soft coral red body, studio product shot, pastel pink background' },
-        { name: '海苔', img: IMG('toys/weird/海苔.jpg'), line: '吃完请记得再补一片，谢谢', prompt: 'one cute squishy soft toy shaped like a tiny piece of nori seaweed, wavy and curly edges, sleepy face with one eye closed yawning, deep green body with golden edges, studio product shot, pastel pink background' }
+        { name: '咬人袜', img: IMG('toys/weird/咬人袜.webp'), line: '「我才不是普通的袜子！」——它说', prompt: 'one cute squishy soft toy sock monster, pastel rainbow striped sock body with two tiny fangs poking out, big mischievous eyes, soft plush texture, studio product shot, pastel pink background' },
+        { name: '充电菇', img: IMG('toys/weird/充电菇.webp'), line: '电量低于 20% 时会小声哭泣', prompt: 'one cute squishy soft toy mushroom, plump rounded cap with tiny USB-C port on the belly, glowing power button, soft pastel mint and lavender body, studio product shot, pastel pink background' },
+        { name: '便利贴小狗', img: IMG('toys/weird/便利贴小狗.webp'), line: '贴在你心上请轻一点，撕下来会委屈', prompt: 'one cute squishy soft toy shaped like a sticky note, dog face drawn on it, pastel yellow paper body with a tiny adhesive strip on the back, soft plush texture, studio product shot, pastel pink background' },
+        { name: '硬盘君', img: IMG('toys/weird/硬盘君.webp'), line: '你存的都什么乱七八糟的！', prompt: 'one cute squishy soft toy shaped like a tiny 3.5 inch hard drive, grumpy cartoon face with furrowed brow, tiny arms crossed, soft mint green body, studio product shot, pastel pink background' },
+        { name: '回形针乐手', img: IMG('toys/weird/回形针乐手.webp'), line: '别小看我，旋律我都会', prompt: 'one cute squishy soft toy shaped like a silver paperclip, wearing tiny headphones, holding a music note, shiny silver plush body, studio product shot, pastel pink background' },
+        { name: '空盒', img: IMG('toys/weird/空盒.webp'), line: '买到就是赚到。赚到啥？问它', prompt: 'one cute squishy soft toy shaped like a small open box, with another smaller box inside, infinite russian doll nesting visible, pastel cream and pink striped box, studio product shot, pastel pink background' },
+        { name: '午睡椒', img: IMG('toys/weird/午睡椒.webp'), line: '再热也要冷静入睡', prompt: 'one cute squishy soft toy shaped like a tiny chili pepper, wearing a tiny sleep cap, eyes half closed yawning, soft coral red body, studio product shot, pastel pink background' },
+        { name: '海苔', img: IMG('toys/weird/海苔.webp'), line: '吃完请记得再补一片，谢谢', prompt: 'one cute squishy soft toy shaped like a tiny piece of nori seaweed, wavy and curly edges, sleepy face with one eye closed yawning, deep green body with golden edges, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '愤怒便利贴', img: IMG('toys/weird/z-愤怒便利贴.jpg'), line: '别再贴了别再贴了！', prompt: 'one legendary grumpy sticky note soft toy, yellow paper with an angry cartoon face, tiny arms raised in frustration, soft plush texture, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '愤怒便利贴', img: IMG('toys/weird/z-愤怒便利贴.webp'), line: '别再贴了别再贴了！', prompt: 'one legendary grumpy sticky note soft toy, yellow paper with an angry cartoon face, tiny arms raised in frustration, soft plush texture, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'fruit', name: '蔬果派对', emoji: '🍅',
       toys: [
-        { name: '草莓', img: IMG('toys/fruit/草莓.jpg'), line: '红着脸说"我很甜"', prompt: 'one cute squishy soft toy strawberry, glossy red body with tiny green leaves, big happy eyes, adorable, studio product shot, pastel pink background' },
-        { name: '葡萄', img: IMG('toys/fruit/葡萄.jpg'), line: '一串不够，再来一串', prompt: 'one cute squishy soft toy grape cluster, plump purple round berries, glossy jelly texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
-        { name: '菠萝', img: IMG('toys/fruit/菠萝.jpg'), line: '扎手归扎手，甜是真甜', prompt: 'one cute squishy soft toy pineapple, spiky green and yellow body, friendly face, soft plush texture, adorable, studio product shot, pastel pink background' },
-        { name: '苹果', img: IMG('toys/fruit/苹果.jpg'), line: '一天一苹果，医生远离我', prompt: 'one cute squishy soft toy apple, glossy red round body with tiny green leaf, rosy cheek, adorable, studio product shot, pastel pink background' },
-        { name: '桃子', img: IMG('toys/fruit/桃子.jpg'), line: '咬一口，汁水会跑出来', prompt: 'one cute squishy soft toy peach, fuzzy pastel pink round body with a tiny green leaf, soft plush texture, adorable, studio product shot, pastel pink background' },
-        { name: '橘子', img: IMG('toys/fruit/橘子.jpg'), line: '一瓣一瓣，吃到见底', prompt: 'one cute squishy soft toy mandarin orange, segmented round body, soft plush texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
-        { name: '樱桃', img: IMG('toys/fruit/樱桃.jpg'), line: '我们一直是双胞胎', prompt: 'two cute squishy soft toy cherries sharing one stem, glossy red round bodies, sweet faces, adorable, studio product shot, pastel pink background' },
-        { name: '芒果', img: IMG('toys/fruit/芒果.jpg'), line: '甜到忧伤', prompt: 'one cute squishy soft toy mango, plump golden yellow oval body with rosy cheeks, soft plush texture, adorable, studio product shot, pastel pink background' }
+        { name: '草莓', img: IMG('toys/fruit/草莓.webp'), line: '红着脸说"我很甜"', prompt: 'one cute squishy soft toy strawberry, glossy red body with tiny green leaves, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '葡萄', img: IMG('toys/fruit/葡萄.webp'), line: '一串不够，再来一串', prompt: 'one cute squishy soft toy grape cluster, plump purple round berries, glossy jelly texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '菠萝', img: IMG('toys/fruit/菠萝.webp'), line: '扎手归扎手，甜是真甜', prompt: 'one cute squishy soft toy pineapple, spiky green and yellow body, friendly face, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '苹果', img: IMG('toys/fruit/苹果.webp'), line: '一天一苹果，医生远离我', prompt: 'one cute squishy soft toy apple, glossy red round body with tiny green leaf, rosy cheek, adorable, studio product shot, pastel pink background' },
+        { name: '桃子', img: IMG('toys/fruit/桃子.webp'), line: '咬一口，汁水会跑出来', prompt: 'one cute squishy soft toy peach, fuzzy pastel pink round body with a tiny green leaf, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '橘子', img: IMG('toys/fruit/橘子.webp'), line: '一瓣一瓣，吃到见底', prompt: 'one cute squishy soft toy mandarin orange, segmented round body, soft plush texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '樱桃', img: IMG('toys/fruit/樱桃.webp'), line: '我们一直是双胞胎', prompt: 'two cute squishy soft toy cherries sharing one stem, glossy red round bodies, sweet faces, adorable, studio product shot, pastel pink background' },
+        { name: '芒果', img: IMG('toys/fruit/芒果.webp'), line: '甜到忧伤', prompt: 'one cute squishy soft toy mango, plump golden yellow oval body with rosy cheeks, soft plush texture, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '人参果', img: IMG('toys/fruit/z-人参果.jpg'), line: '西游记里听说过我吗？三千年一开花', prompt: 'one legendary cute ginseng fruit soft toy, plump pastel pink body shaped like a chubby baby with tiny green leaves on top, glowing aura, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '人参果', img: IMG('toys/fruit/z-人参果.webp'), line: '西游记里听说过我吗？三千年一开花', prompt: 'one legendary cute ginseng fruit soft toy, plump pastel pink body shaped like a chubby baby with tiny green leaves on top, glowing aura, rare legendary, studio product shot, pastel pink background' }
     },
     {
       key: 'fantasy', name: '幻想角色', emoji: '✨',
       toys: [
-        { name: '仙子', img: IMG('toys/fantasy/仙子.jpg'), line: '挥挥手，洒下星尘', prompt: 'one cute squishy soft toy fairy, pastel pink flowing dress, tiny sparkly wings, holding a magic wand, adorable, studio product shot, pastel pink background' },
-        { name: '精灵', img: IMG('toys/fantasy/精灵.jpg'), line: '我住在森林深处的树屋里', prompt: 'one cute squishy soft toy elf, green tunic, pointy ears, tiny wooden bow, adorable, studio product shot, pastel pink background' },
-        { name: '骑士', img: IMG('toys/fantasy/骑士.jpg'), line: '我的剑只用来切蛋糕', prompt: 'one cute squishy soft toy knight, tiny silver armor, round helmet with a plume, holding a small sword, adorable, studio product shot, pastel pink background' },
-        { name: '巫师', img: IMG('toys/fantasy/巫师.jpg'), line: '我挥的不是魔法，是认真', prompt: 'one cute squishy soft toy wizard, purple starry robe, pointy hat, holding a glowing wand, adorable, studio product shot, pastel pink background' },
-        { name: '忍者', img: IMG('toys/fantasy/忍者.jpg'), line: '嘘——你看不见我', prompt: 'one cute squishy soft toy ninja, black outfit with face mask, tiny throwing stars, adorable, studio product shot, pastel pink background' },
-        { name: '机器人', img: IMG('toys/fantasy/机器人.jpg'), line: '电量 99%，心态 0%', prompt: 'one cute squishy soft toy robot, rounded square body with antennas, glowing heart on chest, adorable, studio product shot, pastel pink background' },
-        { name: '宇航员', img: IMG('toys/fantasy/宇航员.jpg'), line: '我把星星带回来了', prompt: 'one cute squishy soft toy astronaut, white spacesuit, round helmet with star reflections, floating a tiny planet, adorable, studio product shot, pastel pink background' },
-        { name: '公主', img: IMG('toys/fantasy/公主.jpg'), line: '今日的皇冠也是闪闪的', prompt: 'one cute squishy soft toy princess, pastel pink ball gown, tiny golden crown, holding a heart scepter, adorable, studio product shot, pastel pink background' }
+        { name: '仙子', img: IMG('toys/fantasy/仙子.webp'), line: '挥挥手，洒下星尘', prompt: 'one cute squishy soft toy fairy, pastel pink flowing dress, tiny sparkly wings, holding a magic wand, adorable, studio product shot, pastel pink background' },
+        { name: '精灵', img: IMG('toys/fantasy/精灵.webp'), line: '我住在森林深处的树屋里', prompt: 'one cute squishy soft toy elf, green tunic, pointy ears, tiny wooden bow, adorable, studio product shot, pastel pink background' },
+        { name: '骑士', img: IMG('toys/fantasy/骑士.webp'), line: '我的剑只用来切蛋糕', prompt: 'one cute squishy soft toy knight, tiny silver armor, round helmet with a plume, holding a small sword, adorable, studio product shot, pastel pink background' },
+        { name: '巫师', img: IMG('toys/fantasy/巫师.webp'), line: '我挥的不是魔法，是认真', prompt: 'one cute squishy soft toy wizard, purple starry robe, pointy hat, holding a glowing wand, adorable, studio product shot, pastel pink background' },
+        { name: '忍者', img: IMG('toys/fantasy/忍者.webp'), line: '嘘——你看不见我', prompt: 'one cute squishy soft toy ninja, black outfit with face mask, tiny throwing stars, adorable, studio product shot, pastel pink background' },
+        { name: '机器人', img: IMG('toys/fantasy/机器人.webp'), line: '电量 99%，心态 0%', prompt: 'one cute squishy soft toy robot, rounded square body with antennas, glowing heart on chest, adorable, studio product shot, pastel pink background' },
+        { name: '宇航员', img: IMG('toys/fantasy/宇航员.webp'), line: '我把星星带回来了', prompt: 'one cute squishy soft toy astronaut, white spacesuit, round helmet with star reflections, floating a tiny planet, adorable, studio product shot, pastel pink background' },
+        { name: '公主', img: IMG('toys/fantasy/公主.webp'), line: '今日的皇冠也是闪闪的', prompt: 'one cute squishy soft toy princess, pastel pink ball gown, tiny golden crown, holding a heart scepter, adorable, studio product shot, pastel pink background' }
       ],
-      hidden: { name: '时空旅行者', img: IMG('toys/fantasy/z-时空旅行者.jpg'), line: '我来自未来，也来自过去', prompt: 'one legendary cute time traveler soft toy, flowing cloak with clock and gear patterns, hourglass accessory, glowing aura, rare legendary, studio product shot, pastel pink background' }
+      hidden: { name: '时空旅行者', img: IMG('toys/fantasy/z-时空旅行者.webp'), line: '我来自未来，也来自过去', prompt: 'one legendary cute time traveler soft toy, flowing cloak with clock and gear patterns, hourglass accessory, glowing aura, rare legendary, studio product shot, pastel pink background' }
     }
   ];
 
@@ -1177,22 +1195,22 @@
   /* WIN_IMG 已废弃：所有季节图预生成到 /images/seasons/ */
   var SEASONS = {
     spring: {
-      img: IMG('seasons/spring.jpg'),
+      img: IMG('seasons/spring.webp'),
       part: '🌸',
       caption: '春天来了，柳树绿了，溪水醒了。田里的小朋友放着风筝，燕子在蓝天上唱歌。'
     },
     summer: {
-      img: IMG('seasons/summer.jpg'),
+      img: IMG('seasons/summer.webp'),
       part: '☀️',
       caption: '池塘里的荷花开得正盛，青蛙在荷叶上打盹，蜻蜓点过水面，知了在柳枝上叫个不停。'
     },
     autumn: {
-      img: IMG('seasons/autumn.jpg'),
+      img: IMG('seasons/autumn.webp'),
       part: '🍂',
       caption: '天凉好个秋。稻田一片金黄，大雁排成行飞往南方，红红的枫叶落满小径。'
     },
     winter: {
-      img: IMG('seasons/winter.jpg'),
+      img: IMG('seasons/winter.webp'),
       part: '❄️',
       caption: '大雪把屋顶盖得厚厚的，腊梅在墙角悄悄开了，雪人站在院子里，等着春天。'
     }
@@ -1286,13 +1304,21 @@
   }
 
   /* ============ 扎小人（解压台） ============ */
+  /* 每小人扎满 6 针即"扎服"；pins 记录自由落点 {x, y, a}，pleas 为专属求饶台词 */
+  var VO_TOTAL = 6;
   var VO_DOLLS = [
-    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.jpg'),  acc: '💦', faceIdle: '😐', faceHit: '😖', faceDown: '😵', line: '已生效：TA 的锅永远有人抢着背 🍳' },
-    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.jpg'),  acc: '😒', faceIdle: '😒', faceHit: '😣', faceDown: '😭', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏' },
-    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.jpg'), acc: '🪙', faceIdle: '🤨', faceHit: '😫', faceDown: '🥺', line: '已生效：TA 的钱包总在最需要时少一张 🪙' },
-    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.jpg'), acc: '🔍', faceIdle: '😏', faceHit: '😝', faceDown: '😩', line: '已生效：TA 的小算盘今晚全被打翻 🧮' },
-    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.jpg'), acc: '🥺', faceIdle: '😟', faceHit: '😢', faceDown: '😭', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅' },
-    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.jpg'), acc: '🤝', faceIdle: '😶', faceHit: '😬', faceDown: '😵', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖' }
+    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.webp'),  acc: '💦', faceIdle: '😐', faceHit: '😖', faceDown: '😵', line: '已生效：TA 的锅永远有人抢着背 🍳',
+      pleas: ['锅我背的，针能不能少扎两下？', '领导说了，这个锅…就，先让你扎着。', '等、等我把锅放下再扎！'] },
+    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.webp'),  acc: '😒', faceIdle: '😒', faceHit: '😣', faceDown: '😭', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏',
+      pleas: ['我不高兴，但现在更不高兴了！', '哼…你扎我，我就——就哼！', '别扎脸，明天还要假装热爱生活。'] },
+    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.webp'), acc: '🪙', faceIdle: '🤨', faceHit: '😫', faceDown: '🥺', line: '已生效：TA 的钱包总在最需要时少一张 🪙',
+      pleas: ['别扎我结账的那个口袋…求你了！', '你扎一针，我少一块红包 🫣', 'AA 制行不行？你扎，我记账。'] },
+    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.webp'), acc: '🔍', faceIdle: '😏', faceHit: '😝', faceDown: '😩', line: '已生效：TA 的小算盘今晚全被打翻 🧮',
+      pleas: ['你这一针，正好打翻我的棋局…', '算准了你会扎这儿，我偏不喊疼。', '疼，但锅已经甩出去了，值！'] },
+    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.webp'), acc: '🥺', faceIdle: '😟', faceHit: '😢', faceDown: '😭', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅',
+      pleas: ['下、下次一定让我先躲…', '别一次性扎太狠，我缓一缓。', '我很想硬气，但…还是缩一缩吧。'] },
+    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.webp'), acc: '🤝', faceIdle: '😶', faceHit: '😬', faceDown: '😵', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖',
+      pleas: ['各退一步，你少扎一针，我当你没扎～', '别别别，这针咱俩各认一半？', '要不这口锅…也各退一步？'] }
   ];
   var VO_LINES = [
     '已生效：TA 的袜子永远少一只 🧦',
@@ -1306,44 +1332,40 @@
     '已生效：TA 的闹钟会提前一小时响 ⏰',
     '已生效：TA 点外卖永远没有餐具 🥢'
   ];
-  var VO_PARTS = [
-    { k: 'head', label: '脑袋' },
-    { k: 'tum',  label: '肚子' },
-    { k: 'arml', label: '左手' },
-    { k: 'armr', label: '右手' }
-  ];
   function openVoodoo(e) {
     lastTrigger = (e && e.currentTarget) || null;
     var m = document.createElement('div');
     m.className = 'bw-modal bw-voodoo';
-    var pins = VO_PARTS.map(function (p, i) {
-      return '<span class="bw-vo-pin bw-vo-pin-' + p.k + '" data-i="' + i + '" title="扎' + p.label + '"></span>';
-    }).join('');
+    var boxN = '';
+    for (var bi = 0; bi < VO_TOTAL; bi++) boxN += '<span class="bw-vo-boxneedle" data-i="' + bi + '"></span>';
     m.innerHTML =
       '<div class="bw-modal-backdrop" data-close></div>' +
       '<div class="bw-modal-panel bw-vo-panel">' +
         '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
         '<h2 class="bw-modal-title">扎小人 · 解压台</h2>' +
-        '<p class="bw-modal-sub">左右切换小人，找到最像 TA 的那个，扎它！</p>' +
-        '<div class="bw-vo-stage">' +
+        '<p class="bw-modal-sub">从针盒拔一根针，拖到小人身上扎下去；扎满 ' + VO_TOTAL + ' 针，TA 就服了。</p>' +
+        '<div class="bw-vo-stage" id="voStage">' +
           '<div class="bw-vo-bubble" id="voBubble">先随机一位幸运小人～</div>' +
-          '<div class="bw-vo-arrows">' +
-            '<button class="bw-vo-nav bw-vo-prev" type="button" aria-label="上一位小人">' +
-              '<span class="bw-vo-nav-arrow">‹</span><span class="bw-vo-nav-label">上一位</span>' +
-            '</button>' +
-            '<div class="bw-vo-view" id="voView">' +
-              '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
-              pins +
-              '<span class="bw-vo-done-badge">已生效 ✓</span>' +
-            '</div>' +
-            '<button class="bw-vo-nav bw-vo-next" type="button" aria-label="下一位小人">' +
-              '<span class="bw-vo-nav-arrow">›</span><span class="bw-vo-nav-label">下一位</span>' +
-            '</button>' +
+          '<div class="bw-vo-boxwrap">' +
+            '<div class="bw-vo-box" id="voBox" title="按住这里拔针，拖到小人身上扎下去">' + boxN + '</div>' +
+            '<span class="bw-vo-boxtip" aria-hidden="true">拔针<br>扎TA</span>' +
           '</div>' +
-          '<div class="bw-vo-prog" id="voProg"></div>' +
+          '<div class="bw-vo-view" id="voView">' +
+            '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
+            '<div class="bw-vo-face" aria-hidden="true"><span class="bw-vo-face-i"></span></div>' +
+            '<div class="bw-vo-stars" aria-hidden="true"></div>' +
+            '<span class="bw-vo-done-badge">已生效 ✓</span>' +
+            '<button class="bw-vo-prev" type="button" aria-label="上一位小人" title="上一位小人">‹</button>' +
+            '<button class="bw-vo-next" type="button" aria-label="下一位小人" title="下一位小人">›</button>' +
+          '</div>' +
+          '<div class="bw-vo-side">' +
+            '<div class="bw-vo-prog" id="voProg"></div>' +
+            '<div class="bw-vo-pips" id="voPips"></div>' +
+            '<button class="bw-vo-stab" id="voStab" type="button">扎一针</button>' +
+            '<button class="bw-vo-again" id="voAgain" type="button" style="display:none">再扎一次</button>' +
+          '</div>' +
         '</div>' +
-        '<div class="bw-vo-count" id="voCount">已扎 0 / 6 个</div>' +
-        '<button class="bw-vo-again" id="voAgain" type="button" style="display:none">再扎一次</button>' +
+        '<div class="bw-vo-count" id="voCount">已扎 0 / ' + VO_DOLLS.length + ' 个</div>' +
         '<p class="bw-vo-note">🧷 纯属娱乐 · 不针对任何人 · 扎完气消，就去吃顿好的吧 🍰</p>' +
       '</div>';
     document.body.appendChild(m);
@@ -1353,162 +1375,279 @@
     });
     document.addEventListener('keydown', onModalKey);
     setupModalA11y(m);
-    var bubble = m.querySelector('#voBubble');
-    var countEl = m.querySelector('#voCount');
-    var again = m.querySelector('#voAgain');
+
+    /* 组件引用 */
+    var stage = m.querySelector('#voStage');
+    var box = m.querySelector('#voBox');
     var view = m.querySelector('#voView');
     var img = m.querySelector('#voImg');
+    var face = m.querySelector('.bw-vo-face');
+    var faceI = m.querySelector('.bw-vo-face-i');
+    var stars = m.querySelector('.bw-vo-stars');
     var prog = m.querySelector('#voProg');
+    var pips = m.querySelector('#voPips');
+    var countEl = m.querySelector('#voCount');
+    var stabBtn = m.querySelector('#voStab');
+    var again = m.querySelector('#voAgain');
+    var bubble = m.querySelector('#voBubble');
     var prev = m.querySelector('.bw-vo-prev');
     var next = m.querySelector('.bw-vo-next');
+
     var idx = (Math.random() * VO_DOLLS.length) | 0;
     var st = VO_DOLLS.map(function () { return { pins: [], full: false }; });
+
+    /* 飞针：固定定位跟随光标（挂 body，跨出舞台仍可见） */
+    var fly = document.createElement('span');
+    fly.className = 'bw-vo-flying';
+    fly.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(fly);
+    /* 模态移除时顺带清掉飞针节点 */
+    var flyGuard = setInterval(function () {
+      if (!document.body.contains(m)) {
+        if (fly && fly.parentNode) fly.parentNode.removeChild(fly);
+        clearInterval(flyGuard);
+      }
+    }, 300);
+
     function say(txt) {
       bubble.textContent = txt;
       bubble.classList.remove('pop');
       void bubble.offsetWidth;
       bubble.classList.add('pop');
     }
-    function render() {
+
+    function drawPins(s) {
+      view.querySelectorAll('.bw-vo-pin, .bw-vo-hit').forEach(function (el) { el.remove(); });
+      s.pins.forEach(function (p) {
+        var pin = document.createElement('span');
+        pin.className = 'bw-vo-pin';
+        pin.style.left = p.x + 'px';
+        pin.style.top = p.y + 'px';
+        pin.style.setProperty('--a', p.a + 'deg');
+        view.appendChild(pin);
+      });
+    }
+    function updPips(animateLast) {
+      var els = pips.children;
+      for (var i = 0; i < els.length; i++) {
+        var on = i < st[idx].pins.length;
+        els[i].classList.toggle('on', on);
+        els[i].classList.remove('pop');
+        if (on && animateLast && i === st[idx].pins.length - 1) {
+          void els[i].offsetWidth;
+          els[i].classList.add('pop');
+        }
+      }
+    }
+    function updChrome() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · ' + s.pins.length + ' / ' + VO_TOTAL + ' 针';
+      prog.classList.toggle('done', !!s.full);
+      countEl.textContent = '已扎 ' + st.filter(function (x) { return x.full; }).length + ' / ' + VO_DOLLS.length + ' 个';
+      stabBtn.style.display = s.full ? 'none' : 'inline-block';
+      again.style.display = s.full ? 'inline-block' : 'none';
+      if (s.full) again.textContent = '已消气 · 再扎一次';
+    }
+    function syncView() {
       var s = st[idx];
       var d = VO_DOLLS[idx];
       img.src = d.img;
       img.alt = d.name;
-      /* view 类状态机:idle / struggle / full(.down 倒下呼吸) / revive */
-      view.classList.remove('idle', 'shake', 'struggle', 'full', 'down', 'revive');
-      view.classList.add(s.full ? 'full' : 'idle');
-      view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
-        var i = +pin.getAttribute('data-i');
-        pin.classList.toggle('done', s.pins.indexOf(i) >= 0);
-        pin.classList.remove('stab', 'hit');
-        /* 清除银色针尖残留（切换小人 / 重置时） */
-        var oldTip = pin.querySelector('.bw-needle-tip');
-        if (oldTip) oldTip.remove();
-      });
-      /* 表情层 emoji：扎前默认、扎服换悲伤 */
-      var face = view.querySelector('.bw-vo-face');
-      if (!face) {
-        face = document.createElement('div');
-        face.className = 'bw-vo-face';
-        face.setAttribute('aria-hidden', 'true');
-        view.appendChild(face);
-      }
-      face.textContent = s.full ? d.faceDown : d.faceIdle;
-      /* 头顶星星层（仅扎服后显示一次,render 重建） */
-      var stars = view.querySelector('.bw-vo-stars');
-      if (!stars) {
-        stars = document.createElement('div');
-        stars.className = 'bw-vo-stars';
-        stars.setAttribute('aria-hidden', 'true');
-        view.appendChild(stars);
-      }
+      /* view 类状态机：idle / struggle / full(.down 倒下呼吸) / revive */
+      view.classList.remove('shake', 'struggle', 'down', 'revive');
+      view.classList.toggle('full', !!s.full);
+      view.classList.toggle('idle', !s.full);
+      view.classList.add('show-face');
+      faceI.textContent = s.full ? d.faceDown : d.faceIdle;
       stars.textContent = '💫 ✨ 💥';
-      view.classList.toggle('show-face', true);
-      prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · 已扎 ' + s.pins.length + ' / ' + VO_PARTS.length;
-      prog.classList.toggle('done', !!s.full);
-      var n = st.filter(function (x) { return x.full; }).length;
-      countEl.textContent = '已扎 ' + n + ' / ' + VO_DOLLS.length + ' 个';
-      if (s.full) {
-        again.style.display = 'inline-block';
-        again.textContent = '已消气 · 再扎一次';
-      } else {
-        again.style.display = 'none';
-      }
-      if (n === VO_DOLLS.length) {
-        say('六个全扎完了！TA 的坏毛病都被扎跑了，气消了吗～✨');
-      }
+      drawPins(s);
+      updPips(false);
+      updChrome();
+    }
+    function render() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      syncView();
+      if (s.full) say(d.name + ' 已被扎服 · ' + d.line);
+      else if (s.pins.length === 0) say('这位是 ' + d.name + '，动手吧～');
       view.classList.remove('pop');
       void view.offsetWidth;
       view.classList.add('pop');
     }
     function go(step) {
       idx = (idx + step + VO_DOLLS.length) % VO_DOLLS.length;
-      var s = st[idx];
-      say(s.full ? VO_DOLLS[idx].name + ' 已被扎服，换下一个吧～' : '这是' + VO_DOLLS[idx].name + '，动手吧～');
       render();
     }
-    view.querySelectorAll('.bw-vo-pin').forEach(function (pin) {
-      pin.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var s = st[idx];
-        var i = +pin.getAttribute('data-i');
-        if (s.full) { say(VO_DOLLS[idx].name + ' 已经被扎服啦，换下一个吧～'); return; }
-        if (s.pins.indexOf(i) >= 0) { say('这里已经扎过啦，换一处～'); return; }
-        s.pins.push(i);
-        pin.classList.add('done');
-        /* 反馈触发：音效+触觉+抖动+表情切换 */
-        try { bwSfx.VOODOO_SFX.stab(); } catch (er) {}
-        try { bwSfx.VOODOO_SFX.haptic(35); } catch (er) {}
-        /* 飞针落定 + 圈本身抖动 + 银色针尖三角 */
-        pin.classList.remove('stab', 'hit');
-        /* 移除旧针尖（如果切换小人后还在） */
-        var oldTip = pin.querySelector('.bw-needle-tip');
-        if (oldTip) oldTip.remove();
-        /* 追加新针尖 span（CSS 动画通过 .stab 触发） */
-        var tip = document.createElement('span');
-        tip.className = 'bw-needle-tip';
-        tip.setAttribute('aria-hidden', 'true');
-        pin.appendChild(tip);
-        /* 动画结束后移除,避免残留 */
-        setTimeout(function () {
-          if (tip && tip.parentNode && !pin.classList.contains('stab')) tip.remove();
-        }, 600);
-        void pin.offsetWidth;
-        pin.classList.add('stab', 'hit');
-        /* 小人抖动 */
-        view.classList.remove('shake', 'struggle', 'idle');
-        void view.offsetWidth;
-        view.classList.add('shake');
-        /* 进度条脉冲 */
-        prog.classList.remove('bump');
-        void prog.offsetWidth;
-        prog.classList.add('bump');
-        setTimeout(function () { prog.classList.remove('bump'); }, 520);
-        /* 扎中一瞬间更换表情为"扎后" */
-        var face = view.querySelector('.bw-vo-face');
-        if (face && !s.full) face.textContent = VO_DOLLS[idx].faceHit;
-        if (s.pins.length < VO_PARTS.length) {
-          say(VO_LINES[(Math.random() * VO_LINES.length) | 0]);
-        } else {
-          s.full = true;
-          if (face) face.textContent = VO_DOLLS[idx].faceDown;
-          /* 命中清脆音 + 扎服上扬音 */
-          try { bwSfx.VOODOO_SFX.hit(); } catch (er) {}
-          setTimeout(function () { try { bwSfx.VOODOO_SFX.defeat(); } catch (er) {} bwSfx.VOODOO_SFX.haptic(80); }, 120);
-          bumpVoodooStat(VO_DOLLS[idx].k);
-          say(VO_DOLLS[idx].line + ' → ' + VO_DOLLS[idx].name + ' 被扎服了！');
-        }
-        render();
-        /* 中等扎针数（≥2 针但未服）触发挣扎（更剧烈、不规则抽搐） */
-        if (!s.full && s.pins.length >= 2) {
-          setTimeout(function () {
-            view.classList.remove('shake');
-            void view.offsetWidth;
-            view.classList.add('struggle');
-            setTimeout(function () {
-              view.classList.remove('struggle');
-              if (!st[idx].full) view.classList.add('idle');
-            }, 560);
-          }, 380);
-        }
-        /* 扎服后:倒下动画 1.1s,加 .down 进入倒地呼吸 */
-        if (s.full) {
-          setTimeout(function () {
-            view.classList.add('down');
-          }, 1100);
-        }
-      });
+
+    /* ---------- 拖针自由扎 ---------- */
+    function pt(ev) {
+      if (ev.touches && ev.touches.length) return { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
+      if (ev.changedTouches && ev.changedTouches.length) return { x: ev.changedTouches[0].clientX, y: ev.changedTouches[0].clientY };
+      return { x: ev.clientX, y: ev.clientY };
+    }
+    function inRect(r, p) { return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom; }
+    function isBtn(ev) { return ev.target && ev.target.closest && ev.target.closest('button'); }
+    function showFly(p) {
+      fly.style.transition = 'none';
+      fly.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) rotate(10deg)';
+      fly.style.opacity = '1';
+    }
+    function hideFly() {
+      fly.style.opacity = '0';
+    }
+    function flyBack(p) {
+      var r = box.getBoundingClientRect();
+      var cx = r.left + r.width / 2;
+      var cy = r.top + r.height / 2;
+      fly.style.transition = 'transform .3s ease, opacity .3s ease';
+      fly.style.transform = 'translate(' + cx + 'px,' + cy + 'px) rotate(-70deg)';
+      fly.style.opacity = '0';
+    }
+    /* 坐标转小人内部相对位置（带内边距防落到空边角） */
+    function viewLocal(p) {
+      var r = view.getBoundingClientRect();
+      var x = p.x - r.left, y = p.y - r.top;
+      x = Math.max(16, Math.min(r.width - 16, x));
+      y = Math.max(22, Math.min(r.height - 24, y));
+      return { x: x, y: y };
+    }
+    /* 眼睛表情贴偷瞄光标（鼠标） */
+    function lookAt(p) {
+      var r = view.getBoundingClientRect();
+      var dx = (p.x - (r.left + r.width / 2)) / r.width;
+      var dy = (p.y - (r.top + r.height / 2)) / r.height;
+      face.style.transform = 'translate(calc(-50% + ' + (dx * 12) + 'px), ' + (dy * 9) + 'px)';
+    }
+    function resetLook() { face.style.transform = 'translate(-50%, 0)'; }
+
+    var dragMode = null;   /* 'needle' | 'stab' | null */
+    var downP = null;
+    var downT = 0;
+    stage.addEventListener('pointerdown', function (ev) {
+      if (isBtn(ev)) return;
+      var p = pt(ev);
+      downP = p;
+      downT = Date.now();
+      var vrect = view.getBoundingClientRect();
+      if (inRect(box.getBoundingClientRect(), p)) {
+        dragMode = 'needle';
+        try { stage.setPointerCapture(ev.pointerId); } catch (er) {}
+        showFly(p);
+      } else if (inRect(vrect, p)) {
+        dragMode = 'stab';
+      } else {
+        dragMode = null;
+      }
+      ev.preventDefault();
     });
+    stage.addEventListener('pointermove', function (ev) {
+      var p = pt(ev);
+      if (dragMode === 'needle') {
+        showFly(p);
+      } else if (dragMode === 'stab' && downP && (Math.abs(p.x - downP.x) > 8 || Math.abs(p.y - downP.y) > 8)) {
+        dragMode = null; /* 拖离原位 → 取消直点 */
+      }
+      if (ev.pointerType !== 'touch') lookAt(p);
+    });
+    stage.addEventListener('pointerup', function (ev) {
+      var p = pt(ev);
+      var vrect = view.getBoundingClientRect();
+      if (dragMode === 'needle') {
+        hideFly();
+        if (inRect(vrect, p) && !st[idx].full) addPin(viewLocal(p));
+        else flyBack(p);
+      } else if (dragMode === 'stab') {
+        if (Date.now() - downT < 700 && inRect(vrect, p)) addPin(viewLocal(p));
+      }
+      dragMode = null;
+    });
+    stage.addEventListener('pointercancel', function () { hideFly(); dragMode = null; });
+    stage.addEventListener('mouseleave', resetLook);
+
+    /* ---------- 扎一针：核心反馈 ---------- */
+    function addPin(local) {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      if (s.full) { say(d.name + ' 已经被扎服啦，换一个吧～'); return; }
+      var pin = { x: Math.round(local.x), y: Math.round(local.y), a: Math.round((Math.random() * 22) - 11) };
+      s.pins.push(pin);
+      /* 落针元素（fresh 飞落动画） */
+      var el = document.createElement('span');
+      el.className = 'bw-vo-pin fresh';
+      el.style.left = pin.x + 'px';
+      el.style.top = pin.y + 'px';
+      el.style.setProperty('--a', pin.a + 'deg');
+      view.appendChild(el);
+      setTimeout(function () { if (el && el.parentNode) el.classList.remove('fresh'); }, 460);
+      /* 扎中爆闪环 */
+      var hit = document.createElement('span');
+      hit.className = 'bw-vo-hit';
+      hit.style.left = pin.x + 'px';
+      hit.style.top = pin.y + 'px';
+      view.appendChild(hit);
+      setTimeout(function () { if (hit && hit.parentNode) hit.remove(); }, 520);
+      /* 反馈：音效 + 触觉 + 抖动 + 表情切换 */
+      try { bwSfx.VOODOO_SFX.stab(); } catch (er) {}
+      try { bwSfx.VOODOO_SFX.haptic(35); } catch (er) {}
+      view.classList.remove('shake', 'struggle', 'idle');
+      void view.offsetWidth;
+      view.classList.add('shake');
+      prog.classList.remove('bump');
+      void prog.offsetWidth;
+      prog.classList.add('bump');
+      setTimeout(function () { prog.classList.remove('bump'); }, 520);
+      faceI.textContent = d.faceHit;
+      /* 台词：第一针通用梗，之后专属求饶 */
+      if (s.pins.length < VO_TOTAL) {
+        var pool = s.pins.length === 1 ? VO_LINES : (d.pleas && d.pleas.length ? d.pleas : VO_LINES);
+        say(pool[(Math.random() * pool.length) | 0]);
+      }
+      if (s.pins.length >= VO_TOTAL) {
+        s.full = true;
+        faceI.textContent = d.faceDown;
+        /* 命中清脆音 + 扎服上扬音 */
+        try { bwSfx.VOODOO_SFX.hit(); } catch (er) {}
+        setTimeout(function () { try { bwSfx.VOODOO_SFX.defeat(); } catch (er) {} bwSfx.VOODOO_SFX.haptic(80); }, 120);
+        bumpVoodooStat(d.k);
+        view.classList.remove('idle');
+        view.classList.add('full');
+        say(d.name + ' 被扎服了！' + d.line);
+        /* 倒下动画 1.1s 后进入倒地呼吸 */
+        setTimeout(function () { view.classList.add('down'); }, 1100);
+      }
+      updPips(true);
+      updChrome();
+      /* ≥3 针未服 → 挣扎（更剧烈、不规则抽搐） */
+      if (!s.full && s.pins.length >= 3) {
+        setTimeout(function () {
+          view.classList.remove('shake');
+          void view.offsetWidth;
+          view.classList.add('struggle');
+          setTimeout(function () {
+            view.classList.remove('struggle');
+            if (!st[idx].full) view.classList.add('idle');
+          }, 560);
+        }, 380);
+      }
+    }
+
     prev.addEventListener('click', function () { go(-1); });
     next.addEventListener('click', function () { go(1); });
+    stabBtn.addEventListener('click', function () {
+      if (st[idx].full) return;
+      addPin({
+        x: 26 + Math.round(Math.random() * (view.clientWidth - 52)),
+        y: 22 + Math.round(Math.random() * (view.clientHeight - 60))
+      });
+    });
     again.addEventListener('click', function () {
       var wasFull = !!st[idx].full;
       st.forEach(function (s) { s.pins = []; s.full = false; });
       idx = (Math.random() * VO_DOLLS.length) | 0;
-      again.style.display = 'none';
       say(wasFull ? '气消了～再来一轮 🎈' : '新一轮，挑一个最像 TA 的吧 😈');
       render();
-      /* 如果之前是 full 状态,先触发一次“复活”弹起,再回到 idle */
+      /* 如果之前是 full 状态，先触发一次"复活"弹起，再回到 idle */
       if (wasFull) {
         view.classList.remove('idle');
         void view.offsetWidth;
@@ -1519,6 +1658,10 @@
         }, 720);
       }
     });
+    /* 针痕占位 */
+    var pipsHtml = '';
+    for (var pi = 0; pi < VO_TOTAL; pi++) pipsHtml += '<span class="bw-vo-pip"></span>';
+    pips.innerHTML = pipsHtml;
     render();
   }
 
@@ -1675,8 +1818,9 @@
     document.body.classList.add('bw-modal-open');
     m.querySelectorAll('[data-close]').forEach(function (el) {
        el.addEventListener('click', function () {
-         /* 挂断时停止铃声 */
+         /* 挂断时停止铃声 + 取消自动重响定时器（防止模态关闭后幽灵铃声响起） */
          try { ringStop && ringStop(); } catch (er) {}
+         if (reRingTimer) { clearTimeout(reRingTimer); reRingTimer = null; }
          closeModal(m);
        });
     });
@@ -1687,6 +1831,7 @@
     var cur = null;              /* 当前来电角色 */
     var lineIdx = -1;            /* 下一条对话索引 */
     var ringStop = null;         /* 铃声停止回调 */
+    var reRingTimer = null;      /* endCall 的自动重响定时器：关闭模态时需取消，否则幽灵铃声会响起 */
     var record = loadCallRecord();
 
     function loadCallRecord() {
@@ -1785,6 +1930,8 @@
       try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 200); } catch (er) {}
     }
     function startRing() {
+      /* 手动再来一通/拒接重选时，取消上一通遗留的自动重响定时器 */
+      if (reRingTimer) { clearTimeout(reRingTimer); reRingTimer = null; }
       cur = pickCaller();
       lineIdx = -1;
       chat.innerHTML = '';
@@ -1834,8 +1981,12 @@
       stopCallTimer();
       topStatus.textContent = hangup ? '已挂断' : '通话结束';
       renderState();
-      /* 5 秒后自动再响,给足点击"再来一通"的时间 */
-      setTimeout(function () { if (state === 'ended') startRing(); }, 5000);
+      /* 5 秒后自动再响,给足点击"再来一通"的时间；句柄存下来，关闭模态时取消，避免幽灵铃声 */
+      clearTimeout(reRingTimer);
+      reRingTimer = setTimeout(function () {
+        reRingTimer = null;
+        if (state === 'ended') startRing();
+      }, 5000);
     }
     pickup.addEventListener('click', pickUp);
     decline.addEventListener('click', function () {
@@ -1863,5 +2014,16 @@
     /* 启动 */
     renderRecord();
     startRing();
+  }
+
+  /* ---- Service Worker 注册：缓存静态资源，二次秒开 + 离线兜底 ----
+     这里才是 brainwave-sw.js 的接线处；缺失会导致整个缓存策略成为死代码。
+     注册作用域 /brainwave/，只缓存脑洞页资源，不碰主站。 */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/brainwave/brainwave-sw.js').catch(function (err) {
+        console.warn('[brainwave] SW register failed:', err);
+      });
+    });
   }
 })();

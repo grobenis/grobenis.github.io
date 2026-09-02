@@ -91,6 +91,88 @@
     
     
     
+    <article id="post-2020-03-13-Kalman_Filter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/14/2020-03-13-Kalman_Filter/"
+    >Kalman 滤波器学习</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-date">
+  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>概率图+时间&#x3D;动态系统</p>
+<p>​	对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
+<ol>
+<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
+<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
+<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
+</ol>
+<p>本节主要来介绍kalman滤波器。</p>
+<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
+<blockquote>
+<p><strong>预测加修正，噪声终让路</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-13-Kalman_Filter/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">Kalman滤波器</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-2020-03-14-GMM" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -242,7 +324,7 @@
 
 </article>
     
-    <article id="post-2020-03-13-Kalman_Filter" class="article article-type-post" itemscope
+    <article id="post-2020-03-15-Motion_consistency" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -250,8 +332,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-13-Kalman_Filter/"
-    >Kalman 滤波器学习</a
+  <a class="article-title" href="/2020/03/14/2020-03-15-Motion_consistency/"
+    >运动一致性判断</a
   >
 </h2>
   
@@ -261,7 +343,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/14/2020-03-13-Kalman_Filter/" class="article-date">
+      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-date">
   <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
 </a>
       
@@ -283,20 +365,13 @@
       
 
       
-      <p>概率图+时间&#x3D;动态系统</p>
-<p>​	对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
-<ol>
-<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
-<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
-<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
-</ol>
-<p>本节主要来介绍kalman滤波器。</p>
-<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
+      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
+<p>本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。</p>
 <blockquote>
-<p><strong>预测加修正，噪声终让路</strong></p>
+<p><strong>动静分离，方能求得位姿真值</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/03/14/2020-03-13-Kalman_Filter/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Motion_consistency/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -309,7 +384,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">Kalman滤波器</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
 
 
     </footer>
@@ -384,81 +459,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="tag">粒子滤波器</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-03-15-Motion_consistency" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/14/2020-03-15-Motion_consistency/"
-    >运动一致性判断</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-date">
-  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
-<p>本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。</p>
-<blockquote>
-<p><strong>动静分离，方能求得位姿真值</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/03/14/2020-03-15-Motion_consistency/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
 
 
     </footer>
@@ -627,6 +627,83 @@
 
 </article>
     
+    <article id="post-2020-03-13-HMM_model" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/10/2020-03-13-HMM_model/"
+    >隐马尔可夫模型</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-date">
+  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
+<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
+<p>来源：李航的《统计学习方法》</p>
+<p>本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。</p>
+<blockquote>
+<p><strong>看不见的状态，可观测的序列</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/10/2020-03-13-HMM_model/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-2020-03-12-Clustering_Survey" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -710,7 +787,7 @@
 
 </article>
     
-    <article id="post-2020-03-13-HMM_model" class="article article-type-post" itemscope
+    <article id="post-2020-02-15-Pub_IMU_Message_To_ROS" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -718,8 +795,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/03/10/2020-03-13-HMM_model/"
-    >隐马尔可夫模型</a
+  <a class="article-title" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/"
+    >发布 IMU 信息到 ROS 系统</a
   >
 </h2>
   
@@ -729,84 +806,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/10/2020-03-13-HMM_model/" class="article-date">
-  <time datetime="2020-03-09T16:00:00.000Z" itemprop="datePublished">2020-03-10</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
-<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
-<p>来源：李航的《统计学习方法》</p>
-<p>本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。</p>
-<blockquote>
-<p><strong>看不见的状态，可观测的序列</strong></p>
-</blockquote>
-      
-      <a class="article-more-link" href="/2020/03/10/2020-03-13-HMM_model/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-2020-02-15-Calibrate_IMU_Camera_by_Kalibr" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"
-    >使用 Kalibr 标定双目相机与 IMU</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/" class="article-date">
+      <a href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/" class="article-date">
   <time datetime="2020-02-14T16:00:00.000Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
@@ -828,19 +828,14 @@
       
 
       
-      <p>本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：</p>
-<ol>
-<li>生成标定板</li>
-<li>标定双目相机</li>
-<li>标定IMU</li>
-<li>联合标定</li>
-</ol>
-<p>本文介绍用 Kalibr 工具完成双目相机与 IMU 联合标定的完整流程，涵盖生成 AprilTag 标定板、标定双目相机内参与 IMU 噪声参数、录制数据并联合标定，最终得到相机到 IMU 的外参，同时整理了几类环境配置报错的解决办法。</p>
+      <p>以下记录是在调试树莓派3b中得到的经验</p>
+<p>​	本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。</p>
+<p>本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs&#x2F;Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。</p>
 <blockquote>
-<p><strong>联合标定做好，视觉惯性方可融合</strong></p>
+<p><strong>消息结构清晰，数据方可流动</strong></p>
 </blockquote>
       
-      <a class="article-more-link" href="/2020/02/15/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/">阅读更多...</a>
+      <a class="article-more-link" href="/2020/02/15/2020-02-15-Pub_IMU_Message_To_ROS/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -853,7 +848,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kalibr/" rel="tag">Kalibr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IMU/" rel="tag">IMU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/" rel="tag">ROS</a></li></ul>
 
 
     </footer>
