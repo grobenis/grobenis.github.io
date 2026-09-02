@@ -2729,6 +2729,8 @@ body.page-scene-dawn .tv-set {
 .journey-stop:nth-child(4) { animation-delay: 0.35s; }
 .journey-stop:nth-child(5) { animation-delay: 0.44s; }
 .journey-stop:nth-child(6) { animation-delay: 0.53s; }
+.journey-stop:nth-child(7) { animation-delay: 0.62s; }
+.journey-stop:nth-child(8) { animation-delay: 0.71s; }
 @keyframes journey-fade-up {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -2880,6 +2882,64 @@ body.page-scene-dawn .tv-set {
   color: #8a97a8;
 }
 
+/* --- 可展开成就清单 --- */
+.journey-ticket.has-detail {
+  cursor: pointer;
+}
+.journey-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #3aa0e8;
+}
+.journey-toggle-arrow {
+  font-size: 10px;
+  transition: transform 0.3s ease;
+}
+.journey-ticket.is-open .journey-toggle-arrow {
+  transform: rotate(180deg);
+}
+.journey-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease;
+}
+.journey-ticket.is-open .journey-detail {
+  grid-template-rows: 1fr;
+}
+.journey-detail-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.journey-detail-list {
+  margin: 0;
+  padding: 12px 16px 14px;
+  border-top: 1px dashed rgba(73, 177, 245, 0.30);
+  list-style: none;
+}
+.journey-detail-list li {
+  position: relative;
+  padding-left: 17px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #666;
+}
+.journey-detail-list li + li {
+  margin-top: 4px;
+}
+.journey-detail-list li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 11px;
+  color: rgba(73, 177, 245, 0.85);
+}
+
 /* 票根上下齿孔缺口（挖穿卡片，透出页面渐变背景） */
 @supports ((-webkit-mask-composite: source-in) or (mask-composite: intersect)) {
   .journey-ticket {
@@ -2984,6 +3044,10 @@ body.page-scene-dawn .tv-set {
   .journey-stop.is-now .journey-badge::after {
     animation: none;
     opacity: 0.45;
+  }
+  .journey-detail,
+  .journey-toggle-arrow {
+    transition: none;
   }
 }
 

@@ -33,7 +33,7 @@ share: false
 
 <div class="journey-stop is-now">
 <div class="journey-badge"><img src="/assets/img/timeline/itashihang.png" alt="它石智航"></div>
-<div class="journey-ticket">
+<div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
 <span class="journey-year">2025</span>
@@ -47,6 +47,15 @@ share: false
 </div>
 <p class="journey-role">感知部 · SLAM算法工程师</p>
 <p class="journey-note">继续在 SLAM 路上，回答“我在哪”</p>
+<div class="journey-toggle"><span>成就</span><span class="journey-toggle-arrow">▾</span></div>
+</div>
+</div>
+<div class="journey-detail">
+<div class="journey-detail-inner">
+<ul class="journey-detail-list">
+<li>一句话成就（占位）——把它替换成你的真实成就</li>
+<li>一句话成就（占位）——同上，写完发我帮你填</li>
+</ul>
 </div>
 </div>
 </div>
@@ -54,7 +63,7 @@ share: false
 
 <div class="journey-stop">
 <div class="journey-badge"><img src="/assets/img/timeline/nullmax.jpg" alt="纽劢科技"></div>
-<div class="journey-ticket">
+<div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
 <span class="journey-year">2022</span>
@@ -68,6 +77,15 @@ share: false
 </div>
 <p class="journey-role">感知部 · SLAM算法工程师</p>
 <p class="journey-note">转战自动驾驶，让机器知道自己在哪</p>
+<div class="journey-toggle"><span>成就</span><span class="journey-toggle-arrow">▾</span></div>
+</div>
+</div>
+<div class="journey-detail">
+<div class="journey-detail-inner">
+<ul class="journey-detail-list">
+<li>一句话成就（占位）——把它替换成你的真实成就</li>
+<li>一句话成就（占位）——同上，写完发我帮你填</li>
+</ul>
 </div>
 </div>
 </div>
@@ -75,7 +93,7 @@ share: false
 
 <div class="journey-stop">
 <div class="journey-badge"><img src="/assets/img/timeline/xiaomi.webp" alt="小米"></div>
-<div class="journey-ticket">
+<div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
 <span class="journey-year">2021</span>
@@ -89,6 +107,15 @@ share: false
 </div>
 <p class="journey-role">手机部 · 可穿戴算法工程师</p>
 <p class="journey-note">做可穿戴算法，让设备学会感知</p>
+<div class="journey-toggle"><span>成就</span><span class="journey-toggle-arrow">▾</span></div>
+</div>
+</div>
+<div class="journey-detail">
+<div class="journey-detail-inner">
+<ul class="journey-detail-list">
+<li>一句话成就（占位）——把它替换成你的真实成就</li>
+<li>一句话成就（占位）——同上，写完发我帮你填</li>
+</ul>
 </div>
 </div>
 </div>
@@ -137,6 +164,46 @@ share: false
 </div>
 
 <div class="journey-stop">
+<div class="journey-badge journey-badge-start"><span>📚</span></div>
+<div class="journey-ticket">
+<div class="journey-ticket-main">
+<div class="journey-stub">
+<span class="journey-year">2011</span>
+<span class="journey-stub-arrow">↓</span>
+<span class="journey-year">2014</span>
+</div>
+<div class="journey-body">
+<div class="journey-title">
+<h3>高中</h3>
+<span class="journey-tag">求学</span>
+</div>
+<p class="journey-note">三年磨一剑，埋头书山等一场高考</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="journey-stop">
+<div class="journey-badge journey-badge-start"><span>🏫</span></div>
+<div class="journey-ticket">
+<div class="journey-ticket-main">
+<div class="journey-stub">
+<span class="journey-year">2008</span>
+<span class="journey-stub-arrow">↓</span>
+<span class="journey-year">2011</span>
+</div>
+<div class="journey-body">
+<div class="journey-title">
+<h3>初中</h3>
+<span class="journey-tag">求学</span>
+</div>
+<p class="journey-note">少年初长成，开始懂得努力的意义</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="journey-stop">
 <div class="journey-badge journey-badge-start"><span>🎂</span></div>
 <div class="journey-ticket">
 <div class="journey-ticket-main">
@@ -157,3 +224,24 @@ share: false
 </div>
 
 </div>
+
+<script>
+(function () {
+  var tickets = document.querySelectorAll('.journey-ticket.has-detail');
+  Array.prototype.forEach.call(tickets, function (ticket) {
+    ticket.setAttribute('tabindex', '0');
+    ticket.setAttribute('aria-expanded', 'false');
+    var toggle = function () {
+      var open = ticket.classList.toggle('is-open');
+      ticket.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    ticket.addEventListener('click', toggle);
+    ticket.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+})();
+</script>
