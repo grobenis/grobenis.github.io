@@ -2889,6 +2889,8 @@ body.page-scene-dawn .tv-set {
 .journey-detail {
   display: grid;
   grid-template-rows: 0fr;
+  margin-left: 70px;
+  border-left: 2px dashed rgba(73, 177, 245, 0.35);
   transition: grid-template-rows 0.32s ease;
 }
 .journey-ticket.is-open .journey-detail {
@@ -2997,6 +2999,9 @@ body.page-scene-dawn .tv-set {
   }
   .journey-body {
     padding: 10px 12px 11px;
+  }
+  .journey-detail {
+    margin-left: 56px;
   }
   @supports ((-webkit-mask-composite: source-in) or (mask-composite: intersect)) {
     .journey-ticket {
