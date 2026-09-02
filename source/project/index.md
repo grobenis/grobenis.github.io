@@ -47,7 +47,6 @@ share: false
 <p class="journey-note">汽笛拉响，旅程从这里出发</p>
 </div>
 </div>
-<div class="journey-magstripe"></div>
 </div>
 </div>
 
@@ -75,7 +74,6 @@ share: false
 <p class="journey-note">在航空院校学数学与计算，给青春定坐标</p>
 </div>
 </div>
-<div class="journey-magstripe"></div>
 </div>
 </div>
 
@@ -103,7 +101,6 @@ share: false
 <p class="journey-note">读研研究虚拟现实，学着造一个世界</p>
 </div>
 </div>
-<div class="journey-magstripe"></div>
 </div>
 </div>
 
@@ -131,7 +128,6 @@ share: false
 <p class="journey-note">做可穿戴算法，让设备学会感知</p>
 </div>
 </div>
-<div class="journey-magstripe"></div>
 </div>
 </div>
 
@@ -159,7 +155,6 @@ share: false
 <p class="journey-note">转战自动驾驶，让机器知道自己在哪</p>
 </div>
 </div>
-<div class="journey-magstripe"></div>
 </div>
 </div>
 
@@ -187,7 +182,6 @@ share: false
 <p class="journey-note">继续在 SLAM 路上，回答“我在哪”</p>
 </div>
 </div>
-<div class="journey-magstripe"></div>
 </div>
 </div>
 
