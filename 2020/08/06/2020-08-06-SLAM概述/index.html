@@ -16,7 +16,7 @@
   <meta property="og:site_name" content="曾是少年" />
   <meta property="og:title" content="SLAM 概述 | 曾是少年" />
   <meta property="og:description" content="SLAM首先要解决自主运动的两大基本问题" />
-  <meta property="og:url" content="https://grobenis.github.io2020/08/06/2020-08-06-SLAM概述/" />
+  <meta property="og:url" content="https://grobenis.github.io/2020/08/06/2020-08-06-SLAM概述/" />
   <meta property="og:type" content="article" />
   
   <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
@@ -274,7 +274,10 @@
 
 
 <h3 id="五-理解ORB-SLAM2-框架"><a href="#五-理解ORB-SLAM2-框架" class="headerlink" title="五. 理解ORB-SLAM2 框架"></a>五. 理解ORB-SLAM2 框架</h3><h4 id="1-从github-com-下载ORB-SLAM2-的代码。"><a href="#1-从github-com-下载ORB-SLAM2-的代码。" class="headerlink" title="1. 从github.com 下载ORB-SLAM2 的代码。"></a>1. 从github.com 下载ORB-SLAM2 的代码。</h4><p>地址在：<a target="_blank" rel="noopener" href="https://github.com/raulmur/ORB_SLAM2">https://github.com/raulmur/ORB_SLAM2</a>.<br>提示：在安装git 之后，可以⽤git clone <a target="_blank" rel="noopener" href="https://github.com/raulmur/ORB_SLAM2">https://github.com/raulmur/ORB_SLAM2</a> 命令下载<br>ORB-SLAM2。下载完成后，请给出终端截图。</p>
-<p>![image-20200522170310934](D:\我的坚果云\视觉SLAM\第一节 概述与预备知识\image\下载ORBSLAM.png)</p>
+<!-- 源文件缺失，已注释 -->![image-20200522170310934](D:\我的坚果云\视觉SLAM\第一节 概述与预备知识\image\下载ORBSLAM.png)<!-- / -->
+
+
+
 <h4 id="2-阅读ORB-SLAM2-代码目录下的CMakeLists-txt，回答问题："><a href="#2-阅读ORB-SLAM2-代码目录下的CMakeLists-txt，回答问题：" class="headerlink" title="2. 阅读ORB-SLAM2 代码目录下的CMakeLists.txt，回答问题："></a>2. 阅读ORB-SLAM2 代码目录下的CMakeLists.txt，回答问题：</h4><h5 id="a-ORB-SLAM2-将编译出什么结果？有几个库文件和可执行文件？"><a href="#a-ORB-SLAM2-将编译出什么结果？有几个库文件和可执行文件？" class="headerlink" title="(a) ORB-SLAM2 将编译出什么结果？有几个库文件和可执行文件？"></a>(a) ORB-SLAM2 将编译出什么结果？有几个库文件和可执行文件？</h5><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>(ORB_SLAM2)</span><br><span class="line"><span class="keyword">add_library</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> SHARED</span><br><span class="line">src/System.cc</span><br><span class="line">src/Tracking.cc</span><br><span class="line">src/LocalMapping.cc</span><br><span class="line">src/LoopClosing.cc</span><br><span class="line">src/ORBextractor.cc</span><br><span class="line">src/ORBmatcher.cc</span><br><span class="line">src/FrameDrawer.cc</span><br><span class="line">src/Converter.cc</span><br><span class="line">src/MapPoint.cc</span><br><span class="line">src/KeyFrame.cc</span><br><span class="line">src/Map.cc</span><br><span class="line">src/MapDrawer.cc</span><br><span class="line">src/Optimizer.cc</span><br><span class="line">src/PnPsolver.cc</span><br><span class="line">src/Frame.cc</span><br><span class="line">src/KeyFrameDatabase.cc</span><br><span class="line">src/Sim3Solver.cc</span><br><span class="line">src/Initializer.cc</span><br><span class="line">src/Viewer.cc</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <p>根据以上CMakeLists.txt的描述，ORBSLAM2编译将生成<code>libORB_SLAM2.so</code><strong>动态链接库</strong></p>

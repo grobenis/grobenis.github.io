@@ -21,6 +21,11 @@ body.is-lyrics .article-title.sea-center {
   display: none !important;
 }
 
+/* 音乐页：右上角全局音乐钮让位给电视面板的 ▶/电源控制（保留 <audio> 供电视调用） */
+body.is-lyrics #music {
+  display: none;
+}
+
 /* ---------- 1. 代码高亮：One Dark 配色（VS Code 同款） ---------- */
 .article-entry .highlight {
   background: #282c34;
@@ -348,7 +353,7 @@ body.is-lyrics .article-inner:hover {
   display: flex;
   flex-direction: column;
   align-items: center;             /* 关键:cross-axis 居中 */
-  gap: 12px;
+  gap: 18px;                       /* 电视区与陈列区之间留出呼吸感 */
   max-width: 800px;
   margin: 0 auto 20px;
   padding: 0 16px;
@@ -362,28 +367,58 @@ body.is-lyrics .article-inner:hover {
   flex-direction: row;
   align-items: center;             /* 统一垂直居中,视觉高度一致 */
   justify-content: center;
-  gap: 18px;
+  gap: 10px 20px;                  /* 行距 10px(招牌↔陈列架两线) / 列距 20px */
   flex-wrap: wrap;
   max-width: 720px;
   margin: 0 auto;
   padding: 2px 0;
 }
-.deco-row .deco-item { transition: transform 0.45s ease, filter 0.45s ease; }
-.deco-row .deco-item:hover { transform: translateY(-3px) scale(1.05); filter: brightness(1.12); }
+/* 主次分组:
+   第一线 = 霓虹 MUSIC 店招(独占一条,居中);
+   第二线 = 播放媒介三件(黑胶/磁带/CD 放大为主体) + 麦克风/海报(缩小点缀) */
+.deco-row::before {
+  content: "";
+  order: 0;
+  flex: 0 0 100%;
+  height: 0;
+}
+.deco-neon     { order: -1; }  /* 店招顶线,居中 */
+.deco-candle   { order: 1; }   /* 纯黑氛围才出现,排最左 */
+.deco-mic      { order: 1; }   /* 左点缀 */
+.deco-vinyl    { order: 2; }   /* ┐ */
+.deco-cassette { order: 3; }   /* │ 播放媒介主体 */
+.deco-cd       { order: 4; }   /* ┘ */
+.deco-poster   { order: 5; }   /* 右点缀 */
+/* 陈列架落地阴影:整排物件共用一条椭圆投影,物件"落在柜面上"而非悬空 */
+.deco-row::after {
+  content: "";
+  order: 10;
+  flex: 0 0 82%;
+  height: 12px;
+  margin-top: -6px;
+  background: radial-gradient(ellipse at 46% 50%, rgba(0,0,0,0.3) 0%, transparent 68%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* hover 语汇复古化:不弹跳不缩放,单件被"烛光照亮"般浮现暖光晕 */
+.deco-row > div { transition: filter 0.45s ease; }
+.deco-row > div:hover {
+  filter: brightness(1.1) drop-shadow(0 0 9px rgba(255, 195, 115, 0.4));
+}
 /* 旧 deco-col 兼容(没用了,直接隐藏) */
 
 
 /* ===== 怀旧物品:黑胶唱片 ===== */
 .deco-vinyl {
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 50% 50%, #b71c1c 0 14%, #1a1a1a 14% 18%, #2a2a2a 18% 22%, #0d0d0d 22% 100%);
   position: relative;
   box-shadow:
     inset 0 0 0 2px rgba(255,255,255,0.06),
-    0 4px 12px rgba(0,0,0,0.35);
+    -5px 9px 12px rgba(0,0,0,0.35);
 }
 .deco-vinyl::before {
   content: "";
@@ -408,19 +443,19 @@ body.is-lyrics .article-inner:hover {
   border: 1.5px solid #b71c1c;
 }
 .deco-vinyl.spin { animation: vinylSpin 6s linear infinite; }
-.deco-row:hover .deco-vinyl { animation: vinylSpin 4s linear infinite; }
+.deco-vinyl:hover { animation: vinylSpin 4s linear infinite; }
 @keyframes vinylSpin { to { transform: rotate(360deg); } }
 
 /* ===== 怀旧物品:磁带 ===== */
 .deco-cassette {
-  width: 76px; height: 48px;
+  width: 88px; height: 56px;
   border-radius: 5px;
   background: linear-gradient(180deg, #d4d2c8 0%, #b0aea3 50%, #8a8880 100%);
   position: relative;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.4),
     inset 0 -2px 0 rgba(0,0,0,0.2),
-    0 4px 12px rgba(0,0,0,0.3);
+    -5px 9px 12px rgba(0,0,0,0.3);
   padding: 5px;
   box-sizing: border-box;
 }
@@ -452,7 +487,7 @@ body.is-lyrics .article-inner:hover {
 
 /* ===== 怀旧物品:CD 盘 ===== */
 .deco-cd {
-  width: 60px; height: 60px;
+  width: 72px; height: 72px;
   border-radius: 50%;
   background:
     conic-gradient(from 0deg,
@@ -460,7 +495,7 @@ body.is-lyrics .article-inner:hover {
   position: relative;
   box-shadow:
     inset 0 0 0 2px rgba(255,255,255,0.5),
-    0 3px 8px rgba(0,0,0,0.3);
+    -4px 8px 10px rgba(0,0,0,0.3);
 }
 .deco-cd::before {
   content: "";
@@ -483,7 +518,7 @@ body.is-lyrics .article-inner:hover {
       #e8eef5 0%, #f0f5fa 12%, #c0d0e0 25%, #d8e0ec 38%,
       #b0c0d8 50%, #e0e8f0 62%, #f0f5fa 75%, #c0d0e0 88%, #e8eef5 100%);
 }
-.deco-row:hover .deco-cd { animation: cdShine 3s ease-in-out infinite alternate; }
+.deco-cd:hover { animation: cdShine 3s ease-in-out infinite alternate; }
 @keyframes cdShine { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(40deg) brightness(1.1); } }
 
 /* ===== 怀旧物品:老式麦克风 ===== */
@@ -491,8 +526,8 @@ body.is-lyrics .article-inner:hover {
   width: 50px; height: 90px;
   position: relative;
   display: flex; flex-direction: column; align-items: center;
-  /* 与其他装饰件统一视觉高度(整体等比缩到约 63px 高) */
-  zoom: 0.7;
+  /* 点缀件:整体等比缩到约 54px 高,小于媒介主体 */
+  zoom: 0.6;
 }
 .deco-mic .mic-head {
   width: 40px; height: 40px;
@@ -503,7 +538,7 @@ body.is-lyrics .article-inner:hover {
   box-shadow:
     inset 0 2px 4px rgba(255,255,255,0.5),
     inset 0 -3px 6px rgba(0,0,0,0.4),
-    0 3px 6px rgba(0,0,0,0.4);
+    -3px 6px 8px rgba(0,0,0,0.4);
 }
 .deco-mic .mic-head::before {
   content: "";
@@ -521,9 +556,9 @@ body.is-lyrics .article-inner:hover {
   width: 36px; height: 6px;
   background: linear-gradient(180deg, #4a4a4a, #1a1a1a);
   border-radius: 50% 50% 4px 4px / 100% 100% 4px 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  box-shadow: -3px 5px 6px rgba(0,0,0,0.4);
 }
-.deco-row:hover .deco-mic .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
+.deco-mic:hover .mic-head { animation: micSway 0.6s ease-in-out infinite alternate; }
 @keyframes micSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
 
 /* ===== 怀旧物品:霓虹招牌 ===== */
@@ -533,9 +568,9 @@ body.is-lyrics .article-inner:hover {
   border-radius: 3px;
   background: rgba(20,10,15,0.4);
   font-family: "Courier New", monospace;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #ff7799;
   text-shadow:
     0 0 4px #ff5577,
@@ -544,25 +579,30 @@ body.is-lyrics .article-inner:hover {
   box-shadow:
     inset 0 0 8px rgba(255,85,119,0.3),
     0 0 12px rgba(255,85,119,0.4);
-  animation: neonFlicker 4s ease-in-out infinite;
+  animation: neonFlicker 7s linear infinite;
   white-space: nowrap;
 }
+/* 真实霓虹:大部分时间稳定,偶发短促"啪嗒"断电 */
 @keyframes neonFlicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.78; }
-  51% { opacity: 0.92; }
-  52% { opacity: 0.8; }
+  0%, 3.5%, 5.5%, 41%, 44.5%, 69%, 71%, 100% { opacity: 1; }
+  4%    { opacity: 0.3; }
+  4.6%  { opacity: 0.92; }
+  5%    { opacity: 0.45; }
+  42%   { opacity: 0.55; }
+  43%   { opacity: 1; }
+  43.8% { opacity: 0.65; }
+  70%   { opacity: 0.85; }
 }
 
 /* ===== 怀旧物品:海报 ===== */
 .deco-poster {
-  width: 64px;
-  padding: 6px 4px;
+  width: 56px;
+  padding: 5px 3px;
   background: linear-gradient(180deg, #f5e8c8 0%, #e8d4a8 100%);
   border: 1px solid rgba(0,0,0,0.2);
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,0.4),
-    0 4px 10px rgba(0,0,0,0.35);
+    -5px 9px 10px rgba(0,0,0,0.35);
   position: relative;
   font-family: "Courier New", monospace;
   text-align: center;
@@ -779,7 +819,7 @@ body.page-scene-dawn #mask {
 @media (max-width: 480px) {
   .music-stage { height: calc(100vh - 50px); }
   .tv-page-mark { padding: 10px 12px 4px !important; }
-  .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 5px 14px; }
+  .tv-page-mark-eyebrow { font-size: 10px; letter-spacing: 3px; padding: 4px 0; }
   .lyric-cards { padding: 6px !important; }
   .lyric-card { left: 3px !important; right: 3px !important; top: 3px !important; bottom: 3px !important; }
   .lyric-card-body { padding: 4px 14px 12px !important; }
@@ -842,29 +882,42 @@ body.page-scene-dawn #mask {
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  /* 1986 客厅电视:胡桃木纹外壳(暖棕色调,上浅下深模拟顶部受光) */
   background:
-    linear-gradient(180deg, #d8d8dc 0%, #b8b8c0 35%, #888890 100%);
+    linear-gradient(180deg, #8a5a34 0%, #6e4324 45%, #4a2c15 100%);
   border-radius: 18px 18px 14px 14px;
-  /* 灰色外壳:下边框收薄,缩小后的控件仍被完整包住 */
+  /* 木质外壳:下边框收薄,缩小后的控件仍被完整包住 */
   padding: 16px 18px 14px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -2px 0 rgba(0,0,0,0.15),
-    0 12px 30px rgba(0,0,0,0.28);
+    inset 0 1px 0 rgba(255,220,180,0.35),
+    inset 0 -2px 0 rgba(0,0,0,0.3),
+    -8px 16px 32px rgba(0,0,0,0.3);
 }
 .tv-body::before {
-  /* 表面金属拉丝纹理 */
+  /* 表面木纹纹理:横向年轮细纹 + 纵向微弱高光 */
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255,255,255,0.04) 0,
-    rgba(255,255,255,0.04) 1px,
-    transparent 1px,
-    transparent 3px
-  );
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.08) 0,
+      rgba(0,0,0,0.08) 1px,
+      transparent 1px,
+      transparent 5px,
+      rgba(255,215,170,0.04) 5px,
+      rgba(255,215,170,0.04) 6px,
+      transparent 6px,
+      transparent 11px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,225,185,0.03) 0,
+      rgba(255,225,185,0.03) 2px,
+      transparent 2px,
+      transparent 40px
+    );
   pointer-events: none;
 }
 
@@ -882,7 +935,7 @@ body.page-scene-dawn #mask {
   box-shadow:
     inset 0 1px 0 rgba(255,170,150,0.6),
     inset 0 -2px 0 rgba(0,0,0,0.25),
-    0 12px 34px rgba(200,40,30,0.5);
+    -8px 16px 34px rgba(200,40,30,0.5);
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -899,13 +952,13 @@ body.page-scene-dawn #mask {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 16px;
-  color: #2a2a30;
+  color: #f2e2c4;
   letter-spacing: 2px;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.55);
 }
 .tv-brand-sub {
   font-size: 10px;
-  color: #4a4a52;
+  color: #d8bd92;
   letter-spacing: 1.5px;
   font-family: "Courier New", monospace;
 }
@@ -1055,11 +1108,17 @@ body.page-scene-dawn #mask {
   align-items: center;
 }
 .tv-speaker {
-  width: 5px;
-  height: 20px;
-  background: linear-gradient(180deg, #2a2a30, #4a4a52);
+  /* 加宽的织物格栅块:内部密条纹,更像真机喇叭布面 */
+  width: 14px;
+  height: 24px;
+  background:
+    repeating-linear-gradient(90deg,
+      #241509 0, #241509 2px,
+      #55351c 2px, #55351c 4px);
   border-radius: 3px;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.65),
+    0 1px 0 rgba(255,225,185,0.15);
 }
 
 .tv-panel-right {
@@ -1131,7 +1190,8 @@ body.page-scene-dawn #mask {
   transform: translateX(-50%);
   font-size: 9px;
   font-weight: 700;
-  color: #2a2a30;
+  color: #ecd9b4;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.5);
   letter-spacing: 1px;
 }
 .tv-knob:active { box-shadow: inset 0 3px 6px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3); }
@@ -1448,10 +1508,10 @@ body.page-scene-dawn #mask {
   z-index: 3;
   font-size: 9px;
   letter-spacing: 2.5px;
-  color: #3a3a42;
+  color: #e2cfa8;
   font-family: "Courier New", monospace;
   text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
   pointer-events: none;
   white-space: nowrap;
 }
@@ -1461,7 +1521,7 @@ body.page-scene-dawn #mask {
   width: 70%;
   height: 14px;
   margin: 8px auto 0;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 46% 50%, rgba(0,0,0,0.35) 0%, transparent 70%);
   border-radius: 50%;
 }
 .lyric-stage {
@@ -1503,18 +1563,6 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 50% 90%, rgba(255, 238, 160, 0.85) 0%, rgba(250, 215, 120, 0.35) 30%, transparent 58%),
     linear-gradient(180deg, #3d4f33 0%, #6d8040 45%, #b8ab4c 75%, #ecd27e 95%, #fff0b8 100%);
 }
-/* 04 晴天 —— 天蓝白云（全组最亮） */
-.lyric-scene[data-bg-crt="crt-04-qingtian.jpg"] {
-  background:
-    radial-gradient(circle at 72% 16%, rgba(255, 255, 235, 0.9) 0%, rgba(255, 245, 200, 0.35) 28%, transparent 52%),
-    linear-gradient(180deg, #2f74bd 0%, #5795d6 40%, #93c1ea 72%, #dff0fb 100%);
-}
-/* 05 清明雨上 —— 青烟灰绿细雨（低饱和冷调） */
-.lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"] {
-  background:
-    radial-gradient(circle at 32% 20%, rgba(205, 225, 210, 0.35) 0%, transparent 48%),
-    linear-gradient(180deg, #26333a 0%, #47615c 50%, #74918a 80%, #adc4ba 100%);
-}
 /* 06 青花瓷 —— 钴蓝瓷白（高饱和对撞） */
 .lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"] {
   background:
@@ -1522,31 +1570,11 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 18% 84%, rgba(30, 90, 175, 0.55) 0%, transparent 52%),
     linear-gradient(170deg, #0d2b56 0%, #1c5599 50%, #3579c2 85%, #7fb3e2 100%);
 }
-/* 07 庐州月 —— 深紫夜空 + 月白银（紫调独占） */
-.lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"] {
-  background:
-    radial-gradient(circle at 50% 12%, rgba(238, 240, 255, 0.65) 0%, rgba(200, 200, 255, 0.2) 18%, transparent 38%),
-    radial-gradient(circle at 76% 24%, rgba(255, 178, 100, 0.28) 0%, transparent 34%),
-    linear-gradient(180deg, #191038 0%, #322152 50%, #553a78 82%, #8a67a8 100%);
-}
-/* 08 告白气球 —— 玫粉桃红（暖粉，区别于 01 的橙） */
-.lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"] {
-  background:
-    radial-gradient(circle at 66% 36%, rgba(255, 190, 205, 0.75) 0%, rgba(255, 150, 170, 0.35) 26%, transparent 50%),
-    linear-gradient(172deg, #7e2e58 0%, #b44f72 38%, #e07a88 68%, #ffadae 90%, #ffd9cf 100%);
-}
 /* 09 雅俗共赏 —— 水墨黑白（宣纸米白, 全组唯一无彩色） */
 .lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"] {
   background:
     radial-gradient(circle at 50% 86%, rgba(255, 253, 246, 0.55) 0%, transparent 52%),
     linear-gradient(178deg, #17181a 0%, #33353a 45%, #63666d 72%, #a7aaaf 92%, #e8e6de 100%);
-}
-/* 10 城府 —— 冷蓝黑 + 血红霓虹点缀 */
-.lyric-scene[data-bg-crt="crt-10-chengfu.jpg"] {
-  background:
-    radial-gradient(circle at 24% 74%, rgba(198, 40, 60, 0.5) 0%, transparent 34%),
-    radial-gradient(circle at 80% 62%, rgba(50, 120, 235, 0.4) 0%, transparent 38%),
-    linear-gradient(180deg, #05070c 0%, #10161f 55%, #1f2937 100%);
 }
 
 /* CRT 粒子容器 */
@@ -2090,50 +2118,18 @@ body.page-bg-3 {
     radial-gradient(ellipse at 50% 92%, rgba(250, 220, 130, 0.25), transparent 52%),
     linear-gradient(176deg, #23291c 0%, #3f4426 40%, #6e6730 72%, #a08a42 100%) !important;
 }
-/* 04 晴天 —— 中亮天蓝（外圈最亮但已压暗） */
+/* 04 青花瓷 —— 暗钴蓝 */
 body.page-bg-4 {
-  background:
-    radial-gradient(ellipse at 70% 16%, rgba(235, 245, 255, 0.3), transparent 42%),
-    linear-gradient(172deg, #16304e 0%, #234b76 42%, #3f6fa3 75%, #6f97bd 100%) !important;
-}
-/* 05 清明雨上 —— 青烟冷雾 */
-body.page-bg-5 {
-  background:
-    radial-gradient(ellipse at 32% 18%, rgba(190, 210, 198, 0.14), transparent 46%),
-    linear-gradient(178deg, #18211f 0%, #2c3936 46%, #48584f 78%, #6b7d71 100%) !important;
-}
-/* 06 青花瓷 —— 暗钴蓝 */
-body.page-bg-6 {
   background:
     radial-gradient(ellipse at 50% 12%, rgba(215, 230, 250, 0.14), transparent 40%),
     radial-gradient(ellipse at 18% 86%, rgba(35, 95, 175, 0.25), transparent 50%),
     linear-gradient(172deg, #081827 0%, #123152 52%, #204d7c 100%) !important;
 }
-/* 07 庐州月 —— 暗紫月夜 */
-body.page-bg-7 {
-  background:
-    radial-gradient(ellipse at 50% 10%, rgba(228, 230, 255, 0.18), transparent 34%),
-    radial-gradient(ellipse at 78% 24%, rgba(240, 170, 110, 0.12), transparent 32%),
-    linear-gradient(180deg, #120c26 0%, #241843 52%, #3c2a58 100%) !important;
-}
-/* 08 告白气球 —— 暗玫粉 */
-body.page-bg-8 {
-  background:
-    radial-gradient(ellipse at 66% 34%, rgba(255, 175, 195, 0.24), transparent 44%),
-    linear-gradient(174deg, #3f1830 0%, #63304a 38%, #8f5262 70%, #bc7a82 100%) !important;
-}
-/* 09 雅俗共赏 —— 水墨炭灰（近无彩色） */
-body.page-bg-9 {
+/* 05 雅俗共赏 —— 水墨炭灰（近无彩色） */
+body.page-bg-5 {
   background:
     radial-gradient(ellipse at 50% 88%, rgba(250, 248, 240, 0.14), transparent 48%),
     linear-gradient(178deg, #101113 0%, #232529 45%, #44474e 74%, #6f7379 100%) !important;
-}
-/* 10 城府 —— 近黑蓝 + 血红霓虹晕 */
-body.page-bg-10 {
-  background:
-    radial-gradient(ellipse at 24% 76%, rgba(185, 38, 58, 0.2), transparent 36%),
-    radial-gradient(ellipse at 80% 62%, rgba(52, 118, 225, 0.18), transparent 40%),
-    linear-gradient(180deg, #04060a 0%, #0c1119 55%, #171f2b 100%) !important;
 }
 
 /* ==========================================================================
@@ -2346,19 +2342,25 @@ body.page-scene-dawn .article-entry {
   color: rgba(255,255,255,0.85);
 }
 .tv-page-mark-eyebrow {
+  /* CRT 荧光频道字幕:去掉现代玻璃药丸,与屏内荧光字同一语汇 */
   display: inline-block;
-  padding: 6px 18px;
+  padding: 4px 0;
   font-family: "Courier New", monospace;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 4px;
-  border: 1px solid rgba(255,255,255,0.45);
-  border-radius: 999px;
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  letter-spacing: 5px;
+  color: #ffb45e;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-shadow:
+    0 0 6px rgba(255, 150, 60, 0.75),
+    0 0 16px rgba(255, 140, 50, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.5);
 }
+/* 字幕两侧的信号横杠 */
+.tv-page-mark-eyebrow::before { content: "▸ "; opacity: 0.7; }
+.tv-page-mark-eyebrow::after  { content: " ◂"; opacity: 0.7; }
 
 /* 电视本身再贴近顶部 */
 body.page-scene-sunset .tv-set,
@@ -2564,69 +2566,491 @@ body.page-scene-dawn .tv-set {
     0 0 6px rgba(0, 0, 0, 0.6),
     0 1px 2px rgba(0, 0, 0, 0.6);
 }
+
+/* ===== CRT 荧光字幕：文字发光色随频道场景切换 ===== */
+/* 默认琥珀橙（01 曾经的你 / 03 稻香 走默认），其余按场景色相分组覆盖 */
+.lyric-card {
+  --lv-c: #ffce7d;                       /* 荧光主色 */
+  --lv-c2: rgba(255, 206, 125, 0.8);     /* 副色（歌手名/滚动条） */
+  --lv-glow: rgba(255, 168, 64, 0.5);    /* 荧光晕 */
+  --lv-shadow: rgba(0, 0, 0, 0.45);      /* 底层收边，保亮场景可读 */
+}
+/* 冷/夜场景：荧光青（02 消愁 / 04 青花瓷） */
+.lyric-card[data-scene="2"],
+.lyric-card[data-scene="4"] {
+  --lv-c: #8df5ff;
+  --lv-c2: rgba(141, 245, 255, 0.8);
+  --lv-glow: rgba(80, 200, 255, 0.5);
+}
+/* 中性/水墨场景：荧光绿（05 雅俗共赏） */
+.lyric-card[data-scene="5"] {
+  --lv-c: #c2ffd0;
+  --lv-c2: rgba(153, 255, 184, 0.8);
+  --lv-glow: rgba(90, 240, 150, 0.5);
+}
+
+.lyric-card-header h3 {
+  color: var(--lv-c);
+  text-shadow:
+    0 0 10px var(--lv-glow),
+    0 0 26px var(--lv-glow),
+    0 2px 4px var(--lv-shadow);
+}
+.lyric-card-header .lyric-singer {
+  color: var(--lv-c2);
+  text-shadow: 0 0 8px var(--lv-glow);
+}
+.lyric-card-body p {
+  color: var(--lv-c);
+  text-shadow:
+    0 0 7px var(--lv-glow),
+    0 0 18px var(--lv-glow),
+    0 1px 2px var(--lv-shadow);
+}
+/* 歌词滚动条随频道荧光色 */
+.lyric-card-body {
+  scrollbar-color: var(--lv-c2) transparent;
+}
+.lyric-card-body::-webkit-scrollbar-thumb {
+  background: var(--lv-c2);
+}
+
 .lyric-controls {
   position: relative;
   z-index: 1;
 }
-/* ---------- 7. 时间线 ---------- */
-.timeline {
+/* ---------- 7. 旅程页：车票时间线 ---------- */
+.journey {
   position: relative;
-  margin: 24px 0 8px;
+  margin: 20px 0 8px;
 }
-.timeline::before {
-  content: "";
-  position: absolute;
-  left: 86px;
-  top: 10px;
-  bottom: 10px;
-  width: 2px;
-  background: rgba(73, 177, 245, 0.25);
+
+/* --- 引言 --- */
+.journey-quote {
+  text-align: center;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: rgba(70, 100, 135, 0.88);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  margin: 2px 0 26px;
+  animation: journey-fade-up 0.55s ease both;
 }
-.timeline-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 58px 56px 1fr;
+
+/* --- 车次信息条 --- */
+.journey-head {
+  display: flex;
   align-items: center;
-  margin-bottom: 26px;
+  justify-content: space-between;
+  gap: 14px;
+  background: linear-gradient(120deg, #49b1f5 0%, #63c0f8 60%, #7ecbfa 100%);
+  border-radius: 14px;
+  padding: 14px 22px;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(73, 177, 245, 0.32);
+  margin-bottom: 34px;
+  animation: journey-fade-up 0.55s ease both;
 }
-.timeline-item:last-child {
-  margin-bottom: 0;
+.journey-head-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  opacity: 0.85;
 }
-.timeline-date {
-  text-align: right;
-  font-size: 16px;
+.journey-head-value {
+  font-size: 15px;
   font-weight: 700;
-  color: #49b1f5;
   letter-spacing: 0.5px;
 }
-.timeline-logo {
-  width: 40px;
-  height: 40px;
-  background: #fff;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.08);
-  padding: 4px;
-  box-sizing: border-box;
-  justify-self: center;
-  z-index: 1;
+.journey-head-right {
+  text-align: right;
 }
-.timeline-logo img {
+.journey-head-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+/* 出发→未来 之间的虚线轨道 + 跑动的小火车 */
+.journey-head-track {
+  position: relative;
+  width: 84px;
+  border-top: 2px dashed rgba(255, 255, 255, 0.75);
+}
+.journey-head-track::after {
+  content: "🚄";
+  position: absolute;
+  top: -13px;
+  left: 0;
+  font-size: 13px;
+  transform: scaleX(-1); /* 表情默认朝左，翻转为朝右行驶 */
+  animation: journey-train-run 3.2s linear infinite;
+}
+@keyframes journey-train-run {
+  0% { left: 0; }
+  100% { left: calc(100% - 14px); }
+}
+
+/* --- 轨道（虚线枕木） --- */
+.journey-line {
+  position: relative;
+}
+.journey-line::before {
+  content: "";
+  position: absolute;
+  left: 27px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(73, 177, 245, 0.55) 0 8px,
+    transparent 8px 16px
+  );
+}
+
+/* --- 每一站 --- */
+.journey-stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+  animation: journey-fade-up 0.55s ease both;
+}
+.journey-stop:last-child {
+  margin-bottom: 0;
+}
+.journey-stop:nth-child(1) { animation-delay: 0.08s; }
+.journey-stop:nth-child(2) { animation-delay: 0.17s; }
+.journey-stop:nth-child(3) { animation-delay: 0.26s; }
+.journey-stop:nth-child(4) { animation-delay: 0.35s; }
+.journey-stop:nth-child(5) { animation-delay: 0.44s; }
+.journey-stop:nth-child(6) { animation-delay: 0.53s; }
+.journey-stop:nth-child(7) { animation-delay: 0.62s; }
+.journey-stop:nth-child(8) { animation-delay: 0.71s; }
+@keyframes journey-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 站点徽章 --- */
+.journey-badge {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid rgba(73, 177, 245, 0.35);
+  border-radius: 50%;
+  padding: 7px;
+  box-shadow: 0 3px 10px rgba(70, 120, 170, 0.18);
+  z-index: 1;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.journey-badge img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
-.timeline-content h3 {
-  margin: 0 0 4px;
-  font-size: 18px;
-  color: #333;
+.journey-stop:hover .journey-badge {
+  transform: scale(1.07);
+  box-shadow: 0 5px 16px rgba(73, 177, 245, 0.35);
 }
-.timeline-content p {
+/* 出发站：蓝底 🎂 */
+.journey-badge-start {
+  background: #49b1f5;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+.journey-badge-start span {
+  font-size: 24px;
+}
+/* 当前站：呼吸光环 */
+.journey-stop.is-now .journey-badge {
+  border-color: #49b1f5;
+}
+.journey-stop.is-now .journey-badge::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid rgba(73, 177, 245, 0.55);
+  animation: journey-pulse 2.2s ease-out infinite;
+}
+@keyframes journey-pulse {
+  0% { transform: scale(0.88); opacity: 0.9; }
+  100% { transform: scale(1.28); opacity: 0; }
+}
+
+/* --- 车票（简约白票） --- */
+.journey-ticket {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(73, 177, 245, 0.20);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(70, 110, 150, 0.10);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.journey-stop:hover .journey-ticket {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(73, 177, 245, 0.20);
+  border-color: rgba(73, 177, 245, 0.45);
+}
+.journey-ticket-main {
+  display: flex;
+  align-items: stretch;
+}
+
+/* 票根（停留区间）+ 齿孔虚线分隔 */
+.journey-stub {
+  flex: 0 0 72px;
+  width: 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 14px 8px;
+  border-right: 2px dashed rgba(73, 177, 245, 0.35);
+  background: rgba(73, 177, 245, 0.05);
+}
+.journey-year {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #3aa0e8;
+}
+.journey-stub-arrow {
+  font-size: 11px;
+  color: rgba(73, 177, 245, 0.6);
+}
+
+/* 票面主体 */
+.journey-body {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px 13px;
+}
+.journey-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+.journey-title h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: 17px;
+  color: #303133;
+}
+.journey-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #3aa0e8;
+  background: rgba(73, 177, 245, 0.10);
+  border: 1px solid rgba(73, 177, 245, 0.35);
+  border-radius: 999px;
+  padding: 1px 9px;
+  white-space: nowrap;
+}
+.journey-stop.is-now .journey-tag {
+  color: #fff;
+  background: #49b1f5;
+  border-color: #49b1f5;
+}
+.journey-role {
+  margin: 5px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #666;
+}
+.journey-note {
+  margin: 7px 0 0;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.6;
+  color: #8a97a8;
+}
+
+/* --- 可展开成就清单 --- */
+.journey-ticket.has-detail {
+  cursor: pointer;
+}
+.journey-detail {
+  position: relative;
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-left: 70px;
+  border-left: 2px dashed rgba(73, 177, 245, 0.35);
+  transition: grid-template-rows 0.32s ease;
+}
+/* 展开区左侧补上票根底色，与上方票根连成一片 */
+.journey-detail::before {
+  content: "";
+  position: absolute;
+  left: -70px;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  background: rgba(73, 177, 245, 0.05);
+}
+.journey-ticket.is-open .journey-detail {
+  grid-template-rows: 1fr;
+}
+.journey-detail-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.journey-detail-list {
+  margin: 0;
+  padding: 12px 16px 14px;
+  border-top: 1px dashed rgba(73, 177, 245, 0.30);
+  list-style: none;
+}
+.journey-detail-list li {
+  position: relative;
+  padding-left: 17px;
+  font-size: 13px;
   line-height: 1.7;
   color: #666;
+}
+.journey-detail-list li + li {
+  margin-top: 4px;
+}
+.journey-detail-list li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 11px;
+  color: rgba(73, 177, 245, 0.85);
+}
+
+/* 票根上下齿孔缺口（挖穿卡片，透出页面渐变背景） */
+@supports ((-webkit-mask-composite: source-in) or (mask-composite: intersect)) {
+  .journey-ticket {
+    -webkit-mask:
+      radial-gradient(circle 8px at 72px 0, transparent 7px, #000 7.5px),
+      radial-gradient(circle 8px at 72px 100%, transparent 7px, #000 7.5px);
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle 8px at 72px 0, transparent 7px, #000 7.5px),
+      radial-gradient(circle 8px at 72px 100%, transparent 7px, #000 7.5px);
+    mask-composite: intersect;
+  }
+}
+
+/* --- 开头：下一站·未来，向下驶入各站 --- */
+.journey-tail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 24px;
+  animation: journey-fade-up 0.55s ease 0.64s both;
+}
+.journey-tail-line {
+  width: 2px;
+  height: 30px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(73, 177, 245, 0.55) 0 6px,
+    transparent 6px 12px
+  );
+}
+.journey-tail-text {
+  font-size: 13.5px;
+  letter-spacing: 2px;
+  color: rgba(90, 120, 155, 0.88);
+}
+
+/* --- 窄屏适配 --- */
+@media (max-width: 560px) {
+  .journey-head {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px 16px;
+    gap: 8px 18px;
+  }
+  .journey-head-right {
+    text-align: center;
+  }
+  .journey-head-track {
+    width: 56px;
+  }
+  .journey-line::before {
+    left: 23px;
+  }
+  .journey-stop {
+    grid-template-columns: 48px 1fr;
+    gap: 12px;
+  }
+  .journey-badge {
+    width: 48px;
+    height: 48px;
+    padding: 6px;
+  }
+  .journey-stub {
+    flex-basis: 58px;
+    width: 58px;
+    padding: 12px 6px;
+  }
+  .journey-year {
+    font-size: 13px;
+  }
+  .journey-body {
+    padding: 10px 12px 11px;
+  }
+  .journey-detail {
+    margin-left: 56px;
+  }
+  .journey-detail::before {
+    left: -56px;
+    width: 56px;
+  }
+  @supports ((-webkit-mask-composite: source-in) or (mask-composite: intersect)) {
+    .journey-ticket {
+      -webkit-mask:
+        radial-gradient(circle 7px at 58px 0, transparent 6px, #000 6.5px),
+        radial-gradient(circle 7px at 58px 100%, transparent 6px, #000 6.5px);
+      -webkit-mask-composite: source-in;
+      mask:
+        radial-gradient(circle 7px at 58px 0, transparent 6px, #000 6.5px),
+        radial-gradient(circle 7px at 58px 100%, transparent 6px, #000 6.5px);
+      mask-composite: intersect;
+    }
+  }
+}
+
+/* --- 减少动态偏好 --- */
+@media (prefers-reduced-motion: reduce) {
+  .journey-quote,
+  .journey-head,
+  .journey-stop,
+  .journey-tail {
+    animation: none;
+  }
+  .journey-head-track::after {
+    animation: none;
+    transform: scaleX(-1);
+  }
+  .journey-stop.is-now .journey-badge::after {
+    animation: none;
+    opacity: 0.45;
+  }
+  .journey-detail {
+    transition: none;
+  }
 }
 
 /* ---------- 8. 侧边栏：技术区在上、搜索居中、生活区左下角 ---------- */
