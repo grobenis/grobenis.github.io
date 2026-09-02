@@ -36,9 +36,9 @@ share: false
 <div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2025</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">至今</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2025</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
@@ -65,9 +65,9 @@ share: false
 <div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2022</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">2025</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2022</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
@@ -95,9 +95,9 @@ share: false
 <div class="journey-ticket">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2021</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">2022</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2021</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
@@ -116,9 +116,9 @@ share: false
 <div class="journey-ticket">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2018</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">2021</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2018</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
@@ -137,9 +137,9 @@ share: false
 <div class="journey-ticket">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2014</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">2018</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2014</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
@@ -158,9 +158,9 @@ share: false
 <div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2011</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">2014</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2011</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
@@ -173,7 +173,7 @@ share: false
 <div class="journey-detail">
 <div class="journey-detail-inner">
 <ul class="journey-detail-list">
-<li>中华圣陶杯全国大赛一等奖</li>
+<li>中华圣陶杯全国作文大赛一等奖</li>
 <li>新概念中文大赛省级三等奖</li>
 </ul>
 </div>
@@ -186,9 +186,9 @@ share: false
 <div class="journey-ticket">
 <div class="journey-ticket-main">
 <div class="journey-stub">
-<span class="journey-year">2008</span>
-<span class="journey-stub-arrow">↓</span>
 <span class="journey-year">2011</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2008</span>
 </div>
 <div class="journey-body">
 <div class="journey-title">
