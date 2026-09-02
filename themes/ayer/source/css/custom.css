@@ -2887,11 +2887,22 @@ body.page-scene-dawn .tv-set {
   cursor: pointer;
 }
 .journey-detail {
+  position: relative;
   display: grid;
   grid-template-rows: 0fr;
   margin-left: 70px;
   border-left: 2px dashed rgba(73, 177, 245, 0.35);
   transition: grid-template-rows 0.32s ease;
+}
+/* 展开区左侧补上票根底色，与上方票根连成一片 */
+.journey-detail::before {
+  content: "";
+  position: absolute;
+  left: -70px;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  background: rgba(73, 177, 245, 0.05);
 }
 .journey-ticket.is-open .journey-detail {
   grid-template-rows: 1fr;
@@ -3002,6 +3013,10 @@ body.page-scene-dawn .tv-set {
   }
   .journey-detail {
     margin-left: 56px;
+  }
+  .journey-detail::before {
+    left: -56px;
+    width: 56px;
   }
   @supports ((-webkit-mask-composite: source-in) or (mask-composite: intersect)) {
     .journey-ticket {
