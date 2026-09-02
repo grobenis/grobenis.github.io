@@ -21,6 +21,11 @@ body.is-lyrics .article-title.sea-center {
   display: none !important;
 }
 
+/* 音乐页：右上角全局音乐钮让位给电视面板的 ▶/电源控制（保留 <audio> 供电视调用） */
+body.is-lyrics #music {
+  display: none;
+}
+
 /* ---------- 1. 代码高亮：One Dark 配色（VS Code 同款） ---------- */
 .article-entry .highlight {
   background: #282c34;
@@ -1503,18 +1508,6 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 50% 90%, rgba(255, 238, 160, 0.85) 0%, rgba(250, 215, 120, 0.35) 30%, transparent 58%),
     linear-gradient(180deg, #3d4f33 0%, #6d8040 45%, #b8ab4c 75%, #ecd27e 95%, #fff0b8 100%);
 }
-/* 04 晴天 —— 天蓝白云（全组最亮） */
-.lyric-scene[data-bg-crt="crt-04-qingtian.jpg"] {
-  background:
-    radial-gradient(circle at 72% 16%, rgba(255, 255, 235, 0.9) 0%, rgba(255, 245, 200, 0.35) 28%, transparent 52%),
-    linear-gradient(180deg, #2f74bd 0%, #5795d6 40%, #93c1ea 72%, #dff0fb 100%);
-}
-/* 05 清明雨上 —— 青烟灰绿细雨（低饱和冷调） */
-.lyric-scene[data-bg-crt="crt-05-qingmingyushang.jpg"] {
-  background:
-    radial-gradient(circle at 32% 20%, rgba(205, 225, 210, 0.35) 0%, transparent 48%),
-    linear-gradient(180deg, #26333a 0%, #47615c 50%, #74918a 80%, #adc4ba 100%);
-}
 /* 06 青花瓷 —— 钴蓝瓷白（高饱和对撞） */
 .lyric-scene[data-bg-crt="crt-06-qinghuaci.jpg"] {
   background:
@@ -1522,31 +1515,11 @@ body.page-scene-dawn #mask {
     radial-gradient(circle at 18% 84%, rgba(30, 90, 175, 0.55) 0%, transparent 52%),
     linear-gradient(170deg, #0d2b56 0%, #1c5599 50%, #3579c2 85%, #7fb3e2 100%);
 }
-/* 07 庐州月 —— 深紫夜空 + 月白银（紫调独占） */
-.lyric-scene[data-bg-crt="crt-07-luzhouyue.jpg"] {
-  background:
-    radial-gradient(circle at 50% 12%, rgba(238, 240, 255, 0.65) 0%, rgba(200, 200, 255, 0.2) 18%, transparent 38%),
-    radial-gradient(circle at 76% 24%, rgba(255, 178, 100, 0.28) 0%, transparent 34%),
-    linear-gradient(180deg, #191038 0%, #322152 50%, #553a78 82%, #8a67a8 100%);
-}
-/* 08 告白气球 —— 玫粉桃红（暖粉，区别于 01 的橙） */
-.lyric-scene[data-bg-crt="crt-08-gaobaiqiqui.jpg"] {
-  background:
-    radial-gradient(circle at 66% 36%, rgba(255, 190, 205, 0.75) 0%, rgba(255, 150, 170, 0.35) 26%, transparent 50%),
-    linear-gradient(172deg, #7e2e58 0%, #b44f72 38%, #e07a88 68%, #ffadae 90%, #ffd9cf 100%);
-}
 /* 09 雅俗共赏 —— 水墨黑白（宣纸米白, 全组唯一无彩色） */
 .lyric-scene[data-bg-crt="crt-09-yasugongshang.jpg"] {
   background:
     radial-gradient(circle at 50% 86%, rgba(255, 253, 246, 0.55) 0%, transparent 52%),
     linear-gradient(178deg, #17181a 0%, #33353a 45%, #63666d 72%, #a7aaaf 92%, #e8e6de 100%);
-}
-/* 10 城府 —— 冷蓝黑 + 血红霓虹点缀 */
-.lyric-scene[data-bg-crt="crt-10-chengfu.jpg"] {
-  background:
-    radial-gradient(circle at 24% 74%, rgba(198, 40, 60, 0.5) 0%, transparent 34%),
-    radial-gradient(circle at 80% 62%, rgba(50, 120, 235, 0.4) 0%, transparent 38%),
-    linear-gradient(180deg, #05070c 0%, #10161f 55%, #1f2937 100%);
 }
 
 /* CRT 粒子容器 */
@@ -2090,50 +2063,18 @@ body.page-bg-3 {
     radial-gradient(ellipse at 50% 92%, rgba(250, 220, 130, 0.25), transparent 52%),
     linear-gradient(176deg, #23291c 0%, #3f4426 40%, #6e6730 72%, #a08a42 100%) !important;
 }
-/* 04 晴天 —— 中亮天蓝（外圈最亮但已压暗） */
+/* 04 青花瓷 —— 暗钴蓝 */
 body.page-bg-4 {
-  background:
-    radial-gradient(ellipse at 70% 16%, rgba(235, 245, 255, 0.3), transparent 42%),
-    linear-gradient(172deg, #16304e 0%, #234b76 42%, #3f6fa3 75%, #6f97bd 100%) !important;
-}
-/* 05 清明雨上 —— 青烟冷雾 */
-body.page-bg-5 {
-  background:
-    radial-gradient(ellipse at 32% 18%, rgba(190, 210, 198, 0.14), transparent 46%),
-    linear-gradient(178deg, #18211f 0%, #2c3936 46%, #48584f 78%, #6b7d71 100%) !important;
-}
-/* 06 青花瓷 —— 暗钴蓝 */
-body.page-bg-6 {
   background:
     radial-gradient(ellipse at 50% 12%, rgba(215, 230, 250, 0.14), transparent 40%),
     radial-gradient(ellipse at 18% 86%, rgba(35, 95, 175, 0.25), transparent 50%),
     linear-gradient(172deg, #081827 0%, #123152 52%, #204d7c 100%) !important;
 }
-/* 07 庐州月 —— 暗紫月夜 */
-body.page-bg-7 {
-  background:
-    radial-gradient(ellipse at 50% 10%, rgba(228, 230, 255, 0.18), transparent 34%),
-    radial-gradient(ellipse at 78% 24%, rgba(240, 170, 110, 0.12), transparent 32%),
-    linear-gradient(180deg, #120c26 0%, #241843 52%, #3c2a58 100%) !important;
-}
-/* 08 告白气球 —— 暗玫粉 */
-body.page-bg-8 {
-  background:
-    radial-gradient(ellipse at 66% 34%, rgba(255, 175, 195, 0.24), transparent 44%),
-    linear-gradient(174deg, #3f1830 0%, #63304a 38%, #8f5262 70%, #bc7a82 100%) !important;
-}
-/* 09 雅俗共赏 —— 水墨炭灰（近无彩色） */
-body.page-bg-9 {
+/* 05 雅俗共赏 —— 水墨炭灰（近无彩色） */
+body.page-bg-5 {
   background:
     radial-gradient(ellipse at 50% 88%, rgba(250, 248, 240, 0.14), transparent 48%),
     linear-gradient(178deg, #101113 0%, #232529 45%, #44474e 74%, #6f7379 100%) !important;
-}
-/* 10 城府 —— 近黑蓝 + 血红霓虹晕 */
-body.page-bg-10 {
-  background:
-    radial-gradient(ellipse at 24% 76%, rgba(185, 38, 58, 0.2), transparent 36%),
-    radial-gradient(ellipse at 80% 62%, rgba(52, 118, 225, 0.18), transparent 40%),
-    linear-gradient(180deg, #04060a 0%, #0c1119 55%, #171f2b 100%) !important;
 }
 
 /* ==========================================================================
@@ -2564,6 +2505,55 @@ body.page-scene-dawn .tv-set {
     0 0 6px rgba(0, 0, 0, 0.6),
     0 1px 2px rgba(0, 0, 0, 0.6);
 }
+
+/* ===== CRT 荧光字幕：文字发光色随频道场景切换 ===== */
+/* 默认琥珀橙（01 曾经的你 / 03 稻香 走默认），其余按场景色相分组覆盖 */
+.lyric-card {
+  --lv-c: #ffce7d;                       /* 荧光主色 */
+  --lv-c2: rgba(255, 206, 125, 0.8);     /* 副色（歌手名/滚动条） */
+  --lv-glow: rgba(255, 168, 64, 0.5);    /* 荧光晕 */
+  --lv-shadow: rgba(0, 0, 0, 0.45);      /* 底层收边，保亮场景可读 */
+}
+/* 冷/夜场景：荧光青（02 消愁 / 04 青花瓷） */
+.lyric-card[data-scene="2"],
+.lyric-card[data-scene="4"] {
+  --lv-c: #8df5ff;
+  --lv-c2: rgba(141, 245, 255, 0.8);
+  --lv-glow: rgba(80, 200, 255, 0.5);
+}
+/* 中性/水墨场景：荧光绿（05 雅俗共赏） */
+.lyric-card[data-scene="5"] {
+  --lv-c: #c2ffd0;
+  --lv-c2: rgba(153, 255, 184, 0.8);
+  --lv-glow: rgba(90, 240, 150, 0.5);
+}
+
+.lyric-card-header h3 {
+  color: var(--lv-c);
+  text-shadow:
+    0 0 10px var(--lv-glow),
+    0 0 26px var(--lv-glow),
+    0 2px 4px var(--lv-shadow);
+}
+.lyric-card-header .lyric-singer {
+  color: var(--lv-c2);
+  text-shadow: 0 0 8px var(--lv-glow);
+}
+.lyric-card-body p {
+  color: var(--lv-c);
+  text-shadow:
+    0 0 7px var(--lv-glow),
+    0 0 18px var(--lv-glow),
+    0 1px 2px var(--lv-shadow);
+}
+/* 歌词滚动条随频道荧光色 */
+.lyric-card-body {
+  scrollbar-color: var(--lv-c2) transparent;
+}
+.lyric-card-body::-webkit-scrollbar-thumb {
+  background: var(--lv-c2);
+}
+
 .lyric-controls {
   position: relative;
   z-index: 1;
