@@ -202,6 +202,26 @@ share: false
 </div>
 
 <div class="journey-stop">
+<div class="journey-badge journey-badge-start"><span>🎒</span></div>
+<div class="journey-ticket">
+<div class="journey-ticket-main">
+<div class="journey-stub">
+<span class="journey-year">2008</span>
+<span class="journey-stub-arrow">↑</span>
+<span class="journey-year">2003</span>
+</div>
+<div class="journey-body">
+<div class="journey-title">
+<h3>小学</h3>
+<span class="journey-tag">求学</span>
+</div>
+<p class="journey-note">五年制小学，读书识字，撒欢长大</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="journey-stop">
 <div class="journey-badge journey-badge-start"><span>🎂</span></div>
 <div class="journey-ticket">
 <div class="journey-ticket-main">
