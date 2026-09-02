@@ -113,7 +113,7 @@ share: false
 
 <div class="journey-stop">
 <div class="journey-badge"><img src="/assets/img/timeline/beihang.svg" alt="北京航空航天大学"></div>
-<div class="journey-ticket">
+<div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
 <span class="journey-year">2021</span>
@@ -127,6 +127,13 @@ share: false
 </div>
 <p class="journey-role">计算机学院 · 虚拟现实方向</p>
 <p class="journey-note">读研研究虚拟现实，学着造一个世界</p>
+</div>
+</div>
+<div class="journey-detail">
+<div class="journey-detail-inner">
+<ul class="journey-detail-list">
+<li>把女朋友破处</li>
+</ul>
 </div>
 </div>
 </div>
