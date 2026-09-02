@@ -52,8 +52,8 @@ share: false
 <div class="journey-detail">
 <div class="journey-detail-inner">
 <ul class="journey-detail-list">
-<li>一句话成就（占位）——把它替换成你的真实成就</li>
-<li>一句话成就（占位）——同上，写完发我帮你填</li>
+<li>世界模型</li>
+<li>空间智能</li>
 </ul>
 </div>
 </div>
@@ -92,7 +92,7 @@ share: false
 
 <div class="journey-stop">
 <div class="journey-badge"><img src="/assets/img/timeline/xiaomi.webp" alt="小米"></div>
-<div class="journey-ticket has-detail">
+<div class="journey-ticket">
 <div class="journey-ticket-main">
 <div class="journey-stub">
 <span class="journey-year">2021</span>
@@ -106,14 +106,6 @@ share: false
 </div>
 <p class="journey-role">手机部 · 可穿戴算法工程师</p>
 <p class="journey-note">做可穿戴算法，让设备学会感知</p>
-</div>
-</div>
-<div class="journey-detail">
-<div class="journey-detail-inner">
-<ul class="journey-detail-list">
-<li>一句话成就（占位）——把它替换成你的真实成就</li>
-<li>一句话成就（占位）——同上，写完发我帮你填</li>
-</ul>
 </div>
 </div>
 </div>
@@ -163,7 +155,7 @@ share: false
 
 <div class="journey-stop">
 <div class="journey-badge journey-badge-start"><span>📚</span></div>
-<div class="journey-ticket">
+<div class="journey-ticket has-detail">
 <div class="journey-ticket-main">
 <div class="journey-stub">
 <span class="journey-year">2011</span>
@@ -176,6 +168,14 @@ share: false
 <span class="journey-tag">求学</span>
 </div>
 <p class="journey-note">三年磨一剑，埋头书山等一场高考</p>
+</div>
+</div>
+<div class="journey-detail">
+<div class="journey-detail-inner">
+<ul class="journey-detail-list">
+<li>中华圣陶杯全国大赛一等奖</li>
+<li>新概念中文大赛省级三等奖</li>
+</ul>
 </div>
 </div>
 </div>
