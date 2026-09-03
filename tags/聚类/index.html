@@ -57,6 +57,211 @@
     <h1 class="page-type-title">#&nbsp聚类</h1>
     
     
+    <!-- 分类/标签筛选：伪装成时间线"第一站"，与年份轨道同构 -->
+    <div class="archives-wrap">
+      <div class="archive-year-wrap">
+        <span class="archive-year">筛选</span>
+      </div>
+      <div class="archives">
+        <nav class="arch-filter" id="archFilter" aria-label="按分类或标签筛选">
+          <div class="arch-filter-head">
+            <button type="button" class="arch-filter-tab is-on" data-panel="cats">分类</button>
+            <button type="button" class="arch-filter-tab" data-panel="tags">标签</button>
+          </div>
+          <div class="arch-filter-panel is-on" data-panel="cats">
+            <a class="arch-filter-chip" href="/archives">全部</a>
+            
+            <a class="arch-filter-chip" href="/categories/C/">C++</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/C/">C++</a>
+            
+            <a class="arch-filter-chip" href="/categories/SLAM/">SLAM</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%88%B7%E9%A2%98/">刷题</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+            
+            <a class="arch-filter-chip" href="/categories/SLAM/%E5%AD%A6%E4%B9%A0/">学习</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%AE%9E%E9%AA%8C/">实验</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%B7%A5%E4%BD%9C/">工作</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98/">工程复盘</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E6%B1%82%E8%81%8C/">求职</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E7%A7%91%E7%A0%94/">科研</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            
+            <a class="arch-filter-chip" href="/categories/%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
+            
+          </div>
+          <div class="arch-filter-panel" data-panel="tags">
+            <a class="arch-filter-chip" href="/archives">全部</a>
+            
+            <a class="arch-filter-chip" href="/tags/BA/">BA</a>
+            
+            <a class="arch-filter-chip" href="/tags/C/">C++</a>
+            
+            <a class="arch-filter-chip" href="/tags/CMake/">CMake</a>
+            
+            <a class="arch-filter-chip" href="/tags/DBoW2/">DBoW2</a>
+            
+            <a class="arch-filter-chip" href="/tags/FloodFill/">FloodFill</a>
+            
+            <a class="arch-filter-chip" href="/tags/GMM/">GMM</a>
+            
+            <a class="arch-filter-chip" href="/tags/HMM/">HMM</a>
+            
+            <a class="arch-filter-chip" href="/tags/HTTP/">HTTP</a>
+            
+            <a class="arch-filter-chip" href="/tags/HTTPS/">HTTPS</a>
+            
+            <a class="arch-filter-chip" href="/tags/IMU/">IMU</a>
+            
+            <a class="arch-filter-chip" href="/tags/KMP/">KMP</a>
+            
+            <a class="arch-filter-chip" href="/tags/Kalibr/">Kalibr</a>
+            
+            <a class="arch-filter-chip" href="/tags/Kalman%E6%BB%A4%E6%B3%A2%E5%99%A8/">Kalman滤波器</a>
+            
+            <a class="arch-filter-chip" href="/tags/LeetCode/">LeetCode</a>
+            
+            <a class="arch-filter-chip" href="/tags/MySQL/">MySQL</a>
+            
+            <a class="arch-filter-chip" href="/tags/NeRF/">NeRF</a>
+            
+            <a class="arch-filter-chip" href="/tags/ORB-SLAM2/">ORB-SLAM2</a>
+            
+            <a class="arch-filter-chip" href="/tags/OpenCV/">OpenCV</a>
+            
+            <a class="arch-filter-chip" href="/tags/ROS/">ROS</a>
+            
+            <a class="arch-filter-chip" href="/tags/SLAM/">SLAM</a>
+            
+            <a class="arch-filter-chip" href="/tags/TCP/">TCP</a>
+            
+            <a class="arch-filter-chip" href="/tags/UDP/">UDP</a>
+            
+            <a class="arch-filter-chip" href="/tags/Ubuntu/">Ubuntu</a>
+            
+            <a class="arch-filter-chip" href="/tags/VINS/">VINS</a>
+            
+            <a class="arch-filter-chip" href="/tags/VIO/">VIO</a>
+            
+            <a class="arch-filter-chip" href="/tags/Vector/">Vector</a>
+            
+            <a class="arch-filter-chip" href="/tags/evo/">evo</a>
+            
+            <a class="arch-filter-chip" href="/tags/markdown/">markdown</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E4%B8%89%E8%A7%92%E5%8C%96/">三角化</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">优先队列</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%8F%AF%E7%A9%BF%E6%88%B4/">可穿戴</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8/">哈希表</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%9B%9E%E6%BA%AF/">回溯</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%9B%9E%E7%8E%AF%E6%A3%80%E6%B5%8B/">回环检测</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">图像分割</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%AE%89%E5%8D%93/">安卓</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%AF%B9%E6%9E%81%E7%BA%A6%E6%9D%9F/">对极约束</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E5%B7%A5%E4%BD%9C/">工作</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%8E%92%E5%BA%8F/">排序</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/">概率图</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/">相机标定</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E7%B2%92%E5%AD%90%E6%BB%A4%E6%B3%A2%E5%99%A8/">粒子滤波器</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E8%81%9A%E7%B1%BB/">聚类</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E8%A7%92%E7%82%B9%E6%A3%80%E6%B5%8B/">角点检测</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E9%93%BE%E8%A1%A8/">链表</a>
+            
+            <a class="arch-filter-chip" href="/tags/%E9%9D%A2%E8%AF%95/">面试</a>
+            
+          </div>
+        </nav>
+      </div>
+    </div>
+    <script>
+    (function () {
+      var root = document.getElementById('archFilter');
+      if (!root) return;
+      var tabs = root.querySelectorAll('.arch-filter-tab');
+      var panels = root.querySelectorAll('.arch-filter-panel');
+      var chips = root.querySelectorAll('.arch-filter-chip');
+      function pick(which) {
+        for (var i = 0; i < tabs.length; i++) {
+          tabs[i].classList.toggle('is-on', tabs[i].getAttribute('data-panel') === which);
+        }
+        for (var j = 0; j < panels.length; j++) {
+          panels[j].classList.toggle('is-on', panels[j].getAttribute('data-panel') === which);
+        }
+      }
+      for (var t = 0; t < tabs.length; t++) {
+        (function (tab) {
+          tab.addEventListener('click', function () { pick(tab.getAttribute('data-panel')); });
+        })(tabs[t]);
+      }
+      // 高亮当前所在分类/标签
+      var here = location.pathname.replace(/\/+$/, '');
+      for (var c = 0; c < chips.length; c++) {
+        var href = (chips[c].getAttribute('href') || '').replace(/\/+$/, '');
+        if (href === here) chips[c].classList.add('is-on');
+      }
+      if (/\/tags\//.test(location.pathname)) pick('tags');
+    })();
+    </script>
+    
+    
   
   
   
@@ -161,6 +366,8 @@
   </div>
   
   <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
   <ul class="nav nav-main">
     
     <li class="nav-item">
@@ -169,14 +376,6 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
     </li>
     
     <li class="nav-item">
@@ -226,13 +425,32 @@
     
   </ul>
 </nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
   <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
   <div id="local-search-result" class="local-search-result"></div>
 </div>
-</div>
-    </aside>
+    </div>
     <div id="mask"></div>
 
 <!-- #reward -->
@@ -486,14 +704,20 @@
 
 
     
-    <!-- 黑白小牛：兼作返回顶部按钮（音乐盒页不显示） -->
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
     
-    <div class="site-mascot" title="回到顶部">
-      <img src="/images/cow.svg" alt="回到顶部" />
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
     </div>
     
     <script>
-    // 小牛：滚动超过封面高度后淡入（替代原返回顶部箭头），点击平滑回顶
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
     // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
     (function () {
       var mascot = document.querySelector('.site-mascot');
@@ -508,14 +732,33 @@
           ? (window.pageYOffset || document.documentElement.scrollTop)
           : scroller.scrollTop;
       }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
       function onScroll() {
         mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
       }
-      mascot.addEventListener('click', function () {
+      function toTop() {
         if (scroller === window) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
         }
       });
       scroller.addEventListener('scroll', onScroll, { passive: true });
