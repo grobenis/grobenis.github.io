@@ -4563,3 +4563,391 @@ body.lamp-black .candle-glow.is-on {
   .lamp-chain { height: 30px; }
   .lamp-pull::after { display: none; }
 }
+
+/* ==========================================================================
+   14. 列表页现代化：文章卡片 + 分页器
+   ========================================================================== */
+/* 去掉旧灰色分隔线，卡片之间留白 */
+.articles .article {
+  padding: 0;
+  border-bottom: none;
+  margin-bottom: 2.2rem;
+}
+.articles .article-inner {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(73, 177, 245, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 3px 14px rgba(70, 110, 150, 0.08);
+  padding: 1.8rem 2rem 1.5rem;
+}
+.articles .article-inner:hover {
+  transform: translateY(-4px);
+  border-color: rgba(73, 177, 245, 0.42);
+  box-shadow: 0 14px 30px rgba(73, 177, 245, 0.16);
+}
+/* 摘要区：去掉虚线灰框 */
+.articles .article-entry {
+  margin-top: 0.6rem;
+  padding: 0 0.2rem;
+  border: none;
+}
+/* 标题：灰色左边框 → 蓝色渐变竖条 */
+.articles .article-title {
+  position: relative;
+  margin-bottom: 1.1rem;
+  padding-left: 1.1rem;
+  border-left: none;
+  font-size: 1.4em;
+  color: #2c3e50;
+  transition: color 0.25s ease;
+}
+.articles .article-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 68%;
+  width: 4px;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #49b1f5, rgba(73, 177, 245, 0.2));
+  transition: box-shadow 0.25s ease;
+}
+.articles .article-title:hover {
+  color: #3aa0e8;
+}
+.articles .article-title:hover::before {
+  box-shadow: 0 0 10px rgba(73, 177, 245, 0.7);
+}
+/* 元信息（日期/分类/字数）：更小更轻 */
+.articles .article-meta {
+  font-size: 0.82rem;
+  letter-spacing: 1px;
+  color: #8a97a8;
+}
+.articles .article-meta a {
+  color: #8a97a8;
+  transition: color 0.2s ease;
+}
+.articles .article-meta a:hover {
+  color: #3aa0e8;
+}
+/* 阅读更多：深灰方块 → 蓝色胶囊 */
+.articles .article-more-link {
+  margin-top: 0.4rem;
+  padding: 0.32rem 1.15rem;
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  color: #3aa0e8 !important;
+  background: rgba(73, 177, 245, 0.1);
+  border: 1px solid rgba(73, 177, 245, 0.35);
+  border-radius: 999px;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.articles .article-more-link:hover {
+  color: #fff !important;
+  background: #49b1f5;
+  border-color: #49b1f5;
+  box-shadow: 0 4px 12px rgba(73, 177, 245, 0.35);
+}
+/* 分页：光秃文字链 → 玻璃胶囊，并恢复页码显示 */
+.page-nav {
+  margin: 2.8rem auto 1rem;
+}
+.page-nav .prev,
+.page-nav .next,
+.page-nav .page-number,
+.page-nav span {
+  float: none;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  letter-spacing: 2px;
+  line-height: 1.4;
+  text-decoration: none;
+  vertical-align: middle;
+}
+.page-nav .prev,
+.page-nav .next {
+  color: #3aa0e8;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(73, 177, 245, 0.28);
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
+}
+.page-nav .prev:hover,
+.page-nav .next:hover {
+  color: #fff;
+  background: #49b1f5;
+  border-color: #49b1f5;
+  box-shadow: 0 4px 14px rgba(73, 177, 245, 0.35);
+  transform: translateY(-1px);
+}
+.page-nav .page-number {
+  color: #5a6b7d;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+}
+.page-nav .page-number:hover {
+  color: #3aa0e8;
+  border-color: rgba(73, 177, 245, 0.35);
+}
+.page-nav .page-number.current {
+  color: #fff;
+  background: linear-gradient(90deg, #49b1f5, #63c0f8);
+  box-shadow: 0 3px 10px rgba(73, 177, 245, 0.3);
+}
+.page-nav .space {
+  color: #8a97a8;
+  padding: 0.5rem 0.4rem;
+}
+@media (max-width: 560px) {
+  .articles .article-inner {
+    padding: 1.3rem 1.1rem 1.1rem;
+  }
+  .page-nav .prev,
+  .page-nav .next,
+  .page-nav .page-number,
+  .page-nav span {
+    padding: 0.4rem 1rem;
+  }
+}
+
+/* ==========================================================================
+   15. 搜索浮层：毛玻璃遮罩 + 明亮搜索面板
+   ========================================================================== */
+.search-form-wrap {
+  z-index: 1000;
+  background: rgba(13, 18, 28, 0.45);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.local-search {
+  margin-top: 9vh;
+  padding: 2.4rem 2.6rem 2rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(15, 30, 50, 0.28);
+}
+.local-search-input {
+  font-size: 110%;
+  color: #2c3e50;
+  padding: 0.85rem 1.4rem;
+  background: rgba(73, 177, 245, 0.07);
+  border: 1px solid rgba(73, 177, 245, 0.28);
+  border-radius: 999px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+.local-search-input::placeholder {
+  color: #a5b2c2;
+  letter-spacing: 1px;
+}
+.local-search-input:focus {
+  background: #fff;
+  border-color: rgba(73, 177, 245, 0.65);
+  box-shadow: 0 0 0 4px rgba(73, 177, 245, 0.14);
+}
+.local-search-close {
+  top: 1.5rem;
+  right: 1.6rem;
+  color: #8a97a8;
+  background: rgba(73, 177, 245, 0.09);
+  transition: color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+}
+.local-search-close:hover {
+  color: #3aa0e8;
+  background: rgba(73, 177, 245, 0.16);
+  transform: rotate(90deg);
+}
+.search-result-list {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+}
+.search-result-list li {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+.search-result-list li:hover {
+  background: rgba(73, 177, 245, 0.08);
+}
+.search-result-title {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.02rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.search-result-list li:hover .search-result-title {
+  color: #3aa0e8;
+}
+p.search-result {
+  margin: 0.3rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #6b7a8c;
+}
+.search-keyword {
+  color: #3aa0e8;
+  font-style: normal;
+  background: rgba(73, 177, 245, 0.14);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+.search-result-empty {
+  padding: 1.6rem 0 0.6rem;
+  text-align: center;
+  color: #8a97a8;
+  letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   16. 文章详情页打磨（仅 .article-type-post，不误伤特殊页面）
+   ========================================================================== */
+/* 打赏：深灰方块 → 暖橘胶囊 */
+#reward-btn {
+  height: 38px;
+  line-height: 36px;
+  font-size: 15px;
+  color: #ff7a59;
+  background: rgba(255, 122, 89, 0.1);
+  border: 1px solid rgba(255, 122, 89, 0.4);
+  border-radius: 999px;
+  box-shadow: none;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
+}
+#reward-btn:hover {
+  color: #fff;
+  background: #ff7a59;
+  border-color: #ff7a59;
+  box-shadow: 0 6px 16px rgba(255, 122, 89, 0.35);
+  transform: translateX(-50%) translateY(-2px);
+}
+/* 版权声明框 → 淡蓝 callout */
+.declare {
+  border-bottom: none;
+  padding-bottom: 0;
+  color: #5a6b7d;
+}
+.declare .post-copyright {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1.3rem;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: #5a6b7d;
+  background: rgba(73, 177, 245, 0.06);
+  border: 1px solid rgba(73, 177, 245, 0.16);
+  border-left: 3px solid #49b1f5;
+  border-radius: 10px;
+}
+/* 正文标题：蓝色渐变锚条（h2）/ 菱形点缀（h3） */
+.article-type-post .article-entry h2 {
+  position: relative;
+  padding-left: 16px;
+}
+.article-type-post .article-entry h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 62%;
+  width: 4px;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #49b1f5, rgba(73, 177, 245, 0.2));
+  transition: box-shadow 0.25s ease;
+}
+.article-type-post .article-entry h2:hover::before {
+  box-shadow: 0 0 10px rgba(73, 177, 245, 0.8);
+}
+.article-type-post .article-entry h3::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 2px;
+  background: #49b1f5;
+  transform: rotate(45deg);
+}
+/* TOC：更清爽的配色，窄屏隐藏避免溢出 */
+.tocbot {
+  opacity: 0.92;
+}
+.toc-link {
+  color: #5a6b7d;
+  transition: color 0.2s ease;
+}
+.toc-link:hover {
+  color: #3aa0e8;
+}
+.toc-link.is-active-link {
+  color: #3aa0e8;
+  font-weight: 600;
+}
+@media (max-width: 1240px) {
+  .tocbot {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   17. 全局高级感：滚动条 / 选中色 / 封面下滑提示
+   ========================================================================== */
+/* 主滚动容器细滚动条 */
+.content::-webkit-scrollbar {
+  width: 7px;
+}
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.content::-webkit-scrollbar-thumb {
+  background: rgba(73, 177, 245, 0.3);
+  border-radius: 4px;
+}
+.content::-webkit-scrollbar-thumb:hover {
+  background: rgba(73, 177, 245, 0.55);
+}
+/* 文字选中色 */
+::selection {
+  background: rgba(73, 177, 245, 0.28);
+}
+/* 封面下滑提示：裸箭头 → 玻璃圆钮 + 慢速弹跳 */
+.cover-learn-more .anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: background-color 0.3s ease;
+}
+.cover-learn-more .anchor:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+.cover-learn-more a > i {
+  font-size: 1.6rem;
+  animation: cover-hint-bounce 2.4s ease-in-out infinite;
+}
+.cover-learn-more a > i:hover {
+  color: #fff;
+}
+@keyframes cover-hint-bounce {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cover-learn-more a > i {
+    animation: none;
+  }
+}
