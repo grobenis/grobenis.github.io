@@ -3324,50 +3324,91 @@ body.page-scene-dawn .tv-set {
   padding: 0.5rem 1rem;
 }
 
-/* ---------- 9. 可爱小牛装饰 ---------- */
+/* ---------- 9. 返回顶部：毛玻璃徽章 + 阅读进度环 ---------- */
 .site-mascot {
   position: fixed;
-  right: 32px;
-  bottom: 104px;
-  width: 74px;
-  height: 74px;
+  right: 28px;
+  bottom: 48px;
+  width: 46px;
+  height: 46px;
   z-index: 999;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(235, 242, 250, 0.9);
+  background: rgba(16, 20, 28, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(16px);
-  transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s;
+  transform: translateY(16px) scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s 0.4s,
+    color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .site-mascot.is-visible {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.4s ease, transform 0.4s ease,
+    color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.site-mascot img {
-  width: 100%;
-  height: 100%;
+.site-mascot:hover,
+.site-mascot:focus-visible {
+  color: #fff;
+  border-color: rgba(120, 190, 250, 0.55);
+  box-shadow: 0 8px 26px rgba(73, 177, 245, 0.35);
+  outline: none;
+}
+.site-mascot:active {
+  transform: translateY(1px) scale(0.96);
+}
+/* 上箭头：悬停轻提 */
+.mascot-arrow {
+  width: 18px;
+  height: 18px;
   pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  animation: mascotFloat 3.5s ease-in-out infinite;
+  transition: transform 0.25s ease;
 }
-.site-mascot:hover img {
-  animation: mascotWiggle 0.6s ease;
+.site-mascot:hover .mascot-arrow {
+  transform: translateY(-2px);
 }
-@keyframes mascotFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+/* 外圈进度环：--sp 由脚本写入（0~1） */
+.mascot-ring {
+  position: absolute;
+  inset: -5px;
+  pointer-events: none;
+  transform: rotate(-90deg);
 }
-@keyframes mascotWiggle {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(-8deg); }
-  75% { transform: rotate(8deg); }
+.mascot-ring circle {
+  fill: none;
+  stroke-width: 2;
+}
+.mascot-ring-track {
+  stroke: rgba(255, 255, 255, 0.12);
+}
+.mascot-ring-bar {
+  stroke: #49b1f5;
+  stroke-linecap: round;
+  stroke-dasharray: 132;
+  stroke-dashoffset: calc(132 - 132 * var(--sp, 0));
+  filter: drop-shadow(0 0 3px rgba(73, 177, 245, 0.7));
+  transition: stroke-dashoffset 0.15s linear;
 }
 /* 小屏隐藏，避免遮挡内容 */
 @media (max-width: 768px) {
   .site-mascot {
     display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-mascot,
+  .mascot-arrow,
+  .mascot-ring-bar {
+    transition: none;
   }
 }
 
