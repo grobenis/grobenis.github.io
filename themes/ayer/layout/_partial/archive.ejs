@@ -12,6 +12,63 @@
     <% if (pagination !== 2){ %>
     <h1 class="page-type-title"><%- title %></h1>
     <% } %>
+    <% if (!page.year && !page.month){ %>
+    <!-- 分类/标签筛选：伪装成时间线"第一站"，与年份轨道同构 -->
+    <div class="archives-wrap">
+      <div class="archive-year-wrap">
+        <span class="archive-year">筛选</span>
+      </div>
+      <div class="archives">
+        <nav class="arch-filter" id="archFilter" aria-label="按分类或标签筛选">
+          <div class="arch-filter-head">
+            <button type="button" class="arch-filter-tab is-on" data-panel="cats">分类</button>
+            <button type="button" class="arch-filter-tab" data-panel="tags">标签</button>
+          </div>
+          <div class="arch-filter-panel is-on" data-panel="cats">
+            <a class="arch-filter-chip" href="<%- url_for(config.archive_dir) %>">全部</a>
+            <% site.categories.sort('name').each(function(c){ if (c.posts.length){ %>
+            <a class="arch-filter-chip" href="<%- url_for(c.path) %>"><%= c.name %></a>
+            <% } }); %>
+          </div>
+          <div class="arch-filter-panel" data-panel="tags">
+            <a class="arch-filter-chip" href="<%- url_for(config.archive_dir) %>">全部</a>
+            <% site.tags.sort('name').each(function(t){ if (t.posts.length){ %>
+            <a class="arch-filter-chip" href="<%- url_for(t.path) %>"><%= t.name %></a>
+            <% } }); %>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <script>
+    (function () {
+      var root = document.getElementById('archFilter');
+      if (!root) return;
+      var tabs = root.querySelectorAll('.arch-filter-tab');
+      var panels = root.querySelectorAll('.arch-filter-panel');
+      var chips = root.querySelectorAll('.arch-filter-chip');
+      function pick(which) {
+        for (var i = 0; i < tabs.length; i++) {
+          tabs[i].classList.toggle('is-on', tabs[i].getAttribute('data-panel') === which);
+        }
+        for (var j = 0; j < panels.length; j++) {
+          panels[j].classList.toggle('is-on', panels[j].getAttribute('data-panel') === which);
+        }
+      }
+      for (var t = 0; t < tabs.length; t++) {
+        (function (tab) {
+          tab.addEventListener('click', function () { pick(tab.getAttribute('data-panel')); });
+        })(tabs[t]);
+      }
+      // 高亮当前所在分类/标签
+      var here = location.pathname.replace(/\/+$/, '');
+      for (var c = 0; c < chips.length; c++) {
+        var href = (chips[c].getAttribute('href') || '').replace(/\/+$/, '');
+        if (href === here) chips[c].classList.add('is-on');
+      }
+      if (/\/tags\//.test(location.pathname)) pick('tags');
+    })();
+    </script>
+    <% } %>
     <% if (pagination == 2){ %>
     <% page.posts.each(function(post){ %>
     <%- partial('article', {post: post, index: true}) %>

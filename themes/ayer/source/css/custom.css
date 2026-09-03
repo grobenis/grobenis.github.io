@@ -3439,75 +3439,264 @@ body.page-scene-dawn .tv-set {
   border-top: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
-/* ---------- 9. 关于页：4 张卡片 + 底部图标排 ---------- */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-  margin: 24px 0 8px;
-}
-.about-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 22px 22px 18px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(73, 177, 245, 0.10);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+/* ---------- 9. 关于页：与旅程/归档同构的「轨道 + 玻璃面板」 ---------- */
+/* 左侧蓝色点状轨道，右侧一节一节「车站」面板 */
+.about-rail {
+  --ab-gap: 2.4rem;
   position: relative;
+  margin: 26px 0 8px;
+  padding-left: var(--ab-gap);
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(73, 177, 245, 0.55) 0 8px,
+    transparent 8px 16px
+  ) no-repeat;
+  background-size: 2px 100%;
 }
-.about-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(73, 177, 245, 0.18);
-  border-color: rgba(73, 177, 245, 0.35);
+.about-station {
+  position: relative;
+  margin-bottom: 1.5rem;
 }
-.about-card h3 {
-  margin: 0 0 10px;
-  font-size: 17px;
+/* 车站节点：贴在轨道上的发光圆点（与 .archive-article::before 同款） */
+.about-station::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--ab-gap) * -1 - 3px);
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(73, 177, 245, 0.6);
+  z-index: 1;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.about-station:hover::before {
+  background: #49b1f5;
+  border-color: #49b1f5;
+  box-shadow: 0 0 10px rgba(73, 177, 245, 0.8);
+}
+/* 车站标签：小字距蓝色（对应归档页的年份位） */
+.about-station-label {
+  margin: 0 0 8px;
+  font-size: 13px;
   font-weight: 700;
-  color: #303133;
-  border-left: 3px solid #49b1f5;
-  padding-left: 8px;
+  letter-spacing: 3px;
+  color: #3aa0e8;
 }
-.about-card p {
+/* 玻璃面板：与 .archive-article-inner 同材质 */
+.about-panel {
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(73, 177, 245, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(70, 110, 150, 0.06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.about-station:hover .about-panel {
+  transform: translateY(-2px);
+  border-color: rgba(73, 177, 245, 0.45);
+  box-shadow: 0 8px 20px rgba(73, 177, 245, 0.16);
+}
+/* 姓名 + 一句话定位 */
+.about-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+.about-name-en {
+  margin-left: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #49b1f5;
+  letter-spacing: 0.5px;
+}
+.about-tagline {
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: #555;
+}
+/* 一句话履历（呼应旅程页的车次感） */
+.about-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(73, 177, 245, 0.22);
+  font-size: 12.5px;
+}
+.about-path a {
+  color: #5a7a95;
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid rgba(73, 177, 245, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+.about-path a:hover {
+  color: #fff;
+  background: #49b1f5;
+  box-shadow: 0 2px 8px rgba(73, 177, 245, 0.35);
+}
+.about-path i {
+  font-style: normal;
+  color: #9db8cc;
+}
+.about-path .about-path-now {
+  color: #fff;
+  background: #49b1f5;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(73, 177, 245, 0.35);
+}
+/* 数字条：面板内的浅色胶囊，而非独立白盒 */
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 16px 0 0;
+}
+.about-stat {
+  text-align: center;
+  padding: 10px 4px 9px;
+  background: rgba(73, 177, 245, 0.07);
+  border: 1px solid rgba(73, 177, 245, 0.16);
+  border-radius: 12px;
+}
+.about-stat b {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  color: #49b1f5;
+  line-height: 1.2;
+}
+.about-stat span {
+  display: block;
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: #8899a6;
+}
+.about-desc {
   margin: 0 0 8px;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.9;
   color: #555;
 }
-.about-card ul, .about-card ol {
-  margin: 6px 0 0;
-  padding-left: 20px;
+.about-desc:last-child {
+  margin-bottom: 0;
+}
+.about-desc a {
+  color: #49b1f5;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(73, 177, 245, 0.5);
+}
+.about-desc a:hover {
+  border-bottom-style: solid;
+}
+/* 在做什么：条目式，粗体主题 + 说明 */
+.about-work {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.about-work li {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+.about-work li + li {
+  margin-top: 2px;
+}
+.about-work li:hover {
+  background: rgba(73, 177, 245, 0.06);
+}
+.about-work b {
+  font-size: 14px;
+  font-weight: 700;
+  color: #303133;
+}
+.about-work span {
   font-size: 13.5px;
-  line-height: 1.8;
+  line-height: 1.75;
   color: #666;
 }
-.about-card ul li, .about-card ol li {
-  margin-bottom: 3px;
-}
-.about-card ul.about-contact {
+/* 联系方式：横向胶囊，与履历链同材质 */
+.about-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   list-style: none;
-  padding-left: 0;
+  margin: 0;
+  padding: 0;
 }
-.about-card ul.about-contact li {
+.about-contact li {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
-.about-card ul.about-contact i {
-  color: #49b1f5;
-  font-size: 15px;
-  width: 18px;
-  text-align: center;
-}
-.about-card ul.about-contact a {
-  color: #555;
+.about-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13.5px;
+  color: #5a7a95;
   text-decoration: none;
-  border-bottom: 1px dashed transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  padding: 6px 14px;
+  border: 1px solid rgba(73, 177, 245, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.about-card ul.about-contact a:hover {
-  color: #49b1f5;
-  border-bottom-color: #49b1f5;
+.about-contact a:hover {
+  color: #fff;
+  background: #49b1f5;
+  border-color: #49b1f5;
+  box-shadow: 0 2px 8px rgba(73, 177, 245, 0.35);
+}
+.about-contact i {
+  font-size: 15px;
+  line-height: 1;
+}
+@media (max-width: 640px) {
+  .about-rail {
+    --ab-gap: 1.6rem;
+  }
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .about-work li {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .about-panel {
+    padding: 14px 14px 16px;
+  }
+  .about-name {
+    font-size: 21px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-station::before,
+  .about-panel,
+  .about-path a,
+  .about-contact a,
+  .about-work li {
+    transition: none;
+  }
+  .about-station:hover .about-panel {
+    transform: none;
+  }
 }
 
 /* ---------- 10. 关于页：底部图标排（关于本站 / 友链 / 订阅） ---------- */
@@ -3795,6 +3984,18 @@ body.page-scene-dawn .tv-set {
 .sidebar.on .navbar > :nth-child(3) { animation-delay: 0.12s; }
 .sidebar.on .navbar > :nth-child(4) { animation-delay: 0.18s; }
 @media (prefers-reduced-motion: reduce) {
+  .sidebar.on .navbar > * {
+    animation: none;
+  }
+}
+/* 桌面端（≥768px）：侧边栏常驻，禁止整页加载时主题自带的
+   “从屏幕外左滑入场 + 菜单错峰浮入”动画（表现为每次点导航都闪一下）。
+   移动端抽屉的滑入动画仍保留。 */
+@media (min-width: 768px) {
+  .sidebar {
+    left: 0;
+    transition: none;
+  }
   .sidebar.on .navbar > * {
     animation: none;
   }
@@ -5172,5 +5373,101 @@ p.search-result {
   }
   .archive-article-inner {
     padding: 0.4rem 0.9rem;
+  }
+}
+
+/* ==========================================================================
+   19. 归档页顶部分类/标签筛选条（arch-filter-*）
+   —— 作为时间线"第一站"：左侧「筛选」标签 + 轨道节点 + 玻璃面板，
+      与下方年份分组完全同构。
+   ========================================================================== */
+.arch-filter {
+  position: relative;
+  margin-bottom: 0.9rem;
+  padding: 0.85rem 1.15rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(73, 177, 245, 0.15);
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(70, 110, 150, 0.06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+/* 站点节点复用 .archive-year::after（与年份节点同位同构），无需额外绘制 */
+.arch-filter-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.6rem;
+}
+.arch-filter-tab {
+  border: none;
+  cursor: pointer;
+  padding: 3px 14px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #5a7a95;
+  background: rgba(73, 177, 245, 0.1);
+  border-radius: 999px;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.arch-filter-tab:hover {
+  color: #3aa0e8;
+}
+.arch-filter-tab.is-on {
+  color: #fff;
+  background: #49b1f5;
+  box-shadow: 0 2px 8px rgba(73, 177, 245, 0.35);
+}
+.arch-filter-panel {
+  display: none;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-height: 10.5rem;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.arch-filter-panel.is-on {
+  display: flex;
+}
+.arch-filter-chip {
+  display: inline-block;
+  padding: 2px 12px;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #3a5a75;
+  background: #fff;
+  border: 1px solid rgba(73, 177, 245, 0.3);
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.arch-filter-chip:hover {
+  color: #fff;
+  background: #49b1f5;
+  border-color: #49b1f5;
+  box-shadow: 0 2px 8px rgba(73, 177, 245, 0.35);
+}
+.arch-filter-chip.is-on {
+  color: #fff;
+  background: #49b1f5;
+  border-color: #49b1f5;
+}
+.arch-filter-panel::-webkit-scrollbar {
+  width: 5px;
+}
+.arch-filter-panel::-webkit-scrollbar-thumb {
+  background: rgba(73, 177, 245, 0.35);
+  border-radius: 3px;
+}
+@media (max-width: 560px) {
+  .arch-filter-panel {
+    max-height: 8.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arch-filter-tab,
+  .arch-filter-chip {
+    transition: none;
   }
 }

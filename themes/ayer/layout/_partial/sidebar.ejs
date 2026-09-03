@@ -6,8 +6,10 @@
   </div>
   <% } %>
   <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
   <ul class="nav nav-main">
-    <% for (var i in theme.menu){ if (i === '旅程') break; %>
+    <% for (var i in theme.menu){ if (i === '旅程') break; if (i === '分类' || i === '标签') continue; %>
     <li class="nav-item">
       <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
     </li>
@@ -22,7 +24,7 @@
   <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
   <ul class="nav nav-mid">
     <% var inMid = false; %>
-    <% for (var i in theme.menu){ if (i === '旅程') inMid = true; if (i === '私人空间') break; if (!inMid) continue; %>
+    <% for (var i in theme.menu){ if (i === '旅程') inMid = true; if (i === '私人空间') break; if (!inMid) continue; if (i === '分类' || i === '标签') continue; %>
     <li class="nav-item">
       <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
     </li>

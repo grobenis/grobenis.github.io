@@ -6,47 +6,65 @@ layout: "about"
 share: false
 ---
 
-> 曾梦想仗剑走天涯，看一看世界的繁华。
+<div class="about-rail">
 
-<div class="about-grid">
+<div class="about-station">
+<h3 class="about-station-label">我是谁</h3>
+<div class="about-station-body">
+<div class="about-panel">
+<div class="about-name">郭犇<span class="about-name-en">grobenis</span></div>
+<p class="about-tagline">SLAM / 计算机视觉算法工程师 —— 让机器回答「我在哪，要去哪」。</p>
+<div class="about-stats">
+<div class="about-stat"><b>67</b><span>篇原创</span></div>
+<div class="about-stat"><b>7</b><span>年笔耕 · 2020→2026</span></div>
+<div class="about-stat"><b>3</b><span>段工程实践</span></div>
+<div class="about-stat"><b>∞</b><span>未解的 bug</span></div>
+</div>
+<div class="about-path">
+<a href="/project/">南航 · 信息与计算科学</a><i>→</i>
+<a href="/project/">北航 · 虚拟现实</a><i>→</i>
+<a href="/project/">小米 · 可穿戴</a><i>→</i>
+<a href="/project/">纽劢 · 自动驾驶</a><i>→</i>
+<span class="about-path-now">它石智航 · 空间智能</span>
+</div>
+</div>
+</div>
+</div>
 
-<div class="about-card">
-<h3>关于我</h3>
-<p>你好，我是<strong>郭犇</strong>，一名专注于 <strong>SLAM / 计算机视觉</strong> 方向的工程师。</p>
-<ul>
-<li>研究方向：视觉 SLAM、多传感器融合、三维重建</li>
-<li>常用技术：C++、Python、ROS、OpenCV、Eigen、G2O、Ceres</li>
-<li>兴趣驱动：喜欢从算法原理追到工程落地，也享受把学到的知识整理成文章的过程</li>
+<div class="about-station">
+<h3 class="about-station-label">在做什么</h3>
+<div class="about-station-body">
+<div class="about-panel">
+<ul class="about-work">
+<li><b>视觉 SLAM 与多传感器融合</b><span>从 ORB-SLAM3、VINS 到工程落地的回环检测与图优化，读过也拆过源码。</span></li>
+<li><b>相机标定与位姿估计</b><span>在线外部标定、多视图标定、从 ArUco 到三角标的 PnP 工程化复盘——都是踩过的坑。</span></li>
+<li><b>世界模型 / 空间智能</b><span>现在的主业：让机器人不止知道自己在哪，还知道接下来会发生什么。</span></li>
 </ul>
 </div>
-
-<div class="about-card">
-<h3>关于博客</h3>
-<p>这个博客用于记录自己在学习中遇到的有趣难题、学习过程，偶尔也写写随笔感悟、读书笔记，主要包括四类内容：</p>
-<ol>
-<li>技术难题</li>
-<li>学习记录</li>
-<li>随心感想</li>
-<li>读书笔记</li>
-</ol>
+</div>
 </div>
 
-<div class="about-card">
-<h3>技术领域</h3>
-<ul>
-<li><strong>SLAM</strong>：ORB-SLAM、VINS-mono、激光 SLAM、回环检测、图优化、后端优化</li>
-<li><strong>计算机视觉</strong>：特征点检测、相机标定、立体匹配、目标检测</li>
-<li><strong>工程实践</strong>：C++ 开发、ROS、CMake、算法与面试题</li>
-</ul>
+<div class="about-station">
+<h3 class="about-station-label">写些什么</h3>
+<div class="about-station-body">
+<div class="about-panel">
+<p class="about-desc">这里不放简历式的技能清单。67 篇文章都是问题驱动的：工作中卡住 → 查资料做实验 → 写成复盘。大多集中在 <a href="/archives/">学习 / SLAM / C++ / 实验</a> 四类，从归档页顶部的分类标签可以直接筛。</p>
+<p class="about-desc">如果某篇帮你在深夜 debug 时省了半小时，这个博客就算没白搭。</p>
+</div>
+</div>
 </div>
 
-<div class="about-card">
-<h3>联系我</h3>
+<div class="about-station">
+<h3 class="about-station-label">找到我</h3>
+<div class="about-station-body">
+<div class="about-panel">
 <ul class="about-contact">
-<li><i class="ri-github-line"></i><a href="https://github.com/grobenis" target="_blank" rel="noopener">grobenis</a></li>
-<li><i class="ri-customer-service-2-line"></i><a href="https://blog.csdn.net/GuoBen_" target="_blank" rel="noopener">CSDN · GuoBen_</a></li>
-<li><i class="ri-mail-line"></i><a href="mailto:guoben@buaa.edu.cn">guoben@buaa.edu.cn</a></li>
+<li><a href="https://github.com/grobenis" target="_blank" rel="noopener"><i class="ri-github-line"></i>github.com/grobenis</a></li>
+<li><a href="https://blog.csdn.net/GuoBen_" target="_blank" rel="noopener"><i class="ri-customer-service-2-line"></i>CSDN · GuoBen_</a></li>
+<li><a href="mailto:guoben@buaa.edu.cn"><i class="ri-mail-line"></i>guoben@buaa.edu.cn</a></li>
 </ul>
+</div>
+</div>
 </div>
 
 </div>
