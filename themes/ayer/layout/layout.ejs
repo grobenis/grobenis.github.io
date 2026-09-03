@@ -17,6 +17,11 @@
     <aside class="sidebar">
       <%- partial('_partial/sidebar') %>
     </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <%- partial('_partial/post/search') %>
+    </div>
     <%- partial('_partial/modal') %>
     <%- partial('_partial/after-footer') %>
 
