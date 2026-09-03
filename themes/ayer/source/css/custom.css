@@ -4951,3 +4951,226 @@ p.search-result {
     animation: none;
   }
 }
+
+/* ==========================================================================
+   18. 归档/分类/标签页：旅程式时间线
+   ========================================================================== */
+.archives-wrap {
+  --arc-gap: 2.4rem;
+  position: relative;
+  margin-bottom: 2.4rem;
+}
+/* 年份：灰色下划线 → 右对齐大字 + 轨道上的发光节点 */
+.archive-year-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6rem;
+}
+.archive-year-wrap .archive-year {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  padding-right: 1.1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #3aa0e8;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.archive-year-wrap .archive-year:hover {
+  color: #49b1f5;
+}
+.archive-year-wrap .archive-year::after {
+  content: "";
+  position: absolute;
+  right: -0.3rem;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #49b1f5;
+  box-shadow: 0 0 10px rgba(73, 177, 245, 0.9), 0 0 0 4px rgba(73, 177, 245, 0.15);
+}
+/* 轨道：灰色虚线 → 蓝色点状枕木（与旅程页同款） */
+.archives {
+  margin-left: 6rem;
+  padding-left: var(--arc-gap);
+  border-left: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(73, 177, 245, 0.55) 0 8px,
+    transparent 8px 16px
+  ) no-repeat;
+  background-size: 2px 100%;
+}
+/* 每条记录：轨道上的小圆点标记 */
+.archive-article {
+  position: relative;
+}
+.archive-article::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--arc-gap) * -1 - 5px);
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(73, 177, 245, 0.6);
+  z-index: 1;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.archive-article:hover::before {
+  background: #49b1f5;
+  border-color: #49b1f5;
+  box-shadow: 0 0 10px rgba(73, 177, 245, 0.8);
+}
+/* 记录行：玻璃胶囊（日期胶囊 + 标题 + 分类/标签芯片） */
+.archive-article-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.9rem;
+  padding: 0.45rem 1.1rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(73, 177, 245, 0.15);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(70, 110, 150, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.archive-article-inner:hover {
+  transform: translateY(-2px);
+  border-color: rgba(73, 177, 245, 0.45);
+  box-shadow: 0 8px 20px rgba(73, 177, 245, 0.16);
+}
+/* 覆盖基础主题的 table-row 布局 */
+.archive-article-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.archive-article-header > h2 {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding-left: 0;
+}
+.archive-article-date {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  color: #3aa0e8;
+  background: rgba(73, 177, 245, 0.09);
+  border-radius: 999px;
+  text-decoration: none;
+}
+.archive-article-header h2 .archive-article-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+.archive-article-inner:hover .archive-article-title {
+  color: #3aa0e8;
+}
+/* 分类/标签芯片 */
+.archive-article-inner .article-category {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 0;
+  font-size: 0.75rem;
+}
+.archive-article-inner .article-category::before {
+  color: rgba(73, 177, 245, 0.8);
+}
+.archive-article-inner .article-category a {
+  color: #3aa0e8;
+  text-decoration: none;
+}
+.archive-article-inner .article-tag-list {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+}
+.archive-article-inner .article-tag-list::before {
+  color: rgba(73, 177, 245, 0.8);
+}
+.archive-article-inner .article-tag-list-item {
+  padding-right: 0;
+}
+.archive-article-inner .article-tag-list-item + .article-tag-list-item {
+  margin-left: 6px;
+}
+.archive-article-inner .article-tag-list-link {
+  float: none;
+  display: inline-block;
+  height: auto;
+  line-height: 1.5;
+  padding: 1px 9px;
+  font-size: 11px;
+  color: #3aa0e8;
+  background: rgba(73, 177, 245, 0.09);
+  border: 1px solid rgba(73, 177, 245, 0.3);
+  border-radius: 999px;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.archive-article-inner .article-tag-list-link:hover {
+  color: #fff;
+  background: #49b1f5;
+  border-color: #49b1f5;
+}
+/* 页型标题（归档 / 分类名 / 标签名）：蓝色渐隐下划线 */
+.page-type-title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2.2rem;
+  color: #2c3e50;
+  letter-spacing: 2px;
+}
+.page-type-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  height: 4px;
+  width: 44%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #49b1f5, rgba(73, 177, 245, 0));
+}
+@media (max-width: 560px) {
+  .archives-wrap {
+    --arc-gap: 1.6rem;
+  }
+  .archive-year-wrap {
+    width: 4.6rem;
+  }
+  .archives {
+    margin-left: 4.6rem;
+  }
+  .archive-year-wrap .archive-year {
+    font-size: 1.05rem;
+    padding-right: 0.8rem;
+  }
+  .archive-article-inner {
+    padding: 0.4rem 0.9rem;
+  }
+}
