@@ -2637,30 +2637,40 @@ body.page-scene-dawn .tv-set {
   animation: journey-fade-up 0.55s ease both;
 }
 
-/* --- 车次信息条 --- */
+/* --- 车次信息条（毛玻璃白卡，与下方车票同质感，透出页面渐变） --- */
 .journey-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  background: linear-gradient(120deg, #49b1f5 0%, #63c0f8 60%, #7ecbfa 100%);
+  background: rgba(255, 255, 255, 0.68);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(73, 177, 245, 0.28);
   border-radius: 14px;
   padding: 14px 22px;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(73, 177, 245, 0.32);
+  color: #2f6d9e;
+  box-shadow: 0 6px 18px rgba(73, 177, 245, 0.15);
   margin-bottom: 34px;
   animation: journey-fade-up 0.55s ease both;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.journey-head:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(73, 177, 245, 0.2);
+  border-color: rgba(73, 177, 245, 0.45);
 }
 .journey-head-label {
   display: block;
   font-size: 11px;
   letter-spacing: 3px;
-  opacity: 0.85;
+  color: rgba(85, 115, 150, 0.78);
 }
 .journey-head-value {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  color: #2f6d9e;
 }
 .journey-head-right {
   text-align: right;
@@ -2672,12 +2682,13 @@ body.page-scene-dawn .tv-set {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 2px;
+  color: #2f6d9e;
 }
 /* 出发→未来 之间的虚线轨道 + 跑动的小火车 */
 .journey-head-track {
   position: relative;
   width: 84px;
-  border-top: 2px dashed rgba(255, 255, 255, 0.75);
+  border-top: 2px dashed rgba(73, 177, 245, 0.5);
 }
 .journey-head-track::after {
   content: "🚄";
@@ -3138,6 +3149,139 @@ body.page-scene-dawn .tv-set {
   }
   .journey-detail {
     transition: none;
+  }
+}
+
+/* ---------- 旅程页深色模式：清晨远行 → 夜行列车 ---------- */
+@media (prefers-color-scheme: dark) {
+  /* 夜空背景：深蓝渐变 + 月色 + 远处暖灯 */
+  body.page-theme-journey {
+    background:
+      radial-gradient(ellipse at 78% 14%, rgba(130, 165, 215, 0.22), transparent 44%),
+      radial-gradient(ellipse at 12% 82%, rgba(70, 105, 160, 0.28), transparent 48%),
+      radial-gradient(ellipse at 50% 108%, rgba(255, 185, 115, 0.12), transparent 55%),
+      linear-gradient(174deg, #0e1728 0%, #14233a 40%, #1b2b44 74%, #22334e 100%) !important;
+  }
+  /* 云层换成星点 */
+  body.page-theme-journey::before {
+    filter: blur(1px);
+    background:
+      radial-gradient(2px 2px at 14% 20%, rgba(190, 210, 240, 0.55), transparent),
+      radial-gradient(2px 2px at 30% 48%, rgba(170, 195, 235, 0.45), transparent),
+      radial-gradient(2px 2px at 46% 15%, rgba(185, 205, 240, 0.5), transparent),
+      radial-gradient(3px 3px at 62% 38%, rgba(175, 200, 240, 0.45), transparent),
+      radial-gradient(2px 2px at 76% 62%, rgba(180, 205, 240, 0.5), transparent),
+      radial-gradient(2px 2px at 88% 22%, rgba(165, 190, 230, 0.45), transparent),
+      radial-gradient(ellipse at 20% 24%, rgba(140, 170, 220, 0.1), transparent 42%),
+      radial-gradient(ellipse at 64% 16%, rgba(160, 190, 235, 0.08), transparent 40%);
+  }
+
+  .journey-quote {
+    color: rgba(185, 208, 235, 0.85);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+
+  /* 顶部车次卡：深蓝毛玻璃 */
+  .journey-head {
+    background: rgba(23, 37, 58, 0.7);
+    border-color: rgba(110, 175, 235, 0.32);
+    color: #d9e7f6;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
+  .journey-head:hover {
+    border-color: rgba(110, 175, 235, 0.55);
+    box-shadow: 0 10px 24px rgba(73, 177, 245, 0.25);
+  }
+  .journey-head-label {
+    color: rgba(165, 190, 220, 0.78);
+  }
+  .journey-head-value,
+  .journey-head-route {
+    color: #d9e7f6;
+  }
+  .journey-head-track {
+    border-top-color: rgba(120, 185, 240, 0.5);
+  }
+
+  .journey-line::before {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(110, 180, 240, 0.5) 0 8px,
+      transparent 8px 16px
+    );
+  }
+
+  /* 车票：深蓝半透明 */
+  .journey-ticket {
+    background: rgba(25, 40, 62, 0.85);
+    border-color: rgba(100, 165, 225, 0.26);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.32);
+  }
+  .journey-stop:hover .journey-ticket {
+    box-shadow: 0 10px 24px rgba(73, 177, 245, 0.22);
+    border-color: rgba(110, 175, 235, 0.55);
+  }
+  .journey-stub {
+    border-right-color: rgba(110, 175, 235, 0.35);
+    background: rgba(110, 175, 235, 0.08);
+  }
+  .journey-detail {
+    border-left-color: rgba(110, 175, 235, 0.35);
+  }
+  .journey-detail::before {
+    background: rgba(110, 175, 235, 0.08);
+  }
+  .journey-detail-list {
+    border-top-color: rgba(110, 175, 235, 0.3);
+  }
+  .journey-year {
+    color: #74c4f8;
+  }
+  .journey-stub-arrow {
+    color: rgba(120, 185, 240, 0.65);
+  }
+  .journey-title h3 {
+    color: #eaf1f9;
+  }
+  .journey-tag {
+    color: #74c4f8;
+    background: rgba(110, 175, 235, 0.14);
+    border-color: rgba(110, 175, 235, 0.42);
+  }
+  .journey-stop.is-now .journey-tag {
+    color: #fff;
+    background: #49b1f5;
+    border-color: #49b1f5;
+  }
+  .journey-role {
+    color: #a9bbcf;
+  }
+  .journey-note,
+  .journey-detail-list li {
+    color: #7e91a8;
+  }
+  .journey-detail-list li::before {
+    color: rgba(120, 185, 240, 0.9);
+  }
+
+  /* 站点徽章：品牌图标多为深色/透明底，保留白底保证可辨识 */
+  .journey-badge {
+    border-color: rgba(110, 175, 235, 0.5);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  }
+  .journey-stop:hover .journey-badge {
+    box-shadow: 0 5px 16px rgba(73, 177, 245, 0.45);
+  }
+
+  .journey-tail-line {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(110, 180, 240, 0.5) 0 6px,
+      transparent 6px 12px
+    );
+  }
+  .journey-tail-text {
+    color: rgba(168, 195, 225, 0.85);
   }
 }
 
