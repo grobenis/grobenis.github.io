@@ -42,3 +42,20 @@
 <div class="search-form-wrap">
   <%- partial('post/search') %>
 </div>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
