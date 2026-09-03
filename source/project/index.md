@@ -152,6 +152,16 @@ share: false
 </div>
 </div>
 </div>
+</div>
+
+<div class="journey-fold" data-fold-target="journeyBeforeCollege">
+<button class="journey-fold-btn" type="button" aria-controls="journeyBeforeCollege" aria-expanded="false">
+<span class="journey-fold-label">展开大学以前的旅程</span>
+<span class="journey-fold-arrow">▾</span>
+</button>
+</div>
+
+<div class="journey-foldable" id="journeyBeforeCollege">
 
 <div class="journey-stop">
 <div class="journey-badge journey-badge-start"><span>📚</span></div>
@@ -258,6 +268,29 @@ share: false
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggle();
+      }
+    });
+  });
+
+  /* 大学以前的旅程折叠:默认收起,点击按钮展开/收起 */
+  var foldBtns = document.querySelectorAll('.journey-fold-btn');
+  Array.prototype.forEach.call(foldBtns, function (btn) {
+    var targetId = btn.getAttribute('aria-controls');
+    if (!targetId) return;
+    var panel = document.getElementById(targetId);
+    if (!panel) return;
+    var label = btn.querySelector('.journey-fold-label');
+    var arrow = btn.querySelector('.journey-fold-arrow');
+    btn.addEventListener('click', function () {
+      var open = panel.classList.toggle('is-shown');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (label) label.textContent = open ? '收起大学以前的旅程' : '展开大学以前的旅程';
+      if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
       }
     });
   });

@@ -2937,6 +2937,93 @@ body.page-scene-dawn .tv-set {
   color: rgba(73, 177, 245, 0.85);
 }
 
+/* --- 折叠区：大学以前的卡片默认收起（隐形可点击） --- */
+.journey-fold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 2px 0 2px 72px;
+  padding: 8px 14px;
+  position: relative;
+  animation: journey-fade-up 0.55s ease 0.5s both;
+}
+.journey-fold::before,
+.journey-fold::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+.journey-fold-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: transparent;
+  background: transparent;
+  border: 1px dashed transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  user-select: none;
+}
+/* 悬停时显示细微提示 */
+.journey-fold:hover::before,
+.journey-fold:hover::after {
+  background: repeating-linear-gradient(
+    to right,
+    rgba(73, 177, 245, 0.35) 0 6px,
+    transparent 6px 12px
+  );
+}
+.journey-fold:hover .journey-fold-btn {
+  color: rgba(73, 177, 245, 0.7);
+  border-color: rgba(73, 177, 245, 0.35);
+  background: rgba(73, 177, 245, 0.06);
+}
+/* 键盘聚焦时显示明确提示 */
+.journey-fold-btn:focus-visible {
+  outline: none;
+  color: rgba(73, 177, 245, 0.95);
+  border-color: rgba(73, 177, 245, 0.7);
+  background: rgba(73, 177, 245, 0.1);
+  box-shadow: 0 0 0 3px rgba(73, 177, 245, 0.18);
+}
+.journey-fold-btn .journey-fold-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+.journey-fold:hover .journey-fold-arrow {
+  opacity: 1;
+}
+.journey-fold-btn:focus-visible .journey-fold-arrow {
+  opacity: 1;
+}
+.journey-foldable {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.45s ease, opacity 0.35s ease;
+}
+.journey-foldable.is-shown {
+  max-height: 4000px;
+  opacity: 1;
+}
+
+@media (max-width: 560px) {
+  .journey-fold {
+    margin-left: 56px;
+    padding: 6px 10px;
+    gap: 8px;
+  }
+}
+
 /* 票根上下齿孔缺口（挖穿卡片，透出页面渐变背景） */
 @supports ((-webkit-mask-composite: source-in) or (mask-composite: intersect)) {
   .journey-ticket {
