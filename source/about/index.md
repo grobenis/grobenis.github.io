@@ -55,6 +55,17 @@ share: false
 </div>
 
 <div class="about-station">
+<h3 class="about-station-label">我的座右铭</h3>
+<div class="about-station-body">
+<div class="about-panel">
+<blockquote class="about-motto-quote">
+<p>人最宝贵的是生命，生命对于每个人只有一次。人的一生应当这样度过：当他回首往事时，不因虚度年华而悔恨，也不因碌碌无为而羞耻；这样，在临终的时候，他能够说：“我的整个生命和全部精力，都已经献给了世界上最壮丽的事业——为人类的解放而斗争。”</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div class="about-station">
 <h3 class="about-station-label">找到我</h3>
 <div class="about-station-body">
 <div class="about-panel">
@@ -79,7 +90,7 @@ share: false
   <div class="about-modal-card">
     <button class="about-modal-close" id="aboutModalClose" title="关闭"><i class="ri-close-line"></i></button>
     <h3>曾是少年</h3>
-    <p class="about-modal-sub">曾梦想仗剑走天涯，看一看世界的繁华</p>
+    <p class="about-modal-sub">记录技术、思考与生活</p>
     <ul>
       <li>站长：郭犇（grobenis）</li>
       <li>方向：视觉 SLAM / 多传感器融合 / 三维重建</li>

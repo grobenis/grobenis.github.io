@@ -3602,6 +3602,19 @@ body.page-scene-dawn .tv-set {
 .about-desc a:hover {
   border-bottom-style: solid;
 }
+.about-motto-quote {
+  margin: 0;
+  padding: 2px 0 2px 18px;
+  border-left: 3px solid rgba(73, 177, 245, 0.7);
+  background: transparent;
+}
+.about-motto-quote p {
+  margin: 0;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+  font-size: 15px;
+  line-height: 2;
+  color: #455665;
+}
 /* 在做什么：条目式，粗体主题 + 说明 */
 .about-work {
   list-style: none;
