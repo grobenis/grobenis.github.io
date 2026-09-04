@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="在 Linux 上把 ChatGPT 桌面版(内置 Codex)接到 OpenAI 兼容的第三方中转:从让 codex 命令可用、补齐双份认证、把 provider 导入正确应用分类,到用一个本地 $ref 展开代理解决中转不解析 JSON Schema 的问题。全程不改动任何系统文件即可跑通,并附配置步骤与速查表。" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="为 Codex 桌面版配置第三方中转 | 曾是少年" />
+  <meta property="og:description" content="在 Linux 上把 ChatGPT 桌面版(内置 Codex)接到 OpenAI 兼容的第三方中转:从让 codex 命令可用、补齐双份认证、把 provider 导入正确应用分类,到用一个本地 $ref 展开代理解决中转不解析 JSON Schema 的问题。全程不改动任何系统文件即可跑通,并附配置步骤与速查表。" />
+  <meta property="og:url" content="https://grobenis.github.io/2026/09/04/2026-09-04-把Codex桌面版接入第三方中转_五个叠加故障的排查记录/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <title>
+    为 Codex 桌面版配置第三方中转 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1788525410272" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2026-09-04-把Codex桌面版接入第三方中转_五个叠加故障的排查记录" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  为 Codex 桌面版配置第三方中转
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2026/09/04/2026-09-04-%E6%8A%8ACodex%E6%A1%8C%E9%9D%A2%E7%89%88%E6%8E%A5%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC_%E4%BA%94%E4%B8%AA%E5%8F%A0%E5%8A%A0%E6%95%85%E9%9A%9C%E7%9A%84%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/" class="article-date">
+  <time datetime="2026-09-03T16:00:00.000Z" itemprop="datePublished">2026-09-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98/">工程复盘</a> / <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98/AI-%E5%B7%A5%E5%85%B7%E9%93%BE/">AI 工具链</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.4k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">10分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>在 Linux 上把 ChatGPT 桌面版(内置 Codex)接入自己搭建的 OpenAI 兼容中转,一共四步:让 <code>codex</code> 命令可用、补齐认证、把 provider 导进正确分类、用一个本地 <code>$ref</code> 展开代理收尾。下面是可直接照做的完整配置流程。</p>
+<span id="more"></span>
+
+<h1 id="为-Codex-桌面版配置第三方中转"><a href="#为-Codex-桌面版配置第三方中转" class="headerlink" title="为 Codex 桌面版配置第三方中转"></a>为 Codex 桌面版配置第三方中转</h1><h2 id="一、目标与效果"><a href="#一、目标与效果" class="headerlink" title="一、目标与效果"></a>一、目标与效果</h2><p>让本机的 Codex 走自建中转,而不是 OpenAI 官方。工具链是 ChatGPT 桌面版(Linux deb,版本 <code>26.901.20858</code>,内置 <code>codex-cli 0.153.0-alpha.5</code>)加 CC-Switch(v3.20.1)做 provider 切换。</p>
+<p>达成后:CLI 和 GUI 都能发消息、调工具,数据经中转转发。全流程不改动任何系统文件,<code>$ref</code> 问题也只在本地代理处消化。</p>
+<p>约定:中转地址记为 <code>https://relay.example.com</code>,模型记为 <code>&lt;org&gt;/kimi-k3</code>,密钥一律 <code>sk-****</code>。</p>
+<h2 id="二、第一步-让-codex-命令可用"><a href="#二、第一步-让-codex-命令可用" class="headerlink" title="二、第一步:让 codex 命令可用"></a>二、第一步:让 codex 命令可用</h2><p>deb 包里其实已经带上了完整的 CLI 二进制,只是包根目录没导出 <code>/usr/bin/codex</code> 软链。直接补一条软链指向捆绑二进制即可:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -sf /usr/lib/chatgpt/resources/codex /usr/local/bin/codex</span><br></pre></td></tr></table></figure>
+
+<p>验证:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex --version   <span class="comment"># -&gt; codex-cli 0.153.0-alpha.5</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>不要照系统提示去 <code>snap install codex</code>,那会装出另一个无关的 Codex。</p>
+</blockquote>
+<h2 id="三、第二步-补双份认证-CLI-与-GUI"><a href="#三、第二步-补双份认证-CLI-与-GUI" class="headerlink" title="三、第二步:补双份认证(CLI 与 GUI)"></a>三、第二步:补双份认证(CLI 与 GUI)</h2><p>Codex 的 CLI 和桌面 GUI 走<strong>两条不同的认证读取路径</strong>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>认证来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CLI</td>
+<td><code>~/.codex/config.toml</code> 里的 <code>experimental_bearer_token</code></td>
+</tr>
+<tr>
+<td>GUI</td>
+<td><code>~/.codex/auth.json</code>,靠它判断”是否已登录”</td>
+</tr>
+</tbody></table>
+<p>CC-Switch 只把密钥写进了自己的 SQLite,<code>config.toml</code> 是全的,但 <strong><code>auth.json</code> 没生成</strong>——于是 CLI 能用、GUI 全程未登录。</p>
+<p>补齐 <code>auth.json</code>。注意别把密钥塞进命令行(<code>argv</code> 对同机其他用户可见),直接从源头程序化读取:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sqlite3, json, os</span><br><span class="line"></span><br><span class="line">c = sqlite3.connect(<span class="string">&#x27;file:~/.cc-switch/cc-switch.db?mode=ro&#x27;</span>, uri=<span class="literal">True</span>)</span><br><span class="line">row = c.execute(</span><br><span class="line">    <span class="string">&quot;select settings_config from providers where app_type=&#x27;codex&#x27; and is_current=1&quot;</span></span><br><span class="line">).fetchone()</span><br><span class="line">key = json.loads(row[<span class="number">0</span>])[<span class="string">&#x27;auth&#x27;</span>][<span class="string">&#x27;OPENAI_API_KEY&#x27;</span>]</span><br><span class="line"></span><br><span class="line">fd = os.<span class="built_in">open</span>(<span class="string">&#x27;~/.codex/auth.json&#x27;</span>, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, <span class="number">0o600</span>)</span><br><span class="line"><span class="keyword">with</span> os.fdopen(fd, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(&#123;<span class="string">&#x27;OPENAI_API_KEY&#x27;</span>: key&#125;, f)</span><br></pre></td></tr></table></figure>
+
+<p>验证:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex login status   <span class="comment"># -&gt; Logged in using an API key - sk-****</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关于残留的官方账号-401"><a href="#关于残留的官方账号-401" class="headerlink" title="关于残留的官方账号 401"></a>关于残留的官方账号 401</h3><p>补完 <code>auth.json</code> 后,日志里可能还残留一批指向 <code>chatgpt.com</code> 的 <code>401</code>(<code>/backend-api/settings/user</code>、<code>wham/usage</code> 等)。它们是<strong>官方账号态接口</strong>(用户设置、用量统计),只认 ChatGPT 的 OAuth session,第三方中转的 API key 天然无效。</p>
+<p>这些和对话链路是分开的——对话走 app-server → 自定义 provider → 中转,不经过 <code>chatgpt.com</code>。所以这批 401 属于<strong>预期噪音</strong>,只要不登录官方账号就会一直刷,可以放心忽略。</p>
+<h2 id="四、第三步-把-provider-导入正确的应用分类"><a href="#四、第三步-把-provider-导入正确的应用分类" class="headerlink" title="四、第三步:把 provider 导入正确的应用分类"></a>四、第三步:把 provider 导入正确的应用分类</h2><p>CC-Switch 通过深链 <code>ccswitch://v1/import</code> 导入 provider。导入时要注意:<code>app=</code> 字段决定它落到 Claude 还是 Codex,<strong>不一定是你想去的那个</strong>。导入后务必回读确认:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -o <span class="string">&#x27;app=Some([^)]*)&#x27;</span> ~/.cc-switch/logs/cc-switch.log | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c</span><br></pre></td></tr></table></figure>
+
+<p>如果 5 次全落在 <code>app=Some(&quot;claude&quot;)</code>,说明 provider 被导成了 Claude 的,Codex 侧还是空的。此时要么在 UI 里手动建一个 <code>app_type=&#39;codex&#39;</code> 的 provider,要么点之前先看清深链里的目标应用。</p>
+<blockquote>
+<p>导入类操作一定要<strong>回读确认落到哪儿了</strong>,不要以”点了没报错”为准。</p>
+</blockquote>
+<p>另外留意一个副作用:如果 Claude 侧的 provider 意外写入,<code>config.toml</code> 的 <code>shell_environment_policy.set</code> 可能注入了 <code>ANTHROPIC_AUTH_TOKEN</code> &#x2F; <code>ANTHROPIC_BASE_URL</code>。Codex 用不到这几项,但它们会随 Codex 启动的每个子进程可读,属于凭证扩散面,应当从配置里删掉。</p>
+<h2 id="五、第四步-用一个本地-ref-展开代理收尾"><a href="#五、第四步-用一个本地-ref-展开代理收尾" class="headerlink" title="五、第四步:用一个本地 $ref 展开代理收尾"></a>五、第四步:用一个本地 <code>$ref</code> 展开代理收尾</h2><p>Codex GUI 发消息时,工具 schema 由 zod 在运行时动态生成,包含 <code>$ref` / `$defs</code>。部分中转的 OpenAI 兼容层<strong>不解析 <code>$ref</code></strong>,会返回:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invalid JSON schema: Unresolvable $ref.</span><br></pre></td></tr></table></figure>
+
+<p>这不是配置文件能规避的(工具 schema 是运行时自动生成,且宿主用命令行 <code>-c</code> 注入 MCP,优先级最高)。最稳妥的做法是在<strong>流量出本机之前把 <code>$ref</code> 展开掉</strong>:起一个本地反向代理,把 <code>base_url</code> 指向它。</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">base_url</span> = <span class="string">&quot;http://127.0.0.1:8788&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>它递归内联 <code>tools</code> 里所有 <code>$ref`、剥掉 `$defs</code>,再转发给真实中转。核心只有两个函数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">resolve_pointer</span>(<span class="params">root, ref</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;解析形如 &#x27;#/$defs/Foo&#x27; 的本地 JSON Pointer,外部引用返回 None。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(ref, <span class="built_in">str</span>) <span class="keyword">or</span> <span class="keyword">not</span> ref.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">for</span> raw <span class="keyword">in</span> ref.lstrip(<span class="string">&quot;#&quot;</span>).split(<span class="string">&quot;/&quot;</span>):</span><br><span class="line">        <span class="keyword">if</span> raw == <span class="string">&quot;&quot;</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        part = raw.replace(<span class="string">&quot;~1&quot;</span>, <span class="string">&quot;/&quot;</span>).replace(<span class="string">&quot;~0&quot;</span>, <span class="string">&quot;~&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(cur, <span class="built_in">dict</span>):</span><br><span class="line">            <span class="keyword">if</span> part <span class="keyword">not</span> <span class="keyword">in</span> cur:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            cur = cur[part]</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(cur, <span class="built_in">list</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                cur = cur[<span class="built_in">int</span>(part)]</span><br><span class="line">            <span class="keyword">except</span> (ValueError, IndexError):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">return</span> cur</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inline</span>(<span class="params">node, root, stack=<span class="built_in">frozenset</span>(<span class="params"></span>), depth=<span class="number">0</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;递归内联 $ref,并剥掉 $defs / definitions。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> depth &gt; MAX_DEPTH:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;object&quot;</span>, <span class="string">&quot;additionalProperties&quot;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(node, <span class="built_in">list</span>):</span><br><span class="line">        <span class="keyword">return</span> [inline(x, root, stack, depth + <span class="number">1</span>) <span class="keyword">for</span> x <span class="keyword">in</span> node]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(node, <span class="built_in">dict</span>):</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    ref = node.get(<span class="string">&quot;$ref&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(ref, <span class="built_in">str</span>):</span><br><span class="line">        <span class="keyword">if</span> ref <span class="keyword">in</span> stack:</span><br><span class="line">            <span class="comment"># 递归结构无法完全展开,退化成宽松 object,避免无限膨胀</span></span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;object&quot;</span>, <span class="string">&quot;additionalProperties&quot;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">        target = resolve_pointer(root, ref)</span><br><span class="line">        siblings = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> node.items() <span class="keyword">if</span> k != <span class="string">&quot;$ref&quot;</span>&#125;</span><br><span class="line">        <span class="keyword">if</span> target <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> inline(siblings, root, stack, depth + <span class="number">1</span>) <span class="keyword">if</span> siblings <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">        expanded = inline(target, root, stack | &#123;ref&#125;, depth + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> siblings <span class="keyword">and</span> <span class="built_in">isinstance</span>(expanded, <span class="built_in">dict</span>):</span><br><span class="line">            merged = <span class="built_in">dict</span>(expanded)</span><br><span class="line">            merged.update(inline(siblings, root, stack, depth + <span class="number">1</span>))</span><br><span class="line">            <span class="keyword">return</span> merged</span><br><span class="line">        <span class="keyword">return</span> expanded</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;k: inline(v, root, stack, depth + <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">for</span> k, v <span class="keyword">in</span> node.items() <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> (<span class="string">&quot;$defs&quot;</span>, <span class="string">&quot;definitions&quot;</span>)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三个必须处理的边界:</p>
+<ol>
+<li><strong>递归结构</strong>(<code>Node.child -&gt; Node</code>)——用 <code>stack</code> 做环检测,命中退化为宽松 object,否则会无限膨胀</li>
+<li><strong>同级兄弟键</strong>(<code>&#123;&quot;$ref&quot;: ..., &quot;description&quot;: ...&#125;</code>)——展开后要合并,不能直接丢</li>
+<li><strong>解析失败</strong>——剥掉 <code>$ref</code> 保留其余约束,而不是整个丢弃</li>
+</ol>
+<p>代理本身还有两点不能省:</p>
+<ul>
+<li><strong>不能缓冲</strong>。Codex 走 SSE 流式,必须逐块 <code>write</code> + <code>flush</code>,并设 <code>Accept-Encoding: identity</code> 避免压缩打断流</li>
+<li><strong>逐跳头部要过滤</strong>(<code>Content-Length</code>、<code>Transfer-Encoding</code>、<code>Connection</code> 等),否则转发长度不一致</li>
+</ul>
+<h2 id="六、验证"><a href="#六、验证" class="headerlink" title="六、验证"></a>六、验证</h2><ol>
+<li>CLI 先验证:<code>codex exec &quot;reply with exactly: OK&quot;</code>,应看到模型经自定义 provider 回复。</li>
+<li>GUI 发一条带工具的请求:模型回话、读文件、跑命令,链路应全部打通。</li>
+<li>若之前报过 <code>$ref</code>,用对照请求确认代理生效:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[直连中转  ] HTTP 400  Invalid JSON schema: Unresolvable $ref.</span><br><span class="line">[经本地代理] HTTP 200  -&gt; &#x27;OK&#x27;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>流式确认未被缓冲(首字节应远早于总耗时)。</li>
+</ol>
+<h2 id="七、日常注意"><a href="#七、日常注意" class="headerlink" title="七、日常注意"></a>七、日常注意</h2><ul>
+<li><code>base_url</code> 指向 <code>127.0.0.1:8788</code>,本地代理是一个<strong>普通进程,注销或重启后就没了</strong>。届时症状变成”连接被拒”。要么做成开机自启,要么明确知道这一点。</li>
+<li><code>$ref` 问题的根本解是让中转在兼容层展开它(`$ref</code> &#x2F; <code>$defs</code> 是 JSON Schema 标准,OpenAI 官方 API 正常支持)。本地代理只是止血,值得给中转提个 issue。</li>
+</ul>
+<hr>
+<h2 id="附-踩坑与原理补充-x2F-速查表"><a href="#附-踩坑与原理补充-x2F-速查表" class="headerlink" title="附:踩坑与原理补充 &#x2F; 速查表"></a>附:踩坑与原理补充 &#x2F; 速查表</h2><p>这套配置之所以每个步骤都要”点一下回读验一下”,是因为每一步都可能<strong>静默失败或落入意料之外的路径</strong>。下面是关键原理与对应症状。</p>
+<h3 id="为什么用-dpkg-L-而不是-which"><a href="#为什么用-dpkg-L-而不是-which" class="headerlink" title="为什么用 dpkg -L 而不是 which"></a>为什么用 <code>dpkg -L</code> 而不是 <code>which</code></h3><p>发行版包管理器、npm 全局、nvm 各版本、snap、以及应用自带的捆绑二进制是五个独立的安装位面。<code>which</code> 只看 PATH,而应用自带的二进制不进来。<code>dpkg -L &lt;pkg&gt;</code> 才能看清包到底装了什么。</p>
+<h3 id="为什么要补两份认证"><a href="#为什么要补两份认证" class="headerlink" title="为什么要补两份认证"></a>为什么要补两份认证</h3><p>CLI&#x2F;GUI 认证读取路径不同,<code>config.toml</code> 一份不够。<code>auth.json</code> 缺失会让 GUI 全程未登录,而 CLI 因 <code>experimental_bearer_token</code> 不受影响——这种”一样配置、A 能用 B 不能用”的不对称,恰恰是最强的排查线索。</p>
+<h3 id="为什么-ref-关不掉"><a href="#为什么-ref-关不掉" class="headerlink" title="为什么 $ref 关不掉"></a>为什么 <code>$ref</code> 关不掉</h3><p>两点叠加:工具 schema 由 zod 在<strong>运行时动态生成</strong>(源码里搜不到,不代表不会产生);宿主用命令行 <code>-c</code> 注入 MCP (<code>startup_timeout_sec=10</code> 异步注册),**优先级高于 <code>config.toml</code>**。所以”关插件&#x2F;改配置”都不成立,只能在流量层面拦。</p>
+<h3 id="“第一轮成功、之后全失败”意味着什么"><a href="#“第一轮成功、之后全失败”意味着什么" class="headerlink" title="“第一轮成功、之后全失败”意味着什么"></a>“第一轮成功、之后全失败”意味着什么</h3><p>工具列表是动态增长的:第一轮请求发出时 MCP 尚未注册完 → 工具集扁平 → 200;几秒后带 <code>$ref</code> 的工具 schema 加入 → 之后每轮 400。这种模式几乎总指向<strong>异步初始化</strong>,别当偶发网络抖动。</p>
+<h3 id="快速排查表"><a href="#快速排查表" class="headerlink" title="快速排查表"></a>快速排查表</h3><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>真实原因</th>
+<th>定位方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>which codex</code> 找不到,提示装 snap</td>
+<td>deb 只注册 GUI 入口,不导出 CLI 软链</td>
+<td><code>dpkg -L &lt;pkg&gt;</code> 找捆绑二进制</td>
+</tr>
+<tr>
+<td>CLI 可用但 GUI 全程 401</td>
+<td>缺 <code>auth.json</code>;CLI 走 <code>experimental_bearer_token</code>,GUI 走 <code>auth.json</code></td>
+<td><code>codex login status</code></td>
+</tr>
+<tr>
+<td>补完认证仍有 401</td>
+<td>打向官方账号态接口(<code>settings/user</code>、<code>wham/*</code>),API key 天然无效</td>
+<td>看 401 的 host 与路径,与对话链路区分</td>
+</tr>
+<tr>
+<td>切换工具”点了没反应”</td>
+<td>深链导入默认落到别的应用分类</td>
+<td>查工具自身日志的 <code>app=</code> 字段 + 回读数据库</td>
+</tr>
+<tr>
+<td>改了 <code>config.toml</code> 不生效</td>
+<td>宿主用命令行 <code>-c</code> 注入,优先级高于配置文件</td>
+<td><code>ps</code> 看进程完整启动参数</td>
+</tr>
+<tr>
+<td><code>Invalid JSON schema: Unresolvable $ref` | 中转不解析 `$ref</code>,而 zod 运行时生成 <code>$ref` | 构造带/不带 `$ref</code> 的对照请求</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>第一轮成功,之后全失败</td>
+<td>异步组件(MCP)注册后改变了工具集形状</td>
+<td>看组件启动时序与 <code>startup_timeout_sec</code></td>
+</tr>
+</tbody></table>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2026/09/04/2026-09-04-%E6%8A%8ACodex%E6%A1%8C%E9%9D%A2%E7%89%88%E6%8E%A5%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC_%E4%BA%94%E4%B8%AA%E5%8F%A0%E5%8A%A0%E6%95%85%E9%9A%9C%E7%9A%84%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2026/09/04/2026-09-04-%E7%BB%99%E5%BE%AE%E4%BF%A1%E5%8A%A0%E4%B8%80%E4%B8%AAAlt+X_GNOME%E4%B8%8B%E7%AA%97%E5%8F%A3%E6%98%BE%E9%9A%90%E7%9A%84%E4%B8%89%E4%B8%AA%E9%99%B7%E9%98%B1/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Ubuntu环境下为微信设置显隐快捷键</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

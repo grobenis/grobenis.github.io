@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="在 Ubuntu GNOME(X11)上为微信配置一个 Alt+X 快捷键：窗口在前台则收起、不在前台则调出、没运行则启动。整个方案只有两个脚本、约 90 行代码，只用 wmctrl、xprop、gsettings，不装 xdotool、不需要 sudo。本文给出可直接照抄的设置步骤，并在文末补充几条深水区原理说明。" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="Ubuntu环境下为微信设置显隐快捷键 | 曾是少年" />
+  <meta property="og:description" content="在 Ubuntu GNOME(X11)上为微信配置一个 Alt+X 快捷键：窗口在前台则收起、不在前台则调出、没运行则启动。整个方案只有两个脚本、约 90 行代码，只用 wmctrl、xprop、gsettings，不装 xdotool、不需要 sudo。本文给出可直接照抄的设置步骤，并在文末补充几条深水区原理说明。" />
+  <meta property="og:url" content="https://grobenis.github.io/2026/09/04/2026-09-04-给微信加一个Alt+X_GNOME下窗口显隐的三个陷阱/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <title>
+    Ubuntu环境下为微信设置显隐快捷键 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1788525410274" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="曾是少年" type="application/atom+xml">
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2026-09-04-给微信加一个Alt+X_GNOME下窗口显隐的三个陷阱" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Ubuntu环境下为微信设置显隐快捷键
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2026/09/04/2026-09-04-%E7%BB%99%E5%BE%AE%E4%BF%A1%E5%8A%A0%E4%B8%80%E4%B8%AAAlt+X_GNOME%E4%B8%8B%E7%AA%97%E5%8F%A3%E6%98%BE%E9%9A%90%E7%9A%84%E4%B8%89%E4%B8%AA%E9%99%B7%E9%98%B1/" class="article-date">
+  <time datetime="2026-09-03T16:00:00.000Z" itemprop="datePublished">2026-09-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98/">工程复盘</a> / <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98/Linux-%E6%A1%8C%E9%9D%A2/">Linux 桌面</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.2k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>在 Ubuntu GNOME(X11)上给微信配一个 Alt+X 快捷键：按一下，微信在前台就收起，不在前台就调出来，没运行就启动。整个方案只有两个脚本、约 90 行代码，只用 <code>wmctrl</code>、<code>xprop</code>、<code>gsettings</code>，不装 <code>xdotool</code>、不需要 sudo。下面是从零到能用的全部步骤。</p>
+<span id="more"></span>
+
+<h1 id="Ubuntu环境下为微信设置显隐快捷键"><a href="#Ubuntu环境下为微信设置显隐快捷键" class="headerlink" title="Ubuntu环境下为微信设置显隐快捷键"></a>Ubuntu环境下为微信设置显隐快捷键</h1><h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>macOS 上”呼出&#x2F;隐藏某个应用”是系统能力，Linux 桌面上则要自己拼。好在我们只需要两个 X11 工具加一个快捷键绑定，就能得到同样的体验。</p>
+<p>环境事实：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>桌面</td>
+<td>Ubuntu GNOME，<code>XDG_SESSION_TYPE=x11</code></td>
+</tr>
+<tr>
+<td>窗管</td>
+<td>mutter</td>
+</tr>
+<tr>
+<td>微信</td>
+<td>腾讯官方 deb，4.1.1.8</td>
+</tr>
+<tr>
+<td>窗口类</td>
+<td><code>wechat.wechat</code></td>
+</tr>
+<tr>
+<td>依赖</td>
+<td><code>wmctrl</code>、<code>xprop</code>、<code>gsettings</code></td>
+</tr>
+</tbody></table>
+<h2 id="二、实现效果"><a href="#二、实现效果" class="headerlink" title="二、实现效果"></a>二、实现效果</h2><p>一个键覆盖三种状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">聚焦中        -&gt; 最小化</span><br><span class="line">最小化/在后台 -&gt; 恢复并聚焦</span><br><span class="line">没有运行      -&gt; 启动</span><br></pre></td></tr></table></figure>
+
+<p>GNOME 的自定义快捷键最终只是执行一条命令，所以整个逻辑收敛成两个可执行文件，不依赖任何交互式 shell 环境。</p>
+<h2 id="三、安装依赖"><a href="#三、安装依赖" class="headerlink" title="三、安装依赖"></a>三、安装依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install wmctrl x11-utils   <span class="comment"># x11-utils 提供 xprop</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果机器上 sudo 需要密码、<code>xdotool</code> 又不方便装，也没关系——本方案不用它。</p>
+</blockquote>
+<h2 id="四、最小化辅助工具-x-iconify"><a href="#四、最小化辅助工具-x-iconify" class="headerlink" title="四、最小化辅助工具 x-iconify"></a>四、最小化辅助工具 x-iconify</h2><p>微信这种窗口用 <code>wmctrl -b add,hidden</code> 是收不起来的（原因见文末补充），所以我们提供一个小工具，向窗管发标准的 <code>WM_CHANGE_STATE</code> 消息来真正最小化。</p>
+<p>新建 <code>~/.local/bin/x-iconify</code>，内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;Minimize (iconify) an X11 window by id.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Sends the WM_CHANGE_STATE client message to the root window -- the same</span></span><br><span class="line"><span class="string">thing XIconifyWindow does internally -- which mutter honors reliably.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> Structure, c_char_p, c_int, c_long, c_ulong, c_void_p</span><br><span class="line"></span><br><span class="line">CLIENT_MESSAGE = <span class="number">33</span></span><br><span class="line">ICONIC_STATE = <span class="number">3</span></span><br><span class="line">SUBSTRUCTURE_NOTIFY_MASK = <span class="number">1</span> &lt;&lt; <span class="number">19</span></span><br><span class="line">SUBSTRUCTURE_REDIRECT_MASK = <span class="number">1</span> &lt;&lt; <span class="number">20</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">XClientMessageEvent</span>(<span class="title class_ inherited__">Structure</span>):</span><br><span class="line">    _fields_ = [</span><br><span class="line">        (<span class="string">&quot;type&quot;</span>, c_int), (<span class="string">&quot;serial&quot;</span>, c_ulong), (<span class="string">&quot;send_event&quot;</span>, c_int),</span><br><span class="line">        (<span class="string">&quot;display&quot;</span>, c_void_p), (<span class="string">&quot;window&quot;</span>, c_ulong), (<span class="string">&quot;message_type&quot;</span>, c_ulong),</span><br><span class="line">        (<span class="string">&quot;format&quot;</span>, c_int), (<span class="string">&quot;data&quot;</span>, c_long * <span class="number">5</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">XEvent</span>(ctypes.<span class="type">Union</span>):</span><br><span class="line">    _fields_ = [(<span class="string">&quot;type&quot;</span>, c_int), (<span class="string">&quot;xclient&quot;</span>, XClientMessageEvent),</span><br><span class="line">                (<span class="string">&quot;pad&quot;</span>, c_long * <span class="number">24</span>)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) != <span class="number">2</span>:</span><br><span class="line">        sys.exit(<span class="string">&quot;usage: x-iconify &lt;window-id-hex&gt;&quot;</span>)</span><br><span class="line"></span><br><span class="line">    x11 = ctypes.CDLL(<span class="string">&quot;libX11.so.6&quot;</span>)</span><br><span class="line">    x11.XOpenDisplay.restype = c_void_p</span><br><span class="line">    x11.XOpenDisplay.argtypes = [c_char_p]</span><br><span class="line">    x11.XInternAtom.restype = c_ulong</span><br><span class="line">    x11.XInternAtom.argtypes = [c_void_p, c_char_p, c_int]</span><br><span class="line">    x11.XDefaultRootWindow.restype = c_ulong</span><br><span class="line">    x11.XDefaultRootWindow.argtypes = [c_void_p]</span><br><span class="line">    x11.XSendEvent.argtypes = [c_void_p, c_ulong, c_int, c_long, c_void_p]</span><br><span class="line">    x11.XFlush.argtypes = [c_void_p]</span><br><span class="line"></span><br><span class="line">    dpy = x11.XOpenDisplay(<span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> dpy:</span><br><span class="line">        sys.exit(<span class="string">&quot;cannot open X display&quot;</span>)</span><br><span class="line"></span><br><span class="line">    ev = XEvent()</span><br><span class="line">    ev.<span class="built_in">type</span> = CLIENT_MESSAGE</span><br><span class="line">    ev.xclient.<span class="built_in">type</span> = CLIENT_MESSAGE</span><br><span class="line">    ev.xclient.window = <span class="built_in">int</span>(sys.argv[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">    ev.xclient.message_type = x11.XInternAtom(dpy, <span class="string">b&quot;WM_CHANGE_STATE&quot;</span>, <span class="literal">False</span>)</span><br><span class="line">    ev.xclient.<span class="built_in">format</span> = <span class="number">32</span></span><br><span class="line">    ev.xclient.data[<span class="number">0</span>] = ICONIC_STATE</span><br><span class="line"></span><br><span class="line">    x11.XSendEvent(dpy, x11.XDefaultRootWindow(dpy), <span class="literal">False</span>,</span><br><span class="line">                   SUBSTRUCTURE_NOTIFY_MASK | SUBSTRUCTURE_REDIRECT_MASK,</span><br><span class="line">                   ctypes.byref(ev))</span><br><span class="line">    x11.XFlush(dpy)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>要点：</p>
+<ul>
+<li><code>XEvent</code> 按 64 位联合声明（<code>pad = c_long * 24</code>），避免 <code>XSendEvent</code> 读取事件结构时越界。</li>
+<li>工具只负责最小化单类窗口，逻辑简单、可单独用 <code>x-iconify 0x&lt;窗口id&gt;</code> 测试。</li>
+</ul>
+<h2 id="五、主脚本-wechat-toggle"><a href="#五、主脚本-wechat-toggle" class="headerlink" title="五、主脚本 wechat-toggle"></a>五、主脚本 wechat-toggle</h2><p>新建 <code>~/.local/bin/wechat-toggle</code>，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="comment"># Toggle WeChat with one key (bound to Alt+X):</span></span><br><span class="line"><span class="comment">#   focused          -&gt; minimize</span></span><br><span class="line"><span class="comment">#   minimized/behind -&gt; restore + focus</span></span><br><span class="line"><span class="comment">#   not running      -&gt; launch</span></span><br><span class="line"><span class="built_in">set</span> -uo pipefail</span><br><span class="line"></span><br><span class="line">LAUNCH_CMD=<span class="string">&#x27;/usr/bin/wechat&#x27;</span></span><br><span class="line">WM_CLASS=<span class="string">&#x27;wechat.wechat&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gnome-settings-daemon launches keybindings with a bare PATH that excludes</span></span><br><span class="line"><span class="comment"># ~/.local/bin, so resolve the helper relative to this script.</span></span><br><span class="line">ICONIFY=<span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="subst">$(readlink -f <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)</span>&quot;</span>)</span>/x-iconify&quot;</span></span><br><span class="line"></span><br><span class="line">win=$(wmctrl -lx 2&gt;/dev/null | awk -v c=<span class="string">&quot;<span class="variable">$WM_CLASS</span>&quot;</span> <span class="string">&#x27;$3 == c &#123;print $1; exit&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ -z <span class="string">&quot;<span class="variable">$win</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">  setsid <span class="string">&quot;<span class="variable">$LAUNCH_CMD</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1 &amp;</span><br><span class="line">  <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">active_raw=$(xprop -root _NET_ACTIVE_WINDOW 2&gt;/dev/null | grep -oE <span class="string">&#x27;0x[0-9a-fA-F]+&#x27;</span> | <span class="built_in">head</span> -1)</span><br><span class="line">active_dec=$(<span class="built_in">printf</span> <span class="string">&#x27;%d&#x27;</span> <span class="string">&quot;<span class="variable">$&#123;active_raw:-0x0&#125;</span>&quot;</span> 2&gt;/dev/null || <span class="built_in">echo</span> 0)</span><br><span class="line">win_dec=$(<span class="built_in">printf</span> <span class="string">&#x27;%d&#x27;</span> <span class="string">&quot;<span class="variable">$win</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$win_dec</span>&quot;</span> -eq <span class="string">&quot;<span class="variable">$active_dec</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">exec</span> <span class="string">&quot;<span class="variable">$ICONIFY</span>&quot;</span> <span class="string">&quot;<span class="variable">$win</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">wmctrl -i -a <span class="string">&quot;<span class="variable">$win</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># mutter sometimes drops the focus request when the window was iconified.</span></span><br><span class="line"><span class="comment"># Re-assert once if focus did not land.</span></span><br><span class="line"><span class="built_in">sleep</span> 0.25</span><br><span class="line">now=$(xprop -root _NET_ACTIVE_WINDOW 2&gt;/dev/null | grep -oE <span class="string">&#x27;0x[0-9a-fA-F]+&#x27;</span> | <span class="built_in">head</span> -1)</span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="subst">$(printf &#x27;%d&#x27; <span class="string">&quot;<span class="variable">$&#123;now:-0x0&#125;</span>&quot;</span>)</span>&quot;</span> -ne <span class="string">&quot;<span class="variable">$win_dec</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">  wmctrl -i -a <span class="string">&quot;<span class="variable">$win</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>逻辑很直白：</p>
+<ol>
+<li>没找到窗口 → 启动微信。</li>
+<li>微信在前台（窗口 id 与 <code>_NET_ACTIVE_WINDOW</code> 相同）→ 最小化。</li>
+<li>否则 → 调出并聚焦（聚焦没落上就补发一次，保证按键交替稳定）。</li>
+</ol>
+<p>两个 id 统一转十进制比较，避免字符串格式给自己挖坑。</p>
+<h2 id="六、绑定到-Alt-X"><a href="#六、绑定到-Alt-X" class="headerlink" title="六、绑定到 Alt+X"></a>六、绑定到 Alt+X</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x ~/.local/bin/x-iconify ~/.local/bin/wechat-toggle</span><br></pre></td></tr></table></figure>
+
+<p>在 GNOME 里加一条自定义快捷键，指向主脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">BASE=/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings</span><br><span class="line">P=<span class="string">&quot;org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:<span class="variable">$BASE</span>/custom1/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意:先读回已有的 custom0 一起写回,别覆盖</span></span><br><span class="line">gsettings <span class="built_in">set</span> org.gnome.settings-daemon.plugins.media-keys custom-keybindings \</span><br><span class="line">  <span class="string">&quot;[&#x27;<span class="variable">$BASE</span>/custom0/&#x27;, &#x27;<span class="variable">$BASE</span>/custom1/&#x27;]&quot;</span></span><br><span class="line"></span><br><span class="line">gsettings <span class="built_in">set</span> <span class="string">&quot;<span class="variable">$P</span>&quot;</span> name <span class="string">&#x27;切换微信&#x27;</span></span><br><span class="line">gsettings <span class="built_in">set</span> <span class="string">&quot;<span class="variable">$P</span>&quot;</span> <span class="built_in">command</span> <span class="string">&quot;<span class="variable">$HOME</span>/.local/bin/wechat-toggle&quot;</span></span><br><span class="line">gsettings <span class="built_in">set</span> <span class="string">&quot;<span class="variable">$P</span>&quot;</span> binding <span class="string">&#x27;&lt;Alt&gt;x&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>gsettings</code> 立即生效，不需要注销或重启。</p>
+<p>绑定前可以确认一下目标组合键没被占用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> org.gnome.desktop.wm.keybindings org.gnome.shell.keybindings \</span><br><span class="line">         org.gnome.settings-daemon.plugins.media-keys org.gnome.mutter.keybindings; <span class="keyword">do</span></span><br><span class="line">  gsettings list-recursively <span class="variable">$s</span> 2&gt;/dev/null | grep -i <span class="string">&quot;alt&gt;x&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>匹配到的 <code>&lt;Alt&gt;XF86AudioMute</code> 之类是多媒体键，不是字母 X，不构成冲突。</p>
+</blockquote>
+<h2 id="七、验证"><a href="#七、验证" class="headerlink" title="七、验证"></a>七、验证</h2><ol>
+<li>终端里先手动跑一遍主脚本，确认三种分支行为正确。</li>
+<li>再用 <code>env -i DISPLAY=&quot;$DISPLAY" XAUTHORITY="$HOME/.Xauthority&quot; HOME=&quot;$HOME&quot; PATH=/usr/bin:/bin ~/.local/bin/wechat-toggle</code> 模拟快捷键的真实环境验证。</li>
+<li>最后再绑快捷键、连按 Alt+X 交替验证。</li>
+</ol>
+<p>多轮循环测试都稳定交替、窗口 id 与进程 PID 稳定后，就可以正常使用了。</p>
+<hr>
+<h2 id="附：为什么这么写——踩坑与原理补充"><a href="#附：为什么这么写——踩坑与原理补充" class="headerlink" title="附：为什么这么写——踩坑与原理补充"></a>附：为什么这么写——踩坑与原理补充</h2><p>这套”标准答案”背后有几何深水区，遇到异常时可对照排查。</p>
+<h3 id="1-为什么不用-wmctrl-b-add-hidden"><a href="#1-为什么不用-wmctrl-b-add-hidden" class="headerlink" title="1. 为什么不用 wmctrl -b add,hidden"></a>1. 为什么不用 <code>wmctrl -b add,hidden</code></h3><p>EWMH 规范明确 <code>_NET_WM_STATE_HIDDEN</code> 是<strong>窗管单向写、客户端只读</strong>的状态位。客户端用 <code>wmctrl -b add,hidden</code> 置位，mutter 直接丢弃，而且按协议它没有义务反馈失败——所以命令返回 0、窗口纹丝不动。</p>
+<h3 id="2-为什么不用”关闭到托盘”来隐藏"><a href="#2-为什么不用”关闭到托盘”来隐藏" class="headerlink" title="2. 为什么不用”关闭到托盘”来隐藏"></a>2. 为什么不用”关闭到托盘”来隐藏</h3><p>微信收进托盘时会<strong>销毁 X 窗口对象</strong>。此时再执行 <code>/usr/bin/wechat</code> 只会撞上单实例检测直接退出，窗口回不来——隐藏不可逆。而最小化（iconify）保留窗口对象、永远可恢复，是更稳妥的”隐藏”语义。顺带的好处：最小化的窗口仍出现在 <code>wmctrl -l</code> 里，窗口发现逻辑只要一行 awk。</p>
+<h3 id="3-为什么不用-XIconifyWindow（Python-ctypes-版）"><a href="#3-为什么不用-XIconifyWindow（Python-ctypes-版）" class="headerlink" title="3. 为什么不用 XIconifyWindow（Python ctypes 版）"></a>3. 为什么不用 <code>XIconifyWindow</code>（Python ctypes 版）</h3><p><code>XIconifyWindow</code> 本身没问题，但在这台机器上用 <code>ctypes</code> 直接调 libX11 时触发段错误（SIGSEGV, EXIT&#x3D;139）。与其调试一个封装函数的绑定，不如把它内部那条 <code>WM_CHANGE_STATE</code> 客户端消息直接构造出来——字段完全可控，没有黑盒，也正是本方案 <code>x-iconify</code> 的原理。</p>
+<h3 id="4-窗口-id-有两种格式"><a href="#4-窗口-id-有两种格式" class="headerlink" title="4. 窗口 id 有两种格式"></a>4. 窗口 id 有两种格式</h3><p><code>wmctrl -lx</code> 把 id 补零到 8 位（<code>0x00200026</code>），<code>xprop</code> 不补零（<code>0x200026</code>）。字符串比较永远不相等，会导致”只能调出、从不隐藏”这种坏掉一半的假象。修法：统一转十进制比较。</p>
+<h3 id="5-焦点竞态"><a href="#5-焦点竞态" class="headerlink" title="5. 焦点竞态"></a>5. 焦点竞态</h3><p>从最小化恢复时，mutter 有时会丢弃焦点请求（防抢焦点），表现为窗口出现但焦点在别处，下一次按键误判为”未聚焦”、再次激活而非隐藏。处理：激活后短暂等待并校验，没生效就补发一次（主脚本里那 0.25s + 二次 <code>wmctrl -a</code>）。改用 iconify 后竞态已大幅缓解，补发逻辑作为兜底。</p>
+<h3 id="6-快捷键环境-PATH-很精简"><a href="#6-快捷键环境-PATH-很精简" class="headerlink" title="6. 快捷键环境 PATH 很精简"></a>6. 快捷键环境 PATH 很精简</h3><p><code>gnome-settings-daemon</code> 执行快捷键命令用的 PATH <strong>不包含</strong> <code>~/.local/bin</code>。主脚本据此用 <code>$(dirname "$(readlink -f &quot;$0&quot;)&quot;)</code> 解析同目录的 <code>x-iconify</code>，并用 <code>env -i</code> 在绑定前复现验证。</p>
+<h3 id="7-写-gsettings-数组先把原有项读回来"><a href="#7-写-gsettings-数组先把原有项读回来" class="headerlink" title="7. 写 gsettings 数组先把原有项读回来"></a>7. 写 gsettings 数组先把原有项读回来</h3><p><code>custom-keybindings</code> 是数组，直接覆盖会静默清掉之前配的快捷键。正确做法是保留已有项再追加。</p>
+<h3 id="快速排查表"><a href="#快速排查表" class="headerlink" title="快速排查表"></a>快速排查表</h3><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>成因</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>命令返回 0 但窗口不动</td>
+<td>置位了客户端只读状态位</td>
+<td>改用 <code>x-iconify</code>（<code>WM_CHANGE_STATE</code>）</td>
+</tr>
+<tr>
+<td>窗口消失后按 Alt+X 起不来</td>
+<td>关闭到托盘销毁了窗口对象</td>
+<td>用最小化替代关闭</td>
+</tr>
+<tr>
+<td>只能调出、从不隐藏</td>
+<td>wmctrl&#x2F;xprop 的 id 格式不一致</td>
+<td><code>printf &#39;%d&#39;</code> 转十进制比较</td>
+</tr>
+<tr>
+<td>窗口出现但焦点在别处、按键失交替</td>
+<td>焦点竞态</td>
+<td>激活后校验，未生效补发一次</td>
+</tr>
+<tr>
+<td>终端能跑、绑上快捷键无反应</td>
+<td>快捷键 PATH 不含 <code>~/.local/bin</code></td>
+<td>按 <code>$0</code> 解析同目录辅助工具</td>
+</tr>
+<tr>
+<td>之前配的快捷键突然失效</td>
+<td>覆盖了 gsettings 数组</td>
+<td>读回原数组后追加写入</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>注：文中窗口 id 为具体环境下的实际值，复现时以本机 <code>wmctrl -lx</code> 输出为准。</em></p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2026/09/04/2026-09-04-%E7%BB%99%E5%BE%AE%E4%BF%A1%E5%8A%A0%E4%B8%80%E4%B8%AAAlt+X_GNOME%E4%B8%8B%E7%AA%97%E5%8F%A3%E6%98%BE%E9%9A%90%E7%9A%84%E4%B8%89%E4%B8%AA%E9%99%B7%E9%98%B1/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2026/09/04/2026-09-04-%E6%8A%8ACodex%E6%A1%8C%E9%9D%A2%E7%89%88%E6%8E%A5%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC_%E4%BA%94%E4%B8%AA%E5%8F%A0%E5%8A%A0%E6%95%85%E9%9A%9C%E7%9A%84%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            为 Codex 桌面版配置第三方中转
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2026/08/27/2026-08-27-%E4%BB%8EArUco%E5%88%B0%E4%B8%89%E8%A7%92%E6%A0%87_PnP%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%A4%8D%E7%9B%98/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">从 ArUco 到三角标:PnP 位姿估计的工程化复盘</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

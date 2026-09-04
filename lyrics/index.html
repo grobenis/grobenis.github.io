@@ -32,9 +32,7 @@
   
 <link rel="stylesheet" href="/css/main.css">
 
-  
-<link rel="stylesheet" href="/css/custom.css">
-
+  <link rel="stylesheet" href="/css/custom.css?v=1788525410267" />
   
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
   
@@ -46,6 +44,7 @@
 </head>
 
 </html>
+
 
 <body class="is-lyrics page-locked">
   <div id="app">
@@ -82,6 +81,11 @@
 </div>
 
 <div class="music-stage">
+
+<!-- 黄铜长条名牌:置于整页最上方(歌词屏之上),点击仍触发终章彩蛋 -->
+<div class="deco-cell deco-cell-neon">
+  <div class="deco-neon" id="decoNeon" title="霓虹招牌">MUSIC</div>
+</div>
 
 <!-- 怀旧拉线吊灯:电视关闭时可拉动切换整页氛围 -->
 <div class="pull-lamp" id="pullLamp">
@@ -343,14 +347,18 @@
 
 <!-- 控制面板(屏幕下方) -->
 <div class="tv-panel">
-<div class="tv-panel-left">
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
-<div class="tv-speaker"></div>
+
+<!-- 读数窗:频道 / 曲目 / 播放状态 / 音量条(JS 联动) -->
+<div class="tv-readout">
+<span class="tv-ro-ch" id="tvRoCh">CH 01</span>
+<span class="tv-ro-title" id="tvRoTitle">曾经的你 · 许巍</span>
+<span class="tv-ro-status" id="tvRoStatus">&#9654;</span>
+<span class="tv-ro-vol" id="tvRoVol" aria-label="音量"><i></i><i></i><i></i><i></i><i></i></span>
 </div>
 
-<div class="tv-panel-right">
+<div class="tv-panel-deck">
+
+<div class="tv-deck-cell tv-deck-left">
 <span class="tv-knob-wrap">
 <button class="tv-knob tv-knob-ch" id="tvKnobCh" type="button" aria-label="切换频道">
 <span class="tv-knob-marks"></span>
@@ -358,14 +366,7 @@
 </button>
 <span class="tv-knob-label">CH</span>
 </span>
-
-<span class="tv-knob-wrap">
-<button class="tv-knob tv-knob-vol" id="tvKnobVol" type="button" aria-label="音量">
-<span class="tv-knob-marks"></span>
-<span class="tv-knob-pointer"></span>
-</button>
-<span class="tv-knob-label">VOL</span>
-</span>
+</div>
 
 <div class="tv-buttons">
 <button class="tv-btn" id="tvBtnPrev" type="button" aria-label="上一首">
@@ -379,11 +380,38 @@
 </button>
 </div>
 
+<div class="tv-deck-cell tv-deck-right">
+<span class="tv-knob-wrap">
+<button class="tv-knob tv-knob-vol" id="tvKnobVol" type="button" aria-label="音量">
+<span class="tv-knob-marks"></span>
+<span class="tv-knob-pointer"></span>
+</button>
+<span class="tv-knob-label">VOL</span>
+</span>
+
 <button class="tv-power-btn" id="tvPowerBtn" type="button" aria-label="电源开关" title="电源开关">
 <span class="tv-power-led" id="tvPowerLed"></span>
 </button>
-
 </div>
+</div>
+
+<!-- 底部整排散热格栅 -->
+<div class="tv-panel-grille">
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+<div class="tv-speaker"></div>
+</div>
+</div>
+
+<!-- 功能键条:陈列品彩蛋收编为机身按键(保留原 id,JS 按 id 绑定,交互不变) -->
+<div class="fx-bar">
+<button class="fx-btn" id="decoVinyl" type="button" title="黑胶唱片">黑胶</button>
+<button class="fx-btn" id="decoMic" type="button" title="复古麦克风">麦克风</button>
+<button class="fx-btn" id="decoCassette" type="button" title="老式磁带">磁带</button>
+<button class="fx-btn" id="decoCd" type="button" title="CD 光盘">CD</button>
+<button class="fx-btn" id="decoPoster" type="button" title="复古海报">海报</button>
+<button class="fx-btn" id="decoCandle" type="button" title="旧蜡烛">蜡烛</button>
 </div>
 
 </div>
@@ -391,37 +419,6 @@
 <!-- 电视柜阴影 -->
 <div class="tv-stand"></div>
 
-</div>
-
-<!-- 下方装饰横排:唱片 / 麦克风 / 磁带 / CD / 霓虹 / 海报 -->
-<div class="deco-row">
-  <div class="deco-candle" id="decoCandle" title="旧蜡烛">
-    <div class="candle-body">
-      <div class="candle-wick"></div>
-      <div class="candle-flame" id="candleFlame"></div>
-    </div>
-    <div class="candle-drip"></div>
-  </div>
-  <div class="deco-vinyl" id="decoVinyl" title="黑胶唱片"></div>
-  <div class="deco-mic" id="decoMic" title="复古麦克风">
-    <div class="mic-head"></div>
-    <div class="mic-stem"></div>
-    <div class="mic-base"></div>
-  </div>
-  <div class="deco-cassette" id="decoCassette" title="老式磁带">
-    <div class="reel-l" style="left:16px;"></div>
-    <div class="reel-r" style="right:16px;"></div>
-  </div>
-  <div class="deco-cd shine" id="decoCd" title="CD 光盘">
-  </div>
-  <div class="deco-neon" id="decoNeon" title="霓虹招牌">MUSIC</div>
-  <div class="deco-poster" id="decoPoster" title="复古海报">
-    <div class="poster-title">FM 87.7</div>
-    <div class="poster-line">LIVE FROM</div>
-    <div class="poster-line">GROBENIS STUDIO</div>
-    <div class="poster-line">1986 — ∞</div>
-    <div class="poster-stars">★ ★ ★ ★ ★</div>
-  </div>
 </div>
 
 <!-- 彩蛋弹窗 -->
@@ -802,11 +799,11 @@
 
   /* 控件 -> 对应剧场 */
   var theaters = {
-    'deco-vinyl':    'theater-vinyl',
-    'deco-mic':      'theater-mic',
-    'deco-cassette': 'theater-cassette',
-    'deco-cd':       'theater-cd',
-    'deco-neon':     'theater-neon'
+    'decoVinyl':    'theater-vinyl',
+    'decoMic':      'theater-mic',
+    'decoCassette': 'theater-cassette',
+    'decoCd':       'theater-cd',
+    'decoNeon':     'theater-neon'
   };
   var theaterTimer = null;
   var activeTheater = null;
@@ -848,20 +845,23 @@
     opened = false;
   }
 
-  document.querySelectorAll('.deco-row > div').forEach(function (el) {
-    var cls = el.className.split(' ')[0].trim();
-    /* 海报:弹窗;其余:触发屏幕小剧场 */
-    if (cls === 'deco-poster') {
+  /* 功能键条:按 id 绑定,海报:弹窗;其余:触发屏幕小剧场 */
+  ['decoVinyl', 'decoMic', 'decoCassette', 'decoCd', 'decoNeon', 'decoPoster'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (id === 'decoPoster') {
       el.style.cursor = 'pointer';
       el.addEventListener('click', function () {
         if (opened) { closeModal(); return; }
+        /* 黑色氛围下不弹 1986 揭谜窗，保留小情话海报类交互 */
+        if (document.body.classList.contains('lamp-black')) return;
         openPoster();
       });
-    } else if (theaters[cls]) {
+    } else if (theaters[id]) {
       el.style.cursor = 'pointer';
       el.addEventListener('click', function () {
         if (opened) closeModal();
-        playTheater(cls);
+        playTheater(id);
       });
     }
   });
@@ -1081,16 +1081,17 @@ function extinguishCandle() {
       if (!drag) return;
       v.style.cursor = 'grab';
       /* 惯性:松手后缓慢减速停止 */
+      var d = drag;
+      drag = null;
       var stopTimer = setInterval(function () {
-        drag.speed *= 0.92;
-        drag.rot += drag.speed * 6;
-        v.style.transform = 'rotate(' + drag.rot + 'deg)';
-        if (drag.speed < 0.05) {
+        d.speed *= 0.92;
+        d.rot += d.speed * 6;
+        v.style.transform = 'rotate(' + d.rot + 'deg)';
+        if (d.speed < 0.05) {
           clearInterval(stopTimer);
           if (window._sfxVinylStop) try { window._sfxVinylStop(); } catch (err) {}
         }
       }, 16);
-      drag = null;
     }
     v.addEventListener('pointerup', endDrag);
     v.addEventListener('pointercancel', endDrag);
@@ -1415,6 +1416,61 @@ function extinguishCandle() {
     var d = new Date();
     if (d.getMinutes() < 1) { hourNote(); showHourPopup(); }
   }, 1500);
+})();
+
+/* ===== 功放读数窗联动:频道/曲目/播放状态/音量条 ===== */
+(function () {
+  var chEl = document.getElementById('tvRoCh');
+  var titleEl = document.getElementById('tvRoTitle');
+  var statusEl = document.getElementById('tvRoStatus');
+  var volEl = document.getElementById('tvRoVol');
+  if (!chEl || !titleEl) return;
+  var audio = document.querySelector('audio');
+  var chNum = document.getElementById('tvChannelNum');
+
+  /* 频道号文本变化 -> 同步读数窗(原有 show() 会改写 #tvChannelNum) */
+  function syncTrack() {
+    if (chNum && chNum.textContent.trim() === '11') {
+      chEl.textContent = 'CH 11';
+      titleEl.textContent = 'SECRET CHANNEL';
+      return;
+    }
+    var card = document.querySelector('.lyric-card.is-active');
+    if (!card) return;
+    var cards = document.querySelectorAll('.lyric-card');
+    var num = (Array.prototype.indexOf.call(cards, card) + 1).toString();
+    if (num.length < 2) num = '0' + num;
+    chEl.textContent = 'CH ' + num;
+    var h3 = card.querySelector('h3');
+    var singer = card.querySelector('.lyric-singer');
+    titleEl.textContent = (h3 ? h3.textContent : '') + (singer ? ' · ' + singer.textContent : '');
+  }
+  if (chNum && window.MutationObserver) {
+    new MutationObserver(syncTrack).observe(chNum, { childList: true, characterData: true, subtree: true });
+  }
+  syncTrack();
+
+  /* 音量条:跟随 audio.volume(五段) */
+  function renderVol() {
+    if (!volEl || !audio) return;
+    var n = Math.round((audio.volume || 0) * 5);
+    var bars = volEl.querySelectorAll('i');
+    for (var i = 0; i < bars.length; i++) bars[i].classList.toggle('is-lit', i < n);
+  }
+  if (audio) {
+    audio.addEventListener('volumechange', renderVol);
+    renderVol();
+
+    /* 播放状态指示 */
+    var syncStatus = function () {
+      if (!statusEl) return;
+      var playing = !audio.paused && !audio.ended;
+      statusEl.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;';
+      statusEl.classList.toggle('is-playing', playing);
+    };
+    ['play', 'pause', 'ended'].forEach(function (evt) { audio.addEventListener(evt, syncStatus); });
+    syncStatus();
+  }
 })();
 </script>
 
