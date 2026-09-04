@@ -3739,13 +3739,12 @@ body.page-scene-dawn .tv-set {
     animation: none;
   }
 }
-/* 桌面端（≥768px）：侧边栏常驻，禁止整页加载时主题自带的
-   “从屏幕外左滑入场 + 菜单错峰浮入”动画（表现为每次点导航都闪一下）。
+/* 桌面端（≥768px）：禁止整页加载时主题自带的“菜单错峰浮入”动画
+   （表现为每次点导航都闪一下）。侧边栏收起/展开用丝滑的 left 过渡。
    移动端抽屉的滑入动画仍保留。 */
 @media (min-width: 768px) {
   .sidebar {
-    left: 0;
-    transition: none;
+    transition: left 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
   .sidebar.on .navbar > * {
     animation: none;
