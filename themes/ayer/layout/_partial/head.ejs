@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="<%- theme.favicon %>" />
   <% } %>
   <%- css('css/main') %>
-  <%- css('css/custom') %>
+  <link rel="stylesheet" href="<%- config.root %>css/custom.css?v=<%- Date.now() %>" />
   <% if (theme.progressBar){ %>
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
   <% } %>
