@@ -782,6 +782,8 @@ share: false
       el.style.cursor = 'pointer';
       el.addEventListener('click', function () {
         if (opened) { closeModal(); return; }
+        /* 黑色氛围下不弹 1986 揭谜窗，保留小情话海报类交互 */
+        if (document.body.classList.contains('lamp-black')) return;
         openPoster();
       });
     } else if (theaters[id]) {

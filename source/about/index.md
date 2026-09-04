@@ -6,6 +6,13 @@ layout: "about"
 share: false
 ---
 
+<div class="about-motto">
+  <blockquote class="about-motto-quote">
+    <p>人最宝贵的是生命，生命对于每个人只有一次。人的一生应当这样度过：当他回首往事时，不因虚度年华而悔恨，也不因碌碌无为而羞耻；这样，在临终的时候，他能够说：「我的整个生命和全部精力，都已经献给了世界上最壮丽的事业——为人类的解放而斗争。」</p>
+    <cite>—— 保尔 · 柯察金</cite>
+  </blockquote>
+</div>
+
 <div class="about-rail">
 
 <div class="about-station">
@@ -21,10 +28,6 @@ share: false
 <div class="about-stat"><b>∞</b><span>未解的 bug</span></div>
 </div>
 <div class="about-path">
-<a href="/project/">南航 · 信息与计算科学</a><i>→</i>
-<a href="/project/">北航 · 虚拟现实</a><i>→</i>
-<a href="/project/">小米 · 可穿戴</a><i>→</i>
-<a href="/project/">纽劢 · 自动驾驶</a><i>→</i>
 <span class="about-path-now">它石智航 · 空间智能</span>
 </div>
 </div>
@@ -35,11 +38,11 @@ share: false
 <h3 class="about-station-label">在做什么</h3>
 <div class="about-station-body">
 <div class="about-panel">
-<ul class="about-work">
-<li><b>视觉 SLAM 与多传感器融合</b><span>从 ORB-SLAM3、VINS 到工程落地的回环检测与图优化，读过也拆过源码。</span></li>
-<li><b>相机标定与位姿估计</b><span>在线外部标定、多视图标定、从 ArUco 到三角标的 PnP 工程化复盘——都是踩过的坑。</span></li>
-<li><b>世界模型 / 空间智能</b><span>现在的主业：让机器人不止知道自己在哪，还知道接下来会发生什么。</span></li>
-</ul>
+<div class="about-cards">
+<div class="about-card2"><b>世界模型</b></div>
+<div class="about-card2"><b>空间智能</b></div>
+<div class="about-card2"><b>独立游戏</b></div>
+</div>
 </div>
 </div>
 </div>
@@ -48,19 +51,12 @@ share: false
 <h3 class="about-station-label">写些什么</h3>
 <div class="about-station-body">
 <div class="about-panel">
-<p class="about-desc">这里不放简历式的技能清单。67 篇文章都是问题驱动的：工作中卡住 → 查资料做实验 → 写成复盘。大多集中在 <a href="/archives/">学习 / SLAM / C++ / 实验</a> 四类，从归档页顶部的分类标签可以直接筛。</p>
-<p class="about-desc">如果某篇帮你在深夜 debug 时省了半小时，这个博客就算没白搭。</p>
+<div class="about-cards">
+<div class="about-card2"><b>学习笔记</b></div>
+<div class="about-card2"><b>实验复盘</b></div>
+<div class="about-card2"><b>SLAM / C++</b></div>
 </div>
-</div>
-</div>
-
-<div class="about-station">
-<h3 class="about-station-label">我的座右铭</h3>
-<div class="about-station-body">
-<div class="about-panel">
-<blockquote class="about-motto-quote">
-<p>人最宝贵的是生命，生命对于每个人只有一次。人的一生应当这样度过：当他回首往事时，不因虚度年华而悔恨，也不因碌碌无为而羞耻；这样，在临终的时候，他能够说：“我的整个生命和全部精力，都已经献给了世界上最壮丽的事业——为人类的解放而斗争。”</p>
-</blockquote>
+<p class="about-desc">去 <a href="/archives/">归档页</a> 顶部分类筛选看更多。</p>
 </div>
 </div>
 </div>
