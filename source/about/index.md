@@ -53,8 +53,8 @@ share: false
 <div class="about-panel">
 <div class="about-cards">
 <div class="about-card2"><b>学习笔记</b></div>
-<div class="about-card2"><b>实验复盘</b></div>
-<div class="about-card2"><b>SLAM / C++</b></div>
+<div class="about-card2"><b>个人随笔</b></div>
+<div class="about-card2"><b>过往复盘</b></div>
 </div>
 <p class="about-desc">去 <a href="/archives/">归档页</a> 顶部分类筛选看更多。</p>
 </div>

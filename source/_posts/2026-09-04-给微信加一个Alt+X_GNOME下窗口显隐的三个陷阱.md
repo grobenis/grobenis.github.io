@@ -5,9 +5,12 @@ reward: false
 copyright: true
 date: 2026-09-04
 categories: [工程复盘, Linux 桌面]
+keywords: 微信, Ubuntu, GNOME, 快捷键, Alt+X, wmctrl, xprop, 窗口最小化, 窗口隐显
 ---
 
 在 Ubuntu GNOME(X11)上给微信配一个 Alt+X 快捷键：按一下，微信在前台就收起，不在前台就调出来，没运行就启动。整个方案只有两个脚本、约 90 行代码，只用 `wmctrl`、`xprop`、`gsettings`，不装 `xdotool`、不需要 sudo。下面是从零到能用的全部步骤。
+
+> **命令返回成功，不代表窗口真的动了**
 
 <!--more-->
 

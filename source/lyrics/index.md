@@ -51,6 +51,12 @@ share: false
 <div class="tv-screen-frame">
 <div class="tv-screen">
 
+<!-- 终章层：CD 触发后在主电视屏幕内显示 I🩹U 与情话(不弹独立黑屏) -->
+<div class="lyric-finale" id="lyricFinale">
+  <div class="finale-text" id="finaleText">I <span class="fv-heart">🩹</span> U</div>
+  <div class="cdtv-love" id="cdLove"></div>
+</div>
+
 <!-- 动态舞台（CRT 内容区） -->
 <div class="lyric-stage">
 
@@ -94,10 +100,53 @@ share: false
 <div class="theater-stage">
 <div class="theater-dim"></div>
 <div class="theater theater-vinyl"><span class="th-vinyl-disc"></span><span class="th-label th-vinyl-label">VINYL · 33⅓</span></div>
-<div class="theater theater-mic"><span class="th-mic-scan th-mic-scan-1"></span><span class="th-mic-scan th-mic-scan-2"></span><span class="th-mic-scan th-mic-scan-3"></span><span class="th-label th-mic-label">GROTV · ON AIR</span></div>
-<div class="theater theater-cassette"><span class="th-cassette-reel th-cassette-reel-1"></span><span class="th-cassette-reel th-cassette-reel-2"></span><span class="th-label th-cassette-label">REW · ▶ ◀</span></div>
-<div class="theater theater-cd"><span class="th-cd-disc"></span><span class="th-cd-ray"></span><span class="th-label th-cd-label">CD · 44.1kHz</span></div>
+<div class="theater theater-mic">
+<span class="th-mic-ring th-mic-ring-1"></span>
+<span class="th-mic-ring th-mic-ring-2"></span>
+<span class="th-mic-ring th-mic-ring-3"></span>
+<div class="th-mic-body"><div class="th-mic-grill"></div></div>
+<div class="th-mic-neck"></div>
+<div class="th-mic-eq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<span class="th-label th-mic-label">GROTV · ON AIR</span>
+</div>
+<div class="theater theater-cassette">
+<div class="th-cassette-body">
+<div class="th-cassette-window">
+<span class="th-cassette-media"></span>
+<span class="th-cassette-reel th-cassette-reel-1"></span>
+<span class="th-cassette-reel th-cassette-reel-2"></span>
+</div>
+<span class="th-cassette-screw th-cassette-screw-1"></span>
+<span class="th-cassette-screw th-cassette-screw-2"></span>
+<span class="th-cassette-screw th-cassette-screw-3"></span>
+<span class="th-cassette-screw th-cassette-screw-4"></span>
+<span class="th-cassette-arrow">⏵ ▶ ◀</span>
+</div>
+<span class="th-label th-cassette-label">REW · ▶ ◀ PLAY</span>
+</div>
+<div class="theater theater-cd">
+<div class="th-cd-disc">
+<span class="th-cd-mirror"></span>
+<span class="th-cd-hub"></span>
+<span class="th-cd-glow"></span>
+</div>
+<span class="th-cd-ray"></span>
+<span class="th-label th-cd-label">CD · 44.1kHz</span>
+</div>
 <div class="theater theater-neon"><span class="th-neon-bar th-neon-bar-1">NEON</span><span class="th-neon-bar th-neon-bar-2">MUSIC</span><span class="th-neon-bar th-neon-bar-3">1986</span></div>
+<div class="theater theater-poster">
+<div class="th-poster">
+<span class="th-poster-tape th-poster-tape-1"></span>
+<span class="th-poster-tape th-poster-tape-2"></span>
+<span class="th-poster-tape th-poster-tape-3"></span>
+<span class="th-poster-tape th-poster-tape-4"></span>
+<div class="th-poster-badge">珍藏海报</div>
+<div class="th-poster-title">海报揭谜</div>
+<div class="th-poster-text">你把海报翻过来，背面用铅笔写着：找到这个小房间里的每一样东西，就能拼出完整的 1986。</div>
+<div class="th-poster-year">EST. 1986</div>
+</div>
+<span class="th-label th-poster-label">好久收藏 · 纸背藏谜</span>
+</div>
 </div>
 
 <!-- 歌词卡（玻璃磨砂） -->
@@ -220,12 +269,30 @@ share: false
 <p>而你嫣然的一笑如含苞待放</p>
 <p>你的美一缕飘散</p>
 <p>去到我去不了的地方</p>
-<p>天青色等烟雨</p>
-<p>而我在等你</p>
-<p>炊烟袅袅升起</p>
-<p>隔江千万里</p>
-<p>在瓶底书刻你名字</p>
-<p>犹如美丽的徽章</p>
+<p>天青色等烟雨 而我在等你</p>
+<p>炊烟袅袅升起 隔江千万里</p>
+<p>在瓶底书汉隶仿前朝的飘逸</p>
+<p>就当我为遇见你伏笔</p>
+<p>天青色等烟雨 而我在等你</p>
+<p>月色被打捞起 晕开了结局</p>
+<p>如传世的青花瓷自顾自美丽</p>
+<p>你眼带笑意</p>
+<p>色白花青的锦鲤跃然于碗底</p>
+<p>临摹宋体落款时却惦记着你</p>
+<p>你隐藏在窑烧里千年的秘密</p>
+<p>极细腻犹如绣花针落地</p>
+<p>帘外芭蕉惹骤雨门环惹铜绿</p>
+<p>而我路过那江南小镇惹了你</p>
+<p>在泼墨山水画里</p>
+<p>你从墨色深处被隐去</p>
+<p>天青色等烟雨 而我在等你</p>
+<p>炊烟袅袅升起 隔江千万里</p>
+<p>在瓶底书汉隶仿前朝的飘逸</p>
+<p>就当我为遇见你伏笔</p>
+<p>天青色等烟雨 而我在等你</p>
+<p>月色被打捞起 晕开了结局</p>
+<p>如传世的青花瓷自顾自美丽</p>
+<p>你眼带笑意</p>
 </div>
 </div>
 
@@ -238,25 +305,59 @@ share: false
 <span class="lyric-singer">许嵩</span>
 </div>
 <div class="lyric-card-body">
-<p>几笔墨 勾勒写意山水</p>
-<p>我自诩 风雅之人</p>
-<p>不入凡尘的执念</p>
-<p>却也难免落了俗套</p>
-<p>你一言 我一语</p>
-<p>皆是这世间 百态的浮光</p>
-<p>有人正 襟危坐</p>
-<p>有人嬉笑怒骂</p>
-<p>千般面孔 一出戏</p>
-<p>何必论 谁高雅</p>
-<p>且共我 举杯饮</p>
-<p>杯中月 杯中影</p>
-<p>俗与雅 本无界</p>
-<p>何须分 彼此</p>
+<p>是否每一部戏都看得完整场</p>
+<p>是否每一天过得都有多难忘</p>
+<p>表情迟钝可能因为比较爱想</p>
+<p>不擅长眉目表达</p>
+<p>总在盼望 总在失望</p>
+<p>日子还不都这样</p>
+<p>俗的无畏 雅的轻狂</p>
+<p>还不都是一副臭皮囊</p>
+<p>他们说快写一首情歌雅俗共赏</p>
+<p>落笔传神还要容易传唱</p>
+<p>上得厅堂也下得厨房</p>
+<p>就像我一直在找的姑娘</p>
+<p>快写一首情歌雅俗共赏</p>
+<p>打完字谜还要接着打榜</p>
+<p>如果胡同弄堂全都播放</p>
+<p>气韵里居然添了些孤芳自赏</p>
+<p>是否每一场美梦醒来都很爽</p>
+<p>是否每一次成熟都徒增了业障</p>
+<p>比痛和痒更多的</p>
+<p>是不痛不痒</p>
+<p>所以我爱进剧场</p>
+<p>总在盼望 总在失望</p>
+<p>日子还不都这样</p>
+<p>俗的无畏 雅的轻狂</p>
+<p>还不都是一副臭皮囊</p>
+<p>他们说快写一首情歌雅俗共赏</p>
+<p>落笔传神还要容易传唱</p>
+<p>上得厅堂也下得厨房</p>
+<p>就像我一直在找的姑娘</p>
+<p>快写一首情歌雅俗共赏</p>
+<p>打完字谜还要接着打榜</p>
+<p>如果胡同弄堂全都播放</p>
+<p>气韵里居然添了些孤芳自赏</p>
+<p>谁的故事有营养</p>
+<p>大俗或大雅的都在理直气壮</p>
+<p>洒狗血或白雪的现场</p>
+<p>都邀我观赏</p>
+<p>还真是大方</p>
+<p>快写一首情歌雅俗共赏</p>
+<p>落笔传神还要容易传唱</p>
+<p>上得厅堂也下得厨房</p>
+<p>就像我一直在找的姑娘</p>
+<p>有没有一种生活雅俗共赏</p>
+<p>情节起伏跌宕让人向往</p>
+<p>满纸荒唐中窥见满脸沧桑</p>
+<p>触到神经就要懂得鼓掌</p>
+<p>别说一不在乎二没期望</p>
+<p>太超脱 中枪中奖感觉会一样</p>
 </div>
 </div>
 
-
 </div>
+
 </div>
 
 <!-- 隐藏频道画面 -->
@@ -350,30 +451,8 @@ share: false
 
 </div>
 
-<!-- 彩蛋弹窗 -->
-<div class="easter-modal" id="easterModal">
-  <div class="easter-modal-panel">
-    <div class="easter-modal-head">
-      <span class="easter-modal-icon" id="easterModalIcon">🎵</span>
-      <button class="easter-modal-close" id="easterModalClose">✕</button>
-    </div>
-    <div class="easter-modal-title" id="easterModalTitle">小彩蛋</div>
-    <div class="easter-modal-text" id="easterModalText"></div>
-  </div>
-</div>
-
 <!-- 全屋烛光明暗层(纯黑氛围点燃蜡烛后出现) -->
 <div class="candle-glow"></div>
-
-<!-- CD 解锁场景:点击出现一台大电视,屏幕为黑 -->
-<div class="cd-tv" id="cdWatch">
-  <span class="cdtv-antenna"></span>
-  <div class="cdtv-screen"></div>
-  <span class="cdtv-leg"></span>
-</div>
-
-<!-- 终章:点击MUSIC点亮屏幕,弹出酷炫 I🩷U 字样 -->
-<div class="finale-text" id="finaleText">I <span class="fv-heart">🩷</span> U</div>
 
 </div><!-- /.music-stage -->
 
@@ -716,23 +795,16 @@ share: false
   });
 })();
 
-/* ===== 装饰件交互:海报弹窗 + 其余控件触发屏幕小剧场 ===== */
+/* ===== 装饰件交互: 控件触发屏幕小剧场; 海报也直接显示在电视屏幕内 ===== */
 (function () {
-  var modal = document.getElementById('easterModal');
-  if (!modal) return;
-  var iconEl = document.getElementById('easterModalIcon');
-  var titleEl = document.getElementById('easterModalTitle');
-  var textEl = document.getElementById('easterModalText');
-  var closeBtn = document.getElementById('easterModalClose');
-  var opened = false;
-
   /* 控件 -> 对应剧场 */
   var theaters = {
     'decoVinyl':    'theater-vinyl',
     'decoMic':      'theater-mic',
     'decoCassette': 'theater-cassette',
     'decoCd':       'theater-cd',
-    'decoNeon':     'theater-neon'
+    'decoNeon':     'theater-neon',
+    'decoPoster':   'theater-poster'
   };
   var theaterTimer = null;
   var activeTheater = null;
@@ -754,50 +826,16 @@ share: false
     }, 4200);
   }
 
-  /* 海报弹窗文案 */
-  var posterEgg = {
-    icon: '🖼️',
-    title: '海报揭谜',
-    text: '你把海报翻过来，背面用铅笔写着：找到这个小房间里的每一样东西，就能拼出完整的 1986。'
-  };
-
-  function openPoster() {
-    iconEl.textContent = posterEgg.icon;
-    titleEl.textContent = posterEgg.title;
-    textEl.textContent = posterEgg.text;
-    modal.classList.add('is-open');
-    opened = true;
-  }
-
-  function closeModal() {
-    modal.classList.remove('is-open');
-    opened = false;
-  }
-
-  /* 功能键条:按 id 绑定,海报:弹窗;其余:触发屏幕小剧场 */
+  /* 功能键条:按 id 绑定为屏幕小剧场 */
   ['decoVinyl', 'decoMic', 'decoCassette', 'decoCd', 'decoNeon', 'decoPoster'].forEach(function (id) {
     var el = document.getElementById(id);
-    if (!el) return;
-    if (id === 'decoPoster') {
-      el.style.cursor = 'pointer';
-      el.addEventListener('click', function () {
-        if (opened) { closeModal(); return; }
-        /* 黑色氛围下不弹 1986 揭谜窗，保留小情话海报类交互 */
-        if (document.body.classList.contains('lamp-black')) return;
-        openPoster();
-      });
-    } else if (theaters[id]) {
-      el.style.cursor = 'pointer';
-      el.addEventListener('click', function () {
-        if (opened) closeModal();
-        playTheater(id);
-      });
-    }
-  });
-
-  closeBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal) closeModal();
+    if (!el || !theaters[id]) return;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function () {
+      /* 黑色氛围下海报由情话彩蛋接管,不显示 1986 揭谜海报 */
+      if (id === 'decoPoster' && document.body.classList.contains('lamp-black')) return;
+      playTheater(id);
+    });
   });
 })();
 
@@ -900,7 +938,7 @@ function extinguishCandle() {
   var FX = { vinyl: null, mic: null, cassette: null };
   var seen = { vinyl: false, mic: false, cassette: false, cd: false };
   var cdTimer = null, finaleTimer = null;
-  var TYPE = { vinyl: 'spark', mic: 'balloon', cassette: 'petal' };
+  var TYPE = { vinyl: 'spark', mic: 'note', cassette: 'petal' };
 
   function canFx() {
     var candle = document.getElementById('decoCandle');
@@ -960,6 +998,24 @@ function extinguishCandle() {
     setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, dur * 1000 + 400);
   }
 
+  /* 音符:荧光粉的音符从画面底部上飘摇摆 */
+  function spawnNotes() {
+    var glyphs = ['♪', '♫', '♩', '♬', '𝄞'];
+    var vw = window.innerWidth || 800;
+    var g = glyphs[Math.floor(Math.random() * glyphs.length)];
+    var size = 18 + Math.random() * 24;
+    var wx = (Math.random() - 0.5) * 90;
+    var rot = (Math.random() - 0.5) * 40;
+    var dur = 3.5 + Math.random() * 1.8;
+    var p = document.createElement('div');
+    p.textContent = g;
+    p.style.cssText = '--wx:' + wx + 'px;--rot:' + rot + 'deg;--fdur:' + dur + 's;' +
+      'width:' + size + 'px;height:' + size + 'px;' +
+      'left:' + (Math.random() * vw) + 'px;top:100vh;';
+    makeP(p, 'note');
+    setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, dur * 1000 + 400);
+  }
+
   /* 前三个控件:开/关各不相同(可同时叠加) */
   function toggle(id, spawn, interval) {
     var el = document.getElementById(id);
@@ -977,6 +1033,7 @@ function extinguishCandle() {
   }
   toggle('decoVinyl', spawnSparks, 260);
   toggle('decoCassette', spawnPetals, 700);
+  toggle('decoMic', spawnNotes, 420);
 
   /* 黑胶拖动:按住拖拽 → 唱片旋转 + 沙沙声 */
   (function () {
@@ -1026,14 +1083,9 @@ function extinguishCandle() {
     v.addEventListener('pointercancel', endDrag);
   })();
 
-  /* 麦克风:气球特效已移除,仅计入解锁进度(seen.mic) */
-  var micEl = document.getElementById('decoMic');
-  if (micEl) {
-    micEl.style.cursor = 'pointer';
-    micEl.addEventListener('click', function () { if (canFx()) seen.mic = true; });
-  }
+  /* 麦克风:音符特效已由 toggle('decoMic', spawnNotes) 接管(seen.mic 在 toggle 内计入) */
 
-  /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;点击出现一台黑屏大电视(可重复开关) */
+  /* CD:解锁条件=黑胶/麦克风/磁带都点过一次;仅点亮主电视屏幕(字样与情话需点海报) */
   var cd = document.getElementById('decoCd');
   if (cd) {
     cd.style.cursor = 'pointer';
@@ -1041,45 +1093,54 @@ function extinguishCandle() {
       if (!canFx()) return;
       if (!(seen.vinyl && seen.mic && seen.cassette)) return;
       seen.cd = true;
-      hideFinale();
-      var cw = document.getElementById('cdWatch');
-      if (!cw) return;
-      cw.classList.toggle('is-on');
+      showScreen(); /* 主电视屏幕亮起(暂无字样) */
     });
   }
 
-  /* 心形 / 气泡:终章漂浮 */
-  function spawnHeart() {
-    var size = 15 + Math.random() * 18;
-    var h = document.createElement('div');
-    h.className = 'fx-heart';
-    h.textContent = '\u2665';
-    h.style.cssText = 'left:' + (Math.random() * (window.innerWidth - 60)) + 'px;' +
-      'top:' + (72 + Math.random() * 12) + 'vh;font-size:' + size + 'px;' +
-      '--dx:' + ((Math.random() - 0.5) * 140) + 'px;--dy:-' + (62 + Math.random() * 40) + 'vh;' +
-      '--rot:' + ((Math.random() - 0.5) * 60) + 'deg;--fdur:' + (4 + Math.random() * 3) + 's;';
-    makeP(h, 'heart');
-    setTimeout(function () { if (h.parentNode) h.parentNode.removeChild(h); }, 8000);
+  /* 亮屏脉冲:以主电视屏幕中心为原点,粉色光晕环向外扩散 */
+  function screenCenter() {
+    var s = document.querySelector('#tvSet .tv-screen');
+    if (!s) return { x: window.innerWidth / 2, y: Math.round(window.innerHeight / 2 - 30) };
+    var r = s.getBoundingClientRect();
+    return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2 - 20) };
   }
-  function spawnBubble() {
-    var size = 8 + Math.random() * 14;
-    var b = document.createElement('div');
-    b.className = 'fx-bubble';
-    b.style.cssText = 'left:' + (Math.random() * window.innerWidth) + 'px;' +
-      'top:' + (70 + Math.random() * 14) + 'vh;width:' + size + 'px;height:' + size + 'px;' +
-      '--dx:' + ((Math.random() - 0.5) * 120) + 'px;--dy:-' + (58 + Math.random() * 40) + 'vh;' +
-      '--rot:' + ((Math.random() - 0.5) * 40) + 'deg;--fdur:' + (4 + Math.random() * 3) + 's;';
-    makeP(b, 'bubble');
-    setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 8000);
+  function spawnRing() {
+    var c = screenCenter();
+    var ring = document.createElement('div');
+    ring.className = 'fx-ring';
+    ring.style.cssText = 'left:' + c.x + 'px;top:' + c.y + 'px;' +
+      'width:' + (22 + Math.random() * 18) + 'px;height:' + (22 + Math.random() * 18) + 'px;' +
+      '--fdur:' + (1.6 + Math.random() * 0.9) + 's;';
+    makeP(ring, 'ring');
+    setTimeout(function () { if (ring.parentNode) ring.parentNode.removeChild(ring); }, 3000);
   }
   function hideFinale() {
     if (finaleTimer) { clearInterval(finaleTimer); finaleTimer = null; }
     var ft = document.getElementById('finaleText');
     if (ft) ft.classList.remove('is-on');
-    clearFx('heart');
-    clearFx('bubble');
+    clearFx('ring');
+    var tv = document.getElementById('tvSet');
+    if (tv) tv.classList.remove('is-cdshow');
   }
-  /* MUSIC(霓虹):终章。点亮黑屏大电视,弹出I♥你发光字样 + 全页心形气泡 */
+  /* 点亮主电视屏幕(仅亮屏,不含字样/情话) */
+  function showScreen() {
+    var tv = document.getElementById('tvSet');
+    if (tv) tv.classList.add('is-cdshow');
+  }
+  /* 终章:点亮主电视屏幕,弹出 I♥你 发光字样 + 全页心形气泡 */
+  function showFinale() {
+    showScreen();
+    var ft = document.getElementById('finaleText');
+    if (!ft) return;
+    seen.finale = true; /* 字样已显示 */
+    clearFx('spark'); clearFx('balloon'); clearFx('petal'); clearFx('ring');
+    if (finaleTimer) clearInterval(finaleTimer);
+    ft.classList.add('is-on');
+    spawnRing();
+    spawnRing();
+    finaleTimer = setInterval(function () { spawnRing(); }, 380);
+  }
+  /* MUSIC(霓虹):终章开关 */
   var neon = document.getElementById('decoNeon');
   if (neon) {
     neon.style.cursor = 'pointer';
@@ -1087,23 +1148,12 @@ function extinguishCandle() {
       if (!canFx()) return;
       if (!seen.cd) return; /* 需先触发过CD场景 */
       var ft = document.getElementById('finaleText');
-      if (!ft) return;
-      if (ft.classList.contains('is-on')) { hideFinale(); return; }
-      var cw = document.getElementById('cdWatch');
-      if (cw) cw.classList.add('is-on'); /* 大电视点亮 */
-      seen.finale = true; /* 字样已显示,解锁海报 */
-      clearFx('spark'); clearFx('balloon'); clearFx('petal');
-      ft.classList.add('is-on');
-      spawnHeart();
-      spawnBubble();
-      finaleTimer = setInterval(function () {
-        spawnHeart();
-        if (Math.random() < 0.65) spawnBubble();
-      }, 420);
+      if (ft && ft.classList.contains('is-on')) { hideFinale(); return; }
+      showFinale();
     });
   }
 
-  /* 海报:触发CD(出现字样)后,点击海报弹出随机小情话海报 */
+  /* 海报:把随机小情话直接写入黑屏电视的屏幕内(不弹浮窗) */
   var LINES = [
     '你是我生命里最亮的星光。',
     '所有的温柔都只想给你。',
@@ -1111,38 +1161,33 @@ function extinguishCandle() {
     '把世间的美好都攒成一份，送给你。',
     '你一笑，我的世界就亮了。'
   ];
-  var posterEl = null;
+  function showPoster() {
+    var love = document.getElementById('cdLove');
+    if (!love) return;
+    var line = LINES[Math.floor(Math.random() * LINES.length)];
+    love.innerHTML = line;
+  }
   var poster = document.getElementById('decoPoster');
   if (poster) {
     poster.style.cursor = 'pointer';
     poster.addEventListener('click', function () {
       if (!canFx()) return;
-      if (!seen.finale) return; /* 需先点击唱片显示出字样(I🩷U)后 */
-      if (posterEl) { posterEl.remove(); posterEl = null; return; }
-      var line = LINES[Math.floor(Math.random() * LINES.length)];
-      var pc = document.createElement('div');
-      pc.className = 'poster-card';
-      pc.innerHTML = '<button type="button" class="pc-close">✕</button>' +
-        '<div class="pc-title">G r o v e 情 话</div>' +
-        '<div class="pc-text">' + line + '</div>';
-      posterEl = pc;
-      document.body.appendChild(pc);
-      pc.querySelector('.pc-close').addEventListener('click', function (ev) { ev.stopPropagation(); pc.remove(); posterEl = null; });
-      pc.addEventListener('click', function (ev) { if (ev.target === pc) { pc.remove(); posterEl = null; } });
+      if (!seen.cd) return; /* 需先触发过CD场景 */
+      showFinale(); /* 确保主屏幕亮起,情话能显示出来 */
+      showPoster();
     });
   }
 
   /* 离开黑色氛围/开电视时清空全部 */
   window.clearRoomFx = function () {
     for (var k in FX) if (FX[k]) { clearInterval(FX[k]); FX[k] = null; }
-    clearFx('spark'); clearFx('balloon'); clearFx('petal'); clearFx('heart'); clearFx('bubble');
+    clearFx('spark'); clearFx('balloon'); clearFx('petal'); clearFx('ring');
     if (cdTimer) { clearTimeout(cdTimer); cdTimer = null; }
     if (finaleTimer) { clearInterval(finaleTimer); finaleTimer = null; }
-    var cw = document.getElementById('cdWatch');
-    if (cw) cw.classList.remove('is-on');
+    var tv = document.getElementById('tvSet');
+    if (tv) tv.classList.remove('is-cdshow');
     var ft = document.getElementById('finaleText');
     if (ft) ft.classList.remove('is-on');
-    if (posterEl) { posterEl.remove(); posterEl = null; }
     if (window._sfxVinylStop) { try { window._sfxVinylStop(); } catch (e) {} }
     if (window._tvNoSignalOff) window._tvNoSignalOff();
   };
