@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
    
-  <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+  <meta name="keywords" content="Codex, 第三方中转, CC-Switch, ChatGPT 桌面版, auth.json, JSON Schema, $ref, 本地反向代理, 故障排查,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
    
   <meta name="description" content="在 Linux 上把 ChatGPT 桌面版(内置 Codex)接到 OpenAI 兼容的第三方中转:从让 codex 命令可用、补齐双份认证、把 provider 导入正确应用分类,到用一个本地 $ref 展开代理解决中转不解析 JSON Schema 的问题。全程不改动任何系统文件即可跑通,并附配置步骤与速查表。" />
   
@@ -32,7 +32,7 @@
   
 <link rel="stylesheet" href="/css/main.css">
 
-  <link rel="stylesheet" href="/css/custom.css?v=1788525410272" />
+  <link rel="stylesheet" href="/css/custom.css?v=1788532304943" />
   
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
   
@@ -117,6 +117,9 @@
 
       
       <p>在 Linux 上把 ChatGPT 桌面版(内置 Codex)接入自己搭建的 OpenAI 兼容中转,一共四步:让 <code>codex</code> 命令可用、补齐认证、把 provider 导进正确分类、用一个本地 <code>$ref</code> 展开代理收尾。下面是可直接照做的完整配置流程。</p>
+<blockquote>
+<p><strong>看得见的凭证与路径，未必落在想去的那条上，回读验证胜过反复重试</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h1 id="为-Codex-桌面版配置第三方中转"><a href="#为-Codex-桌面版配置第三方中转" class="headerlink" title="为 Codex 桌面版配置第三方中转"></a>为 Codex 桌面版配置第三方中转</h1><h2 id="一、目标与效果"><a href="#一、目标与效果" class="headerlink" title="一、目标与效果"></a>一、目标与效果</h2><p>让本机的 Codex 走自建中转,而不是 OpenAI 官方。工具链是 ChatGPT 桌面版(Linux deb,版本 <code>26.901.20858</code>,内置 <code>codex-cli 0.153.0-alpha.5</code>)加 CC-Switch(v3.20.1)做 provider 切换。</p>

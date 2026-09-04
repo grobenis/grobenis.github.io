@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
    
-  <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+  <meta name="keywords" content="微信, Ubuntu, GNOME, 快捷键, Alt+X, wmctrl, xprop, 窗口最小化, 窗口隐显,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
    
   <meta name="description" content="在 Ubuntu GNOME(X11)上为微信配置一个 Alt+X 快捷键：窗口在前台则收起、不在前台则调出、没运行则启动。整个方案只有两个脚本、约 90 行代码，只用 wmctrl、xprop、gsettings，不装 xdotool、不需要 sudo。本文给出可直接照抄的设置步骤，并在文末补充几条深水区原理说明。" />
   
@@ -32,7 +32,7 @@
   
 <link rel="stylesheet" href="/css/main.css">
 
-  <link rel="stylesheet" href="/css/custom.css?v=1788525410274" />
+  <link rel="stylesheet" href="/css/custom.css?v=1788532304944" />
   
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
   
@@ -117,6 +117,9 @@
 
       
       <p>在 Ubuntu GNOME(X11)上给微信配一个 Alt+X 快捷键：按一下，微信在前台就收起，不在前台就调出来，没运行就启动。整个方案只有两个脚本、约 90 行代码，只用 <code>wmctrl</code>、<code>xprop</code>、<code>gsettings</code>，不装 <code>xdotool</code>、不需要 sudo。下面是从零到能用的全部步骤。</p>
+<blockquote>
+<p><strong>命令返回成功，不代表窗口真的动了</strong></p>
+</blockquote>
 <span id="more"></span>
 
 <h1 id="Ubuntu环境下为微信设置显隐快捷键"><a href="#Ubuntu环境下为微信设置显隐快捷键" class="headerlink" title="Ubuntu环境下为微信设置显隐快捷键"></a>Ubuntu环境下为微信设置显隐快捷键</h1><h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>macOS 上”呼出&#x2F;隐藏某个应用”是系统能力，Linux 桌面上则要自己拼。好在我们只需要两个 X11 工具加一个快捷键绑定，就能得到同样的体验。</p>
