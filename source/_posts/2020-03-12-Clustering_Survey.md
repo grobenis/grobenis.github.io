@@ -7,7 +7,7 @@ copyright: true
 date: 2020-03-10
 Author: guoben
 categories: 学习
-tags: [聚类,图像分割]
+tags: [聚类, 图像处理]
 comments: true
 toc: true
 ---

@@ -5,7 +5,7 @@ Author: 郭犇
 reward: true
 copyright: true
 categories: [SLAM]
-tags: [角点检测]
+tags: [图像处理]
 date: 2022-05-31 21:38:32
 ---
 

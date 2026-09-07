@@ -7,7 +7,7 @@ copyright: true
 date: 2020-03-10
 Author: Guo ben
 categories: 学习
-tags: [DBoW2,回环检测]
+tags: [回环检测]
 comments: true
 toc: true
 ---

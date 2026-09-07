@@ -7,7 +7,7 @@ copyright: true
 categories: [SLAM, 学习]
 date: 2020-02-15
 Author: guoben
-tags: [VIO, VINS]
+tags: [VIO]
 comments: true
 toc: true
 ---

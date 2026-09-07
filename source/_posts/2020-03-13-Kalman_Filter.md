@@ -7,7 +7,7 @@ copyright: true
 date: 2020-03-14
 Author: guoben
 categories: 学习
-tags: [Kalman滤波器]
+tags: [滤波]
 comments: true
 toc: true
 ---

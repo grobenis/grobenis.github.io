@@ -7,7 +7,7 @@ copyright: true
 date: 2020-02-15
 Author: guoben
 categories: 实验
-tags: [ROS,IMU,Kalibr]
+tags: [ROS, IMU, 相机标定]
 comments: true
 toc: true
 ---
