@@ -165,13 +165,7 @@ body.is-lyrics .article-inner:hover {
   border-radius: 6px;
 }
 
-/* 音乐按钮 hover 过渡 */
-.music-btn {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.music-btn:hover {
-  transform: scale(1.1);
-}
+/* 音乐按钮已并入侧栏底部按钮组（音乐/RSS/主题切换），样式见文件末尾 */
 
 /* 友链页头像：缩略为 80px 圆形 */
 .article-entry img[src*="/friends/"] {
@@ -6181,9 +6175,10 @@ figure.highlight .code-copy-btn.copied {
    作用范围：主页卡片、文章正文等阅读区域；艺术页(音乐/游戏/脑洞)自带氛围主题不受影响
    ========================================================================== */
 
-/* 切换按钮 + RSS 订阅按钮 */
+/* 侧栏底部按钮组：音乐 / RSS / 切换主题 */
 .theme-toggle,
-.rss-link {
+.rss-link,
+.music-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6200,9 +6195,21 @@ figure.highlight .code-copy-btn.copied {
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 .theme-toggle:hover,
-.rss-link:hover {
+.rss-link:hover,
+.music-btn:hover {
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
+}
+/* 播放中：淡蓝高亮 + 一圈呼吸光晕，状态一眼可辨 */
+.music-btn.playing {
+  color: #8fd0ff;
+  border-color: rgba(143, 208, 255, 0.35);
+  background: rgba(143, 208, 255, 0.12);
+  animation: music-breathe 1.6s ease-in-out infinite;
+}
+@keyframes music-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(143, 208, 255, 0.28); }
+  50%      { box-shadow: 0 0 0 6px rgba(143, 208, 255, 0); }
 }
 
 /* 基础背景与文字 */
