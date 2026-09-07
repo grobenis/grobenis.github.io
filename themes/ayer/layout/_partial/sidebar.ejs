@@ -40,11 +40,6 @@
     </li>
     <% } } %>
   </ul>
-  <% if (theme.music && theme.music.enable && theme.music.file){ %>
-  <button class="music-btn" id="musicToggle" title="播放/暂停音乐" aria-label="播放/暂停音乐">
-    <i id="musicIcon" class="ri-music-2-line"></i>
-  </button>
-  <% } %>
   <% if (theme.rss){ %>
   <a class="rss-link" href="<%- url_for(theme.rss) %>" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
     <i class="ri-rss-line"></i>

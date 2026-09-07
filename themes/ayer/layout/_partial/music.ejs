@@ -1,5 +1,39 @@
 <% if (theme.music && theme.music.enable && theme.music.file) { %>
-<audio id="musicPlayer" preload="metadata" src="<%= url_for(theme.music.file) %>"></audio>
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="<%= url_for(theme.music.file) %>"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
 
 <script>
 (function () {
@@ -7,20 +41,18 @@
     var btn = document.getElementById('musicToggle');
     var icon = document.getElementById('musicIcon');
     if (!audio || !btn || !icon) return;
-    function setPlaying(on) {
-        icon.className = on ? 'ri-pause-line' : 'ri-music-2-line';
-        if (on) btn.classList.add('playing'); else btn.classList.remove('playing');
-    }
     btn.addEventListener('click', function () {
         if (audio.paused) {
             audio.play();
-            setPlaying(true);
+            icon.className = 'ri-pause-line';
         } else {
             audio.pause();
-            setPlaying(false);
+            icon.className = 'ri-music-2-line';
         }
     });
-    audio.addEventListener('ended', function () { setPlaying(false); });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
 })();
 </script>
 <% } %>
