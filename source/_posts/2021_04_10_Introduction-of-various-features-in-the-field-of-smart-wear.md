@@ -1,11 +1,11 @@
 ---
 title: 可穿戴设备特性综述
 description: "很早就想抽空写一篇关于智能穿戴中各种特性的综述文章。今天逼迫自己开个头。总体来说，在当前的智能穿戴领域，主要分为运动和健康两大块。"
-Author: Grobenis
 reward: true
 copyright: true
 date: 2021-04-10 21:49:13
 categories: [工作]
+keywords: 可穿戴, 工作
 tags: [可穿戴]
 ---
 

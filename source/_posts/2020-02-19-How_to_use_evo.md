@@ -1,15 +1,12 @@
 ---
-layout: post
 title: 使用 evo 工具评测 SLAM
 description: "evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同…"
 reward: true
 copyright: true
 date: 2020-02-15
-Author: guoben
 categories: 实验
+keywords: VIO, evo, SLAM, 实验
 tags: [VIO,evo,SLAM]
-comments: true
-toc: true
 ---
 
 evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。

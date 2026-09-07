@@ -4,8 +4,8 @@ description: "本文是论文《基于车道宽度先验与车道边界观测的
 reward: true
 copyright: true
 date: 2022-10-20
-Author: Grobenis
 categories: [学习]
+keywords: 相机标定, 图像处理, 学习
 tags: [相机标定, 图像处理]
 ---
 

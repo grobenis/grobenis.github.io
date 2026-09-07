@@ -1,15 +1,12 @@
 ---
-layout: post
 title: VIO 主流框架
 description: "本节主要说明当前主流的VIO算法流程。课程来源于B站。"
 reward: true
 copyright: true
-categories: [SLAM, 学习]
 date: 2020-02-15
-Author: guoben
+categories: [SLAM, 学习]
+keywords: VIO, SLAM, 学习
 tags: [VIO]
-comments: true
-toc: true
 ---
 
 本节主要说明当前主流的VIO算法流程。课程来源于[B站](https://www.bilibili.com/video/av44472237?t=297)。

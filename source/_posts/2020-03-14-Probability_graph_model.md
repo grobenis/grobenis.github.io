@@ -1,15 +1,12 @@
 ---
-layout: post
 title: 概率图模型
 description: "概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的…"
 reward: true
 copyright: true
 date: 2020-03-14
-Author: guoben
 categories: 学习
+keywords: 概率图, 学习
 tags: [概率图]
-comments: true
-toc: true
 ---
 
 概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）

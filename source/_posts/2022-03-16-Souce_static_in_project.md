@@ -1,11 +1,11 @@
 ---
 title: 在工程中统计资源占用情况
 description: "简尔言之："
-Author: Grobenis
 reward: true
 copyright: true
 date: 2022-03-16 16:28:29
 categories: [SLAM]
+keywords: SLAM, C++, 工作
 tags: [SLAM, C++, 工作]
 ---
 

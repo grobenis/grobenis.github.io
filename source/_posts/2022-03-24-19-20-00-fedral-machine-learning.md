@@ -1,12 +1,12 @@
 ---
 title: 联邦机器学习
 description: "联邦学习"
-Author: 郭犇
 reward: true
 copyright: true
-categories: [学习]
-tags: [机器学习]
 date: 2022-03-24 19:22:01
+categories: [学习]
+keywords: 机器学习, 学习
+tags: [机器学习]
 ---
 
 联邦学习

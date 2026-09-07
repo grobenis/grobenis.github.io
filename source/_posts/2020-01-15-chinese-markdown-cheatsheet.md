@@ -4,8 +4,8 @@ description: "本文是一份 Markdown 语法速查手册，覆盖标题、引�
 reward: true
 copyright: true
 date: 2020-01-15
-Author: guoben
 categories: [工具]
+keywords: markdown, 工具
 tags: [markdown]
 ---
 

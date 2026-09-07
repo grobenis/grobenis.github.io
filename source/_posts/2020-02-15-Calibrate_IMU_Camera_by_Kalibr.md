@@ -1,15 +1,12 @@
 ---
-layout: post
 title: 使用 Kalibr 标定双目相机与 IMU
 description: "本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步："
 reward: true
 copyright: true
 date: 2020-02-15
-Author: guoben
 categories: 实验
+keywords: ROS, IMU, 相机标定, 实验
 tags: [ROS, IMU, 相机标定]
-comments: true
-toc: true
 ---
 
 本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步：

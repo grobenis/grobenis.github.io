@@ -1,14 +1,12 @@
 ---
-layout: post
 title: 粒子滤波器
 description: "粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。"
 reward: true
 copyright: true
 date: 2020-03-14
-Author: guoben
 categories: 学习
+keywords: 滤波, 学习
 tags: [滤波]
-toc: true
 ---
 
 粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。

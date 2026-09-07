@@ -3,9 +3,9 @@ title: SLAM 中的三角测量
 description: "三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。"
 reward: true
 copyright: true
-Author: Grobenis
 date: 2020-03-24 16:34:07
 categories: 学习
+keywords: SLAM, 多视图几何, 面试, 学习
 tags: [SLAM, 多视图几何, 面试]
 ---
 

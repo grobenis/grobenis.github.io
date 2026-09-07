@@ -1,15 +1,12 @@
 ---
-layout: post
 title: 回环检测与 DBoW2 库
 description: "本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。"
 reward: true
 copyright: true
 date: 2020-03-10
-Author: Guo ben
 categories: 学习
+keywords: 回环检测, 学习
 tags: [回环检测]
-comments: true
-toc: true
 ---
 
 本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。
