@@ -35,6 +35,9 @@
   <% } %>
   <meta name="twitter:card" content="summary" />
   <link rel="canonical" href="<%= ogUrl %>" />
+  <% if (theme.rss){ %>
+  <link rel="alternate" type="application/atom+xml" href="<%- url_for(theme.rss) %>" title="<%= config.title %> RSS" />
+  <% } %>
   <% if (is_post()) { %>
   <script type="application/ld+json">
   {
@@ -57,6 +60,9 @@
   <% if (theme.favicon){ %>
   <link rel="shortcut icon" href="<%- theme.favicon %>" />
   <% } %>
+  <link rel="manifest" href="<%- config.root %>manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="<%- config.root %>images/icon-192.png" />
   <% if (theme.cover && theme.cover.enable && is_home()){ %>
   <link rel="preload" as="image" href="<%- theme.cover.path %>" />
   <% } %>

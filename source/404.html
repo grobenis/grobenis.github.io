@@ -17,7 +17,7 @@
     text-align: center;
     padding: 20px;
   }
-  .box { max-width: 520px; }
+  .box { max-width: 560px; width: 100%; }
   .num {
     font-size: 96px;
     font-weight: 700;
@@ -44,14 +44,56 @@
     transition: all 0.3s ease;
   }
   .link:hover { border-color: #61a3f8; color: #61a3f8; }
+  .quick { margin-top: 18px; font-size: 14px; }
+  .quick a {
+    color: #999;
+    text-decoration: none;
+    margin: 0 12px;
+    transition: color 0.2s ease;
+  }
+  .quick a:hover { color: #61a3f8; }
+  .search { margin-top: 24px; display: flex; gap: 8px; }
+  .search input {
+    flex: 1;
+    padding: 10px 14px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #ddd;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .search input:focus { border-color: #61a3f8; }
+  .search button {
+    padding: 10px 18px;
+    background: #61a3f8;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .search button:hover { opacity: 0.88; }
 </style>
 </head>
 <body>
   <div class="box">
     <div class="num">4<span>0</span>4</div>
     <h1>页面走丢了</h1>
-    <p>你访问的页面不存在或已被移动<br>可以去首页看看，或在侧边栏搜索</p>
+    <p>你访问的页面不存在或已被移动<br>可以返回首页，或用下方站内搜索找一找</p>
     <a class="link" href="/">返回首页</a>
+    <form class="search" action="https://duckduckgo.com/" method="get" target="_blank" rel="noopener">
+      <input type="text" name="q" placeholder="站内搜索…" aria-label="站内搜索">
+      <input type="hidden" name="sites" value="grobenis.github.io">
+      <button type="submit">搜索</button>
+    </form>
+    <div class="quick">
+      <a href="/archives">归档</a>
+      <a href="/about">关于</a>
+      <a href="/atom.xml" target="_blank" rel="noopener">RSS</a>
+    </div>
   </div>
 </body>
 </html>

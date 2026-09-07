@@ -6,7 +6,7 @@ copyright: true
 Author: Grobenis
 date: 2020-03-26 15:19:07
 categories: 学习
-tags: [SLAM,对极约束]
+tags: [SLAM, 多视图几何]
 ---
 
 本文旨在了解一下几点：

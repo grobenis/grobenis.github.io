@@ -6,7 +6,7 @@ copyright: true
 Author: Grobenis
 date: 2020-03-24 16:34:07
 categories: 学习
-tags: [SLAM,三角化,面试]
+tags: [SLAM, 多视图几何, 面试]
 ---
 
 三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。

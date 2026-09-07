@@ -40,6 +40,11 @@
     </li>
     <% } } %>
   </ul>
+  <% if (theme.rss){ %>
+  <a class="rss-link" href="<%- url_for(theme.rss) %>" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  <% } %>
   <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
     <i class="ri-moon-line"></i>
   </button>

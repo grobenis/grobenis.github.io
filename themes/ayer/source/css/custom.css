@@ -6181,8 +6181,9 @@ figure.highlight .code-copy-btn.copied {
    作用范围：主页卡片、文章正文等阅读区域；艺术页(音乐/游戏/脑洞)自带氛围主题不受影响
    ========================================================================== */
 
-/* 切换按钮 */
-.theme-toggle {
+/* 切换按钮 + RSS 订阅按钮 */
+.theme-toggle,
+.rss-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6195,9 +6196,11 @@ figure.highlight .code-copy-btn.copied {
   color: #c9c9c9;
   font-size: 1.6rem;
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-.theme-toggle:hover {
+.theme-toggle:hover,
+.rss-link:hover {
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
 }
