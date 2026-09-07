@@ -1215,6 +1215,45 @@ body.page-scene-dawn #mask {
   animation: tvLed 1.6s ease-in-out infinite alternate;
 }
 
+/* 氛围灯开关：机身上的拨杆式小开关，电视关闭时切换整页氛围 */
+.tv-lamp-switch {
+  position: relative;
+  width: 40px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #5a5a62, #3a3a40);
+  border: 1px solid #1a1a20;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 4px rgba(0,0,0,0.3);
+  transition: background 0.2s ease;
+}
+.tv-lamp-switch:hover { background: linear-gradient(180deg, #6a6a72, #4a4a52); }
+.tv-lamp-switch:active { transform: translateY(1px); box-shadow: inset 0 2px 3px rgba(0,0,0,0.5); }
+.tv-lamp-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #241410;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.8);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.tv-lamp-lever {
+  position: relative;
+  width: 6px;
+  height: 18px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #d8d8dc, #8a8a92);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  transform-origin: 50% 85%;
+  transform: rotate(18deg);
+  transition: transform 0.18s ease;
+}
+.tv-lamp-switch.is-on .tv-lamp-lever { transform: rotate(-18deg); }
+
 /* ===== 电视关机状态 ===== */
 .tv-set.is-off .tv-screen {
   filter: brightness(0.04);
@@ -4088,94 +4127,9 @@ body.page-scene-dawn .tv-set {
 }
 
 /* ==========================================================================
-   14. 怀旧拉线吊灯(拉动切换整页氛围) —— 电视关闭时生效
+   14. 整页氛围灯 —— 机身上的「灯」开关切换(电视关闭时生效)
    ========================================================================== */
-.pull-lamp {
-  position: fixed;
-  top: 0;
-  right: 48px;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: none;
-}
-/* 电线:从页面顶部垂下 */
-.lamp-cord {
-  width: 1px;
-  height: 42px;
-  background: repeating-linear-gradient(180deg, #2e2e2e 0 5px, #3c3c3c 5px 10px);
-}
-/* 灯头:灯罩 + 灯泡 */
-.lamp-head {
-  position: relative;
-  pointer-events: none;
-}
-.lamp-shade {
-  width: 30px;
-  height: 20px;
-  margin: 0 auto;
-  position: relative;
-  background: linear-gradient(180deg, #b3914a 0%, #947238 55%, #66501f 100%);
-  clip-path: polygon(0 0, 100% 0, 68% 100%, 32% 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 226, 170, 0.5);
-  filter: drop-shadow(0 0 4px rgba(255, 195, 115, 0.3));
-}
-.lamp-shade::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 38%;
-  background: linear-gradient(180deg, rgba(255, 240, 200, 0.42), transparent);
-}
-.lamp-bulb {
-  width: 15px;
-  height: 12px;
-  margin: -1px auto 0;
-  border-radius: 50% 50% 46% 46%;
-  background: radial-gradient(circle at 50% 40%, #fff8d8, #ffd580 60%, #c88a2a);
-  box-shadow: 0 0 12px rgba(255, 200, 110, 0.7), 0 0 30px rgba(255, 190, 100, 0.35);
-  transition: background 0.4s ease, box-shadow 0.4s ease;
-  animation: lampBreath 3.6s ease-in-out infinite;
-}
-@keyframes lampBreath {
-  0%, 100% { box-shadow: 0 0 10px rgba(255, 200, 110, 0.5), 0 0 24px rgba(255, 190, 100, 0.24); }
-  50%      { box-shadow: 0 0 15px rgba(255, 205, 115, 0.85), 0 0 36px rgba(255, 190, 100, 0.4); }
-}
-/* 拉绳:可点击 */
-.lamp-pull {
-  position: relative;
-  pointer-events: auto;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: -1px;
-  padding-bottom: 4px;
-}
-.lamp-chain {
-  width: 1px;
-  height: 32px;
-  background: repeating-linear-gradient(180deg, #d4b868 0 4px, #9a8040 4px 8px);
-}
-.lamp-ball {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #e0c878, #7a6430 80%);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-  transition: transform 0.1s ease;
-}
-.lamp-pull:active .lamp-ball { transform: translateY(3px); }
-/* 去掉拉绳文字提示 */
-.lamp-pull::after,
-.lamp-pull:hover::after {
-  content: none;
-}
-
-/* --- 七种整页氛围(拉绳切换,覆盖 page-bg-*) --- */
+/* --- 七种整页氛围(灯开关切换,覆盖 page-bg-*) --- */
 body.lamp-black {
   background: #000000 !important;
 }
@@ -4241,15 +4195,6 @@ body.lamp-warm {
     radial-gradient(circle at 50% 30%, rgba(255,200,120,0.5), transparent 62%),
     linear-gradient(180deg, #c05a1a 0%, #93420f 55%, #5c2608 100%) !important;
 }
-/* 灯泡颜色随氛围变 */
-body.lamp-black  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #e8e8e0, #9a9a90 70%); box-shadow: 0 0 14px rgba(220,220,220,0.5); }
-body.lamp-white  .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff, #f2efe0 70%); box-shadow: 0 0 22px rgba(255,255,240,0.9); }
-body.lamp-yellow .lamp-bulb { background: radial-gradient(circle at 50% 40%, #fff8c0, #ffd070 70%); box-shadow: 0 0 22px rgba(255,220,120,0.9); }
-body.lamp-pink   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffd8e0, #ff88a0 70%); box-shadow: 0 0 22px rgba(255,150,180,0.9); }
-body.lamp-grey   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #eaeaf0, #b6b6be 70%); box-shadow: 0 0 16px rgba(220,220,230,0.6); }
-body.lamp-blue   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #dce8ff, #8cbaff 70%); box-shadow: 0 0 22px rgba(140,190,255,0.9); }
-body.lamp-warm   .lamp-bulb { background: radial-gradient(circle at 50% 40%, #ffe0a0, #ff9a30 70%); box-shadow: 0 0 24px rgba(255,160,60,0.95); }
-
 /* ==========================================================================
    15. 蜡烛键(#decoCandle)：默认隐藏;纯黑氛围时出现在功能键条,点击点燃透光
    (键条样式见文件末尾"陈列柜 v6",这里只保留点燃后的整体提亮)
@@ -4552,11 +4497,8 @@ body.lamp-black .tv-set.is-cdshow .tv-panel { opacity: 1; }
   80%, 100% { opacity: 1; text-shadow: 0 0 6px #fff, 0 0 22px rgba(255, 77, 154, 1), 0 0 55px rgba(255, 45, 122, 0.7), 0 0 95px rgba(255, 45, 122, 0.4); }
 }
 
-@media (max-width: 640px) {
-  .pull-lamp { right: 16px; }
-  .lamp-cord { height: 32px; }
-  .lamp-chain { height: 24px; }
-  .lamp-pull::after { display: none; }
+@media (max-width: 420px) {
+  .tv-lamp-wrap { display: none; } /* 超窄屏隐藏氛围灯开关(与 VOL 旋钮同档)，避免控制面板拥挤 */
 }
 
 /* ==========================================================================

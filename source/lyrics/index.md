@@ -16,19 +16,6 @@ share: false
   <div class="deco-neon" id="decoNeon" title="霓虹招牌">MUSIC</div>
 </div>
 
-<!-- 怀旧拉线吊灯:电视关闭时可拉动切换整页氛围 -->
-<div class="pull-lamp" id="pullLamp">
-<div class="lamp-cord"></div>
-<div class="lamp-head">
-<div class="lamp-shade"></div>
-<div class="lamp-bulb" id="lampBulb"></div>
-</div>
-<div class="lamp-pull" id="lampPull">
-<div class="lamp-chain"></div>
-<div class="lamp-ball"></div>
-</div>
-</div>
-
 <div class="tv-set" id="tvSet">
 
 <!-- 左上品牌铭牌 -->
@@ -417,6 +404,14 @@ share: false
 <span class="tv-knob-pointer"></span>
 </button>
 <span class="tv-knob-label">VOL</span>
+</span>
+
+<span class="tv-knob-wrap tv-lamp-wrap">
+<button class="tv-lamp-switch" id="tvLampSwitch" type="button" aria-label="灯 · 切换氛围" title="灯 · 切换氛围">
+<span class="tv-lamp-led" id="tvLampLed"></span>
+<span class="tv-lamp-lever"></span>
+</button>
+<span class="tv-knob-label">灯</span>
 </span>
 
 <button class="tv-power-btn" id="tvPowerBtn" type="button" aria-label="电源开关" title="电源开关">
@@ -849,8 +844,14 @@ share: false
 
   /* 七种氛围顺序(黑色在最后) */
   var LAMPS = ['white', 'yellow', 'pink', 'grey', 'blue', 'warm', 'black'];
-  var lampIdx = -1; /* -1 表示未拉起(电视开着,氛围随歌曲) */
-  var pull = document.getElementById('lampPull');
+  var lampIdx = -1; /* -1 表示未拉灯(电视开着,氛围随歌曲) */
+  var lampSwitch = document.getElementById('tvLampSwitch');
+  var lampLed = document.getElementById('tvLampLed');
+  /* 每种氛围对应的小灯颜色 */
+  var MOOD_COLORS = {
+    white: '#fff8e0', yellow: '#ffd070', pink: '#ff88a0',
+    grey: '#b8b8be', blue: '#8cbaff', warm: '#ff9a30', black: '#221a14'
+  };
 
   /* 全局房间状态:供蜡烛模块读取/联动 */
   window.roomState = {
@@ -864,6 +865,22 @@ share: false
     }
   }
 
+  /* 同步开关视觉:亮起 = 已拉灯,小灯颜色 = 当前氛围 */
+  function renderLampSwitch() {
+    if (!lampSwitch) return;
+    var active = !on && lampIdx >= 0 && lampIdx < LAMPS.length;
+    lampSwitch.classList.toggle('is-on', active);
+    if (!lampLed) return;
+    if (active) {
+      var c = MOOD_COLORS[LAMPS[lampIdx]] || '#ffd070';
+      lampLed.style.background = c;
+      lampLed.style.boxShadow = '0 0 8px ' + c + ', 0 0 16px ' + c + ', inset 0 1px 1px rgba(255,255,255,0.6)';
+    } else {
+      lampLed.style.background = '#241410';
+      lampLed.style.boxShadow = 'inset 0 1px 1px rgba(0,0,0,0.8)';
+    }
+  }
+
   function setLamp(idx) {
     clearLamp();
     if (idx >= 0 && idx < LAMPS.length) {
@@ -874,6 +891,7 @@ share: false
       extinguishCandle();
       if (window.clearRoomFx) window.clearRoomFx();
     }
+    renderLampSwitch();
   }
 
   function setPower(state) {
@@ -892,11 +910,12 @@ share: false
       setLamp(0);
       if (window._tvNoSignalOn) window._tvNoSignalOn();
     }
+    renderLampSwitch();
   }
 
-  if (pull) {
-    pull.addEventListener('click', function () {
-      /* 只有电视关闭时才允许拉绳换氛围 */
+  if (lampSwitch) {
+    lampSwitch.addEventListener('click', function () {
+      /* 只有电视关闭时才允许切氛围 */
       if (on) return;
       lampIdx = (lampIdx + 1) % LAMPS.length;
       setLamp(lampIdx);
@@ -1367,10 +1386,10 @@ function extinguishCandle() {
     if (Date.now() - lastInteract < 30000) return;
     var tv = document.getElementById('tvSet');
     if (!tv || !tv.classList.contains('is-off')) return;
-    /* 仅当当前不是黑色氛围时拉灯切到黑 */
+    /* 仅当当前不是黑色氛围时拨灯切到黑 */
     if (!document.body.classList.contains('lamp-black')) {
-      var pull = document.getElementById('lampPull');
-      if (pull) pull.click();
+      var lampSwitch = document.getElementById('tvLampSwitch');
+      if (lampSwitch) lampSwitch.click();
       showHourPopup();
     }
   }, 60000);
