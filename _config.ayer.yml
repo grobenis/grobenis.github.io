@@ -88,6 +88,12 @@ nav_text:
 # 文章页是否显示目录
 toc: true
 
+# 旧文提示
+# 文章发布时间超过 days 天时，在文首显示「内容可能已过时」提示
+outdated_banner:
+  enable: true
+  days: 365
+
 # 文章中的图片是否支持点击放大
 image_viewer: true
 

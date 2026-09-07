@@ -6135,3 +6135,42 @@ body.lamp-black .fx-bar #decoCandle { display: inline-flex; }
     transition: none;
   }
 }
+
+/* 代码块一键复制按钮 */
+figure.highlight .code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #8a8f98;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  z-index: 2;
+}
+figure.highlight:hover .code-copy-btn {
+  opacity: 1;
+}
+figure.highlight .code-copy-btn:hover {
+  color: #333;
+}
+figure.highlight .code-copy-btn.copied {
+  color: #2ea44f;
+  opacity: 1;
+}
+
+/* 旧文过时提示 */
+.outdated-banner {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #856404;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+}
