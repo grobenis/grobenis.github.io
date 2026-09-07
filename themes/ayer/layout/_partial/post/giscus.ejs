@@ -1,0 +1,33 @@
+<% if (theme.giscus.enable) { %>
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="<%- theme.giscus.repo %>"
+    data-repo-id="<%- theme.giscus.repo_id %>"
+    data-category="<%- theme.giscus.category %>"
+    data-category-id="<%- theme.giscus.category_id %>"
+    data-mapping="<%- theme.giscus.mapping %>"
+    data-strict="0"
+    data-reactions-enabled="<%- theme.giscus.reactions_enabled ? '1' : '0' %>"
+    data-emit-metadata="<%- theme.giscus.emit_metadata ? '1' : '0' %>"
+    data-input-position="<%- theme.giscus.input_position %>"
+    data-theme="<%- theme.giscus.theme %>"
+    data-lang="<%- theme.giscus.lang %>"
+    data-loading="<%- theme.giscus.loading %>"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+<% } %>

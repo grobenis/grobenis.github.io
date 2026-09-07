@@ -116,7 +116,7 @@ copyright_type: 1
 # 需要安装hexo-generator-searchdb(https://github.com/theme-next/hexo-generator-searchdb)
 search: true
 
-# 评论：1、Valine(推荐)；2、Gitalk
+# 评论：1、Valine；2、Gitalk；3、Giscus(推荐)
 
 # 1、Valine[一款快速、简洁且高效的无后端评论系统](https://github.com/xCss/Valine)
 # 启用Valine必须先创建leancloud应用， 获取 id|key 填入即可
@@ -147,6 +147,28 @@ gitalk:
   repo: blog-comments # 存放评论的仓库（需先在 GitHub 创建空仓库）
   owner: grobenis
   admin: grobenis
+
+# 3、Giscus(https://giscus.app/zh-CN) —— 基于 GitHub Discussions 的评论系统，免后端、开源
+# 启用步骤：
+#   1. 打开仓库 Settings → General → Features，勾选 Discussions（giscus 依赖它存评论）
+#   2. 到 https://github.com/apps/giscus 安装 Giscus App，授权访问 grobenis/grobenis.github.io
+#   3. 访问 https://giscus.app/zh-CN，填入仓库名 grobenis/grobenis.github.io，
+#      选择「页面与讨论映射」为 pathname、选好讨论分类，页面会生成一段脚本，
+#      把脚本里的 data-repo-id / data-category-id 两串值填到下方
+#   4. enable 改为 true，重新部署
+giscus:
+  enable: true
+  repo: grobenis/grobenis.github.io
+  repo_id: MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI=
+  category: General # 存放评论的 Discussions 分类
+  category_id: DIC_kwDODs61iM4DFCzP
+  mapping: pathname # 映射方式：pathname(按文章网址)/title/url/specific
+  reactions_enabled: true # 是否显示表情回复
+  emit_metadata: false # 是否输出 discussion 元数据
+  input_position: bottom # 输入框位置：top/bottom
+  theme: preferred_color_scheme # 主题：light/dark/preferred_color_scheme 等
+  lang: zh-CN
+  loading: lazy # lazy 可延迟加载评论，不拖慢首屏
 
 # GitHub Ribbons-封面右上角的forkme
 github:

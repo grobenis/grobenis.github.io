@@ -83,4 +83,8 @@
   <%- partial('post/gitalk') %>
   <% } %>
 
+  <% if (theme.giscus && theme.giscus.enable && is_post()) { %>
+  <%- partial('post/giscus') %>
+  <% } %>
+
 </article>
