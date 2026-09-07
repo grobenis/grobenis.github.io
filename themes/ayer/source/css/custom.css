@@ -6174,3 +6174,109 @@ figure.highlight .code-copy-btn.copied {
   border: 1px solid #ffeeba;
   border-radius: 4px;
 }
+
+/* ==========================================================================
+   暗色模式
+   触发：<html data-theme="dark">（跟随系统 + 手动切换 + localStorage 记忆）
+   作用范围：主页卡片、文章正文等阅读区域；艺术页(音乐/游戏/脑洞)自带氛围主题不受影响
+   ========================================================================== */
+
+/* 切换按钮 */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin: 0.8rem auto 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #c9c9c9;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* 基础背景与文字 */
+html[data-theme="dark"] body {
+  background-color: #181a1f;
+  color: #cdd0d6;
+}
+html[data-theme="dark"] .content {
+  background-color: #181a1f;
+}
+
+/* 卡片与正文 */
+html[data-theme="dark"] .article-inner {
+  background-color: #23252b;
+  border-color: #2a2d33;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+html[data-theme="dark"] .article-entry {
+  color: #cdd0d6;
+  border-color: #2a2d33;
+}
+
+/* 标题 */
+html[data-theme="dark"] .article-title,
+html[data-theme="dark"] .article-header h1,
+html[data-theme="dark"] .article-header h2,
+html[data-theme="dark"] .article-header h3,
+html[data-theme="dark"] .article-entry h1,
+html[data-theme="dark"] .article-entry h2,
+html[data-theme="dark"] .article-entry h3,
+html[data-theme="dark"] .article-entry h4,
+html[data-theme="dark"] .article-entry h5,
+html[data-theme="dark"] .article-entry h6 {
+  color: #e8eaed;
+}
+html[data-theme="dark"] .article-title {
+  border-left-color: #e8eaed;
+}
+
+/* 元信息（日期/分类） */
+html[data-theme="dark"] .article-date,
+html[data-theme="dark"] .article-meta,
+html[data-theme="dark"] .article-category a {
+  color: #9aa0a8;
+}
+
+/* 链接 */
+html[data-theme="dark"] .article-entry a,
+html[data-theme="dark"] .article-inner a {
+  color: #6cb2f5;
+}
+
+/* 引用块 */
+html[data-theme="dark"] .article-entry blockquote {
+  color: #a8adb4;
+  background-color: #23252b;
+  border-left-color: #3a3f46;
+}
+
+/* 行内代码 */
+html[data-theme="dark"] .article-entry code {
+  background-color: #2a2d33;
+  color: #e0a86a;
+}
+
+/* 表格 */
+html[data-theme="dark"] .article-entry table tr,
+html[data-theme="dark"] .article-entry table td,
+html[data-theme="dark"] .article-entry table th {
+  border-color: #3a3f46;
+}
+
+/* 版权声明与页脚分隔线 */
+html[data-theme="dark"] .declare {
+  color: #9aa0a8;
+  border-bottom-color: #2a2d33;
+}
+html[data-theme="dark"] .footer {
+  border-top-color: #2a2d33;
+}

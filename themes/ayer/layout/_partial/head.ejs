@@ -2,6 +2,10 @@
 <html lang="zh-CN">
 
 <head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
   <meta charset="utf-8" />
   <% var title = page.title; if (is_archive()) { title = __('archive_a'); if
     (is_month()) { title += ': ' + page.year + '/' + page.month; } else if
