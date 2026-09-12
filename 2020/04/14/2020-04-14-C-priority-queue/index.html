@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="C++, 数据结构, 学习,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, larg…" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="C++ 优先队列 | 曾是少年" />
+  <meta property="og:description" content="普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, larg…" />
+  <meta property="og:url" content="https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "C++ 优先队列",
+    "description": "普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, larg…",
+    "url": "https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/",
+    "datePublished": "2020-04-14T02:15:06.000Z",
+    "dateModified": "2026-09-12T13:19:00.241Z",
+    "author": { "@type": "Person", "name": "guoben" },
+    "publisher": { "@type": "Person", "name": "guoben" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/" }
+  }
+  </script>
+  
+  <title>
+    C++ 优先队列 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150143" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-04-14-C-priority-queue" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  C++ 优先队列
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/14/2020-04-14-C-priority-queue/" class="article-date">
+  <time datetime="2020-04-14T02:15:06.000Z" itemprop="datePublished">2020-04-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">8分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    <div class="outdated-banner">
+      <i class="ri-time-line"></i> 本文发布于 2020-04-14，距今已超 365 天，内容可能已过时，请注意甄别。
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, largest out）的行为特征。通常采用堆数据结构来实现。本节来介绍C++中的优先队列。</p>
+<p>本文介绍 C++ 优先队列的概念与用法，讲解其基于堆的最高优先级先出队特性，涵盖相关定义、声明方式（默认、greater&#x2F;less、自定义仿函数、结构体重载小于号）以及基本操作成员函数，并给出基本类型、pair 与自定义类型的完整示例。</p>
+<blockquote>
+<p><strong>优先级高者先出，队列自有章法</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<p>优先队列是0个或多个元素的集合,每个元素都有一个优先权或值,对优先队列执行的操作有1) 查找;2) 插入一个新元素;3) 删除.在最小优先队列(min priority queue)中,查找操作用来搜索优先权最小的元素,删除操作用来删除该元素;对于最大优先队列(max priority queue),查找操作用来搜索优先权最大的元素,删除操作用来删除该元素.优先权队列中的元素可以有相同的优先权,查找与删除操作可根据任意优先权进行.</p>
+<p>最大优先权队列的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">抽象数据类型</a>描述下所示,最小优先队列的抽象数据类型描述与之类似,只需将最大改为最小即可.</p>
+<h2 id="一、相关定义"><a href="#一、相关定义" class="headerlink" title="一、相关定义"></a>一、相关定义</h2><p>优先队列容器与队列一样，只能从队尾插入元素，从队首删除元素。但是它有一个特性，就是队列中最大的元素总是位于队首，所以出队时，并非按照先进先出的原则进行，而是将当前队列中最大的元素出队。这点类似于给队列里的元素进行了由大到小的顺序排序。元素的比较规则默认按元素值由大到小排序，可以重载“&lt;”操作符来重新定义比较规则。</p>
+<p>优先级队列可以用向量(vector)或双向队列(deque)来实现(注意list container不能用来实现queue，因为list的迭代器不是任意存取iterator，而pop中用到堆排序时是要求randomaccess iterator 的!)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;vector&lt;int&gt;, less&lt;int&gt; &gt; pq1; 　　　 // 使用递增less&lt;int&gt;函数对象排序</span><br><span class="line">priority_queue&lt;deque&lt;int&gt;, greater&lt;int&gt; &gt; pq2; 　　// 使用递减greater&lt;int&gt;函数对象排序</span><br></pre></td></tr></table></figure>
+
+
+<p>其成员函数有“判空(empty)” 、“尺寸(Size)” 、“栈顶元素(top)” 、“压栈(push)” 、“弹栈(pop)”等。</p>
+<h2 id="二、priority-queue"><a href="#二、priority-queue" class="headerlink" title="二、priority_queue"></a>二、priority_queue</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><strong>首先要包含头文件<code>#include</code></strong>, 他和<code>queue</code>不同的就在于我们可以自定义其中数据的优先级, 让优先级高的排在队列前面,优先出队。在默认的优先队列中，优先级高的先出队。在默认的int型中先出队的为较大的数。</p>
+<p>优先队列具有队列的所有特性，包括队列的基本操作，只是在这基础上添加了内部的一个排序，它本质是一个堆实现的。</p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><blockquote>
+<p>和队列基本操作相同:</p>
+<ul>
+<li>top() 	      访问队头元素</li>
+<li>empty()      队列是否为空</li>
+<li>size()          返回队列内元素个数</li>
+<li>push()        插入元素到队尾 (并排序)</li>
+<li>emplace() 原地构造一个元素并插入队列</li>
+<li>pop()         弹出队头元素</li>
+<li>swap()       交换内容</li>
+</ul>
+</blockquote>
+<h3 id="头文件："><a href="#头文件：" class="headerlink" title="头文件："></a>头文件：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\#include &lt;queue&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="声明方式："><a href="#声明方式：" class="headerlink" title="声明方式："></a>声明方式：</h3><h4 id="1、普通方法："><a href="#1、普通方法：" class="headerlink" title="1、普通方法："></a>1、普通方法：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="type">int</span>&gt; q;  　　　　　　　　　　　  <span class="comment">//通过操作，按照元素从大到小的顺序出队</span></span><br><span class="line"><span class="comment">//升序队列</span></span><br><span class="line">priority_queue &lt;<span class="type">int</span>,vector&lt;<span class="type">int</span>&gt;,greater&lt;<span class="type">int</span>&gt; &gt; q; <span class="comment">//通过操作，按照元素从小到大的顺序出队</span></span><br><span class="line"><span class="comment">//降序队列</span></span><br><span class="line">priority_queue &lt;<span class="type">int</span>,vector&lt;<span class="type">int</span>&gt;,less&lt;<span class="type">int</span>&gt; &gt;q;</span><br><span class="line"></span><br><span class="line"><span class="comment">//greater和less是std实现的两个仿函数（就是使一个类的使用看上去像一个函数。其实现就是类中实现一个operator()，这个类就有了类似函数的行为，就是一个仿函数类了）</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、自定义优先级："><a href="#2、自定义优先级：" class="headerlink" title="2、自定义优先级："></a>2、自定义优先级：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp</span> &#123;</span><br><span class="line">　　<span class="function"><span class="keyword">operator</span> <span class="title">bool</span> <span class="params">()</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span>   </span></span><br><span class="line"><span class="function">　　</span>&#123;     </span><br><span class="line">　　　　 <span class="keyword">return</span>　x &gt; y;　　 <span class="comment">// x小的优先级高    //也可以写成其他方式，如： return p[x] &gt; p[y];表示p[i]小的优先级高</span></span><br><span class="line">　　&#125;</span><br><span class="line">&#125;;</span><br><span class="line">priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, cmp&gt; q;  <span class="comment">//定义方法</span></span><br><span class="line"><span class="comment">//其中，第二个参数为容器类型。第三个参数为比较函数。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3、结构体声明方式："><a href="#3、结构体声明方式：" class="headerlink" title="3、结构体声明方式："></a>3、结构体声明方式：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;   </span><br><span class="line">　　<span class="type">int</span> x, y; </span><br><span class="line">　　<span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt; (node a, node b)  </span><br><span class="line">　　&#123;     </span><br><span class="line">　　　　<span class="keyword">return</span> a.x &gt; b.x;  <span class="comment">//结构体中，x小的优先级高   </span></span><br><span class="line">　　&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">priority_queue&lt;node&gt;q;  <span class="comment">//定义方法</span></span><br><span class="line"><span class="comment">// 在该结构中，y为值, x为优先级。</span></span><br><span class="line"><span class="comment">// 通过自定义operator&lt;操作符来比较元素中的优先级。</span></span><br><span class="line"><span class="comment">// 在重载”&lt;”时，最好不要重载”&gt;”，可能会发生编译错误</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、例子"><a href="#三、例子" class="headerlink" title="三、例子"></a>三、例子</h2><h3 id="1、基本类型优先队列的例子："><a href="#1、基本类型优先队列的例子：" class="headerlink" title="1、基本类型优先队列的例子："></a><strong>1、基本类型优先队列的例子：</strong></h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//对于基础类型 默认是大顶堆</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>&gt; a; </span><br><span class="line">    <span class="comment">//等同于 priority_queue&lt;int, vector&lt;int&gt;, less&lt;int&gt; &gt; a;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//      这里一定要有空格，不然成了右移运算符↓↓</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt; &gt; c;  <span class="comment">//这样就是小顶堆</span></span><br><span class="line">    priority_queue&lt;string&gt; b;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) </span><br><span class="line">    &#123;</span><br><span class="line">        a.<span class="built_in">push</span>(i);</span><br><span class="line">        c.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (!a.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; a.<span class="built_in">top</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        a.<span class="built_in">pop</span>();</span><br><span class="line">    &#125; </span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!c.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; c.<span class="built_in">top</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        c.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    b.<span class="built_in">push</span>(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">    b.<span class="built_in">push</span>(<span class="string">&quot;abcd&quot;</span>);</span><br><span class="line">    b.<span class="built_in">push</span>(<span class="string">&quot;cbd&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span> (!b.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; b.<span class="built_in">top</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        b.<span class="built_in">pop</span>();</span><br><span class="line">    &#125; </span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4 3 2 1 0``0 1 2 3 4``cbd abcd abc``请按任意键继续. . .</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、用pair做优先队列元素的例子："><a href="#2、用pair做优先队列元素的例子：" class="headerlink" title="2、用pair做优先队列元素的例子："></a><strong>2、用pair做优先队列元素的例子：</strong></h3><p>规则：pair的比较，先比较第一个元素，第一个相等比较第二个。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//对于基础类型 默认是大顶堆</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>&gt; a; </span><br><span class="line">    <span class="comment">//等同于 priority_queue&lt;int, vector&lt;int&gt;, less&lt;int&gt; &gt; a;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//      这里一定要有空格，不然成了右移运算符↓↓</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt; &gt; c;  <span class="comment">//这样就是小顶堆</span></span><br><span class="line">    priority_queue&lt;string&gt; b;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) </span><br><span class="line">    &#123;</span><br><span class="line">        a.<span class="built_in">push</span>(i);</span><br><span class="line">        c.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (!a.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; a.<span class="built_in">top</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        a.<span class="built_in">pop</span>();</span><br><span class="line">    &#125; </span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!c.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; c.<span class="built_in">top</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        c.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    b.<span class="built_in">push</span>(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">    b.<span class="built_in">push</span>(<span class="string">&quot;abcd&quot;</span>);</span><br><span class="line">    b.<span class="built_in">push</span>(<span class="string">&quot;cbd&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span> (!b.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; b.<span class="built_in">top</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        b.<span class="built_in">pop</span>();</span><br><span class="line">    &#125; </span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2 5``1 3``1 2``请按任意键继续. . .</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、用自定义类型做优先队列元素的例子"><a href="#3、用自定义类型做优先队列元素的例子" class="headerlink" title="3、用自定义类型做优先队列元素的例子"></a><strong>3、用自定义类型做优先队列元素的例子</strong></h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法1</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">tmp1</span> <span class="comment">//运算符重载&lt;</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="built_in">tmp1</span>(<span class="type">int</span> a) &#123;x = a;&#125;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">operator</span>&lt;(<span class="type">const</span> tmp1&amp; a) <span class="type">const</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> x &lt; a.x; <span class="comment">//大顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法2</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">tmp2</span> <span class="comment">//重写仿函数</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(tmp1 a, tmp1 b)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.x &lt; b.x; <span class="comment">//大顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">tmp1 <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="function">tmp1 <span class="title">b</span><span class="params">(<span class="number">2</span>)</span></span>;</span><br><span class="line">    <span class="function">tmp1 <span class="title">c</span><span class="params">(<span class="number">3</span>)</span></span>;</span><br><span class="line">    priority_queue&lt;tmp1&gt; d;</span><br><span class="line">    d.<span class="built_in">push</span>(b);</span><br><span class="line">    d.<span class="built_in">push</span>(c);</span><br><span class="line">    d.<span class="built_in">push</span>(a);</span><br><span class="line">    <span class="keyword">while</span> (!d.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; d.<span class="built_in">top</span>().x &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        d.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    priority_queue&lt;tmp1, vector&lt;tmp1&gt;, tmp2&gt; f;</span><br><span class="line">    f.<span class="built_in">push</span>(b);</span><br><span class="line">    f.<span class="built_in">push</span>(c);</span><br><span class="line">    f.<span class="built_in">push</span>(a);</span><br><span class="line">    <span class="keyword">while</span> (!f.<span class="built_in">empty</span>()) </span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; f.<span class="built_in">top</span>().x &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        f.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">`3`</span><br><span class="line">`2`</span><br><span class="line">`1` </span><br><span class="line"></span><br><span class="line">`3`</span><br><span class="line">`2`</span><br><span class="line">`1`</span><br><span class="line"></span><br><span class="line">请按任意键继续. . .</span><br></pre></td></tr></table></figure>
+
+<p> 参考资料</p>
+<p>[1] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/huashanqingzhu/p/11040390.html">c++优先队列(priority_queue)用法详解</a></p>
+<p>[2] [C++STL——优先队列](<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xzxl/p/7266404.html%EF%BC%89">https://www.cnblogs.com/xzxl/p/7266404.html）</a></p>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/14/2020-04-14-C-priority-queue/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/04/14/2020-04-14-OPENCV-Function/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            OpenCV 重要函数
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/04/13/2020-04-13-ORBSLAM2/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">ORB-SLAM2 学习笔记</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="grobenis/grobenis.github.io"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI="
+    data-category="General"
+    data-category-id="DIC_kwDODs61iM4DFCzP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

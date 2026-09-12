@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="曾梦想仗剑走天涯" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="曾是少年" />
+  <meta property="og:description" content="曾梦想仗剑走天涯" />
+  <meta property="og:url" content="https://grobenis.github.io/page/6/" />
+  <meta property="og:type" content="website" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/page/6/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <title>
+     曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  <link rel="preload" as="image" href="/images/cover1.jpg" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150187" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" fetchpriority="high" decoding="async" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">曾是少年</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+        <img
+          src="/images/cat.jpeg"
+          class="cover-logo"
+          alt="曾是少年"
+        />
+        
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+<div id="main">
+  <section class="outer">
+  <article class="articles">
+    
+    
+    
+    
+    
+    <article id="post-2020-03-24-Triangulation" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/24/2020-03-24-Triangulation/"
+    >SLAM 中的三角测量</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/24/2020-03-24-Triangulation/" class="article-date">
+  <time datetime="2020-03-24T08:34:07.000Z" itemprop="datePublished">2020-03-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。</p>
+<p>本节旨在解决以下问题：</p>
+<ol>
+<li>三角测量的概念</li>
+<li>三角测量的过程及代码实现；</li>
+<li>三角测量有哪些不确定性</li>
+<li>如何提高三角测量的精度</li>
+</ol>
+<p>本文学习 SLAM 中的三角测量，即已知相机运动 R、t 后，利用两帧特征点的归一化坐标求解地图点的深度与空间位置。文章给出三角化的数学推导与基于 OpenCV 的代码实现，并分析了三角化的不确定性来源以及提高精度的措施。</p>
+<blockquote>
+<p><strong>三角测量，由视差求深度</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/24/2020-03-24-Triangulation/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" rel="tag">多视图几何</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-24-SLAM初始化" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/24/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/"
+    >SLAM 初始化</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/24/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/" class="article-date">
+  <time datetime="2020-03-24T04:23:32.000Z" itemprop="datePublished">2020-03-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本节的学习要点：</p>
+<ol>
+<li>初始化的目的(单目&#x2F;双目)</li>
+<li>初始化的两种方法</li>
+<li>初始化过程</li>
+</ol>
+<p>本文学习 SLAM 初始化，阐明单目初始化构建初始三维点云并为后续估计提供初始值的目的，介绍了追踪已知物体、计算单应矩阵与基础矩阵三种常用方法。文章重点梳理 ORB-SLAM2 单目初始化的完整流程——初始帧匹配、位姿计算（八点法与 RANSAC 模型选择）、三角测量与地图创建、BA 优化，并简述双目与 RGB-D 的初始化。</p>
+<blockquote>
+<p><strong>初始化定根基，后续估计方有所依</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/24/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-22-KMP-Algorithm" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/22/2020-03-22-KMP-Algorithm/"
+    >KMP 字符串匹配算法</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/22/2020-03-22-KMP-Algorithm/" class="article-date">
+  <time datetime="2020-03-22T06:31:40.000Z" itemprop="datePublished">2020-03-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。</p>
+<p>本文讲解 KMP 字符串匹配算法的原理与实现，从暴力匹配的回溯缺陷出发，引入 next 数组记录模式串前缀后缀的最长公共长度，将时间复杂度从 O(nm) 优化到 O(m+n)，并给出完整的 next 数组构造与匹配源代码。</p>
+<blockquote>
+<p><strong>利用失配信息，让匹配不再回溯</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/22/2020-03-22-KMP-Algorithm/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-15-Motion_consistency" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/14/2020-03-15-Motion_consistency/"
+    >运动一致性判断</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/14/2020-03-15-Motion_consistency/" class="article-date">
+  <time datetime="2020-03-14T16:00:00.000Z" itemprop="datePublished">2020-03-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。</p>
+<p>本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。</p>
+<blockquote>
+<p><strong>动静分离，方能求得位姿真值</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Motion_consistency/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-15-Particle_Filter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/14/2020-03-15-Particle_Filter/"
+    >粒子滤波器</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/14/2020-03-15-Particle_Filter/" class="article-date">
+  <time datetime="2020-03-14T16:00:00.000Z" itemprop="datePublished">2020-03-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。</p>
+<blockquote>
+<p><strong>以粒子之众，逼近状态之真</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/14/2020-03-15-Particle_Filter/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag">滤波</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-14-GMM" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/13/2020-03-14-GMM/"
+    >高斯混合模型</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/13/2020-03-14-GMM/" class="article-date">
+  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>高斯混合模型</p>
+<p>本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。</p>
+<blockquote>
+<p><strong>简单分布叠加，拟合复杂世界</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/13/2020-03-14-GMM/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-14-Probability_graph_model" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/13/2020-03-14-Probability_graph_model/"
+    >概率图模型</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/13/2020-03-14-Probability_graph_model/" class="article-date">
+  <time datetime="2020-03-13T16:00:00.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）</p>
+<p>本节将用来介绍概率图模型。</p>
+<p>本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。</p>
+<blockquote>
+<p><strong>用图言变量，依赖一目了然</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/13/2020-03-14-Probability_graph_model/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-13-HMM_model" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/12/2020-03-13-HMM_model/"
+    >隐马尔可夫模型</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/12/2020-03-13-HMM_model/" class="article-date">
+  <time datetime="2020-03-12T16:00:00.000Z" itemprop="datePublished">2020-03-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。</p>
+<p>隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。</p>
+<p>来源：李航的《统计学习方法》</p>
+<p>本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。</p>
+<blockquote>
+<p><strong>看不见的状态，可观测的序列</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/12/2020-03-13-HMM_model/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE/" rel="tag">概率图</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-13-Kalman_Filter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/12/2020-03-13-Kalman_Filter/"
+    >Kalman 滤波器学习</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/12/2020-03-13-Kalman_Filter/" class="article-date">
+  <time datetime="2020-03-12T16:00:00.000Z" itemprop="datePublished">2020-03-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>概率图+时间&#x3D;动态系统</p>
+<p>​	对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
+<ol>
+<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
+<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
+<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
+</ol>
+<p>本节主要来介绍kalman滤波器。</p>
+<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
+<blockquote>
+<p><strong>预测加修正，噪声终让路</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/12/2020-03-13-Kalman_Filter/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag">滤波</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-2020-03-12-Clustering_Survey" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/11/2020-03-12-Clustering_Survey/"
+    >经典聚类算法调研</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/11/2020-03-12-Clustering_Survey/" class="article-date">
+  <time datetime="2020-03-11T16:00:00.000Z" itemprop="datePublished">2020-03-12</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种：</p>
+<ol>
+<li>Means-shift聚类</li>
+<li>k-means聚类</li>
+<li>Fuzzy C means聚类</li>
+<li>Medoid shift算法</li>
+<li>Turbopixel算法</li>
+<li>SLIC算法</li>
+</ol>
+<p>本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。</p>
+<blockquote>
+<p><strong>物以类聚，算法以分见真章</strong></p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2020/03/11/2020-03-12-Clustering_Survey/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%81%9A%E7%B1%BB/" rel="tag">聚类</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+</article>
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+  </nav>
+  
+</section>
+
+</div>
+
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

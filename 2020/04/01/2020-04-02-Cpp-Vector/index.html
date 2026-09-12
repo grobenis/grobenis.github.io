@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="C++, 数据结构, 学习,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="C++ 容器 vector | 曾是少年" />
+  <meta property="og:description" content="向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。" />
+  <meta property="og:url" content="https://grobenis.github.io/2020/04/01/2020-04-02-Cpp-Vector/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/2020/04/01/2020-04-02-Cpp-Vector/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "C++ 容器 vector",
+    "description": "向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。",
+    "url": "https://grobenis.github.io/2020/04/01/2020-04-02-Cpp-Vector/",
+    "datePublished": "2020-04-01T16:24:14.000Z",
+    "dateModified": "2026-09-12T13:19:00.239Z",
+    "author": { "@type": "Person", "name": "guoben" },
+    "publisher": { "@type": "Person", "name": "guoben" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://grobenis.github.io/2020/04/01/2020-04-02-Cpp-Vector/" }
+  }
+  </script>
+  
+  <title>
+    C++ 容器 vector |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150144" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-04-02-Cpp-Vector" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  C++ 容器 vector
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/01/2020-04-02-Cpp-Vector/" class="article-date">
+  <time datetime="2020-04-01T16:24:14.000Z" itemprop="datePublished">2020-04-02</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.4k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">5分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    <div class="outdated-banner">
+      <i class="ri-time-line"></i> 本文发布于 2020-04-02，距今已超 365 天，内容可能已过时，请注意甄别。
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。</p>
+<p>本文介绍 C++ 容器 Vector 的基本概念与顺序序列、动态数组等特性，系统列出构造函数、增删元素、遍历访问、判断与大小等常用成员函数的用法，并补充二维 Vector 的初始化与排序方法。</p>
+<blockquote>
+<p><strong>动态数组，Vector 一步到位</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h2><p>向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。</p>
+<h2 id="二、容器特性"><a href="#二、容器特性" class="headerlink" title="二、容器特性"></a>二、容器特性</h2><h3 id="1-顺序序列"><a href="#1-顺序序列" class="headerlink" title="1. 顺序序列"></a>1. 顺序序列</h3><p>顺序容器中的元素按照严格的线性顺序排序。可以通过元素在序列中的位置访问对应的元素。</p>
+<h3 id="2-动态数组"><a href="#2-动态数组" class="headerlink" title="2. 动态数组"></a>2. 动态数组</h3><p>支持对序列中的任意元素进行快速直接访问，甚至可以通过指针算述进行该操作。操供了在序列末尾相对快速地添加&#x2F;删除元素的操作。</p>
+<h3 id="3-能够感知内存分配器的（Allocator-aware）"><a href="#3-能够感知内存分配器的（Allocator-aware）" class="headerlink" title="3. 能够感知内存分配器的（Allocator-aware）"></a>3. 能够感知内存分配器的（Allocator-aware）</h3><p>容器使用一个内存分配器对象来动态地处理它的存储需求。</p>
+<h2 id="三、基本函数"><a href="#三、基本函数" class="headerlink" title="三、基本函数"></a>三、基本函数</h2><h3 id="1-构造函数"><a href="#1-构造函数" class="headerlink" title="1.构造函数"></a>1.构造函数</h3><ul>
+<li>vector():创建一个空vector</li>
+<li>vector(int nSize):创建一个vector,元素个数为nSize</li>
+<li>vector(int nSize,const t&amp; t):创建一个vector，元素个数为nSize,且值均为t</li>
+<li>vector(const vector&amp;):复制构造函数</li>
+<li>vector(begin,end):复制[begin,end)区间内另一个数组的元素到vector中</li>
+</ul>
+<h3 id="2-增加函数"><a href="#2-增加函数" class="headerlink" title="2.增加函数"></a>2.增加函数</h3><ul>
+<li>void push_back(const T&amp; x):向量尾部增加一个元素X</li>
+<li>iterator insert(iterator it,const T&amp; x):向量中迭代器指向元素前增加一个元素x</li>
+<li>iterator insert(iterator it,int n,const T&amp; x):向量中迭代器指向元素前增加n个相同的元素x</li>
+<li>iterator insert(iterator it,const_iterator first,const_iterator last):向量中迭代器指向元素前插入另一个相同类型向量的[first,last)间的数据</li>
+</ul>
+<h3 id="3-删除函数"><a href="#3-删除函数" class="headerlink" title="3.删除函数"></a>3.删除函数</h3><ul>
+<li><p>iterator erase(iterator it):删除向量中迭代器指向元素</p>
+</li>
+<li><p>iterator erase(iterator first,iterator last):删除向量中[first,last)中元素</p>
+</li>
+<li><p>void pop_back():删除向量中最后一个元素</p>
+</li>
+<li><p>void clear():清空向量中所有元素</p>
+</li>
+<li><p>也可以使用swap()函数与空向量进行交换，不但可以改变size还可以改变容量（cap）；</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;().<span class="built_in">swap</span>(a);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-遍历函数"><a href="#4-遍历函数" class="headerlink" title="4.遍历函数"></a>4.遍历函数</h3><ul>
+<li>reference at(int pos):返回pos位置元素的引用</li>
+<li>reference front():返回首元素的引用</li>
+<li>reference back():返回尾元素的引用</li>
+<li>iterator begin():返回向量头指针，指向第一个元素</li>
+<li>iterator end():返回向量尾指针，指向向量最后一个元素的下一个位置</li>
+<li>reverse_iterator rbegin():反向迭代器，指向最后一个元素</li>
+<li>reverse_iterator rend():反向迭代器，指向第一个元素之前的位置</li>
+</ul>
+<h3 id="5-判断函数"><a href="#5-判断函数" class="headerlink" title="5.判断函数"></a>5.判断函数</h3><ul>
+<li>bool empty() const:判断向量是否为空，若为空，则向量中无元素</li>
+</ul>
+<h3 id="6-大小函数"><a href="#6-大小函数" class="headerlink" title="6.大小函数"></a>6.大小函数</h3><ul>
+<li>int size() const:返回向量中元素的个数</li>
+<li>int capacity() const:返回当前向量所能容纳的最大元素值</li>
+<li>int max_size() const:返回最大可允许的vector元素数量值</li>
+</ul>
+<h3 id="7-其他函数"><a href="#7-其他函数" class="headerlink" title="7.其他函数"></a>7.其他函数</h3><ul>
+<li>void swap(vector&amp;):交换两个同类型向量的数据</li>
+<li>void assign(int n,const T&amp; x):设置向量中第n个元素的值为x</li>
+<li>void assign(const_iterator first,const_iterator last):向量中[first,last)中元素设置成当前向量元素</li>
+</ul>
+<h3 id="8-看着清楚"><a href="#8-看着清楚" class="headerlink" title="8.看着清楚"></a>8.看着清楚</h3><table>
+<thead>
+<tr>
+<th></th>
+<th align="center">函数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td align="center">push_back( )</td>
+<td align="center">在数组的最后添加一个数据</td>
+</tr>
+<tr>
+<td>2</td>
+<td align="center">pop_back()</td>
+<td align="center">去掉数组的最后一个数据</td>
+</tr>
+<tr>
+<td>3</td>
+<td align="center">at</td>
+<td align="center">得到编号位置的数据</td>
+</tr>
+<tr>
+<td>4</td>
+<td align="center">begin</td>
+<td align="center">得到数组头的指针</td>
+</tr>
+<tr>
+<td>5</td>
+<td align="center">end</td>
+<td align="center">得到数组的最后一个单元+1的指针</td>
+</tr>
+<tr>
+<td>6</td>
+<td align="center">front</td>
+<td align="center">得到数组头的引用</td>
+</tr>
+<tr>
+<td>7</td>
+<td align="center">back</td>
+<td align="center">得到数组的最后一个单元的引用</td>
+</tr>
+<tr>
+<td>8</td>
+<td align="center">max_size</td>
+<td align="center">得到vector最大可以是多大</td>
+</tr>
+<tr>
+<td>9</td>
+<td align="center">capacity</td>
+<td align="center">当前vector分配的大小</td>
+</tr>
+<tr>
+<td>10</td>
+<td align="center">size</td>
+<td align="center">当前使用数据的大小</td>
+</tr>
+<tr>
+<td>11</td>
+<td align="center">resize</td>
+<td align="center">改变当前使用数据的大小，如果它比当前使用的大，者填充默认值</td>
+</tr>
+<tr>
+<td>12</td>
+<td align="center">reserve</td>
+<td align="center">改变当前vecotr所分配空间的大小</td>
+</tr>
+<tr>
+<td>13</td>
+<td align="center">erase</td>
+<td align="center">删除指针指向的数据项</td>
+</tr>
+<tr>
+<td>14</td>
+<td align="center">clear</td>
+<td align="center">清空当前的vector</td>
+</tr>
+<tr>
+<td>15</td>
+<td align="center">rbegin</td>
+<td align="center">将vector反转后的开始指针返回(其实就是原来的end-1)</td>
+</tr>
+<tr>
+<td>16</td>
+<td align="center">rend</td>
+<td align="center">将vector反转构的结束指针返回(其实就是原来的begin-1)</td>
+</tr>
+<tr>
+<td>17</td>
+<td align="center">empty</td>
+<td align="center">判断vector是否为空</td>
+</tr>
+<tr>
+<td>18</td>
+<td align="center">swap</td>
+<td align="center">与另一个vector交换数据</td>
+</tr>
+</tbody></table>
+<h2 id="四、二维Vector初始化"><a href="#四、二维Vector初始化" class="headerlink" title="四、二维Vector初始化"></a>四、二维Vector初始化</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//二维vector初始化</span></span><br><span class="line">vector&lt; vector&lt;<span class="type">int</span>&gt; &gt; vt;<span class="comment">//初始化一个 二维vector</span></span><br><span class="line">vector&lt; vector&lt;<span class="type">int</span>&gt; &gt; <span class="built_in">vect</span>(vt);<span class="comment">//使用另一个 二维 vector 初始化当前二维vector</span></span><br><span class="line">vector&lt; vector&lt;<span class="type">int</span>&gt; &gt; <span class="built_in">vec</span>(row,<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(column));<span class="comment">//初始化一个 二维的vector 行row,列column,且值为0</span></span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt; &gt; <span class="built_in">visited</span>(row,<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(column,<span class="number">6</span>));<span class="comment">//初始化一个 二维vector 行row,列column ,且 值为data=6 自定义data;</span></span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt; &gt; <span class="built_in">vecto</span>(row,<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(vt[<span class="number">0</span>].<span class="built_in">begin</span>()<span class="number">+1</span>,vt[<span class="number">0</span>].<span class="built_in">begin</span>()<span class="number">+3</span>));<span class="comment">////初始化一个 二维vector 行row,第二个参数为一维vector;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="五、排序"><a href="#五、排序" class="headerlink" title="五、排序"></a>五、排序</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; v;</span><br><span class="line"><span class="built_in">sort</span>(v.<span class="built_in">begin</span>(),v.<span class="built_in">end</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">//自定义排序</span></span><br><span class="line"><span class="keyword">auto</span> compare = [](string sa, string sb)&#123;<span class="keyword">return</span> sa+sb &lt; sb+sa;&#125;;</span><br><span class="line"><span class="built_in">sort</span>(numstr.<span class="built_in">begin</span>(),numstr.<span class="built_in">end</span>(),compare);</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/04/01/2020-04-02-Cpp-Vector/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/04/03/2020-04-04-SLAM-CV/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            SLAM 岗位求职与简历书写
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/03/31/2020-03-31-%E5%90%84%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">C++ 排序算法</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="grobenis/grobenis.github.io"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI="
+    data-category="General"
+    data-category-id="DIC_kwDODs61iM4DFCzP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

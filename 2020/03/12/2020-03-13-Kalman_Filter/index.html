@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="滤波, 学习,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="概率图+时间=动态系统" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="Kalman 滤波器学习 | 曾是少年" />
+  <meta property="og:description" content="概率图+时间=动态系统" />
+  <meta property="og:url" content="https://grobenis.github.io/2020/03/12/2020-03-13-Kalman_Filter/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/2020/03/12/2020-03-13-Kalman_Filter/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Kalman 滤波器学习",
+    "description": "概率图+时间=动态系统",
+    "url": "https://grobenis.github.io/2020/03/12/2020-03-13-Kalman_Filter/",
+    "datePublished": "2020-03-12T16:00:00.000Z",
+    "dateModified": "2026-09-12T13:19:00.232Z",
+    "author": { "@type": "Person", "name": "guoben" },
+    "publisher": { "@type": "Person", "name": "guoben" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://grobenis.github.io/2020/03/12/2020-03-13-Kalman_Filter/" }
+  }
+  </script>
+  
+  <title>
+    Kalman 滤波器学习 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150151" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-03-13-Kalman_Filter" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Kalman 滤波器学习
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/12/2020-03-13-Kalman_Filter/" class="article-date">
+  <time datetime="2020-03-12T16:00:00.000Z" itemprop="datePublished">2020-03-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.7k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">11分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    <div class="outdated-banner">
+      <i class="ri-time-line"></i> 本文发布于 2020-03-13，距今已超 365 天，内容可能已过时，请注意甄别。
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>概率图+时间&#x3D;动态系统</p>
+<p>​	对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类：</p>
+<ol>
+<li>若隐状态离散，不要求分布，则为隐马尔可夫模型</li>
+<li>如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型）</li>
+<li>如果隐状态连续且非线性，作为得到粒子滤波器</li>
+</ol>
+<p>本节主要来介绍kalman滤波器。</p>
+<p>本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。</p>
+<blockquote>
+<p><strong>预测加修正，噪声终让路</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Kalman滤波器"><a href="#Kalman滤波器" class="headerlink" title="Kalman滤波器"></a>Kalman滤波器</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>卡尔曼滤波器是由Swerling（1958）和Kalman（1960）作为线性高斯系统中的预测和滤波技术而发明的，使用矩来定义的。KF实现了对连续状态的置信度计算。KF用矩参数来表示置信度：在时刻k，置信度用均值$ \mu_k $（一阶矩）和方差$ \sum _{k-1} $（二阶矩）表达。</p>
+<p>卡尔曼滤波建立在线性代数和隐马尔可夫模型上。其基本动态系统可以用一个马尔可夫链来表示，该马尔可夫链建立在一个线性高斯系统上。系统的状态可以用一个元素为实数的向量表示。随着离散时间的每一个增加，这个线性算子就会作用在当前状态上，产生一个新的状态，并也会带入一些噪声，同时系统的一些已知的控制器的控制信息也会被加入。同时，另一个受噪声干扰的线性算子产生出这些隐含状态的可见输出。</p>
+<p>使后验为高斯分布的前提，同时也是KF的特性：<br>       （1）状态转移必须是带有随机高斯噪声的参数的线性函数。<br>       （2）测量也与带有高斯噪声的自变量呈线性关系。<br>       （3）初始置信度必须是正态分布的。</p>
+<p>这三个假设足以确保后验在任何时刻<code>t</code>总符合高斯分布。</p>
+<p>根据线性高斯系统可以得到<strong>卡尔曼滤波器</strong>。 </p>
+<p>卡尔曼滤波器的状态由以下两个变量表示：</p>
+<ol>
+<li>$\hat{x}_k$，在时刻k的状态的估计；</li>
+<li>$\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。</li>
+</ol>
+<h3 id="线性高斯系统"><a href="#线性高斯系统" class="headerlink" title="线性高斯系统"></a>线性高斯系统</h3><p>线性高斯系统是说，运动方程和观测方程可以由线性方程来描述：<br>$$
+\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,...,N\\
+z_k=C_kx_k+v_k
+\end{cases}
+$$</p>
+<!-- 本地 Typora 路径源文件缺失，已注释 -->
+
+<h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>$$
+x_k=A_kx_{k-1}+u_k+w_k \quad k=1,...,N
+$$</p>
+<p>其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵&#x2F;矢量）。</p>
+<p>$w_k$是过程噪声,满足$w_k\sim N(0,Q)$</p>
+<h4 id="观测模型"><a href="#观测模型" class="headerlink" title="观测模型"></a>观测模型</h4><p>$$
+z_k = C_kx_k+v_k
+$$</p>
+<p>其中$C_k$是观测模型，能把真实状态空间映射成观测空间。并假设了所有的状态和噪声均满足高斯分布。</p>
+<p>$v_k$观测噪声服从零均值高斯分布：即$.v_k\sim N(0,R)$。</p>
+<p><strong>线性</strong></p>
+<p>线性系统中的线性体现在以下两个方面:</p>
+<ol>
+<li>$X_k=A*X_{k-1}+B+\epsilon,\epsilon\sim N(0,Q)$</li>
+<li>$Z_k=C*X_k+D+\delta,\epsilon \sim N(0,R)$</li>
+</ol>
+<p>两个条件服从高斯分布：<br>$$
+P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)
+$$</p>
+<p>$$
+P(Z_k|X_k)\sim N(C*X_k+D,R)
+$$</p>
+<p>可以系统的初始状态：<br>$$
+X_1\sim N(\mu_1,\Sigma_1)
+$$</p>
+<p>$$
+\begin{equation}
+\left\{
+	\begin{array}{lr}
+		P(X_k|X_{k-1})\sim N(A*X_{k-1}+B,Q)\\
+		P(Z_k|X_k)\sim N(C*X_k+D,R)\\
+		P(Z_1)=N(\mu_1,\Sigma_1)
+	\end{array}
+\right.
+\end{equation}
+$$<br>总共的参数表如下：</p>
+<p>$$
+\theta = (A,B,C,D,Q,R,\mu_1,\Sigma_1)
+$$</p>
+<p>卡尔曼滤波是一种递归的估计，即只要获知上一时刻状态的估计值以及当前状态的观测值就可以计算出当前状态的估计值，因此不需要记录观测或者估计的历史信息。卡尔曼滤波器与大多数滤波器不同之处，在于它是一种纯粹的时域滤波器，它不需要像低通滤波器等频域滤波器那样，需要在频域设计再转换到时域实现。</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>卡尔曼滤波器的操作包括两个阶段：<strong>预测</strong>与<strong>更新</strong>。</p>
+<ol>
+<li>预测阶段，滤波器使用上一状态的估计，做出对当前状态的预测。</li>
+<li>更新阶段，滤波器利用对当前状态的观测值优化在预测阶段获得的预测值，以获得一个更精确的新估计值。</li>
+</ol>
+<p><strong>输入：</strong>系统在<code>t-1</code>时刻状态的置信度（正态分布，均值和方差用$\mu_{t-1}$和$\Sigma_{t-1}$）; 输入的控制向量$u_t$和测量向量$z_t$。</p>
+<p><strong>输出：</strong>系统t时刻的状态的置信度$bel(x_t)$，均值向量$\mu_t$，方差$\Sigma_t$。</p>
+<p><strong>伪代码</strong></p>
+<p><strong>Algorithm Kalman_filter</strong> ($\mu_{t-1}$,$\Sigma_{t-1}$,$\mu_t$,$z_t$)</p>
+<ol>
+<li>$\hat\mu_t = A_t\mu_{t-1}+B_tu_t$</li>
+<li>$\hat\sum_t =A_t\sum_{t-1}A^T_t+R_t$</li>
+<li>$K_t=\hat\sum_tC^T_t(C_t\hat\sum_tC^T_t+Q_t)^{-1}$</li>
+<li>$\mu_t=\hat\mu_t+K_t(z_t-C_t\hat\mu_t)$</li>
+<li>$\sum_t=(I-K_tC_t)\hat\sum_t$</li>
+</ol>
+<p><strong>return</strong> $\mu_t$, $ \sum_t$</p>
+<h3 id="代码样例"><a href="#代码样例" class="headerlink" title="代码样例"></a>代码样例</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[ predictx, predicty, state, param ]</span> = <span class="title">kalmanFilter</span><span class="params">( t, x, y, state, param, previous_t )</span></span></span><br><span class="line"><span class="comment">% 卡尔曼滤波器</span></span><br><span class="line"><span class="comment">% 输入：当前时间t，位置，状态，参数，前一帧的时间t-1</span></span><br><span class="line"><span class="comment">% UNTITLED Summary of this function goes here</span></span><br><span class="line"><span class="comment">%   假设状态为四维:[p_x,p_y,v_x,v_y]</span></span><br><span class="line"><span class="comment">%   Four dimensional state: position_x, position_y, velocity_x, velocity_y</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">%% Place parameters like covarainces, etc. here:</span></span><br><span class="line">    <span class="comment">% P = eye(4)</span></span><br><span class="line">    <span class="comment">% R = eye(2)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">% Check if the first time running this function</span></span><br><span class="line">    <span class="comment">% 初始化</span></span><br><span class="line">    <span class="keyword">if</span> previous_t&lt;<span class="number">0</span></span><br><span class="line">        state = [x, y, <span class="number">0</span>, <span class="number">0</span>];</span><br><span class="line">        param.P = <span class="number">0.1</span> * <span class="built_in">eye</span>(<span class="number">4</span>);</span><br><span class="line">        predictx = x;</span><br><span class="line">        predicty = y;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">%% Naive estimate 朴素估计</span></span><br><span class="line"><span class="comment">%     % As an example, here is a Naive estimate without a Kalman filter</span></span><br><span class="line"><span class="comment">%     % You should replace this code</span></span><br><span class="line"><span class="comment">%     vx = (x - state(1)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     vy = (y - state(2)) / (t - previous_t);</span></span><br><span class="line"><span class="comment">%     % Predict 330ms into the future</span></span><br><span class="line"><span class="comment">%     predictx = x + vx * 0.330;</span></span><br><span class="line"><span class="comment">%     predicty = y + vy * 0.330;</span></span><br><span class="line"><span class="comment">%     % State is a four dimensional element</span></span><br><span class="line"><span class="comment">%     state = [x, y, vx, vy];</span></span><br><span class="line">    <span class="comment">%% <span class="doctag">TODO:</span> Add Kalman filter updates</span></span><br><span class="line">    <span class="comment">%% 当前目的：更新kalman滤波器</span></span><br><span class="line">    <span class="comment">% 1. 计算时间间隔</span></span><br><span class="line">    dt = t - previous_t; <span class="comment">% Time interval</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% PREDICT</span></span><br><span class="line">    <span class="comment">% 2. 预测</span></span><br><span class="line">    A = [<span class="number">1</span> <span class="number">0</span> dt <span class="number">0</span>; <span class="comment">% Transform matrix A</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> dt;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>  <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>  <span class="number">1</span>];</span><br><span class="line">     </span><br><span class="line">    C = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>; <span class="comment">% Observation matrix C</span></span><br><span class="line">         <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line">     </span><br><span class="line">    z_t = [x, y]&#x27;; <span class="comment">% Measurement data</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Q = 0.005 * eye(4);</span></span><br><span class="line">    Q = [dt^<span class="number">2</span>  <span class="number">0</span>        <span class="number">0</span>       <span class="number">0</span>; <span class="comment">% System (Motion) noise covariance</span></span><br><span class="line">         <span class="number">0</span>        dt^<span class="number">2</span>  <span class="number">0</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">1</span>       <span class="number">0</span>;</span><br><span class="line">         <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>       <span class="number">1</span>];</span><br><span class="line">           </span><br><span class="line">    R = <span class="number">0.005</span> * <span class="built_in">eye</span>(<span class="number">2</span>); <span class="comment">% Measurement noise covariance</span></span><br><span class="line">    </span><br><span class="line">    P = A * param.P * transpose(A) + Q; <span class="comment">% Prior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% UPDATE</span></span><br><span class="line">    <span class="comment">% 3. 更新</span></span><br><span class="line">    K = P * transpose(C) * inv(R + C * P * transpose(C)); <span class="comment">% Kalman gain</span></span><br><span class="line">    state = (A * (state&#x27;) + K * (z_t - C * A * (state&#x27;)))&#x27;; <span class="comment">% Posterior state estimation</span></span><br><span class="line">    param.P = P - K * C * P; <span class="comment">% Posterior estimation covariance</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Predict 330ms into the future</span></span><br><span class="line">    predictx = state(<span class="number">1</span>) + state(<span class="number">3</span>) * <span class="number">0.330</span>;</span><br><span class="line">    predicty = state(<span class="number">2</span>) + state(<span class="number">4</span>) * <span class="number">0.330</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="基于后验概率推导Kalman滤波器·"><a href="#基于后验概率推导Kalman滤波器·" class="headerlink" title="基于后验概率推导Kalman滤波器·"></a>基于后验概率推导Kalman滤波器·</h3><p>可以看作是一个Filter问题的求解过程<br>$$
+P(X_t|z_1,z_2,...z_t)\propto P(z_1,z_2,...z_t,X_t)\\=P(z_t|z_1,z_2,...z_{t-1},X_t)*P(z_1,z_2,...z_{t-1},X_t)\\
+=P(z_t|X_t)P(z_1,...,z_{t-1},X_t)\\
+=P(z_t|X_t)P(X_t|z_1,...,z_{t-1})P(z_1,...,z_{t-1})\\
+\propto P(z_t|X_t)P(X_t|z_1,...,z_{t-1})\\
+$$</p>
+<p>其中：<br>$$
+P(X_t|z_1,...,z_{t-1})
+=\int_{X_{t-1}}P(X_t,X_{t-1}|z_1,...,z_{t-1})dz_{t-1}\\
+=\int_{X_{t-1}}P(X_t|X_{t-1},z_1,...,z_{t-1})P(X_{t-1}|z_1,...,z_{t-1})dz_{t-1}
+\\=\int_{X_{t-1}}P(X_t|X_{t-1})P(X_{t-1}|z_1,...,z_{t-1})dz_{t-1}
+$$</p>
+<p> 基于概率的推导步骤：</p>
+<ul>
+<li><p>t&#x3D;1,<br>$$
+  \begin{equation}
+  \left \{
+  	\begin{array}{lr}
+  	P(X_1|z_1)\rarr update\\
+  	P(X_2|z_1)\rarr prediction
+  	\end{array}
+  \right.
+  \end{equation}
+  $$</p>
+</li>
+<li><p>t&#x3D;2,<br>$$
+  \begin{equation}
+  \left \{
+  	\begin{array}{lr}
+  	P(X_2|z_1,z_2)\rarr update\\
+  	P(X_3|z_1,z_2)\rarr prediction
+  	\end{array}
+  \right.
+  \end{equation}
+  $$</p>
+</li>
+<li><p>t&#x3D;T,<br>$$
+  \begin{equation}
+  \left \{
+  	\begin{array}{lr}
+  	P(X_T|z_1,z_2...z_T)\rarr update\\
+  	P(X_{T+1}|z_1,z_2,...,z_T)\rarr prediction
+  	\end{array}
+  \right.
+  \end{equation}
+  $$</p>
+</li>
+</ul>
+<h3 id="Kalman滤波器与HMM之间的关系"><a href="#Kalman滤波器与HMM之间的关系" class="headerlink" title="Kalman滤波器与HMM之间的关系"></a>Kalman滤波器与HMM之间的关系</h3><p>本节<a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinking/p/9201405.html">出处</a>。</p>
+<p>Kalman与HMM的关系，事实上，他们解决的问题模型都是如上图所示，只不过一个是利用最小均方误差准则进行估计，一个是利用最大后验进行估计。事实上，HMM的预测问题中，就是一个最大的后验概率作为其似然函数，然后通过viterbi算法解的这个似然函数。</p>
+<h2 id="拓展Kalman滤波器"><a href="#拓展Kalman滤波器" class="headerlink" title="拓展Kalman滤波器"></a>拓展Kalman滤波器</h2><p>核心思想：把卡尔曼滤波器的结果拓展到非线性系统中</p>
+<p>做法：在某个点附近考虑运动方程以及观测方程的一阶泰勒展开，只保留一阶项，即闲下来部分，然后按照线性系统进行推导。</p>
+<p>卡尔曼滤波器给出了在线性化之后，状态变量分布的变化过程。在线性系统和高斯噪声下，卡尔曼滤波器给出了无偏最优估计。而在SLAM 这种非线性的情况下，它给出了单次线性近似下最大后验估计（MAP）。</p>
+<h3 id="EKF的应用"><a href="#EKF的应用" class="headerlink" title="EKF的应用"></a>EKF的应用</h3><p>EKF在SLAM中有着广泛的应用</p>
+<h3 id="EKF的局限性"><a href="#EKF的局限性" class="headerlink" title="EKF的局限性"></a>EKF的局限性</h3><ol>
+<li>EKF假设了马尔可夫性，即k时刻的状态只与k-1时刻相关，而与k-1之前的状态和观测都无关。但在视觉里程计中，只考虑相邻两帧的关系会累积误差。如果有回环检测的，滤波器就很难处理这种情况。</li>
+<li>与非线性优化方法相比，EKF滤波器仅在$\hat{x}_{k-1}$处做了一次线性化，然后直接根据这次线性化结果计算后验概率。。这相当于在说，我们认为该点处的线性化近似，在后验概率处仍然是有效的。而实际上，当我们离开工作点较远的时候，一阶泰勒展开并不一定能够近似整个函数，这取决于运动模型和观测模型的非线性情况。如果它们有强烈的非线性，那线性近似就只在很小范围内成立，不能认为在<br>很远的地方仍能用线性来近似。这就是EKF 的非线性误差，是它的主要问题所在。在优化问题中，尽管我们也做一阶（最速下降）或二阶（G-N 或L-M）的近似，但每迭代一次，状态估计发生改变之后，我们会重新对新的估计点做泰勒展开，而不像EKF 那样只在固定点上做一次泰勒展开。这就导致优化方法适用范围更广，则在状态变化较大时亦能适用。</li>
+<li>从程序实现上来说，EKF 需要存储状态量的均值和方差，并对它们进行维护和更新。如果把路标也放进状态的话，由于视觉SLAM 中路标数量很大，这个存储量是相当可观的，且与状态量呈平方增长（因为要存储协方差矩阵）。因此，EKF-SLAM 普遍被认为不可适用于大型场景。</li>
+</ol>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/12/2020-03-13-Kalman_Filter/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BB%A4%E6%B3%A2/" rel="tag">滤波</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/03/12/2020-03-13-HMM_model/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            隐马尔可夫模型
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/03/11/2020-03-12-Clustering_Survey/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">经典聚类算法调研</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="grobenis/grobenis.github.io"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI="
+    data-category="General"
+    data-category-id="DIC_kwDODs61iM4DFCzP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="3DGS, 3DGUT, 无迹变换, 高斯泼溅, 畸变相机, 卷帘快门, 反射折射,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="CVPR 2025 的 3DGUT（NVIDIA）用无迹变换替换 3DGS 的 EWA 投影线性化，让光栅化管线原生支持鱼眼、大畸变相机与卷帘快门，并把渲染公式与光线追踪方法 3DGRT 对齐，实现主光线光栅化、次级光线追踪的混合渲染，从而以 200+ FPS 同时支持反射与折射效果。" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线 | 曾是少年" />
+  <meta property="og:description" content="CVPR 2025 的 3DGUT（NVIDIA）用无迹变换替换 3DGS 的 EWA 投影线性化，让光栅化管线原生支持鱼眼、大畸变相机与卷帘快门，并把渲染公式与光线追踪方法 3DGRT 对齐，实现主光线光栅化、次级光线追踪的混合渲染，从而以 200+ FPS 同时支持反射与折射效果。" />
+  <meta property="og:url" content="https://grobenis.github.io/2026/09/06/2026-09-07-3DGUT论文精读/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/2026/09/06/2026-09-07-3DGUT论文精读/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线",
+    "description": "CVPR 2025 的 3DGUT（NVIDIA）用无迹变换替换 3DGS 的 EWA 投影线性化，让光栅化管线原生支持鱼眼、大畸变相机与卷帘快门，并把渲染公式与光线追踪方法 3DGRT 对齐，实现主光线光栅化、次级光线追踪的混合渲染，从而以 200+ FPS 同时支持反射与折射效果。",
+    "url": "https://grobenis.github.io/2026/09/06/2026-09-07-3DGUT论文精读/",
+    "datePublished": "2026-09-06T16:00:00.000Z",
+    "dateModified": "2026-09-12T13:19:00.307Z",
+    "author": { "@type": "Person", "name": "guoben" },
+    "publisher": { "@type": "Person", "name": "guoben" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://grobenis.github.io/2026/09/06/2026-09-07-3DGUT论文精读/" }
+  }
+  </script>
+  
+  <title>
+    3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150118" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2026-09-07-3DGUT论文精读" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" class="article-date">
+  <time datetime="2026-09-06T16:00:00.000Z" itemprop="datePublished">2026-09-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">论文笔记</a> / <a class="article-category-link" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.6k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">14分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>3D 高斯泼溅（3DGS）重建质量高、渲染快，但被光栅化管线绑死在理想针孔相机上：鱼眼、大畸变镜头要先”去畸变”，卷帘快门这类时变效应无法建模，反射折射等次级光照更是无从谈起。NVIDIA 在 CVPR 2025 提出的 3DGUT 换了一个思路——不再对投影函数做线性化，改用无迹变换近似高斯粒子本身，并把渲染公式与光线追踪方法 3DGRT 对齐，一次解锁了任意畸变相机、卷帘快门与反射&#x2F;折射混合渲染，帧率依然保持在 200+ FPS。本文是对这篇论文的精读笔记。</p>
+<blockquote>
+<p><strong>不近似函数，近似粒子本身</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="3DGUT-论文精读：用无迹变换解锁-3DGS-的畸变相机与次级光线"><a href="#3DGUT-论文精读：用无迹变换解锁-3DGS-的畸变相机与次级光线" class="headerlink" title="3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线"></a>3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线</h1><h2 id="一、论文信息与任务"><a href="#一、论文信息与任务" class="headerlink" title="一、论文信息与任务"></a>一、论文信息与任务</h2><table>
+<thead>
+<tr>
+<th>项</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>论文</td>
+<td>3DGUT: Enabling Distorted Cameras and Secondary Rays in Gaussian Splatting</td>
+</tr>
+<tr>
+<td>会议</td>
+<td>CVPR 2025</td>
+</tr>
+<tr>
+<td>作者</td>
+<td>Qi Wu<em>、Janick Martinez Esturo</em>（共同一作）、Ashkan Mirzaei、Nicolas Moenne-Loccoz、Zan Gojcic</td>
+</tr>
+<tr>
+<td>单位</td>
+<td>NVIDIA；Ashkan Mirzaei 同时隶属多伦多大学</td>
+</tr>
+<tr>
+<td>代码</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/nv-tlabs/3dgrut%EF%BC%88%E5%B7%B2%E9%9B%86%E6%88%90%E8%BF%9B">https://github.com/nv-tlabs/3dgrut（已集成进</a> gsplat 库）</td>
+</tr>
+<tr>
+<td>项目主页</td>
+<td><a target="_blank" rel="noopener" href="https://research.nvidia.com/labs/toronto-ai/3DGUT">https://research.nvidia.com/labs/toronto-ai/3DGUT</a></td>
+</tr>
+</tbody></table>
+<p><strong>任务</strong>：多视图 3D 场景重建与新视角合成。与普通 3DGS 工作不同，它要求在光栅化渲染管线内同时做到两件事：</p>
+<ol>
+<li>支持任意非线性相机投影模型（鱼眼、大畸变）与时变相机效应（卷帘快门）；</li>
+<li>支持次级光线，从而渲染反射、折射等光照效果；</li>
+</ol>
+<p>并且保持 3DGS 级别的实时速度。</p>
+<ul>
+<li><strong>输入</strong>：一组多视角图像与对应相机参数（不限于针孔，可以是鱼眼&#x2F;畸变&#x2F;卷帘快门时变位姿；Waymo 场景额外使用 LiDAR 深度监督）。</li>
+<li><strong>输出</strong>：3D 高斯粒子场景表示（位置 $\mu$、旋转四元数、尺度 $S$、不透明度 $\sigma$、三阶球谐视角相关颜色）、新视角图像、混合渲染图像（可在场景中插入反射球、折射雕像）。</li>
+</ul>
+<p>论文 Fig.1 全景展示了这两项能力：左半对比”去畸变后训练”与”直接用原始畸变视图训练（Ours）”的重建质量，右半展示在场景中插入反射球、折射雕像后的次级光照渲染效果。</p>
+<p><img decoding="async" src="/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/image-20260908114751106.png" alt="image-20260908114751106" loading="lazy"></p>
+<h2 id="二、动机：光栅化的两个天花板"><a href="#二、动机：光栅化的两个天花板" class="headerlink" title="二、动机：光栅化的两个天花板"></a>二、动机：光栅化的两个天花板</h2><p><strong>业务问题</strong>：自动驾驶、机器人、手机等真实传感器大量使用广角&#x2F;鱼眼镜头与卷帘快门传感器，且载体在运动中拍摄。传统 3DGS 重建前必须把图像去畸变校正成针孔模型，这一过程裁切掉大量边缘像素、丢失信息、拉低重建质量；与此同时，反射折射等次级光照效果在仿真、虚拟物体插入中不可缺少，而纯光栅化管线天然不支持。</p>
+<p>现有方案各有短板：</p>
+<table>
+<thead>
+<tr>
+<th>方案族</th>
+<th>代表</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>光栅化 splatting</td>
+<td>3DGS、StopThePop</td>
+<td>EWA 投影是一阶泰勒线性化，每种相机模型都要手推雅可比；畸变越大误差越大；卷帘快门无法表示</td>
+</tr>
+<tr>
+<td>专用扩展</td>
+<td>FisheyeGS、GS on the move</td>
+<td>每个畸变模型定制一套公式，换个模型就要重来，扩展性差</td>
+</tr>
+<tr>
+<td>光线追踪</td>
+<td>3DGRT、EVER</td>
+<td>原生支持复杂相机与次级光线，但渲染慢约 3-4 倍</td>
+</tr>
+</tbody></table>
+<p>归结起来是两个核心挑战：</p>
+<ol>
+<li><strong>投影挑战</strong>：EWA 公式近似的是”投影函数”——线性化丢弃高阶项，雅可比依赖具体相机模型，时变效应塞不进单个投影函数；</li>
+<li><strong>渲染公式对齐挑战</strong>：光栅化（2D 评估 + 全局 tile 排序）与光线追踪（3D 评估 + 沿光线精确排序）的渲染公式不一致，同一份表示无法在两种模式下无缝切换，也就做不了”主光线光栅化 + 次级光线追踪”的混合渲染。</li>
+</ol>
+<h2 id="三、解决思路一：用无迹变换替换-EWA-投影"><a href="#三、解决思路一：用无迹变换替换-EWA-投影" class="headerlink" title="三、解决思路一：用无迹变换替换 EWA 投影"></a>三、解决思路一：用无迹变换替换 EWA 投影</h2><p>EWA 投影的本质问题：把弯曲的投影函数在均值处”掰直”。3DGUT 反过来——<strong>保留弯曲的函数，把连续的分布拆成几个代表点</strong>，这正是无迹卡尔曼滤波中的无迹变换（Unscented Transform, UT）。</p>
+<p><strong>Sigma 点构造</strong>：3D 高斯的协方差按 $\Sigma=RSS^TR^T$ 分解，取 $2\times3+1=7$ 个 sigma 点：</p>
+<p>$$x_0=\mu,\qquad x_i=\mu+\big[\sqrt{(3+\lambda)\,\Sigma}\,\big]_{[:,i]},\qquad x_{i+3}=\mu-\big[\sqrt{(3+\lambda)\,\Sigma}\,\big]_{[:,i]}\quad(i=1,2,3)$$</p>
+<p>其中 $\lambda=\alpha^2(3+\kappa)-3$，实验取 $\alpha=1.0$、$\beta=2.0$、$\kappa=0.0$。</p>
+<p><strong>为什么恰好是 7 个点</strong>：UT 的理论要求是——匹配 $N$ 维高斯的至少前三阶矩需要 $2N+1$ 个点。3DGS 粒子是 3D 高斯（$N=3$），于是 $2\times3+1=7$：一个中心点 + 三对沿主轴方向对称分布的点。</p>
+<p><strong>矩阵平方根是免费的</strong>：上面的构造需要对协方差矩阵开方。3DGS 本来就存着旋转 $R$ 与缩放 $S$，由 $\Sigma=RSS^TR^T$ 可直接读出 $\sqrt{\Sigma}=RS$，完全不需要额外做 Cholesky 或特征分解。几何上看，$RS$ 的三列就是高斯椭球旋转后的三条主轴、长度分别为 $s_1,s_2,s_3$；所以 6 个边点恰好躺在三条主轴延长线上，距中心 $\sqrt{3+\lambda}\cdot s_i$，中心点就是粒子位置 $\mu$。</p>
+<p><strong>代入论文的参数看具体数字</strong>：$\alpha=1.0,\ \kappa=0.0$ 时 $\lambda=\alpha^2(3+\kappa)-3=0$，于是边点落在 $\sqrt{3}\,s_i\approx1.73$ 个标准差处；均值权重中心点为 $\frac{\lambda}{3+\lambda}=0$，6 个边点各 $\tfrac{1}{6}$。</p>
+<p>**为什么这 7 个点就”够”**：3D 高斯的所有统计信息都在一阶矩 $\mu$ 与二阶矩 $\Sigma$ 里，而这组点恰好能精确复现它们：成对的 $\pm$ 点让加权均值里的偏移互相抵消（$\sum_i w_ix_i=\mu$）；每个主轴方向贡献 $2\cdot\tfrac{1}{6}\cdot3s_i^2v_iv_i^T=s_i^2v_iv_i^T$，三轴求和恰为 $\Sigma$；又因点集关于中心完全对称，所有奇阶矩天然为零。所以这不是”随机采样碰运气”，而是确定性设计——位置由 $\Sigma$ 的轴决定、权重由下文的矩匹配条件解出，7 个点携带完整的一、二阶矩信息（”unscented” 的本意正是”不走蒙特卡洛随机采样这条路”）。</p>
+<p><strong>逐点精确投影</strong>：每个 sigma 点是普通 3D 点，直接代入任意非线性投影函数 $g(x)$ 精确投影到像平面，不需要雅可比。卷帘快门的时变效应也顺理成章——每个点代入自己所在行对应时刻的外参 $W(t)$。</p>
+<p><strong>重估 2D 高斯</strong>：从投影后的点加权重建均值与协方差：</p>
+<p>$$v_\mu=\sum_{i=0}^{6}w_i^{\mu}\,v_{x_i},\qquad \Sigma'=\sum_{i=0}^{6}w_i^{\Sigma}\,(v_{x_i}-v_\mu)(v_{x_i}-v_\mu)^T$$</p>
+<p>权重不是拍脑袋定的，而是由两个矩匹配约束解出来的：$\sum_i w_i=1$ 与 $\sum_i w_i(x_i-\mu)(x_i-\mu)^T=\Sigma$。代入对称构造后得到 $2wc^2=1$，即 $w=\frac{1}{2(3+\lambda)}$，中心点权重由归一化补足为 $\frac{\lambda}{3+\lambda}$（中心点对协方差贡献为零，其协方差权重里额外加 $(1-\alpha^2+\beta)$ 用于校正四阶矩峰度，高斯分布取 $\beta=2$ 最优）。</p>
+<p><strong>为什么比线性化准</strong>：把左右对称的 sigma 点配对做泰勒展开，一阶、三阶项符号相反全部抵消；而二次项系数 $wc^2=\tfrac12$ 恰好等于真实均值泰勒展开里的 $\tfrac12\mathrm{tr}(H\Sigma)$ 修正项——UT 的均值、协方差估计精确到二阶（均值因对称性连三阶误差也为零），误差从四阶才出现；EWA 线性化在二阶就出错，且畸变曲率越大差得越远。</p>
+<p><strong>关键设计定位</strong>：重估出的 2D conic 只用于加速结构（沿用 3DGS&#x2F;StopThePop 的 tile 划分与 culling，决定哪些粒子影响哪些像素），粒子响应的评估不在 2D 做（见下节），因此梯度不需要反向穿过非线性投影函数，数值更稳定。作者用伪代码说明：原 3DGS 管线只需替换一个 <code>Estimate2DGaussian</code> 函数即可（drop-in replacement）。</p>
+<h2 id="四、解决思路二：把渲染公式与光线追踪对齐"><a href="#四、解决思路二：把渲染公式与光线追踪对齐" class="headerlink" title="四、解决思路二：把渲染公式与光线追踪对齐"></a>四、解决思路二：把渲染公式与光线追踪对齐</h2><p><strong>3D 粒子响应评估</strong>（与 3DGRT 一致）：对光线 $r(\tau)=o+\tau d$，取粒子响应沿光线最大处的单点评估，闭式解：</p>
+<p>$$\tau_{\max}=\frac{(\mu-o)^T\Sigma^{-1}d}{d^T\Sigma^{-1}d}=-\frac{o_g^Td_g}{d_g^Td_g},\qquad o_g=S^{-1}R^T(o-\mu),\ d_g=S^{-1}R^Td$$</p>
+<p>相比 3DGS 在 2D 投影之后评估，这条路径的梯度不流经投影函数，避免了近似与数值不稳定；作者在补充材料中给出了数值稳定的反传推导（$\partial\alpha/\partial\mu$、$\partial\alpha/\partial S$、$\partial\alpha/\partial R$）。</p>
+<p><strong>近似的按深度排序</strong>：光栅化没有 BVH，无法像 3DGRT 那样精确取沿光线最近的 k 个粒子，于是采用 StopThePop 的 MLAB（多层 alpha 混合，即 k-buffer，$k=16$）：每条光线保留 k 个最远命中粒子存入 buffer，最近的粒子增量式 alpha 混合直到透射率消失，以此近似 $\tau_{\max}$ 排序。作者还讨论了 HT（混合透明）替代方案：存 k 个最近、混合最远，精确但要遍历全部粒子，较慢。</p>
+<p><strong>混合渲染</strong>：渲染公式对齐后，同一份表示可以既光栅化又追踪。先光栅化主光线（并可丢弃落在最近交点之后的高斯命中），再用 3DGRT 追踪次级光线——反射、折射、虚拟物体插入由此在光栅化框架内实现。</p>
+<p>论文 Fig.9 展示了三类应用：(a) 卷帘快门场景的重建与帧序列渲染；(b) 手持拍摄的大畸变视频重建；(c) 混合渲染——主光线光栅化 + 次级光线追踪的反射&#x2F;折射效果。</p>
+<p><img decoding="async" src="/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/image-fig9-applications.png" loading="lazy"></p>
+<p><strong>实现与训练细节</strong>：PyTorch + 自定义 CUDA kernel；采用 StopThePop 的剔除策略；没有 2D 屏幕空间梯度，改用 3D 位置梯度（除以到相机距离的一半）；每 300 次迭代 densify&#x2F;prune；训练 30k 迭代，损失 $L=L_2+0.2\,L_{SSIM}$；Waymo 额外加入 LiDAR 深度 $L_1$ 与不透明度 $L_2$ 加权损失。补充材料还提出广义高斯核（degree n），degree&#x3D;4 对应 3DGRT 的 degree&#x3D;2，可在质量与速度之间调节。</p>
+<h2 id="五、实验表现"><a href="#五、实验表现" class="headerlink" title="五、实验表现"></a>五、实验表现</h2><p><strong>对比设置</strong>：对比 3DGS（Kerbl 2023）、StopThePop（SIGGRAPH Asia 2024）、3DGRT（SIGGRAPH Asia 2024）、EVER、FisheyeGS（鱼眼专用）、ZipNeRF（NeRF 代表）；指标 PSNR↑ &#x2F; SSIM↑ &#x2F; LPIPS↓ &#x2F; FPS↑（单张 RTX 6000 Ada，数据集原始分辨率）。数据集：MipNeRF360（9 个场景、标准针孔）、Tanks &amp; Temples（Truck&#x2F;Train）、Scannet++（6 个鱼眼场景，1752×1168）、Waymo（9 个静态场景，畸变相机 + 卷帘快门）。</p>
+<p><strong>MipNeRF360（针孔、公平对比场）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>PSNR↑</th>
+<th>SSIM↑</th>
+<th>LPIPS↓</th>
+<th>FPS↑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3DGS</td>
+<td>27.26</td>
+<td>0.803</td>
+<td>0.240</td>
+<td>347</td>
+</tr>
+<tr>
+<td>Ours</td>
+<td>27.26</td>
+<td>0.810</td>
+<td>0.218</td>
+<td>265</td>
+</tr>
+<tr>
+<td>StopThePop</td>
+<td>27.14</td>
+<td>0.804</td>
+<td>0.235</td>
+<td>340</td>
+</tr>
+<tr>
+<td>3DGRT</td>
+<td>27.20</td>
+<td>0.818</td>
+<td>0.248</td>
+<td>52</td>
+</tr>
+<tr>
+<td>EVER</td>
+<td>27.51</td>
+<td>0.825</td>
+<td>0.233</td>
+<td>36</td>
+</tr>
+<tr>
+<td>Ours (sorted)</td>
+<td>27.26</td>
+<td>0.812</td>
+<td>0.215</td>
+<td>200</td>
+</tr>
+</tbody></table>
+<p>画质与各家相当，速度上 Ours 265 FPS、Ours (sorted) 200 FPS——支持复杂相机的方法里最快的 3DGRT 也只有 52 FPS。逐项毫秒计时（每张）：3DGS 2.88、Ours 3.77、StopThePop 2.94、Ours (sorted) 4.98，3DGRT 则高达 19.24。</p>
+<p><strong>Scannet++（鱼眼相机）</strong>：Ours (sorted) 达到 29.11&#x2F;0.910&#x2F;0.252，全面超过专门为等距鱼眼推导雅可比的 FisheyeGS（28.15&#x2F;0.901&#x2F;0.261），且仅用 0.38M 个高斯（FisheyeGS 1.07M）。对照去畸变后训练 3DGS 只有 22.76&#x2F;0.798——去畸变裁掉大量像素的损失非常直观。</p>
+<p><strong>Waymo（畸变 + 卷帘快门）</strong>：Ours (sorted) 30.16&#x2F;0.900 超过 3DGRT（29.99&#x2F;0.897）；3DGS 需要校正图像且忽略卷帘快门（29.83&#x2F;0.917），不做直接比较。</p>
+<p><strong>定性结果</strong>：</p>
+<p><strong>卷帘快门案例分析</strong>（论文 Fig.7）：用合成旋转相机 + 卷帘快门数据渲染同一箱子并逐帧拼接对比，Ours (sorted) 忠实还原传感器运动、恢复无畸变几何（各 tile PSNR 约 46~49），3DGS 无法建模时变效应，帧间出现明显错位撕裂。</p>
+<p><img decoding="async" src="/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/image-fig7-rolling-shutter.png" loading="lazy"></p>
+<p><strong>对齐性验证</strong>（论文 Fig.8）：把各方法训练出的表示统一用 3DGRT 重新渲染，Ours (sorted) 结果（PSNR 25.10）最接近 3DGRT 自身渲染，而 3DGS（19.80）与 StopThePop 偏差更大——证明本文渲染公式与光线追踪对齐得最好，支持无缝混合渲染。</p>
+<p><img decoding="async" src="/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/image-fig8-alignment.png" loading="lazy"></p>
+<p><strong>投影精度定量</strong>（补充材料）：以蒙特卡洛投影（每高斯 500 采样）为参考用 KL 散度评估——针孔下 EWA 与 UT 一致；鱼眼、径向畸变、卷帘快门平移下 UT 的中位 KL 稳定在约 $4.4\sim4.6\times10^{-3}$，EWA 则显著劣化（卷帘快门场景出现长尾），这正是 EWA 渲染卷帘快门时撕裂伪影的根源。</p>
+<h2 id="六、借鉴意义与已知局限"><a href="#六、借鉴意义与已知局限" class="headerlink" title="六、借鉴意义与已知局限"></a>六、借鉴意义与已知局限</h2><ol>
+<li><strong>“近似粒子而不是近似函数”的思路很通用</strong>：凡遇到函数复杂&#x2F;难求导&#x2F;时变的环节，都可以考虑把变换施加在一组代表性采样点上再重估统计量。工程成本极低——原 3DGS 管线只替换一个 <code>Estimate2DGaussian</code> 函数，且已被 gsplat 官方集成，迁移路径清晰。</li>
+<li><strong>UT 只做加速结构、评估仍在 3D 的分层设计</strong>：投影环节与响应计算解耦，避免梯度流经非线性投影函数，兼顾任意相机支持与数值稳定性。”近似只控制像素-粒子分配、不影响最终积分”值得在自研渲染器中借鉴。</li>
+<li><strong>渲染公式对齐带来生态价值</strong>：与 3DGRT 统一后，同一份表示可光栅化（主光线快）也可追踪（次级光线），混合渲染直接复用；”渲染器对齐”是打通 splatting 与 tracing 工具链的关键，后续做逆渲染、重光照同样受益。</li>
+<li><strong>直接吃原始畸变数据、免去去畸变预处理</strong>：保留全部像素参与监督、质量反而更高（Scannet++ 上 PSNR 高出 6+ dB），对自动驾驶、机器人等真实传感器数据重建有直接工程价值——管线中可以省掉 rectification，并支持卷帘快门每行像素各自的外参。</li>
+<li><strong>已知局限（follow-up 切入点）</strong>：大畸变下投影形状偏离 2D 高斯、tile 分配变糙；单点评估难以精确渲染互相重叠的高斯；UT + 3D 评估比纯 3DGS 略慢。文中指出 EVER 等椭球精确渲染可能是缓解方向。</li>
+</ol>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3DGS/" rel="tag">3DGS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NeRF/" rel="tag">NeRF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A0%E8%BF%B9%E5%8F%98%E6%8D%A2/" rel="tag">无迹变换</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2026/09/03/2026-09-04-%E6%8A%8ACodex%E6%A1%8C%E9%9D%A2%E7%89%88%E6%8E%A5%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC_%E4%BA%94%E4%B8%AA%E5%8F%A0%E5%8A%A0%E6%95%85%E9%9A%9C%E7%9A%84%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">为 Codex 桌面版配置第三方中转</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="grobenis/grobenis.github.io"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI="
+    data-category="General"
+    data-category-id="DIC_kwDODs61iM4DFCzP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

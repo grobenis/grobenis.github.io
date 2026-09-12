@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="安卓, 学习,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="通过 NDK 打包 aar 格式的 SDK | 曾是少年" />
+  <meta property="og:description" content="根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。" />
+  <meta property="og:url" content="https://grobenis.github.io/2021/07/04/2021-07-04-通过ndkd打包aar格式的SDK/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/2021/07/04/2021-07-04-通过ndkd打包aar格式的SDK/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "通过 NDK 打包 aar 格式的 SDK",
+    "description": "根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。",
+    "url": "https://grobenis.github.io/2021/07/04/2021-07-04-通过ndkd打包aar格式的SDK/",
+    "datePublished": "2021-07-04T05:06:09.000Z",
+    "dateModified": "2026-09-12T13:19:00.286Z",
+    "author": { "@type": "Person", "name": "guoben" },
+    "publisher": { "@type": "Person", "name": "guoben" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://grobenis.github.io/2021/07/04/2021-07-04-通过ndkd打包aar格式的SDK/" }
+  }
+  </script>
+  
+  <title>
+    通过 NDK 打包 aar 格式的 SDK |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150129" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2021-07-04-通过ndkd打包aar格式的SDK" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  通过 NDK 打包 aar 格式的 SDK
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/" class="article-date">
+  <time datetime="2021-07-04T05:06:09.000Z" itemprop="datePublished">2021-07-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.3k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    <div class="outdated-banner">
+      <i class="ri-time-line"></i> 本文发布于 2021-07-04，距今已超 365 天，内容可能已过时，请注意甄别。
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。</p>
+<p>本文将学习制作SDK的流程。</p>
+<p>本文完整演示如何用 NDK&#x2F;JNI 将纯 C 模块打包成 aar 格式的 Android SDK：从认识 AAR 与 NDK 入手，依次经历创建 Library 模块、javah 生成 JNI 头文件、实现 C 接口函数、配置 Android.mk 与 build.gradle、ndk-build 编译 so 并打包 aar，最后将 aar 导入工程中通过 gradle 依赖使用。</p>
+<blockquote>
+<p><strong>写好 JNI 接口，C 库即可服务安卓世界</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。</p>
+<p><code>mylib.h</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">// Created by 郭犇 on 2021/4/1.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#ifndef MYDEMO_MY_LIB_H</span><br><span class="line">#define MYDEMO_MY_LIB_H</span><br><span class="line"></span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">char* count_mean(float *a ,int num);</span><br><span class="line">#endif //MYDEMO_MY_LIB_H</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>mylib.c</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">// Created by 郭犇 on 2021/4/1.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">char* count_mean(float *a ,int num)&#123;</span><br><span class="line">    float sum = 0.0f;</span><br><span class="line">    for(int i = 0;i&lt;=num;i++)&#123;</span><br><span class="line">        sum += a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    float mean = sum/num;</span><br><span class="line"></span><br><span class="line">    int n = 5; // 显示小数点后5位</span><br><span class="line">    int p,c;</span><br><span class="line">    //char *str=fcvt(mean,n,&amp;p,&amp;c);</span><br><span class="line">    char *str;</span><br><span class="line">    sprintf(str,&quot;%5.2f&quot;,mean);</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面用实例一步一步介绍这个过程。</p>
+<h2 id="一-认识AAR"><a href="#一-认识AAR" class="headerlink" title="一 认识AAR"></a>一 认识AAR</h2><p>Android 库的结构与 Android 应用模块的结构相同。它可以提供构建应用所需的一切内容，包括源代码、资源文件和 Android 清单。不过，Android 库将编译为您可以用作 Android 应用模块依赖项的 Android ARchive (AAR) 文件，而不是编译为在设备上运行的 APK。</p>
+<p>与 JAR 文件不同，AAR 文件会为 Android 应用提供以下功能：</p>
+<ul>
+<li>AAR 文件可以包含多项 Android 资源和一个清单文件，让您除了能够在 Java 类和方法中进行捆绑以外，还能够在布局和可绘制对象等共享资源中进行捆绑。</li>
+<li>AAR 文件可以<a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/native-dependencies?hl=zh-cn">包含 C&#x2F;C++ 库</a>，供应用模块的 C&#x2F;C++ 代码使用。</li>
+</ul>
+<p>*.aar，AAR（Android Archive）包是一个Android库项目的二进制归档文件。我们随便找一个aar文件，然后修改后缀名为‘zip’或者‘rar’格式，然后解压该文件，打开解压后的文件夹，截图如下所示：（每个aar解压后的内容可能不完全一样，但是都会包含AndroidManifest.xml，classes.jar，res，R.txt）。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210330150317969.png" loading="lazy"></p>
+<p>*.aar文件中包含所有资源，class以及res资源文件。</p>
+<h2 id="二-NDK"><a href="#二-NDK" class="headerlink" title="二 NDK"></a>二 NDK</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>本部分简要介绍了 NDK 的工作原理。Android NDK 是一组使您能将 C 或 C++（“原生代码”）嵌入到 Android 应用中的工具。能够在 Android 应用中使用原生代码对于想执行以下一项或多项操作的开发者特别有用：</p>
+<ul>
+<li>在平台之间移植其应用。</li>
+<li>重复使用现有库，或者提供其自己的库供重复使用。</li>
+<li>在某些情况下提高性能，特别是像游戏这种计算密集型应用。</li>
+</ul>
+<p><strong>Application.mk</strong>文件</p>
+<p>不一定要有，可以用来配置编译平台相关内容，常用的估计只是APP_ABI字段，它用来指定我们需要基于哪些CPU架构的.so文件，当然你可以配置多个平台（如果ndk-build 没有指定 Application.mk，则默认编译出所有平台的.so文件）：</p>
+<blockquote>
+<p>APP_ABI :&#x3D; armeabi armeabi-v7a x86 mips</p>
+</blockquote>
+<p>这个文件还可以配置Android.mk文件</p>
+<blockquote>
+<p>APP_BUILD_SCRIPT :&#x3D; Android.mk</p>
+</blockquote>
+<h2 id="三-利用Android-Studio生成aar文件"><a href="#三-利用Android-Studio生成aar文件" class="headerlink" title="三 利用Android Studio生成aar文件"></a>三 利用Android Studio生成aar文件</h2><p>生成<code>.aar</code>形式SDK的整个过程我们可以利用AS实现。</p>
+<h3 id="3-1-建立一个项目ProjectDemo"><a href="#3-1-建立一个项目ProjectDemo" class="headerlink" title="3.1 建立一个项目ProjectDemo"></a>3.1 建立一个项目ProjectDemo</h3><h4 id="1-新建项目"><a href="#1-新建项目" class="headerlink" title="1 新建项目"></a>1 新建项目</h4><p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170348808.png" loading="lazy"></p>
+<h4 id="2-配置项目"><a href="#2-配置项目" class="headerlink" title="2 配置项目"></a>2 配置项目</h4><!-- <img decoding="async" src="image-20210401170459101.png" alt="image-20210401170459101" style="zoom: 67%;" /> 图片源文件已丢失 -->
+
+<p>点finish结束即可。</p>
+<h3 id="3-2-建立一个library的模块库MySDK"><a href="#3-2-建立一个library的模块库MySDK" class="headerlink" title="3.2 建立一个library的模块库MySDK"></a>3.2 建立一个library的模块库MySDK</h3><h4 id="1-新建模块"><a href="#1-新建模块" class="headerlink" title="1 新建模块"></a>1 新建模块</h4><p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170658032.png" loading="lazy"></p>
+<h4 id="2-选择Library的模块"><a href="#2-选择Library的模块" class="headerlink" title="2 选择Library的模块"></a>2 选择Library的模块</h4><p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401170716786.png" loading="lazy"></p>
+<h4 id="3-配置该模块"><a href="#3-配置该模块" class="headerlink" title="3 配置该模块"></a>3 配置该模块</h4><p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171021523.png" loading="lazy"></p>
+<p>现在建议从Android视图切换到Project视图，这样有利于我看看清楚整个项目的目录结构</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171346953.png" loading="lazy"></p>
+<h3 id="3-3-建立MySDK类-编写Native方法，生成jni头文件"><a href="#3-3-建立MySDK类-编写Native方法，生成jni头文件" class="headerlink" title="3.3 建立MySDK类,编写Native方法，生成jni头文件"></a>3.3 建立MySDK类,编写Native方法，生成jni头文件</h3><h4 id="1-建立类"><a href="#1-建立类" class="headerlink" title="1 建立类"></a>1 建立类</h4><p>接下来，我们建立一个名为MySDK的java类，作为SDK的接口。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171535574.png" loading="lazy"></p>
+<p>生成的函数类如下：</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401171822235.png" loading="lazy"></p>
+<h4 id="2-书写方法名"><a href="#2-书写方法名" class="headerlink" title="2 书写方法名"></a>2 书写方法名</h4><p>接下来，我们可以需要写类中的方法，目前只需要写函数名即可。我定义了一个用于计算链表平均值的函数，输入为一个</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172213525.png" loading="lazy"></p>
+<p>（为了展示后边Jni的书写方法，我用了一个链表的数据结构。）目前定义的这个类不需要实现他的方法，仅仅用于生成JNI的头文件。（由于JNI的头文件书写极其复杂，因此我们使用自动的方法生成）。</p>
+<h4 id="3-利用javah生成头文件"><a href="#3-利用javah生成头文件" class="headerlink" title="3 利用javah生成头文件"></a>3 利用javah生成头文件</h4><p>利用javah生成头文件的操作， 我们可以使用AS自带的命令行完成。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172646427.png" loading="lazy"></p>
+<p>在terminal中，输入以下的命令：</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172733132.png" loading="lazy"></p>
+<p>我们可以在目录中看到文件<code>com_xiaomi_phonesleepsdk_PhoneSleepSDK.h</code>：</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401172919207.png" loading="lazy"></p>
+<p>内容长这样：</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173031982.png" loading="lazy"></p>
+<h3 id="3-4-建立JNI文件夹，建立main-c，实现函数，编写编译文件Android-mk"><a href="#3-4-建立JNI文件夹，建立main-c，实现函数，编写编译文件Android-mk" class="headerlink" title="3.4 建立JNI文件夹，建立main.c，实现函数，编写编译文件Android.mk"></a>3.4 建立JNI文件夹，建立main.c，实现函数，编写编译文件Android.mk</h3><h4 id="1-建立JNI文件夹"><a href="#1-建立JNI文件夹" class="headerlink" title="1 建立JNI文件夹"></a>1 建立JNI文件夹</h4><p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173247121.png" loading="lazy"></p>
+<h4 id="2-建立main-c文件"><a href="#2-建立main-c文件" class="headerlink" title="2 建立main.c文件"></a>2 建立main.c文件</h4><p>main.c文件将实现前文中文件中的方法。作为JAVA转C的接口。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173328777.png" loading="lazy"></p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173501401.png" loading="lazy"></p>
+<h4 id="3-实现接口函数"><a href="#3-实现接口函数" class="headerlink" title="3 实现接口函数"></a>3 实现接口函数</h4><p>在实现函数之前，我们需要把生成的头文件，移动或者复制到jni文件夹</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401173600997.png" loading="lazy"></p>
+<p>然后可以把自己的C库复制到jni目录下边。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193013539.png" loading="lazy"></p>
+<p>接下来，我们需要利用JNI实现main.c中的接口函数。</p>
+<p>main.c内容如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Created by 郭犇 on 2021/4/1.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;com_xiaomi_mysdk_MySDK.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;my_lib.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> jstring <span class="title function_">stoJstring</span><span class="params">(JNIEnv* env, <span class="type">char</span>* pat)</span>;</span><br><span class="line"></span><br><span class="line">JNIEXPORT jstring JNICALL <span class="title function_">Java_com_xiaomi_mysdk_MySDK_my_1count_1mean_1funtion</span></span><br><span class="line">   <span class="params">(JNIEnv *env, jobject thisz , jobject a, jint b)</span>&#123;</span><br><span class="line">        <span class="type">int</span> num = b; <span class="comment">//JNI语法中，int与jint支持强制转换</span></span><br><span class="line">        <span class="comment">//链表的类型转换比较复杂</span></span><br><span class="line"></span><br><span class="line">        jclass list_class = (*env)-&gt;FindClass(env,<span class="string">&quot;java/util/ArrayList&quot;</span>);</span><br><span class="line">        jmethodID list_get =  (*env)-&gt;GetMethodID(env, list_class, <span class="string">&quot;get&quot;</span>, <span class="string">&quot;(I)Ljava/lang/Object;&quot;</span>);</span><br><span class="line">        jmethodID list_size = (*env)-&gt;GetMethodID(env, list_class, <span class="string">&quot;size&quot;</span>, <span class="string">&quot;()I&quot;</span>);</span><br><span class="line"></span><br><span class="line">        jclass float_class = (*env)-&gt;FindClass(env,<span class="string">&quot;java/lang/Float&quot;</span>);</span><br><span class="line">        jmethodID get_float_value = (*env)-&gt;GetMethodID(env, float_class, <span class="string">&quot;floatValue&quot;</span>,<span class="string">&quot;()F&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">float</span> *l = (<span class="type">float</span> *)<span class="built_in">malloc</span>(num*(<span class="keyword">sizeof</span>(<span class="type">float</span>)));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">            jobject obj_element = (*env)-&gt;CallObjectMethod(env, a, list_get, i);</span><br><span class="line">            <span class="type">float</span> float_ele = (*env)-&gt;CallFloatMethod(env, obj_element, get_float_value);</span><br><span class="line">            l[i] = float_ele;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">char</span>* str = count_mean(l ,num);</span><br><span class="line">        jstring ret = stoJstring(env, str);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> jstring <span class="title function_">stoJstring</span><span class="params">(JNIEnv* env, <span class="type">char</span>* pat)</span>&#123;</span><br><span class="line">    jclass strClass = (*env)-&gt;FindClass(env, <span class="string">&quot;java/lang/String&quot;</span>);</span><br><span class="line">    jmethodID ctorID = (*env)-&gt;GetMethodID(env, strClass, <span class="string">&quot;&lt;init&gt;&quot;</span>, <span class="string">&quot;([BLjava/lang/String;)V&quot;</span>);</span><br><span class="line">    jbyteArray bytes = (*env)-&gt;NewByteArray(env, <span class="built_in">strlen</span>(pat));</span><br><span class="line">    (*env)-&gt;SetByteArrayRegion(env, bytes, <span class="number">0</span>, <span class="built_in">strlen</span>(pat), (jbyte*)pat);</span><br><span class="line">    jstring encoding = (*env)-&gt;NewStringUTF(env, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> (jstring)(*env)-&gt;NewObject(env, strClass, ctorID, bytes, encoding);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-配置-Android-mk"><a href="#4-配置-Android-mk" class="headerlink" title="4 配置 Android.mk"></a>4 配置 Android.mk</h4><p>该文件内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE    := MySDK</span><br><span class="line">LOCAL_SRC_FILES := main.c</span><br><span class="line">LOCAL_SRC_FILES += my_lib.c</span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure>
+
+<p>其中，LOCAL_MODULE :&#x3D; mysdklibrary，这里的定义，最终生成的so文件是 libMySDK.so。</p>
+<p>此外可以加上以下语句，用于生成最终的log。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_LDLIBS :=-llog</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-配置-MySDK下的build-gradle"><a href="#5-配置-MySDK下的build-gradle" class="headerlink" title="5 配置 MySDK下的build.gradle"></a>5 配置 MySDK下的build.gradle</h4><p>修改图下的位置</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191344975.png" loading="lazy"></p>
+<p>其中，moduleName对应的是 SDK的名字。cFlags表示C语言对应的标准。</p>
+<p>sourceSets设置中。jni.srcDirs指的是我们放置C语言源代码的目录。</p>
+<p>jniLibs.srcDirs指的是生成的so库所在的位置。（注：这条语句不是用来指示生成的位置，只是为后续打包aar时找到so库用的）。</p>
+<p>到这里，jni部分的工作基本完成了。</p>
+<h4 id="6-调用ndk-build生成so库。"><a href="#6-调用ndk-build生成so库。" class="headerlink" title="6 调用ndk-build生成so库。"></a>6 调用ndk-build生成so库。</h4><p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210401193741347.png" loading="lazy"></p>
+<p>生成的so库在如下的位置</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402191907379.png" loading="lazy"></p>
+<h3 id="3-5-把源代码和so库一并打包到aar文件中"><a href="#3-5-把源代码和so库一并打包到aar文件中" class="headerlink" title="3.5 把源代码和so库一并打包到aar文件中"></a>3.5 把源代码和so库一并打包到aar文件中</h3><p>我们可以直接利用AS自带的右方的gradle按钮。按照如图的目录找到assembleRelease</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192057568.png" loading="lazy"></p>
+<p>运行结束之后，我们就可以在MyDemo&#x2F;MySDK&#x2F;build&#x2F;outputs&#x2F;aar&#x2F;目录中找到MySDK-release.aar文件。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192217160.png" loading="lazy"></p>
+<p>双击aar文件可以看到如下所示的目录；</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192323837.png" loading="lazy"></p>
+<p>可以发现包含了各种文件。jni文件夹下是四个so库。可供Java程序调用的so库就在jni目录中。</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402192431250.png" loading="lazy"></p>
+<p>至此，<strong>打包成功！</strong>。</p>
+<h2 id="四-将-aar导入项目中进行使用"><a href="#四-将-aar导入项目中进行使用" class="headerlink" title="四 将.aar导入项目中进行使用"></a>四 将.aar导入项目中进行使用</h2><p>下面主要看看在Android Studio中如何加载本地的*.aar文件。</p>
+<ol>
+<li><p>把aar文件放在一个文件目录内，比如就放在libs目录内；</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210402193110508.png" loading="lazy"></p>
+</li>
+<li><p>在app的build.gradle文件添加如下内容；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    flatDir &#123;</span><br><span class="line">        dirs <span class="string">&#x27;libs&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后只需要添加一句gradle依赖便方便的引用了该aar文件；</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.2.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.google.android.material:material:1.3.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.constraintlayout:constraintlayout:2.0.4&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加以下这句</span></span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.aar&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.+&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.3.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，在Android Studio中加载本地的*.aar文件就结束。</p>
+</li>
+<li><p>修改主活动</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;AppCompatActivity&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">        <span class="type">List</span>&lt;Float&gt; <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        a.add(<span class="number">1.0f</span>);</span><br><span class="line">        a.add(<span class="number">2.0f</span>);</span><br><span class="line">        a.add(<span class="number">3.0f</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">        <span class="type">float</span> <span class="variable">ret</span> <span class="operator">=</span> MySDK.my_count_mean_funtion(a,b);</span><br><span class="line">        Log.d(<span class="string">&quot;ret&quot;</span>, Float.toString(ret));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行程序得到正确结果</p>
+<p><img decoding="async" src="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/image-20210419201234352.png" loading="lazy"></p>
+</li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>jni接口文件的编写是能否成功的关键，考验编程能力</li>
+<li>为了便于调试，建议先在将主程序与module连接起来调试通，最后再生成aar形式的SDK；</li>
+</ol>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            C++ 正则表达式
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">可穿戴设备压力监测算法</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="grobenis/grobenis.github.io"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI="
+    data-category="General"
+    data-category-id="DIC_kwDODs61iM4DFCzP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>

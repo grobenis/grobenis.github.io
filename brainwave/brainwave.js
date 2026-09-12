@@ -1,0 +1,2029 @@
+/* ===== 脑洞页：宇宙声音全屏播放器 ===== */
+(function () {
+  var root = document.getElementById('bwModalRoot');
+  if (!root) return;
+
+  /* --- 打开/关闭模态 --- */
+  function openCosmos(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-cosmos';
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">宇宙声音</h2>' +
+        '<p class="bw-modal-sub">选择一段宇宙电波，闭上眼睛聆听</p>' +
+        '<div class="bw-cosmos-sky">' +
+          '<span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span>' +
+          '<span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span>' +
+          '<span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span>' +
+          '<span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span><span class="bw-cosmos-star"></span>' +
+        '</div>' +
+        '<div class="bw-cosmos-options">' +
+          '<button class="bw-cosmo-opt" type="button" data-sound="deep">深空低频</button>' +
+          '<button class="bw-cosmo-opt" type="button" data-sound="pulsar">脉冲星</button>' +
+          '<button class="bw-cosmo-opt" type="button" data-sound="solar">太阳风</button>' +
+          '<button class="bw-cosmo-opt" type="button" data-sound="wave">引力波</button>' +
+          '<button class="bw-cosmo-opt" type="button" data-sound="jupiter">木星电波</button>' +
+        '</div>' +
+        '<div class="bw-cosmos-status">未播放 · 点击上方选项开始</div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    m.querySelectorAll('.bw-cosmo-opt').forEach(function (btn) {
+      btn.addEventListener('click', function () { playSound(m, btn); });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+  }
+  function closeModal(m) {
+    stopAll();
+    if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = null; }
+    if (m && m.parentNode) m.parentNode.removeChild(m);
+    document.body.classList.remove('bw-modal-open');
+    document.removeEventListener('keydown', onModalKey);
+    if (lastTrigger && typeof lastTrigger.focus === 'function') {
+      try { lastTrigger.focus(); } catch (e) {}
+    }
+    lastTrigger = null;
+  }
+  /* 模态无障碍：role/aria + 焦点移到关闭按钮 + Tab 焦点圈闭（不逃逸到背后页面） */
+  function setupModalA11y(m) {
+    m.setAttribute('role', 'dialog');
+    m.setAttribute('aria-modal', 'true');
+    m.setAttribute('tabindex', '-1');
+    var closer = m.querySelector('.bw-modal-close');
+    if (closer) setTimeout(function () { try { closer.focus(); } catch (e) {} }, 0);
+    m.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var els = Array.prototype.filter.call(
+        m.querySelectorAll('button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])'),
+        function (el) { return !el.disabled && el.type !== 'hidden' && el.offsetParent !== null; }
+      );
+      if (!els.length) { e.preventDefault(); return; }
+      var first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+  /* 累计扎小人次数：localStorage 持久化，封面展示徽章 */
+  var VO_STAT_KEY = 'bw_voodoo_stat';
+  function loadVoodooStat() { try { return JSON.parse(localStorage.getItem(VO_STAT_KEY)) || {}; } catch (e) { return {}; } }
+  function saveVoodooStat(o) { try { localStorage.setItem(VO_STAT_KEY, JSON.stringify(o)); } catch (e) {} }
+  function bumpVoodooStat(key) {
+    var o = loadVoodooStat();
+    o[key] = (o[key] || 0) + 1;
+    saveVoodooStat(o);
+    renderVoodooStat();
+  }
+  function renderVoodooStat() {
+    var el = document.getElementById('voodooStat');
+    if (!el) return;
+    var o = loadVoodooStat();
+    var total = 0; for (var k in o) total += (o[k] | 0);
+    if (total > 0) { el.textContent = '已扎服 ' + total + ' 次'; el.removeAttribute('hidden'); }
+    else el.setAttribute('hidden', '');
+  }
+  renderVoodooStat();
+  var lastTrigger = null;
+  function onModalKey(e) {
+    if (e.key === 'Escape') {
+      var m = document.querySelector('.bw-modal');
+      if (m) closeModal(m);
+    }
+  }
+
+  /* --- Web Audio 宇宙噪音合成（程序合成，零音频文件） --- */
+  var actx = null;
+  var master = null;    /* 共享主输出 */
+  var analyser = null;  /* 频谱分析:驱动星空律动 */
+  var activeNodes = null;
+  var vizRaf = null;    /* 律动动画循环 */
+  var vizTarget = { sky: null, stars: [] };
+  var freqData = null;
+  /* 命名空间:供后续模块（接电话等）访问 stopAll 内部定义的音效函数 */
+  var bwSfx = {};
+  /* 动物拟音音量:IIFE 顶层声明,供 stopAll 内部 voice 函数与 openPhone 共享 */
+  var voiceVolume = 1;
+  /* 律动开关:IIFE 顶层声明,供 ensureSfxRegistered 读取/恢复 */
+  var vizPaused = false;
+  /* 页面卸载兜底:确保任何方式退出都停止声音 */
+  window.addEventListener('pagehide', stopAll);
+  window.addEventListener('beforeunload', stopAll);
+  function ensureCtx() {
+    if (!actx) {
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+      master = actx.createGain(); master.gain.value = 1;
+      analyser = actx.createAnalyser(); analyser.fftSize = 256;
+      master.connect(analyser);
+      analyser.connect(actx.destination);
+      freqData = new Uint8Array(analyser.frequencyBinCount);
+    }
+    if (actx.state === 'suspended') actx.resume();
+    return actx;
+  }
+  function stopAll() {
+    if (activeNodes) {
+      try {
+        activeNodes.forEach(function (n) {
+          /* interval id:clearInterval; 其它:stop+disconnect */
+          if (typeof n === 'number') { clearInterval(n); return; }
+          try { n.stop && n.stop(); } catch (e) {}
+          try { n.disconnect(); } catch (e) {}
+        });
+      } catch (e) {}
+      activeNodes = null;
+    }
+    /* ---------- 音效合成器（扎小人反馈，复用 actx） ---------- */
+    var sfxGain = null;       /* 独立的 GainNode，避免污染宇宙声音 */
+    function ensureSfxGain() {
+      if (!sfxGain) {
+        var ctx = ensureCtx();
+        sfxGain = ctx.createGain(); sfxGain.gain.value = 0.55;
+        sfxGain.connect(ctx.destination);  /* 旁路掉 analyser，免得星座也跟着抖 */
+      }
+      return sfxGain;
+    }
+    /* 合成一次性音效：起音 5ms、衰减至 0、总时长 dur */
+    function playOne(opts) {
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var osc = ctx.createOscillator();
+        var env = ctx.createGain();
+        osc.type = opts.type || 'sine';
+        osc.frequency.setValueAtTime(opts.f0 || 440, ctx.currentTime);
+        if (opts.f1) osc.frequency.exponentialRampToValueAtTime(opts.f1, ctx.currentTime + (opts.dur || 0.18));
+        env.gain.setValueAtTime(0.0001, ctx.currentTime);
+        env.gain.exponentialRampToValueAtTime(opts.peak || 0.6, ctx.currentTime + 0.005);
+        env.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (opts.dur || 0.18));
+        osc.connect(env); env.connect(g);
+        osc.start();
+        osc.stop(ctx.currentTime + (opts.dur || 0.18) + 0.02);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 三种预设：扎针短闷 / 命中清脆 / 扎服上扬 */
+    function sfxStab()    { playOne({ type: 'square',   f0: 220, f1: 110, dur: 0.10, peak: 0.45 }); }
+    function sfxHit()     { playOne({ type: 'triangle', f0: 880, f1: 660, dur: 0.12, peak: 0.40 }); }
+    function sfxDefeat()  {
+      [880, 1100, 1320].forEach(function (f, i) {
+        setTimeout(function () { playOne({ type: 'sine', f0: f, f1: f * 1.5, dur: 0.25, peak: 0.35 }); }, i * 90);
+      });
+    }
+    /* 移动端触觉 */
+    function haptic(ms) {
+      try { if (navigator.vibrate) navigator.vibrate(ms || 35); } catch (e) {}
+    }
+    var VOODOO_SFX = { stab: sfxStab, hit: sfxHit, defeat: sfxDefeat, haptic: haptic };
+
+    /* ---------- 电话音效：铃声 / 接听 / 挂断 / 忙音 / 对话气泡 ---------- */
+    /* 铃声：急促"嘟嘟"双脉冲（680Hz 方波,周期 650ms）,返回停止函数 */
+    function sfxRing() {
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var stop = false;
+        function ringOnce() {
+          if (stop) return;
+          var t = ctx.currentTime;
+          /* 每个周期两个短促脉冲,更刺耳更急促 */
+          [0, 0.13].forEach(function (d) {
+            var osc = ctx.createOscillator();
+            var env = ctx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(680, t + d);
+            env.gain.setValueAtTime(0.0001, t + d);
+            env.gain.exponentialRampToValueAtTime(0.38, t + d + 0.01);
+            env.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.1);
+            osc.connect(env); env.connect(g);
+            osc.start(t + d);
+            osc.stop(t + d + 0.12);
+          });
+        }
+        ringOnce();
+        var timer = setInterval(ringOnce, 650);
+        /* 注册进 activeNodes:页面卸载时 stopAll() 能清掉铃声定时器 */
+        if (!Array.isArray(activeNodes)) activeNodes = [];
+        activeNodes.push(timer);
+        return function () {
+          stop = true;
+          clearInterval(timer);
+          var idx = activeNodes ? activeNodes.indexOf(timer) : -1;
+          if (idx > -1) activeNodes.splice(idx, 1);
+        };
+      } catch (e) { return function () {}; }
+    }
+    /* 接听咔哒声：短促高频 sine（1200→800Hz） */
+    function sfxPickup() {
+      playOne({ type: 'sine', f0: 1200, f1: 800, dur: 0.12, peak: 0.4 });
+    }
+    /* 挂断忙音：低频方波短鸣（持续到脚本结束由 sfxBusy 接管） */
+    function sfxHangup() {
+      playOne({ type: 'square', f0: 480, f1: 480, dur: 0.15, peak: 0.25 });
+    }
+    /* 忙音：循环 480Hz/620Hz 短促交替,持续约 1s */
+    function sfxBusy() {
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var t0 = ctx.currentTime;
+        for (var i = 0; i < 6; i++) {
+          var osc = ctx.createOscillator();
+          var env = ctx.createGain();
+          osc.type = 'sine';
+          var f = (i % 2 === 0) ? 480 : 620;
+          osc.frequency.setValueAtTime(f, t0 + i * 0.16);
+          env.gain.setValueAtTime(0.0001, t0 + i * 0.16);
+          env.gain.exponentialRampToValueAtTime(0.25, t0 + i * 0.16 + 0.01);
+          env.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.16 + 0.13);
+          osc.connect(env); env.connect(g);
+          osc.start(t0 + i * 0.16);
+          osc.stop(t0 + i * 0.16 + 0.14);
+        }
+      } catch (e) {}
+    }
+    /* 对话气泡出场音：高频轻点（2000Hz 短促 30ms） */
+    function sfxTalk() {
+      playOne({ type: 'sine', f0: 2000, f1: 1600, dur: 0.06, peak: 0.18 });
+    }
+
+    /* ---------- 10种动物拟音（Web Audio 合成） ---------- */
+    /* 通用工具：单音 ADSR 包络 */
+    function voiceTone(opts) {
+      /* opts: {type, f0, f1, dur, peak, vibrato?} */
+      try {
+        var ctx = ensureCtx();
+        var g = ensureSfxGain();
+        var t = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var env = ctx.createGain();
+        osc.type = opts.type || 'sine';
+        osc.frequency.setValueAtTime(opts.f0, t);
+        if (opts.f1) osc.frequency.exponentialRampToValueAtTime(opts.f1, t + opts.dur);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(opts.peak || 0.3, t + 0.01);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + opts.dur);
+        osc.connect(env); env.connect(g);
+        osc.start(t);
+        osc.stop(t + opts.dur + 0.02);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 猫：高频颤音喵喵（vibrato sine + 频率滑降） */
+    function voiceCat() {
+      try {
+        var ctx = ensureCtx(); var g = ensureSfxGain(); var t = ctx.currentTime;
+        var osc = ctx.createOscillator(); var env = ctx.createGain(); var lfo = ctx.createOscillator(); var lfoGain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(800, t);
+        osc.frequency.exponentialRampToValueAtTime(500, t + 0.3);
+        lfo.frequency.value = 18; lfoGain.gain.value = 60;
+        lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(0.35, t + 0.02);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+        osc.connect(env); env.connect(g);
+        osc.start(t); lfo.start(t);
+        osc.stop(t + 0.4); lfo.stop(t + 0.4);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); lfo.disconnect(); lfoGain.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 企鹅：3 次嘎嘎短脉冲 */
+    function voicePenguin() {
+      [0, 0.1, 0.2].forEach(function (d) {
+        setTimeout(function () { voiceTone({ type: 'square', f0: 400, f1: 350, dur: 0.05, peak: _vp(0.25) }); }, d * 1000);
+      });
+    }
+    /* 刺猬：高频碎裂 saw */
+    function voiceHedgehog() {
+      voiceTone({ type: 'sawtooth', f0: 3000, f1: 1500, dur: 0.2, peak: _vp(0.18) });
+    }
+    /* 慢龟：极低频呻吟（sine sweep） */
+    function voiceTurtle() {
+      voiceTone({ type: 'sine', f0: 80, f1: 40, dur: 0.6, peak: _vp(0.4) });
+    }
+    /* 章鱼：湿黏低音（sine + 滤波衰减） */
+    function voiceOctopus() {
+      try {
+        var ctx = ensureCtx(); var g = ensureSfxGain(); var t = ctx.currentTime;
+        var osc = ctx.createOscillator(); var env = ctx.createGain(); var filt = ctx.createBiquadFilter();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(100, t); osc.frequency.linearRampToValueAtTime(60, t + 0.4);
+        filt.type = 'lowpass'; filt.frequency.setValueAtTime(400, t); filt.frequency.exponentialRampToValueAtTime(80, t + 0.4);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(0.35, t + 0.05);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+        osc.connect(filt); filt.connect(env); env.connect(g);
+        osc.start(t); osc.stop(t + 0.45);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); filt.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 猫头鹰：双音呼呼 */
+    function voiceOwl() {
+      [0, 0.18].forEach(function (d) {
+        setTimeout(function () { voiceTone({ type: 'sine', f0: 350, f1: 250, dur: 0.16, peak: 0.3 }); }, d * 1000);
+      });
+    }
+    /* 浣熊：贼笑（短频率滑降） */
+    function voiceRaccoon() {
+      voiceTone({ type: 'sine', f0: 1200, f1: 600, dur: 0.25, peak: 0.28 });
+    }
+    /* 狐狸：尖利叫声 */
+    function voiceFox() {
+      voiceTone({ type: 'sawtooth', f0: 500, f1: 1500, dur: 0.35, peak: 0.25 });
+    }
+    /* 青蛙：呱呱双音 */
+    function voiceFrog() {
+      [0, 0.18].forEach(function (d) {
+        setTimeout(function () { voiceTone({ type: 'square', f0: d === 0 ? 300 : 400, f1: d === 0 ? 250 : 350, dur: 0.12, peak: 0.3 }); }, d * 1000);
+      });
+    }
+    /* 蜜蜂：嗡嗡声（持续 + 颤音） */
+    function voiceBee() {
+      try {
+        var ctx = ensureCtx(); var g = ensureSfxGain(); var t = ctx.currentTime;
+        var osc = ctx.createOscillator(); var env = ctx.createGain(); var lfo = ctx.createOscillator(); var lfoGain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(220, t);
+        lfo.frequency.value = 25; lfoGain.gain.value = 12;
+        lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(_vp(0.22), t + 0.04);
+        env.gain.exponentialRampToValueAtTime(_vp(0.18), t + 0.5);
+        env.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+        osc.connect(env); env.connect(g);
+        osc.start(t); lfo.start(t);
+        osc.stop(t + 0.75); lfo.stop(t + 0.75);
+        osc.onended = function () { try { osc.disconnect(); env.disconnect(); lfo.disconnect(); lfoGain.disconnect(); } catch (e) {} };
+      } catch (e) {}
+    }
+    /* 音量:已提升到 IIFE 顶层(供 openPhone 共享),此处仅保留 setter 与音量应用函数 */
+    function setVoiceVolume(v) { voiceVolume = Math.max(0, Math.min(1, v)); }
+    /* 应用音量:voice 内的 peak 都乘以 voiceVolume */
+    function _vp(peak) { return (peak || 0.3) * voiceVolume; }
+    /* 停止律动循环并复位画面 */
+    pauseViz();
+    if (vizTarget.sky) {
+      vizTarget.sky.style.removeProperty('--pulse');
+      vizTarget.sky.style.removeProperty('--shimmer');
+    }
+    vizTarget = { sky: null, stars: [] };
+    /* 暴露音效函数给 IIFE 顶层（接电话等模块） */
+    function _registerSfx() {
+      bwSfx.sfxStab = sfxStab; bwSfx.sfxHit = sfxHit; bwSfx.sfxDefeat = sfxDefeat;
+      bwSfx.VOODOO_SFX = VOODOO_SFX;
+      bwSfx.sfxRing = sfxRing; bwSfx.sfxPickup = sfxPickup; bwSfx.sfxHangup = sfxHangup;
+      bwSfx.sfxBusy = sfxBusy; bwSfx.sfxTalk = sfxTalk;
+      bwSfx.voiceTone = voiceTone;
+      bwSfx.voiceCat = voiceCat; bwSfx.voicePenguin = voicePenguin; bwSfx.voiceHedgehog = voiceHedgehog;
+      bwSfx.voiceTurtle = voiceTurtle; bwSfx.voiceOctopus = voiceOctopus; bwSfx.voiceOwl = voiceOwl;
+      bwSfx.voiceRaccoon = voiceRaccoon; bwSfx.voiceFox = voiceFox; bwSfx.voiceFrog = voiceFrog;
+      bwSfx.voiceBee = voiceBee;
+    }
+    _registerSfx();
+  }
+  /* 惰性注册:确保 bwSfx 在接电话等模块使用前已填充。
+     首次调用 stopAll() 触发 _registerSfx,但撤销其 pauseViz 副作用
+     (openCosmos 不调用 resumeViz,不能让其暂停星空律动)。 */
+  function ensureSfxRegistered() {
+    if (bwSfx.sfxRing) return;
+    var savedPaused = vizPaused;
+    stopAll();
+    vizPaused = savedPaused;
+  }
+  ensureSfxRegistered();
+  /* 律动循环:读频谱 → 驱动星星闪烁速度 + 光晕呼吸 */
+  function vizLoop() {
+    vizRaf = 0;
+    if (vizPaused) return;
+    vizRaf = requestAnimationFrame(vizLoop);
+    if (!analyser || !freqData) return;
+    analyser.getByteFrequencyData(freqData);
+    var len = freqData.length;
+    if (!len) return;
+    /* 低频能量(前1/4) → 光晕呼吸 */
+    var lo = Math.max(1, Math.floor(len * 0.25));
+    var sumLo = 0, sumAll = 0, i;
+    for (i = 0; i < len; i++) { sumAll += freqData[i]; if (i < lo) sumLo += freqData[i]; }
+    var pulse = sumLo / lo / 255;
+    var shimmer = sumAll / len / 255;
+    var sky = vizTarget.sky;
+    if (sky) {
+      sky.style.setProperty('--pulse', pulse.toFixed(3));
+      sky.style.setProperty('--shimmer', shimmer.toFixed(3));
+    }
+    /* 星星:能量越高闪烁越快 */
+    var dur = Math.max(0.6, 3 - shimmer * 2.2);
+    var stars = vizTarget.stars;
+    for (i = 0; i < stars.length; i++) {
+      if (stars[i] && stars[i].style) stars[i].style.animationDuration = dur.toFixed(2) + 's';
+    }
+  }
+  /* 律动控制:页面隐藏时暂停 raf、可见时恢复;与 stopAll 复用同一个开关 */
+  function pauseViz() {
+    vizPaused = true;
+    if (vizRaf) { cancelAnimationFrame(vizRaf); vizRaf = 0; }
+  }
+  function resumeViz() {
+    if (!vizPaused) return;
+    vizPaused = false;
+    if (activeNodes && analyser && freqData && !vizRaf) vizLoop();
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) pauseViz(); else resumeViz();
+  });
+  function noiseBuffer(ctx, type) {
+    var len = ctx.sampleRate * 2;
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = buf.getChannelData(0);
+    var last = 0;
+    for (var i = 0; i < len; i++) {
+      var w = Math.random() * 2 - 1;
+      if (type === 'pink') { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+      else d[i] = w;
+    }
+    return buf;
+  }
+  function connectToOut(node) {
+    var g = actx.createGain();
+    g.gain.value = 0.22;
+    node.connect(g);
+    g.connect(master);
+    return g;
+  }
+  var presets = {
+    /* 深空低频：粉噪声 + 低通 + 缓慢起伏 */
+    deep: function () {
+      var nodes = [];
+      var src = actx.createBufferSource();
+      src.buffer = noiseBuffer(actx, 'pink');
+      src.loop = true;
+      var lp = actx.createBiquadFilter();
+      lp.type = 'lowpass'; lp.frequency.value = 420;
+      var lfo = actx.createOscillator();
+      lfo.frequency.value = 0.08;
+      var lfoGain = actx.createGain(); lfoGain.gain.value = 150;
+      lfo.connect(lfoGain); lfoGain.connect(lp.frequency);
+      src.connect(lp);
+      var out = connectToOut(lp);
+      src.start(); lfo.start();
+      nodes = [src, lp, lfo, lfoGain, out];
+      return nodes;
+    },
+    /* 脉冲星：规律的哔哔脉冲 */
+    pulsar: function () {
+      var nodes = [];
+      var timer = setInterval(function () {
+        if (!actx) return;
+        var osc = actx.createOscillator();
+        osc.type = 'sine';
+        var t = actx.currentTime;
+        osc.frequency.setValueAtTime(1200 + Math.random() * 600, t);
+        var g = actx.createGain();
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.18, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+        osc.connect(g); g.connect(master);
+        osc.start(t); osc.stop(t + 0.15);
+      }, 900);
+      nodes = [timer];
+      return nodes;
+    },
+    /* 太阳风：白噪声 + 高通 + 飘忽起伏 */
+    solar: function () {
+      var nodes = [];
+      var src = actx.createBufferSource();
+      src.buffer = noiseBuffer(actx, 'white');
+      src.loop = true;
+      var hp = actx.createBiquadFilter();
+      hp.type = 'highpass'; hp.frequency.value = 1800;
+      var bp = actx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 4200; bp.Q.value = 0.6;
+      var lfo = actx.createOscillator(); lfo.frequency.value = 0.05;
+      var lfoGain = actx.createGain(); lfoGain.gain.value = 0.25;
+      lfo.connect(lfoGain); lfoGain.connect(bp.frequency);
+      src.connect(hp); hp.connect(bp);
+      var out = connectToOut(bp);
+      src.start(); lfo.start();
+      nodes = [src, hp, bp, lfo, lfoGain, out];
+      return nodes;
+    },
+    /* 引力波：极低频嗡嗡上下扫频 */
+    wave: function () {
+      var nodes = [];
+      var osc = actx.createOscillator(); osc.type = 'sine';
+      osc.frequency.value = 45;
+      var lfo = actx.createOscillator(); lfo.frequency.value = 0.06;
+      var lfoGain = actx.createGain(); lfoGain.gain.value = 38;
+      lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+      var out = connectToOut(osc);
+      osc.start(); lfo.start();
+      nodes = [osc, lfo, lfoGain, out];
+      return nodes;
+    },
+    /* 木星电波：锯齿波 + 带通扫描（科幻感啁啾） */
+    jupiter: function () {
+      var nodes = [];
+      var osc = actx.createOscillator(); osc.type = 'sawtooth'; osc.frequency.value = 330;
+      var bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 18; bp.frequency.value = 1800;
+      var lfo = actx.createOscillator(); lfo.frequency.value = 0.2;
+      var lfoGain = actx.createGain(); lfoGain.gain.value = 1500;
+      lfo.connect(lfoGain); lfoGain.connect(bp.frequency);
+      osc.connect(bp);
+      var out = connectToOut(bp);
+      osc.start(); lfo.start();
+      nodes = [osc, bp, lfo, lfoGain, out];
+      return nodes;
+    }
+  };
+
+  function playSound(m, btn) {
+    var key = btn.getAttribute('data-sound');
+    var ctx = ensureCtx();
+    /* 再点同一个按钮：暂停当前声音 */
+    if (btn.classList.contains('is-on') && activeNodes) {
+      stopAll();
+      m.querySelectorAll('.bw-cosmo-opt').forEach(function (b) { b.classList.remove('is-on'); });
+      var status0 = m.querySelector('.bw-cosmos-status');
+      if (status0) status0.textContent = '已暂停 · 点击其他选项切换';
+      return;
+    }
+    stopAll();
+    var nodes = presets[key]();
+    activeNodes = nodes;
+    m.querySelectorAll('.bw-cosmo-opt').forEach(function (b) { b.classList.remove('is-on'); });
+    btn.classList.add('is-on');
+    var status = m.querySelector('.bw-cosmos-status');
+    if (status) status.textContent = '正在播放 · ' + btn.textContent.trim();
+    /* 绑定律动目标并启动频谱循环 */
+    vizTarget = {
+      sky: m.querySelector('.bw-cosmos-sky'),
+      stars: Array.prototype.slice.call(m.querySelectorAll('.bw-cosmos-star'))
+    };
+    if (!vizRaf) vizLoop();
+  }
+
+  /* --- 卡片点击打开 --- */
+  document.querySelectorAll('.bw-card[data-bw-open]').forEach(function (card) {
+    var mode = card.getAttribute('data-bw-open');
+    var OPENERS = { cosmos: openCosmos, galaxy: openGalaxy, dolls: openDolls, shop: openToyShop, window: openWindow, voodoo: openVoodoo, phone: openPhone };
+    var open = OPENERS[mode];
+    if (!open) { console.warn('[brainwave] unknown card mode:', mode); return; }
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+
+  /* ============ 脑洞星系（点子库） ============ */
+  /* 默认脑洞点子 */
+  var GALAXY_IDEAS = [
+    { t: '天空写诗机', d: '一架无人机在云层上用烟轨写诗，抬头就能读到天空的情书。' },
+    { t: '月光充电', d: '把所有路灯换成收集月光的装置，夜晚停电时也能温柔发亮。' },
+    { t: '时间胶囊快递', d: '寄一封给十年后自己的信，由未来的时钟亲自签收。' },
+    { t: '会飞的图书馆', d: '热气球载着旧书环游世界，每到一个城市换一批读者。' },
+    { t: '声音琥珀', d: '把重要日子的声音封进琥珀，多年后摇晃就能听见那年夏天。' },
+    { t: '云朵枕头', d: '采集午后的云做成枕头，失眠时躺进去就回到无忧无虑的童年。' },
+    { t: '星际邮箱', d: '在屋顶立一个信箱，相信的人往里投递心事，星星替你转交。' },
+    { t: '彩虹补给站', d: '雨天过后的十字路口自动洒出一道彩虹，给赶路的人一瞬的好心情。' }
+  ];
+  var galIdeas = loadGalIdeas();
+
+  function loadGalIdeas() {
+    try {
+      var raw = localStorage.getItem('bwGalaxyIdeas');
+      if (raw) { var arr = JSON.parse(raw); if (Array.isArray(arr) && arr.length) return arr; }
+    } catch (e) {}
+    return GALAXY_IDEAS.map(function (it, i) {
+      return { id: 'g' + i, t: it.t, d: it.d, x: 14 + (i * 73) % 76, y: 18 + (i * 47) % 64 };
+    });
+  }
+  function saveGalIdeas() { try { localStorage.setItem('bwGalaxyIdeas', JSON.stringify(galIdeas)); } catch (e) {} }
+
+  function openGalaxy(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-galaxy';
+    m.innerHTML =
+      '<div class="bw-gal-bg" id="galSky"></div>' +
+      '<div class="bw-modal-panel bw-galaxy-panel">' +
+        '<button class="bw-modal-close" type="button" data-close title="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">脑洞星系</h2>' +
+        '<p class="bw-modal-sub">每一颗星都是一个想法 · 点亮它们，或挂上新的脑洞</p>' +
+        '<div class="bw-gal-add">' +
+          '<input class="bw-gal-input" id="galInput" type="text" maxlength="18" placeholder="写下一个新的脑洞点子…" />' +
+          '<button class="bw-gal-btn" id="galAddBtn" type="button">挂上星空 ✦</button>' +
+        '</div>' +
+        '<div class="bw-gal-tip">点击星星查看想法 · 也可在下方新增</div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+    /* 渲染全屏星系背景 */
+    var sky = m.querySelector('#galSky');
+    renderGalaxy(sky);
+    /* 新增点子 */
+    var input = m.querySelector('#galInput');
+    var addBtn = m.querySelector('#galAddBtn');
+    function addIdea() {
+      var v = (input.value || '').trim();
+      if (!v) return;
+      var id = 'g' + Date.now();
+      galIdeas.push({ id: id, t: v, d: '刚刚挂上星空的崭新脑洞。', x: 8 + Math.random() * 82, y: 10 + Math.random() * 72 });
+      saveGalIdeas();
+      input.value = '';
+      renderGalaxy(sky);
+    }
+    addBtn.addEventListener('click', addIdea);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') addIdea(); });
+  }
+
+  function renderGalaxy(sky) {
+    var w = sky.clientWidth || 480;
+    var h = sky.clientHeight || 260;
+    var i, j;
+    /* 只清点子和连线，保留背景星点（避免每次加点子背景都重新随机闪烁） */
+    var oldNodes = sky.querySelectorAll('.bw-gal-star, .bw-gal-lines');
+    for (i = 0; i < oldNodes.length; i++) {
+      if (oldNodes[i].parentNode) oldNodes[i].parentNode.removeChild(oldNodes[i]);
+    }
+    /* 背景星点：仅在首次生成 */
+    if (!sky.querySelector('.bw-gal-bgstar')) {
+      var bg;
+      for (i = 0; i < 40; i++) {
+        bg = document.createElement('span');
+        bg.className = 'bw-gal-bgstar';
+        bg.style.left = (Math.random() * 100) + '%';
+        bg.style.top = (Math.random() * 100) + '%';
+        bg.style.animationDelay = (Math.random() * 3) + 's';
+        bg.style.width = bg.style.height = (Math.random() < 0.6 ? 2 : 3) + 'px';
+        sky.appendChild(bg);
+      }
+    }
+    /* 连线(SVG):连接每颗星到最近的另一颗 */
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'bw-gal-lines');
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    var used = {};
+    for (i = 0; i < galIdeas.length; i++) {
+      var a = galIdeas[i], best = null, bd = 1e9;
+      for (var j = 0; j < galIdeas.length; j++) {
+        if (i === j) continue;
+        var b = galIdeas[j];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < bd) { bd = dist; best = j; }
+      }
+      if (best !== null) {
+        var key = i < best ? i + '_' + best : best + '_' + i;
+        if (!used[key] && bd < 45) {
+          used[key] = 1;
+          var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', (a.x / 100 * w)); line.setAttribute('y1', (a.y / 100 * h));
+          line.setAttribute('x2', (galIdeas[best].x / 100 * w)); line.setAttribute('y2', (galIdeas[best].y / 100 * h));
+          svg.appendChild(line);
+        }
+      }
+    }
+    sky.appendChild(svg);
+    /* 星星 */
+    for (i = 0; i < galIdeas.length; i++) {
+      var it = galIdeas[i];
+      var star = document.createElement('span');
+      star.className = 'bw-gal-star';
+      star.style.left = it.x + '%';
+      star.style.top = it.y + '%';
+      star.setAttribute('role', 'button');
+      star.setAttribute('tabindex', '0');
+      star.title = it.t;
+      star.innerHTML = '<i></i>';
+      star.addEventListener('click', function (idea) {
+        return function () { showGalIdea(sky, idea); };
+      }(it));
+      star.addEventListener('keydown', function (idea) {
+        return function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showGalIdea(sky, idea); } };
+      }(it));
+      sky.appendChild(star);
+    }
+  }
+
+  /* 查看点子详情(弹出的迷你卡片,挂到模态层以盖住面板) */
+  function showGalIdea(sky, idea) {
+    var modal = sky.parentNode;
+    var old = modal.querySelector('.bw-gal-pop');
+    if (old) old.parentNode.removeChild(old);
+    var pop = document.createElement('div');
+    pop.className = 'bw-gal-pop';
+    pop.innerHTML =
+      '<span class="bw-gal-pop-t">✦ ' + idea.t + '</span>' +
+      '<span class="bw-gal-pop-d">' + idea.d + '</span>' +
+      '<button class="bw-gal-pop-x" type="button" title="关闭">✕</button>';
+    modal.appendChild(pop);
+    pop.querySelector('.bw-gal-pop-x').addEventListener('click', function () {
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+    });
+    sky.addEventListener('click', function once(e) {
+      if (e.target.closest('.bw-gal-star') || e.target.closest('.bw-gal-pop')) return;
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+      sky.removeEventListener('click', once);
+    });
+  }
+
+  /* ============ 娃娃屋（娃娃墙） ============ */
+  /* 所有 AI 配图已预生成到 source/brainwave/images/，每个数据项带 img 字段直接引用本地 */
+  var IMG = function (rel) { return '/brainwave/images/' + rel; };
+  /* 每只娃娃：名字 + 性格 + 喜欢的事 + 悄悄话 + AI 图 prompt（5×4=20 只） */
+  var DOLLS = [
+    { name: '糯米', img: IMG('dolls/糯米.webp'), personality: '温柔爱睡', like: '抱着蜂蜜罐打盹，在你难过时递上一个抱抱', line: '今天的烦恼，都被我卷进小肚皮里啦。', prompt: 'one cute plush teddy bear, caramel cream color, round chubby body, soft woolly texture, big glossy eyes, tiny blush cheeks, studio product shot, pastel pink background' },
+    { name: '奶糖', img: IMG('dolls/奶糖.webp'), personality: '好奇又活泼', like: '收集清晨的露珠，竖起长耳朵听风里的故事', line: '耳朵这么长，是为了偷偷接住你的好消息。', prompt: 'one fluffy white plush bunny with soft pink inner ears, cute rounded shape, big sparkling eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '布丁', img: IMG('dolls/布丁.webp'), personality: '慵懒小傲娇', like: '晒太阳打呼噜，偷看你认真写字的侧脸', line: '呼噜呼噜，把你的不开心都呼噜走。', prompt: 'one round orange tabby plush kitten, chubby round face, closed happy eyes, sweet smile, soft plush fur, studio product shot, pastel pink background' },
+    { name: '橙子', img: IMG('dolls/橙子.webp'), personality: '开朗元气', like: '追着自己的尾巴转圈，把甜橙味抱抱分给大家', line: '尾巴藏不住开心，就让它摇啊摇。', prompt: 'one cute plush fox with big fluffy orange tail, cream belly, big adorable eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '棉花', img: IMG('dolls/棉花.webp'), personality: '软萌害羞', like: '趴在窗边数星星，把烦心事裹进云朵里', line: '软绵绵的，最适合在你难过时靠一靠。', prompt: 'one fluffy woolly plush lamb with cloudlike curly wool, gentle closed eyes, sweet smile, studio product shot, pastel pink background' },
+    { name: '豆丁', img: IMG('dolls/豆丁.webp'), personality: '勇敢又逞强', like: '假装很凶地保护大家，其实最怕被搔痒痒', line: '别看我小，我可是恐龙里的勇敢担当！', prompt: 'one cute green plush baby dinosaur, round chubby body, tiny arms, big shiny eyes, adorable smile, studio product shot, pastel pink background' },
+    { name: '桃桃', img: IMG('dolls/桃桃.webp'), personality: '甜甜软软', like: '每天给自己一个草莓味抱抱', line: '生活有点苦，但我是甜的。', prompt: 'one cute plush pink pig, round soft body, big glossy eyes, tiny blush, adorable smile, studio product shot, pastel pink background' },
+    { name: '西西', img: IMG('dolls/西西.webp'), personality: '安静心思细', like: '收藏雨后的彩虹，画进你的梦里', line: '别看我话少，我记得你所有的好。', prompt: 'one cute plush blue kitten with sleepy soft eyes, round fluffy body, tiny blush, studio product shot, pastel pink background' },
+    { name: '果冻', img: IMG('dolls/果冻.webp'), personality: '活泼呱呱', like: '下雨天跳进池塘里，和雨滴排排队', line: '生活嘛，总要蹦跶两下才过瘾。', prompt: 'one cute plush green frog, round chubby body, bright wide eyes, cheerful smile, studio product shot, pastel pink background' },
+    { name: '布林', img: IMG('dolls/布林.webp'), personality: '稳重慢悠悠', like: '冬天最暖的，是和朋友们挤在一起', line: '走得慢没关系，我不急着离开你。', prompt: 'one cute plush blue penguin, round belly, orange feet, big sparkly eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '啾啾', img: IMG('dolls/啾啾.webp'), personality: '元气满满', like: '一天到晚对着太阳叽叽叫', line: '想把第一缕晨光，分一缕给你。', prompt: 'one cute plush yellow chick, chubby round body, bright joyful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '麻薯', img: IMG('dolls/麻薯.webp'), personality: '黏人小团子', like: '不知不觉就黏在你身边不想走', line: '想你了，所以把自己变成软软的。', prompt: 'one cute plush white bear, precise soft round body, glossy gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '泡芙', img: IMG('dolls/泡芙.webp'), personality: '甜到冒泡', like: '往平凡的日子里加一点奶油', line: '不开心的时候，请轻轻咬我一口。', prompt: 'one cute plush cream bunny with swirl creampuff look, round soft body, sweet sparkling eyes, studio product shot, pastel pink background' },
+    { name: '曲奇', img: IMG('dolls/曲奇.webp'), personality: '踏实可靠', like: '把难题耐心烤成脆脆的曲奇', line: '慢慢来，一切都来得及。', prompt: 'one cute plush brown bear with cookie speckles, round fluffy body, warm kind eyes, studio product shot, pastel pink background' },
+    { name: '柠檬', img: IMG('dolls/柠檬.webp'), personality: '清爽乐乐', like: '在水面划出一道道小小的涟漪', line: '酸酸的我，最配甜甜的你。', prompt: 'one cute plush yellow duck, round soft body, bright cheerful eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '松果', img: IMG('dolls/松果.webp'), personality: '机灵爱囤', like: '把秋天的快乐都收进小口袋', line: '你给的小确幸，我都悄悄珍藏。', prompt: 'one cute plush squirrel with big fluffy tail, round chubby body, bright clever eyes, studio product shot, pastel pink background' },
+    { name: '草莓', img: IMG('dolls/草莓.webp'), personality: '软fu软fu', like: '给平凡的日子撒上一层糖霜', line: '我的心，是草莓味的。', prompt: 'one cute plush pink bear with strawberry detail, round soft body, glossy happy eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '芋泥', img: IMG('dolls/芋泥.webp'), personality: '温柔寡言', like: '把想说的话都说得很轻很暖', line: '靠近一点，就能听见我的心跳。', prompt: 'one cute plush purple bear, round chubby body, soft gentle eyes, tiny blush, studio product shot, pastel pink background' },
+    { name: '可可', img: IMG('dolls/可可.webp'), personality: '忠诚暖暖', like: '陪你到天亮，再送你安全回家', line: '无论多晚，都等你回来。', prompt: 'one cute plush brown puppy, round fluffy body, big faithful eyes, happy ears, studio product shot, pastel pink background' },
+    { name: '蛋挞', img: IMG('dolls/蛋挞.webp'), personality: '软糯贪嘴', like: '热爱人间烟火气与甜滋滋的味道', line: '日子这炉火，得有甜味才圆满。', prompt: 'one cute plush golden kitten, round chubby body, sunny golden fur, big sparkly eyes, studio product shot, pastel pink background' }
+  ];
+
+  /* 投喂动作表：每只娃娃专属食物 + 专属特效 + 专属动作动画 */
+  var ACT = {
+    '糯米': { food: '🍯', fx: '🍯', anim: 'bwA_bear' },
+    '奶糖': { food: '🥕', fx: '🥕', anim: 'bwA_bunny' },
+    '布丁': { food: '🐟', fx: '🐟', anim: 'bwA_cat' },
+    '橙子': { food: '🍊', fx: '🍊', anim: 'bwA_fox' },
+    '棉花': { food: '🍡', fx: '☁️', anim: 'bwA_lamb' },
+    '豆丁': { food: '🍖', fx: '🔥', anim: 'bwA_dino' },
+    '桃桃': { food: '🍎', fx: '😋', anim: 'bwA_pig' },
+    '西西': { food: '🐟', fx: '💤', anim: 'bwA_catSleepy' },
+    '果冻': { food: '🐌', fx: '💧', anim: 'bwA_frog' },
+    '布林': { food: '🧊', fx: '❄️', anim: 'bwA_penguin' },
+    '啾啾': { food: '🌽', fx: '🪶', anim: 'bwA_chick' },
+    '麻薯': { food: '🍡', fx: '🫧', anim: 'bwA_sticky' },
+    '泡芙': { food: '🧁', fx: '💗', anim: 'bwA_creampuff' },
+    '曲奇': { food: '🍪', fx: '🤎', anim: 'bwA_cookie' },
+    '柠檬': { food: '🌿', fx: '💧', anim: 'bwA_duck' },
+    '松果': { food: '🌰', fx: '🍂', anim: 'bwA_squirrel' },
+    '草莓': { food: '🍓', fx: '🍬', anim: 'bwA_strawberry' },
+    '芋泥': { food: '🍠', fx: '🫐', anim: 'bwA_taro' },
+    '可可': { food: '🦴', fx: '💛', anim: 'bwA_dog' },
+    '蛋挞': { food: '🥧', fx: '🌞', anim: 'bwA_golden' },
+    '彩虹': { food: '🌈', fx: '✨', anim: 'bwA_rainbow' }
+  };
+
+  /* 隐藏传说娃娃：集齐 20 只后召唤 */
+  var HIDDEN = { name: '彩虹', img: IMG('dolls/彩虹.webp'), personality: '传说级暖暖', like: '只在集齐所有伙伴时才肯现身', line: '谢谢你让20颗小星星聚在一起，愿彩虹落在你心上。', prompt: 'one magical rainbow colored plush cat, iridescent shiny fur, tiny angel wings, big sparkling starry eyes, floating gently among little golden stars, adorable, studio product shot, pastel pink background' };
+
+  /* 盲盒商店：16 款软萌软胶玩具 + 1 款稀有隐藏 */
+  /* 拆盲盒：5 大类 ×（8 普通 + 1 隐藏）= 45 款；按当前分类抽盒 */
+  var CATEGORIES = [
+    {
+      key: 'animal', name: '软萌动物', emoji: '🐾',
+      toys: [
+        { name: '团子喵', img: IMG('toys/animal/团子喵.webp'), line: '一盒软糯，喵 ~', prompt: 'one cute squishy soft-toy cat with round marshmallow body, shiny squishy vinyl texture, big glossy happy eyes, soft cream and pink color, adorable, studio product shot, pastel pink background' },
+        { name: '布丁兔', img: IMG('toys/animal/布丁兔.webp'), line: '晃一晃，身体弹一弹', prompt: 'one cute squishy pudding soft toy shaped like a little rabbit, jiggly caramel body wearing bunny ears, shiny jelly texture, adorable, studio product shot, pastel pink background' },
+        { name: '云朵羊', img: IMG('toys/animal/云朵羊.webp'), line: '软成一片云', prompt: 'one cute fluffy cloud sheep soft toy, round cotton-candy wool, sleepy happy face, soft white and pink, adorable, studio product shot, pastel pink background' },
+        { name: '奶泡企鹅', img: IMG('toys/animal/奶泡企鹅.webp'), line: '咕嘟咕嘟，冒泡泡', prompt: 'one cute squishy milky foam penguin soft toy, soft white and orange, round chubby body, happy smile, adorable, studio product shot, pastel pink background' },
+        { name: '泡泡蛙', img: IMG('toys/animal/泡泡蛙.webp'), line: '咕呱，全是泡泡', prompt: 'one cute bubble frog soft toy, soft green jelly body blowing a bubble, big round eyes, adorable, studio product shot, pastel pink background' },
+        { name: '转圈猴', img: IMG('toys/animal/转圈猴.webp'), line: '转呀转呀，头晕晕', prompt: 'one cute baby chimpanzee plush toy with big round ears and long curly tail, warm brown fur, playful grin holding a tiny banana, studio product shot, pastel pink background' },
+        { name: '小麋鹿', img: IMG('toys/animal/小麋鹿.webp'), line: '戴好小铃铛，圣诞见', prompt: 'one cute little moose soft toy, soft brown plush body with red bow and tiny bell, gentle smile, adorable, studio product shot, pastel pink background' },
+        { name: '芒果鸭', img: IMG('toys/animal/芒果鸭.webp'), line: '嘎嘎，把香甜分你一半', prompt: 'one cute mango duck soft toy, round squishy yellow body, orange beak smile, pastel green garnish, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '彩虹独角兽', img: IMG('toys/animal/z-彩虹独角兽.webp'), line: '我可是传说中限定的彩虹独角兽！', prompt: 'one legendary cute rainbow unicorn squishy soft toy, iridescent pastel horn and mane, sparkling starry eyes, soft glowing body, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'dessert', name: '甜品甜点', emoji: '🍰',
+      toys: [
+        { name: '星星软糖', img: IMG('toys/dessert/星星软糖.webp'), line: '把这一刻，沾一点甜', prompt: 'one cute translucent gummy star candy soft toy, shiny jelly texture, big sweet smile, pastel candy colors, adorable, studio product shot, pastel pink background' },
+        { name: '小酸奶', img: IMG('toys/dessert/小酸奶.webp'), line: '轻咬一口，都是奶香', prompt: 'one cute squishy yogurt cup soft toy shaped like a little bear, creamy white with berry pink lid, shiny squishy texture, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '奶黄包', img: IMG('toys/dessert/奶黄包.webp'), line: '趁热咬一口，会流心哦', prompt: 'one cute custard bao soft toy shaped like a little bun, glossy soft golden yellow body, tiny steam swirl on top, plump round shape, adorable, studio product shot, pastel pink background' },
+        { name: '芝士鼠', img: IMG('toys/dessert/芝士鼠.webp'), line: '有小洞洞，也超可爱', prompt: 'one cute cheese mouse soft toy, warm yellow cheese block shaped like a little mouse, soft plush, happy face, adorable, studio product shot, pastel pink background' },
+        { name: '西瓜猪', img: IMG('toys/dessert/西瓜猪.webp'), line: '我是一个小甜甜', prompt: 'one cute watermelon pig soft toy, pink squishy pig body with green watermelon rind, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '曲奇牛', img: IMG('toys/dessert/曲奇牛.webp'), line: '哞 ~ 今天也很甜', prompt: 'one cute cookie cow soft toy, white cow body with chocolate cookie spots, big friendly eyes, adorable, studio product shot, pastel pink background' },
+        { name: '草莓杯', img: IMG('toys/dessert/草莓杯.webp'), line: '一勺下去，酸酸甜甜', prompt: 'one cute strawberry parfait cup soft toy, layered pink and cream body in a tiny glass cup topped with a strawberry, adorable, studio product shot, pastel pink background' },
+        { name: '抹茶卷', img: IMG('toys/dessert/抹茶卷.webp'), line: '慢慢转出来，每一层都是绿', prompt: 'one cute matcha roll cake soft toy, green and white spiral swirl, soft sponge texture, tiny cream dollop on top, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '小笼包国王', img: IMG('toys/dessert/z-小笼包国王.webp'), line: '皮薄馅大，谁与争锋！', prompt: 'one regal cute steamed xiaolongbao king soft toy, plump translucent dumpling with a tiny golden crown on top, soft jelly texture, proud face, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'weird', name: '稀奇古怪', emoji: '🤪',
+      toys: [
+        { name: '咬人袜', img: IMG('toys/weird/咬人袜.webp'), line: '「我才不是普通的袜子！」——它说', prompt: 'one cute squishy soft toy sock monster, pastel rainbow striped sock body with two tiny fangs poking out, big mischievous eyes, soft plush texture, studio product shot, pastel pink background' },
+        { name: '充电菇', img: IMG('toys/weird/充电菇.webp'), line: '电量低于 20% 时会小声哭泣', prompt: 'one cute squishy soft toy mushroom, plump rounded cap with tiny USB-C port on the belly, glowing power button, soft pastel mint and lavender body, studio product shot, pastel pink background' },
+        { name: '便利贴小狗', img: IMG('toys/weird/便利贴小狗.webp'), line: '贴在你心上请轻一点，撕下来会委屈', prompt: 'one cute squishy soft toy shaped like a sticky note, dog face drawn on it, pastel yellow paper body with a tiny adhesive strip on the back, soft plush texture, studio product shot, pastel pink background' },
+        { name: '硬盘君', img: IMG('toys/weird/硬盘君.webp'), line: '你存的都什么乱七八糟的！', prompt: 'one cute squishy soft toy shaped like a tiny 3.5 inch hard drive, grumpy cartoon face with furrowed brow, tiny arms crossed, soft mint green body, studio product shot, pastel pink background' },
+        { name: '回形针乐手', img: IMG('toys/weird/回形针乐手.webp'), line: '别小看我，旋律我都会', prompt: 'one cute squishy soft toy shaped like a silver paperclip, wearing tiny headphones, holding a music note, shiny silver plush body, studio product shot, pastel pink background' },
+        { name: '空盒', img: IMG('toys/weird/空盒.webp'), line: '买到就是赚到。赚到啥？问它', prompt: 'one cute squishy soft toy shaped like a small open box, with another smaller box inside, infinite russian doll nesting visible, pastel cream and pink striped box, studio product shot, pastel pink background' },
+        { name: '午睡椒', img: IMG('toys/weird/午睡椒.webp'), line: '再热也要冷静入睡', prompt: 'one cute squishy soft toy shaped like a tiny chili pepper, wearing a tiny sleep cap, eyes half closed yawning, soft coral red body, studio product shot, pastel pink background' },
+        { name: '海苔', img: IMG('toys/weird/海苔.webp'), line: '吃完请记得再补一片，谢谢', prompt: 'one cute squishy soft toy shaped like a tiny piece of nori seaweed, wavy and curly edges, sleepy face with one eye closed yawning, deep green body with golden edges, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '愤怒便利贴', img: IMG('toys/weird/z-愤怒便利贴.webp'), line: '别再贴了别再贴了！', prompt: 'one legendary grumpy sticky note soft toy, yellow paper with an angry cartoon face, tiny arms raised in frustration, soft plush texture, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'fruit', name: '蔬果派对', emoji: '🍅',
+      toys: [
+        { name: '草莓', img: IMG('toys/fruit/草莓.webp'), line: '红着脸说"我很甜"', prompt: 'one cute squishy soft toy strawberry, glossy red body with tiny green leaves, big happy eyes, adorable, studio product shot, pastel pink background' },
+        { name: '葡萄', img: IMG('toys/fruit/葡萄.webp'), line: '一串不够，再来一串', prompt: 'one cute squishy soft toy grape cluster, plump purple round berries, glossy jelly texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '菠萝', img: IMG('toys/fruit/菠萝.webp'), line: '扎手归扎手，甜是真甜', prompt: 'one cute squishy soft toy pineapple, spiky green and yellow body, friendly face, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '苹果', img: IMG('toys/fruit/苹果.webp'), line: '一天一苹果，医生远离我', prompt: 'one cute squishy soft toy apple, glossy red round body with tiny green leaf, rosy cheek, adorable, studio product shot, pastel pink background' },
+        { name: '桃子', img: IMG('toys/fruit/桃子.webp'), line: '咬一口，汁水会跑出来', prompt: 'one cute squishy soft toy peach, fuzzy pastel pink round body with a tiny green leaf, soft plush texture, adorable, studio product shot, pastel pink background' },
+        { name: '橘子', img: IMG('toys/fruit/橘子.webp'), line: '一瓣一瓣，吃到见底', prompt: 'one cute squishy soft toy mandarin orange, segmented round body, soft plush texture, tiny smiling face, adorable, studio product shot, pastel pink background' },
+        { name: '樱桃', img: IMG('toys/fruit/樱桃.webp'), line: '我们一直是双胞胎', prompt: 'two cute squishy soft toy cherries sharing one stem, glossy red round bodies, sweet faces, adorable, studio product shot, pastel pink background' },
+        { name: '芒果', img: IMG('toys/fruit/芒果.webp'), line: '甜到忧伤', prompt: 'one cute squishy soft toy mango, plump golden yellow oval body with rosy cheeks, soft plush texture, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '人参果', img: IMG('toys/fruit/z-人参果.webp'), line: '西游记里听说过我吗？三千年一开花', prompt: 'one legendary cute ginseng fruit soft toy, plump pastel pink body shaped like a chubby baby with tiny green leaves on top, glowing aura, rare legendary, studio product shot, pastel pink background' }
+    },
+    {
+      key: 'fantasy', name: '幻想角色', emoji: '✨',
+      toys: [
+        { name: '仙子', img: IMG('toys/fantasy/仙子.webp'), line: '挥挥手，洒下星尘', prompt: 'one cute squishy soft toy fairy, pastel pink flowing dress, tiny sparkly wings, holding a magic wand, adorable, studio product shot, pastel pink background' },
+        { name: '精灵', img: IMG('toys/fantasy/精灵.webp'), line: '我住在森林深处的树屋里', prompt: 'one cute squishy soft toy elf, green tunic, pointy ears, tiny wooden bow, adorable, studio product shot, pastel pink background' },
+        { name: '骑士', img: IMG('toys/fantasy/骑士.webp'), line: '我的剑只用来切蛋糕', prompt: 'one cute squishy soft toy knight, tiny silver armor, round helmet with a plume, holding a small sword, adorable, studio product shot, pastel pink background' },
+        { name: '巫师', img: IMG('toys/fantasy/巫师.webp'), line: '我挥的不是魔法，是认真', prompt: 'one cute squishy soft toy wizard, purple starry robe, pointy hat, holding a glowing wand, adorable, studio product shot, pastel pink background' },
+        { name: '忍者', img: IMG('toys/fantasy/忍者.webp'), line: '嘘——你看不见我', prompt: 'one cute squishy soft toy ninja, black outfit with face mask, tiny throwing stars, adorable, studio product shot, pastel pink background' },
+        { name: '机器人', img: IMG('toys/fantasy/机器人.webp'), line: '电量 99%，心态 0%', prompt: 'one cute squishy soft toy robot, rounded square body with antennas, glowing heart on chest, adorable, studio product shot, pastel pink background' },
+        { name: '宇航员', img: IMG('toys/fantasy/宇航员.webp'), line: '我把星星带回来了', prompt: 'one cute squishy soft toy astronaut, white spacesuit, round helmet with star reflections, floating a tiny planet, adorable, studio product shot, pastel pink background' },
+        { name: '公主', img: IMG('toys/fantasy/公主.webp'), line: '今日的皇冠也是闪闪的', prompt: 'one cute squishy soft toy princess, pastel pink ball gown, tiny golden crown, holding a heart scepter, adorable, studio product shot, pastel pink background' }
+      ],
+      hidden: { name: '时空旅行者', img: IMG('toys/fantasy/z-时空旅行者.webp'), line: '我来自未来，也来自过去', prompt: 'one legendary cute time traveler soft toy, flowing cloak with clock and gear patterns, hourglass accessory, glowing aura, rare legendary, studio product shot, pastel pink background' }
+    }
+  ];
+
+  /* 图鉴收藏进度持久化 */
+  var COLL_KEY = 'bw_doll_coll';
+  var CELE_KEY = 'bw_doll_celebrated';
+  var _col = loadColl();
+  function loadColl() { try { var s = localStorage.getItem(COLL_KEY); return s ? JSON.parse(s) : []; } catch (e) { return []; } }
+  function saveColl(a) { try { localStorage.setItem(COLL_KEY, JSON.stringify(a)); } catch (e) {} }
+  function todayIndex() { var n = new Date(); return (n.getFullYear() * 10000 + (n.getMonth() + 1) * 100 + n.getDate()) % DOLLS.length; }
+
+  function openDolls(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-dolls';
+    var t = DOLLS[todayIndex()];
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-doll-petals"></div>' +
+      '<div class="bw-modal-panel bw-dolls-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">娃娃墙</h2>' +
+        '<p class="bw-modal-sub">点一只娃娃，喂它小饼干、听它说悄悄话，集齐 20 只或许有惊喜</p>' +
+        '<div class="bw-dolls-top">' +
+          '<div class="bw-today">' +
+            '<div class="bw-today-img"><img src="' + t.img + '" alt="" loading="lazy"></div>' +
+            '<div class="bw-today-body">' +
+              '<span class="bw-today-tag">✦ 今日娃娃</span>' +
+              '<span class="bw-today-name">' + t.name + '</span>' +
+              '<p class="bw-today-line">' + t.line + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="bw-collect" title="点亮你点开过档案卡的娃娃">' +
+            '<span class="bw-collect-label">图鉴收藏</span>' +
+            '<span class="bw-collect-num" id="collectNum">0 / ' + DOLLS.length + '</span>' +
+            '<div class="bw-collect-rail"><div class="bw-collect-fill" id="collectFill" style="width:' + (_col.length / DOLLS.length * 100) + '%"></div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bw-dolls-wall" id="dollsWall"></div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+    buildPetals(m);
+    renderDolls(m);
+    updateCollect(m, _col);
+  }
+
+  function buildPetals(m) {
+    var layer = m.querySelector('.bw-doll-petals');
+    for (var i = 0; i < 14; i++) {
+      var p = document.createElement('span');
+      p.className = 'bw-petal';
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.top = (-40 - Math.random() * 30) + 'px';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      p.style.animationDuration = (8 + Math.random() * 6) + 's';
+      p.style.fontSize = (Math.random() * 9 + 11) + 'px';
+      p.textContent = Math.random() > 0.5 ? '🌸' : '✨';
+      layer.appendChild(p);
+    }
+  }
+
+  function renderDolls(m) {
+    var wall = m.querySelector('#dollsWall');
+    wall.innerHTML = '';
+    DOLLS.forEach(function (doll, i) {
+      var d = document.createElement('div');
+      d.className = 'bw-doll';
+      d.setAttribute('data-name', doll.name);
+      d.style.animationDelay = (i * 0.08) + 's';
+      d.setAttribute('role', 'button');
+      d.setAttribute('tabindex', '0');
+      d.innerHTML =
+        '<span class="bw-doll-hang"></span>' +
+        '<img class="bw-doll-img" src="' + doll.img + '" alt="' + doll.name + '" loading="lazy" />' +
+        '<span class="bw-doll-name">' + doll.name + '</span>';
+      d.querySelector('.bw-doll-img').style.animationDelay = ((i * 0.37) % 3) + 's';
+      var click = function () { onDollClick(m, d, doll); };
+      d.addEventListener('click', click);
+      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onDollClick(m, d, doll); } });
+      wall.appendChild(d);
+    });
+    /* 集齐过全部娃娃后，每次打开都召唤隐藏的彩虹宝宝 */
+    if (_col.length >= DOLLS.length) ensureLegend(m);
+  }
+
+  function onDollClick(m, d, doll) {
+    bounceDoll(d);
+    feedDoll(d, doll);
+    collectDoll(m, doll);
+    showDollCard(m, doll);
+  }
+
+  /* 点击娃娃时的放大弹跳动画(重触发技巧:先移除再回流,弹完恢复呼吸) */
+  function bounceDoll(d) {
+    d.classList.remove('is-bounce');
+    void d.offsetWidth;
+    d.classList.add('is-bounce');
+    var t = Date.now(); d.__bt = t;
+    setTimeout(function () { if (d.__bt === t) d.classList.remove('is-bounce'); }, 900);
+  }
+
+  /* 投喂彩蛋：按娃娃专属动作表，冒专属食物 + 专属特效，娃娃做专属动作 */
+  function feedDoll(d, doll) {
+    var a = ACT[doll && doll.name] || ACT['糯米'];
+    var old = d.parentNode.querySelector('.bw-doll-yum');
+    if (old) old.parentNode.removeChild(old);
+    var yum = document.createElement('span');
+    yum.className = 'bw-doll-yum';
+    yum.innerHTML = '<i class="y-foo">' + a.food + '</i><i class="y-fx">' + a.fx + '</i>';
+    d.appendChild(yum);
+    d.classList.add('is-fed');
+    var img = d.querySelector('.bw-doll-img');
+    var cur = d.getAttribute('data-anim');
+    if (cur) img.classList.remove(cur);
+    void img.offsetWidth;
+    img.classList.add(a.anim);
+    d.setAttribute('data-anim', a.anim);
+    setTimeout(function () {
+      if (yum.parentNode) yum.parentNode.removeChild(yum);
+      img.classList.remove(a.anim);
+      d.classList.remove('is-fed');
+    }, 1600);
+  }
+
+  function collectDoll(m, doll) {
+    if (_col.indexOf(doll.name) === -1) {
+      _col.push(doll.name);
+      saveColl(_col);
+      updateCollect(m, _col);
+    }
+  }
+
+  function updateCollect(m, collect) {
+    var num = m.querySelector('#collectNum');
+    if (!num) return;
+    num.textContent = collect.length + ' / ' + DOLLS.length;
+    var fill = m.querySelector('#collectFill');
+    if (fill) fill.style.width = (collect.length / DOLLS.length * 100) + '%';
+    m.querySelectorAll('.bw-doll').forEach(function (d) {
+      if (collect.indexOf(d.getAttribute('data-name')) > -1) d.classList.add('is-collected');
+    });
+    if (collect.length >= DOLLS.length) {
+      var done = false; try { done = !!localStorage.getItem(CELE_KEY); } catch (e) {}
+      if (!done) doCelebrate(m);
+    }
+  }
+
+  /* 集齐全部娃娃：金色烟花 + 横幅 + 召唤隐藏的彩虹宝宝 */
+  function doCelebrate(m) {
+    try { localStorage.setItem(CELE_KEY, '1'); } catch (e) {}
+    try { fireConfetti(m); } catch (e) {}
+    var banner = document.createElement('div');
+    banner.className = 'bw-doll-banner';
+    banner.innerHTML = '✦ 恭喜集齐全部小星星 ✦ 彩虹宝宝被你的爱召唤而来 ✦';
+    m.querySelector('.bw-dolls-panel').appendChild(banner);
+    setTimeout(function () { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4200);
+    ensureLegend(m);
+  }
+
+  function ensureLegend(m) {
+    var wall = m.querySelector('#dollsWall');
+    if (!wall || wall.querySelector('.bw-doll-legend')) return;
+    var d = document.createElement('div');
+    d.className = 'bw-doll bw-doll-legend';
+    d.setAttribute('data-name', '彩虹');
+    d.setAttribute('role', 'button'); d.setAttribute('tabindex', '0');
+    d.innerHTML =
+      '<span class="bw-doll-hang"></span>' +
+      '<img class="bw-doll-img" src="' + HIDDEN.img + '" alt="彩虹宝宝" loading="lazy" />' +
+      '<span class="bw-doll-name">彩虹宝宝</span>';
+    d.querySelector('.bw-doll-img').style.animationDelay = '0s';
+    var open = function () { bounceDoll(d); feedDoll(d, HIDDEN); showDollCard(m, HIDDEN); };
+    d.addEventListener('click', open);
+    d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    wall.appendChild(d);
+    var note = document.createElement('div');
+    note.className = 'bw-doll-legend-note';
+    note.textContent = '✦ 传说中集齐所有伙伴才会现身的守护小队长 ✦';
+    wall.appendChild(note);
+  }
+
+  function fireConfetti(m) {
+    var panel = m.querySelector('.bw-dolls-panel');
+    var box = panel.getBoundingClientRect();
+    var cx = box.left + box.width / 2, cy = box.top + 44;
+    for (var i = 0; i < 26; i++) {
+      var p = document.createElement('span');
+      p.className = 'bw-confetti';
+      p.textContent = Math.random() > 0.5 ? '✨' : '⭐';
+      p.style.left = cx + 'px';
+      p.style.top = cy + 'px';
+      p.style.setProperty('--dx', (Math.random() * 220 - 110) + 'px');
+      p.style.setProperty('--dy', (Math.random() * 240 - 60) + 'px');
+      p.style.animationDelay = (i * 0.03) + 's';
+      document.body.appendChild(p);
+      (function (el) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1800 + i * 30); })(p);
+    }
+  }
+
+  /* 点击娃娃：弹出个人档案卡(名字 / 性格 / 喜欢 / 悄悄话) */
+  function showDollCard(m, doll) {
+    var old = m.querySelector('.bw-doll-pop');
+    if (old) old.parentNode.removeChild(old);
+    var pop = document.createElement('div');
+    pop.className = 'bw-doll-pop bw-doll-card';
+    pop.innerHTML =
+      '<img class="bw-doll-card-img" src="' + doll.img + '" alt="' + doll.name + '" />' +
+      '<div class="bw-doll-card-body">' +
+        '<span class="bw-doll-pop-name">✿ ' + doll.name + '</span>' +
+        '<div class="bw-doll-fields">' +
+          '<div class="bw-doll-field"><b>性格</b><span>' + doll.personality + '</span></div>' +
+          '<div class="bw-doll-field"><b>喜欢</b><span>' + doll.like + '</span></div>' +
+          '<div class="bw-doll-field bw-doll-field-line"><b>悄悄话</b><span>' + doll.line + '</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="bw-doll-pop-x" type="button" title="关闭">✕</button>';
+    m.appendChild(pop);
+    pop.querySelector('.bw-doll-pop-x').addEventListener('click', function () {
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+    });
+  }
+  /* 盲盒商店：摇盒开盖，蹦出软萌小玩具(16款+1稀有隐藏，纯随机不收藏) */
+  function openToyShop(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-shop';
+    var catsHtml = CATEGORIES.map(function (c, i) {
+      return '<button class="bw-shop-cat' + (i === 0 ? ' is-on' : '') + '" type="button" data-cat="' + i + '" title="' + c.name + '">' +
+        '<span class="bw-shop-cat-emoji">' + c.emoji + '</span>' +
+        '<span class="bw-shop-cat-name">' + c.name + '</span>' +
+      '</button>';
+    }).join('');
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-shop-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">盲盒商店</h2>' +
+        '<p class="bw-modal-sub">5 大类 · 摇一摇、开一开 · 每类藏一只限定款</p>' +
+        '<div class="bw-shop-cats" id="shopCats">' + catsHtml + '</div>' +
+        '<div class="bw-shop-stage">' +
+          '<div class="bw-shop-box" id="shopBox" role="button" tabindex="0" title="点我开盒">' +
+            '<span class="bw-box-lid-front"></span>' +
+            '<span class="bw-shop-q">?</span>' +
+            '<span class="bw-shop-cat-tag" id="shopCatTag">🐾</span>' +
+            '<span class="bw-shop-hint">点我开盒</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bw-shop-result" id="shopResult"></div>' +
+        '<button class="bw-shop-again" id="shopAgain" type="button" style="display:none">再开一盒</button>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+    var panel = m.querySelector('.bw-shop-panel');
+    var box = m.querySelector('#shopBox');
+    var stage = m.querySelector('.bw-shop-stage');
+    var res = m.querySelector('#shopResult');
+    var again = m.querySelector('#shopAgain');
+    var catTag = m.querySelector('#shopCatTag');
+    var curCat = 0;  /* 当前选中的分类下标 */
+
+    function pick() {
+      var cat = CATEGORIES[curCat];
+      if (Math.random() < 0.12) return cat.hidden;
+      return cat.toys[Math.floor(Math.random() * cat.toys.length)];
+    }
+    function openBox() {
+      if (stage.style.display === 'none') return;
+      box.classList.add('shaking');
+      setTimeout(function () {
+        stage.style.display = 'none';
+        showToy(pick());
+      }, 780);
+    }
+    function showToy(t) {
+      var cat = CATEGORIES[curCat];
+      var rare = t === cat.hidden;
+      res.innerHTML =
+        '<img class="bw-toy-img' + (rare ? ' is-rare' : '') + '" src="' + t.img + '" alt="' + t.name + '" />' +
+        '<div class="bw-toy-name' + (rare ? ' is-rare' : '') + '">' + t.name + '</div>' +
+        '<div class="bw-toy-cat-tag">' + cat.emoji + ' ' + cat.name + '</div>' +
+        '<div class="bw-toy-line">' + t.line + '</div>';
+      res.classList.add('open');
+      panel.classList.toggle('rare', rare);
+      again.style.display = 'inline-block';
+      if (rare) {
+        var b = document.createElement('div');
+        b.className = 'bw-shop-rare';
+        b.textContent = '✦ ' + cat.name + '限定款 ✦ ' + t.name + '出现了！';
+        panel.appendChild(b);
+        setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 4200);
+      }
+    }
+    function reset() {
+      stage.style.display = '';
+      box.classList.remove('shaking');
+      res.classList.remove('open');
+      res.innerHTML = '';
+      panel.classList.remove('rare');
+      again.style.display = 'none';
+    }
+    /* 切换分类：若已经开过盒，自动重置为初始盒 */
+    m.querySelectorAll('.bw-shop-cat').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var idx = parseInt(btn.getAttribute('data-cat'), 10);
+        if (idx === curCat) return;
+        curCat = idx;
+        m.querySelectorAll('.bw-shop-cat').forEach(function (b) { b.classList.remove('is-on'); });
+        btn.classList.add('is-on');
+        catTag.textContent = CATEGORIES[curCat].emoji;
+        reset();
+      });
+    });
+    box.addEventListener('click', openBox);
+    box.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBox(); } });
+    /* 再开一盒：直接重置并进入开盒流程，无需再点盒子 */
+    again.addEventListener('click', function () { reset(); openBox(); });
+  }
+
+  /* ============ 四季窗 ============ */
+  /* AI 生成卡通窗外景（与娃娃屋同款 text_to_image 服务，首次访问触发生成，之后 CDN 直出） */
+  /* WIN_IMG 已废弃：所有季节图预生成到 /images/seasons/ */
+  var SEASONS = {
+    spring: {
+      img: IMG('seasons/spring.webp'),
+      part: '🌸',
+      caption: '春天来了，柳树绿了，溪水醒了。田里的小朋友放着风筝，燕子在蓝天上唱歌。'
+    },
+    summer: {
+      img: IMG('seasons/summer.webp'),
+      part: '☀️',
+      caption: '池塘里的荷花开得正盛，青蛙在荷叶上打盹，蜻蜓点过水面，知了在柳枝上叫个不停。'
+    },
+    autumn: {
+      img: IMG('seasons/autumn.webp'),
+      part: '🍂',
+      caption: '天凉好个秋。稻田一片金黄，大雁排成行飞往南方，红红的枫叶落满小径。'
+    },
+    winter: {
+      img: IMG('seasons/winter.webp'),
+      part: '❄️',
+      caption: '大雪把屋顶盖得厚厚的，腊梅在墙角悄悄开了，雪人站在院子里，等着春天。'
+    }
+  };
+  function openWindow(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-winmodal';
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-win-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">四季窗</h2>' +
+        '<p class="bw-modal-sub">公主屋的小窗，窗外住着春夏秋冬 · 点窗放大外景</p>' +
+        '<div class="bw-room">' +
+          '<div class="bw-win-frame" id="winFrame">' +
+            '<div class="bw-win-scene" id="winScene"></div>' +
+            '<div class="bw-win-sash bw-win-sash-l"><span class="bw-win-sash-in"></span></div>' +
+            '<div class="bw-win-sash bw-win-sash-r"><span class="bw-win-sash-in"></span></div>' +
+            '<div class="bw-win-sill"><span class="bw-win-sill-plant">🪴</span><span class="bw-win-sill-candle">🕯️</span></div>' +
+          '</div>' +
+          '<div class="bw-win-fullview" id="winFull"><img alt="" /></div>' +
+          '<div class="bw-win-tabs">' +
+            '<button class="bw-win-tab is-on" type="button" data-season="spring">🌱 春</button>' +
+            '<button class="bw-win-tab" type="button" data-season="summer">☀️ 夏</button>' +
+            '<button class="bw-win-tab" type="button" data-season="autumn">🍁 秋</button>' +
+            '<button class="bw-win-tab" type="button" data-season="winter">⛄ 冬</button>' +
+          '</div>' +
+        '</div>' +
+        '<p class="bw-win-caption" id="winCap"></p>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+    var scene = m.querySelector('#winScene');
+    var cap = m.querySelector('#winCap');
+    var frame = m.querySelector('#winFrame');
+    var full = m.querySelector('#winFull');
+    var fullImg = full.querySelector('img');
+    var room = frame.parentElement;
+    var panel = m.querySelector('.bw-modal-panel');
+    /* 把季节按钮从房间内部挪到 panel 容器内（房间 overflow:hidden 会切掉按钮），
+       同时把 is-zoom class 同步到 panel，使 .is-zoom .bw-win-tabs 选择器仍能命中 */
+    var tabs = room.querySelector('.bw-win-tabs');
+    if (tabs) panel.appendChild(tabs);
+    var curSeason = 'spring';
+    var WIN_HINT = '点一点窗户，推开它，看看窗外住着谁？🪟';
+    function render(key) {
+      curSeason = key;
+      var s = SEASONS[key];
+      scene.className = 'bw-win-scene is-' + key;
+      scene.innerHTML = '<img class="bw-win-view" src="' + s.img + '" alt="' + key + '" loading="lazy" decoding="async" />';
+      fullImg.src = s.img;
+      fullImg.alt = key;
+      cap.textContent = s.caption;
+    }
+    render('spring');
+    cap.textContent = WIN_HINT;
+    m.querySelectorAll('.bw-win-tab').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        m.querySelectorAll('.bw-win-tab').forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on');
+        render(b.getAttribute('data-season'));
+        /* 放大画面上切季：保持放大态，直接切换外景 */
+      });
+    });
+    /* 点窗户：放大外景（再点还原房间）；放大时窗棂淡出 */
+    frame.addEventListener('click', function (e) {
+      e.stopPropagation();
+      /* is-zoom 同时加在 .bw-room 和 .bw-modal-panel 上：
+         - .bw-room.is-zoom 让 .is-zoom .bw-win-frame::before/::after 等后代选择器命中
+         - .bw-modal-panel.is-zoom 让从房间内挪出的 .bw-win-tabs 也能被 .is-zoom 命中 */
+      var zoom = room.classList.toggle('is-zoom');
+      panel.classList.toggle('is-zoom', zoom);
+      /* 室内时显示引导文案，推开后显示季节旁白 */
+      cap.textContent = zoom ? SEASONS[curSeason].caption : WIN_HINT;
+    });
+    /* 放大态下点击画面任意空白处也可退出，回到室内 */
+    room.addEventListener('click', function () {
+      if (this.classList.contains('is-zoom')) {
+        this.classList.remove('is-zoom');
+        panel.classList.remove('is-zoom');
+        cap.textContent = WIN_HINT;
+      }
+    });
+  }
+
+  /* ============ 扎小人（解压台） ============ */
+  /* 每小人扎满 6 针即"扎服"；pins 记录自由落点 {x, y, a}，pleas 为专属求饶台词 */
+  var VO_TOTAL = 6;
+  var VO_DOLLS = [
+    { k: 'shirk',  name: '没担当', img: IMG('voodoo/没担当.webp'),  acc: '💦', faceIdle: '😐', faceHit: '😖', faceDown: '😵', line: '已生效：TA 的锅永远有人抢着背 🍳',
+      pleas: ['锅我背的，针能不能少扎两下？', '领导说了，这个锅…就，先让你扎着。', '等、等我把锅放下再扎！'] },
+    { k: 'grump',  name: '不高兴', img: IMG('voodoo/不高兴.webp'),  acc: '😒', faceIdle: '😒', faceHit: '😣', faceDown: '😭', line: '已生效：TA 的嘴角会偷偷上扬 0.5 秒 😏',
+      pleas: ['我不高兴，但现在更不高兴了！', '哼…你扎我，我就——就哼！', '别扎脸，明天还要假装热爱生活。'] },
+    { k: 'stingy', name: '小气鬼', img: IMG('voodoo/小气鬼.webp'), acc: '🪙', faceIdle: '🤨', faceHit: '😫', faceDown: '🥺', line: '已生效：TA 的钱包总在最需要时少一张 🪙',
+      pleas: ['别扎我结账的那个口袋…求你了！', '你扎一针，我少一块红包 🫣', 'AA 制行不行？你扎，我记账。'] },
+    { k: 'sly',    name: '心机鬼', img: IMG('voodoo/心机鬼.webp'), acc: '🔍', faceIdle: '😏', faceHit: '😝', faceDown: '😩', line: '已生效：TA 的小算盘今晚全被打翻 🧮',
+      pleas: ['你这一针，正好打翻我的棋局…', '算准了你会扎这儿，我偏不喊疼。', '疼，但锅已经甩出去了，值！'] },
+    { k: 'wimp',   name: '窝囊废', img: IMG('voodoo/窝囊废.webp'), acc: '🥺', faceIdle: '😟', faceHit: '😢', faceDown: '😭', line: '已生效：TA 的豪言壮语全变成“下次一定” 📅',
+      pleas: ['下、下次一定让我先躲…', '别一次性扎太狠，我缓一缓。', '我很想硬气，但…还是缩一缩吧。'] },
+    { k: 'mixer',  name: '和稀泥', img: IMG('voodoo/和稀泥.webp'), acc: '🤝', faceIdle: '😶', faceHit: '😬', faceDown: '😵', line: '已生效：TA 的“各退一步”永远退不到 TA 自己 🫖',
+      pleas: ['各退一步，你少扎一针，我当你没扎～', '别别别，这针咱俩各认一半？', '要不这口锅…也各退一步？'] }
+  ];
+  var VO_LINES = [
+    '已生效：TA 的袜子永远少一只 🧦',
+    '已生效：TA 的奶茶永远做错糖度 🧋',
+    '已生效：TA 明天会左脚踩右脚 🦶',
+    '已生效：TA 的手机电量永远卡在 1% 🔋',
+    '已生效：TA 的快递永远晚一天 📦',
+    '已生效：TA 开冰箱总忘记要拿什么 ❄️',
+    '已生效：TA 的 Wi-Fi 永远差一格 📶',
+    '已生效：TA 会被蚊子精准空投 🦟',
+    '已生效：TA 的闹钟会提前一小时响 ⏰',
+    '已生效：TA 点外卖永远没有餐具 🥢'
+  ];
+  function openVoodoo(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-voodoo';
+    var boxN = '';
+    for (var bi = 0; bi < VO_TOTAL; bi++) boxN += '<span class="bw-vo-boxneedle" data-i="' + bi + '"></span>';
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-vo-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">扎小人 · 解压台</h2>' +
+        '<p class="bw-modal-sub">从针盒拔一根针，拖到小人身上扎下去；扎满 ' + VO_TOTAL + ' 针，TA 就服了。</p>' +
+        '<div class="bw-vo-stage" id="voStage">' +
+          '<div class="bw-vo-bubble" id="voBubble">先随机一位幸运小人～</div>' +
+          '<div class="bw-vo-boxwrap">' +
+            '<div class="bw-vo-box" id="voBox" title="按住这里拔针，拖到小人身上扎下去">' + boxN + '</div>' +
+            '<span class="bw-vo-boxtip" aria-hidden="true">拔针<br>扎TA</span>' +
+          '</div>' +
+          '<div class="bw-vo-view" id="voView">' +
+            '<img class="bw-vo-img" id="voImg" src="" alt="" />' +
+            '<div class="bw-vo-face" aria-hidden="true"><span class="bw-vo-face-i"></span></div>' +
+            '<div class="bw-vo-stars" aria-hidden="true"></div>' +
+            '<span class="bw-vo-done-badge">已生效 ✓</span>' +
+            '<button class="bw-vo-prev" type="button" aria-label="上一位小人" title="上一位小人">‹</button>' +
+            '<button class="bw-vo-next" type="button" aria-label="下一位小人" title="下一位小人">›</button>' +
+          '</div>' +
+          '<div class="bw-vo-side">' +
+            '<div class="bw-vo-prog" id="voProg"></div>' +
+            '<div class="bw-vo-pips" id="voPips"></div>' +
+            '<button class="bw-vo-stab" id="voStab" type="button">扎一针</button>' +
+            '<button class="bw-vo-again" id="voAgain" type="button" style="display:none">再扎一次</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bw-vo-count" id="voCount">已扎 0 / ' + VO_DOLLS.length + ' 个</div>' +
+        '<p class="bw-vo-note">🧷 纯属娱乐 · 不针对任何人 · 扎完气消，就去吃顿好的吧 🍰</p>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', function () { closeModal(m); });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+
+    /* 组件引用 */
+    var stage = m.querySelector('#voStage');
+    var box = m.querySelector('#voBox');
+    var view = m.querySelector('#voView');
+    var img = m.querySelector('#voImg');
+    var face = m.querySelector('.bw-vo-face');
+    var faceI = m.querySelector('.bw-vo-face-i');
+    var stars = m.querySelector('.bw-vo-stars');
+    var prog = m.querySelector('#voProg');
+    var pips = m.querySelector('#voPips');
+    var countEl = m.querySelector('#voCount');
+    var stabBtn = m.querySelector('#voStab');
+    var again = m.querySelector('#voAgain');
+    var bubble = m.querySelector('#voBubble');
+    var prev = m.querySelector('.bw-vo-prev');
+    var next = m.querySelector('.bw-vo-next');
+
+    var idx = (Math.random() * VO_DOLLS.length) | 0;
+    var st = VO_DOLLS.map(function () { return { pins: [], full: false }; });
+
+    /* 飞针：固定定位跟随光标（挂 body，跨出舞台仍可见） */
+    var fly = document.createElement('span');
+    fly.className = 'bw-vo-flying';
+    fly.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(fly);
+    /* 模态移除时顺带清掉飞针节点 */
+    var flyGuard = setInterval(function () {
+      if (!document.body.contains(m)) {
+        if (fly && fly.parentNode) fly.parentNode.removeChild(fly);
+        clearInterval(flyGuard);
+      }
+    }, 300);
+
+    function say(txt) {
+      bubble.textContent = txt;
+      bubble.classList.remove('pop');
+      void bubble.offsetWidth;
+      bubble.classList.add('pop');
+    }
+
+    function drawPins(s) {
+      view.querySelectorAll('.bw-vo-pin, .bw-vo-hit').forEach(function (el) { el.remove(); });
+      s.pins.forEach(function (p) {
+        var pin = document.createElement('span');
+        pin.className = 'bw-vo-pin';
+        pin.style.left = p.x + 'px';
+        pin.style.top = p.y + 'px';
+        pin.style.setProperty('--a', p.a + 'deg');
+        view.appendChild(pin);
+      });
+    }
+    function updPips(animateLast) {
+      var els = pips.children;
+      for (var i = 0; i < els.length; i++) {
+        var on = i < st[idx].pins.length;
+        els[i].classList.toggle('on', on);
+        els[i].classList.remove('pop');
+        if (on && animateLast && i === st[idx].pins.length - 1) {
+          void els[i].offsetWidth;
+          els[i].classList.add('pop');
+        }
+      }
+    }
+    function updChrome() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      prog.textContent = s.full ? d.name + ' · 已扎服 ✓' : d.name + ' · ' + s.pins.length + ' / ' + VO_TOTAL + ' 针';
+      prog.classList.toggle('done', !!s.full);
+      countEl.textContent = '已扎 ' + st.filter(function (x) { return x.full; }).length + ' / ' + VO_DOLLS.length + ' 个';
+      stabBtn.style.display = s.full ? 'none' : 'inline-block';
+      again.style.display = s.full ? 'inline-block' : 'none';
+      if (s.full) again.textContent = '已消气 · 再扎一次';
+    }
+    function syncView() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      img.src = d.img;
+      img.alt = d.name;
+      /* view 类状态机：idle / struggle / full(.down 倒下呼吸) / revive */
+      view.classList.remove('shake', 'struggle', 'down', 'revive');
+      view.classList.toggle('full', !!s.full);
+      view.classList.toggle('idle', !s.full);
+      view.classList.add('show-face');
+      faceI.textContent = s.full ? d.faceDown : d.faceIdle;
+      stars.textContent = '💫 ✨ 💥';
+      drawPins(s);
+      updPips(false);
+      updChrome();
+    }
+    function render() {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      syncView();
+      if (s.full) say(d.name + ' 已被扎服 · ' + d.line);
+      else if (s.pins.length === 0) say('这位是 ' + d.name + '，动手吧～');
+      view.classList.remove('pop');
+      void view.offsetWidth;
+      view.classList.add('pop');
+    }
+    function go(step) {
+      idx = (idx + step + VO_DOLLS.length) % VO_DOLLS.length;
+      render();
+    }
+
+    /* ---------- 拖针自由扎 ---------- */
+    function pt(ev) {
+      if (ev.touches && ev.touches.length) return { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
+      if (ev.changedTouches && ev.changedTouches.length) return { x: ev.changedTouches[0].clientX, y: ev.changedTouches[0].clientY };
+      return { x: ev.clientX, y: ev.clientY };
+    }
+    function inRect(r, p) { return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom; }
+    function isBtn(ev) { return ev.target && ev.target.closest && ev.target.closest('button'); }
+    function showFly(p) {
+      fly.style.transition = 'none';
+      fly.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) rotate(10deg)';
+      fly.style.opacity = '1';
+    }
+    function hideFly() {
+      fly.style.opacity = '0';
+    }
+    function flyBack(p) {
+      var r = box.getBoundingClientRect();
+      var cx = r.left + r.width / 2;
+      var cy = r.top + r.height / 2;
+      fly.style.transition = 'transform .3s ease, opacity .3s ease';
+      fly.style.transform = 'translate(' + cx + 'px,' + cy + 'px) rotate(-70deg)';
+      fly.style.opacity = '0';
+    }
+    /* 坐标转小人内部相对位置（带内边距防落到空边角） */
+    function viewLocal(p) {
+      var r = view.getBoundingClientRect();
+      var x = p.x - r.left, y = p.y - r.top;
+      x = Math.max(16, Math.min(r.width - 16, x));
+      y = Math.max(22, Math.min(r.height - 24, y));
+      return { x: x, y: y };
+    }
+    /* 眼睛表情贴偷瞄光标（鼠标） */
+    function lookAt(p) {
+      var r = view.getBoundingClientRect();
+      var dx = (p.x - (r.left + r.width / 2)) / r.width;
+      var dy = (p.y - (r.top + r.height / 2)) / r.height;
+      face.style.transform = 'translate(calc(-50% + ' + (dx * 12) + 'px), ' + (dy * 9) + 'px)';
+    }
+    function resetLook() { face.style.transform = 'translate(-50%, 0)'; }
+
+    var dragMode = null;   /* 'needle' | 'stab' | null */
+    var downP = null;
+    var downT = 0;
+    stage.addEventListener('pointerdown', function (ev) {
+      if (isBtn(ev)) return;
+      var p = pt(ev);
+      downP = p;
+      downT = Date.now();
+      var vrect = view.getBoundingClientRect();
+      if (inRect(box.getBoundingClientRect(), p)) {
+        dragMode = 'needle';
+        try { stage.setPointerCapture(ev.pointerId); } catch (er) {}
+        showFly(p);
+      } else if (inRect(vrect, p)) {
+        dragMode = 'stab';
+      } else {
+        dragMode = null;
+      }
+      ev.preventDefault();
+    });
+    stage.addEventListener('pointermove', function (ev) {
+      var p = pt(ev);
+      if (dragMode === 'needle') {
+        showFly(p);
+      } else if (dragMode === 'stab' && downP && (Math.abs(p.x - downP.x) > 8 || Math.abs(p.y - downP.y) > 8)) {
+        dragMode = null; /* 拖离原位 → 取消直点 */
+      }
+      if (ev.pointerType !== 'touch') lookAt(p);
+    });
+    stage.addEventListener('pointerup', function (ev) {
+      var p = pt(ev);
+      var vrect = view.getBoundingClientRect();
+      if (dragMode === 'needle') {
+        hideFly();
+        if (inRect(vrect, p) && !st[idx].full) addPin(viewLocal(p));
+        else flyBack(p);
+      } else if (dragMode === 'stab') {
+        if (Date.now() - downT < 700 && inRect(vrect, p)) addPin(viewLocal(p));
+      }
+      dragMode = null;
+    });
+    stage.addEventListener('pointercancel', function () { hideFly(); dragMode = null; });
+    stage.addEventListener('mouseleave', resetLook);
+
+    /* ---------- 扎一针：核心反馈 ---------- */
+    function addPin(local) {
+      var s = st[idx];
+      var d = VO_DOLLS[idx];
+      if (s.full) { say(d.name + ' 已经被扎服啦，换一个吧～'); return; }
+      var pin = { x: Math.round(local.x), y: Math.round(local.y), a: Math.round((Math.random() * 22) - 11) };
+      s.pins.push(pin);
+      /* 落针元素（fresh 飞落动画） */
+      var el = document.createElement('span');
+      el.className = 'bw-vo-pin fresh';
+      el.style.left = pin.x + 'px';
+      el.style.top = pin.y + 'px';
+      el.style.setProperty('--a', pin.a + 'deg');
+      view.appendChild(el);
+      setTimeout(function () { if (el && el.parentNode) el.classList.remove('fresh'); }, 460);
+      /* 扎中爆闪环 */
+      var hit = document.createElement('span');
+      hit.className = 'bw-vo-hit';
+      hit.style.left = pin.x + 'px';
+      hit.style.top = pin.y + 'px';
+      view.appendChild(hit);
+      setTimeout(function () { if (hit && hit.parentNode) hit.remove(); }, 520);
+      /* 反馈：音效 + 触觉 + 抖动 + 表情切换 */
+      try { bwSfx.VOODOO_SFX.stab(); } catch (er) {}
+      try { bwSfx.VOODOO_SFX.haptic(35); } catch (er) {}
+      view.classList.remove('shake', 'struggle', 'idle');
+      void view.offsetWidth;
+      view.classList.add('shake');
+      prog.classList.remove('bump');
+      void prog.offsetWidth;
+      prog.classList.add('bump');
+      setTimeout(function () { prog.classList.remove('bump'); }, 520);
+      faceI.textContent = d.faceHit;
+      /* 台词：第一针通用梗，之后专属求饶 */
+      if (s.pins.length < VO_TOTAL) {
+        var pool = s.pins.length === 1 ? VO_LINES : (d.pleas && d.pleas.length ? d.pleas : VO_LINES);
+        say(pool[(Math.random() * pool.length) | 0]);
+      }
+      if (s.pins.length >= VO_TOTAL) {
+        s.full = true;
+        faceI.textContent = d.faceDown;
+        /* 命中清脆音 + 扎服上扬音 */
+        try { bwSfx.VOODOO_SFX.hit(); } catch (er) {}
+        setTimeout(function () { try { bwSfx.VOODOO_SFX.defeat(); } catch (er) {} bwSfx.VOODOO_SFX.haptic(80); }, 120);
+        bumpVoodooStat(d.k);
+        view.classList.remove('idle');
+        view.classList.add('full');
+        say(d.name + ' 被扎服了！' + d.line);
+        /* 倒下动画 1.1s 后进入倒地呼吸 */
+        setTimeout(function () { view.classList.add('down'); }, 1100);
+      }
+      updPips(true);
+      updChrome();
+      /* ≥3 针未服 → 挣扎（更剧烈、不规则抽搐） */
+      if (!s.full && s.pins.length >= 3) {
+        setTimeout(function () {
+          view.classList.remove('shake');
+          void view.offsetWidth;
+          view.classList.add('struggle');
+          setTimeout(function () {
+            view.classList.remove('struggle');
+            if (!st[idx].full) view.classList.add('idle');
+          }, 560);
+        }, 380);
+      }
+    }
+
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    stabBtn.addEventListener('click', function () {
+      if (st[idx].full) return;
+      addPin({
+        x: 26 + Math.round(Math.random() * (view.clientWidth - 52)),
+        y: 22 + Math.round(Math.random() * (view.clientHeight - 60))
+      });
+    });
+    again.addEventListener('click', function () {
+      var wasFull = !!st[idx].full;
+      st.forEach(function (s) { s.pins = []; s.full = false; });
+      idx = (Math.random() * VO_DOLLS.length) | 0;
+      say(wasFull ? '气消了～再来一轮 🎈' : '新一轮，挑一个最像 TA 的吧 😈');
+      render();
+      /* 如果之前是 full 状态，先触发一次"复活"弹起，再回到 idle */
+      if (wasFull) {
+        view.classList.remove('idle');
+        void view.offsetWidth;
+        view.classList.add('revive');
+        setTimeout(function () {
+          view.classList.remove('revive', 'full', 'down');
+          view.classList.add('idle');
+        }, 720);
+      }
+    });
+    /* 针痕占位 */
+    var pipsHtml = '';
+    for (var pi = 0; pi < VO_TOTAL; pi++) pipsHtml += '<span class="bw-vo-pip"></span>';
+    pips.innerHTML = pipsHtml;
+    render();
+  }
+
+  /* ============ 接电话（动物来电） ============ */
+  /* 10 位来电角色;每通电话有多句对话,接听后逐条出现 */
+  var CALLERS = [
+    {
+      k: 'cat', name: '邻居家橘猫', avatar: '🐱', voice: bwSfx.voiceCat, ring: '🐱 · 喵喵来电',
+      line: '你阳台那个鱼干...是不是风吹下去的？',
+      script: [
+        '喵...你家阳台的鱼干，是不是风吹下去的？',
+        '不是啦，是我自己不小心碰掉的...但能不能再给一块？',
+        '你看，我就剩这一块了，今晚还要用它招待女朋友。',
+        '什么？你没有女朋友？那就...那就算了我自己吃。'
+      ]
+    },
+    {
+      k: 'penguin', name: '南极科考员', avatar: '🐧', voice: bwSfx.voicePenguin, ring: '🐧 · 南极基站',
+      line: '你家 Wi-Fi 借我用一下？',
+      script: [
+        '你好，我家在南极，这边5G 没覆盖...',
+        '你家 Wi-Fi 密码多少？我出企鹅币买。',
+        '一企鹅币等于几人民币？我也没换算过。',
+        '要不这样，你告诉我密码，我寄一箱南极磷虾给你当运费。'
+      ]
+    },
+    {
+      k: 'hedgehog', name: '迷路的小刺猬', avatar: '🦔', voice: bwSfx.voiceHedgehog, ring: '🦔 · 求助电话',
+      line: '我迷路了，身上还扎着两个橘子',
+      script: [
+        '我迷路了，身上还扎着两个橘子，能告诉我最近的便利店怎么走吗？',
+        '不是橘子，是橘子皮...现在已经扎进皮肤里了。',
+        '你能来接我吗？我已经三个小时没动了。',
+        '如果你来的话，请带一把镊子，谢谢。'
+      ]
+    },
+    {
+      k: 'turtle', name: '公园慢龟', avatar: '🐢', voice: bwSfx.voiceTurtle, ring: '🐢 · 物业投诉',
+      line: '你家楼下那辆红色的车开太快了！',
+      script: [
+        '我要投诉，你家楼下那辆红色的车，开得比我走路还快！',
+        '好吧，严格来说是比你走路快一点。',
+        '它刚才从我壳上压过去了，只压到一点点。',
+        '我现在在公园假山后面，需要法律援助吗？'
+      ]
+    },
+    {
+      k: 'octopus', name: '深海章鱼', avatar: '🐙', voice: bwSfx.voiceOctopus, ring: '🐙 · 求职专线',
+      line: '我看到你们公司在招前端工程师',
+      script: [
+        '你好，我看到你们公司在招前端工程师。',
+        '我有八只手，可以并行写八个组件。',
+        '另外两只脚可以顺便做后端。',
+        '请问贵司能否接受带薪水下办公？'
+      ]
+    },
+    {
+      k: 'owl', name: '夜行猫头鹰', avatar: '🦉', voice: bwSfx.voiceOwl, ring: '🦉 · 哲学咨询',
+      line: '你睡觉的时候梦会飘出来',
+      script: [
+        '你睡觉的时候，我看见你的梦从窗口飘出来。',
+        '今晚那个梦尤其奇怪，你居然梦到自己在写 bug。',
+        '能不能帮我翻译一下，那个梦到底想说什么？',
+        '放心，咨询费可以换成夜宵——我吃素。'
+      ]
+    },
+    {
+      k: 'raccoon', name: '浣熊快递员', avatar: '🦝', voice: bwSfx.voiceRaccoon, ring: '🦝 · 快递误投',
+      line: '你家门口的快递我拆开试吃了一下',
+      script: [
+        '你家门口的快递我拆开试吃了一下。',
+        '不是偷吃，是试吃，为了确保食品安全。',
+        '结果是：味道不错，建议再下一单。',
+        '对了，包装上写的是你的晚饭。'
+      ]
+    },
+    {
+      k: 'fox', name: '童话里的狐狸', avatar: '🦊', voice: bwSfx.voiceFox, ring: '🦊 · 下午茶邀请',
+      line: '我这边有个吃不到葡萄主题派对',
+      script: [
+        '你好，这边有个"吃不到葡萄说葡萄酸"主题派对。',
+        '我们缺一位人类代表，能赏脸吗？',
+        '葡萄是假的，但吐槽是真的。',
+        '对了，甜点区有一盘葡萄，我特别酸。'
+      ]
+    },
+    {
+      k: 'frog', name: '井底之蛙', avatar: '🐸', voice: bwSfx.voiceFrog, ring: '🐸 · 心理咨询',
+      line: '我想跳出井，但外面会不会没人记得我',
+      script: [
+        '我想跳出井，但外面世界这么大。',
+        '会不会出去了，反而没人记得我？',
+        '井里至少有三十七只蚊子认得我。',
+        '你觉得，跳出去值得吗？'
+      ]
+    },
+    {
+      k: 'bee', name: '加班的蜜蜂', avatar: '🐝', voice: bwSfx.voiceBee, ring: '🐝 · 加班倾诉',
+      line: '今天采了 400 朵花，但被一朵嘲笑效率低',
+      script: [
+        '今天采了400 朵花，但被一朵嘲笑说我效率低。',
+        '我解释说是路径优化，它说它自己开的更鲜艳。',
+        '老板是花朵，我就忍着点吧。',
+        '你呢，今天也被老板花刺过吗？'
+      ]
+    }
+  ];
+  function openPhone(e) {
+    lastTrigger = (e && e.currentTarget) || null;
+    var m = document.createElement('div');
+    m.className = 'bw-modal bw-phone';
+    /* HTML 结构:第一人称通话界面(顶部状态栏 + 主画面 + 底部控制) */
+    m.innerHTML =
+      '<div class="bw-modal-backdrop" data-close></div>' +
+      '<div class="bw-modal-panel bw-phone-panel">' +
+        '<button class="bw-modal-close" type="button" data-close aria-label="关闭">✕</button>' +
+        '<h2 class="bw-modal-title">动物来电</h2>' +
+        '<p class="bw-modal-sub">想谁来电话，就让谁来 · 接不接由你</p>' +
+        '<div class="bw-phone-call" id="phoneCall">' +
+          /* 顶部状态栏:对方头像 + 名字 + 通话状态/计时 */
+          '<div class="bw-phone-top">' +
+            '<div class="bw-phone-top-av" id="phoneTopAv">🐧</div>' +
+            '<div class="bw-phone-top-info">' +
+              '<div class="bw-phone-top-name" id="phoneTopName">—</div>' +
+              '<div class="bw-phone-top-status" id="phoneTopStatus">来电中</div>' +
+            '</div>' +
+          '</div>' +
+          /* 主画面:来电视图 或 通话聊天 */
+          '<div class="bw-phone-stage" id="phoneStage">' +
+            '<div class="bw-phone-ringing" id="phoneRinging">' +
+              '<div class="bw-phone-ring-pulse" aria-hidden="true"></div>' +
+              '<div class="bw-phone-avatar" id="phoneAvatar">🐧</div>' +
+              '<div class="bw-phone-ringing-name" id="phoneRingName">—</div>' +
+              '<div class="bw-phone-ringing-line" id="phoneRingLine">……</div>' +
+            '</div>' +
+            '<div class="bw-phone-chat" id="phoneChat" aria-live="polite"></div>' +
+          '</div>' +
+          /* 底部控制按钮:按状态切换显示 */
+          '<div class="bw-phone-controls">' +
+            '<button class="bw-phone-call-btn bw-phone-call-decline" id="phoneDecline" type="button" aria-label="拒接">✕ 拒接</button>' +
+            '<button class="bw-phone-call-btn bw-phone-call-answer" id="phonePickup" type="button" aria-label="接听">📞 接听</button>' +
+            '<button class="bw-phone-call-btn bw-phone-call-hangup" id="phoneHangup" type="button" aria-label="挂断">挂断</button>' +
+            '<button class="bw-phone-call-btn bw-phone-call-again" id="phoneNext" type="button" aria-label="再来一通">📞 再来一通</button>' +
+          '</div>' +
+        '</div>' +
+        /* 来电记录 + 工具 */
+        '<div class="bw-phone-foot">' +
+          '<span class="bw-phone-record" id="phoneRecord">已接 0 通</span>' +
+          '<button class="bw-phone-mute" id="phoneMute" type="button" title="开关动物声音">🔊 动物音</button>' +
+          '<button class="bw-phone-reset" id="phoneReset" type="button">清空记录</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(m);
+    document.body.classList.add('bw-modal-open');
+    m.querySelectorAll('[data-close]').forEach(function (el) {
+       el.addEventListener('click', function () {
+         /* 挂断时停止铃声 + 取消自动重响定时器（防止模态关闭后幽灵铃声响起） */
+         try { ringStop && ringStop(); } catch (er) {}
+         if (reRingTimer) { clearTimeout(reRingTimer); reRingTimer = null; }
+         closeModal(m);
+       });
+    });
+    document.addEventListener('keydown', onModalKey);
+    setupModalA11y(m);
+
+    var state = 'ringing';       /* ringing / talking / ended */
+    var cur = null;              /* 当前来电角色 */
+    var lineIdx = -1;            /* 下一条对话索引 */
+    var ringStop = null;         /* 铃声停止回调 */
+    var reRingTimer = null;      /* endCall 的自动重响定时器：关闭模态时需取消，否则幽灵铃声会响起 */
+    var record = loadCallRecord();
+
+    function loadCallRecord() {
+      try { return JSON.parse(localStorage.getItem('bw_phone_record') || '{}'); } catch (e) { return {}; }
+    }
+    function saveCallRecord(o) {
+      try { localStorage.setItem('bw_phone_record', JSON.stringify(o)); } catch (e) {}
+    }
+    function renderRecord() {
+      var total = 0; for (var k in record) total += (record[k] | 0);
+      recEl.textContent = '已接 ' + total + ' 通';
+    }
+
+    var stage = m.querySelector('#phoneStage');
+    var ringView = m.querySelector('#phoneRinging');
+    var avatarEl = m.querySelector('#phoneAvatar');
+    var ringNameEl = m.querySelector('#phoneRingName');
+    var ringLineEl = m.querySelector('#phoneRingLine');
+    var topAv = m.querySelector('#phoneTopAv');
+    var topName = m.querySelector('#phoneTopName');
+    var topStatus = m.querySelector('#phoneTopStatus');
+    var pickup = m.querySelector('#phonePickup');
+    var decline = m.querySelector('#phoneDecline');
+    var hangup = m.querySelector('#phoneHangup');
+    var next = m.querySelector('#phoneNext');
+    var chat = m.querySelector('#phoneChat');
+    var recEl = m.querySelector('#phoneRecord');
+    var reset = m.querySelector('#phoneReset');
+    var mute = m.querySelector('#phoneMute');
+    var callTimer = null;   /* 通话计时器 */
+    var callSec = 0;        /* 通话秒数 */
+
+    /* 状态渲染:按 ringing/talking/ended 切换界面 */
+    function renderState() {
+      var isRing = state === 'ringing';
+      var isTalk = state === 'talking';
+      ringView.style.display = isRing ? '' : 'none';
+      chat.style.display = (isTalk || state === 'ended') ? '' : 'none';
+      pickup.style.display = isRing ? '' : 'none';
+      decline.style.display = isRing ? '' : 'none';
+      hangup.style.display = isTalk ? '' : 'none';
+      next.style.display = (state === 'ended') ? '' : 'none';
+      stage.classList.toggle('ringing', isRing);
+      stage.classList.toggle('talking', isTalk);
+    }
+    function fmtTime(sec) {
+      var mm = ('0' + ((sec / 60) | 0)).slice(-2);
+      var ss = ('0' + (sec % 60)).slice(-2);
+      return mm + ':' + ss;
+    }
+    function stopCallTimer() {
+      if (callTimer) { clearInterval(callTimer); callTimer = null; }
+    }
+
+    /* 加载持久化的音量偏好 */
+    try {
+      var savedVol = parseFloat(localStorage.getItem('bw_phone_voice'));
+      if (!isNaN(savedVol)) voiceVolume = savedVol > 0.05 ? 1 : 0;
+    } catch (e) {}
+    function updateMuteBtn() {
+      mute.textContent = voiceVolume > 0 ? '🔊 动物音' : '🔇 已静音';
+    }
+    updateMuteBtn();
+
+    function pickCaller() {
+      /* 排除上次来电,增加重复耐受 */
+      var pool = CALLERS.filter(function (c) { return !cur || c.k !== cur.k; });
+      return pool[(Math.random() * pool.length) | 0];
+    }
+    function showBubble(text, who) {
+      var row = document.createElement('div');
+      row.className = 'bw-phone-msg ' + who;
+      var av = document.createElement('div');
+      av.className = 'bw-phone-msg-av';
+      av.textContent = who === 'me' ? '🙂' : cur.avatar;
+      var bub = document.createElement('div');
+      bub.className = 'bw-phone-msg-bub';
+      bub.textContent = text;
+      row.appendChild(av); row.appendChild(bub);
+      chat.appendChild(row);
+      /* 滚动到底 */
+      chat.scrollTop = chat.scrollHeight;
+    }
+    function nextLine() {
+      lineIdx++;
+      if (lineIdx >= cur.script.length) {
+        /* 全部台词结束 */
+        showBubble('（电话那头安静了）', 'sys');
+        try { bwSfx.sfxBusy(); } catch (er) {}
+        setTimeout(function () { endCall(false); }, 1200);
+        return;
+      }
+      showBubble(cur.script[lineIdx], 'them');
+      try { bwSfx.sfxTalk(); } catch (er) {}
+      /* 动物拟音:在台词出现后 200ms 播放,营造"说话同时发出声音" */
+      try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 200); } catch (er) {}
+    }
+    function startRing() {
+      /* 手动再来一通/拒接重选时，取消上一通遗留的自动重响定时器 */
+      if (reRingTimer) { clearTimeout(reRingTimer); reRingTimer = null; }
+      cur = pickCaller();
+      lineIdx = -1;
+      chat.innerHTML = '';
+      callSec = 0;
+      stopCallTimer();
+      topAv.textContent = cur.avatar;
+      topName.textContent = cur.name;
+      topStatus.textContent = '来电中';
+      avatarEl.textContent = cur.avatar;
+      ringNameEl.textContent = cur.name;
+      ringLineEl.textContent = cur.line;
+      state = 'ringing';
+      renderState();
+      try { ringStop = bwSfx.sfxRing(); } catch (er) {}
+    }
+    function pickUp() {
+      if (state !== 'ringing') return;
+      state = 'talking';
+      try { bwSfx.sfxPickup(); } catch (er) {}
+      try { ringStop && ringStop(); } catch (er) {}
+      ringStop = null;
+      /* 启动通话计时 */
+      callSec = 0;
+      stopCallTimer();
+      callTimer = setInterval(function () {
+        callSec++;
+        topStatus.textContent = '通话中 ' + fmtTime(callSec);
+      }, 1000);
+      renderState();
+      /* 接听后 250ms 播放动物欢迎音(比第一条台词早 100ms) */
+      try { setTimeout(function () { if (cur.voice && voiceVolume > 0) cur.voice(); }, 250); } catch (er) {}
+      /* 接听音效后 350ms 显示第一条 */
+      setTimeout(nextLine, 350);
+      /* 累计记录 */
+      record[cur.k] = (record[cur.k] || 0) + 1;
+      saveCallRecord(record);
+      renderRecord();
+    }
+    function hangUp() {
+      if (state === 'ended') return;
+      showBubble('（你挂了电话）', 'sys');
+      try { bwSfx.sfxHangup(); } catch (er) {}
+      endCall(true);
+    }
+    function endCall(hangup) {
+      state = 'ended';
+      stopCallTimer();
+      topStatus.textContent = hangup ? '已挂断' : '通话结束';
+      renderState();
+      /* 5 秒后自动再响,给足点击"再来一通"的时间；句柄存下来，关闭模态时取消，避免幽灵铃声 */
+      clearTimeout(reRingTimer);
+      reRingTimer = setTimeout(function () {
+        reRingTimer = null;
+        if (state === 'ended') startRing();
+      }, 5000);
+    }
+    pickup.addEventListener('click', pickUp);
+    decline.addEventListener('click', function () {
+      /* 拒接:挂断铃声,换一个来电 */
+      if (state !== 'ringing') return;
+      try { ringStop && ringStop(); } catch (er) {}
+      ringStop = null;
+      startRing();
+    });
+    hangup.addEventListener('click', hangUp);
+    next.addEventListener('click', startRing);
+    /* 点击通话画面可推进下一句 */
+    chat.addEventListener('click', function () {
+      if (state === 'talking') nextLine();
+    });
+    reset.addEventListener('click', function () {
+      record = {}; saveCallRecord(record); renderRecord();
+    });
+    mute.addEventListener('click', function () {
+      voiceVolume = voiceVolume > 0 ? 0 : 1;
+      try { localStorage.setItem('bw_phone_voice', String(voiceVolume)); } catch (e) {}
+      updateMuteBtn();
+    });
+
+    /* 启动 */
+    renderRecord();
+    startRing();
+  }
+
+  /* ---- Service Worker 注册：缓存静态资源，二次秒开 + 离线兜底 ----
+     这里才是 brainwave-sw.js 的接线处；缺失会导致整个缓存策略成为死代码。
+     注册作用域 /brainwave/，只缓存脑洞页资源，不碰主站。 */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/brainwave/brainwave-sw.js').catch(function (err) {
+        console.warn('[brainwave] SW register failed:', err);
+      });
+    });
+  }
+})();

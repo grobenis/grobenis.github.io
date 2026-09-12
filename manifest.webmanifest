@@ -1,0 +1,14 @@
+{
+  "name": "曾是少年",
+  "short_name": "曾是少年",
+  "description": "曾梦想仗剑走天涯",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#403e3e",
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

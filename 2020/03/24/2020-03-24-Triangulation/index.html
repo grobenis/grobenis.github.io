@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <script>
+  /* 暗色模式：在渲染前设置 data-theme，避免首屏闪烁 */
+  (function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="SLAM, 多视图几何, 面试, 学习,SLAM, C++, OpenCV, ROS, 算法, 机器学习, VIO, VINS, ORB-SLAM, 面试, 可穿戴" />
+   
+  <meta name="description" content="三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  
+  
+  
+  <meta property="og:site_name" content="曾是少年" />
+  <meta property="og:title" content="SLAM 中的三角测量 | 曾是少年" />
+  <meta property="og:description" content="三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。" />
+  <meta property="og:url" content="https://grobenis.github.io/2020/03/24/2020-03-24-Triangulation/" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:image" content="https://grobenis.github.io/images/cover1.jpg" />
+  
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://grobenis.github.io/2020/03/24/2020-03-24-Triangulation/" />
+  
+  <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="曾是少年 RSS" />
+  
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "SLAM 中的三角测量",
+    "description": "三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。",
+    "url": "https://grobenis.github.io/2020/03/24/2020-03-24-Triangulation/",
+    "datePublished": "2020-03-24T08:34:07.000Z",
+    "dateModified": "2026-09-12T13:19:00.235Z",
+    "author": { "@type": "Person", "name": "guoben" },
+    "publisher": { "@type": "Person", "name": "guoben" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://grobenis.github.io/2020/03/24/2020-03-24-Triangulation/" }
+  }
+  </script>
+  
+  <title>
+    SLAM 中的三角测量 |  曾是少年
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/images/cat.ico" />
+  
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#403e3e" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="/css/custom.css?v=1789219150147" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+
+<body class="">
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-2020-03-24-Triangulation" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  SLAM 中的三角测量
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/24/2020-03-24-Triangulation/" class="article-date">
+  <time datetime="2020-03-24T08:34:07.000Z" itemprop="datePublished">2020-03-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.6k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">7分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    <div class="outdated-banner">
+      <i class="ri-time-line"></i> 本文发布于 2020-03-24，距今已超 365 天，内容可能已过时，请注意甄别。
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。</p>
+<p>本节旨在解决以下问题：</p>
+<ol>
+<li>三角测量的概念</li>
+<li>三角测量的过程及代码实现；</li>
+<li>三角测量有哪些不确定性</li>
+<li>如何提高三角测量的精度</li>
+</ol>
+<p>本文学习 SLAM 中的三角测量，即已知相机运动 R、t 后，利用两帧特征点的归一化坐标求解地图点的深度与空间位置。文章给出三角化的数学推导与基于 OpenCV 的代码实现，并分析了三角化的不确定性来源以及提高精度的措施。</p>
+<blockquote>
+<p><strong>三角测量，由视差求深度</strong></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><p>在SLAM中，利用对极几何约束估计相机运动之后，我们还需要通过三角测量来估计地图点的深度。三角测量（三角化）指的是，通过在两处观测同一个点的夹角，从而确定该点的距离。</p>
+<p>SLAM中主要用三角化来估计像素点的距离。</p>
+<p><img decoding="async" src="/2020/03/24/2020-03-24-Triangulation/%E4%B8%89%E8%A7%92%E6%B5%8B%E9%87%8F.png" loading="lazy"></p>
+<h2 id="2-过程"><a href="#2-过程" class="headerlink" title="2. 过程"></a>2. 过程</h2><p>按照对极几何的定义，设$x_1,x_2$为两个特征点的归一化坐标，那么他们满足：<br>$$
+s_1x_1=s_2Rx_2+t.
+$$<br>经过对极几何之后，已得到了运动$R,t$，需要求解两个特征点的深度$s_1$,$s_2$。</p>
+<p>两个深度可以分开算。若先算$s_2$,那么对上市两个做成一个$x_1$^,得：</p>
+<p><img decoding="async" src="/2020/03/24/2020-03-24-Triangulation/%E6%96%B9%E7%A8%8B.png" loading="lazy"></p>
+<p>该式子左侧为0，右侧可看成是$s_2$的一个方程，可以根据它直接求$s_2$。有了$s_2$,$s_1$也非常容易求出。预测就可以得到两帧下的深度，即确定了空间坐标。</p>
+<h2 id="3-代码实现；"><a href="#3-代码实现；" class="headerlink" title="3. 代码实现；"></a>3. 代码实现；</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">triangulation</span> <span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> vector&lt;KeyPoint&gt;&amp; keypoint_1,</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> vector&lt;KeyPoint&gt;&amp; keypoint_2,</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> std::vector&lt; DMatch &gt;&amp; matches,</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> Mat&amp; R, <span class="type">const</span> Mat&amp; t,</span></span></span><br><span class="line"><span class="params"><span class="function">	vector&lt;Point3d&gt;&amp; points</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">triangulation</span> <span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> vector&lt; KeyPoint &gt;&amp; keypoint_1,</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> vector&lt; KeyPoint &gt;&amp; keypoint_2,</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> std::vector&lt; DMatch &gt;&amp; matches,</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="type">const</span> Mat&amp; R, <span class="type">const</span> Mat&amp; t,</span></span></span><br><span class="line"><span class="params"><span class="function">	vector&lt; Point3d &gt;&amp; points )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Mat T1 = (<span class="built_in">Mat_</span>&lt;<span class="type">double</span>&gt; (<span class="number">3</span>,<span class="number">4</span>) &lt;&lt;</span><br><span class="line">	<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">	<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">	Mat T2 = (<span class="built_in">Mat_</span>&lt;<span class="type">double</span>&gt; (<span class="number">3</span>,<span class="number">4</span>) &lt;&lt;</span><br><span class="line">	R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">0</span>,<span class="number">0</span>), R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">0</span>,<span class="number">1</span>), R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">0</span>,<span class="number">2</span>), t.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">0</span>,<span class="number">0</span>),</span><br><span class="line">	R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">1</span>,<span class="number">0</span>), R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">1</span>,<span class="number">1</span>), R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">1</span>,<span class="number">2</span>), t.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">1</span>,<span class="number">0</span>),</span><br><span class="line">	R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">2</span>,<span class="number">0</span>), R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">2</span>,<span class="number">1</span>), R.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">2</span>,<span class="number">2</span>), t.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">2</span>,<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    Mat K = ( <span class="built_in">Mat_</span>&lt;<span class="type">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    vector&lt;Point2d&gt; pts_1, pts_2;</span><br><span class="line">    <span class="keyword">for</span> ( DMatch m:matches )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 将像素坐标转换至相机坐标</span></span><br><span class="line">        pts_1.<span class="built_in">push_back</span> ( <span class="built_in">pixel2cam</span>( keypoint_1[m.queryIdx].pt, K) );</span><br><span class="line">        pts_2.<span class="built_in">push_back</span> ( <span class="built_in">pixel2cam</span>( keypoint_2[m.trainIdx].pt, K) );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Mat pts_4d;</span><br><span class="line">    cv::<span class="built_in">triangulatePoints</span>( T1, T2, pts_1, pts_2, pts_4d );</span><br><span class="line">    <span class="comment">// 转换成非齐次坐标</span></span><br><span class="line">	<span class="keyword">for</span> ( <span class="type">int</span> i=<span class="number">0</span>; i&lt;pts_4d.cols; i++ )</span><br><span class="line">	&#123;</span><br><span class="line">        Mat x = pts_4d.<span class="built_in">col</span>(i);</span><br><span class="line">        x /= x.<span class="built_in">at</span>&lt;<span class="type">float</span>&gt;(<span class="number">3</span>,<span class="number">0</span>); <span class="comment">// 归一化</span></span><br><span class="line">        <span class="function">Point3d <span class="title">p</span> <span class="params">(x.at&lt;<span class="type">float</span>&gt;(<span class="number">0</span>,<span class="number">0</span>),x.at&lt;<span class="type">float</span>&gt;(<span class="number">1</span>,<span class="number">0</span>),x.at&lt;<span class="type">float</span>&gt;(<span class="number">2</span>,<span class="number">0</span>))</span></span>;</span><br><span class="line">	points.<span class="built_in">push_back</span>( p );</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时，在main函数中增加三角测量部分，并验证重投影关系：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span> <span class="params">(<span class="type">int</span> argc, <span class="type">char</span>∗∗ argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// .....</span></span><br><span class="line">	<span class="comment">//􀀀􀀀 三角化</span></span><br><span class="line">	vector&lt;Point3d&gt; points;</span><br><span class="line">	<span class="built_in">triangulation</span>( keypoints_1, keypoints_2, matches, R, t, points );</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//􀀀􀀀 验证三角化点与特征点的重投影关系</span></span><br><span class="line">	Mat K = ( <span class="built_in">Mat_</span>&lt;<span class="type">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="keyword">for</span> ( <span class="type">int</span> i=<span class="number">0</span>; i&lt;matches.<span class="built_in">size</span>(); i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        Point2d pt1_cam = <span class="built_in">pixel2cam</span>( keypoints_1[ matches[i].queryIdx ].pt, K );</span><br><span class="line">        <span class="function">Point2d <span class="title">pt1_cam_3d</span> <span class="params">(points[i].x/points[i].z, points[i].y/points[i].z )</span></span>;</span><br><span class="line"></span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;point in the first camera frame: &quot;</span>&lt;&lt;pt1_cam&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;point projected from 3D &quot;</span>&lt;&lt;pt1_cam_3d&lt;&lt;<span class="string">&quot;, d=&quot;</span>&lt;&lt;points[i].z&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 第2幅图</span></span><br><span class="line">        Point2f pt2_cam = <span class="built_in">pixel2cam</span>( keypoints_2[ matches[i].trainIdx ].pt, K );</span><br><span class="line">        Mat pt2_trans = R∗( <span class="built_in">Mat_</span>&lt;<span class="type">double</span>&gt;(<span class="number">3</span>,<span class="number">1</span>) &lt;&lt; points[i].x, points[i].y, points[i].z ) + t;</span><br><span class="line">        pt2_trans /= pt2_trans.<span class="built_in">at</span>&lt;<span class="type">double</span>&gt;(<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;point in the second camera frame: &quot;</span>&lt;&lt;pt2_cam&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;point reprojected from second frame: &quot;</span>&lt;&lt;pt2_trans.<span class="built_in">t</span>()&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们打印了每个空间点在两个相机坐标系下的投影坐标与像素坐标——相当于P 的投影位置与看到的特征点位置。由于误差的存在，它们会有一些微小的差异。以下是某一特征点的信息：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">point in the first camera frame: [<span class="number">0.0844072</span>, <span class="number">0.0734976</span>]</span><br><span class="line">point projected from <span class="number">3</span>D [<span class="number">0.0843702</span>, <span class="number">0.0743606</span>], d=<span class="number">14.9895</span></span><br><span class="line">point in the second camera frame: [<span class="number">0.0431343</span>, <span class="number">0.0459876</span>]</span><br><span class="line">point reprojected from second frame: [<span class="number">0.04312769812378599</span>, <span class="number">0.04515455276163744</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，误差的量级大约在小数点后第3 位。可以看到，三角化特征点的距离大约为15。</p>
+<p>但由于尺度不确定性，我们并不知道这里的15 究竟是多少米。</p>
+<h2 id="4-不确定性因素"><a href="#4-不确定性因素" class="headerlink" title="4. 不确定性因素"></a>4. 不确定性因素</h2><ol>
+<li>由于<strong>噪声</strong>的存在，我们估得的运动R; t 不一定精确使(1)式为零，所以更常见的做法是求最小二乘解而不是零解。</li>
+<li>三角测量是由平移得到的，有平移才会有对极几何中的三角形，才谈得上三角测量。因此，<strong>纯旋转</strong>是无法使用三角测量的，因为对极约束将永远满足。在平移存在的情况下，我们还要关心三角测量的不确定性，这会引出一个三角测量的矛盾</li>
+<li>当平移很小时，<strong>像素上的不确定性</strong>将导致较大的深度不确定性。即若特征点运动一个像素x，使得视线角变化了一个角度，那么将测量到深度值有d 的变化。从几何关系可以看出，当t 较大时，d 将明显变小，这说明平移较大时，在同样的相机分辨率下，三角化测量将更精确。对该过程的定量分析可以使用正弦定理得到，不过这里先考虑定性分析。</li>
+</ol>
+<h2 id="5-如何提高精度"><a href="#5-如何提高精度" class="headerlink" title="5. 如何提高精度"></a>5. 如何提高精度</h2><p>要提高三角化的精度，主要有两种方法：</p>
+<ol>
+<li>提高特征点的提取精度，也就是提高图像分辨率——但这会导致图像变大，增加计算成本。</li>
+<li>使平移量增大。但是，这会导致图像的外观发生明显的变化，比如箱子原先被挡住的侧面显示出来，又比如反射光发生变化，等等。外观变化会使得特征提取与匹配变得困难。</li>
+</ol>
+<p>总而言之，增大平移，会导致匹配失效；而平移太小，则三角化精度不够——这就是三角化的矛盾。</p>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://grobenis.github.io/2020/03/24/2020-03-24-Triangulation/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SLAM/" rel="tag">SLAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" rel="tag">多视图几何</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/03/26/2020-03-26-Hash-Table/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            哈希表与 C++
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/03/24/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">SLAM 初始化</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+<!-- giscus评论 -->
+<div class="giscus" id="giscus-container"></div>
+<script src="https://giscus.app/client.js"
+    data-repo="grobenis/grobenis.github.io"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNDg0Mjc5MTI="
+    data-category="General"
+    data-category-id="DIC_kwDODs61iM4DFCzP"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
+<style>
+    #giscus-container {
+        padding: 5px 30px 20px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 800px) {
+        #giscus-container {
+            padding: 5px 0 20px;
+        }
+    }
+</style>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2026
+        guoben
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    </main>
+    <aside class="sidebar">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/cat.ico" alt="曾是少年"></a>
+  </div>
+  
+  <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
+  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
+       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+  </ul>
+  <!-- 搜索：位于上组下方 -->
+  
+  <a class="nav-item-link nav-item-search nav-search-top" title="Search">
+    <i class="ri-search-line"></i>
+  </a>
+  
+  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <ul class="nav nav-mid">
+    
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/project">旅程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/works">成果</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/games">游戏</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/lyrics">音乐</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/brainwave">脑洞</a>
+    </li>
+    
+  </ul>
+</nav>
+<!-- 底部：私人空间（隐藏入口） -->
+<nav class="navbar navbar-bottom">
+  <ul class="nav nav-life">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/private">私人空间</a>
+    </li>
+    
+  </ul>
+  
+  <a class="rss-link" href="/atom.xml" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">
+    <i class="ri-rss-line"></i>
+  </a>
+  
+  <button class="theme-toggle" id="theme-toggle" title="切换亮/暗模式" aria-label="切换亮/暗模式">
+    <i class="ri-moon-line"></i>
+  </button>
+</nav>
+<script>
+/* 侧边栏当前页高亮：路径匹配加 is-active；文章页归入「主页」 */
+(function () {
+  function norm(p) {
+    return (p || '/').replace(/\/+$/, '') || '/';
+  }
+  var here = norm(location.pathname);
+  var isPost = /^\/\d{4}\//.test(location.pathname);
+  var links = document.querySelectorAll('.nav-item-link[href]');
+  Array.prototype.forEach.call(links, function (a) {
+    var href = norm(a.getAttribute('href'));
+    if (href === here || (isPost && href === '/')) {
+      a.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script>
+/* 暗色模式切换：点亮/暗跟随系统初值，点击切换并持久化 */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  function current() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+  function render() {
+    var icon = toggle.querySelector('i');
+    if (icon) icon.className = current() === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+  }
+  toggle.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>
+    </aside>
+    <!-- 搜索浮层必须在 .sidebar 之外：侧边栏的 backdrop-filter 会改写
+         后代 fixed 元素的包含块，放进去会被困在 8rem 宽的面板里 -->
+    <div class="search-form-wrap">
+      <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+    </div>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i></p>
+  <div class="reward-box">
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/pay/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['曾梦想仗剑走天涯', '愿你出走半生，归来仍是少年', '一杯敬朝阳，一杯敬月光'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: true
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/js/ayer.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+
+
+
+
+
+
+<script>
+// 代码块一键复制：为每个 figure.highlight 添加复制按钮
+(function () {
+  var figures = document.querySelectorAll('figure.highlight');
+  Array.prototype.forEach.call(figures, function (fig) {
+    if (fig.querySelector('.code-copy-btn')) return;
+    var code = fig.querySelector('td.code') || fig.querySelector('pre code') || fig.querySelector('pre');
+    if (!code) return;
+    fig.style.position = 'relative';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+    function showDone() {
+      btn.classList.add('copied');
+      btn.textContent = '已复制';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ri-file-copy-line"></i>';
+      }, 1500);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = code.innerText || code.textContent;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = code.innerText || code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showDone, fallback);
+      } else {
+        fallback();
+      }
+    });
+    fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 注册 Service Worker（PWA 离线缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
+}
+</script>
+
+    
+    
+<div id="music">
+    <audio id="musicPlayer" preload="metadata" src="/music/zengjingdeni.mp3"></audio>
+    <button id="musicToggle" class="music-btn" title="播放/暂停音乐" aria-label="播放/暂停音乐">
+        <i id="musicIcon" class="ri-music-2-line"></i>
+    </button>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        top: 15px;
+        z-index: 998;
+        background: transparent;
+    }
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: rgba(0, 0, 0, 0.55);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: opacity .3s;
+    }
+    .music-btn:hover {
+        opacity: .75;
+    }
+</style>
+
+<script>
+(function () {
+    var audio = document.getElementById('musicPlayer');
+    var btn = document.getElementById('musicToggle');
+    var icon = document.getElementById('musicIcon');
+    if (!audio || !btn || !icon) return;
+    btn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            icon.className = 'ri-pause-line';
+        } else {
+            audio.pause();
+            icon.className = 'ri-music-2-line';
+        }
+    });
+    audio.addEventListener('ended', function () {
+        icon.className = 'ri-music-2-line';
+    });
+})();
+</script>
+
+
+    
+    <!-- 返回顶部徽章：毛玻璃圆钮 + 阅读进度环（音乐盒页不显示） -->
+    
+    <div class="site-mascot" title="回到顶部" role="button" tabindex="0" aria-label="回到顶部">
+      <svg class="mascot-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="mascot-ring-track" cx="24" cy="24" r="21"></circle>
+        <circle class="mascot-ring-bar" cx="24" cy="24" r="21"></circle>
+      </svg>
+      <svg class="mascot-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M12 5l-6.5 6.5M12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    
+    <script>
+    // 返回顶部：滚动超过封面高度后淡入，点击平滑回顶；外圈实时显示阅读进度
+    // 注意：本主题 body 固定视口高度，滚动发生在 main.content 容器内
+    (function () {
+      var mascot = document.querySelector('.site-mascot');
+      if (!mascot) return;
+      var scroller = document.querySelector('main.content') || window;
+      function getThreshold() {
+        var cover = document.querySelector('.cover');
+        return cover ? cover.offsetHeight : 400;
+      }
+      function getScrollY() {
+        return scroller === window
+          ? (window.pageYOffset || document.documentElement.scrollTop)
+          : scroller.scrollTop;
+      }
+      function getProgress() {
+        var pos, max;
+        if (scroller === window) {
+          pos = window.pageYOffset || document.documentElement.scrollTop;
+          max = document.documentElement.scrollHeight - window.innerHeight;
+        } else {
+          pos = scroller.scrollTop;
+          max = scroller.scrollHeight - scroller.clientHeight;
+        }
+        return max > 0 ? Math.min(1, Math.max(0, pos / max)) : 0;
+      }
+      function onScroll() {
+        mascot.classList.toggle('is-visible', getScrollY() > getThreshold());
+        mascot.style.setProperty('--sp', getProgress().toFixed(3));
+      }
+      function toTop() {
+        if (scroller === window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          scroller.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      mascot.addEventListener('click', toTop);
+      mascot.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toTop();
+        }
+      });
+      scroller.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script>
+  </div>
+</body>
+
+</html>
