@@ -67,6 +67,7 @@ share: false
 <div class="about-panel">
 <ul class="about-contact">
 <li><a href="https://github.com/grobenis" target="_blank" rel="noopener"><i class="ri-github-line"></i>github.com/grobenis</a></li>
+<li><a href="https://b23.tv/NxZwwwA" target="_blank" rel="noopener"><i class="ri-bilibili-line"></i>B站 · 万斤金牛牛</a></li>
 <li><a href="https://blog.csdn.net/GuoBen_" target="_blank" rel="noopener"><i class="ri-customer-service-2-line"></i>CSDN · GuoBen_</a></li>
 <li><a href="mailto:guoben@buaa.edu.cn"><i class="ri-mail-line"></i>guoben@buaa.edu.cn</a></li>
 </ul>
