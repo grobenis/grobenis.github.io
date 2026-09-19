@@ -8,8 +8,11 @@ public/
 _multiconfig.yml
 # 私密文章（仅本地，不推送到公开仓库）
 source/_posts/private-*.md
-# 私密空间页面（明文源码仅本地，构建产物为加密版）
+# 私密空间页面：明文源码只存在于本机与私有仓库 grobenis/blog-private，
+# 公开仓库里只有加密后的构建产物（由 CI 拉取私有仓库后生成）
 source/private/
+# CI 中拉取私有仓库的临时目录（万一在本地手动执行同名步骤）
+.private-src/
 # 本次清理的临时回收站（确认无误后删除）
 .trash-2026-08-30/
 # 脑洞页 jpg 原始图备份（已本地化转 WebP，jpg 仅作本地留底，不进仓库）

@@ -69,10 +69,14 @@
   });
 
   // justifiedGallery
-  $('#gallery').justifiedGallery({
-    rowHeight: 200,
-    margins: 5
-  });
+  // 该插件已改为按需加载（只有配了 albums 的文章才引入），所以这里必须先判断
+  // 插件是否真的在页面上：jQuery 对空集合调用未注册的插件方法一样会抛 TypeError。
+  if ($.fn.justifiedGallery && $('#gallery').length) {
+    $('#gallery').justifiedGallery({
+      rowHeight: 200,
+      margins: 5
+    });
+  }
 
   // scroll down
   $(document).ready(function ($) {

@@ -40,6 +40,10 @@ skip_render:
   - "brainwave/brainwave.css"
   - "brainwave/brainwave.min.css"
   - "brainwave/brainwave-sw.js"
+  # 404 页是一份自带样式与脚本的完整 HTML 文档。不跳过渲染的话，hexo 会把它
+  # 当成普通 page 再套一层主题布局，产物里会出现两套 <html>/<body>、三套 <head>：
+  # 既是无效 HTML，又白加载一遍主题 CSS/JS（侧边栏、播放器、pace 等）。
+  - "404.html"
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -90,8 +94,14 @@ meta_generator: true
 ## http://momentjs.com/docs/#/displaying/format/
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
-## Use post's date for updated date unless set in front-matter
-updated_option: false
+## updated 字段的来源。必须是 'mtime' | 'date' | 'empty' 之一：
+##   - 'mtime'（hexo 默认）：取文件系统修改时间。CI 是全新 checkout，
+##     mtime == 检出时间，于是每次部署 sitemap/atom/JSON-LD 里的“最后修改”
+##     都会变成部署当天，2020 年的旧文也会显示成刚改过。
+##   - 'date'：updated 恒等于文章 date，跨机器/跨 CI 完全稳定。
+##   - 'empty'：没有 front-matter `updated:` 就不输出该字段。
+## 这里选 'date'；若要标记某篇确实改过，在该文 front-matter 显式写 updated:。
+updated_option: date
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -111,11 +121,25 @@ theme: ayer
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
+##
+## 部署统一走 GitHub Actions（.github/workflows/deploy.yml）：
+## push 到 source 分支后由 CI 构建 public/ 并发布到 master。
+## 本地 `hexo deploy` 已停用——它和 CI 都会 force push 同一条 master，
+## 谁后跑谁覆盖对方，而且本地构建产物与 CI 不一致（见下方说明）。
+## 若确需临时本地部署，把下面的 deploy: 块取消注释即可。
+#
+# deploy:
+#   type: git
+#   repo: git@github-blog:grobenis/grobenis.github.io.git
+#   branch: master
 
-deploy:
-  type: git
-  repo: git@github-blog:grobenis/grobenis.github.io.git
-  branch: master
+# hexo-blog-encrypt（私人空间页加密）
+## password/abstract/message 等每页写在 front-matter 里（明文源码不入公开仓库）。
+## kdf.iterations 必须 ≥ 100000，OWASP 2023 建议 ≥ 600000；插件默认 250000 偏低。
+## 注意：提高迭代数会同步增加浏览器端解密耗时（PBKDF2-SHA256，约几百毫秒量级）。
+encrypt:
+  kdf:
+    iterations: 600000
 
 # Hexo-generator-search
 search:

@@ -43,13 +43,17 @@
 <% } %>
 
 
+<%# justifiedGallery 只在文章配了 albums 时才渲染出 #gallery，此前却全站加载 CDN。
+    现在按需加载；同时 ayer.js 里的初始化也加了 $.fn 存在性判断。 %>
+<% if (need_justified_gallery()) { %>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<% } %>
 <%- js('js/ayer') %>
 
-<% if (theme.image_viewer){ %>
+<% if (theme.image_viewer && need_photoswipe()){ %>
 <%- partial('viewer') %>
 <% } %>
-<% if (theme.mathjax){ %>
+<% if (theme.mathjax && need_mathjax()){ %>
 <%- partial('mathjax') %>
 <script>
   var ayerConfig = {
@@ -110,6 +114,50 @@
       }
     });
     fig.appendChild(btn);
+  });
+})();
+</script>
+
+<script>
+// 搜索快捷键：Ctrl/⌘+K 或 / 打开站内搜索并聚焦；Esc 收起。
+// 侧边栏的 .nav-item-search 已由 ayer.js 绑定打开逻辑，这里复用它的点击，
+// 避免两处各写一套开合状态（含动画中防抖）。
+(function () {
+  var wrap = document.querySelector('.search-form-wrap');
+  var input = document.getElementById('local-search-input');
+  var trigger = document.querySelector('.nav-item-search');
+  if (!wrap || !input || !trigger) return;
+
+  function isTyping(el) {
+    if (!el || !el.tagName) return false;
+    var t = el.tagName;
+    return t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || el.isContentEditable === true;
+  }
+
+  function openSearch() {
+    trigger.click();
+    // ayer.js 会在 200ms 动画结束后聚焦，这里稍晚一点兜底（面板已开时它也会聚焦）
+    setTimeout(function () { input.focus(); }, 240);
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.defaultPrevented) return;
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      openSearch();
+      return;
+    }
+    // "/" 只在非输入态触发，避免打断正常打字
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !isTyping(e.target)) {
+      e.preventDefault();
+      openSearch();
+      return;
+    }
+    // Esc 只负责收起搜索面板，不干扰页面自身的 Esc 行为（如脑洞页弹窗）
+    if (e.key === 'Escape' && wrap.classList.contains('on')) {
+      wrap.classList.remove('on');
+      input.blur();
+    }
   });
 })();
 </script>

@@ -76,6 +76,30 @@
     transition: opacity 0.2s ease;
   }
   .search button:hover { opacity: 0.88; }
+  .search button:disabled { opacity: 0.5; cursor: default; }
+  /* 站内搜索结果 */
+  .status { margin-top: 14px; font-size: 13px; color: #777; text-align: left; }
+  .results { margin-top: 10px; text-align: left; list-style: none; }
+  .results li { padding: 12px 0; border-top: 1px solid #2c2c2c; }
+  .results li:first-child { border-top: none; }
+  .results a {
+    color: #cfe0f5;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s ease;
+  }
+  .results a:hover { color: #61a3f8; }
+  .results .snippet {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #888;
+    word-break: break-word;
+  }
+  .results em { color: #61a3f8; font-style: normal; }
+  .ext { margin-top: 22px; font-size: 13px; }
+  .ext a { color: #777; text-decoration: none; }
+  .ext a:hover { color: #61a3f8; }
 </style>
 </head>
 <body>
@@ -84,16 +108,163 @@
     <h1>页面走丢了</h1>
     <p>你访问的页面不存在或已被移动<br>可以返回首页，或用下方站内搜索找一找</p>
     <a class="link" href="/">返回首页</a>
-    <form class="search" action="https://duckduckgo.com/" method="get" target="_blank" rel="noopener">
-      <input type="text" name="q" placeholder="站内搜索…" aria-label="站内搜索">
-      <input type="hidden" name="sites" value="grobenis.github.io">
-      <button type="submit">搜索</button>
+
+    <!-- 站内搜索：直接读站点自己的 search.xml（由 scripts/search-slim.js 生成），
+         不依赖任何第三方或者 jQuery。索引约 100KB，首次搜索时才拉取。 -->
+    <form class="search" id="local-search-form" action="/" method="get">
+      <input type="text" id="local-search-input" placeholder="站内搜索…" aria-label="站内搜索"
+             autocomplete="off" autofocus>
+      <button type="submit" id="local-search-btn">搜索</button>
     </form>
+    <p class="status" id="local-search-status" hidden></p>
+    <ul class="results" id="local-search-results"></ul>
+
     <div class="quick">
       <a href="/archives">归档</a>
       <a href="/about">关于</a>
       <a href="/atom.xml" target="_blank" rel="noopener">RSS</a>
     </div>
+
+    <div class="ext">
+      <a href="https://duckduckgo.com/?q=site%3Agrobenis.github.io" target="_blank" rel="noopener">
+        站内没有？改用搜索引擎 ↗
+      </a>
+    </div>
   </div>
+
+<script>
+(function () {
+  'use strict';
+  var form = document.getElementById('local-search-form');
+  var input = document.getElementById('local-search-input');
+  var btn = document.getElementById('local-search-btn');
+  var statusEl = document.getElementById('local-search-status');
+  var listEl = document.getElementById('local-search-results');
+
+  var entries = null;   // 索引加载后填充
+  var loading = null;   // 进行中的 Promise，避免重复请求
+
+  function stripTags(html) {
+    return String(html).replace(/<[^>]+>/g, ' ');
+  }
+
+  function loadIndex() {
+    if (entries) return Promise.resolve(entries);
+    if (loading) return loading;
+    statusEl.hidden = false;
+    statusEl.textContent = '正在加载站内索引…';
+    loading = fetch('/search.xml', { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text();
+      })
+      .then(function (text) {
+        var doc = new DOMParser().parseFromString(text, 'application/xml');
+        entries = Array.prototype.map.call(doc.querySelectorAll('entry'), function (e) {
+          var pick = function (sel) {
+            var n = e.querySelector(sel);
+            return n ? n.textContent : '';
+          };
+          return {
+            title: pick('title'),
+            url: pick('url'),
+            content: stripTags(pick('content')).replace(/\s+/g, ' ').trim()
+          };
+        });
+        return entries;
+      })
+      .catch(function () {
+        statusEl.textContent = '索引加载失败，可以用下方搜索引擎，或直接去归档页翻一翻。';
+        loading = null;
+        throw new Error('index-load-failed');
+      });
+    return loading;
+  }
+
+  function render(keyword) {
+    var kw = keyword.toLowerCase();
+    var shown = 0;
+    var frag = document.createDocumentFragment();
+
+    entries.forEach(function (entry) {
+      if (shown >= 8) return;
+      var title = entry.title || '（无标题）';
+      var hay = (title + ' ' + entry.content).toLowerCase();
+      var at = hay.indexOf(kw);
+      if (at < 0) return;
+
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = entry.url;
+      a.textContent = title;
+      li.appendChild(a);
+
+      // 命中位置附近截一段做摘要（与站内搜索保持同一套路）
+      var body = entry.content;
+      var bodyAt = body.toLowerCase().indexOf(kw);
+      if (bodyAt >= 0) {
+        var start = Math.max(0, bodyAt - 40);
+        var end = Math.min(body.length, bodyAt + 120);
+        var snippet = (start > 0 ? '…' : '') + body.slice(start, end) + (end < body.length ? '…' : '');
+        var p = document.createElement('p');
+        p.className = 'snippet';
+        // 用 textContent 拼装，避免把索引内容当 HTML 解析
+        var idx = snippet.toLowerCase().indexOf(kw);
+        if (idx >= 0) {
+          p.appendChild(document.createTextNode(snippet.slice(0, idx)));
+          var em = document.createElement('em');
+          em.textContent = snippet.slice(idx, idx + kw.length);
+          p.appendChild(em);
+          p.appendChild(document.createTextNode(snippet.slice(idx + kw.length)));
+        } else {
+          p.textContent = snippet;
+        }
+        li.appendChild(p);
+      }
+      frag.appendChild(li);
+      shown++;
+    });
+
+    listEl.textContent = '';
+    if (!shown) {
+      statusEl.hidden = false;
+      statusEl.textContent = '没有找到「' + keyword + '」相关的内容。';
+      return;
+    }
+    statusEl.hidden = false;
+    statusEl.textContent = '找到 ' + shown + ' 条结果：';
+    listEl.appendChild(frag);
+  }
+
+  function search() {
+    var keyword = input.value.trim();
+    if (!keyword) { input.focus(); return; }
+    btn.disabled = true;
+    loadIndex().then(function () {
+      statusEl.hidden = true;
+      render(keyword);
+    }).catch(function () {
+      /* 失败提示已在 loadIndex 里写过 */
+    }).then(function () {
+      btn.disabled = false;
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); // 不再跳到搜索引擎，改成本地搜索
+    search();
+  });
+  // 输入即搜（索引只在第一次输入时才真正下载）
+  var timer = null;
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      if (input.value.trim().length >= 2) search();
+    }, 250);
+  });
+  // 聚焦时就预热索引，用户敲字时基本已经就绪
+  input.addEventListener('focus', function () { loadIndex().catch(function () {}); });
+})();
+</script>
 </body>
 </html>

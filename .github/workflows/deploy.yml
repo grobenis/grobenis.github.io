@@ -16,6 +16,11 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      # 供 if: 判断使用（secrets 不能直接出现在 if 表达式里）
+      PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+      # 可选：用 Secret 覆盖私人空间页的密码（不设则用私有仓库里的 front-matter）
+      PRIVATE_PAGE_PASSWORD: ${{ secrets.PRIVATE_PAGE_PASSWORD }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -29,8 +34,75 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # ---------------------------------------------------------------------
+      # 私人空间页（source/private/）的明文源码不入公开仓库，改为在 CI 里
+      # 从私有仓库 grobenis/blog-private 拉取后参与构建。
+      #   私有仓库内容布局需与本地一致：
+      #     index.md            （可含 password: xxx，也可完全不含）
+      #     images/…            （照片等）
+      #   只需配置一次：
+      #     1. 新建私有仓库（如 grobenis/blog-private），把 source/private/ 下的
+      #        index.md 与图片推上去；
+      #     2. 生成一个对该私有仓库有读权限的 PAT（fine-grained，仅 Contents: Read）；
+      #     3. 本仓库 Settings → Secrets and variables → Actions 添加
+      #        PRIVATE_REPO_TOKEN = 该 PAT；
+      #        可选再添加 PRIVATE_PAGE_PASSWORD 覆盖页面密码（推荐，密码就只存在于 Secret 里）。
+      # ---------------------------------------------------------------------
+      - name: Checkout private content
+        if: env.PRIVATE_REPO_TOKEN != ''
+        uses: actions/checkout@v4
+        with:
+          repository: grobenis/blog-private
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: .private-src
+
+      - name: Place private content
+        if: env.PRIVATE_REPO_TOKEN != ''
+        run: |
+          mkdir -p source/private
+          rsync -a --exclude '.git' .private-src/ source/private/
+          echo "私人空间页内容已就位："
+          find source/private -type f | head -20
+
+      # force_orphan 会整棵覆盖 master。所以只在“会丢东西”时才拦住：
+      # 线上 master 里还有 private/index.html，而这次构建拿不到它的源码。
+      # 若线上本来就没有（例如 2026-09-12 那次部署已经把它抹掉了），
+      # 则只警告、不阻断部署。
+      - name: Decide whether a missing private page is fatal
+        id: private_guard
+        run: |
+          if [ -n "$PRIVATE_REPO_TOKEN" ]; then
+            echo "fatal=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          HAS=no
+          if git fetch --depth=1 origin master 2>/dev/null; then
+            if git cat-file -e FETCH_HEAD:private/index.html 2>/dev/null; then HAS=yes; fi
+          fi
+          if [ "$HAS" = "yes" ]; then
+            echo "fatal=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "fatal=no" >> "$GITHUB_OUTPUT"
+            echo "::warning title=私人空间页不在线上::未配置 PRIVATE_REPO_TOKEN，且线上 master 已无 private/index.html。本次部署不会丢东西，但私人空间页会继续缺失。"
+          fi
+
+      - name: Guard - refuse to delete the live private page
+        if: steps.private_guard.outputs.fatal == 'yes'
+        run: |
+          echo "::error title=这次部署会删掉私人空间页::线上 master 仍有 private/index.html，但本次构建没有它的源码，force_orphan 会把整棵覆盖掉。"
+          echo "请先按 deploy.yml 注释配置 PRIVATE_REPO_TOKEN（私有仓库 grobenis/blog-private）后重试。"
+          exit 1
+
       - name: Generate static files
         run: npx hexo generate
+
+      - name: Guard - private page must be generated
+        if: env.PRIVATE_REPO_TOKEN != ''
+        run: |
+          if [ ! -f public/private/index.html ]; then
+            echo "::error title=私人空间页未生成::source/private/index.md 存在，但 public/private/index.html 没有产出。"
+            exit 1
+          fi
 
       - name: Deploy to master
         uses: peaceiris/actions-gh-pages@v4

@@ -10,4 +10,5 @@ module.exports = hexo => {
 };
 
 // 保持过滤器最先执行
-hexo.extend.filter.register('after_render:html', require(metaGeneratorPath), 1);
+// meta_generator 现在需要读站点/主题配置，所以以工厂形式传入 hexo 实例
+hexo.extend.filter.register('after_render:html', require(metaGeneratorPath)(hexo), 1);

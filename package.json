@@ -5,7 +5,6 @@
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
-    "deploy": "hexo deploy",
     "minify:brainwave": "node scripts/minify-brainwave.js",
     "server": "hexo server"
   },
