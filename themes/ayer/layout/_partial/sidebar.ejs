@@ -5,15 +5,26 @@
     <a href="<%- url_for() %>"><img src="<%- theme.logo %>" alt="<%= config.title %>"></a>
   </div>
   <% } %>
+  <%
+  /* 侧栏分组：分组与排序的唯一来源是 theme.menuGroups（见 _config.ayer.yml）。
+     只渲染显式列出、且 menu 里有链接的键 —— 白名单形式，因此不再依赖
+     「第一个中组项叫什么」这种隐式约定，也天然屏蔽上游主题经深合并带回来的旧入口。*/
+  function menuGroup(name) {
+    var keys = (theme.menuGroups && theme.menuGroups[name]) || [];
+    var out = [];
+    for (var i = 0; i < keys.length; i++) {
+      if (theme.menu && theme.menu[keys[i]] != null) out.push(keys[i]);
+    }
+    return out;
+  }
+  %>
   <!-- 上组：技术文章与自我介绍（主页 → 关于） -->
-  <!-- 注：分类/标签入口已收进归档页顶部筛选条；此处显式过滤，
-       避免其他机器未跟踪的 themes/ayer/_config.yml 默认值经深合并把菜单补回来 -->
   <ul class="nav nav-main">
-    <% for (var i in theme.menu){ if (i === '旅程') break; if (i === '分类' || i === '标签') continue; %>
+    <% menuGroup('main').forEach(function (key) { %>
     <li class="nav-item">
-      <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
+      <a class="nav-item-link" href="<%- url_for(theme.menu[key]) %>"><%= key %></a>
     </li>
-    <% } %>
+    <% }); %>
   </ul>
   <!-- 搜索：位于上组下方 -->
   <% if (theme.search){ %>
@@ -21,24 +32,34 @@
     <i class="ri-search-line"></i>
   </a>
   <% } %>
-  <!-- 中组：旅程 / 成果展示 / 自创游戏 / 音乐盒 -->
+  <!-- 中组：成果展示 / 自创游戏 / 音乐盒 / 脑洞 -->
   <ul class="nav nav-mid">
-    <% var inMid = false; %>
-    <% for (var i in theme.menu){ if (i === '旅程') inMid = true; if (i === '私人空间') break; if (!inMid) continue; if (i === '分类' || i === '标签') continue; %>
+    <% menuGroup('mid').forEach(function (key) { %>
     <li class="nav-item">
-      <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
+      <a class="nav-item-link" href="<%- url_for(theme.menu[key]) %>"><%= key %></a>
     </li>
-    <% } %>
+    <% }); %>
   </ul>
+  <%
+  /* 漏配告警：menu 里有、但没进任何组的项不会被渲染。这条注释只出现在页面源码里，
+     `grep "未出现在 theme.menuGroups" public/` 即可查到。*/
+  var grouped = menuGroup('main').concat(menuGroup('mid'), menuGroup('life'));
+  var orphans = Object.keys(theme.menu || {}).filter(function (k) {
+    return grouped.indexOf(k) < 0;
+  });
+  %>
+  <% if (orphans.length) { %>
+  <!-- 注意：以下菜单项未出现在 theme.menuGroups，未渲染：<%= orphans.join(' / ') %> -->
+  <% } %>
 </nav>
 <!-- 底部：私人空间（隐藏入口） -->
 <nav class="navbar navbar-bottom">
   <ul class="nav nav-life">
-    <% for (var i in theme.menu){ if (i === '私人空间'){ %>
+    <% menuGroup('life').forEach(function (key) { %>
     <li class="nav-item">
-      <a class="nav-item-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
+      <a class="nav-item-link" href="<%- url_for(theme.menu[key]) %>"><%= key %></a>
     </li>
-    <% } } %>
+    <% }); %>
   </ul>
   <% if (theme.rss){ %>
   <a class="rss-link" href="<%- url_for(theme.rss) %>" target="_blank" rel="noopener" title="RSS 订阅" aria-label="RSS 订阅">

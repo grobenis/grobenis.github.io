@@ -19,13 +19,19 @@ menu:
   # CSDN: https://blog.csdn.net/GuoBen_
   # 生活: https://cengshishaonian37279.lofter.com/
   关于: /about
-  旅程: /project
   成果: /works
   游戏: /games
   音乐: /lyrics
   脑洞: /brainwave
   # 友链: /friends # 友链已移至「关于」页底部
   私人空间: /private
+# 侧栏分组：唯一的分组与排序来源，数组顺序即渲染顺序
+# 只有这里显式列出、且 menu 里有对应链接的键才会渲染；
+# 不在任何组里的菜单项会被静默跳过，并在页面源码里留一条告警注释
+menuGroups:
+  main: [主页, 归档, 关于]
+  mid:  [成果, 游戏, 音乐, 脑洞]
+  life: [私人空间]
 # 站点次标题和打字动效
 # https://github.com/mattboldt/typed.js
 subtitle:
