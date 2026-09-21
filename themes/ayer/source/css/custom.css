@@ -6560,3 +6560,171 @@ html[data-theme="dark"] .declare {
 html[data-theme="dark"] .footer {
   border-top-color: #2a2d33;
 }
+
+/* ---------- 13. 关于页章节导航：个人介绍与旅程使用同一条叙事轨道 ---------- */
+body.page-theme-about .article-entry {
+  --about-accent: #49b1f5;
+  --about-ink: #2c3e50;
+  --about-muted: #6f8495;
+}
+
+.about-section-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 34px;
+  padding: 4px;
+  width: fit-content;
+  border: 1px solid rgba(73, 177, 245, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.about-section-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: #6b8497;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.about-section-nav a:hover,
+.about-section-nav a.is-active {
+  color: #fff;
+  background: var(--about-accent);
+  box-shadow: 0 3px 10px rgba(73, 177, 245, 0.28);
+}
+
+.about-chapter {
+  scroll-margin-top: 24px;
+}
+.about-chapter-header {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin: 0 0 20px;
+}
+.about-chapter-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(73, 177, 245, 0.42);
+  border-radius: 50%;
+  color: var(--about-accent);
+  background: rgba(255, 255, 255, 0.62);
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: 0 3px 10px rgba(73, 177, 245, 0.12);
+}
+.about-chapter-kicker {
+  margin: 1px 0 2px !important;
+  color: var(--about-accent) !important;
+  font-family: "Courier New", monospace;
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.3 !important;
+}
+.about-chapter-header h2 {
+  margin: 0 !important;
+  color: var(--about-ink);
+  font-size: 22px;
+  line-height: 1.35;
+}
+.about-chapter-header h2::before {
+  display: none;
+}
+.about-chapter-header > div > p:last-child {
+  margin: 5px 0 0 !important;
+  color: var(--about-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.about-profile-chapter .about-rail {
+  margin-top: 6px;
+}
+.about-journey-chapter {
+  margin-top: 46px;
+  padding-top: 34px;
+  border-top: 1px solid rgba(255, 255, 255, 0.72);
+}
+.about-journey-chapter .journey {
+  margin-top: 0;
+}
+.about-journey-chapter .journey-head {
+  margin-top: 0;
+}
+.about-journey-chapter .journey-tail {
+  margin-top: 0;
+}
+
+html[data-theme="dark"] .about-section-nav {
+  border-color: rgba(110, 175, 235, 0.26);
+  background: rgba(23, 37, 58, 0.58);
+}
+html[data-theme="dark"] .about-section-nav a {
+  color: #a9bbcf;
+}
+html[data-theme="dark"] .about-section-nav a:hover,
+html[data-theme="dark"] .about-section-nav a.is-active {
+  color: #fff;
+}
+html[data-theme="dark"] .about-chapter-index {
+  border-color: rgba(110, 175, 235, 0.5);
+  background: rgba(23, 37, 58, 0.78);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.24);
+}
+html[data-theme="dark"] .about-chapter-header h2 {
+  color: #eaf1f9;
+}
+html[data-theme="dark"] .about-chapter-header > div > p:last-child {
+  color: #a9bbcf;
+}
+html[data-theme="dark"] .about-journey-chapter {
+  border-top-color: rgba(110, 175, 235, 0.2);
+}
+
+@media (max-width: 560px) {
+  .about-section-nav {
+    margin-bottom: 28px;
+  }
+  .about-section-nav a {
+    padding: 0 13px;
+  }
+  .about-chapter-header {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 11px;
+    margin-bottom: 16px;
+  }
+  .about-chapter-index {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+  }
+  .about-chapter-header h2 {
+    font-size: 19px;
+  }
+  .about-chapter-header > div > p:last-child {
+    font-size: 12px;
+  }
+  .about-journey-chapter {
+    margin-top: 34px;
+    padding-top: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-section-nav a {
+    transition: none;
+  }
+}

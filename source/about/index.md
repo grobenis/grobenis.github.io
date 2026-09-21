@@ -13,6 +13,21 @@ share: false
   </blockquote>
 </div>
 
+<nav class="about-section-nav" aria-label="关于页章节">
+<a class="is-active" href="#about-profile">认识我</a>
+<a href="#about-journey">旅程</a>
+</nav>
+
+<section class="about-chapter about-profile-chapter" id="about-profile">
+<header class="about-chapter-header">
+<span class="about-chapter-index">01</span>
+<div>
+<p class="about-chapter-kicker">ABOUT ME</p>
+<h2>认识我</h2>
+<p>把复杂问题拆开、验证，再做成可靠而有用的东西。</p>
+</div>
+</header>
+
 <div class="about-rail">
 
 <div class="about-station">
@@ -77,15 +92,19 @@ share: false
 
 </div>
 
-<div class="about-links">
-  <a href="javascript:void(0)" id="about-info-btn" title="关于本站"><i class="ri-information-line"></i><span>关于本站</span></a>
-  <a href="https://cparadox.github.io/" target="_blank" rel="noopener" title="友链：仔仔的博客"><i class="ri-links-line"></i><span>友链</span></a>
-  <a href="javascript:void(0)" id="about-rss-btn" title="订阅 RSS"><i class="ri-rss-line"></i><span>订阅</span></a>
+</section>
+
+<section class="about-chapter about-journey-chapter" id="about-journey">
+<header class="about-chapter-header">
+<span class="about-chapter-index">02</span>
+<div>
+<p class="about-chapter-kicker">JOURNEY</p>
+<h2>一路走来</h2>
+<p>从数学与计算，到让机器理解自己身处的空间。</p>
 </div>
+</header>
 
 <div class="journey">
-
-<div class="journey-quote">曾梦想仗剑走天涯，看一看世界的繁华。</div>
 
 <div class="journey-head">
 <div class="journey-head-item">
@@ -328,6 +347,14 @@ share: false
 </div>
 </div>
 
+</div>
+
+</section>
+
+<div class="about-links">
+  <a href="javascript:void(0)" id="about-info-btn" title="关于本站"><i class="ri-information-line"></i><span>关于本站</span></a>
+  <a href="https://cparadox.github.io/" target="_blank" rel="noopener" title="友链：仔仔的博客"><i class="ri-links-line"></i><span>友链</span></a>
+  <a href="javascript:void(0)" id="about-rss-btn" title="订阅 RSS"><i class="ri-rss-line"></i><span>订阅</span></a>
 </div>
 
 </div>
