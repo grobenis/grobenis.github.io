@@ -7097,3 +7097,129 @@ html[data-theme="dark"] body.page-theme-about .article-inner {
     height: 32px;
   }
 }
+
+/* ---------- 15. 关于页：作品卡片 + 悬停细节 ---------- */
+.about-works {
+  min-width: 0;
+}
+.article-entry .about-work-card {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 20px;
+  gap: 18px;
+  align-items: center;
+  padding: 20px 22px;
+  border: 1px solid var(--about-line);
+  border-radius: 4px;
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.article-entry .about-work-card:hover {
+  border-color: rgba(43, 113, 142, 0.5);
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.07);
+  transform: translateY(-2px);
+}
+.about-work-icon {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--about-line);
+  border-radius: 12px;
+  background: #fff;
+  object-fit: contain;
+}
+.about-work-body {
+  display: block;
+  min-width: 0;
+}
+.about-work-name {
+  display: block;
+  color: var(--about-text);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.about-work-name em {
+  margin-left: 6px;
+  color: var(--about-muted);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.about-work-desc {
+  display: block;
+  margin-top: 5px;
+  color: var(--about-muted);
+  font-size: 13px;
+  line-height: 1.85;
+}
+.about-work-tags {
+  display: block;
+  margin-top: 8px;
+  color: #98a2a8;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+}
+.about-work-arrow {
+  color: #a3adb2;
+  font-size: 16px;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.article-entry .about-work-card:hover .about-work-arrow {
+  color: var(--about-accent);
+  transform: translateX(3px);
+}
+.article-entry .about-works-more {
+  margin: 14px 0 0;
+  color: var(--about-muted);
+  font-size: 12.5px;
+}
+.article-entry .about-works-more a {
+  color: var(--about-accent);
+  text-decoration: none;
+}
+/* 悬停细节：时间线徽标轻微放大、focus 序号点亮 */
+.about-timeline-item img {
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.about-timeline-item:hover img {
+  border-color: rgba(43, 113, 142, 0.55);
+  transform: scale(1.06);
+}
+.about-focus-index {
+  transition: color 0.25s ease;
+}
+.about-focus-item:hover .about-focus-index {
+  color: var(--about-accent);
+}
+
+html[data-theme="dark"] .article-entry .about-work-card {
+  background: #262b30;
+}
+html[data-theme="dark"] .article-entry .about-work-card:hover {
+  border-color: rgba(112, 184, 223, 0.5);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+html[data-theme="dark"] .about-work-icon {
+  background: #f4f6f7;
+}
+html[data-theme="dark"] .about-timeline-item:hover img {
+  border-color: rgba(112, 184, 223, 0.55);
+}
+
+@media (max-width: 480px) {
+  .article-entry .about-work-card {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    padding: 16px;
+  }
+  .about-work-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+  .about-work-arrow {
+    display: none;
+  }
+}

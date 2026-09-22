@@ -15,7 +15,7 @@ share: false
 <p class="about-eyebrow">算法工程师 / 独立开发者</p>
 <h2 id="about-name">你好，我是郭犇。</h2>
 <p class="about-lead">专注于空间感知，也在做自己的产品。</p>
-<p class="about-summary">我在空间感知领域工作，也在业余时间做自己的产品。喜欢从一个具体问题出发，弄清楚它，再把答案做成真正能用的东西。</p>
+<p class="about-summary">喜欢从一个具体问题出发，把它弄清楚，再把答案做成真正能用的东西。工作里研究机器人如何理解空间，工作之外把想法打磨成可以上手的产品。</p>
 </div>
 <div class="about-hero-side" aria-label="个人标识">
   <span class="about-side-mark">G</span>
@@ -59,9 +59,28 @@ share: false
 </div>
 </section>
 
+<section class="about-section" aria-labelledby="about-works">
+<div class="about-section-title">
+  <p>02 / WORKS</p>
+  <h2 id="about-works">作品</h2>
+</div>
+<div class="about-works">
+  <a class="about-work-card" href="/works/">
+    <img class="about-work-icon" src="/assets/img/works/nibs-icon.png" alt="Nibs 图标">
+    <span class="about-work-body">
+      <span class="about-work-name">Nibs <em>便签</em></span>
+      <span class="about-work-desc">跨平台桌面便签：多条彩色贴纸随手贴、随手改，配一个清爽的管理窗口。Flutter 统一 UI，鸿蒙端原生重写，支持 WebDAV 同步。</span>
+      <span class="about-work-tags">FLUTTER · ARKTS · WEBDAV</span>
+    </span>
+    <span class="about-work-arrow" aria-hidden="true"><i class="ri-arrow-right-line"></i></span>
+  </a>
+  <p class="about-works-more">更多项目与截图，见 <a href="/works/">成果</a> 页。</p>
+</div>
+</section>
+
 <section class="about-section" aria-labelledby="about-path">
 <div class="about-section-title">
-  <p>02 / EXPERIENCE</p>
+  <p>03 / EXPERIENCE</p>
   <h2 id="about-path">经历</h2>
 </div>
 <div class="about-timeline">
@@ -95,7 +114,7 @@ share: false
 
 <section class="about-section about-writing" aria-labelledby="about-writing">
 <div class="about-section-title">
-  <p>03 / WRITING</p>
+  <p>04 / WRITING</p>
   <h2 id="about-writing">关于这个博客</h2>
 </div>
 <div class="about-writing-copy">
