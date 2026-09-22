@@ -3,6 +3,7 @@
 <body class="<%- (function(){
   var p = page.path || '';
   if (p.indexOf('lyrics') === 0) return 'is-lyrics page-locked';
+  if (p.indexOf('project') === 0) return 'page-theme-journey';
   if (p.indexOf('about') === 0) return 'page-theme-about';
   if (p.indexOf('works') === 0) return 'page-theme-works';
   if (p.indexOf('games') === 0) return 'page-theme-games';

@@ -1842,18 +1842,18 @@ body.page-bg-5 {
 }
 
 /* ==========================================================================
-   独立页面主题背景(page-theme-*):关于 / 成果 / 游戏 / 脑洞
+   独立页面主题背景(page-theme-*):旅程 / 关于 / 成果 / 游戏 / 脑洞
    ========================================================================== */
-/* 关于 —— 清晨远行:淡蓝天空 + 暖沙地平线(原旅程页主题,合并后由 /about 承载) */
-body.page-theme-about {
+/* 旅程 —— 清晨远行:淡蓝天空 + 暖沙地平线 */
+body.page-theme-journey {
   background:
     radial-gradient(ellipse at 78% 16%, rgba(255, 200, 130, 0.4), transparent 44%),
     radial-gradient(ellipse at 12% 82%, rgba(120, 180, 235, 0.35), transparent 48%),
     radial-gradient(ellipse at 50% 105%, rgba(240, 180, 110, 0.45), transparent 55%),
     linear-gradient(174deg, #cfe6f7 0%, #e6eef6 38%, #f6ead8 72%, #f7d9b0 100%) !important;
 }
-/* 关于 —— 远景云层 + 飞鸟氛围 */
-body.page-theme-about::before {
+/* 旅程 —— 远景云层 + 飞鸟氛围 */
+body.page-theme-journey::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -1928,7 +1928,7 @@ body.page-theme-brainwave::before {
     radial-gradient(2px 2px at 88% 24%, rgba(140, 110, 255, 0.5), transparent);
 }
 /* 保证页面正文在氛围层之上 */
-body.page-theme-about #app,
+body.page-theme-journey #app,
 body.page-theme-works #app,
 body.page-theme-games #app,
 body.page-theme-brainwave #app {
@@ -2867,7 +2867,7 @@ body.page-scene-dawn .tv-set {
    优先，否则读系统偏好），所以不存在属性缺失的空窗；改用属性选择器后，手动
    点侧栏月亮按钮切换暗色也能正确触发本页深色主题——此前该路径下本页完全
    不生效，会呈现浅色渐变。*/
-html[data-theme="dark"] body.page-theme-about {
+html[data-theme="dark"] body.page-theme-journey {
   background:
     radial-gradient(ellipse at 78% 14%, rgba(130, 165, 215, 0.22), transparent 44%),
     radial-gradient(ellipse at 12% 82%, rgba(70, 105, 160, 0.28), transparent 48%),
@@ -2875,7 +2875,7 @@ html[data-theme="dark"] body.page-theme-about {
     linear-gradient(174deg, #0e1728 0%, #14233a 40%, #1b2b44 74%, #22334e 100%) !important;
 }
 /* 云层换成星点 */
-html[data-theme="dark"] body.page-theme-about::before {
+html[data-theme="dark"] body.page-theme-journey::before {
   filter: blur(1px);
   background:
     radial-gradient(2px 2px at 14% 20%, rgba(190, 210, 240, 0.55), transparent),
@@ -2889,7 +2889,7 @@ html[data-theme="dark"] body.page-theme-about::before {
 }
 /* 关键：站点级暗色把 main.content 刷成 #181a1f，而 .content 是铺满视口的滚动
    容器，会把上面 body 上的夜空渐变完全盖住。本页要透出夜空，故显式恢复透明。*/
-html[data-theme="dark"] body.page-theme-about .content {
+html[data-theme="dark"] body.page-theme-journey .content {
   background-color: transparent;
 }
 
@@ -3003,12 +3003,14 @@ html[data-theme="dark"] .journey-tail-text {
 }
 
 /* ===== 关于页：两章共用车票形制（章节一的内容原语留在下方 .about-* 规则里） ===== */
-/* 座右铭横幅：保留白底「灯箱」的醒目感（呼应「Make about motto prominent」），
-   只把边框与投影调成夜间质感 */
+/* 座右铭横幅（深色模式）：白灯箱 → 墨色金笺，文字呈金色渐变并缓慢流光，
+   带柔和金光晕。 */
 html[data-theme="dark"] .about-motto {
-  background: #f6f9fc;
-  border-color: rgba(110, 175, 235, 0.24);
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5);
+  background: #14110a;
+  border-color: rgba(212, 175, 55, 0.28);
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.5),
+    0 0 28px rgba(255, 200, 90, 0.07);
 }
 /* 必须写到 0-3-x：文件末尾站点级暗色块的 html[data-theme="dark"] .article-entry
    blockquote(0-2-2) / h3(0-2-1) / a(0-2-1) 会压过本页的 0-1-x 规则。
@@ -3016,7 +3018,43 @@ html[data-theme="dark"] .about-motto {
    要覆盖的属性，不重复 margin/padding。*/
 html[data-theme="dark"] .article-entry .about-motto-quote {
   background: transparent;
-  border-left-color: rgba(73, 177, 245, 0.75);
+  border-left-color: rgba(212, 175, 55, 0.8);
+}
+/* 金色渐变流光字：渐变裁剪到文字 + 缓慢横移 + 光晕 */
+html[data-theme="dark"] .article-entry .about-motto-quote p {
+  background: linear-gradient(
+    100deg,
+    #b8892f 0%,
+    #e7c36f 18%,
+    #f7e6ad 38%,
+    #fff8e0 50%,
+    #f7e6ad 62%,
+    #d9ae54 82%,
+    #a97c28 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 9px rgba(255, 205, 100, 0.35));
+  animation: about-gold-shimmer 7s ease-in-out infinite;
+}
+/* 落款：收一档的暖金 */
+html[data-theme="dark"] .article-entry .about-motto-quote cite {
+  color: #d3ad57;
+  -webkit-text-fill-color: #d3ad57;
+  filter: drop-shadow(0 0 6px rgba(255, 200, 90, 0.3));
+}
+@keyframes about-gold-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="dark"] .article-entry .about-motto-quote p {
+    animation: none;
+  }
 }
 /* 章节一的轨道 / 徽章 / 车票 / 票根都不需要暗色 companion —— 它们就是
    .journey-line / .journey-badge / .journey-ticket / .journey-stub，
@@ -7129,10 +7167,10 @@ html[data-theme="dark"] body.page-theme-about .article-inner {
 .about-work-icon {
   width: 56px;
   height: 56px;
-  border: 1px solid var(--about-line);
-  border-radius: 12px;
-  background: #fff;
-  object-fit: contain;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  object-fit: cover;
 }
 .about-work-body {
   display: block;
@@ -7208,9 +7246,6 @@ html[data-theme="dark"] .article-entry .about-work-card:hover {
   border-color: rgba(112, 184, 223, 0.5);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
-html[data-theme="dark"] .about-work-icon {
-  background: #f4f6f7;
-}
 html[data-theme="dark"] .about-timeline-item:hover img {
   border-color: rgba(112, 184, 223, 0.55);
 }
@@ -7231,78 +7266,93 @@ html[data-theme="dark"] .about-timeline-item:hover img {
   }
 }
 
-/* ---------- 16. 关于页：高级海报化重设计（覆盖第 13/14/15 节） ---------- */
-/* 设计语言：巨号衬线姓名作视觉主角 + 朱印点缀 + 超大留白 + 细发丝线 +
-   章节编号做成「幽灵大字」。整页像一张可滚动的展览海报。 */
+/* ---------- 16. 关于页：现代极简重设计（覆盖第 13/14/15 节） ---------- */
+/* 设计语言：黑白蓝三色 —— 无衬线黑体 + 强网格 + 发丝分隔线 + 小标签编号 +
+   大留白。冷静、理性，类似 Apple / Linear 的编辑式版面。 */
 :root {
-  --poster-ink: #14191d;
-  --poster-red: #b23a2e;
-  --poster-serif: "Songti SC", "Noto Serif SC", "STSong", "SimSun", serif;
+  --poster-ink: #0f1419;
+  --poster-blue: #1b4f8f;
+  --poster-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
 }
-/* 座右铭左边条：蓝色 → 朱色，融入海报色板 */
+/* 页面底色：冷调浅蓝白 */
+body.page-theme-about {
+  background: #e9eef5 !important;
+}
+html[data-theme="dark"] body.page-theme-about {
+  background: #0d1117 !important;
+}
+/* 座右铭：白底黑字，左边条蓝，无衬线 */
 .article-entry .about-motto-quote {
-  border-left-color: var(--poster-red);
+  border-left-color: var(--poster-blue);
+  font-family: var(--poster-sans);
+}
+.article-entry .about-motto-quote p,
+.article-entry .about-motto-quote cite {
+  font-family: var(--poster-sans);
 }
 html[data-theme="dark"] .article-entry .about-motto-quote {
-  border-left-color: #d1584a;
+  border-left-color: rgba(212, 175, 55, 0.8);
 }
 body.page-theme-about .article-inner {
   border: 0;
   border-radius: 0;
-  background: #fbfaf8;
-  box-shadow: 0 24px 70px rgba(20, 25, 29, 0.12);
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 20, 25, 0.12);
 }
 body.page-theme-about .article-entry {
   --about-text: var(--poster-ink);
-  --about-muted: #6a7178;
-  --about-line: #e4e0d8;
-  --about-accent: var(--poster-red);
+  --about-muted: #5f6b7a;
+  --about-line: #e3e8ef;
+  --about-accent: var(--poster-blue);
+  font-family: var(--poster-sans);
 }
 .about-page {
   position: relative;
-  padding: 96px 96px 108px;
+  padding: 80px 96px 96px;
 }
-/* 顶部一道朱色细线，像海报的边压 */
+/* 顶部一道 1px 蓝色发丝线 */
 .about-page::before {
   content: "";
   position: absolute;
   top: 0;
   left: 96px;
   right: 96px;
-  height: 2px;
-  background: var(--poster-red);
+  height: 1px;
+  background: var(--poster-blue);
 }
 
-/* Hero：姓名即海报主视觉 */
+/* Hero：粗黑姓名 + 蓝色小标签 */
 .about-hero {
   padding-bottom: 0;
   border-bottom: 0;
 }
 .about-hero-meta {
-  color: #9aa0a3;
+  color: #97a1ad;
   font-size: 11px;
   letter-spacing: 3px;
 }
 .about-hero-main {
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
-  padding: 40px 0 8px;
+  padding: 36px 0 8px;
   align-items: start;
 }
 .about-eyebrow,
 .article-entry .about-eyebrow {
-  margin-bottom: 26px;
-  color: var(--poster-red);
+  margin-bottom: 22px;
+  color: var(--poster-blue);
+  font-family: var(--poster-sans);
   font-size: 12px;
-  letter-spacing: 4px;
+  font-weight: 600;
+  letter-spacing: 3px;
 }
 .article-entry .about-greeting {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   color: var(--about-muted);
-  font-family: var(--poster-serif);
-  font-size: 17px;
+  font-family: var(--poster-sans);
+  font-size: 15px;
   font-weight: 400;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 .article-entry .about-hero h2 {
   position: relative;
@@ -7310,41 +7360,21 @@ body.page-theme-about .article-entry {
   max-width: none;
   margin: 0;
   color: var(--poster-ink);
-  font-family: var(--poster-serif);
-  font-size: clamp(52px, 8.5vw, 92px);
-  font-weight: 600;
-  letter-spacing: 3px;
-  line-height: 1.02;
-}
-/* 朱印：线框小印，点到为止 */
-.about-seal {
-  position: absolute;
-  top: 0.22em;
-  right: -1.05em;
-  display: grid;
-  place-items: center;
-  width: 0.5em;
-  height: 0.5em;
-  border-radius: 4px;
-  border: 1.5px solid var(--poster-red);
-  background: transparent;
-  color: var(--poster-red);
-  font-family: var(--poster-serif);
-  font-size: 0.3em;
-  font-weight: 600;
-  line-height: 1;
-  transform: rotate(4deg);
-  box-shadow: none;
+  font-family: var(--poster-sans);
+  font-size: clamp(42px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 .article-entry .about-hero .about-lead {
   max-width: 640px;
-  margin-top: 26px;
-  color: var(--poster-ink);
-  font-family: var(--poster-serif);
-  font-size: 17px;
+  margin-top: 22px;
+  color: var(--about-text);
+  font-family: var(--poster-sans);
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1.8;
-  letter-spacing: 0.5px;
+  line-height: 1.75;
+  letter-spacing: 0;
 }
 .article-entry .about-hero .about-summary {
   max-width: 600px;
@@ -7353,28 +7383,29 @@ body.page-theme-about .article-entry {
   font-size: 14.5px;
   line-height: 2.1;
 }
-/* 右侧竖排标识在海报版里让位给巨型姓名，隐藏 */
+/* 右侧竖排标识让位给姓名主视觉，隐藏 */
 .about-hero-side {
   display: none;
 }
 .about-hero-foot {
-  margin-top: 44px;
-  padding-top: 20px;
+  margin-top: 40px;
+  padding-top: 18px;
   border-top: 1px solid var(--about-line);
-  color: #9aa0a3;
+  color: #97a1ad;
   font-size: 11px;
   letter-spacing: 2px;
 }
 .article-entry .about-actions a {
+  font-family: var(--poster-sans);
   font-size: 12px;
   letter-spacing: 1px;
 }
 
-/* 章节：编号做成幽灵大字，标题压在编号之上 */
+/* 章节：蓝色小编号标签 + 粗黑标题，发丝线分隔 */
 .about-section {
   display: block;
   position: relative;
-  padding: 96px 0;
+  padding: 72px 0;
   border-top: 1px solid var(--about-line);
 }
 .about-section:first-of-type {
@@ -7382,54 +7413,50 @@ body.page-theme-about .article-entry {
 }
 .about-section-title {
   position: relative;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
 }
 .about-section-title > p,
 .article-entry .about-section-title > p {
-  position: absolute;
-  top: -0.42em;
-  left: 0;
-  z-index: 0;
-  margin: 0;
-  color: rgba(20, 25, 29, 0.05);
-  font-family: "Courier New", monospace;
-  font-size: 96px;
-  font-weight: 700;
-  letter-spacing: -4px;
+  margin: 0 0 10px;
+  color: var(--poster-blue);
+  font-family: var(--poster-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
   line-height: 1;
-  pointer-events: none;
 }
 .article-entry .about-section-title h2 {
   position: relative;
   z-index: 1;
-  padding-left: 2px;
-  font-family: var(--poster-serif);
-  font-size: 25px;
-  font-weight: 600;
-  letter-spacing: 3px;
+  padding-left: 0;
+  font-family: var(--poster-sans);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-/* focus 列表：加大序号与标题，海报式排布 */
+/* focus 列表：细数字编号 + 粗黑标题 */
 .about-focus-item {
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 22px;
-  padding-bottom: 32px;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 20px;
+  padding-bottom: 28px;
 }
 .about-focus-item + .about-focus-item {
-  padding-top: 32px;
+  padding-top: 28px;
 }
 .about-focus-index {
-  padding-top: 4px;
-  color: var(--poster-red);
-  font-family: "Courier New", monospace;
-  font-size: 15px;
-  font-weight: 700;
+  padding-top: 3px;
+  color: var(--about-muted);
+  font-family: "SF Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 .article-entry .about-focus-item h3 {
-  font-family: var(--poster-serif);
-  font-size: 18px;
+  font-family: var(--poster-sans);
+  font-size: 17px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0;
 }
 .article-entry .about-focus-item p {
   max-width: 560px;
@@ -7457,8 +7484,8 @@ body.page-theme-about .article-entry {
   padding: 7px;
 }
 .article-entry .about-timeline-item h3 {
-  font-family: var(--poster-serif);
-  font-size: 18px;
+  font-family: var(--poster-sans);
+  font-size: 17px;
   font-weight: 700;
 }
 .article-entry .about-timeline-item p {
@@ -7471,8 +7498,8 @@ body.page-theme-about .article-entry {
   background: #fff;
 }
 .article-entry .about-work-name {
-  font-family: var(--poster-serif);
-  font-size: 18px;
+  font-family: var(--poster-sans);
+  font-size: 17px;
   font-weight: 700;
 }
 
@@ -7486,81 +7513,63 @@ body.page-theme-about .article-entry {
   font-size: 13.5px;
 }
 
-/* 深色模式：海报换成墨黑底纸，朱印转暖红 */
+/* 深色模式：墨黑底 */
 html[data-theme="dark"] body.page-theme-about .article-inner {
-  background: #16181b;
+  background: #11151b;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
 }
 html[data-theme="dark"] body.page-theme-about .article-entry {
-  --about-text: #eceae4;
-  --about-muted: #9aa1a8;
-  --about-line: #2c2f33;
-  --about-accent: #d1584a;
+  --about-text: #e6ebf2;
+  --about-muted: #98a2b0;
+  --about-line: #252b33;
+  --about-accent: #6aa6e8;
 }
 html[data-theme="dark"] .about-page::before {
-  background: var(--poster-red);
-}
-html[data-theme="dark"] .about-seal {
-  border-color: #d1584a;
-  color: #d1584a;
+  background: #6aa6e8;
 }
 html[data-theme="dark"] .about-section-title > p {
-  color: rgba(236, 234, 228, 0.07);
+  color: #6aa6e8;
+}
+html[data-theme="dark"] .about-eyebrow,
+html[data-theme="dark"] .article-entry .about-eyebrow {
+  color: #6aa6e8;
 }
 html[data-theme="dark"] .article-entry .about-work-card {
-  background: #1d2023;
+  background: #161b22;
 }
 
-/* 响应式：海报留白随屏收缩 */
+/* 响应式：留白随屏收缩 */
 @media (max-width: 900px) {
   .about-page {
-    padding: 72px 56px 84px;
+    padding: 60px 56px 72px;
   }
   .about-page::before {
     left: 56px;
     right: 56px;
   }
-  .about-seal {
-    right: -0.95em;
-  }
-  .about-section-title > p {
-    font-size: 76px;
-  }
 }
 @media (max-width: 760px) {
   .about-page {
-    padding: 56px 34px 64px;
+    padding: 48px 34px 56px;
   }
   .about-page::before {
     left: 34px;
     right: 34px;
   }
   .about-section {
-    padding: 64px 0;
+    padding: 56px 0;
   }
   .article-entry .about-hero h2 {
-    font-size: clamp(40px, 12vw, 68px);
-  }
-  .about-seal {
-    position: static;
-    display: inline-grid;
-    width: 0.46em;
-    height: 0.46em;
-    margin-left: 0.16em;
-    vertical-align: 0.12em;
+    font-size: clamp(36px, 11vw, 52px);
   }
   .article-entry .about-greeting {
-    font-size: 15px;
+    font-size: 14px;
   }
   .article-entry .about-hero .about-lead {
-    font-size: 16px;
-  }
-  .about-section-title > p {
-    font-size: 56px;
-    top: -0.3em;
+    font-size: 15px;
   }
   .article-entry .about-section-title h2 {
-    font-size: 21px;
+    font-size: 20px;
   }
   .about-timeline-item {
     grid-template-columns: 96px 40px minmax(0, 1fr);
@@ -7576,14 +7585,14 @@ html[data-theme="dark"] .article-entry .about-work-card {
 }
 @media (max-width: 480px) {
   .about-page {
-    padding: 44px 22px 52px;
+    padding: 40px 22px 48px;
   }
   .about-page::before {
     left: 22px;
     right: 22px;
   }
   .about-focus-item {
-    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-columns: 36px minmax(0, 1fr);
     gap: 14px;
   }
   .about-timeline-item {
