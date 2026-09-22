@@ -7269,7 +7269,7 @@ body.page-theme-about .article-entry {
   top: 0;
   left: 96px;
   right: 96px;
-  height: 3px;
+  height: 2px;
   background: var(--poster-red);
 }
 
@@ -7300,7 +7300,7 @@ body.page-theme-about .article-entry {
   margin: 0 0 4px;
   color: var(--about-muted);
   font-family: var(--poster-serif);
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 400;
   letter-spacing: 2px;
 }
@@ -7311,38 +7311,39 @@ body.page-theme-about .article-entry {
   margin: 0;
   color: var(--poster-ink);
   font-family: var(--poster-serif);
-  font-size: clamp(72px, 13vw, 148px);
-  font-weight: 700;
-  letter-spacing: 4px;
-  line-height: 0.98;
+  font-size: clamp(52px, 8.5vw, 92px);
+  font-weight: 600;
+  letter-spacing: 3px;
+  line-height: 1.02;
 }
-/* 朱印：右下角一方红印 */
+/* 朱印：线框小印，点到为止 */
 .about-seal {
   position: absolute;
-  top: 0.28em;
-  right: -1.15em;
+  top: 0.22em;
+  right: -1.05em;
   display: grid;
   place-items: center;
-  width: 0.62em;
-  height: 0.62em;
-  border-radius: 6px;
-  background: var(--poster-red);
-  color: #fbfaf8;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 4px;
+  border: 1.5px solid var(--poster-red);
+  background: transparent;
+  color: var(--poster-red);
   font-family: var(--poster-serif);
-  font-size: 0.34em;
-  font-weight: 700;
+  font-size: 0.3em;
+  font-weight: 600;
   line-height: 1;
-  transform: rotate(6deg);
-  box-shadow: 0 2px 8px rgba(178, 58, 46, 0.4);
+  transform: rotate(4deg);
+  box-shadow: none;
 }
 .article-entry .about-hero .about-lead {
   max-width: 640px;
-  margin-top: 34px;
+  margin-top: 26px;
   color: var(--poster-ink);
   font-family: var(--poster-serif);
-  font-size: 21px;
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.7;
+  line-height: 1.8;
   letter-spacing: 0.5px;
 }
 .article-entry .about-hero .about-summary {
@@ -7390,9 +7391,9 @@ body.page-theme-about .article-entry {
   left: 0;
   z-index: 0;
   margin: 0;
-  color: rgba(20, 25, 29, 0.06);
+  color: rgba(20, 25, 29, 0.05);
   font-family: "Courier New", monospace;
-  font-size: 120px;
+  font-size: 96px;
   font-weight: 700;
   letter-spacing: -4px;
   line-height: 1;
@@ -7403,8 +7404,8 @@ body.page-theme-about .article-entry {
   z-index: 1;
   padding-left: 2px;
   font-family: var(--poster-serif);
-  font-size: 30px;
-  font-weight: 700;
+  font-size: 25px;
+  font-weight: 600;
   letter-spacing: 3px;
 }
 
@@ -7426,8 +7427,8 @@ body.page-theme-about .article-entry {
 }
 .article-entry .about-focus-item h3 {
   font-family: var(--poster-serif);
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 1px;
 }
 .article-entry .about-focus-item p {
@@ -7500,7 +7501,8 @@ html[data-theme="dark"] .about-page::before {
   background: var(--poster-red);
 }
 html[data-theme="dark"] .about-seal {
-  color: #16181b;
+  border-color: #d1584a;
+  color: #d1584a;
 }
 html[data-theme="dark"] .about-section-title > p {
   color: rgba(236, 234, 228, 0.07);
@@ -7522,7 +7524,7 @@ html[data-theme="dark"] .article-entry .about-work-card {
     right: -0.95em;
   }
   .about-section-title > p {
-    font-size: 88px;
+    font-size: 76px;
   }
 }
 @media (max-width: 760px) {
@@ -7537,28 +7539,28 @@ html[data-theme="dark"] .article-entry .about-work-card {
     padding: 64px 0;
   }
   .article-entry .about-hero h2 {
-    font-size: clamp(56px, 17vw, 92px);
+    font-size: clamp(40px, 12vw, 68px);
   }
   .about-seal {
     position: static;
     display: inline-grid;
-    width: 0.5em;
-    height: 0.5em;
-    margin-left: 0.18em;
+    width: 0.46em;
+    height: 0.46em;
+    margin-left: 0.16em;
     vertical-align: 0.12em;
   }
   .article-entry .about-greeting {
-    font-size: 18px;
+    font-size: 15px;
   }
   .article-entry .about-hero .about-lead {
-    font-size: 18px;
+    font-size: 16px;
   }
   .about-section-title > p {
-    font-size: 64px;
+    font-size: 56px;
     top: -0.3em;
   }
   .article-entry .about-section-title h2 {
-    font-size: 24px;
+    font-size: 21px;
   }
   .about-timeline-item {
     grid-template-columns: 96px 40px minmax(0, 1fr);
