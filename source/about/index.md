@@ -8,6 +8,13 @@ share: false
 
 <div class="about-page">
 
+<div class="about-motto">
+  <blockquote class="about-motto-quote">
+    <p>人最宝贵的是生命，生命对于每个人只有一次。人的一生应当这样度过：当他回首往事时，不因虚度年华而悔恨，也不因碌碌无为而羞耻；这样，在临终的时候，他能够说：「我的整个生命和全部精力，都已经献给了世界上最壮丽的事业——为人类的解放而斗争。」</p>
+    <cite>—— 保尔 · 柯察金</cite>
+  </blockquote>
+</div>
+
 <header class="about-hero" aria-labelledby="about-name">
 <div class="about-hero-meta"><span>ABOUT / 2026</span><span>BEIJING · CHINA</span></div>
 <div class="about-hero-main">

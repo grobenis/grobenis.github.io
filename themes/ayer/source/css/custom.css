@@ -7099,6 +7099,13 @@ html[data-theme="dark"] body.page-theme-about .article-inner {
 }
 
 /* ---------- 15. 关于页：作品卡片 + 悬停细节 ---------- */
+/* 座右铭横幅适配编辑式版面：直角细边框、轻投影，白底黑字不变 */
+.about-motto {
+  margin: 0 0 44px;
+  padding: 26px 30px;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
 .about-works {
   min-width: 0;
 }
