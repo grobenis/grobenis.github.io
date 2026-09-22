@@ -3002,7 +3002,7 @@ html[data-theme="dark"] .journey-tail-text {
   color: rgba(168, 195, 225, 0.85);
 }
 
-/* ===== 关于四站（与上方夜行轨道同材质） ===== */
+/* ===== 关于页：两章共用车票形制（章节一的内容原语留在下方 .about-* 规则里） ===== */
 /* 座右铭横幅：保留白底「灯箱」的醒目感（呼应「Make about motto prominent」），
    只把边框与投影调成夜间质感 */
 html[data-theme="dark"] .about-motto {
@@ -3018,37 +3018,11 @@ html[data-theme="dark"] .article-entry .about-motto-quote {
   background: transparent;
   border-left-color: rgba(73, 177, 245, 0.75);
 }
-html[data-theme="dark"] .article-entry .about-station-label {
-  color: #74c4f8;
-}
-
-/* 点状轨道 + 车站节点：与 .journey-line 夜行轨道同色 */
-html[data-theme="dark"] .about-rail {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(110, 180, 240, 0.5) 0 8px,
-    transparent 8px 16px
-  );
-}
-html[data-theme="dark"] .about-station::before {
-  background: #101d31;
-  border-color: rgba(110, 180, 240, 0.7);
-}
-html[data-theme="dark"] .about-station:hover::before {
-  background: #49b1f5;
-  border-color: #49b1f5;
-  box-shadow: 0 0 10px rgba(73, 177, 245, 0.85);
-}
-
-/* 玻璃面板 = 夜行色车票同材质 */
-html[data-theme="dark"] .about-panel {
-  background: rgba(25, 40, 62, 0.85);
-  border-color: rgba(100, 165, 225, 0.26);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.32);
-}
-html[data-theme="dark"] .about-station:hover .about-panel {
-  border-color: rgba(110, 175, 235, 0.55);
-  box-shadow: 0 10px 24px rgba(73, 177, 245, 0.22);
+/* 章节一的轨道 / 徽章 / 车票 / 票根都不需要暗色 companion —— 它们就是
+   .journey-line / .journey-badge / .journey-ticket / .journey-stub，
+   第 7 节的 html[data-theme="dark"] .journey-* 那一组已全部覆盖。 */
+html[data-theme="dark"] .about-detail-body {
+  border-top-color: rgba(110, 175, 235, 0.3);
 }
 html[data-theme="dark"] .about-name {
   color: #eaf1f9;
@@ -3266,7 +3240,7 @@ html[data-theme="dark"] .about-modal-close:hover {
    胶囊导航退役——渐隐由第 12b 区块的 opacity:1 兜底封禁，分隔线改由 .nav-mid::before
    画渐隐光线。原规则全部不再生效，故移除，不再保留名字已过时的注释。*/
 
-/* ---------- 9. 关于页：与旅程/归档同构的「轨道 + 玻璃面板」 ---------- */
+/* ---------- 9. 关于页：两章共用「车票」形制（卡片外壳来自第 7 节 .journey-*） ---------- */
 /* 顶部座右铭横幅：简洁白底黑字 */
 .about-motto {
   position: relative;
@@ -3298,76 +3272,37 @@ html[data-theme="dark"] .about-modal-close:hover {
   color: #999;
   text-align: right;
 }
-/* 左侧蓝色点状轨道，右侧一节一节「车站」面板 */
-.about-rail {
-  /* --ab-track = 轨道轴线（2px 宽虚线）的左边缘。它必须与 .journey-line::before
-     的 left 取同一个值：两段轨道同处 /about 一页，轴线错开就会读成「断轨」。
-     journey 的轴心落在徽章中心（桌面 56px 徽章 → 27+1=28px；≤560px 48px 徽章
-     → 23+1=24px），所以本页跟着它走，而不是反过来让 journey 迁就这里。*/
-  --ab-track: 27px;
-  --ab-gap: 2.4rem;
-  position: relative;
-  margin: 26px 0 8px;
-  /* 内容整体让出「轨道自身宽度 + 间距」，面板左缘因此落在 track + gap 上 */
-  padding-left: calc(var(--ab-track) + var(--ab-gap));
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(73, 177, 245, 0.55) 0 8px,
-    transparent 8px 16px
-  ) no-repeat;
-  background-size: 2px 100%;
-  /* 必须写在 background 简写之后——简写会把 position 重置回 0 0 */
-  background-position: var(--ab-track) 0;
-}
-.about-station {
-  position: relative;
-  margin-bottom: 1.5rem;
-}
-/* 车站节点：贴在轨道上的发光圆点（与 .archive-article::before 同款）
-   left 写成「负间距 - 3px」而不是直接引用 --ab-track，是刻意的：它与 .about-rail
-   的 padding-left = track + gap 相消后恒等于 track - 3，于是节点中心永远落在
-   track + 1（即轴线中心）上，轴线位置改了这里也不用跟着改。 */
-.about-station::before {
-  content: "";
-  position: absolute;
-  left: calc(var(--ab-gap) * -1 - 3px);
-  top: 5px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid rgba(73, 177, 245, 0.6);
-  z-index: 1;
-  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.about-station:hover::before {
-  background: #49b1f5;
-  border-color: #49b1f5;
-  box-shadow: 0 0 10px rgba(73, 177, 245, 0.8);
-}
-/* 车站标签：小字距蓝色（对应归档页的年份位） */
-.about-station-label {
-  margin: 0 0 8px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 3px;
+/* 章节一不再自建轨道与玻璃面板 —— 直接复用第 7 节的 .journey-line / .journey-stop /
+   .journey-badge / .journey-ticket / .journey-stub，全页因此只剩一条轨道、一种卡片。
+   轨道轴心（27px，≤560px 23px）、徽章直径、票根宽度、票根齿孔遮罩，以及全部
+   html[data-theme="dark"] .journey-* 夜行配色都由那一套统一供给，故此处只补
+   章节一独有的两处 delta。 */
+
+/* delta 1：旅程徽章装的是品牌图（.journey-badge img），章节一装 Remix 字形图标。
+   暗色下 .journey-badge 仍是白底盘（见第 7 节 dark 规则的注释，它只改
+   border-color / box-shadow），所以 #3aa0e8 在两种主题下都成立，无需 dark 规则。
+   先例：.journey-badge-start span { font-size: 24px }。 */
+.journey-badge-icon i {
+  font-size: 26px;
+  line-height: 1;
   color: #3aa0e8;
 }
-/* 玻璃面板：与 .archive-article-inner 同材质 */
-.about-panel {
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(73, 177, 245, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(70, 110, 150, 0.06);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+/* delta 2：详情区内容容器。刻意不复用 .journey-detail-list —— 它的 li / li::before
+   规则会给 .about-contact li 加上「✦」项目符号。左内距取 18px（而非 16px）是为了让
+   内容左缘落在 x=88，与 .journey-body 的内容左缘对齐（.journey-detail 的
+   margin-left 是 70px，.journey-body 从 72px 起 + 16px 内距）。 */
+.about-detail-body {
+  padding: 12px 16px 14px 18px;
+  border-top: 1px dashed rgba(73, 177, 245, 0.30);
 }
-.about-station:hover .about-panel {
-  transform: translateY(-2px);
-  border-color: rgba(73, 177, 245, 0.45);
-  box-shadow: 0 8px 20px rgba(73, 177, 245, 0.16);
+/* 详情区的上下留白由本容器的 padding 定义，首尾子元素自带的外边距要清掉 ——
+   .about-stats 有 margin-top:16px，.about-desc 是 <p>，会被基座
+   .article-entry p 的 margin:1.5rem 0 打到上下各 24px。0-2-0 足以压过两者。 */
+.about-detail-body > :first-child {
+  margin-top: 0;
+}
+.about-detail-body > :last-child {
+  margin-bottom: 0;
 }
 /* 姓名 + 一句话定位 */
 .about-name {
@@ -3470,8 +3405,8 @@ html[data-theme="dark"] .about-modal-close:hover {
   padding: 16px 12px;
   border-radius: 14px;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.035);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(73, 177, 245, 0.07);
+  border: 1px solid rgba(73, 177, 245, 0.16);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .about-card2 b {
@@ -3479,11 +3414,11 @@ html[data-theme="dark"] .about-modal-close:hover {
   z-index: 1;
   font-size: 17px;
   letter-spacing: 1px;
-  color: #333;
+  color: #303133;
 }
-.about-station:hover .about-card2 {
+.journey-stop:hover .about-card2 {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 16px rgba(73, 177, 245, 0.16);
 }
 @media (max-width: 640px) {
   .about-cards {
@@ -3593,39 +3528,20 @@ html[data-theme="dark"] .about-modal-close:hover {
   line-height: 1;
 }
 @media (max-width: 640px) {
-  .about-rail {
-    --ab-gap: 1.6rem;
-  }
   .about-stats {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .about-work li {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-  .about-panel {
-    padding: 14px 14px 16px;
   }
   .about-name {
     font-size: 21px;
   }
 }
-/* ≤560px 时 .journey-line::before 从 27px 改到 23px（徽章缩到 48px，中心 24px），
-   本页轨道必须同步换轴，否则窄屏下又错开 4px。断点与 journey 保持一致。 */
-@media (max-width: 560px) {
-  .about-rail {
-    --ab-track: 23px;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
-  .about-station::before,
-  .about-panel,
   .about-path a,
   .about-contact a,
-  .about-work li {
+  .journey-stop:hover .about-card2 {
     transition: none;
   }
-  .about-station:hover .about-panel {
+  .journey-stop:hover .about-card2 {
     transform: none;
   }
 }
@@ -6561,170 +6477,623 @@ html[data-theme="dark"] .footer {
   border-top-color: #2a2d33;
 }
 
-/* ---------- 13. 关于页章节导航：个人介绍与旅程使用同一条叙事轨道 ---------- */
-body.page-theme-about .article-entry {
-  --about-accent: #49b1f5;
-  --about-ink: #2c3e50;
-  --about-muted: #6f8495;
+/* ---------- 13. 关于页：结构层（网格骨架、分隔线、暗色 token） ---------- */
+body.page-theme-about {
+  background: #edf0f2 !important;
 }
-
-.about-section-nav {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 auto 34px;
-  padding: 4px;
-  width: fit-content;
-  border: 1px solid rgba(73, 177, 245, 0.2);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.42);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-}
-.about-section-nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 0 16px;
-  border-radius: 999px;
-  color: #6b8497;
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-decoration: none;
-  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-.about-section-nav a:hover,
-.about-section-nav a.is-active {
-  color: #fff;
-  background: var(--about-accent);
-  box-shadow: 0 3px 10px rgba(73, 177, 245, 0.28);
-}
-
-.about-chapter {
-  scroll-margin-top: 24px;
-}
-.about-chapter-header {
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-  margin: 0 0 20px;
-}
-.about-chapter-index {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(73, 177, 245, 0.42);
-  border-radius: 50%;
-  color: var(--about-accent);
-  background: rgba(255, 255, 255, 0.62);
-  font-family: "Courier New", monospace;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0;
-  box-shadow: 0 3px 10px rgba(73, 177, 245, 0.12);
-}
-.about-chapter-kicker {
-  margin: 1px 0 2px !important;
-  color: var(--about-accent) !important;
-  font-family: "Courier New", monospace;
-  font-size: 11px !important;
-  font-weight: 700;
-  letter-spacing: 2px;
-  line-height: 1.3 !important;
-}
-.about-chapter-header h2 {
-  margin: 0 !important;
-  color: var(--about-ink);
-  font-size: 22px;
-  line-height: 1.35;
-}
-.about-chapter-header h2::before {
+body.page-theme-about::before {
   display: none;
 }
-.about-chapter-header > div > p:last-child {
-  margin: 5px 0 0 !important;
+body.page-theme-about .article-inner {
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(28, 36, 43, 0.07);
+}
+body.page-theme-about .article-inner:hover {
+  transform: none;
+  box-shadow: 0 10px 30px rgba(28, 36, 43, 0.07);
+}
+body.page-theme-about .article-header {
+  display: none;
+}
+body.page-theme-about .article-entry {
+  --about-text: #26313a;
+  --about-muted: #6d7880;
+  --about-line: #dce1e4;
+  --about-accent: #2679a8;
+  margin: 0;
+  padding: 0;
+}
+.about-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 68px 54px 60px;
+  color: var(--about-text);
+}
+.about-intro {
+  padding-bottom: 52px;
+  border-bottom: 1px solid var(--about-line);
+}
+.about-eyebrow,
+.article-entry .about-eyebrow {
+  margin: 0 0 16px;
+  color: var(--about-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.4;
+}
+.article-entry .about-intro h2 {
+  margin: 0;
+  color: var(--about-text);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+.article-entry .about-intro h2::before,
+.article-entry .about-section-title h2::before {
+  display: none;
+}
+.article-entry .about-lead {
+  max-width: 620px;
+  margin: 18px 0 0;
+  color: #3f4a52;
+  font-size: 18px;
+  line-height: 1.8;
+}
+.article-entry .about-summary {
+  max-width: 650px;
+  margin: 18px 0 0;
   color: var(--about-muted);
+  font-size: 14.5px;
+  line-height: 2;
+}
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 26px;
+}
+.article-entry .about-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #55636d;
   font-size: 13px;
-  line-height: 1.7;
+  text-decoration: none;
 }
-.about-profile-chapter .about-rail {
-  margin-top: 6px;
+.article-entry .about-actions a:hover {
+  color: var(--about-accent);
 }
-.about-journey-chapter {
-  margin-top: 46px;
-  padding-top: 34px;
-  border-top: 1px solid rgba(255, 255, 255, 0.72);
+.about-actions i {
+  font-size: 16px;
 }
-.about-journey-chapter .journey {
-  margin-top: 0;
+.about-section {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 36px;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--about-line);
 }
-.about-journey-chapter .journey-head {
-  margin-top: 0;
+.about-section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
-.about-journey-chapter .journey-tail {
-  margin-top: 0;
+.about-section-title > p,
+.article-entry .about-section-title > p {
+  margin: 2px 0 7px;
+  color: #90999f;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+}
+.article-entry .about-section-title h2 {
+  margin: 0;
+  color: var(--about-text);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+.about-focus-list,
+.about-timeline {
+  min-width: 0;
+}
+.about-focus-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 15px;
+  padding: 0 0 24px;
+}
+.about-focus-item + .about-focus-item {
+  padding-top: 24px;
+  border-top: 1px solid var(--about-line);
+}
+.about-focus-item:last-child {
+  padding-bottom: 0;
+}
+.about-focus-index {
+  color: #a0a8ad;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.article-entry .about-focus-item h3,
+.article-entry .about-timeline-item h3 {
+  margin: 0;
+  color: var(--about-text);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+.article-entry .about-focus-item p {
+  margin: 6px 0 0;
+  color: var(--about-muted);
+  font-size: 13.5px;
+  line-height: 1.85;
+}
+.about-timeline-item {
+  display: grid;
+  grid-template-columns: 94px 34px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  position: relative;
+  min-height: 52px;
+  padding: 11px 0;
+}
+.about-timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 110px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--about-line);
+}
+.about-timeline-item:first-child::before {
+  top: 50%;
+}
+.about-timeline-item:last-child::before {
+  bottom: 50%;
+}
+.about-timeline-item time {
+  color: #7f898f;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.about-timeline-item img {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid var(--about-line);
+  border-radius: 50%;
+  background: #fff;
+  object-fit: contain;
+}
+.about-timeline-item.is-current img {
+  border-color: rgba(38, 121, 168, 0.55);
+}
+.article-entry .about-timeline-item p {
+  margin: 2px 0 0;
+  color: var(--about-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.about-writing-copy {
+  min-width: 0;
+}
+.article-entry .about-writing-copy p {
+  margin: 0;
+  color: var(--about-muted);
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+.article-entry .about-writing-copy p + p {
+  margin-top: 13px;
+}
+.about-footer-links {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: -12px;
+}
+.article-entry .about-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--about-accent);
+  font-size: 12.5px;
+  text-decoration: none;
+}
+.about-footer-links i {
+  font-size: 13px;
 }
 
-html[data-theme="dark"] .about-section-nav {
-  border-color: rgba(110, 175, 235, 0.26);
-  background: rgba(23, 37, 58, 0.58);
+html[data-theme="dark"] body.page-theme-about {
+  background: #181b1f !important;
 }
-html[data-theme="dark"] .about-section-nav a {
-  color: #a9bbcf;
+html[data-theme="dark"] body.page-theme-about .article-inner {
+  background: #23272c;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
 }
-html[data-theme="dark"] .about-section-nav a:hover,
-html[data-theme="dark"] .about-section-nav a.is-active {
-  color: #fff;
+html[data-theme="dark"] body.page-theme-about .article-entry {
+  --about-text: #e3e7ea;
+  --about-muted: #a7b0b7;
+  --about-line: #373d43;
+  --about-accent: #70b8df;
 }
-html[data-theme="dark"] .about-chapter-index {
-  border-color: rgba(110, 175, 235, 0.5);
-  background: rgba(23, 37, 58, 0.78);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.24);
+html[data-theme="dark"] .article-entry .about-lead {
+  color: #c8d0d5;
 }
-html[data-theme="dark"] .about-chapter-header h2 {
-  color: #eaf1f9;
+html[data-theme="dark"] .article-entry .about-actions a {
+  color: #aeb8bf;
 }
-html[data-theme="dark"] .about-chapter-header > div > p:last-child {
-  color: #a9bbcf;
+html[data-theme="dark"] .article-entry .about-actions a:hover,
+html[data-theme="dark"] .article-entry .about-footer-links a {
+  color: var(--about-accent);
 }
-html[data-theme="dark"] .about-journey-chapter {
-  border-top-color: rgba(110, 175, 235, 0.2);
+html[data-theme="dark"] .about-timeline-item img {
+  background: #f4f6f7;
 }
 
-@media (max-width: 560px) {
-  .about-section-nav {
-    margin-bottom: 28px;
+@media (max-width: 680px) {
+  .about-page {
+    padding: 42px 24px 44px;
   }
-  .about-section-nav a {
-    padding: 0 13px;
+  .about-intro {
+    padding-bottom: 38px;
   }
-  .about-chapter-header {
-    grid-template-columns: 34px minmax(0, 1fr);
-    gap: 11px;
-    margin-bottom: 16px;
+  .article-entry .about-intro h2 {
+    font-size: 27px;
   }
-  .about-chapter-index {
+  .article-entry .about-lead {
+    font-size: 16px;
+  }
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 38px 0;
+  }
+  .about-footer-links {
+    grid-column: 1;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .about-page {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .about-timeline-item {
+    grid-template-columns: 76px 30px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .about-timeline-item::before {
+    left: 90px;
+  }
+  .about-timeline-item img {
     width: 30px;
     height: 30px;
-    font-size: 11px;
   }
-  .about-chapter-header h2 {
-    font-size: 19px;
-  }
-  .about-chapter-header > div > p:last-child {
-    font-size: 12px;
-  }
-  .about-journey-chapter {
-    margin-top: 34px;
-    padding-top: 26px;
+  .about-timeline-item time {
+    font-size: 10px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .about-section-nav a {
-    transition: none;
+/* ---------- 14. 关于页：编辑式个人主页（视觉层，覆盖第 13 节） ---------- */
+/* 主题默认 .outer 锁死 70rem(700px)，本节栅格按 980px 卡片设计，
+   若不解锁，章节标题栏 + 间距会吃掉一半宽度，正文列只剩 120px 左右。
+   桌面端左侧还有 80px 固定导航面板，故窄屏时按视口宽度收缩。 */
+body.page-theme-about .outer,
+body.page-theme-about .wrap {
+  width: 100%;
+  max-width: min(980px, max(700px, calc(100% - 240px)));
+}
+body.page-theme-about {
+  background: #f3f4f5 !important;
+}
+body.page-theme-about .article-inner {
+  max-width: 980px;
+  margin: 30px auto 50px;
+  border: 1px solid #dfe3e6;
+  border-radius: 2px;
+  background: #fff;
+  /* 双层投影：近处一层贴边、远处一层落地，卡片从底色里「立」起来但不浮 */
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 16px 40px rgba(16, 24, 40, 0.06);
+}
+body.page-theme-about .article-entry {
+  --about-text: #202a31;
+  --about-muted: #68747b;
+  --about-line: #dfe4e6;
+  --about-accent: #2b718e;
+}
+.about-page {
+  max-width: none;
+  padding: 72px 82px 76px;
+}
+.about-hero {
+  padding-bottom: 34px;
+  border-bottom: 1px solid var(--about-line);
+}
+.about-hero-meta,
+.about-hero-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #899399;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+.about-hero-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px;
+  gap: 44px;
+  align-items: end;
+  padding: 58px 0 46px;
+}
+.about-hero-copy {
+  min-width: 0;
+}
+.about-eyebrow,
+.article-entry .about-eyebrow {
+  margin: 0 0 20px;
+  color: var(--about-accent);
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+}
+.article-entry .about-hero h2 {
+  max-width: 650px;
+  margin: 0;
+  color: var(--about-text);
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+.article-entry .about-hero h2::before {
+  display: none;
+}
+.article-entry .about-hero .about-lead {
+  margin: 18px 0 0;
+  color: var(--about-text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+.article-entry .about-hero .about-summary {
+  max-width: 570px;
+  margin: 9px 0 0;
+  color: var(--about-muted);
+  font-size: 14px;
+  line-height: 2;
+}
+.about-hero-side {
+  display: flex;
+  min-height: 150px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-left: 26px;
+  border-left: 1px solid var(--about-line);
+}
+.about-side-mark {
+  color: var(--about-accent);
+  font-family: "Times New Roman", "Songti SC", serif;
+  font-size: 82px;
+  font-weight: 400;
+  line-height: 0.8;
+}
+.about-side-name {
+  color: #899399;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+}
+.about-hero-foot {
+  padding-top: 18px;
+  border-top: 1px solid var(--about-line);
+}
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  /* 必须显式归零：第 13 节给 actions 留了 margin-top，现在 actions
+     嵌在 hero-foot 的 flex 行里，残留 margin 会把它压到下一行。 */
+  margin-top: 0;
+}
+.article-entry .about-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #5d6b72;
+  font-size: 11px;
+  text-decoration: none;
+}
+.article-entry .about-actions a:hover {
+  color: var(--about-accent);
+}
+.about-actions i {
+  font-size: 14px;
+}
+.about-section {
+  grid-template-columns: 130px minmax(0, 1fr);
+  /* 只留列间距：grid 的 gap 会同时作用于行，会让「关于这个博客」的
+     正文与底部链接之间凭空多出 48px。 */
+  column-gap: 40px;
+  row-gap: 0;
+  padding: 64px 0;
+}
+.about-section-title > p,
+.article-entry .about-section-title > p {
+  margin: 4px 0 12px;
+  color: var(--about-accent);
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1.4;
+}
+.article-entry .about-section-title h2 {
+  color: var(--about-text);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.about-focus-item {
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 18px;
+  padding: 0 0 28px;
+}
+.about-focus-item + .about-focus-item {
+  padding-top: 28px;
+}
+.about-focus-index {
+  padding-top: 2px;
+  color: #a3adb2;
+  font-size: 10px;
+}
+.article-entry .about-focus-item h3,
+.article-entry .about-timeline-item h3 {
+  color: var(--about-text);
+  font-size: 16px;
+  font-weight: 600;
+}
+.article-entry .about-focus-item p {
+  max-width: 520px;
+  margin-top: 7px;
+  color: var(--about-muted);
+  font-size: 13.5px;
+  line-height: 1.9;
+}
+.about-timeline-item {
+  grid-template-columns: 112px 40px minmax(0, 1fr);
+  gap: 18px;
+  padding: 16px 0;
+}
+/* 竖线落在图标列的中轴上，穿过圆形徽标；配合首尾 50% 的裁剪，
+   视觉上是「一条线串起所有站点」。 */
+.about-timeline-item::before {
+  left: 149px;
+}
+.about-timeline-item time {
+  color: #7f898f;
+  font-size: 11px;
+}
+.about-timeline-item img {
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+}
+.article-entry .about-timeline-item p {
+  margin-top: 3px;
+  color: var(--about-muted);
+  font-size: 13px;
+}
+.article-entry .about-writing-copy p {
+  max-width: 540px;
+  color: var(--about-muted);
+  font-size: 13.5px;
+  line-height: 2;
+}
+.about-footer-links {
+  gap: 12px 28px;
+  margin-top: 21px;
+}
+.article-entry .about-footer-links a {
+  color: var(--about-accent);
+  font-size: 12px;
+}
+
+html[data-theme="dark"] body.page-theme-about {
+  background: #171a1d !important;
+}
+html[data-theme="dark"] body.page-theme-about .article-inner {
+  border-color: #343a3f;
+  background: #22272b;
+}
+
+@media (max-width: 760px) {
+  body.page-theme-about .article-inner {
+    margin: 0 auto 30px;
+    border-right: 0;
+    border-left: 0;
+  }
+  .about-page {
+    padding: 48px 30px 54px;
+  }
+  .about-hero-main {
+    grid-template-columns: minmax(0, 1fr) 104px;
+    gap: 28px;
+    padding: 46px 0 36px;
+  }
+  .article-entry .about-hero h2 {
+    font-size: 31px;
+  }
+  .about-hero-side {
+    min-height: 125px;
+    padding-left: 18px;
+  }
+  .about-side-mark {
+    font-size: 68px;
+  }
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 42px 0;
+  }
+  .about-footer-links {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page {
+    padding: 38px 21px 44px;
+  }
+  .about-hero-meta,
+  .about-hero-foot {
+    font-size: 9px;
+  }
+  .about-hero-main {
+    display: block;
+    padding: 42px 0 30px;
+  }
+  .article-entry .about-hero h2 {
+    font-size: 29px;
+  }
+  .about-hero-side {
+    display: none;
+  }
+  .about-hero-foot {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .about-timeline-item {
+    grid-template-columns: 82px 32px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .about-timeline-item::before {
+    left: 107px;
+  }
+  .about-timeline-item img {
+    width: 32px;
+    height: 32px;
   }
 }

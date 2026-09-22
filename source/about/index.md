@@ -6,453 +6,107 @@ layout: "about"
 share: false
 ---
 
-<div class="about-motto">
-  <blockquote class="about-motto-quote">
-    <p>人最宝贵的是生命，生命对于每个人只有一次。人的一生应当这样度过：当他回首往事时，不因虚度年华而悔恨，也不因碌碌无为而羞耻；这样，在临终的时候，他能够说：「我的整个生命和全部精力，都已经献给了世界上最壮丽的事业——为人类的解放而斗争。」</p>
-    <cite>—— 保尔 · 柯察金</cite>
-  </blockquote>
-</div>
+<div class="about-page">
 
-<nav class="about-section-nav" aria-label="关于页章节">
-<a class="is-active" href="#about-profile">认识我</a>
-<a href="#about-journey">旅程</a>
-</nav>
-
-<section class="about-chapter about-profile-chapter" id="about-profile">
-<header class="about-chapter-header">
-<span class="about-chapter-index">01</span>
-<div>
-<p class="about-chapter-kicker">ABOUT ME</p>
-<h2>认识我</h2>
-<p>把复杂问题拆开、验证，再做成可靠而有用的东西。</p>
+<header class="about-hero" aria-labelledby="about-name">
+<div class="about-hero-meta"><span>ABOUT / 2026</span><span>BEIJING · CHINA</span></div>
+<div class="about-hero-main">
+<div class="about-hero-copy">
+<p class="about-eyebrow">算法工程师 / 独立开发者</p>
+<h2 id="about-name">你好，我是郭犇。</h2>
+<p class="about-lead">专注于空间感知，也在做自己的产品。</p>
+<p class="about-summary">我在空间感知领域工作，也在业余时间做自己的产品。喜欢从一个具体问题出发，弄清楚它，再把答案做成真正能用的东西。</p>
 </div>
+<div class="about-hero-side" aria-label="个人标识">
+  <span class="about-side-mark">G</span>
+  <span class="about-side-name">GUO BEN<br>GROBENIS</span>
+</div>
+</div>
+<div class="about-hero-foot"><span>SLAM · COMPUTER VISION · WORLD MODEL</span><div class="about-actions" aria-label="联系方式">
+  <a href="https://github.com/grobenis" target="_blank" rel="noopener"><i class="ri-github-line" aria-hidden="true"></i><span>GitHub</span></a>
+  <a href="https://b23.tv/NxZwwwA" target="_blank" rel="noopener"><i class="ri-bilibili-line" aria-hidden="true"></i><span>B 站</span></a>
+  <a href="mailto:guoben@buaa.edu.cn"><i class="ri-mail-line" aria-hidden="true"></i><span>邮件</span></a>
+</div><span>2014 — NOW</span></div>
 </header>
 
-<div class="about-rail">
-
-<div class="about-station">
-<h3 class="about-station-label">我是谁</h3>
-<div class="about-station-body">
-<div class="about-panel">
-<div class="about-name">郭犇<span class="about-name-en">grobenis</span></div>
-<p class="about-tagline">SLAM / 计算机视觉算法工程师 —— 让机器回答「我在哪，要去哪」。</p>
-<div class="about-stats">
-<div class="about-stat"><b>67</b><span>篇原创</span></div>
-<div class="about-stat"><b>7</b><span>年笔耕 · 2020→2026</span></div>
-<div class="about-stat"><b>3</b><span>段工程实践</span></div>
-<div class="about-stat"><b>∞</b><span>未解的 bug</span></div>
-</div>
-<div class="about-path">
-<span class="about-path-now">它石智航 · 空间智能</span>
-</div>
-</div>
-</div>
-</div>
-
-<div class="about-station">
-<h3 class="about-station-label">在做什么</h3>
-<div class="about-station-body">
-<div class="about-panel">
-<div class="about-cards">
-<div class="about-card2"><b>世界模型</b></div>
-<div class="about-card2"><b>空间智能</b></div>
-<div class="about-card2"><b>独立游戏</b></div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="about-station">
-<h3 class="about-station-label">写些什么</h3>
-<div class="about-station-body">
-<div class="about-panel">
-<div class="about-cards">
-<div class="about-card2"><b>学习笔记</b></div>
-<div class="about-card2"><b>个人随笔</b></div>
-<div class="about-card2"><b>过往复盘</b></div>
-</div>
-<p class="about-desc">去 <a href="/archives/">归档页</a> 顶部分类筛选看更多。</p>
-</div>
-</div>
-</div>
-
-<div class="about-station">
-<h3 class="about-station-label">找到我</h3>
-<div class="about-station-body">
-<div class="about-panel">
-<ul class="about-contact">
-<li><a href="https://github.com/grobenis" target="_blank" rel="noopener"><i class="ri-github-line"></i>github.com/grobenis</a></li>
-<li><a href="https://b23.tv/NxZwwwA" target="_blank" rel="noopener"><i class="ri-bilibili-line"></i>B站 · 万斤金牛牛</a></li>
-<li><a href="https://blog.csdn.net/GuoBen_" target="_blank" rel="noopener"><i class="ri-customer-service-2-line"></i>CSDN · GuoBen_</a></li>
-<li><a href="mailto:guoben@buaa.edu.cn"><i class="ri-mail-line"></i>guoben@buaa.edu.cn</a></li>
-</ul>
-</div>
-</div>
-</div>
-
-</div>
-
-</section>
-
-<section class="about-chapter about-journey-chapter" id="about-journey">
-<header class="about-chapter-header">
-<span class="about-chapter-index">02</span>
-<div>
-<p class="about-chapter-kicker">JOURNEY</p>
-<h2>一路走来</h2>
-<p>从数学与计算，到让机器理解自己身处的空间。</p>
-</div>
-</header>
-
-<div class="journey">
-
-<div class="journey-head">
-<div class="journey-head-item">
-<span class="journey-head-label">车次</span>
-<span class="journey-head-value">旅程号 · G1996</span>
-</div>
-<div class="journey-head-route">
-<span>出发</span>
-<span class="journey-head-track"></span>
-<span>未来</span>
-</div>
-<div class="journey-head-item journey-head-right">
-<span class="journey-head-label">状态</span>
-<span class="journey-head-value">运行中</span>
-</div>
-</div>
-
-<div class="journey-tail">
-<span class="journey-tail-text">下一站 · 未来 —— 旅程仍在继续</span>
-<span class="journey-tail-line"></span>
-</div>
-
-<div class="journey-line">
-
-<div class="journey-stop is-now">
-<div class="journey-badge"><img src="/assets/img/timeline/itashihang.png" alt="它石智航"></div>
-<div class="journey-ticket has-detail">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">至今</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2025</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>它石智航</h3>
-<span class="journey-tag">当前站</span>
-</div>
-<p class="journey-role">感知部 · SLAM算法工程师</p>
-<p class="journey-note">继续在 SLAM 路上，回答“我在哪”</p>
-</div>
-</div>
-<div class="journey-detail">
-<div class="journey-detail-inner">
-<ul class="journey-detail-list">
-<li>世界模型</li>
-<li>空间智能</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge"><img src="/assets/img/timeline/nullmax.jpg" alt="纽劢科技"></div>
-<div class="journey-ticket has-detail">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2025</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2022</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>纽劢科技</h3>
-<span class="journey-tag">工作</span>
-</div>
-<p class="journey-role">感知部 · SLAM算法工程师</p>
-<p class="journey-note">转战自动驾驶，让机器知道自己在哪</p>
-</div>
-</div>
-<div class="journey-detail">
-<div class="journey-detail-inner">
-<ul class="journey-detail-list">
-<li>AutoGT</li>
-<li>多视图标定</li>
-<li>世界模型</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge"><img src="/assets/img/timeline/xiaomi.webp" alt="小米"></div>
-<div class="journey-ticket">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2022</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2021</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>小米</h3>
-<span class="journey-tag">工作</span>
-</div>
-<p class="journey-role">手机部 · 可穿戴算法工程师</p>
-<p class="journey-note">做可穿戴算法，让设备学会感知</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge"><img src="/assets/img/timeline/beihang.svg" alt="北京航空航天大学"></div>
-<div class="journey-ticket">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2021</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2018</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>北京航空航天大学</h3>
-<span class="journey-tag">求学</span>
-</div>
-<p class="journey-role">计算机学院 · 虚拟现实方向</p>
-<p class="journey-note">读研研究虚拟现实，学着造一个世界</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge"><img src="/assets/img/timeline/nanhang.png" alt="南京航空航天大学"></div>
-<div class="journey-ticket">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2018</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2014</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>南京航空航天大学</h3>
-<span class="journey-tag">求学</span>
-</div>
-<p class="journey-role">理学院 · 信息与计算科学</p>
-<p class="journey-note">在航空院校学数学与计算，给青春定坐标</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-fold" data-fold-target="journeyBeforeCollege">
-<button class="journey-fold-btn" type="button" aria-controls="journeyBeforeCollege" aria-expanded="false">
-<span class="journey-fold-label">展开大学以前的旅程</span>
-<span class="journey-fold-arrow">▾</span>
-</button>
-</div>
-
-<div class="journey-foldable" id="journeyBeforeCollege">
-
-<div class="journey-stop">
-<div class="journey-badge journey-badge-start"><span>📚</span></div>
-<div class="journey-ticket has-detail">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2014</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2011</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>高中</h3>
-<span class="journey-tag">求学</span>
-</div>
-<p class="journey-note">三年磨一剑，埋头书山等一场高考</p>
-</div>
-</div>
-<div class="journey-detail">
-<div class="journey-detail-inner">
-<ul class="journey-detail-list">
-<li>中华圣陶杯全国作文大赛一等奖</li>
-<li>新概念中文大赛省级三等奖</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge journey-badge-start"><span>🏫</span></div>
-<div class="journey-ticket">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2011</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2008</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>初中</h3>
-<span class="journey-tag">求学</span>
-</div>
-<p class="journey-note">少年初长成，开始懂得努力的意义</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge journey-badge-start"><span>🎒</span></div>
-<div class="journey-ticket">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">2008</span>
-<span class="journey-stub-arrow">↑</span>
-<span class="journey-year">2003</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>小学</h3>
-<span class="journey-tag">求学</span>
-</div>
-<p class="journey-note">五年制小学，读书识字，撒欢长大</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="journey-stop">
-<div class="journey-badge journey-badge-start"><span>🎂</span></div>
-<div class="journey-ticket">
-<div class="journey-ticket-main">
-<div class="journey-stub">
-<span class="journey-year">1996</span>
-</div>
-<div class="journey-body">
-<div class="journey-title">
-<h3>出生</h3>
-<span class="journey-tag">出发</span>
-</div>
-<p class="journey-note">汽笛拉响，旅程从这里出发</p>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-
-</section>
-
-<div class="about-links">
-  <a href="javascript:void(0)" id="about-info-btn" title="关于本站"><i class="ri-information-line"></i><span>关于本站</span></a>
-  <a href="https://cparadox.github.io/" target="_blank" rel="noopener" title="友链：仔仔的博客"><i class="ri-links-line"></i><span>友链</span></a>
-  <a href="javascript:void(0)" id="about-rss-btn" title="订阅 RSS"><i class="ri-rss-line"></i><span>订阅</span></a>
-</div>
-
-</div>
-
-<div class="about-modal" id="aboutModal">
-  <div class="about-modal-card">
-    <button class="about-modal-close" id="aboutModalClose" title="关闭"><i class="ri-close-line"></i></button>
-    <h3>曾是少年</h3>
-    <p class="about-modal-sub">记录技术、思考与生活</p>
-    <ul>
-      <li>站长：郭犇（grobenis）</li>
-      <li>方向：视觉 SLAM / 多传感器融合 / 三维重建</li>
-      <li>框架：Hexo · Ayer 主题 · GitHub Pages</li>
-    </ul>
+<section class="about-section" aria-labelledby="about-now">
+<div class="about-section-title">
+  <p>01 / NOW</p>
+  <h2 id="about-now">我在做什么</h2>
+</div>
+<div class="about-focus-list">
+  <div class="about-focus-item">
+    <span class="about-focus-index">01</span>
+    <div>
+      <h3>空间智能</h3>
+      <p>在它石智航从事 SLAM 算法工作，关注机器人如何定位、建图并理解所处的空间。</p>
+    </div>
+  </div>
+  <div class="about-focus-item">
+    <span class="about-focus-index">02</span>
+    <div>
+      <h3>世界模型</h3>
+      <p>持续探索视觉、三维感知与世界模型的结合，也记录工程落地中的判断与取舍。</p>
+    </div>
+  </div>
+  <div class="about-focus-item">
+    <span class="about-focus-index">03</span>
+    <div>
+      <h3>独立开发</h3>
+      <p>利用业余时间做自己的产品，练习从需求、设计、开发到发布的完整过程。</p>
+    </div>
   </div>
 </div>
-<div class="about-toast" id="aboutToast">RSS 订阅链接已复制</div>
-<script>
-(function () {
-  var modal = document.getElementById('aboutModal');
-  var infoBtn = document.getElementById('about-info-btn');
-  var closeBtn = document.getElementById('aboutModalClose');
-  var rssBtn = document.getElementById('about-rss-btn');
-  var toast = document.getElementById('aboutToast');
-  var timer = null;
-  if (infoBtn && modal) {
-    infoBtn.onclick = function () { modal.style.display = 'flex'; };
-    closeBtn.onclick = function () { modal.style.display = 'none'; };
-    modal.onclick = function (e) { if (e.target === modal) modal.style.display = 'none'; };
-  }
-  function fallbackCopy(text) {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy'); } catch (e) {}
-    document.body.removeChild(ta);
-  }
-  function showToast() {
-    toast.style.opacity = '1';
-    clearTimeout(timer);
-    timer = setTimeout(function () { toast.style.opacity = '0'; }, 2000);
-  }
-  if (rssBtn && toast) {
-    rssBtn.onclick = function () {
-      var url = location.origin + '/atom.xml';
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(showToast, function () { fallbackCopy(url); showToast(); });
-      } else {
-        fallbackCopy(url);
-        showToast();
-      }
-    };
-  }
-})();
-</script>
-<script>
-(function () {
-  var tickets = document.querySelectorAll('.journey-ticket.has-detail');
-  Array.prototype.forEach.call(tickets, function (ticket) {
-    ticket.setAttribute('tabindex', '0');
-    ticket.setAttribute('aria-expanded', 'false');
-    var toggle = function () {
-      var open = ticket.classList.toggle('is-open');
-      ticket.setAttribute('aria-expanded', open ? 'true' : 'false');
-    };
-    ticket.addEventListener('click', toggle);
-    ticket.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle();
-      }
-    });
-  });
+</section>
 
-  /* 大学以前的旅程折叠:默认收起,点击按钮展开/收起 */
-  var foldBtns = document.querySelectorAll('.journey-fold-btn');
-  Array.prototype.forEach.call(foldBtns, function (btn) {
-    var targetId = btn.getAttribute('aria-controls');
-    if (!targetId) return;
-    var panel = document.getElementById(targetId);
-    if (!panel) return;
-    var label = btn.querySelector('.journey-fold-label');
-    var arrow = btn.querySelector('.journey-fold-arrow');
-    btn.addEventListener('click', function () {
-      var open = panel.classList.toggle('is-shown');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (label) label.textContent = open ? '收起大学以前的旅程' : '展开大学以前的旅程';
-      if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
-    });
-    btn.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        btn.click();
-      }
-    });
-  });
-})();
-</script>
+<section class="about-section" aria-labelledby="about-path">
+<div class="about-section-title">
+  <p>02 / EXPERIENCE</p>
+  <h2 id="about-path">经历</h2>
+</div>
+<div class="about-timeline">
+  <div class="about-timeline-item is-current">
+    <time>2025 — 至今</time>
+    <img src="/assets/img/timeline/itashihang.png" alt="" aria-hidden="true">
+    <div><h3>它石智航</h3><p>感知部 · SLAM 算法工程师</p></div>
+  </div>
+  <div class="about-timeline-item">
+    <time>2022 — 2025</time>
+    <img src="/assets/img/timeline/nullmax.jpg" alt="" aria-hidden="true">
+    <div><h3>纽劢科技</h3><p>感知部 · SLAM 算法工程师</p></div>
+  </div>
+  <div class="about-timeline-item">
+    <time>2021 — 2022</time>
+    <img src="/assets/img/timeline/xiaomi.webp" alt="" aria-hidden="true">
+    <div><h3>小米</h3><p>手机部 · 可穿戴算法工程师</p></div>
+  </div>
+  <div class="about-timeline-item">
+    <time>2018 — 2021</time>
+    <img src="/assets/img/timeline/beihang.svg" alt="" aria-hidden="true">
+    <div><h3>北京航空航天大学</h3><p>计算机学院 · 虚拟现实方向</p></div>
+  </div>
+  <div class="about-timeline-item">
+    <time>2014 — 2018</time>
+    <img src="/assets/img/timeline/nanhang.png" alt="" aria-hidden="true">
+    <div><h3>南京航空航天大学</h3><p>理学院 · 信息与计算科学</p></div>
+  </div>
+</div>
+</section>
+
+<section class="about-section about-writing" aria-labelledby="about-writing">
+<div class="about-section-title">
+  <p>03 / WRITING</p>
+  <h2 id="about-writing">关于这个博客</h2>
+</div>
+<div class="about-writing-copy">
+  <p>这里主要写技术实践、学习笔记和阶段性复盘。我希望文章不只是记录结果，也尽量留下问题是怎样被发现、验证和解决的。</p>
+  <p>博客从 2020 年写到现在。它既是一份公开笔记，也是我回看自己如何理解问题、如何改变想法的地方。</p>
+</div>
+<div class="about-footer-links">
+  <a href="/archives/"><span>浏览归档</span><i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+  <a href="https://blog.csdn.net/GuoBen_" target="_blank" rel="noopener"><span>CSDN</span><i class="ri-external-link-line" aria-hidden="true"></i></a>
+  <a href="/atom.xml"><span>RSS</span><i class="ri-rss-line" aria-hidden="true"></i></a>
+</div>
+</section>
+
+</div>
