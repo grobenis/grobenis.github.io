@@ -20,7 +20,8 @@ share: false
 <div class="about-hero-main">
 <div class="about-hero-copy">
 <p class="about-eyebrow">算法工程师 / 独立开发者</p>
-<h2 id="about-name">你好，我是郭犇。</h2>
+<p class="about-greeting">你好，我是</p>
+<h2 id="about-name">郭犇<span class="about-seal" aria-hidden="true">犇</span></h2>
 <p class="about-lead">专注于空间感知，也在做自己的产品。</p>
 <p class="about-summary">喜欢从一个具体问题出发，把它弄清楚，再把答案做成真正能用的东西。工作里研究机器人如何理解空间，工作之外把想法打磨成可以上手的产品。</p>
 </div>

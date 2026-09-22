@@ -3143,7 +3143,7 @@ html[data-theme="dark"] .about-modal-close:hover {
 }
 /* 生活区（左下角）：覆盖 navbar-bottom 的 2rem 大字号 */
 .navbar-bottom .nav-life .nav-item-link {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   padding: 0.5rem 1rem;
 }
 
@@ -3920,7 +3920,7 @@ html[data-theme="dark"] .about-modal-close:hover {
   margin: 3px 12px;
   padding: 0.45rem 0.7rem;
   border-radius: 999px;
-  font-size: 1.15rem;
+  font-size: 1.32rem;
   letter-spacing: 2px;
   color: rgba(228, 235, 244, 0.78);
   transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
@@ -3978,12 +3978,12 @@ html[data-theme="dark"] .about-modal-close:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 2.6rem;
+  height: 2.6rem;
   margin: 0.5rem auto;
   padding: 0;
   border-radius: 50%;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: rgba(228, 235, 244, 0.72);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -7228,5 +7228,372 @@ html[data-theme="dark"] .about-timeline-item:hover img {
   }
   .about-work-arrow {
     display: none;
+  }
+}
+
+/* ---------- 16. 关于页：高级海报化重设计（覆盖第 13/14/15 节） ---------- */
+/* 设计语言：巨号衬线姓名作视觉主角 + 朱印点缀 + 超大留白 + 细发丝线 +
+   章节编号做成「幽灵大字」。整页像一张可滚动的展览海报。 */
+:root {
+  --poster-ink: #14191d;
+  --poster-red: #b23a2e;
+  --poster-serif: "Songti SC", "Noto Serif SC", "STSong", "SimSun", serif;
+}
+/* 座右铭左边条：蓝色 → 朱色，融入海报色板 */
+.article-entry .about-motto-quote {
+  border-left-color: var(--poster-red);
+}
+html[data-theme="dark"] .article-entry .about-motto-quote {
+  border-left-color: #d1584a;
+}
+body.page-theme-about .article-inner {
+  border: 0;
+  border-radius: 0;
+  background: #fbfaf8;
+  box-shadow: 0 24px 70px rgba(20, 25, 29, 0.12);
+}
+body.page-theme-about .article-entry {
+  --about-text: var(--poster-ink);
+  --about-muted: #6a7178;
+  --about-line: #e4e0d8;
+  --about-accent: var(--poster-red);
+}
+.about-page {
+  position: relative;
+  padding: 96px 96px 108px;
+}
+/* 顶部一道朱色细线，像海报的边压 */
+.about-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 96px;
+  right: 96px;
+  height: 3px;
+  background: var(--poster-red);
+}
+
+/* Hero：姓名即海报主视觉 */
+.about-hero {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.about-hero-meta {
+  color: #9aa0a3;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+.about-hero-main {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: 40px 0 8px;
+  align-items: start;
+}
+.about-eyebrow,
+.article-entry .about-eyebrow {
+  margin-bottom: 26px;
+  color: var(--poster-red);
+  font-size: 12px;
+  letter-spacing: 4px;
+}
+.article-entry .about-greeting {
+  margin: 0 0 4px;
+  color: var(--about-muted);
+  font-family: var(--poster-serif);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+.article-entry .about-hero h2 {
+  position: relative;
+  display: inline-block;
+  max-width: none;
+  margin: 0;
+  color: var(--poster-ink);
+  font-family: var(--poster-serif);
+  font-size: clamp(72px, 13vw, 148px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  line-height: 0.98;
+}
+/* 朱印：右下角一方红印 */
+.about-seal {
+  position: absolute;
+  top: 0.28em;
+  right: -1.15em;
+  display: grid;
+  place-items: center;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 6px;
+  background: var(--poster-red);
+  color: #fbfaf8;
+  font-family: var(--poster-serif);
+  font-size: 0.34em;
+  font-weight: 700;
+  line-height: 1;
+  transform: rotate(6deg);
+  box-shadow: 0 2px 8px rgba(178, 58, 46, 0.4);
+}
+.article-entry .about-hero .about-lead {
+  max-width: 640px;
+  margin-top: 34px;
+  color: var(--poster-ink);
+  font-family: var(--poster-serif);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+.article-entry .about-hero .about-summary {
+  max-width: 600px;
+  margin-top: 16px;
+  color: var(--about-muted);
+  font-size: 14.5px;
+  line-height: 2.1;
+}
+/* 右侧竖排标识在海报版里让位给巨型姓名，隐藏 */
+.about-hero-side {
+  display: none;
+}
+.about-hero-foot {
+  margin-top: 44px;
+  padding-top: 20px;
+  border-top: 1px solid var(--about-line);
+  color: #9aa0a3;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.article-entry .about-actions a {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* 章节：编号做成幽灵大字，标题压在编号之上 */
+.about-section {
+  display: block;
+  position: relative;
+  padding: 96px 0;
+  border-top: 1px solid var(--about-line);
+}
+.about-section:first-of-type {
+  border-top: 0;
+}
+.about-section-title {
+  position: relative;
+  margin-bottom: 48px;
+}
+.about-section-title > p,
+.article-entry .about-section-title > p {
+  position: absolute;
+  top: -0.42em;
+  left: 0;
+  z-index: 0;
+  margin: 0;
+  color: rgba(20, 25, 29, 0.06);
+  font-family: "Courier New", monospace;
+  font-size: 120px;
+  font-weight: 700;
+  letter-spacing: -4px;
+  line-height: 1;
+  pointer-events: none;
+}
+.article-entry .about-section-title h2 {
+  position: relative;
+  z-index: 1;
+  padding-left: 2px;
+  font-family: var(--poster-serif);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+/* focus 列表：加大序号与标题，海报式排布 */
+.about-focus-item {
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 22px;
+  padding-bottom: 32px;
+}
+.about-focus-item + .about-focus-item {
+  padding-top: 32px;
+}
+.about-focus-index {
+  padding-top: 4px;
+  color: var(--poster-red);
+  font-family: "Courier New", monospace;
+  font-size: 15px;
+  font-weight: 700;
+}
+.article-entry .about-focus-item h3 {
+  font-family: var(--poster-serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.article-entry .about-focus-item p {
+  max-width: 560px;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 2;
+}
+
+/* 经历时间线：字号与间距同步放大 */
+.about-timeline-item {
+  grid-template-columns: 130px 46px minmax(0, 1fr);
+  gap: 22px;
+  padding: 20px 0;
+}
+.about-timeline-item::before {
+  left: 175px;
+}
+.about-timeline-item time {
+  font-size: 12.5px;
+  letter-spacing: 1px;
+}
+.about-timeline-item img {
+  width: 46px;
+  height: 46px;
+  padding: 7px;
+}
+.article-entry .about-timeline-item h3 {
+  font-family: var(--poster-serif);
+  font-size: 18px;
+  font-weight: 700;
+}
+.article-entry .about-timeline-item p {
+  margin-top: 4px;
+  font-size: 13.5px;
+}
+
+/* 作品卡片：贴合米白底 */
+.article-entry .about-work-card {
+  background: #fff;
+}
+.article-entry .about-work-name {
+  font-family: var(--poster-serif);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* 关于这个博客：正文放大 */
+.article-entry .about-writing-copy p {
+  max-width: 620px;
+  font-size: 14.5px;
+  line-height: 2.15;
+}
+.article-entry .about-works-more {
+  font-size: 13.5px;
+}
+
+/* 深色模式：海报换成墨黑底纸，朱印转暖红 */
+html[data-theme="dark"] body.page-theme-about .article-inner {
+  background: #16181b;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="dark"] body.page-theme-about .article-entry {
+  --about-text: #eceae4;
+  --about-muted: #9aa1a8;
+  --about-line: #2c2f33;
+  --about-accent: #d1584a;
+}
+html[data-theme="dark"] .about-page::before {
+  background: var(--poster-red);
+}
+html[data-theme="dark"] .about-seal {
+  color: #16181b;
+}
+html[data-theme="dark"] .about-section-title > p {
+  color: rgba(236, 234, 228, 0.07);
+}
+html[data-theme="dark"] .article-entry .about-work-card {
+  background: #1d2023;
+}
+
+/* 响应式：海报留白随屏收缩 */
+@media (max-width: 900px) {
+  .about-page {
+    padding: 72px 56px 84px;
+  }
+  .about-page::before {
+    left: 56px;
+    right: 56px;
+  }
+  .about-seal {
+    right: -0.95em;
+  }
+  .about-section-title > p {
+    font-size: 88px;
+  }
+}
+@media (max-width: 760px) {
+  .about-page {
+    padding: 56px 34px 64px;
+  }
+  .about-page::before {
+    left: 34px;
+    right: 34px;
+  }
+  .about-section {
+    padding: 64px 0;
+  }
+  .article-entry .about-hero h2 {
+    font-size: clamp(56px, 17vw, 92px);
+  }
+  .about-seal {
+    position: static;
+    display: inline-grid;
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: 0.18em;
+    vertical-align: 0.12em;
+  }
+  .article-entry .about-greeting {
+    font-size: 18px;
+  }
+  .article-entry .about-hero .about-lead {
+    font-size: 18px;
+  }
+  .about-section-title > p {
+    font-size: 64px;
+    top: -0.3em;
+  }
+  .article-entry .about-section-title h2 {
+    font-size: 24px;
+  }
+  .about-timeline-item {
+    grid-template-columns: 96px 40px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .about-timeline-item::before {
+    left: 130px;
+  }
+  .about-timeline-item img {
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 480px) {
+  .about-page {
+    padding: 44px 22px 52px;
+  }
+  .about-page::before {
+    left: 22px;
+    right: 22px;
+  }
+  .about-focus-item {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .about-timeline-item {
+    grid-template-columns: 80px 34px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .about-timeline-item::before {
+    left: 107px;
+  }
+  .about-timeline-item img {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
   }
 }
