@@ -6830,8 +6830,11 @@ html[data-theme="dark"] .about-timeline-item img {
 /* ---------- 14. 关于页：编辑式个人主页（视觉层，覆盖第 13 节） ---------- */
 /* 主题默认 .outer 锁死 70rem(700px)，本节栅格按 980px 卡片设计，
    若不解锁，章节标题栏 + 间距会吃掉一半宽度，正文列只剩 120px 左右。
-   桌面端左侧还有 80px 固定导航面板，故窄屏时按视口宽度收缩。 */
-body.page-theme-about .outer,
+   桌面端左侧还有 80px 固定导航面板，故窄屏时按视口宽度收缩。
+   .outer 必须用子选择器定位到 page.ejs 的 section.outer：footer.ejs 里
+   还有一层同名的 div.outer，后代选择器会连它一起改宽（第 17 节起 footer
+   在关于页被隐藏，所以只是隐患，但迟早会咬人）。 */
+body.page-theme-about .content > .outer,
 body.page-theme-about .wrap {
   width: 100%;
   max-width: min(980px, max(700px, calc(100% - 240px)));
@@ -7607,4 +7610,921 @@ html[data-theme="dark"] .article-entry .about-work-card {
     height: 34px;
     padding: 5px;
   }
+}
+
+/* ---------- 17. 关于页：一屏锁定 + 横向翻页册（覆盖第 13-16 节） ---------- */
+/* 结构：.about-page > .about-deck > .about-slide ×5，底下 .about-nav。
+   设计语言（黑白蓝、发丝线、小标签编号、深浅双主题）全部沿用第 16 节，
+   本节只负责三件事：锁一屏、横向轨道、控件。
+   竖向节奏一律用含 vh 的 clamp()，这是「矮屏也一屏装下」的主要手段，比
+   逐档加媒体查询稳；真正装不下时由 .about-slide-body 内滚兜底。
+   交互在 source/about/index.md 末尾的内联脚本里（站内独立页的既有习惯）。 */
+
+/* --- 高度链：.content 是本主题真正的滚动容器（html/body/#app/.content
+       在 main.css 里已有 height:100%），这里只需把关于页锁住。
+       必须用 100% 而不是 100vh：iOS 上 100% 解析到 ICB（small viewport），
+       100vh 解析到 large viewport —— URL 栏展开时底部导航会被 Safari 底栏盖住。 --- */
+body.page-theme-about .content {
+  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100% !important;
+}
+/* 卡片四周的呼吸感由外层给；safe-area 那条是给全面屏/横屏的，
+   否则圆点行会压在 Home Indicator 上。 */
+body.page-theme-about .content > .outer {
+  height: 100%;
+  box-sizing: border-box;
+  padding: clamp(12px, 2.4vh, 30px) 0
+           calc(clamp(12px, 2.4vh, 30px) + env(safe-area-inset-bottom, 0px));
+}
+/* 站脚会顶破一屏；文章页脚虽是空节点，留着也是 .article-inner 这个
+   flex 列里的一个 flex item。 */
+body.page-theme-about .content > .footer,
+body.page-theme-about .article-footer {
+  display: none !important;
+}
+/* main.css 的裸规则 .article{padding:5rem 0 3rem}（html 字号被压到 60%，
+   1rem=9.6px）会吃掉上 48px + 下 28.8px，且上下不对称 —— 白卡因此比
+   .outer 的内容框矮近 77px。归零，改由 .outer 的 padding 统一给。 */
+body.page-theme-about .article {
+  padding: 0;
+  height: 100%;
+}
+body.page-theme-about .article-inner {
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+/* 这两行是整条高度链的接缝：.article-entry 不是 flex 容器时，
+   .about-page 的 flex:1 1 0 是死声明，结果是「auto 高 + overflow 裁掉
+   底部导航」且无法滚动，而不是锁一屏。 */
+body.page-theme-about .article-entry {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+/* main.css 的 clearfix 伪元素（display:table）在 flex 容器里会被 blockify
+   成 flex item，污染子项序列，去掉。 */
+body.page-theme-about .article-entry::before,
+body.page-theme-about .article-entry::after {
+  content: none;
+  display: none;
+}
+
+/* --- 卡面底色：不用纯白，改成带冷调的浅蓝纸面 --- */
+/* 第 16 节给的是 #ffffff 平涂。在同样偏冷的页面底色上，纯白卡片边界发死、
+   和背景只差一点点明度，「浮起一张纸」的层次立不住。换成自上而下的极浅蓝
+   渐变：上缘接近纸白、下缘收进冷灰蓝，卡片有厚度，顶部那根发丝线与进度条
+   也有了底色可依。同时把页面底色压深一档，让卡片与背景拉开距离。
+   文字对比度不受影响（--about-text #0f1419 对 #eaf1f9 约 16.5:1）。
+   这两条与第 16 节同特异性、源序更晚，直接覆盖。 */
+body.page-theme-about {
+  background: #e0e8f2 !important;
+}
+body.page-theme-about .article-inner {
+  background: linear-gradient(180deg, #f7fafe 0%, #ecf2fa 100%);
+  box-shadow: 0 24px 70px rgba(15, 20, 25, 0.14);
+}
+html[data-theme="dark"] body.page-theme-about {
+  background: #0a0e13 !important;
+}
+html[data-theme="dark"] body.page-theme-about .article-inner {
+  background: linear-gradient(180deg, #171d26 0%, #0f151c 100%);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+/* --- 页面容器与顶部进度条 --- */
+.about-page {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  /* margin 必须显式归零：第 14 节在这里留了 `margin: 0 auto`，而交叉轴上的
+     auto 外边距会吞掉全部自由空间，使父容器的 align-items:stretch 彻底失效
+     （CSS Flexbox §8.1）—— 本项于是退化成 fit-content 按内容定宽，实测 1440
+     视口下被撑到 1416px，比 980px 的白卡宽出 436px，右半边内容（meta 行第 2
+     段、导航箭头、居中的翻阅提示）全被 .content 裁到屏幕外。写死 0 才拿回
+     stretch，宽度才等于卡片宽度、translateX(-100%) 的基准才等于一屏。 */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* 显式写 stretch：deck 的宽度基准就是这里。若被后来者改成 flex-start，
+     deck 会退化成 max-content（5 屏宽），每次只移动 1/5 屏。 */
+  align-items: stretch;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  /* 左右留白归零 —— 横向留白必须挂在 .about-slide 上：overflow 的裁剪边界
+     是 padding box，留白挂在这里的话，翻页那 620ms 里出场屏会残留在左右
+     留白栏里被看见。 */
+  padding: clamp(18px, 3.4vh, 44px) 0 clamp(14px, 2.6vh, 30px);
+  --about-pad-x: clamp(22px, 5.4vw, 96px);
+  --about-i: 0;
+  /* (i+1)/n；若取 i/n，第 1 屏进度条宽度为 0，完全看不见 */
+  --about-p: 0.2;
+}
+/* 顶部发丝线复用为进度条轨道。必须显式分色：第 16 节给它的是 --poster-blue，
+   与填充同色在浅色下完全看不见；深色下第 16 节的
+   html[data-theme="dark"] .about-page::before（0-2-2）又会压过任何 0-1-1
+   的规则，导致 track 比 fill 亮。所以深色也一并重写。 */
+.about-page::before {
+  background: var(--about-line);
+  left: var(--about-pad-x);
+  right: var(--about-pad-x);
+}
+html[data-theme="dark"] .about-page::before {
+  background: var(--about-line);
+}
+.about-page::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--about-pad-x);
+  right: auto;
+  height: 1px;
+  width: calc((100% - var(--about-pad-x) * 2) * var(--about-p));
+  background: var(--about-accent);
+  transition: width 0.62s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --- 轨道与屏 --- */
+.about-deck {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  /* 明确放弃横向浏览器手势（iOS 边缘返回），纵向留给屏内滚动 */
+  touch-action: pan-y;
+  /* translateX 的百分比以 deck 自身 border-box 宽为准。deck 宽 = .about-page
+     内容宽 = 一屏：min-width:auto 只在主轴生效，而 .about-page 是 column，
+     所以 5 片 flex:0 0 100% 的溢出子项撑不宽 deck。 */
+  transform: translateX(calc(var(--about-i, 0) * -100%));
+  transition: transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.about-slide {
+  /* flex-basis 100% 解析 deck 的主轴尺寸（= 一屏）；5 片溢出 400%，
+     由 .about-page 的 overflow:hidden 裁掉。 */
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: var(--about-pad-x);
+  padding-right: var(--about-pad-x);
+  /* visibility 是 inert 的兜底：老 Safari 静默忽略 inert，屏外作品卡链接
+     会留在 Tab 序列里变成「看不见的焦点」。visibility 原生就把元素移出
+     Tab 序列与辅助技术树，不需要能力检测。延迟到动画结束再隐藏。 */
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.985);
+  pointer-events: none;
+  transition: opacity 0.45s ease,
+              transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1),
+              visibility 0s linear 0.62s;
+}
+.about-slide.is-active {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0s, 0s, 0s;
+}
+.about-slide-body {
+  flex: 1 1 0;
+  /* min-height:0 缺了它，flex 列里的 overflow:auto 永远不生效，内容只会
+     溢出被裁 —— 这是「装不下时还能读」的唯一退路，所以无条件开着，
+     翻页与内滚的分流交给脚本里的 canScroll。 */
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* safe center：内容溢出时退化为顶部对齐，避免居中把顶部推到够不着的
+     地方（普通 center 在溢出时两端都被裁，且滚不上去）。 */
+  justify-content: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@supports (justify-content: safe center) {
+  .about-slide-body {
+    justify-content: safe center;
+  }
+}
+
+/* --- 屏内节奏：把第 16 节的固定间距换成含 vh 的 clamp --- */
+.about-slide .about-section {
+  /* 结构改由 slide 承担，章节不再自带上下留白与分隔线。
+     底边框要显式归零：它是第 14 节给的，第 16 节只改了 border-top，
+     目前靠 :last-child 那条规则压着（每屏里章节正好都是独子），
+     写死更稳。 */
+  padding: 0;
+  border-top: 0;
+  border-bottom: 0;
+}
+.about-slide .about-section-title {
+  margin-bottom: clamp(14px, 2.6vh, 34px);
+}
+.article-entry .about-slide .about-hero h2 {
+  font-size: clamp(30px, min(6vw, 7.5vh), 64px);
+}
+.about-slide .about-hero-main {
+  padding: clamp(10px, 1.6vh, 32px) 0 clamp(4px, 0.8vh, 8px);
+}
+.about-slide .about-eyebrow {
+  margin-bottom: clamp(10px, 1.8vh, 22px);
+}
+.article-entry .about-slide .about-hero .about-lead {
+  margin-top: clamp(10px, 1.8vh, 22px);
+}
+.about-slide .about-hero-foot {
+  margin-top: clamp(16px, 3vh, 40px);
+  padding-top: clamp(10px, 1.6vh, 18px);
+}
+.about-slide .about-focus-item {
+  padding-bottom: clamp(12px, 2.4vh, 28px);
+}
+.about-slide .about-focus-item + .about-focus-item {
+  padding-top: clamp(12px, 2.4vh, 28px);
+}
+.article-entry .about-slide .about-writing-copy p {
+  font-size: clamp(13px, 1.1vh + 7px, 14.5px);
+  line-height: 1.95;
+}
+
+/* --- 卷首屏：座右铭 --- */
+/* 第 13 节的座右铭是「白灯箱 + 14px 圆角 + 投影」，深色是「墨色金笺」。
+   整屏引言不需要灯箱，去掉容器只留左边条（深色那条金边来自第 13 节的
+   html[data-theme="dark"] .about-motto-quote，不受影响）。 */
+.about-slide .about-motto,
+html[data-theme="dark"] .about-slide .about-motto {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.article-entry .about-slide .about-motto-quote {
+  padding: 2px 0 2px clamp(16px, 2vw, 26px);
+  border-left-width: 4px;
+}
+.article-entry .about-slide .about-motto-quote p {
+  font-size: clamp(15px, 1.5vh + 8px, 23px);
+  line-height: 1.95;
+}
+.article-entry .about-slide .about-motto-quote cite {
+  margin-top: clamp(10px, 1.6vh, 18px);
+  font-size: clamp(12px, 0.8vh + 9px, 15px);
+}
+.about-slide-hint {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding-top: clamp(10px, 2vh, 22px);
+  color: var(--about-muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.about-slide-hint i {
+  font-size: 14px;
+}
+
+/* --- 底部导航：圆点 + 页码 + 箭头 --- */
+.about-nav {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 18px);
+  margin-top: clamp(8px, 1.8vh, 20px);
+  padding-top: clamp(8px, 1.8vh, 18px);
+  border-top: 1px solid var(--about-line);
+}
+.about-dots {
+  display: flex;
+  align-items: center;
+}
+/* 24px 的按钮 + 居中的 7px 视觉点：点本身太小点不中，按钮撑到 24px
+   才够 WCAG 2.5.8 的目标尺寸 */
+.about-dot {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.about-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  /* 不能用 --about-line：浅色 #e3e8ef / 深色 #252b33 都是发丝线的色阶，
+     1.2:1 的对比度等于隐形，用户看不出总共有几屏。改用 --about-muted
+     降透明度：既明显低当前项一等，又能看清个数。 */
+  background: var(--about-muted);
+  opacity: 0.4;
+  transition: background 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+.about-dot:hover::before {
+  opacity: 0.7;
+}
+.about-dot[aria-current="true"]::before {
+  background: var(--about-accent);
+  opacity: 1;
+  transform: scale(1.35);
+}
+/* 控件必须显式给色：默认会继承 main.css 的 body{color:#403e3e}，
+   在深色卡片 #11151b 上对比度约 1.6:1，基本不可见 */
+.about-count {
+  color: var(--about-muted);
+  font-family: "SF Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+.about-nav-arrows {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.about-arrow {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--about-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--about-muted);
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.about-arrow:hover:not(:disabled) {
+  border-color: var(--about-accent);
+  color: var(--about-accent);
+}
+.about-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.about-arrow:focus-visible,
+.about-dot:focus-visible {
+  outline: 2px solid var(--about-accent);
+  outline-offset: 2px;
+}
+
+/* 仅给读屏用的文本（主题里没有现成的工具类） */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- 响应式：留白与字号已由上面的 clamp 承担，这里只兜两端 --- */
+@media (max-width: 480px) {
+  .article-entry .about-slide .about-hero h2 {
+    font-size: clamp(28px, min(9vw, 6.4vh), 44px);
+  }
+  .about-slide-hint {
+    font-size: 10px;
+  }
+}
+@media (max-height: 560px) {
+  /* 横屏手机：竖向留白再收一档，尽量让内容不必内滚 */
+  .about-page {
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+  .about-slide .about-hero-main {
+    padding: 6px 0 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* transition:none 会一并干掉 visibility 的 0.62s 延迟 —— 必须干掉，
+     否则「无过渡」时切换仍有 620ms 空白 */
+  .about-deck,
+  .about-slide,
+  .about-page::after {
+    transition: none;
+  }
+}
+
+/* ---------- 18. 关于页：终端 / 代码风（覆盖第 16/17 节的排版与配色） ---------- */
+/* 结构（高度链、deck 轨道、一屏锁定、四路输入）全部沿用第 17 节，这一节只换皮：
+   字体换成等宽、卡片换成一个终端窗口、页面上多一条标题栏。
+   配色不走第 16 节的「黑白蓝编辑风」，改成终端调色板 —— 浅色是纸白终端，
+   深色是经典暗色终端，跟随站点主题切换，不强行锁死深色。 */
+
+/* --- 18.1 调色板与量度：定义在 body 上而不是 .about-page 上，因为
+   .article-inner（卡面）是 .about-page 的祖先，得让它也读得到。 --- */
+body.page-theme-about {
+  --term-bg: #f8fafc;
+  --term-chrome: #eef2f7;
+  --term-ink: #1f2933;
+  --term-dim: #5b6672;
+  --term-faint: #8b95a1;
+  --term-line: #dbe3ec;
+  --term-green: #0f7b4f;
+  --term-blue: #1a56db;
+  --term-amber: #9a6207;
+  --term-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  /* 标题栏高度要被两处读到：标题栏自身，和挪到它下沿的进度条 */
+  --term-bar-h: clamp(28px, 4.4vh, 40px);
+  /* 页面底色比卡面深一档，卡片才浮得起来 */
+  background: #e3e9f3 !important;
+}
+html[data-theme="dark"] body.page-theme-about {
+  --term-bg: #0d1117;
+  --term-chrome: #161b22;
+  --term-ink: #e6edf3;
+  --term-dim: #9aa4b0;
+  --term-faint: #6e7681;
+  --term-line: #21262d;
+  --term-green: #3fb950;
+  --term-blue: #58a6ff;
+  --term-amber: #d29922;
+  background: #05080c !important;
+}
+/* 卡面 = 终端窗口。用 box-shadow 画 1px 描边而不是 border：border 会参与
+   盒模型，可能把第 17 节那条刚修好的高度链再顶破一次。 */
+body.page-theme-about .article-inner {
+  background: var(--term-bg);
+  box-shadow: 0 0 0 1px var(--term-line), 0 26px 70px rgba(15, 20, 25, 0.16);
+}
+html[data-theme="dark"] body.page-theme-about .article-inner {
+  background: var(--term-bg);
+  box-shadow: 0 0 0 1px var(--term-line), 0 26px 70px rgba(0, 0, 0, 0.62);
+}
+
+/* 底部导航与进度条复用的 --about-* token 一并接到终端调色板上。
+   深色那条必须写成与第 16 节同形（0-3-1）才能压过去。 */
+body.page-theme-about .article-entry,
+html[data-theme="dark"] body.page-theme-about .article-entry {
+  --about-text: var(--term-ink);
+  --about-muted: var(--term-dim);
+  --about-line: var(--term-line);
+  --about-accent: var(--term-blue);
+}
+
+/* 标题栏要齐平卡片上沿，第 17 节给 .about-page 的上内边距必须顶掉；
+   左右的 0 已经是第 17 节的状态，下内边距留给底部导航，别动。 */
+body.page-theme-about .about-page {
+  padding-top: 0;
+}
+/* 卡片切圆角，标题栏是方角，不裁会从圆角处露出来 */
+body.page-theme-about .article-inner {
+  overflow: hidden;
+}
+
+/* --- 18.2 标题栏：三个圆点 + 路径 + shell 名 --- */
+.term-chrome {
+  flex: 0 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--term-bar-h);
+  padding: 0 clamp(12px, 2.4vw, 20px);
+  background: var(--term-chrome);
+  font-family: var(--term-mono);
+  font-size: clamp(10px, 1.4vh, 12px);
+  line-height: 1;
+  color: var(--term-dim);
+  user-select: none;
+}
+/* 绝对居中：标题两侧的元素宽度不同，靠 flex 永远对不齐 */
+.term-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 62%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+}
+.term-dots {
+  display: flex;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+.term-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--term-faint);
+}
+.term-dots i:nth-child(1) { background: #ff5f57; }
+.term-dots i:nth-child(2) { background: #febc2e; }
+.term-dots i:nth-child(3) { background: #28c840; }
+.term-shell {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: var(--term-faint);
+}
+
+/* --- 18.3 进度条挪到标题栏下沿，并拉通整张卡 --- */
+/* 第 17 节把它挂在 .about-page 的 padding box 内侧（left/right 各让出
+   --about-pad-x），现在标题栏是通栏的，进度条跟着通栏才接得住那条下沿；
+   同时把标题栏自己的 border-bottom 撤掉，让这根线兼任分隔线。 */
+.about-page::before,
+html[data-theme="dark"] .about-page::before {
+  top: calc(var(--term-bar-h) - 1px);
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--term-line);
+}
+.about-page::after {
+  top: calc(var(--term-bar-h) - 1px);
+  left: 0;
+  right: auto;
+  height: 1px;
+  width: calc(100% * var(--about-p));
+  background: var(--term-blue);
+}
+
+/* --- 18.4 屏内：垂直居中 --- */
+/* 这里**不写** justify-content，交给第 17 节的 center / @supports safe center。
+   曾在此处用 0-2-0 覆盖成 flex-start（终端从顶部往下写），现按需求改回居中：
+   复述一遍只会多一个要同步的地方，而且 safe center 的溢出回退是第 17 节
+   写好的，覆盖掉反而丢了。 */
+.term-screen {
+  display: flex;
+  flex-direction: column;
+  padding-top: clamp(14px, 2.8vh, 36px);
+  padding-bottom: clamp(6px, 1.2vh, 16px);
+  font-family: var(--term-mono);
+  /* 字号绑视口高度：高屏要撑满，矮屏要装得下。1.05vh+6.6px 那版在 1440x900
+     只到 15px，全屏看时下半张卡空着；改成 1.5vh+3.2px 后高屏到 16.7px，
+     矮屏（640）反而收到 12.8px，两头都对。 */
+  font-size: clamp(12px, 1.5vh + 3.2px, 17px);
+  line-height: 1.75;
+  color: var(--term-ink);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+/* 行距用相邻兄弟边距而不是 gap：同一个命令的输出行要贴紧，换命令才拉开，
+   gap 做不到两档。 */
+.term-screen > * + * { margin-top: clamp(2px, 0.5vh, 6px); }
+.term-screen > * + .term-line { margin-top: clamp(10px, 1.9vh, 22px); }
+
+/* --- 18.5 提示符 / 命令 / 光标 --- */
+.article-entry .term-line {
+  margin: 0;
+}
+.term-prompt {
+  margin-right: 0.6em;
+  color: var(--term-green);
+  font-weight: 600;
+}
+html[data-theme="dark"] .term-prompt {
+  font-weight: 500;
+}
+.term-cmd {
+  color: var(--term-ink);
+}
+.term-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.02em;
+  vertical-align: -0.17em;
+  background: var(--term-green);
+  animation: term-blink 1.06s step-end infinite;
+}
+@keyframes term-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* --- 18.6 输出的逐条点亮 --- */
+/* 默认全部可见；只有 JS 活着（.term-js）才藏起来等打字机。脚本挂掉或禁用
+   JS 时退化成「内容都在、只是没有动画」，而不是一片空白。 */
+.about-page.term-js .term-out {
+  visibility: hidden;
+}
+.about-page.term-js .term-out.is-on {
+  visibility: visible;
+  /* backwards：延迟期间保持 from 状态（透明），而不是先闪一下再动画 */
+  animation: term-in 0.3s ease backwards;
+  animation-delay: calc(var(--d, 0) * 70ms);
+}
+@keyframes term-in {
+  from { opacity: 0; transform: translateY(3px); }
+}
+
+/* --- 18.7 输出块 --- */
+.article-entry .term-lead {
+  font-size: 1.12em;
+  color: var(--term-ink);
+}
+.term-dim { color: var(--term-faint); }
+
+/* 名言：不套灯箱，只留左侧竖线（像 cat 出来的引用块） */
+/* 必须带上深色那条同形选择器：主题第 6490 行 `html[data-theme="dark"]
+   .article-entry blockquote`（0-2-2）会给引用块刷 #23252b 底 + #3a3f46 左边框，
+   单靠下面 0-2-0 那条压不住 —— 深色下会浮出一块比卡片亮的方块，竖线也不是琥珀色。
+   带上 html[data-theme] 后是 0-3-1，稳过。 */
+.article-entry .term-quote,
+html[data-theme="dark"] .article-entry .term-quote {
+  margin: 0;
+  padding: 2px 0 2px clamp(12px, 1.6vw, 20px);
+  border: 0;
+  /* 竖线跟正文同色：单独一条灰发丝线时，彩色文字像是没改完的半成品 */
+  border-left: 2px solid var(--term-amber);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.article-entry .term-quote p {
+  margin: 0;
+  /* 用琥珀（--term-amber）而不是 --term-ink：屏 1 的其它元素是绿提示符 +
+     蓝文件名，引文占掉暖色这一格，既不撞色又比纯黑轻。
+     对比度实测浅色 4.86:1、深色 7.50:1，按大字口径都有余量。 */
+  color: var(--term-amber);
+  /* 原 1.9vh+5px（900 高时 22.1px）压到 19px：引文比正文大一档就够，
+     之前那档大到像标题，把下面 ls 的目录压没了。 */
+  font-size: clamp(13.5px, 1.65vh + 4.2px, 20px);
+  line-height: 1.95;
+}
+.article-entry .term-quote cite {
+  display: block;
+  margin-top: clamp(6px, 1.3vh, 14px);
+  color: var(--term-faint);
+  font-size: clamp(11px, 0.7vh + 8px, 14px);
+  font-style: normal;
+}
+
+/* 键值对（whoami 的资料）—— 用 grid 定列而不是敲空格对齐：中文回退字体
+   的宽度不是等宽拉丁的整数倍，空格对齐在混排下必错。 */
+.article-entry .term-kv {
+  display: grid;
+  grid-template-columns: 5em minmax(0, 1fr);
+  gap: clamp(2px, 0.5vh, 6px) clamp(10px, 1.6vw, 22px);
+  margin: 0;
+  padding: 2px 0 2px clamp(10px, 1.4vw, 18px);
+  border-left: 2px solid var(--term-line);
+}
+.article-entry .term-kv dt { color: var(--term-amber); }
+.article-entry .term-kv dd { margin: 0; color: var(--term-ink); }
+
+/* 列表（联系方式 / 最近文章） */
+.article-entry .term-list {
+  display: grid;
+  gap: clamp(2px, 0.5vh, 6px);
+  margin: 0;
+  padding: 2px 0 2px clamp(10px, 1.4vw, 18px);
+  border-left: 2px solid var(--term-line);
+  list-style: none;
+}
+.article-entry .term-list li {
+  display: grid;
+  grid-template-columns: 5.5em minmax(0, 1fr);
+  gap: clamp(10px, 1.6vw, 22px);
+  margin: 0;
+}
+.term-key { color: var(--term-amber); }
+/* 深色下把链接色夺回来。主题第 6490 行那块 `html[data-theme="dark"] .article-entry a`
+   是 0-2-2，而本节各条链接规则只有 0-2-1，会被它整片改成 #6cb2f5（浅蓝），
+   于是终端里的链接在深色下不跟 --term-blue 走。写成 page-theme-about 版本
+   （0-3-3）一次盖住 term-list / term-links / t-date 三处，比给每条规则各配一个
+   深色变体少三处重复。 */
+html[data-theme="dark"] body.page-theme-about .article-entry a {
+  color: var(--term-blue);
+}
+.article-entry .term-list a {
+  color: var(--term-blue);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.article-entry .term-list a:hover {
+  border-bottom-color: currentColor;
+}
+/* 最近文章标题最长的一行在窄屏放不下 —— 限两行，宁可截断也不让它把这一屏
+   撑出滚动条（完整标题点进去就有）。 */
+.article-entry .term-list[data-feed="recent"] li a {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 进程表 / 文件表。列宽用 ch（等宽字体下一个字符的宽度）与 em（中文按全角
+   算），比写死 px 更贴字体实际尺寸。 */
+.article-entry .term-table {
+  --t-cols: 3.6ch 6em 6em minmax(0, 1fr);
+  display: grid;
+  gap: clamp(2px, 0.5vh, 6px);
+  margin: 0;
+  padding: 2px 0 2px clamp(10px, 1.4vw, 18px);
+  border-left: 2px solid var(--term-line);
+}
+.article-entry .term-table.is-files {
+  --t-cols: 11ch 10ch minmax(0, 1fr) 9ch;
+}
+.article-entry .term-table.is-log {
+  --t-cols: 6ch 7em minmax(0, 1fr);
+}
+.article-entry .term-tr {
+  display: grid;
+  grid-template-columns: var(--t-cols);
+  grid-template-areas: "a b c d";
+  align-items: center;
+  gap: 0 clamp(8px, 1.2vw, 16px);
+  margin: 0;
+}
+.term-tr.is-head {
+  color: var(--term-faint);
+  font-size: 0.86em;
+  letter-spacing: 1px;
+}
+.t-pid, .t-perm { grid-area: a; color: var(--term-faint); }
+.t-focus, .t-name { grid-area: b; color: var(--term-ink); }
+.term-load { grid-area: c; }
+.t-desc { grid-area: d; color: var(--term-dim); }
+.t-date { grid-area: d; color: var(--term-faint); text-align: right; }
+.article-entry .term-table.is-files .t-date { grid-area: d; }
+.article-entry .term-table.is-files .t-desc { grid-area: c; }
+.article-entry .term-table.is-log .term-tr { grid-template-areas: "a b c"; }
+.article-entry .term-table.is-log .t-desc { grid-area: c; }
+.article-entry .t-date a { color: var(--term-blue); text-decoration: none; }
+
+/* 负载条：用 CSS 画而不是敲 ▓░ —— 方块元素（U+2588 区）在中文回退字体里
+   常按全角渲染，一敲就错位。顺带能在点亮时从 0 涨上去。 */
+.term-load {
+  display: block;
+  height: 0.6em;
+  background: var(--term-line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.term-load i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--term-green);
+  transition: width 0.8s cubic-bezier(0.2, 0.7, 0.3, 1) 0.12s;
+}
+.term-table.is-on .term-load i {
+  width: calc(var(--v, 0) * 1%);
+}
+
+/* README 段落 */
+.article-entry .term-doc {
+  margin: 0;
+  padding: 2px 0 2px clamp(10px, 1.4vw, 18px);
+  border-left: 2px solid var(--term-line);
+  color: var(--term-dim);
+}
+.article-entry .term-doc p { margin: 0; }
+.article-entry .term-doc .term-tags {
+  margin-top: clamp(4px, 0.9vh, 10px);
+  color: var(--term-amber);
+  letter-spacing: 1px;
+}
+
+/* 卷首的目录索引：两列，窄屏也保两列（实测 360px 下 2x(12ch+间隔+3 个中文字)
+   仍放得下，收成一列反而多占三行高） */
+/* flex + nowrap 而不是定列 grid：grid 的列宽是共享的，窄屏上 13ch 的文件名
+   列会把后面的中文标签挤进近乎 0 宽的列里，一个字一行，整屏直接撑高。nowrap
+   让每个条目整体换行，怎么都撑不坏。 */
+.article-entry .term-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2px, 0.5vh, 6px) clamp(14px, 2.4vw, 34px);
+  margin: 0;
+  padding: 2px 0 2px clamp(10px, 1.4vw, 18px);
+  border-left: 2px solid var(--term-line);
+}
+.article-entry .term-index span {
+  display: inline-flex;
+  gap: 0 clamp(6px, 1vw, 14px);
+  white-space: nowrap;
+  color: var(--term-dim);
+}
+.article-entry .term-index b {
+  min-width: 12ch;
+  font-weight: 400;
+  color: var(--term-blue);
+}
+
+/* 目录名 / 标签云 */
+.term-dirs {
+  color: var(--term-blue);
+}
+
+/* JSON 块：同样用 grid 定列。写成 <pre>+空格也能对（里面全是 ASCII），
+   但列宽一变就要重数空格，grid 不用。 */
+.article-entry .term-json {
+  display: block;
+  margin: 0;
+  padding: 2px 0 2px clamp(10px, 1.4vw, 18px);
+  border-left: 2px solid var(--term-line);
+}
+/* 一行一个块，冒号逗号紧跟着键值 —— 之前用四列 grid 对齐，冒号被推到列边，
+   出来的是 column -t 的表格样，不像 curl 吐的 JSON。 */
+.j-brace, .j-row { display: block; }
+.j-row { padding-left: 2ch; }
+.j-brace { color: var(--term-faint); }
+.j-key { color: var(--term-blue); }
+.j-punc { color: var(--term-faint); }
+.j-num, .j-str { font-weight: 400; }
+.j-num { color: var(--term-amber); }
+.j-str { color: var(--term-green); }
+
+/* 末行链接 */
+.article-entry .term-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1.6vw, 20px);
+}
+.article-entry .term-links a {
+  color: var(--term-blue);
+  text-decoration: none;
+}
+.article-entry .term-links a:hover { text-decoration: underline; }
+
+/* --- 18.8 翻阅提示与底部导航：一并换成等宽 --- */
+.about-slide-hint {
+  font-family: var(--term-mono);
+  color: var(--term-faint);
+  font-size: clamp(10px, 1.3vh, 12px);
+  letter-spacing: 0.4px;
+}
+.about-nav,
+.about-count {
+  font-family: var(--term-mono);
+}
+.about-count { letter-spacing: 1px; }
+/* 圆点换成小方块：终端的块状光标语言 */
+.about-dot::before {
+  border-radius: 1px;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+}
+.about-arrow {
+  border-radius: 4px;
+}
+
+/* --- 18.9 响应式 --- */
+@media (max-width: 560px) {
+  /* 四列排不下，砍成「标识 + 名称」两行，负载条与日期列让位 */
+  .article-entry .term-table { --t-cols: 3.6ch minmax(0, 1fr); }
+  .article-entry .term-table.is-files { --t-cols: 11ch minmax(0, 1fr); }
+  .article-entry .term-table.is-log { --t-cols: 6ch minmax(0, 1fr); }
+  .article-entry .term-tr { grid-template-areas: "a b" ". d"; }
+  .article-entry .term-table.is-files .term-tr,
+  .article-entry .term-table.is-log .term-tr { grid-template-areas: "a b" ". c"; }
+  .article-entry .term-tr.is-head,
+  .article-entry .term-load,
+  .article-entry .t-date { display: none; }
+  /* 屏 5 最挤：标题限一行。两行的话四条里外里能多占四行，390x844 实测超 69px */
+  .article-entry .term-list[data-feed="recent"] li a {
+    -webkit-line-clamp: 1;
+  }
+  .article-entry .term-json { gap: 0 6px; }
+}
+@media (max-width: 480px) {
+  /* 窄屏同时也是矮屏（360x640 是最小目标），字号与行距一起收：屏 5 的内容
+     最多，全尺寸下实测超出 32px，靠这两档刚好收回来。 */
+  .term-screen {
+    line-height: 1.62;
+    padding-top: 8px;
+  }
+  .term-screen > * + .term-line { margin-top: 7px; }
+  .article-entry .term-kv { grid-template-columns: 4.4em minmax(0, 1fr); }
+  .article-entry .term-list li { grid-template-columns: 4.6em minmax(0, 1fr); }
+  .term-title { max-width: 52%; }
+}
+@media (max-height: 560px) {
+  /* 横屏手机：竖向留白再收一档 */
+  .term-screen {
+    padding-top: 8px;
+    line-height: 1.6;
+  }
+  .term-screen > * + .term-line { margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* 脚本在 reduce 下根本不会进入打字流程（直接 finish），这里补的是
+     CSS 侧自带的两处动画 */
+  .about-page.term-js .term-out.is-on { animation: none; }
+  .term-cursor { animation: none; }
+  .term-load i { transition: none; }
 }
