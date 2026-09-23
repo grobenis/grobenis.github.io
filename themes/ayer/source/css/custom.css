@@ -8584,6 +8584,15 @@ html[data-theme="dark"] body.page-theme-about .article-entry a {
   }
   .term-screen > * + .term-line { margin-top: 8px; }
 }
+@media (max-height: 680px) {
+  /* 矮屏专用：表格行距收一档。
+     表格是 `ls` / `git log` 那种列表输出，本来就不需要正文那档行距。收在
+     **高度**上而不是宽度上，是因为挤不下的原因是竖向空间不够：屏 3 的
+     `git log` 在 560px 以下每条会折成两行（年份+机构 / 描述），5 条就是 224px，
+     占满屏 43%。加「南航」那条第 3 屏在 360x640 超出 17px，这档按 1.38 收
+     能省下 40px 上下，而 390x844 这类高屏完全不受影响 —— 那边早已定稿。 */
+  .article-entry .term-table { line-height: 1.38; }
+}
 @media (prefers-reduced-motion: reduce) {
   /* 脚本在 reduce 下根本不会进入打字流程（直接 finish），这里补的是
      CSS 侧自带的两处动画 */

@@ -81,6 +81,7 @@ share: false
 <div class="term-tr"><span class="t-perm">2022-</span><span class="t-name">纽劢科技</span><span class="t-desc">感知部 · SLAM 算法工程师</span></div>
 <div class="term-tr"><span class="t-perm">2021-</span><span class="t-name">小米</span><span class="t-desc">手机部 · 可穿戴算法工程师</span></div>
 <div class="term-tr"><span class="t-perm">2018-</span><span class="t-name">北航</span><span class="t-desc">计算机学院 · 虚拟现实方向</span></div>
+<div class="term-tr"><span class="t-perm">2014-</span><span class="t-name">南航</span><span class="t-desc">理学院 · 信息与计算科学</span></div>
 </div>
 </div>
 </div>
