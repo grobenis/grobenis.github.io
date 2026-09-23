@@ -8028,28 +8028,23 @@ html[data-theme="dark"] .about-slide .about-motto {
 /* ---------- 18. 关于页：终端 / 代码风（覆盖第 16/17 节的排版与配色） ---------- */
 /* 结构（高度链、deck 轨道、一屏锁定、四路输入）全部沿用第 17 节，这一节只换皮：
    字体换成等宽、卡片换成一个终端窗口、页面上多一条标题栏。
-   配色不走第 16 节的「黑白蓝编辑风」，改成终端调色板 —— 浅色是纸白终端，
-   深色是经典暗色终端，跟随站点主题切换，不强行锁死深色。 */
+   配色不走第 16 节的「黑白蓝编辑风」，改成终端调色板，并且**恒为深色**：
+   站点主题在关于页上不生效，这是有意的（理由写在 18.1 里）。 */
 
 /* --- 18.1 调色板与量度：定义在 body 上而不是 .about-page 上，因为
-   .article-inner（卡面）是 .about-page 的祖先，得让它也读得到。 --- */
-body.page-theme-about {
-  --term-bg: #f8fafc;
-  --term-chrome: #eef2f7;
-  --term-ink: #1f2933;
-  --term-dim: #5b6672;
-  --term-faint: #8b95a1;
-  --term-line: #dbe3ec;
-  --term-green: #0f7b4f;
-  --term-blue: #1a56db;
-  --term-amber: #9a6207;
-  --term-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  /* 标题栏高度要被两处读到：标题栏自身，和挪到它下沿的进度条 */
-  --term-bar-h: clamp(28px, 4.4vh, 40px);
-  /* 页面底色比卡面深一档，卡片才浮得起来 */
-  background: #e3e9f3 !important;
-}
+   .article-inner（卡面）是 .about-page 的祖先，得让它也读得到。
+   ---------------------------------------------------------------------------
+   这里只留**一套深色值**，不再写浅色版。理由：这一屏的隐喻就是「盯着一台
+   终端」，浅色下把它翻成纸白终端会同时丢掉隐喻和沉浸感；而两套主题各留一份
+   token，等于多一处永远要同步、且只在切主题时才暴露的地方。
+   选择器仍然写两遍（多一条 html[data-theme="dark"]）：第 13~16 节在
+   6758 / 7064 / 7284 / 7691 行留了四条 `html[data-theme="dark"]
+   body.page-theme-about`（0-2-2，高过裸 body.page-theme-about 的 0-1-1），
+   而且都带 !important。只留裸选择器的话，深色下这四条会重新冒出来，把刚铺好
+   的环境刷回它们的底色。带上 html[data-theme] 后同为 0-2-2、源序更晚 —— 胜出。
+   （那四条是第 13~16 节几版旧设计的遗留，内容早已被本节取代；本次不清洗，
+     理由同第 17 节的说明。） --- */
+body.page-theme-about,
 html[data-theme="dark"] body.page-theme-about {
   --term-bg: #0d1117;
   --term-chrome: #161b22;
@@ -8060,17 +8055,85 @@ html[data-theme="dark"] body.page-theme-about {
   --term-green: #3fb950;
   --term-blue: #58a6ff;
   --term-amber: #d29922;
-  background: #05080c !important;
+  --term-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  /* 标题栏高度要被两处读到：标题栏自身，和挪到它下沿的进度条 */
+  --term-bar-h: clamp(28px, 4.4vh, 40px);
+  /* --- 环境（卡片以外那整屏）--- */
+  /* 底色比卡面再暗一档：卡片是「亮着的那块」，环境得退到后面去 */
+  --term-env: #05080c;
+  /* 网格与扫描线都只是压在底色上很薄的一层：要的是「那儿有东西」，不是花纹。
+     0.075 那档在本机上几乎看不出来（线条只比底色亮 10/255），实测放到 0.10
+     （亮 16/255）才在普通屏上立得住；再往上就开始像贴了张科技风壁纸。 */
+  --term-grid: rgba(120, 170, 235, 0.1);
+  --term-scan: rgba(160, 200, 255, 0.03);
+  /* 格子边长跟视口走：写死 px 的话，2560 宽的屏上会稀得像掉了几根线 */
+  --term-grid-sz: clamp(34px, 3.4vw, 56px);
+
+  /* 整屏环境。五层从下往上：底色 → 网格（横竖各一层）→ 扫描线 → 中心冷光
+     → 暗角。CSS 里**先写的画在上面**，所以这里是倒着写的。
+     用 background 简写而不是 background-image + background-color：上面提到
+     的那四条遗留用的正是 `background: … !important` 简写，而简写会把
+     background-image 一并重置 —— 分开写的话这层网格在深色下会被它们清掉。
+     整条简写也带 !important，靠同特异性 + 源序更晚压过去。 */
+  background:
+    /* 暗角：只压最外圈。压狠了网格就没了，而网格恰恰是这次要的东西 */
+    radial-gradient(
+      ellipse 104% 88% at 50% 48%,
+      transparent 46%,
+      rgba(0, 0, 0, 0.6) 100%
+    ),
+    /* 中心冷光：给终端背后一个光源，卡片四周才不至于是死黑 */
+    radial-gradient(
+      ellipse 62% 58% at 50% 46%,
+      rgba(88, 166, 255, 0.1),
+      transparent 72%
+    ),
+    /* 扫描线：4px 一周期、1px 亮线 */
+    repeating-linear-gradient(
+      180deg,
+      var(--term-scan) 0 1px,
+      transparent 1px 4px
+    ),
+    /* 网格：竖线 + 横线 */
+    repeating-linear-gradient(
+      90deg,
+      var(--term-grid) 0 1px,
+      transparent 1px var(--term-grid-sz)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--term-grid) 0 1px,
+      transparent 1px var(--term-grid-sz)
+    )
+    var(--term-env) !important;
+}
+/* 深色下主题会给 .content 刷一层 #181a1f（6444 行），把 body 上的环境整个盖住
+   —— 结果深色下反倒看不见环境。关于页要的是「整屏一个环境」，让它让开。
+   浅色下 .content 本来就是透明的，这条对浅色无副作用。 */
+body.page-theme-about .content,
+html[data-theme="dark"] body.page-theme-about .content {
+  background-color: transparent;
 }
 /* 卡面 = 终端窗口。用 box-shadow 画 1px 描边而不是 border：border 会参与
-   盒模型，可能把第 17 节那条刚修好的高度链再顶破一次。 */
-body.page-theme-about .article-inner {
-  background: var(--term-bg);
-  box-shadow: 0 0 0 1px var(--term-line), 0 26px 70px rgba(15, 20, 25, 0.16);
-}
+   盒模型，可能把第 17 节那条刚修好的高度链再顶破一次。
+   外面那圈冷色辉光不是纯装饰：环境是暗的，卡片得看起来是「亮着的」。 */
+body.page-theme-about .article-inner,
 html[data-theme="dark"] body.page-theme-about .article-inner {
-  background: var(--term-bg);
-  box-shadow: 0 0 0 1px var(--term-line), 0 26px 70px rgba(0, 0, 0, 0.62);
+  background-color: var(--term-bg);
+  /* 卡面自己也铺一层扫描线。环境那层被卡片整个挡掉了，而文字这一块才是眼睛
+     盯得最久的地方 —— 少了它，卡片看着就是贴在 CRT 上的一张纸。
+     画进 background 而不是用 ::after 盖上去：前者在文字**下面**，一格对比度
+     都不吃；后者压在字上，正文立刻发灰。 */
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.022) 0 1px,
+    transparent 1px 4px
+  );
+  box-shadow:
+    0 0 0 1px var(--term-line),
+    0 0 90px rgba(88, 166, 255, 0.1),
+    0 26px 70px rgba(0, 0, 0, 0.62);
 }
 
 /* 底部导航与进度条复用的 --about-* token 一并接到终端调色板上。
