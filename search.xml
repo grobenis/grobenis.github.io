@@ -1,0 +1,1883 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线</title>
+      <link href="/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/"/>
+      <url>/2026/09/06/2026-09-07-3DGUT%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/</url>
+      
+        <content type="html"><![CDATA[3D 高斯泼溅（3DGS）重建质量高、渲染快，但被光栅化管线绑死在理想针孔相机上：鱼眼、大畸变镜头要先”去畸变”，卷帘快门这类时变效应无法建模，反射折射等次级光照更是无从谈起。NVIDIA 在 CVPR 2025 提出的 3DGUT 换了一个思路——不再对投影函数做线性化，改用无迹变换近似高斯粒子本身，并把渲染公式与光线追踪方法 3DGRT 对齐，一次解锁了任意畸变相机、卷帘快门与反射/折射混合渲染，帧率依然保持在 200+ FPS。本文是对这篇论文的精读笔记。 不近似函数，近似粒子本身 3DGUT 论文精读：用无迹变换解锁 3DGS 的畸变相机与次级光线 一、论文信息与任务 项 内容 论文 3DGUT: Enabling Distorted Cameras and Secondary Rays in Gaussian Splatting 会议 CVPR 2025 作者 Qi Wu 、Janick Martinez Esturo （共同一作）、Ashkan Mirzaei、Nicolas Moenne-Loccoz、Zan Gojcic 单位 NVIDIA；Ashkan Mirzaei 同时隶属多伦多大学 代码 https://github.com/nv-tlabs/3dgrut（已集成进 gsplat 库） 项目主页 https://research.nvidia.com/labs/toronto-ai/3DGUT 任务 ：多视图 3D 场景重建与新视角合成。与普通 3DGS 工作不同，它要求在光栅化渲染管线内同时做到两件事： 支持任意非线性相机投影模型（鱼眼、大畸变）与时变相机效应（卷帘快门）； 支持次级光线，从而渲染反射、折射等光照效果； 并且保持 3DGS 级别的实时速度。 输入 ：一组多视角图像与对应相机参数（不限于针孔，可以是鱼眼/畸变/卷帘快门时变位姿；Waymo 场景额外使用 LiDAR 深度监督）。 输出 ：3D 高斯粒子场景表示（位置 $\mu$、旋转四元数、尺度 $S$、不透明度 $\sigma$、三阶球谐视角相关颜色）、新视角图像、混合渲染图像（可在场景中插入反射球、折射雕像）。 论文 Fig.1 全景展示了这两项能力：左半对比”去畸变后训练”与”直接用原始畸变视图训练（Ours）”的重建质量，右半展示在场景中插入反射球、折射雕像后的次级光照渲染效果。 二、动机：光栅化的两个天花板 业务问题 ：自动驾驶、机器人、手机等真实传感器大量使用广角/鱼眼镜头与卷帘快门传感器，且载体在运动中拍摄。传统 3DGS 重建前必须把图像去畸变校正成针孔模型，这一过程裁切掉大量边缘像素、丢失信息、拉低重建质量；与此同时，反射折射等次级光照效果在仿真、虚拟物体插入中不可缺少，而纯光栅化管线天然不支持。 现有方案各有短板： 方案族 代表 问题 光栅化 spl …]]></content>
+      
+      
+      <categories>
+          
+          <category> 论文笔记 </category>
+          
+          <category> 计算机视觉 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> NeRF </tag>
+            
+            <tag> 3DGS </tag>
+            
+            <tag> 无迹变换 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>为 Codex 桌面版配置第三方中转</title>
+      <link href="/2026/09/03/2026-09-04-%E6%8A%8ACodex%E6%A1%8C%E9%9D%A2%E7%89%88%E6%8E%A5%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC_%E4%BA%94%E4%B8%AA%E5%8F%A0%E5%8A%A0%E6%95%85%E9%9A%9C%E7%9A%84%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/"/>
+      <url>/2026/09/03/2026-09-04-%E6%8A%8ACodex%E6%A1%8C%E9%9D%A2%E7%89%88%E6%8E%A5%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC_%E4%BA%94%E4%B8%AA%E5%8F%A0%E5%8A%A0%E6%95%85%E9%9A%9C%E7%9A%84%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[在 Linux 上把 ChatGPT 桌面版(内置 Codex)接入自己搭建的 OpenAI 兼容中转,一共四步:让 codex 命令可用、补齐认证、把 provider 导进正确分类、用一个本地 $ref 展开代理收尾。下面是可直接照做的完整配置流程。 看得见的凭证与路径，未必落在想去的那条上，回读验证胜过反复重试 为 Codex 桌面版配置第三方中转 一、目标与效果 让本机的 Codex 走自建中转,而不是 OpenAI 官方。工具链是 ChatGPT 桌面版(Linux deb,版本 26.901.20858 ,内置 codex-cli 0.153.0-alpha.5 )加 CC-Switch(v3.20.1)做 provider 切换。 达成后:CLI 和 GUI 都能发消息、调工具,数据经中转转发。全流程不改动任何系统文件, $ref 问题也只在本地代理处消化。 约定:中转地址记为 https://relay.example.com ,模型记为 &lt;org&gt;/kimi-k3 ,密钥一律 sk-**** 。 二、第一步:让 codex 命令可用 deb 包里其实已经带上了完整的 CLI 二进制,只是包根目录没导出 /usr/bin/codex 软链。直接补一条软链指向捆绑二进制即可: 1 sudo ln -sf /usr/lib/chatgpt/resources/codex /usr/local/bin/codex 验证: 1 codex --version # -&gt; codex-cli 0.153.0-alpha.5 不要照系统提示去 snap install codex ,那会装出另一个无关的 Codex。 三、第二步:补双份认证(CLI 与 GUI) Codex 的 CLI 和桌面 GUI 走 两条不同的认证读取路径 : 认证来源 CLI ~/.codex/config.toml 里的 experimental_bearer_token GUI ~/.codex/auth.json ,靠它判断”是否已登录” CC-Switch 只把密钥写进了自己的 SQLite, config.toml 是全的,但 auth.json 没生成 ——于是 CLI 能用、GUI 全程未登录。 补齐 auth.json 。注意别把密钥塞进命令行( argv 对同机其他用户可见),直接从源头程序化读取: 1 2 3 4 5 6 7 8 9 10 11 import sqlite3, json, os c = sqlite3.connect( &#x27;file:~/.cc-switch/cc-switch.db?mode=ro&#x27; , uri= True ) row = c.execute( "select settings_config  …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工程复盘 </category>
+          
+          <category> AI 工具链 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AI工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ubuntu环境下为微信设置显隐快捷键</title>
+      <link href="/2026/09/03/2026-09-04-%E7%BB%99%E5%BE%AE%E4%BF%A1%E5%8A%A0%E4%B8%80%E4%B8%AAAlt+X_GNOME%E4%B8%8B%E7%AA%97%E5%8F%A3%E6%98%BE%E9%9A%90%E7%9A%84%E4%B8%89%E4%B8%AA%E9%99%B7%E9%98%B1/"/>
+      <url>/2026/09/03/2026-09-04-%E7%BB%99%E5%BE%AE%E4%BF%A1%E5%8A%A0%E4%B8%80%E4%B8%AAAlt+X_GNOME%E4%B8%8B%E7%AA%97%E5%8F%A3%E6%98%BE%E9%9A%90%E7%9A%84%E4%B8%89%E4%B8%AA%E9%99%B7%E9%98%B1/</url>
+      
+        <content type="html"><![CDATA[在 Ubuntu GNOME(X11)上给微信配一个 Alt+X 快捷键：按一下，微信在前台就收起，不在前台就调出来，没运行就启动。整个方案只有两个脚本、约 90 行代码，只用 wmctrl 、 xprop 、 gsettings ，不装 xdotool 、不需要 sudo。下面是从零到能用的全部步骤。 命令返回成功，不代表窗口真的动了 Ubuntu环境下为微信设置显隐快捷键 一、背景 macOS 上”呼出/隐藏某个应用”是系统能力，Linux 桌面上则要自己拼。好在我们只需要两个 X11 工具加一个快捷键绑定，就能得到同样的体验。 环境事实： 项 值 桌面 Ubuntu GNOME， XDG_SESSION_TYPE=x11 窗管 mutter 微信 腾讯官方 deb，4.1.1.8 窗口类 wechat.wechat 依赖 wmctrl 、 xprop 、 gsettings 二、实现效果 一个键覆盖三种状态： 1 2 3 聚焦中 -&gt; 最小化 最小化/在后台 -&gt; 恢复并聚焦 没有运行 -&gt; 启动 GNOME 的自定义快捷键最终只是执行一条命令，所以整个逻辑收敛成两个可执行文件，不依赖任何交互式 shell 环境。 三、安装依赖 1 sudo apt install wmctrl x11-utils # x11-utils 提供 xprop 如果机器上 sudo 需要密码、 xdotool 又不方便装，也没关系——本方案不用它。 四、最小化辅助工具 x-iconify 微信这种窗口用 wmctrl -b add,hidden 是收不起来的（原因见文末补充），所以我们提供一个小工具，向窗管发标准的 WM_CHANGE_STATE 消息来真正最小化。 新建 ~/.local/bin/x-iconify ，内容如下： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 #!/usr/bin/env python3 """Minimize (iconify) an X11 window by id. Sends the WM_CHANGE_STATE client message to the root window -- the same thing XIconifyWindow does internally -- which mutter honors reliably. """ import ctypes import sys fr …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工程复盘 </category>
+          
+          <category> Linux 桌面 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Ubuntu </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>从 ArUco 到三角标:PnP 位姿估计的工程化复盘</title>
+      <link href="/2026/08/26/2026-08-27-%E4%BB%8EArUco%E5%88%B0%E4%B8%89%E8%A7%92%E6%A0%87_PnP%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%A4%8D%E7%9B%98/"/>
+      <url>/2026/08/26/2026-08-27-%E4%BB%8EArUco%E5%88%B0%E4%B8%89%E8%A7%92%E6%A0%87_PnP%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%A4%8D%E7%9B%98/</url>
+      
+        <content type="html"><![CDATA[机器人对料盘、料盒的六自由度位姿估计长期依赖 ArUco 码解码与 PnP 求解。当标识物迁移为无编码的等边三角形标记后,同一套 PnP 流水线陆续暴露了六类工程问题:等边歧义导致的角点对应退化、共线布局导致的姿态自由度观测缺失、歧义消除对上游契约的依赖、欧拉角表示法的值域陷阱、观测鲁棒性与闸门设计,以及阈值可调空间趋近于零的极限情况。本文逐类分析成因、特征现象与处理方式,并汇总为九条工程检查清单,供视觉引导、视觉抓取类任务的位姿估计环节参考。 契约消歧义,闸门替解算 从 ArUco 到三角标:PnP 位姿估计的工程化复盘 一、背景 PnP(Perspective-n-Point)在标识物(fiducial marker)定位流程中常被当作成熟组件直接调用:给定若干 3D 物点与对应 2D 像素,求解相机外参 R、t。称之为”成熟”,隐含一组教科书前提成立—— 3D-2D 对应唯一且无歧义、标定参数与物理一致、观测误差为独立同分布高斯噪声 。当这些前提被局部破坏时,问题往往不表现为求解器崩溃,而表现为解的质量在某个自由度上静默恶化。后者比显式报错难以排查得多。 本文记录一次标识物迁移。料盘定位原使用 ArUco 码:检测器解码四边形,四角点像素与物点的对应由图案编码保证,位姿估计长期稳定。后因工艺与外观要求,将标识物改为无编码的等边三角形标记(下文简称”三角标”),盘面共贴 4 枚。 该改动表面上只涉及检测器替换,实际触发了 PnP 流水线从对应建立到阈值设计的一系列问题。下文按问题类别逐项展开,最后汇总为工程清单。 二、PnP 问题简述 相机模型: 1 u ~ K[R | t]X 其中 X 为 3D 物点,K 为内参,R、t 为待求相机外参。 相关的解法族: P3P :3 点可解,闭式解至多 4 个候选,需要额外信息消歧; EPnP :以 4 个控制点表达物点,线性求解,复杂度 O(n),适用于非共面点; 迭代最小化 : solvePnP(ITERATIVE) 即 Levenberg–Marquardt 最小化重投影误差,通常以线性解为初值; 多帧联合优化 :将多帧观测一次性建模求解,是光束法平差的简化形式,也是本文第 5 节方案的主要组成。 三类问题的共同前提已在背景中给出,后文依次对应三条前提各自的破坏场景。 三、坑一:等边歧义——对称性破坏对应唯一性 本节先给出三代解算器的演化概览: 代际 解算策略 结果 0 ArUco 四角点 + 分对 PnP 长期稳定 1 三角标三顶点 + 角点 PnP(沿用 ArUco 流水线) 不可用 2 三角化中心 + 法向合成(绕开 PnP) 可用但脆弱 3 三角标六顶点重投影 LM PnP(含契约约束) 稳定 第 1 代方案将三角标的三个顶点直接接入原有角点 PnP 流水线,失败于 对应关系无法建立 。 ArUco 码 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工程复盘 </category>
+          
+          <category> 计算机视觉 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 相机标定 </tag>
+            
+            <tag> 图像处理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>在线外部相机标定论文学习</title>
+      <link href="/2022/10/19/2022-10-20-Online_Extrinsic_Camera_Calibration/"/>
+      <url>/2022/10/19/2022-10-20-Online_Extrinsic_Camera_Calibration/</url>
+      
+        <content type="html"><![CDATA[本文是论文《基于车道宽度先验与车道边界观测的时间一致 IPM 在线外部相机校准》的翻译与学习笔记。论文提出利用消失点估计俯仰角与偏航角，再通过最小化车道宽度观测值与先验的差异求解横滚角与相机高度，并由扩展卡尔曼滤波顺序更新参数，从而生成时间一致的 IPM 鸟瞰图。 稳定的外参，才有稳定一致的俯视图 Online Extrinsic Camera Calibration for Temporally Consistent IPM Using Lane Boundary Observations with a Lane Width Prior 标题：基于车道线等宽的先验进行车道边界观测的时间一致 IPM 的在线外部相机校准 摘要 ​ 在本文中，我们提出了一种在线外部相机校准方法，即在连续驾驶场景图像中从路面估计俯仰角、偏航角、侧倾角和相机高度。 所提出的方法通过两个步骤估计外部摄像机参数： 使用从一组车道边界观测计算的消失点同时估计俯仰角和偏航角 通过最小化车道之间的差异来计算滚动角和摄像机高度 宽度观察和车道宽度先验。 ​ 外部相机参数使用扩展卡尔曼滤波 (EKF) 顺序更新，并最终用于通过逆透视映射 (IPM) 生成时间一致的鸟瞰 (BEV) 图像。 我们证明了所提出的方法在合成和现实世界数据集中的优越性。 I 引言 近年来，针对ADAS（高级驾驶辅助系统）和AD（自动驾驶）应用的摄像头视觉感知研究已经深入开展。许多研究集中在相邻物体和驾驶环境的检测上，例如车道边界检测[1]、[2]、交通标志检测[3]、[4]、物体检测和跟踪[5]、[6]等，来自前置摄像头捕获的输入图像。特别是对于路面标记，主要使用逆透视映射（IPM）[7]，因为它们受摄像机透视失真的影响更大。给定相机与路面的几何关系，即相机外参，可将输入图像转换为鸟瞰（BEV）图像，从而保留路面标记的实际形状并提高检测性能。此外，外参被广泛用于估计单目相机系统[8]、[9]中物体的距离，并通过生成增强特征[10]来提高物体检测的性能。 外参通常在驾驶前通过使用矩形/梯形/平行四边形的各种图案[11]、[12]或车道标记上的手动注释线/顶点[13]、[14]、[15]来计算]。然而，由于出厂默认标定的不持久性，摄像头与路面的几何关系会逐渐发生变化，并且随着摄像头在行驶中的晃动而变化很大。因此，IPM 无法产生如图 1(b) 所示的良好 BEV 图像，因此在驾驶时应反复补偿外部相机参数，但人们不能在驾驶时干预校准过程，尤其是出于安全原因。因此，外部相机校准应该使用来自驾驶场景图像的观察来自动执行。 有几项研究 [16]、[17] 使用具有相机运动变化的驾驶环境的图像序列进行在线外部相机校准。他们使用从视觉里程计或车道边界的消失点 (VP) 估计的摄像机运动来更新外部摄像机参数，并生成显示平行车道边界的 BE …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 相机标定 </tag>
+            
+            <tag> 图像处理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>时间戳同步方法</title>
+      <link href="/2022/07/25/2022-07-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/"/>
+      <url>/2022/07/25/2022-07-25-%E6%97%B6%E9%97%B4%E6%88%B3%E5%90%8C%E6%AD%A5/</url>
+      
+        <content type="html"><![CDATA[参考链接 : 从零开始一起学习SLAM | 用四元数插值来对齐IMU和图像帧 本文介绍 IMU 与相机帧之间的时间戳同步方法，针对 IMU 帧率远高于图像帧率的问题，讲解四元数线性插值（Nlerp）与球面线性插值（Slerp）的原理、差异及实现注意事项。文章还给出将 IMU 四元数对齐到图像帧时间戳的编程示例与完整 C++ 代码。 插值对齐时间戳，多传感器步调一致 IMU与相机帧的互补 IMU与相机帧之间的同步 各种插值方法 双线性插值 在图像处理和计算机视觉领域，应用比较多的双线性插值。双线性插值的效果不是最好的，但相较最邻近插值和线性插值的简单粗暴，其获得图像的效果还是更令人满意的，而且双线性插值的计算量和易于理解程度会优于双三次插值和三次样条插值等高阶插值方法。因此双线性插值还是最受广大图像研究者喜爱的。 四元数的插值方法 线性插值-&gt;归一化线性插值 $$q_{t}=\operatorname{Nerp}\left(q_{0}, q_{1}, t\right)=\frac{(1-t) q_{0}+t q_{1}}{\left\|(1-t) q_{0}+t q_{1}\right\|}$$ 线性插值即在$q_0$,$q_1$上进行插值得到$q_t$，对于匀速的变换，其扫过的面积却不是匀速的 $$\begin{aligned}&q_{t}=\operatorname{Serp}\left(q_{0}, q_{1}, t\right)=\frac{\sin ((1-t) \theta)}{\sin (\theta)} q_{0}+\frac{\sin (t \theta)}{\sin (\theta)} q_{1} \\&\theta=\operatorname{acos}\left(q_{0} \cdot q_{1}\right)\end{aligned}$$ 注意事项 理论上是这样的，不过，在编程实现Slerp插值的时候还是有几个问题需要注意一下。 1、如果单位四元数之间的夹角θ非常小，那么sin(θ)可能会由于浮点数的误差被近似为0.0，从而导致除以0的错误．所以，我们在实施 Slerp 之前，需要检查两个四元数的夹角是否过小（或者完全相同）。一旦发现这种问题，我们就必须改用 Nlerp 对两个四元数进行插值，这时候 Nlerp 的误差非常小，所以基本不会与真正的 Slerp 有什么区别。 2、在对两个单位四元数进行插值之前，我们需要先检测q0与q1之间是否是钝角，即检测它们点积的结果q0⋅q1 是否为负数。如果 q0⋅q1&lt;0，那么我们就反转其中的一个四元数，比如说将q1改为−q1 ，并使用q0与−q1之间新的夹角来进行插值，这样才能保证插值的路径是最短的． 编程实现四元数球面线性插值。 我们用智能手机采集了图像序列和IMU数据，由于IM …]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> IMU </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>相机标定原理</title>
+      <link href="/2022/07/25/2022-07-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/"/>
+      <url>/2022/07/25/2022-07-25-%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[本文介绍SLAM系统中不同传感器以及之间的标定原理与步骤。 极简相机标定步骤： 1、打印一张棋盘格，把它贴在一个平面上，作为标定物。 2、通过调整标定物或摄像机的方向，为标定物拍摄一些不同方向的照片。 3、从照片中提取棋盘格角点。 4、估算理想无畸变的情况下，五个内参和六个外参。 5、应用最小二乘法估算实际存在径向畸变下的畸变系数。 6、极大似然法，优化估计，提升估计精度。 参考来源： 一文详解相机标定算法原理 本文讲解 SLAM 中传感器的标定原理，重点介绍张正友棋盘格标定法，从相机内参、外参与畸变模型入手，推导平面单应性矩阵与求解内参的两个基本约束。文章进一步说明通过极大似然估计和 L-M 算法迭代优化参数，并简要提及 IMU 标定及相机与 IMU 之间的外参标定。 一块棋盘格，求解相机内外参 相机标定 问题引出 一. 为什么要相机标定？ ​ 在图像测量过程以及机器视觉应用中，为确定空间物体表面某点的三维几何位置与其在图像中对应点之间的相互关系，必须建立相机成像的几何模型，这些几何模型参数就是相机参数。 ​ 【1】进行摄像机标定的目的：求出相机的内、外参数，以及畸变参数。 ​ 【2】标定相机后通常是想做两件事：一个是由于每个镜头的畸变程度各不相同，通过相机标定可以校正这种镜头畸变矫正畸变，生成矫正后的图像；另一个是根据获得的图像重构三维场景。 摄像机标定过程，简单的可以简单的描述为通过标定板，如下图，可以得到n个对应的世界坐标三维点Xi和对应的图像坐标二维点xi，这些三维点到二维点的转换都可以通过上面提到的相机内参K，相机外参R和t，以及畸变参数D，经过一系列的矩阵变换得到。 二. 什么叫相机标定？ ​ 在大多数条件下这些参数必须通过实验与计算才能得到，这个求解参数的过程就称之为相机标定（或摄像机标定） 三. 为什么相机标定很重要？ 无论是在图像测量或者机器视觉应用中，相机参数的标定都是非常关键的环节，其标定结果的精度及算法的稳定性直接影响相机工作产生结果的准确性。因此，做好相机标定是做好后续工作的前提，提高标定精度是科研工作的重点所在。 四. 相机标定方法有哪些？ 相机标定方法有：传统相机标定法、主动视觉相机标定方法、相机自标定法。 传统相机标定法需要使用尺寸已知的标定物，通过建立标定物上坐标已知的点与其图像点之间的对应，利用一定的算法获得相机模型的内外参数。根据标定物的不同可分为三维标定物和平面型标定物。三维标定物可由单幅图像进行标定，标定精度较高，但高精密三维标定物的加工和维护较困难。平面型标定物比三维标定物制作简单，精度易保证，但标定时必须采用两幅或两幅以上的图像。传统相机标定法在标定过程中始终需要标定物，且标定物的制作精度会影响标定结果。同时有些场合不适合放置标定物也限制了传统相机标定法的应用。 目前出现的自标定算法中主要是利用相机运动的约束。 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> 相机标定 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>NeRF 论文学习</title>
+      <link href="/2022/07/24/2022-07-24-Nerf/"/>
+      <url>/2022/07/24/2022-07-24-Nerf/</url>
+      
+        <content type="html"><![CDATA[Nerf(neural radiance field)神经辐射场 本文用来学习Nerf； 本文解读 NeRF（神经辐射场）论文，介绍如何用 MLP 神经网络将静态 3D 场景隐式表示为连续的 5D 函数，输出各点的体积密度与视角相关颜色，并沿相机光线做可微体素渲染。文章重点讲解了场景表示、基于分段随机采样的离散近似渲染算法，以及位置编码、多层级采样等训练技巧，最终实现从任意视角合成逼真的新视图。 以连续辐射场隐式建模场景，任意视角皆可渲染 NeRF: Representing Scenes asNeural Radiance Fields for View Synthesis 概览 NeRF可以简要概括为用一个MLP神经网络去隐式地学习一个静态3D场景。为了训练网络，针对一个静态场景，需要提供大量相机参数已知的图片。基于这些图片训练好的神经网络，即可以从任意角度渲染出图片结果了。理解NeRF主要需要理解三个方面： 如何用NeRF来表示3D场景？ 如何基于NeRF渲染出2D图像？ 如何训练NeRF？ 即我们要理解NeRF是如何从一系列2D图像中学习到3D场景，又是如何渲染出2D图像。 摘要 我们提出了一种方法，该方法通过使用一组稀疏输入视图优化底层连续体积场景函数来合成复杂场景的新视图，从而获得最先进的结果。我们的算法使用全连接（非卷积）深度网络表示场景，其输入是单个连续 5D 坐标（空间位置 $(x,y,z)$ 和观察方向 $(θ,φ)$），其输出是该空间位置的体积密度和与视图相关的发射辐射。我们通过沿相机光线查询 5D 坐标来合成视图，并使用经典的体积渲染技术将输出颜色和密度投影到图像中。因为体绘制自然可微，优化我们的表示所需的唯一输入是一组具有已知相机姿势的图像。我们描述了如何有效地优化神经辐射场以渲染具有复杂几何形状和外观的场景的逼真的新视图，并展示了优于先前在神经渲染和视图合成方面的工作的结果。查看合成结果最好以视频形式观看，因此我们敦促读者观看我们的补充视频以进行令人信服的比较。 关键词 ：场景表示，视图合成，基于图像的渲染，体绘制，3D深度学习 引言 ​本文将静态场景表示为一个连续的5D 函数，它输出空间中每个点 $(x,y,z)$ 在每个方向$ (θ,φ)$ 发射的辐射度，以及每个点的密度，其作用类似于控制辐射度的微分不透明度 由穿过 $(x,y,z) $的射线累积。 ​本文方法优化了一个没有任何卷积层的深度全连接神经网络（通常称为多层感知器或 MLP），通过从单个 5D 坐标$ (x,y,z,θ,φ)$ 回归到单个体积密度和视图来表示此函数- 依赖 RGB 颜色。为了从特定视点渲染这个神经辐射场 (NeRF)，我们： 将相机光线穿过场景以生成一组采样的 3D 点， 使用这些点及其对应的 2D 观察方向作为神经网络的输入来生成输出集颜色和密度， …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> NeRF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 中常用的角点检测算法</title>
+      <link href="/2022/05/31/2022-05-31-SLAM_Feature_detecter/"/>
+      <url>/2022/05/31/2022-05-31-SLAM_Feature_detecter/</url>
+      
+        <content type="html"><![CDATA[本文总结 SLAM 中常用的角点检测算法：先介绍人工设计特征点应具备的可重复性、可区别性、高效率与本地性，以及关键点和描述子的组成；再逐一讲解 FAST、Harris、Shi-Tomas、ORB、SIFT、SURF 的原理、优缺点及其在 SLAM 中的适用性。 小而稳定的特征，撑起整个位姿估计 特征点 人工设计的特征点该具有的特性 可重复性（Repeatability）：相同的“区域”可以在不同的图像中被找到。 可区别性（Distinctiveness）：不同的“区域”有不同的表达。 高效率（Efficiency）：同一图像中，特征点的数量应远小于像素的数量。 本地性（Locality）：特征仅与一小片图像区域相关。 组成 关键点 描述子 描述子设计原则：外观相似的特征应该又相似的描述子； 常用角点检测算法 SLAM中常用的角点检测算法整理如下： 本文根据ORBSLAM3中的综述表格进行总结： FAST关键点 单纯的FAST关键点，没有描述子 FAST 是一种角点，主要检测局部像素灰度变化明显的地方，以速度快著称。它的思 想是：如果一个像素与它邻域的像素差别较大（过亮或过暗）, 那它更可能是角点。相比于其他角点检测算法，FAST 只需比较像素亮度的大小，十分快捷。它的检测过程如下（见图7-3 ）： 在图像中选取像素p，假设它的亮度为$I_p$。 设置一个阈值T(比如$I_p$ 的20%)。 以像素p 为中心, 选取半径为3 的圆上的16 个像素点。 假如选取的圆上，有连续的N 个点的亮度大于Ip + T 或小于Ip - T，那么像素p可以被认为是特征点(N 通常取12，即为FAST-12。其它常用的N 取值为9 和11，他们分别被称为FAST-9，FAST-11)。 循环以上四步，对每一个像素执行相同的操作。 在FAST-12 算法中，为了更高效，可以添加一项预测试操作，以快速地排除绝大多数不是角点的像素。具体操作为，对于每个像素，直接检测邻域圆上的第1，5，9，13 个像素的亮度。只有当这四个像素中有三个同时大于Ip + T 或小于Ip 􀀀 T 时，当前像素才有可能是一个角点，否则应该直接排除。这样的预测试操作大大加速了角点检测。此外，原始的FAST 角点经常出现“扎堆”的现象。所以在第一遍检测之后，还需要用非极大值抑制（Non-maximal suppression），在一定区域内仅保留响应极大值的角点，避免角点集中的问题。 缺点 FAST 特征点的计算仅仅是比较像素间亮度的差异，速度非常快，但它也有一些问题。 首先，FAST 特征点数量很大且不确定，而我们往往希望对图像提取固定数量的特征。因此，在ORB 中，对原始的FAST 算法进行了改进。我们可以指定最终要提取的角点数量N，对原始FAST 角点分别计算Harris 响应值，然后选取前N 个具有最大 …]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 图像处理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ORB-SLAM3 学习笔记</title>
+      <link href="/2022/05/31/2022-05-31-ORBSLAM3/"/>
+      <url>/2022/05/31/2022-05-31-ORBSLAM3/</url>
+      
+        <content type="html"><![CDATA[原文链接： https://arxiv.org/abs/2007.11898 参考翻译文章： https://zhuanlan.zhihu.com/p/403299796 本文学习 ORB-SLAM3 论文，该系统是首个在单目、双目与 RGB-D 相机上同时支持纯视觉、视觉惯性与多地图的 SLAM 系统。文章重点介绍两大创新：基于最大后验估计的紧耦合视觉惯性前端，以及依赖高召回率位置识别算法的多地图机制——跟踪丢失时开启新地图、回访建图区域时无缝合并，从而在全流程中复用历史信息并显著提升精度。 多地图无缝衔接，SLAM永不迷航 摘要 本文提出的ORBSLAM3，采用 针孔相机和鱼眼镜头模型 ， 第一个在单目、双目以及RGBD相机上都能执行纯视觉、视觉-惯性以及多地图的SLAM系统 。 第一个主要的创新点是 基于特征的紧耦合视觉惯性SLAM系统 ， 完全依赖于最大后验估计MAP算法 ，甚至在IMU初始化阶段期间。这个SLAM系统， 在实时的、小型或大型、室内或室外环境中，都能鲁棒地运行系统 ，并且 要比之前的方法精确2到5倍 。 第二个主要的创新点是 多地图系统 ，依赖于一个提升召回率的新的位置识别算法。基于此，ORB-SLAM3在长期缺乏视觉信息的情况下依旧能够运行：当特征跟踪丢失时，它将会开启一个新地图，遇到建图过的区域将会无缝合并之前的地图。与那些只是用前几秒信息的视觉里程计系统相比，ORBSLAM3系统是第一个，能在每个算法阶段，复用之前的所有信息。这个允许包括在光束平差法共视关键帧阶段，其提供提升精度的高视差观测，即使在时间序列上是分隔的，或者他们来自之前的建图会话Session。 我们的实验显示，在所有的传感器配置中，ORBSLAM3和已有文献中最好的系统一样鲁棒，并且要更加精确。注意的是，我们的双目-惯性SLAM在EuRoC飞行器数据集上达到了平均3.6cm的精度，在TUM-VI（AR/VR场景代表）快速手持运动环境的室内数据集中达到了平均9mm的精度。为了社区的明天，本文开源了代码。 引言 表1给出了最具代表的视觉和视觉-惯性系统的总结，显示了用于估计和数据关联的主要技术。定性的精度对比和鲁棒性评级包括在表中，对于现代SLAM系统主要基于第7小节中介绍的对比方法，而针对经典的系统，主要基于文献【2】【52】中先前的比较。 不同SLAM系统之间的相同点与不通电]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>安卓基础</title>
+      <link href="/2022/04/05/2022-04-05-%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/"/>
+      <url>/2022/04/05/2022-04-05-%E5%AE%89%E5%8D%93%E5%9F%BA%E7%A1%80/</url>
+      
+        <content type="html"><![CDATA[本文介绍 安卓学习过程中的知识点， 参考书籍：《第一行代码》 本文整理安卓学习中的核心知识点，重点讲解 Activity、Service、Content Provider、Broadcast Receiver 四大组件的定义、注册、激活与关闭机制，并介绍任务栈与生命周期等概念。 四大组件了然，安卓开发方能入门 安卓四大组件 Android四大组件分别为activity、service、content provider、broadcast receiver。 一、android四大组件详解 1、activity （1）一个Activity通常就是一个单独的屏幕（窗口）。 （2）Activity之间通过Intent进行通信。 （3）android应用中每一个Activity都必须要在AndroidManifest.xml配置文件中声明，否则系统将不识别也不执行该Activity。 2、service （1）service用于在后台完成用户指定的操作。service分为两种： （a）started（启动）：当应用程序组件（如activity）调用startService()方法启动服务时，服务处于started状态。 （b）bound（绑定）：当应用程序组件调用bindService()方法绑定到服务时，服务处于bound状态。 （2）startService()与bindService()区别： （a）started service（启动服务）是由其他组件调用startService()方法启动的，这导致服务的onStartCommand()方法被调用。当服务是started状态时，其生命周期与启动它的组件无关，并且可以在后台无限期运行，即使启动服务的组件已经被销毁。因此，服务需要在完成任务后调用stopSelf()方法停止，或者由其他组件调用stopService()方法停止。 （b）使用bindService()方法启用服务，调用者与服务绑定在了一起，调用者一旦退出，服务也就终止，大有“不求同时生，必须同时死”的特点。 （3）开发人员需要在应用程序配置文件中声明全部的service，使用 标签。 （4）Service通常位于后台运行，它一般不需要与用户交互，因此Service组件没有图形用户界面。Service组件需要继承Service基类。Service组件通常用于为其他组件提供后台服务或监控其他组件的运行状态。 3、content provider （1）android平台提供了Content Provider使一个应用程序的指定数据集提供给其他应用程序。其他应用可以通过ContentResolver类从该内容提供者中获取或存入数据。 （2）只有需要在多个应用程序间共享数据是才需要内容提供者。例如，通讯录数据被多个应用程序使用，且必须存储在一个内容提供者 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 安卓 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>大数据简述</title>
+      <link href="/2022/03/31/2022-03-31-Big-data/"/>
+      <url>/2022/03/31/2022-03-31-Big-data/</url>
+      
+        <content type="html"><![CDATA[跟着同事学习一下大数据。 本文简述大数据的基本面貌，梳理了静态与动态数据的分类及其来源，并介绍分布式存储、MapReduce 分析流程等大数据框架，涵盖 YARN 资源调度与 ZooKeeper 分布式协调服务等关键组件。 分而治之，方驭海量数据 无处不在的大数据 分类 静态数据 动态数据（年龄，喜好，推荐） 来源 谷歌文件系统（GFS） MapReduce BigTable hadoop spark 大数据框架 分布式处理的软件框架的总称， 存储 分布式存储 NameNode:记录每个块的信息 DataNode：存储源信息 降低硬件成本 软件提供可靠性 分开存储；可用性不能保证 分析——MapReduce 分而治之 Map Shuffle Reduce 里程碑-YARN 接受任务/资源调度 Resource Manager：接受任务 Node Manager：启动容器 ZooKeeper:分布式协调服务 命令服务 配置管理 集群管理 脑裂现象： 投票机制~ 过半当leader]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 大数据 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>联邦机器学习</title>
+      <link href="/2022/03/24/2022-03-24-19-20-00-fedral-machine-learning/"/>
+      <url>/2022/03/24/2022-03-24-19-20-00-fedral-machine-learning/</url>
+      
+        <content type="html"><![CDATA[联邦学习 本文介绍联邦机器学习的基本概念与应用生态，说明其在保护数据隐私与合法合规前提下实现共同建模的思路，梳理横向、纵向与联邦迁移学习的分类，并列举 Google、FATE、微众银行等平台及相关法律依据。 数据不动模型动，隐私与智能兼得 联邦学习 机器学习框架，保护数据隐私安全级合法合规的基础上，实现共同建模，提升AI模型的效果； GOOGLE FATE 商业化价值 端训练-&gt;模型参数-&gt;上传-&gt;训练 分类 横向 业态相同或相似， 特征重叠多，用户重叠少 性能指标；无限接近联合学习的结果 纵向 带来一些危害 特性 用户相同或相似 特征重叠少，用户重叠多 特征联合 计数架构 样本对齐，基于加密技术 把id对齐，通过加密（同态加密） 加密训练 联邦线下回归 xgboost c 联邦迁移学习 也太用户均交际较少 特征、用户重叠少 应用生态 隐私保护 模型 决策树 随机森林 线性回归 增效 其它技术 分布式技术 推荐系统 自然语言处理 计算机视觉 平台 微众银行 谷歌 百度 字节 场景 独立同分布， 相关法律 中华人民共和国网络安全法 中华人民共和国数据安全法 中华人民共和国个人信息保护法]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 机器学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>在工程中统计资源占用情况</title>
+      <link href="/2022/03/16/2022-03-16-Souce_static_in_project/"/>
+      <url>/2022/03/16/2022-03-16-Souce_static_in_project/</url>
+      
+        <content type="html"><![CDATA[简尔言之： RAM: valgrind –tool&#x3D;massif –stacks&#x3D;yes –time-unit&#x3D;B –alloc-fn&#x3D;generic_malloc ./demo ROM: arm-none-eabi-size -t *.a 检查内存泄漏：valgrind –tool&#x3D;memcheck –leak-check&#x3D;full –show-reachable&#x3D;yes –trace-children&#x3D;yes build_linux-x86_64/main 本文整理工程中统计资源占用的实用方法：用 Valgrind Massif 统计程序 RAM 峰值与栈占用，配合 massif-visualizer 可视化分析；用 arm-none-eabi-size 查看静态库的 ROM 占用；用 Valgrind Memcheck 检查内存泄漏。 资源占用可量化，内存问题无处藏 RAM统计 统计工具Valgrind 统计内存占用可以用下valgrind的工具 ubuntu可以使用apt直接安装的 使用的方法是写一个demo 调用算法的接口 编译成可执行文件 然后通过valgrind执行它。 1 valgrind --tool=massif --stacks=yes --time-unit=B --alloc-fn=generic_malloc ./swimming_analyzer_demo 然后在当前目录会生成一个文件 比如：massif.out.1250590 后面的数字是个id 再安装一个软件 massif-visualizer , 使用这个软件打开生成的这个文件massif.out. . 也可以辅助分析它的内存RAM消耗。 ROM统计 关于程序占用ROM的计算借助arm交叉编译器实现 可以通过以下命令查看文件占用flash和ram的大小。 1 arm-none-eabi-size -t *.a 显示结果如下： 上图中，TOTALS所在的dec指示的数字即是占用ROM空间的情况，单位为字节（Byte）。上图中占用为4863/1024 &#x3D;4.74KB。 利用工具统计资源泄露情况 1 valgrind --tool=memcheck --leak-check=full --show-reachable=yes --trace-children=yes build_linux-x86_64/L67main]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> C++ </tag>
+            
+            <tag> 工作 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>VINS-mono 学习笔记</title>
+      <link href="/2022/03/01/2022-03-01-VINS-mono/"/>
+      <url>/2022/03/01/2022-03-01-VINS-mono/</url>
+      
+        <content type="html"><![CDATA[本章想要抽空把之前的VINS_mono系统地学习一下。 本文是对 VINS-mono 的系统学习笔记，梳理这一单目视觉惯性系统的完整框架：前端通过 KLT 光流跟踪特征并对 IMU 测量做预积分，初始化恢复位姿、速度与重力矢量初值，滑动窗口内联合优化视觉与惯性测量，最后经闭环检测与四自由度位姿图优化消除累积漂移。 视觉惯性紧耦合，小代价换高精度 简介 论文 摘要 本文提出了一种用于在各种环境中进行状态估计的单目视觉惯性系统 (VINS)。单目相机和低成本的惯性测量单元 (IMU) 构成了用于六自由度状态估计的最小传感器套件。本文算法迭代地优化有界滑动窗口中的视觉和惯性测量，以执行准确的状态估计。视觉结构由滑动窗口中的关键帧保持，而惯性度量测量则通过关键帧之间的预积分来保持。我们的系统对未知状态的初始化、在线相机-IMU 外部参数校准、在球体上定义的统一重投影误差、循环检测和四自由度位姿图优化具有鲁棒性。这些特性使我们的系统实用且易于使用。我们通过与其他最先进的算法进行比较来验证我们系统在公共数据集和真实世界实验中的性能。我们还在 MAV 平台上执行机载闭环自主飞行，并将算法移植到 iOS 应用程序。我们强调所提出的工作是一个可靠且完整的系统，可以在其他智能平台上轻松操作。我们开源了我们的实现代码和 iOS 移动设备上的增强现实 (AR) 应用程序。 I. 总体简介 本文所提出的视觉惯性系统的结构如下图所示。 第一部分是数据测量处理前端，它从每个新图像帧提取、跟踪特征并在两帧之间预积分所有 IMU 数据。 第二部分是初始化过程，它提供必要的初始值（姿态、速度、重力矢量、陀螺仪偏差和 3D 特征位置）来引导非线性系统。 第三部分实现非线性图优化，通过优化所有视觉、惯性信息来解决我们滑动窗口中的状态。 最后，位姿图优化模块（参见第 VIII 节）接收几何验证的重定位结果，并执行全局优化以消除漂移。 它还实现了位姿图重用。 （VIO 和位姿图优化模块分别在单独的线程中同时运行） 与适用于立体相机的最先进的 VIO 算法 OKVIS [15] 相比，我们的算法是专门为单目相机设计的。 因此，我们特别提出了初始化程序、关键帧选择标准，并使用和处理大视场 (FOV) 相机以获得更好的跟踪性能。 此外，我们的算法提出了一个完整的系统，具有闭环和位姿图重用模块。 符号定义：我们将 $(·)^w$ 视为世界坐标系，其中重力矢量的方向与其 z 轴对齐。 $(·)^b$ 是与 IMU 框架对齐的主体框架。$ (·)^c$ 是相机框架。我们同时使用 R 和四元数 q 来表示旋转矩阵。四元数对应于汉密尔顿符号。我们主要在状态向量中使用四元数，但旋转矩阵也用于 3-D 向量的方便旋转。 $q^w_b$ , $p^w_b$ 是从body坐标系到世界坐标系的旋转和平移。 $b_k$ 是拍摄第 …]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> ROS </tag>
+            
+            <tag> VIO </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 正则表达式</title>
+      <link href="/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+      <url>/2022/02/26/2022-02-26-Cpp%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+      
+        <content type="html"><![CDATA[在实际应用中，有效得利用正则表达式可以极大地提高工作效率。借着LeetCode每日一题，今天学习一下C++语言中的正则表达式。 学习自： C++正则表达式 LeetCode复数乘法 本文借 LeetCode 复数乘法一题学习 C++ 的正则表达式，介绍 regex 库的基本类型以及 regex_match、regex_search、regex_replace 三大操作，并通过手工解析与正则解法的对比展示正则的高效简洁。 正则一行，胜过代码百行 C++正则表达式 一 简介 ​ C++ 中的regex 库提供了用于表示正则表达式和匹配结果的基本类型，以及搜寻、匹配、替换等函数。使用正则表达式处理字符串的流程包括： 用正则表达式定义要匹配的字符串的 规则 ； 然后对目标字符串进行 匹配 ； 最后对匹配到的 结果 进行操作。 二 基本类型 2.1 basic_regex 及其实例化类型 regex 、 wregex 模板类型 basic_regex 用于表示正则表达式对象， &lt;regex&gt; 库提供了它的两种实例化类型： 1 2 Copytypedef basic_regex&lt; char &gt; regex; typedef basic_regex&lt; wchar_t &gt; wregex; 构造函数一般接受一个字符串作为参数，如 1 Copystd::regex reg ( "[0-9A-Z]+" ) ; 构造函数中还有一个默认参数flags，默认值为 std::regex::ECMAScript ，该参数可以用来设置正则表达式所采用的语法，如 std::regex::grep, std::regex::awk 等，也可以设置 case insensitive。flags 的多个值用比特位 OR 操作 | 连接，如 1 Copystd::regex ninth ( "\\bd\\w+" , ECMAScript | icase ) ; 但是正则语法的flag只能设置一种。 具体的构造函数声明及fags值的定义参考 basic_regex::basic_regex - C++ Reference 。 2.2 match_results 、 sub_match 及其实例化类型 match_results 是一种 container-like 的模板类，用于存放对目标串执行完 regex matching 操作后匹配到的结果，其中的每个元素（即每个匹配结果）是一个 sub_match 的实例化对象。 match_results 的实例类型有下列四种： 1 2 3 4 Copytypedef match_results&lt; const char *&gt; cmatch; typedef match_results&lt; const wcha …]]></content>
+      
+      
+      <categories>
+          
+          <category> C++ </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>通过 NDK 打包 aar 格式的 SDK</title>
+      <link href="/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/"/>
+      <url>/2021/07/04/2021-07-04-%E9%80%9A%E8%BF%87ndkd%E6%89%93%E5%8C%85aar%E6%A0%BC%E5%BC%8F%E7%9A%84SDK/</url>
+      
+        <content type="html"><![CDATA[根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。 本文将学习制作SDK的流程。 本文完整演示如何用 NDK/JNI 将纯 C 模块打包成 aar 格式的 Android SDK：从认识 AAR 与 NDK 入手，依次经历创建 Library 模块、javah 生成 JNI 头文件、实现 C 接口函数、配置 Android.mk 与 build.gradle、ndk-build 编译 so 并打包 aar，最后将 aar 导入工程中通过 gradle 依赖使用。 写好 JNI 接口，C 库即可服务安卓世界 目标 根据项目的需求，我们用纯c实现的模块，需要移植到android设备中，制作java版本的sdk，我们需要用到jni和ndk。 mylib.h 1 2 3 4 5 6 7 8 9 10 11 12 // // Created by 郭犇 on 2021/4/1. // #ifndef MYDEMO_MY_LIB_H #define MYDEMO_MY_LIB_H #include &lt;stdlib.h&gt; char* count_mean(float *a ,int num); #endif //MYDEMO_MY_LIB_H mylib.c 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 // // Created by 郭犇 on 2021/4/1. // char* count_mean(float *a ,int num)&#123; float sum = 0.0f; for(int i = 0;i&lt;=num;i++)&#123; sum += a[i]; &#125; float mean = sum/num; int n = 5; // 显示小数点后5位 int p,c; //char *str=fcvt(mean,n,&p,&c); char *str; sprintf(str,"%5.2f",mean); return str; &#125; 下面用实例一步一步介绍这个过程。 一 认识AAR Android 库的结构与 Android 应用模块的结构相同。它可以提供构建应用所需的一切内容，包括源代码、资源文件和 Android 清单。不过，Android 库将编译为您可以用作 Android 应用模块依赖项的 Android ARchive (AAR) 文件，而不是编译为在设备上运行的 APK。 与 JAR 文件不同，AAR 文件会为 Android 应用提供以下功能： AAR 文件可以包含多项 Android 资源和一个清单文件，让您除了能够在 Java 类和方法中进行捆绑以外，还能够在布局和可绘制对象等 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 安卓 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>可穿戴设备压力监测算法</title>
+      <link href="/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/"/>
+      <url>/2021/06/19/2021-06-19-%E5%8F%AF%E7%A9%BF%E6%88%B4%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8E%8B%E5%8A%9B%E7%9B%91%E6%B5%8B/</url>
+      
+        <content type="html"><![CDATA[​ 以后要坚持每周更新一篇博客，所以今天先记载一下自己调研的可穿戴算法中的压力监测算法。 本文调研可穿戴设备中的压力监测算法，先介绍压力的心理学定义、组成与 PSS、PSTR、DASS-21 等评估量表。文章重点讲解基于心率变异性（HRV）的时域、频域特征及其与压力的关系，并梳理 FirstBeat 压力监测系统的检测流程，最后对比了华为、苹果、小米等市面产品的实现方案。 心率变异性，映射身心压力状态 一 压力 1.1 压力 概念 压力是压力源和压力反应共同构成的一种认知和行为体验过程。心理压力（Mental Stress）被定义为 人们认为（评价）他们的需求超出其应付能力的程度 。 组成 从生理-社会-心理学取向的角度可以把压力理解为一种复杂的身心历程，它包含三大部分： 压力源 （stressor）任何情境或刺激具有伤害或威胁个人的潜在因素，统称为压力源，即压力来源。 认知评估 （cognitive appraisal） 当事人认为经历的刺激或情境，对于个人确实有所威胁时，此时即构成压力，但如果认为是种解脱或乐趣而不是威胁时，则不构成压力，此历程即为认知评估。 焦虑反应 （anxiety reaction）当事人意识到他生理的健康、身体的安全、心理的安静、事业的成败或自尊的维护，甚至自己所关心的人等正处于危险的状况或受到威胁时所做的反应，即为焦虑反应。 因此，压力产生的身心历程是：压力的来源-威胁的知觉-焦虑的反应。 意义 压力是正常日常生活的一部分，在生理上表现为ANS系统的交感神经活动和副交感神经活动的减少。 正性压力 是有益的压力，产生于个体被激发和鼓舞的情景中，当压力持续增加，正性压力会逐渐转化为负性压力，绩效或健康状况随之下降，生病的危险加大。 中性压力 是一些不会引发后续效应的感官刺激，它们无所谓好坏。比如，看到一则关于遥远的城市发生火灾的新闻，或是听说某明星的婚姻出现危机…… 负性压力 是有害的压力，经常被简称为压力，比如险些发生交通事故、工作中频繁的加班、夜晚隔壁邻居家吵闹的音乐声等。负性压力又可以分为两类：急性压力和慢性压力，前者来势汹汹但迅速消退；后者出现的时候不甚强烈，但旷日持久。 二 压力评估方法 在国内，大部分研究以心理学评估量表为准，而部分高校也开始了基于生理信号的心理压力评估的研究，并且取得了一定的进展。 2.1 心理学评估量表 量表的可信度分析。 α信度 ： α信度是检视 信度 的一种方法，由 李·克隆巴赫 在1951年提出。它克服了部分折半法的缺点，是目前 社会科学 研究最常使用的信度分析方法。也可表示内在一致性。 Cronbach’s alpha Internal consistency α ≥ 0.9 Excellent 0.9 &gt; α ≥ 0.8 Good 0.8 &gt; α ≥ 0.7 Acceptable …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 可穿戴 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>可穿戴设备特性综述</title>
+      <link href="/2021/04/10/2021-04-10-Introduction-of-various-features-in-the-field-of-smart-wear/"/>
+      <url>/2021/04/10/2021-04-10-Introduction-of-various-features-in-the-field-of-smart-wear/</url>
+      
+        <content type="html"><![CDATA[很早就想抽空写一篇关于智能穿戴中各种特性的综述文章。今天逼迫自己开个头。总体来说，在当前的智能穿戴领域，主要分为运动和健康两大块。 本文综述智能穿戴设备领域的功能特性，将其划分为运动与健康两大板块，运动侧涵盖监测、动作识别与定位，健康侧重点讲解睡眠分期依赖的多种生理信号，并列举压力、血氧、心率等监测方向。 腕间方寸，洞察健康全局 一、可穿戴设备中的传感器 可穿戴设备的功能特性建立在传感器硬件之上，常见传感器包括： 惯性传感器（IMU） ：加速度计、陀螺仪、磁力计，用于运动监测、姿态解算与动作识别； 光学心率传感器（PPG） ：通过绿光/红光照射皮肤，利用光电容积脉搏波描记法获取心率、血氧等生理参数； 心电电极（ECG） ：采集单导联或多导联心电信号，用于心脏健康监测； 温度传感器 ：测量皮肤温度，辅助发热预警与睡眠监测； 定位模块 ：GPS 用于室外运动轨迹记录与定位。 二、运动特性 1、运动监测 运动监测是可穿戴设备最基础的功能，主要包括： 计步与距离 ：基于加速度计的周期性步态检测，结合步幅估算距离； 卡路里消耗 ：综合步数、心率与运动类型估算能耗； 运动类型识别 ：自动区分走路、跑步、骑行、游泳、爬楼等运动，游泳场景还会结合气压计判断泳姿与趟数。 2、动作识别 动作识别利用 IMU 的加速度、角速度时序数据，通过特征提取（时域、频域特征）与机器学习分类器（SVM、决策树、神经网络）识别特定动作，如跌倒检测、挥拍动作、健身动作计数等。相比单纯的计步，动作识别需要更精细的信号处理与模型训练。 3、室外定位 室外运动（跑步、骑行、登山）依赖 GPS 进行定位与轨迹记录，核心指标包括定位精度、冷启动时间与功耗。部分设备支持北斗、GLONASS、Galileo 多系统联合定位以提升精度；室内场景则借助 Wi-Fi、蓝牙定位作为补充。 三、健康特性 1、睡眠分期 睡眠分期主要是用来对睡眠过程进行监测，计算睡眠过程中各个期间的时长与周期。 用于睡眠分期的信号主要包括如下信号： 单通道脑电（electroencephalogram，EEG）； 多通道脑电 EEG； 心电（electrocardiogram，ECG）； 眼电（electro-oculogram，EOG）； 肌电（electromyogram，EMG）； 呼吸等生理信号。 体动传感器，如acc、陀螺仪 消费级可穿戴设备通常无法佩戴脑电电极，因此多采用 体动信号 + 心率（PPG） 的组合来估计睡眠分期：通过整夜的体动剧烈程度与心率变化趋势，将睡眠划分为清醒、浅睡、深睡、快速眼动（REM）等阶段。 2、压力检测 压力检测主要依赖 心率变异性（HRV） 分析：当人处于压力状态时，交感神经兴奋，HRV 的时域指标（如 RMSSD）与频域指标（如 LF/HF 比值）会发生可观测的变化。设备通过长时间佩戴连续采集  …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 可穿戴 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>基于真实轨迹生成 IMU 数据</title>
+      <link href="/2020/09/19/2020-09-19-Generate-Imu-Data-Based-on-GroundTruth/"/>
+      <url>/2020/09/19/2020-09-19-Generate-Imu-Data-Based-on-GroundTruth/</url>
+      
+        <content type="html"><![CDATA[该文用来介绍仿真IMU数据的方法 本文介绍基于 GroundTruth 轨迹仿真生成 IMU 数据的方法，先利用矩阵对数与指数映射描述相机位姿变换，再通过 B 样条插值将离散轨迹拟合成连续曲线。在此基础上对曲线求导，即可得到带误差的加速度计与陀螺仪测量值，文章最后给出了 TUM-GT2IMU 工具的目录结构与各文件作用。 由轨迹拟合曲线，从曲线求导得 IMU 理论基础 1、定义相机变换矩阵 首先使用4*4的变换矩阵来来表示相机之间的变换T： ​ 使用$T_{b,a}$表示时间Δt内，帧$T_{w,a}$与帧$T_{w,b}$(其中w为世界坐标系)之间运动的速度（该速度恒定且包括角速度和线速度）可表示为矩阵形式： ​ 其中log是矩阵对数。对于矩阵组SE3，对数映射和它的逆(指数映射)就可以在闭域内计算。 2、根据离散的点拟合连续的曲线 为了得到IMU数据，我们需要知晓轨迹的数学形式，为此，我们需要先根据离散的点轨迹拟合曲线，这个过程通过B样条插值来完成。 曲线p(t)可以使用点$P_i$和基本方程$B_{i,k}(t)$来表示: $$p(t) = \sum^n_{i=0}p_iB_{i,k}(t)$$ 其中$p_i$表示控制点，$B_{i,k}(t)$是基础函数，可以使用De Boor-Cox递归公式进行计算得到。上式可以组织为如下形式： $$p(t)=p_0\tilde{B}_{0,k}(t)+\sum^{n}_{i=1}(p_i-p_{i-1})\tilde{B}_{i,k}(t)$$ 其中$\tilde{B}_{i,k}(t) = \sum^{n}_{j=i}B_{j,k}(t)$是累加的基础函数。利用对数和指数映射，把$p_0$映射到李代数上：$p_0 = \log(T_{w,0})$. 将$p_i,p_{i-1}$两两个点之间的转移方程映射到李代数上，可表示为$\Omega_i = \log(T^{-1}_{w,i-1}T_{w,i})$. 可以把由等式2描述的李群中的轨迹重写为如下形式。 $$T_{w,s}(t) = \exp(\tilde{B_{0,k}(t)})\log(T_{w,0}))\prod^n_{i=1}\exp(\tilde{B}_{i,k}(t)\Omega_i)$$ 其中，$R_{w,s}(t)\in SE^3$是t可是沿着样条线的位姿。 $T_{w,s}(t)$ 可以看作是轨迹 3. 根据曲线生成IMU的加速度和陀螺仪角速度数据 ​ 累积的B样条参数化满足可求导性，因此可轻松地得到加速度计和陀螺仪的带误差的测量值。计算公式如下： 其中,$\dot{R}_{w,s}$和$\ddot{s}_w$分别是$\dot{T}_{w,s}$和$\ddot{T_{w,s}}$相应的子矩阵. $g_w$是世界坐标系下的重力加速度. 其中，$T …]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> IMU </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>HTTP 协议</title>
+      <link href="/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/"/>
+      <url>/2020/09/14/2020-09-14-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%B1%82HTTP%E5%8D%8F%E8%AE%AE/</url>
+      
+        <content type="html"><![CDATA[本文学习自《图解HTTP》，目的是为了系统的学习这个协议 本文系统学习 HTTP 协议，从 TCP/IP 分层模型与 URI、URL 概念入手，讲解请求与响应报文结构、无状态特性，以及 GET、POST、PUT 等八种请求方法。文章还覆盖持久连接与管线化、Cookie 状态管理，并延伸至 HTTP 报文、状态码、首部字段与 HTTPS 的加密认证机制。 无状态协议，用 Cookie 记住你 HTTP的 背景 最初设想的基本理念是:借助多文档之间相互关联形成的超文本(HyperText),连成可相互参阅的 WWW(World Wide Web,万维网)。 发展 HTTP/1.0 HTTP 正式作为标准被公布是在 1996 年的 5 月,版本被命名为HTTP/1.0,并记载于 RFC1945。虽说是初期标准,但该协议标准至今仍被广泛使用在服务器端。 HTTP/1.1 1997 年 1 月公布的 HTTP/1.1 是目前主流的 HTTP 协议版本。当初的标准是 RFC2068,之后发布的修订版 RFC2616 就是当前的最新版本。 基础 TCP/IP TCP/IP 协议族里重要的一点就是分层。TCP/IP 协议族按层次分别分为以下 4 层:应用层、传输层、网络层和数据链路层。 各层的作用 应用层 决定了向用户提供应用服务时通信的活动 传输层 传输层对上层应用层,提供处于网络连接中的两台计算机之间的数据传输。 网络层 网络层用来处理在网络上流动的数据包。数据包是网络传输的最小数据单位。 该层规定了通过怎样的路径(所谓的传输路线)到达对方计算机,并把数据包传送给对方。 网络接口层 用来处理连接网络的硬件部分。 与 HTTP 关系密切的协议 : IP、TCP 和DNS，其中IP协议负责传输，TCP协议确保可靠，DNS服务负责域名解析。 各个协议与HTTP协议之间的关系 URI和URL URI 用字符串标识某一互联网资源,而 URL 表示资源的地点(互联网上所处的位置)。可见 URL 是 URI 的子集。 HTTP协议 HTTP 协议用于客户端和服务器端之间的通信 1 通过请求和响应的交换达成通信 请求报文 请求报文是由请求方法、请求URI、协议版本、可选的请求首部字段和内容实体构成的。 响应报文 响应报文基本上由协议版本、状态码(表示请求成功或失败的数字代码)、用以解释状态码的原因短语、可选的响应首部字段以及实体主体构成。稍后我们会对这些内容进行详细说明。 2 HTTP 是不保存状态的协议 HTTP 是一种不保存状态,即无状态(stateless)协议。HTTP 协议自身不对请求和响应之间的通信状态进行保存。也就是说在 HTTP 这个级别,协议对于发送过的请求或响应都不做持久化处理。 HTTP/1.1 虽然是无状态协议,但为了实现期望的保持状态功能,于是引入了 Cook …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>面试经典代码题</title>
+      <link href="/2020/09/11/2020-09-11-%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%85%B8%E4%BB%A3%E7%A0%81%E9%A2%98/"/>
+      <url>/2020/09/11/2020-09-11-%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%85%B8%E4%BB%A3%E7%A0%81%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[本文旨在整理面试过程中经典的考题 本文整理面试中高频的经典代码题，覆盖字符串操作、排序与 Top K、链表、回溯、数字游戏、计算几何与动态规划等类别，每题附核心思路与参考实现，是面试前查漏补缺的实用清单。 经典题在手，面试心不慌 一、字符串操作 1 字符串转数字(atoi/stoi) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 int StrToInt (string str) &#123; int len = str. length (); if (len == 0 ) return 0 ; int i = 0 ; while (i &lt; len && str[i] == &#x27; &#x27; ) ++i; // 排除开头的空格 if (i == len) return 0 ; if (! isdigit (str[i]) && str[i] != &#x27;+&#x27; && str[i] != &#x27;-&#x27; ) return 0 ; //判断第一个符号 bool neg = str[i]== &#x27;-&#x27; ? true : false ; i = isdigit (str[i]) ? i : i +1 ; long long ans = 0L ; while (i &lt; len && isdigit (str[i])) &#123; ans = ans * 10 + (str[i++]- &#x27;0&#x27; ); if (!neg && ans &gt; INT_MAX) &#123; ans = INT_MAX; break ; &#125; if (neg && ans &gt; 1L + INT_MAX) &#123; ans = 1L + INT_MAX; break ; &#125; &#125; if (i != len) return 0 ; // 不要此处，就是atoi()库函数的实现 return !neg ? static_cast &lt; int &gt;(ans) : static_cast &lt; int &gt;(-ans); &#125; 2 编程实现strcpy函数 1 2 3 4 5 6 7 8 9 # include &lt;stdio.h&gt; char * strcpy ( char * dest_str, const char src_str) &#123; if (dest_str== NULL ||src_str== NULL ) return NULL ; char * strdestCopy = dest_str; while ((*dest_str+ …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>层次聚类</title>
+      <link href="/2020/09/10/2020-09-10-%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB/"/>
+      <url>/2020/09/10/2020-09-10-%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB/</url>
+      
+        <content type="html"><![CDATA[本文主要为了了解聚类的分裂与合并。 本文介绍层次聚类的基本概念与树图、集合图等表达方式，重点讲解自底向上的合并与自顶向下的分裂两条实现路径，并讨论基于准则函数的逐步优化方法及类间距离度量的选取。 聚散之间，层次分明自现 层次聚类 概念 层次聚类（Hierarchical Clustering）考虑把n个样本聚成c类的情况。首先把所有样本分成n类，每类正好含有一个样本。其次，我们将样本分为n-1类，接着是n-2类，这样下去知道所有样本被分为一类。我们成聚类数目$c=n-k+1$对应层次结构的第k层，因此第1层对应n个类而第n层对应一个类别。对层次结构的任意一层及其该层中的任意n个样本，如果该层中属于同一类，而且在更高的层次一直属于同一类，那么这样的序列称为层次聚类。 层次聚类的表达方式 树图 集合图 纯文本集合：$\{x_1,\{x_2,x_3\},\{x_4,x_5\}\}$ 维恩图 其中，纯文本集合不能定量的体现相似性 实现方法 层次聚类方法主要通过两种途径进行实现：合并和分裂。 合并是自底向上，先使得所有样本归入一类，然后通过后续分裂，来增加类别的数目。 一 合并 自底向上，先使得样本各成一类，然后通过合并不同的类，来减少类别数目。 基于合并的聚类算法 一开始一共有c类 1 2 3 4 5 6 7 1 begin intialize: c,\hat&#123;c&#125; &lt;- n, D_i &lt;- &#123;x_i&#125;, i = 1,...,n 2 do \hat&#123;c&#125;&lt;-\hat&#123;c&#125;-1 3 求最接近的聚类，如D_i和D_j 4合并D_i和D_j 5 until c = \hat&#123;c&#125; 6return c个聚类 7 end 对合并方法来说，从一个层次到另一个层次所需的计算比较简单。但是如果样本过多而期望的类别样本数目又很少，这种计算会被反复多次地执行。 不同类别之间的相似性的度量： $$d_\min(D_i,D_j) = \min_{x\in D_i\\x'D_j}||x-x'||\\d_\max(D_i,D_j) = \max_{x\in D_i\\x'D_j}||x-x'||\\d_{avg}(D_i,D_j) = \frac{1}{n_in_j}\sum_{x\in D_i}\sum_{x\in D_j}||x-x'||\\d_{mean}(D_i,D_j) = ||m_i-m_j||$$ 在上述的这些距离度量中，最近距离度量$d_\min(.,.)$和$d_\max(.,.)$ 代表了类与类之间距离的两个极端。就像所有利用最大值或最小值的算法，它们对噪声和孤立点非常敏感。用平静值代替它们可以改善这些问题。 二 分裂 先将样本都归入一类，然后通过后续分裂， …]]></content>
+      
+      
+      <categories>
+          
+          <category> 科研 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 聚类 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>数据库总结</title>
+      <link href="/2020/08/31/2020-08-31-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/"/>
+      <url>/2020/08/31/2020-08-31-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[本文学习自：数据库系统概论、MySQL必知必会 本文系统总结关系数据库的核心知识，覆盖数据库设计的六个阶段、三种数据模型、常用数据类型与范式，并详细讲解主键外键、索引、SQL 语法、各类查询（条件、投影、排序、分页、聚合、多表与连接查询）、增删改操作、MySQL 实用语句以及事务的 ACID 特性与四种隔离级别。 数据组织有序，查询方能高效可靠 SQL就是访问和处理关系数据库的计算机标准语言。也就是说，无论用什么编程语言（Java、Python、C++……）编写程序，只要涉及到操作关系数据库，比如，一个电商网站需要把用户和商品信息存入数据库，或者一个手机游戏需要把用户的道具、通关信息存入数据库，都必须通过SQL来完成。 一 数据库概论 一 数据库设计的六个阶段 需求分析： 分析用户的需求，包括数据、功能和性能需求； 概念结构设计：主要采用E-R模型进行设计，包括画E-R图； 逻辑结构设计：通过将E-R图转换成表，实现从E-R模型到关系模型的转换，进行关系规范化； 数据库物理设计：主要是为所设计的数据库选择合适的存储结构和存储路径； 数据库的实施：包括编程、测试和试运行； 数据库运行和维护：系统的运行和数据库的日常维护 二 数据模型 数据库按照数据结构来组织、存储和管理数据，实际上，数据库一共有三种模型： 层次模型 网状模型 关系模型 层次模型就是以“上下级”的层次关系来组织数据的一种方式，层次模型的数据结构看起来就像一颗树： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 ┌─────┐ │ │ └─────┘ │ ┌───────┴───────┐ │ │ ┌─────┐ ┌─────┐ │ │ │ │ └─────┘ └─────┘ │ │ ┌───┴───┐ ┌───┴───┐ │ │ │ │ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ │ │ │ │ │ │ │ │ └─────┘ └─────┘ └─────┘ └─────┘ 网状模型把每个数据节点和其他很多节点都连接起来，它的数据结构看起来就像很多城市之间的路网： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 ┌─────┐ ┌─────┐ ┌─│ │──────│ │──┐ │ └─────┘ └─────┘ │ │ │ │ │ │ └──────┬─────┘ │ │ │ │ ┌─────┐ ┌─────┐ ┌─────┐ │ │─────│ │─────│ │ └─────┘ └─────┘ └─────┘ │ │ │ │ ┌─────┴─────┐ │ │ │ │ │ │ ┌─────┐ ┌─────┐ │ └──│ │─────│ │──┘ └─────┘ └─────┘ 关系模型把数据看作是一个二维表格，任何数据都 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机网络传输层总结</title>
+      <link href="/2020/08/31/2020-08-31-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%B1%82%E6%80%BB%E7%BB%93/"/>
+      <url>/2020/08/31/2020-08-31-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%B1%82%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[本文学习自计算机网络第七版 本文总结计算机网络传输层，先介绍端到端进程通信、复用与分用以及端口号的分类。随后分别梳理 UDP 无连接、面向报文的六大特点与 8 字节首部，以及 TCP 面向连接、可靠交付、全双工、面向字节流等特性，并深入讲解可靠传输的停止等待协议与超时重传机制。 传输层一收一发，可靠性各显神通 运输层 从通信和信息处理的角度看，运输层向它上面的应用层提供通信服务，它属于面向通信部分的最高层，同时也是用户功能中的最低层。 进程之间的通信 端到端的通信是应用进程之间的通信 运输层有一个很重要的功能——复用(multiplexing)和分用(demultiplexing) UDP在传送数据之前不需要先建立连接。远地主机的运输层在收到UDP报文后，不需要给出任何确认。虽然UDP不提供可靠交付，但在某些情况下UDP却是一种最有效的工作方式。TCP则提供面向连接的服务。在传送数据之前必须先建立连接，数据传送结束后要释放连接。TCP不提供广播或多播服务。由于TCP要提供可靠的、面向连接的运输服务，因此不可避免地增加了许多的开销，如确认、流量控制、计时器以及连接管理等。这不仅使协议数据单元的首部增大很多，还要占用许多的处理机资源。 表5-1 使用UDP和TCP协议的各种应用和应用层协议 TCP/IP的运输层用一个16位端口号来标志一个端口。但请注意，端口号只具有本地意义，它只是为了标志本计算机应用层中的各个进程在和运输层交互时的层间接口。在因特网不同计算机中，相同的端口号是没有关联的。 服务器端使用的端口号这里又分为两类，最重要的一类叫做熟知端口号(well-known port number)或系统端口号，数值为0～1023；另一类叫做登记端口号，数值为1024～49151。这类端口号是为没有熟知端口号的应用程序使用的。使用这类端口号必须在IANA按照规定的手续登记，以防止重复。 客户端使用的端口号 数值为49152～65535。由于这类端口号仅在客户进程运行时才动态选择，因此又叫做短暂端口号[插图] 一 UDP 用户数据报协议UDP只在IP的数据报服务之上增加了很少一点的功能，这就是复用和分用的功能以及差错检测的功能。 UDP的主要特点： (1) UDP是无连接的，即发送数据之前不需要建立连接（当然，发送数据结束时也没有连接可释放），因此减少了开销和发送数据之前的时延。 (2) UDP使用尽最大努力交付，即不保证可靠交付，因此主机不需要维持复杂的连接状态表（这里面有许多参数）。 (3) UDP是面向报文的。 (4) UDP没有拥塞控制，因此网络出现的拥塞不会使源主机的发送速率降低。这对某些实时应用是很重要的。很多的实时应用（如IP电话、实时视频会议等）要求源主机以恒定的速率发送数据，并且允许在网络发生拥塞时丢失一些数据，但却不允许数据有太大的时延。UDP …]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++开发面试题汇总</title>
+      <link href="/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+      <url>/2020/08/18/2020-08-18-C-%E5%BC%80%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[本文整理自网络： C++面经宝典 现代操作系统 计算机网络 数据库系统概论 设计模式 本文是一份面向求职的 C++ 面试题汇总，覆盖编译链接过程、变量与类型、指针引用、智能指针、表达式与函数、异常处理、类与继承多态、模板与泛型、STL 容器、内存管理等语言核心，并延伸到算法与数据结构、计算机网络、操作系统与设计模式等常考领域。 基本功扎实，难题皆是纸老虎 一 C++基础 一 基本语言 零 编译过程 1. 源文件从文本到可执行文件经历的过程 简单版本 对于C++源文件，从文本到可执行文件一般需要 四个过程 1、 预处理阶段 ：对源代码文件中文件包含关系（头文件）、预编译语句（宏定义）进行分析和替换，生成预编译文件。 2、 编译阶段 ：将经过预处理后的预编译文件转换成特定汇编代码，生成汇编文件 3、 汇编阶段 ：将编译阶段生成的汇编文件转化成机器码，生成可重定位目标文件 4、 链接阶段 ：将多个目标文件及所需要的库连接成最终的可执行目标文件 详细版本 1 预编译：主要处理源代码文件中的以“#”开头的预编译指令。处理规则见下 1、删除所有的#define，展开所有的 宏定义 。 2、处理所有的 条件预编译指令 ，如“#if”、“#endif”、“#ifdef”、“#elif”和“#else”。 3、处理“**#include”预编译指令**，将文件内容替换到它的位置，这个过程是递归进行的，文件中包含其他文件。 4、删除所有的 注释 ，“//”和“/**/”。 5、保留所有的**#pragma 编译器指令**，编译器需要用到他们，如：#pragma once 是为了防止有文件被重复引用。 6、添加 行号和文件标识 ，便于编译时编译器产生调试用的行号信息，和编译时产生编译错误或警告是能够显示行号。 2 编译：把预编译之后生成的 xxx.i 或 xxx.ii 文件，进行一系列词法分析、语法分析、语义分析及优化后，生成相应的汇编代码文件。 1、 词法分析 ：利用类似于“有限状态机”的算法，将源代码程序输入到扫描机中，将其中的字符序列分割成一系列的记号。 2、 语法分析 ：语法分析器对由扫描器产生的记号，进行语法分析，产生语法树。由语法分析器输出的语法树是一种以表达式为节点的树。 3、 语义分析 ：语法分析器只是完成了对表达式语法层面的分析，语义分析器则对表达式是否有意义进行判断，其分析的语义是静态语义——在编译期能分期的语义，相对应的动态语义是在运行期才能确定的语义。 4、 优化 ：源代码级别的一个优化过程。 5、 目标代码生成 ：由代码生成器将中间代码转换成目标机器代码，生成一系列的代码序列——汇编语言表示。 6、 目标代码优化 ：目标代码优化器对上述的目标机器代码进行优化：寻找合适的寻址方式、使用位移来替代乘法运算、删除多余的指令等。 3）汇编 将汇编代码转变成机器可 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 面试 </tag>
+            
+            <tag> 数据结构 </tag>
+            
+            <tag> 工作 </tag>
+            
+            <tag> 计算机网络 </tag>
+            
+            <tag> 操作系统 </tag>
+            
+            <tag> 设计模式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 笔试注意事项</title>
+      <link href="/2020/08/17/2020-08-17-C-%E7%AC%94%E8%AF%95%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/"/>
+      <url>/2020/08/17/2020-08-17-C-%E7%AC%94%E8%AF%95%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
+      
+        <content type="html"><![CDATA[本文主要目的就是为了排除笔试与面试之中写C++代码时候的坑及各种低级错误。 本文梳理 C++ 笔试与面试中常见的低级错误与踩坑点，包括指针数组声明、 == 与 = 混淆、变量名抄错等易错细节，并系统总结了标准输入输出的常用写法，涵盖 cin、getline、以逗号或空格分隔的数据读取以及浮点输出的精度控制，帮助读者避开笔试中的典型陷阱。 细节决定成败，笔试更需谨慎 一 常见错误 声明指针数组时 1 int new a[ 10 ]; 千万不要用 （） 1 2 3 A (*ga)[n] = new A[m][n]; ... delete []ga; 条件表达式中的 == 与 = 区分开 变量名不要抄错 过不了的时候 尝试使用long换int 二 标准输入输出 2.1 常见输入 基础：cin / cin.getline / cin.get / getline（string）简单用法 Tab、space结束符。enter是判断输入流结束的表现。不要把他和普通的结束符看成一样的。 cin.getline / cin.get都是遇到enter会终止，但不同的是，cin.getline会把缓冲区当中的enter删除掉，不影响下一次的输入。而cin.get不会删除。 getline（string）：Get line from stream into string (function )，不是遇到space tab就结束的，会记录下字符串当中的space。 零、’,’ 作为输入分隔符 例题：输入五个学生的名字，每个学生的名字不超过10个字符，输入时学生名字之间用逗号隔开，把这五个名字存储并换行输出 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 # include &lt;iostream&gt; using namespace std; int main () &#123; char a[ 5 ][ 10 ]; int i; // 每次遇到&#x27;,&#x27; 就终止了 ，不保留在缓冲区。 for (i= 0 ;i&lt; 4 ;i++)cin. getline (a[i], 10 , &#x27;,&#x27; ); // 最后一个是输入5&#x27;/n&#x27;没有&#x27;,&#x27;不符合上面的式子，需要重新把缓冲区中的读出来 cin. getline (a[i], 10 ); for (i= 0 ;i&lt; 5 ;i++) cout&lt;&lt;a[i]&lt;&lt;endl; &#125; input: 1 , 2 , 3 , 4 , 5 （最后必须有enter保证跳出了输入流） out: 1 2 3 4 5 这样我们就可以完成完成用任何符号作为分割符的输入了！此处getline换成get …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+            <tag> 工作 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>回溯法</title>
+      <link href="/2020/08/17/2020-08-17-%E5%9B%9E%E6%BA%AF/"/>
+      <url>/2020/08/17/2020-08-17-%E5%9B%9E%E6%BA%AF/</url>
+      
+        <content type="html"><![CDATA[本文学习自 labuladong的算法小抄 本文基于 labuladong 的算法笔记学习回溯法，将回溯问题视为决策树的遍历过程，归纳出路径、选择列表与结束条件三要素，给出做选择与撤销选择的代码框架，并以 24 点游戏为例演示回溯求解。 撤销一时，回溯柳暗花明 回溯问题，实际上就是一个决策树的遍历过程 。需要思考 3 个问题： 路径：也就是已经做出的选择。 选择列表：也就是你当前可以做的选择。 结束条件：也就是到达决策树底层，无法再做选择的条件。 代码方面，回溯算法的框架： 1 2 3 4 5 6 7 8 9 10 result = [] def backtrack(路径, 选择列表): if 满足结束条件: result.add(路径) return for 选择 in 选择列表: 做选择 backtrack(路径, 选择列表) 撤销选择 其核心就是 for 循环里面的递归，在递归调用之前「做选择」，在递归调用之后「撤销选择」 ，特别简单。 什么叫做选择和撤销选择呢，这个框架的底层原理是什么呢？下面我们就通过「全排列」这个问题来解开之前的疑惑，详细探究一下其中的奥妙！ 24点游戏 你有 4 张写有 1 到 9 数字的牌。你需要判断是否能通过 *，/，+，-，(，) 的运算得到 24。 示例 1: 输入: [4, 1, 8, 7] 输出: True 解释: (8-4) * (7-1) &#x3D; 24 示例 2: 输入: [1, 2, 1, 2] 输出: False 注意: 除法运算符 / 表示实数除法，而不是整数除法。例如 4 / (1 - 2/3) &#x3D; 12 。 每个运算符对两个数进行运算。特别是我们不能用 - 作为一元运算符。例如，[1, 1, 1, 1] 作为输入时，表达式 -1 - 1 - 1 - 1 是不允许的。 你不能将数字连接在一起。例如，输入为 [1, 2, 1, 2] 时，不能写成 12 + 12 。 来源：力扣（LeetCode） 链接： https://leetcode-cn.com/problems/24-game 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。 解法 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 class Solution &#123; public : static constexpr int TARGET= 24 ; static constexpr double EPISILON = 1e-6 ; static constexpr …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 面试 </tag>
+            
+            <tag> 工作 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>漫水填充法</title>
+      <link href="/2020/08/16/2020-08-16-%E6%BC%AB%E6%B0%B4%E5%A1%AB%E5%85%85%E6%B3%95/"/>
+      <url>/2020/08/16/2020-08-16-%E6%BC%AB%E6%B0%B4%E5%A1%AB%E5%85%85%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[漫水填充法是一种用特定的颜色填充联通区域，通过设置可连通像素的上下限以及连通方式来达到不同的填充效果的方法。漫水填充经常被用来标记或分离图像的一部分以便对其进行进一步处理或分析，也可以用来从输入图像获取掩码区域，掩码会加速处理过程，或只处理掩码指定的像素点，操作的结果总是某个连续的区域。 本文讲解漫水填充法的原理与 OpenCV 实现，介绍如何借助种子点、连通方式和像素上下限来标记与分离连通区域，并给出图像渲染（洪水填充）题目的广度优先与深度优先两种解法及完整代码。 从种子点出发，点亮整片连通区域 漫水填充算法 基本思想 漫水填充算法是用来标记一片区域的：设置一个种子点，然后种子点附近的相似点都被填充同一种颜色。该算法应用性很广，比如目标识别，photoshop 的魔术棒功能等等，是填充类算法中应用最为广泛的一个算法。 OpenCV函数 1 2 3 4 5 6 7 8 9 10 void cvFloodFill ( IplImage * img, // 输入图像 CvPoint seedPoint, // 种子点 CvScalar newVal, // 像素点被染色的值 CvScalar loDiff = cvScalarAll( 0 ), // 染色边界判定 CvScalar upDiff = cvScalarAll( 0 ), // 染色边界判定 CvConnectedComp * comp = NULL , // 填充区域统计属性 int flags = 4 , // 连通性，相关性等参数设置。 CvArr * mask = NULL // 掩码区域 ) ; 参数特别说明： 1. 掩码参数 mask 必须是一个单通道，8位，像素宽度高度均比原图像大两个像素。mask 图像的像素 (x+1, y+1) 与原图像 (x, y) 相对应。为 0 的位表示不进行处理。同时，掩码区也会返回填充结果。 2. flags 参数提供更为强大的填充配置信息，详见相关资料 相应题目 有一幅以二维整数数组表示的图画，每一个整数表示该图画的像素值大小，数值在 0 到 65535 之间。 给你一个坐标 (sr, sc) 表示图像渲染开始的像素值（行 ，列）和一个新的颜色值 newColor ，让你重新上色这幅图像。 为了完成上色工作，从初始坐标开始，记录初始坐标的上下左右四个方向上像素值与初始坐标相同的相连像素点，接着再记录这四个方向上符合条件的像素点与他们对应四个方向上像素值与初始坐标相同的相连像素点，……，重复该过程。将所有有记录的像素点的颜色值改为新的颜色值。 最后返回经过上色渲染后的图像。 方法一：广度优先搜索 思路及算法 我们从给定的起点开始，进行广度优先搜索。每次搜索到一个方格时，如果其与初始位置的方格颜色相同，就将该方格加入队列，并将该方格的颜色更新，以防止重复入 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 图像处理 </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> OpenCV </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 面试题汇总</title>
+      <link href="/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/"/>
+      <url>/2020/08/06/2020-08-06-SLAM%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/</url>
+      
+        <content type="html"><![CDATA[本文总结面试SLAM中可能遇到的各种问题，共分为十一个章节。 本文汇总 SLAM 岗位面试常见问题，共分十一个章节，覆盖数学基础（李群李代数、刚体运动表示、坐标系变换）、相机模型（单目、双目、RGB-D、投影与畸变、标定）、视觉前端（特征点、特征提取与匹配、相机运动求解）等核心知识点。全文以问答形式整理原理与要点，适合面试前系统复习。 面试问原理，功夫在平时 零 数学基础 一 李群和李代数 1. 李群和李代数的关系 2. 雅克比求导 3. 双线性差值如何去做，写公式 4. 为什么要引入李群李代数 旋转矩阵自身是带有约束的，正交且行列式为1，他们作为优化变量时，会引入额外的约束，导致优化变的困难，通过李群李代数的转换关系，把位姿估计变成无约束的优化问题。优化过程求极值，由求导数的定义式，可以知道矩阵对于加法不封闭，对于乘法封闭；我们可以看错把李群就是变换矩阵的集合，但是用李代数的形式去表示变换矩阵，与李群的变换对应关系恰好是与指数相乘的关系，用求导的定义式子就可以求解优化问题了。 在SLAM 中，除了要对三维世界中刚体运动进行旋转表示之外，还要对它们进行估计和优化。在SLAM 中位姿往往是未知的，而我们需要解决在什么样的相机位姿下最符合当前观测数据这样的问题。一种典型的方式是把它构建成一个优化问题，求解最优的 $R,t$ 使得误差最小化。 而旋转矩阵自身是带有约束的（正交且行列式为1）。它们作为优化变量时，会引入额外的约束，使优化变得困难。通过李群–李代数间的转换关系，我们可以把位姿估计变成无约束的优化问题，简化求解方式。 目前的理解：对于一个最小二乘问题 Z为观测的像素坐标，T为Tcw，p为世界坐标系下的某一个点，求解该问题时，需要对变量T进行迭代更新，主要的方式是求得沿J的负梯度方向的dT对T进行更新，但由于变换矩阵对于加法不封闭（T1+T2不再具有变换的物理意义），需要通过李群和李代数之间的映射，借助李代数对于加法的封闭性，完成对变量的更新。 二 刚体运动的表示 1. 说一下3D空间的位姿如何去表达? 描述3D空间位姿态需要描述旋转和平移； 旋转可用：旋转向量（即李代数）、欧拉角、四元数、RPY表示； 平移可以：向量描述 结合起来可以李代数矩阵描述。 2. 机器人学中表示旋转的方式有哪些？区别是什么？ 表示旋转的方式有4种：旋转矩阵、旋转向量、欧拉角、四元数； 区别 旋转矩阵 ：用9个变量描述3个自由度，具有冗余，不够紧凑 旋转向量 ：3维，使用向量描述旋转，向量的方向与旋转轴一致、向量长度等于旋转角，即李代数。 欧拉角 ：3维，比较直观，将一个旋转拆分成了绕3个坐标轴的旋转，如RPY指横滚、俯仰、偏航角度，指绕固定轴XYZ、绕旋转之后的轴：ZYX。 四元数 ：4维，旋转向量与欧拉角虽然紧凑但具有奇异性，四元数紧凑、没有奇异性；使用1个实部、3个虚部表示 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> VIO </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 概述</title>
+      <link href="/2020/08/06/2020-08-06-SLAM%E6%A6%82%E8%BF%B0/"/>
+      <url>/2020/08/06/2020-08-06-SLAM%E6%A6%82%E8%BF%B0/</url>
+      
+        <content type="html"><![CDATA[SLAM首先要解决自主运动的两大基本问题 我在什么地方？——定位 周围环境是什么子？——建图 SLAM与定位与建图又有着联系：内外兼修 ；定位侧重对自身的了解，建图侧重对外在的了解；它与两者又相互关联；准确的定位需要精确的地图；精确的地图来自准确的定位。 本文是 SLAM 入门概述，从”我在哪里、周围环境是什么”两大基本问题出发，梳理了视觉 SLAM 的前端视觉里程计、后端优化、回环检测与建图四大模块，并给出运动方程与观测方程的数学描述。文章还介绍了内质与外质传感器、单目/双目/RGB-D 相机的分类及各自的深度获取方式。 定位与建图，内外兼修方得完整地图 视觉SLAM框架 经典的视觉SLAM主要包含以下部分 前端：Visual Odometry 后端：Optimization 回环：Loop Closing 建图：Mapping 其中， 视觉里程计 用来估计邻近时刻的相机运动。最简化的形式就是：估计两个图像的相对运动。采用的方法有特征点法和直接法两部分； 后端 则用来从带有噪声的数据中估计最优轨迹与地图，涉及到的最大后验概率估计部分可以分为滤波器和图优化两类。 回环检测 是用来检测相机是否到达过之前位置，主要通过计算图像间相似性来判断与之前位置的差异，需要用到词袋模型。 建图 涉及到导航、规划、通讯、交互、可视化等内容，最后需要构建度量地图、拓扑地图、稀疏地图、稠密地图等。度量地图强调精确地表示地图中物体的位置关系，通常用稀疏（Sparse）与稠密（Dense）对其分类。稀疏地图进行了一定程度的抽象，并不需要表达所有的物体。相对地，稠密地图着重于建模所有看到的东西。相比于度量地图的精确性，拓扑地图则更强调地图元素之间的关系。拓扑地图是一个图（Graph），由节点和边组成，只考虑节点间的连通性。 数学描述 视觉SLAM可以通过以下两个方程进行数学描述： 运动方程：$x_{k+1}= f(x_k, u_k,w_k)$ 观测方程：$z_{k,j} = h(x_k, y_j,w_{k,j})$ 为了解决这个问题，需要解决一下三个问题： 位置是三维的，如何表述？一一第2、3次课 观测模型如何表述？一一第4次课 已知u,z时，如何推断x,y？一第5次课以后 SLAM用到的 传感器 是机器人感知外界环境的手段。大致可以分为内质和外质两类。其中，内质传感器是用来感受机器人本体信息，比如：加速度计、陀螺仪、编码器等；外质传感器是用来感受测量外界的信息。比如：相机、激光、导轨、磁条等；环境限制了一些传感器的形式。比如 GPS：需要能接收到卫星信号的环境；Marker、导轨：需要环境允许安装 相比之下，激光、相机等携带式传感器更加自由。 相机 概念：以一定速率采集图像、形成视频（24hz/30hz） 分类：相机的主要分类有：1. 单目相机 Monocular；2. 双目相机（立 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>处理 H 自由度的不同方法</title>
+      <link href="/2020/08/06/2020-08-06-%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/"/>
+      <url>/2020/08/06/2020-08-06-%E5%A4%84%E7%90%86H%E8%87%AA%E7%94%B1%E5%BA%A6%E7%9A%84%E4%B8%8D%E5%90%8C%E6%96%B9%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[视觉-惯性状态估计过程中有四个自由度需要进行额外处理，它们是一个平移变量（3个自由度）和绕重力轴方向的旋转（1个自由度）。 视觉惯性状态估计最多可以达到四自由度的转换（围绕重力的旋转和平移），因此必须正确处理额外的自由度 。尽管在实践中使用了不同方法处理多余自由度，但没有任何研究来系统地分析它们的差异。本文介绍了在基于优化的视觉惯性状态估计中处理量测自由度的不同方法的对比分析。通过实验比较了三种常用方法： 将不可观察的状态固定为给定值， 在这些状态上设置先验 在优化过程中让状态自由地优化。 实验表明： 三种方法的准确性和计算时间相似，自由量测方法稍快一些； 自由优化法的协方差估计似乎有很大的不同，但实际上与其他方法紧密相关。 本文对比了基于优化的视觉惯性状态估计中处理不可观测自由度的三种方法：固定规范状态、施加规范先验与自由优化。文章指出 VI 系统存在绕重力方向的旋转与整体平移共四个测量自由度，实验表明三种方法的精度与计算时间相近，自由方法略快，且其协方差估计经变换后与其他方法的结果密切相关。 不可观自由度处理得当，状态估计稳健可靠 引言 在机器人视觉研究领域。 惯性传感器与相机融合是互补的[1]，两者的结合可提供可靠而准确的状态估计。 尽管关于VI融合的大多数研究都集中在基于滤波器的方法上[2]，[3]，[4]，但非线性优化在最近几年中变得越来越流行。 与基于滤波器的方法相比，基于非线性优化的方法受线性累积误差的影响较小。 它们的主要缺点即高计算成本，已通过硬件和理论的发展得到缓解[5]，[6]。 最近的工作[5]，[7]，[8]，[9]在使用非线性优化的挑战性环境中显示了令人印象深刻的实时VI状态估计结果。 尽管这些工作具有相同的基本原理，即将状态估计作为非线性最小二乘优化问题求解，但它们使用不同的方法来处理VI系统中不可观察的自由度。众所周知，VI系统无法观察到全局位置和偏航[3]，[10]，在本文中，我们根据BA领域的惯例将其称为测量自由度[11]。给定这种测量自由度，获得唯一解决方案的自然方法是在优化中固定相应的状态（即参数）[12]。另一种可能性是将先验设置为不可观察状态，并且先验本质上在优化中充当虚拟度量[5]，[8]，[13]，[7]。最后，可以改为允许优化算法在迭代过程中自由更改不可观察的状态。尽管这三种方法在现有文献中都可以证明是可行的，但对VI状态估计的差异却没有进行比较研究：它们通常作为实现细节呈现，因此没有得到很好的研究和理解。此外，尽管已经研究了类似的仅视觉束调节问题（例如，在单目情况下具有7个不可观察的DoF的[11]，[14]），但据我们所知，此类研究尚未完成用于VI系统（具有4个不可观察的DoF）。 本文所对比的三种方法包括： 规范自由度固定法 ， 规范自由度先验法 和 自由规范自由度 法。在准确性，计算成本和估计的协方差 …]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> IMU </tag>
+            
+            <tag> VIO </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>OpenCV 图像像素遍历方法</title>
+      <link href="/2020/08/04/2020-08-04-OpenCV-Function/"/>
+      <url>/2020/08/04/2020-08-04-OpenCV-Function/</url>
+      
+        <content type="html"><![CDATA[本文总结 OpenCV 遍历图像像素的四种方式：at 模板函数、指针、迭代器与基于 isContinuous 的高效一维遍历，每种方式均配以 colorReduce 颜色缩减实例代码，便于按性能需求选型。 选对遍历方式，图像处理事半功倍 图像操作 遍历图像的四种方式 at&lt;typename&gt;(i,j) Mat类提供了一个at的方法用于取得图像上的点，它是一个模板函数，可以取到任何类型的图像上的点。下面我们通过一个图像处理中的实际来说明它的用法。 1 2 3 4 5 6 7 8 9 void colorReduce (Mat& image, int div) &#123; for ( int i= 0 ;i&lt;image.rows;i++)&#123; for ( int j= 0 ;j&lt;image.cols;j++)&#123; image. at &lt;Vec3b&gt;(i,j)[ 0 ]=image. at &lt;Vec3b&gt;(i,j)[ 0 ]/div*div+div/ 2 ; image. at &lt;Vec3b&gt;(i,j)[ 1 ]=image. at &lt;Vec3b&gt;(i,j)[ 1 ]/div*div+div/ 2 ; image. at &lt;Vec3b&gt;(i,j)[ 2 ]=image. at &lt;Vec3b&gt;(i,j)[ 2 ]/div*div+div/ 2 ; &#125; &#125; &#125; 用指针来遍历图像 我们实际喜欢把原图传进函数内，但是在函数内我们对原图像进行了修改，而将原图作为一个结果输出，很多时候我们需要保留原图，这样我们需要一个原图的副本。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 1 void colorReduce ( const Mat& image,Mat& outImage, int div) 2 &#123; 3 // 创建与原图像等尺寸的图像 4 outImage. create (image. size (),image. type ()); 5 int nr=image.rows; 6 // 将3通道转换为1通道 7 int nl=image.cols*image. channels (); 8 for ( int k= 0 ;k&lt;nr;k++)&#123; 10 // 每一行图像的指针 11 const uchar* inData=image. ptr &lt;uchar&gt;(k); 12 uchar* outData=outImage. ptr &lt;uchar&gt;(k); 13 for ( int i= 0 ;i&lt;nl;i++)&#123; 15 outData[ …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 图像处理 </tag>
+            
+            <tag> OpenCV </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 二叉树</title>
+      <link href="/2020/08/02/2020-08-02-C++%E6%A0%91/"/>
+      <url>/2020/08/02/2020-08-02-C++%E6%A0%91/</url>
+      
+        <content type="html"><![CDATA[本文系统梳理 C++ 二叉树的基础概念，给出满二叉树与完全二叉树的定义，并分别提供前序、中序、后序遍历的非递归实现，最后总结一种用空指针标记的统一遍历写法。 前中后序，遍历自有章法 一 树的概念 二 二叉树 满二叉树： 定义： 1 2 3 除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。 国内教程定义：一个二叉树，如果每一个层的结点数都达到最大值，则这个二叉树就是满二叉树。也就是说，如果一个二叉树的层数为K，且结点总数是(2^k) -1 ，则它就是满二叉树。 最后一层的节点个数等于其他层数节点个数之和+1，假设第k层，最后一层的节点个数即2*（k-1） 完全二叉树： 定义： 1 2 3 若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边。 完全二叉树是由满二叉树而引出来的。对于深度为K的，有n个结点的二叉树，当且仅当其每一个结点都与深度为K的满二叉树中编号从1至n的结点一一对应时称之为完全二叉树。 二叉树的遍历 非递归写法 前序遍历 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 class Solution &#123; public : vector&lt; int &gt; preorderTraversal (TreeNode* root) &#123; stack&lt;TreeNode*&gt; his; vector&lt; int &gt; res; TreeNode *t = root, *dummy = new TreeNode ( 0 ); his. push (dummy); while (!his. empty ())&#123; while (t)&#123; res. push_back (t-&gt;val); his. push (t); t = t-&gt;left; &#125; t = his. top ()-&gt;right; his. pop (); &#125; return res; &#125; &#125;; 容易理解的写法 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 class Solution &#123; public : vector&lt; int &gt; preorderTraversal (TreeNode* root) &#123; vector&lt; int &gt; res; stack&lt;TreeNode *&gt; st; if (root== nullptr ) return res; st. push (root); while (!st. empty ()) &#1 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构 </category>
+          
+          <category> C++ </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CMake 指令手册</title>
+      <link href="/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/"/>
+      <url>/2020/07/30/2020-07-30-Cmake-%E6%8A%80%E5%B7%A7/</url>
+      
+        <content type="html"><![CDATA[Cmake 是 kitware 公司以及一些开源开发者在开发几个工具套件(VTK)的过程中衍生品，最终形成体系，成为一个独立的开放源代码项目。 本文主要记录书写Cmake的大致流程 本文按书写 CMakeLists.txt 的流程，逐一剖析 project、ADD_EXECUTABLE、SET、FIND_LIBRARY 等常用指令，讲解内部构建与外部构建的区别，并附上可直接套用的 CMake 基础模板与常用变量速查表。 写好 CMake，构建事半功倍 常见 CMakeLists.txt 中指令剖析 注意:Cmake的指令是大小写无关的,参数和变量是大小写相关的。 cmake_minimum_required(VERSION 2.6)命令 规定cmake软件的最低版本。这行命令是可选的，可以不写这句话，但在有些情况下，如果CMakeLists.txt文件中使用了一些高版本cmake特有的一些命令时，就需要加上这一行，提醒用户升级到该版本之后再执行cmake。 project(&lt;projectname&gt;) 命令 语法： project(projectname [cxx] [c] [java]) 可以指定工程采用的语言，选项分别表示：C++, C, java， 如不指定默认支持所有语言。 指定项目的名称，在生成VS项目下即指明了生成的 .sln 项目的文件名。项目最终编译生成的 可执行文件 不一定是这个项目名称，而是由另一条命令( add_executable )指定的。 通过 project 命令，为整个代码项目定义了一个管理架构，这点可以通过在VS下建立项目的结构层次来帮助理解。VS下所有的项目都是在解决方案（.sln文件）下进行管理的，一个解决方案可以包含多个项目。cmake中project命令正是定义了解决方案的名称， add_executable 和 add_library 命令都会生成一个项目，cmake会自动为每个项目（包括生成可执行文件的项目和生成链接库的项目）创建对应的文件夹，存储编译中间文件。 但是这个项目名称还是很必要的，在cmake中有两个预定义的变量： &lt;projectname&gt;_BINARY_DIR 和 &lt;projectname&gt;_SOURCE_DIR ，即一旦使用了project指明了一个项目名称，则同时隐式定义了这两个预定义的变量。在内部编译情况下，这两个变量的含义相同，而在外部编译下，两者指代的内容会有所不同。要理解这两个变量的含义，我们首先需要了解什么是 外部构建（out of source build） ，下面会介绍什么叫外部构建。 同时cmake还预定义了 PROJECT_BINARY_DIR 和 PROJECT_SOURCE_DIR 变量，其中 PROJECT_BINARY_DIR 就等 …]]></content>
+      
+      
+      <categories>
+          
+          <category> C++ </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 多线程编程</title>
+      <link href="/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/"/>
+      <url>/2020/05/15/2020-05-15-C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[多线程是学习SLAM过程中不可缺少的一步，正确的使用多线程能使SLAM系统的运行速度提升很多，达到更高的精度和速度。本节就来学习SLAM中的多线程编程方法。 本文讲解 SLAM 学习中常用的 C++ 多线程编程，从线程的概念与优点讲起，介绍了 C++11 标准库中 std::thread 的创建、join/detach 与终止方法，并覆盖互斥锁（lock_guard、unique_lock）和信号量等同步机制。文末通过按序打印、交替打印 FooBar、哲学家进餐等经典并发例题演示实际用法。 多线程用好，并发计算快人一步 多线程是多任务处理的一种特殊形式，多任务处理允许让电脑同时运行两个或两个以上的程序。一般情况下，两种类型的多任务处理： 基于进程和基于线程 。 基于进程的多任务处理是程序的并发执行。 基于线程的多任务处理是同一程序的片段的并发执行。 多线程程序包含可以同时运行的两个或多个部分。这样的程序中的每个部分称为一个线程，每个线程定义了一个单独的执行路径。 线程 概念 线程在Unix系统下，通常被称为轻量级的进程，线程虽然不是进程，但却可以看作是Unix进程的表亲，同一进程中的多条线程将 共享该进程中的全部系统资源，如虚拟地址空间，文件描述符和信号处理等等 。但同一进程中的多个线程**有各自的调用栈(call stack)，自己的寄存器环境（register context)，自己的线程本地存储(thread-local storage)**。 一个进程可以有很多线程，每条线程并行执行不同的任务。 优点 线程可以提高应用程序在多核环境下处理诸如文件I/O或者socket I/O等会产生堵塞的情况的表现性能。在Unix系统中，一个进程包含很多东西，包括可执行程序以及一大堆的诸如文件描述符地址空间等资源。在很多情况下，完成相关任务的不同代码间需要交换数据。如果采用多进程的方式，那么通信就需要在用户空间和内核空间进行频繁的切换，开销很大。但是如果使用多线程的方式，因为可以使用共享的全局变量，所以线程间的通信（数据交换）变得非常高效。 C++ 一个简单的Demo 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 # include &lt;iostream&gt; # include &lt;thread&gt; # include &lt;future&gt; using namespace std; void helloworld () &#123; cout &lt;&lt; "hello world \n" ; &#125; int main () &#123; //开启一个线程 std::thread t (helloworld) ; std::cout &lt;&lt; "hello world mai …]]></content>
+      
+      
+      <categories>
+          
+          <category> C++ </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ORB-SLAM2 双目立体匹配</title>
+      <link href="/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/"/>
+      <url>/2020/05/13/2020-05-13-ORB%20SLAM2%20%E5%8F%8C%E7%9B%AE%E7%A8%80%E7%96%8F%E7%AB%8B%E4%BD%93%E5%8C%B9%E9%85%8D/</url>
+      
+        <content type="html"><![CDATA[本节主要学习ORB_SLAM2中的双目立体匹配算法的实现过程 本文从源码层面学习 ORB_SLAM2 双目稀疏立体匹配的实现（主要在 frame.cc）：梳理从帧 ID 分配、图像金字塔参数设置、左右图双线程提取 ORB 特征，到特征点去畸变、双目特征匹配与深度计算的完整流程。 稀疏点匹配成功，稠密深度随之而来 主要在frame.cc文件中 主要过程： ID自增 1 mnId=nNextId++; 计算图像金字塔的参数 1 2 3 4 5 6 7 mnScaleLevels = mpORBextractorLeft-&gt; GetLevels (); mfScaleFactor = mpORBextractorLeft-&gt; GetScaleFactor (); mfLogScaleFactor = log (mfScaleFactor); mvScaleFactors = mpORBextractorLeft-&gt; GetScaleFactors (); mvInvScaleFactors = mpORBextractorLeft-&gt; GetInverseScaleFactors (); mvLevelSigma2 = mpORBextractorLeft-&gt; GetScaleSigmaSquares (); mvInvLevelSigma2 = mpORBextractorLeft-&gt; GetInverseScaleSigmaSquares (); 对左右图像提取ORB特征点, 使用双线程进行提取 1 2 3 4 thread threadLeft (&Frame::ExtractORB, this , 0 ,imLeft) ; thread threadRight (&Frame::ExtractORB, this , 1 ,imRight) ; threadLeft. join (); threadRight. join (); 用opencv的矫正函数，内参对提取到的特征点进行矫正 1 UndisortKeyPoints (); 计算双目见特征点的匹配 ，只有匹配成功的特征点才会计算深度，深度存放在mvDepth中; 1 ComPuteStereoMatches (); 计算去畸变后边界 双目特征点匹配 主要对应函数 Frame::ComputeStereoMatches() 。 输入 ：两帧立体矫正后的图像对应的ob特征点集 过程 行特征点统计 粗匹配 精确匹配SAD. 亚像素精度优化 最有视差值/深度选择 删除离群点（ outliers) 输出 ：稀疏特征点视差图/深度图和匹配结果 视差公式 z:深度 d:视差（disparity）f:焦距 b：(baseline) 基线 $z=\frac{fb}{d},d=u_L- …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> ORB-SLAM2 </tag>
+            
+            <tag> OpenCV </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>堆与优先队列</title>
+      <link href="/2020/04/22/2020-04-23-Cpp-heap/"/>
+      <url>/2020/04/22/2020-04-23-Cpp-heap/</url>
+      
+        <content type="html"><![CDATA[堆（heaps）是一种特殊的数据组织方式， STL 中的 priority_queue 容器适配器底层就是采用堆来组织数据存储的。为了弄明白堆是什么，首先要搞清楚什么是树存储结构。 本节就来学习C++中点的堆于优先队列。 本文学习 C++ 中的堆与优先队列，先讲解二叉堆的概念、大顶堆与小顶堆的性质以及用数组存储堆的方式，再介绍 STL 中 priority_queue 的常用操作。文章指出优先队列本质上就是堆，入队出队复杂度为 O(log n)，最后以”数据流中的中位数”面试题演示堆的实际应用。 堆顶即最值，优先队列取舍有序 堆 基本概念 堆（heap）是一种非常重要的数据结构（这里我们讨论的是二叉堆），它是一棵满足特定条件的完全二叉树，堆的定义如下： 堆是一棵树完全二叉树，对于该完全二叉树中的每一个结点x，其关键字大于等于(或小于等于）其左右孩子结点，而其左右子树均为一个二叉堆。 在上述的定义中，若堆中父亲结点关键字的值大于等于孩子结点，则称该堆为大顶堆；若堆中父亲结点关键子的值小于等于孩子结点，则称该堆为小顶堆。 由于堆是一棵完全二叉树，所以我们可以很轻易地用一个数组存储堆中的每一个元素，并且由子结点访问到其父亲结点和由父亲结点访问到其子结点 堆是一种用于查找最大值/最小值的二叉树 支持添加/减少数据，添加/删除的复杂度是O(logn)，查找的复杂度是O(1) 堆的结构： 大根堆：顾名思义，根结点的值比两个子结点都大. 小根堆：顾名思义，根节点的值比两个子结点都小. 堆中结点序号：若根节点序号为1，则根节点的左结点为2（1 2），右结点为3（1 2+1）。堆的全部结点均满足该性质. STL基本操作 1 2 3 4 5 a. size (); //返回堆内元素个数。 a. empty (); //如果堆为空，返回真，否则返回假。 a. top (); //返回堆顶元素。 a. pop (); //删除堆顶元素，自动整理。 a. push (x); //插入一个元素x，自动整理。 优先队列 基本概念 先来回顾一下 队列 ，队列是一种先进先出（FIFO）的数据结构，它的本质是一个线性表，只能在表的一端插入值，在表的另一端删除值。 队尾（rear）：允许插入的一端； 队头（front）：允许删除的一端。 优先队列也是一种队列，与队列不同的是，优先队列不再遵循先入先出的原则，而是分成了两种情况： 最大优先队列，无论入队顺序，当前最大的元素优先出队。 最小优先队列，无论入队顺序，当前最小的元素优先出队。 对于最小优先队列，队列中的每个元素都有一个权值，权值小的优先出队。假如我们将自身的数值作为权值，那么最小优先队列中较小的数会排在队列的前面，当加入一个新值 3 时， 3 会在队列中处于合适的位置。 当进行出队操作时，每次会从队首弹出队列中最小的元素： 最大优先队列则 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 位运算</title>
+      <link href="/2020/04/15/2020-04-15-Cpp-Bit/"/>
+      <url>/2020/04/15/2020-04-15-Cpp-Bit/</url>
+      
+        <content type="html"><![CDATA[本节主要学习C++中的位运算。 位运算符列表如下： 操作符 功能 用法 ~ 位求反 ~expr &lt;&lt; 左移 expr1 &lt;&lt; expr2 &gt;&gt; 右移 expr1 &gt;&gt; expr2 & 位与 expr1 & expr2 ^ 位异或 expr1 ^ expr2 | 位或 expr1 | expr2 本文介绍 C++ 位运算的常用技巧，列出位求反、移位、与或异或六种操作符，并给出求二进制中 1 的个数、对齐到 8 的倍数、取整型最值、判断符号、交换两数及提取与修改指定位等经典用法与代码。 位运算虽简，威力不容小觑 C++ 位运算 简介 位是数据存储的最小单位。在 计算机中的二进制数系统中，位，简记为b,也称为比特，每个0或1就是一个位(bit)。 经典用法 1. 求二进制中1的个数 1 n&n -1 2. 把 data上调至8 的倍数，同理，也可以改成16，32…的倍数。 1 (data + 8 - 1 ） & ( 8 - 1 ) 3. 取int的最值 1 2 3 4 ( 1 &lt;&lt; 31 ) -1 ; //int的最大值 ( 1 &lt;&lt; 31 ); //int的最小值 (( long long ) 1 &lt;&lt; 63 ) -1 ; //long long的最大值 (( long long ) 1 &lt;&lt; 63 ); //long long的最小值 4. 判断两个数符号是否相同 这个也很简单，二进制第一位表示符号，所以符号相同就为0（正数），符号不同就为1（负数）。 1 n^m&gt;= 0 5. 判断正负 1 n&gt;&gt;31 特殊用法 1. 交换两个数 1 2 3 a^=b; b^=a; a^=b; 2. 对这个数二进制的第m位进行处理（从低位到高位） ​ 首先为了得到第m位的值，肯定是要将这个数右移(m-1)位，然后为了将其他多余的数清零，我们再进行&1的操作，就可以将第m位提取出来了。如果是想改变第m位的值，那么就不能对这个数进行移动，因为这样会改变这个数的值。所以我们要对1向左移(m-1)位，然后再进行操作更改。如果要将第m位变成1，那么就n|(1&lt;&lt;(m-1))，这样就可以保证其余位不变改变第m位。如果要将第m位变为0，那么就n&~(1&lt;&lt;(m-1))，因为取反后就能得到除了第m位为0其余位都为1的一个数，这样再进行按位与计算就可以只改变第m位的值了。 1 2 3 (n&gt;&gt;(m -1 ))& 1 ; //取n的二进制的第m位 n|( 1 &lt;&lt;(m -1 )); //将n的二进制的第m位改为1 n&~( 1 &lt;&lt;(m -1 )); //将n的二进制的第m位改为0 3. 统计1的个数 1.普通算法 1 2  …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>OpenCV 重要函数</title>
+      <link href="/2020/04/14/2020-04-14-OPENCV-Function/"/>
+      <url>/2020/04/14/2020-04-14-OPENCV-Function/</url>
+      
+        <content type="html"><![CDATA[本节用来总结SLAM学习过程中，用到的重要的opencv函数 本文总结 SLAM 学习中常用的 OpenCV 函数，重点介绍 calcOpticalFlowPyrLK 金字塔 LK 光流函数的参数含义与用法，并补充 circle 画圆与 goodFeaturesToTrack 角点检测函数的参数说明及 VINS-Fusion 应用示例。 熟悉参数含义，SLAM 开发得心应手 CalcopticalFlowPyrLK() 功能 使用具有金字塔的迭代Lucas-Kanade方法计算稀疏特征集的光流。 1 2 3 4 5 6 7 8 9 10 11 12 13 void cv::calcOpticalFlowPyrLK ( InputArray prevImg, InputArray nextImg, InputArray prevPts, InputOutputArray nextPts, OutputArray status, OutputArray err, Size winSize = Size( 21 , 21 ), int maxLevel = 3 , TermCriteria criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30 , 0.01 ), int flags = 0 , double minEigThreshold = 1e-4 ) 参数： prevImg ：buildOpticalFlowPyramid构造的第一个8位输入图像或金字塔。 nextImg ：与prevImg相同大小和相同类型的第二个输入图像或金字塔 prevPts ：需要找到流的2D点的矢量(vector of 2D points for which the flow needs to be found;);点坐标必须是单精度浮点数。 nextPts ：输出二维点的矢量（具有单精度浮点坐标），包含第二图像中输入特征的计算新位置;当传递OPTFLOW_USE_INITIAL_FLOW标志时，向量必须与输入中的大小相同。 status ：输出状态向量（无符号字符）;如果找到相应特征的流，则向量的每个元素设置为1，否则设置为0。 err ：输出错误的矢量; 向量的每个元素都设置为相应特征的错误，错误度量的类型可以在flags参数中设置; 如果未找到流，则未定义错误（使用status参数查找此类情况）。 winSize ：每个金字塔等级的搜索窗口的winSize大小。 maxLevel ：基于0的最大金字塔等级数;如果设置为0，则不使用金字塔（单级），如果设置为1，则使用两个级别，依此类推;如果将金字塔传递给输入，那么算法将使用与金字塔一样多的级别，但不超过maxLevel。 criteria ：参数，指 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> OpenCV </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 优先队列</title>
+      <link href="/2020/04/14/2020-04-14-C-priority-queue/"/>
+      <url>/2020/04/14/2020-04-14-C-priority-queue/</url>
+      
+        <content type="html"><![CDATA[普通的队列是一种先进先出的数据结构，元素在队列尾追加，而从队列头删除。在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。优先队列具有最高级先出 （first in, largest out）的行为特征。通常采用堆数据结构来实现。本节来介绍C++中的优先队列。 本文介绍 C++ 优先队列的概念与用法，讲解其基于堆的最高优先级先出队特性，涵盖相关定义、声明方式（默认、greater/less、自定义仿函数、结构体重载小于号）以及基本操作成员函数，并给出基本类型、pair 与自定义类型的完整示例。 优先级高者先出，队列自有章法 优先队列是0个或多个元素的集合,每个元素都有一个优先权或值,对优先队列执行的操作有1) 查找;2) 插入一个新元素;3) 删除.在最小优先队列(min priority queue)中,查找操作用来搜索优先权最小的元素,删除操作用来删除该元素;对于最大优先队列(max priority queue),查找操作用来搜索优先权最大的元素,删除操作用来删除该元素.优先权队列中的元素可以有相同的优先权,查找与删除操作可根据任意优先权进行. 最大优先权队列的 抽象数据类型 描述下所示,最小优先队列的抽象数据类型描述与之类似,只需将最大改为最小即可. 一、相关定义 优先队列容器与队列一样，只能从队尾插入元素，从队首删除元素。但是它有一个特性，就是队列中最大的元素总是位于队首，所以出队时，并非按照先进先出的原则进行，而是将当前队列中最大的元素出队。这点类似于给队列里的元素进行了由大到小的顺序排序。元素的比较规则默认按元素值由大到小排序，可以重载“&lt;”操作符来重新定义比较规则。 优先级队列可以用向量(vector)或双向队列(deque)来实现(注意list container不能用来实现queue，因为list的迭代器不是任意存取iterator，而pop中用到堆排序时是要求randomaccess iterator 的!)： 1 2 priority_queue&lt;vector&lt;int&gt;, less&lt;int&gt; &gt; pq1; // 使用递增less&lt;int&gt;函数对象排序 priority_queue&lt;deque&lt;int&gt;, greater&lt;int&gt; &gt; pq2; // 使用递减greater&lt;int&gt;函数对象排序 其成员函数有“判空(empty)” 、“尺寸(Size)” 、“栈顶元素(top)” 、“压栈(push)” 、“弹栈(pop)”等。 二、priority_queue 简介 首先要包含头文件 #include , 他和 queue 不同的就在于我们可以自定义其中数据的优先级, 让优先级高的排在队列前面,优先出队。在默认 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ORB-SLAM2 学习笔记</title>
+      <link href="/2020/04/13/2020-04-13-ORBSLAM2/"/>
+      <url>/2020/04/13/2020-04-13-ORBSLAM2/</url>
+      
+        <content type="html"><![CDATA[ORB-SLAM 是西班牙 Zaragoza 大学的 Raúl Mur-Arta 编写的视觉 SLAM 系统。 它是一个完整的 SLAM 系统，包括视觉里程计、跟踪、回环检测，是一种完全基于稀疏特征点的单目 SLAM 系统，同时还有单目、双目、RGBD 相机的接口。其核心是使用 ORB (Orinted FAST and BRIEF) 作为整个视觉 SLAM 中的核心特征。 本文介绍特征点法 SLAM 的代表作 ORB-SLAM2，概述其基于 ORB 特征、由跟踪、局部建图和闭环检测三大线程并行运行的系统框架，以及支持单目、双目、RGB-D 相机和实时运行等特点。文章还解析了代码结构，包括数据集读取、地图表示与 System 入口函数。 三大线程并行，稀疏特征建图定位 ORB-SLAM 基本介绍 ORB-SLAM 基本延续了 PTAM 的算法框架,但对框架中的大部分组件都做了改进, 归纳起来主要有 4 点: ORB-SLAM 选用了 ORB 特征, 基于 ORB 描述量的特征匹配和重定位, 都比 PTAM 具有更好的视角不变性。此外, 新增三维点的特征匹配效率更高, 因此能更及时地扩展场景。扩展场景及时与否决定了后续帧是否能稳定跟踪。 ORBSLAM 加入了循环回路的检测和闭合机制, 以消除误差累积。系统采用与重定位相同的方法来检测回路(匹配回路两侧关键帧上的公共点), 通过方位图 (Pose Graph) 优化来闭合回路。 PTAM 需要用户指定 2 帧来初始化系统, 2 帧间既要有足够的公共点, 又要有足够的平移量. 平移运动为这些公共点提供视差 (Parallax) , 只有足够的视差才能三角化出精确的三维位置。ORB-SLAM 通过检测视差来自动选择初始化的 2 帧。 PTAM 扩展场景时也要求新加入的关键帧提供足够的视差, 导致场景往往难以扩展. ORB-SLAM 采用一种更鲁棒的关键帧和三维点的选择机制——先用宽松的判断条件尽可能及时地加入新的关键帧和三维点, 以保证后续帧的鲁棒跟踪; 再用严格的判断条件删除冗余的关键帧和不稳定的三维点，以保证 BA 的效率和精度。 引自《基于单目视觉的同时定位与地图构建方法综述》 特点 首个支持单目，双目和RGBD相机的完整的开源SLAM方案，能够实现地图重用，回环检测和重新定位的功能 能够在CPU上进行实时工作，比如手机、无人机、汽车。 特征点法的巅峰之作，定位精度极高。 能够实时计出相机的位姿，并生成场景的稀疏三维重建地图。 代码非常整洁，包含很多实际应用中的技巧，非常实用。 支持仅定位模式，该模式适用于轻量级以及在地图已知情况下长期运行，此时不使用局部建图和回环检测的线程。 双目和RGBD相对单目相机的主要优势在于，可以直接获得深度信息，不需要像单目情况中那样做一个特定的SFM初始化 系统框架 ORB-S …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> ORB-SLAM2 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 岗位求职与简历书写</title>
+      <link href="/2020/04/03/2020-04-04-SLAM-CV/"/>
+      <url>/2020/04/03/2020-04-04-SLAM-CV/</url>
+      
+        <content type="html"><![CDATA[本文学习自B站计算机视觉Life的 如何写简历 。 本文面向 SLAM 与计算机视觉算法岗位求职，先分析视觉算法岗的就业形势，再按个人信息、教育背景、项目经历、专业技能等板块讲解简历撰写要点与应避免的内容。文章最后给出夯实数学编程基础、关注产品落地等学习建议及适合投递的公司参考。 简历贵在精准，实力藏在细节 当前求职背景怎么样 2019计算机直觉算法岗的求职情况为： 候选人数很多，优秀者极少 找工作不仅需要实力，也需要运气 原因 贸易战影响：华为、海康、大华、商汤、旷视、依图、讯飞。 宏观经济下行：裁员潮商业落地困难大量其他行业转行到AI人才成本高 视觉算法的未来依然前途光明（智能手机、无人汽车、机器人、无人机等)。 简历内容怎么写 个人信息 姓名、电话、邮箱（尽量用edu结尾的邮箱）、Github、博客、个人网站等 Github主页最好展示自己最有含金量的工作。 个人网站：自己、项目、论文、荣誉、生活博客 教育背景 从本科开始，包括时间、专业、成绩排名； 本科学校211以上就没问题了 相关课程：图像处理；模式识别啥的；参加过的培训； 相关科研项目经历 从最后学历开始，最重要的写前面。条理要清晰（背景、原理、结果）、用词要准确。 项目实现细节，成果（指标、论文、专利）。 可以放一个直观的研究成果展示，项目主页。 好的实习、竞赛、科研交流经历：简洁、突出结果。、行业知名公司 行业知名竞赛：Kitti，Kaggle，天池 专业技能 提到的方向尽量对口 内容：编程、奖学金、竞赛获奖、论文 语言得体不要夸大：精通C++，算法掌握程度 量化一下技能结果，比如国家励志奖学金、Kaggle比赛（3/1000）、ACM竞赛、CVPR论文（状态、几座、创新点、细节） 什么是不需要的 个人评价：没有区分度 社会活动经历、兴趣爱好、照片 其它注意事项 简历有很多格式格式：pdf，Word，Wps等，最好用pdf格式。 可以针对性地准备几份简历； 尽可能了解你投递的公司、岗位。（新闻，内部员工等途径） 可以根据不同公司、不同岗位调整简历。 建议 重视数学、编程； 传统图像处理、计算机视觉算法不可忽视； 挖掘底层技术原理，知其所以然； 注重CV领域和其它方向结合； 关注产品落地 越是站在浪潮之巅，越要保持清醒头脑 求职经历与心路历程 可能有SLAM岗位的公司： 企业：地平线、商汤、网易(3D视觉算法工程师)、百度、阿里菜鸟、海康威视、旷视、百度、大疆、大华、360、OPPO、奥比中光、臻迪、华为、图森未来、驭势科技、地平线、联想、滴滴、美团、优必选、博世、小马智行、纵目科技、步飞科技、宽凳科技爱笔科技、高仙、托斯达、瓜子二手车、速腾聚创、博智林、亿嘉和、四维图新、极智嘉、九阳、虹软（3维重建）。 其它：九号机器人、 Auto、银星智能、中车、徐工 研究所比较稳定 薪资：25w+ 需要 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 求职 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 容器 vector</title>
+      <link href="/2020/04/01/2020-04-02-Cpp-Vector/"/>
+      <url>/2020/04/01/2020-04-02-Cpp-Vector/</url>
+      
+        <content type="html"><![CDATA[向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。 本文介绍 C++ 容器 Vector 的基本概念与顺序序列、动态数组等特性，系统列出构造函数、增删元素、遍历访问、判断与大小等常用成员函数的用法，并补充二维 Vector 的初始化与排序方法。 动态数组，Vector 一步到位 一、基本概念 向量（Vector）是一个封装了动态大小数组的顺序容器（Sequence Container）。跟任意其它类型容器一样，它能够存放各种类型的对象。可以简单的认为，向量是一个能够存放任意类型的动态数组。 二、容器特性 1. 顺序序列 顺序容器中的元素按照严格的线性顺序排序。可以通过元素在序列中的位置访问对应的元素。 2. 动态数组 支持对序列中的任意元素进行快速直接访问，甚至可以通过指针算述进行该操作。操供了在序列末尾相对快速地添加/删除元素的操作。 3. 能够感知内存分配器的（Allocator-aware） 容器使用一个内存分配器对象来动态地处理它的存储需求。 三、基本函数 1.构造函数 vector():创建一个空vector vector(int nSize):创建一个vector,元素个数为nSize vector(int nSize,const t& t):创建一个vector，元素个数为nSize,且值均为t vector(const vector&):复制构造函数 vector(begin,end):复制[begin,end)区间内另一个数组的元素到vector中 2.增加函数 void push_back(const T& x):向量尾部增加一个元素X iterator insert(iterator it,const T& x):向量中迭代器指向元素前增加一个元素x iterator insert(iterator it,int n,const T& x):向量中迭代器指向元素前增加n个相同的元素x iterator insert(iterator it,const_iterator first,const_iterator last):向量中迭代器指向元素前插入另一个相同类型向量的[first,last)间的数据 3.删除函数 iterator erase(iterator it):删除向量中迭代器指向元素 iterator erase(iterator first,iterator last):删除向量中[first,last)中元素 void pop_back():删除向量中最后一个元素 void clear():清空向量中所有元素 也可以使用swap()函数与空向量进行交换，不但可以改变size还 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 排序算法</title>
+      <link href="/2020/03/31/2020-03-31-%E5%90%84%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
+      <url>/2020/03/31/2020-03-31-%E5%90%84%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[今日打卡题目如下： 排序数组 各种排序算法 冒泡排序 插入排序t 快速排序 堆排序 桶排序 C++中的自定义排序算法 本文以 LeetCode 912 排序数组为引，系统总结十种常见排序算法的思想、性能与 C++ 实现，覆盖冒泡、插入、选择、快排、归并、堆、希尔、基数等比较类与非比较类排序。文中还讲解了仿函数、lambda、函数指针等自定义排序方式及 STL 排序规则。 排序算法千万条，时间复杂度第一条 912. 排序数组 给定一个整数数组 nums ，将该数组升序排列。 示例 1 1 2 输入：[5,2,3,1] 输出：[1,2,3,5] 示例 2 1 2 输入：[5,1,1,2,0,0] 输出：[0,0,1,1,2,5] 提示： 1 &lt;= A.length &lt;= 10000 -50000 &lt;= A[i] &lt;= 50000 我的解法 快速排序 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 class Solution &#123; public : vector&lt; int &gt; sortArray (vector&lt; int &gt;& nums) &#123; quicksort (nums, 0 ,nums. size () -1 ); return nums; &#125; void quicksort (vector&lt; int &gt;& nums, int low , int high) &#123; if (low &gt;= high) return ; int num = nums[low]; int left = low +1 ; int right = high; while ( true ) &#123; while (left&lt;=right && nums[left]&lt;=num) left++; while (left&lt;=right && nums[right]&gt;=num) right--; if (left&gt;right) break ; swap (nums[left],nums[right]); &#125; nums[low] = nums[right]; nums[right] = num; quicksort (nums,low,right -1 ); quicksort (nums,right +1 ,high); &#125; &#125;; 十种常见排序算法 分类 比较类排序 通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序。 非比较类排序 不通过比较来决定元素间的相对次序，它可以突破基于比较排序的 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 刷题 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 中的后端优化</title>
+      <link href="/2020/03/30/2020-03-30-Bundle-adjustment/"/>
+      <url>/2020/03/30/2020-03-30-Bundle-adjustment/</url>
+      
+        <content type="html"><![CDATA[本节介绍SLAM中的后端优化过程 本文介绍 SLAM 的后端优化，即同时对三维路标点位置与相机参数进行非线性优化的光束法平差（BA）。文章重点讲解 LM 算法作为信赖域方法的原理与优势——速度快、能在离初始值较远处收敛到最优解，并以表格对比了 KF/EKF、粒子滤波、EM 与图优化等常见后端方案的优缺点。 后端优化，让轨迹与地图一同精进 一、问题阐述 同时对三维点位置和相机参数进行非线性优化 二、LM法的原理与优势 原理 ：是一种“信赖域”的方法，当收敛速度较快时，增大信赖域使算法趋向于高斯牛顿法；当收敛速度较慢时，减小信赖域使算法趋向于最速下降法。 优势 ：速度快；可以在距离初始值较远处得到最优解。 SLAM优化算法对比 算法 缺点 优点 KF/EKF 假设噪声为高斯分布，在高维状态空间时计算效率较低，不适合大规模场景的地图构建 原理简单，小场景下收敛性好。 PF 会不可避免出现粒子退化现象，每个粒子需包含整张地图信息导致不适合大场景地图构建 将运动方程表示为一组粒子，通过蒙特卡罗方法求解，能够处理非线性非高斯噪声。 EM 计算量大，不能用于大规模场景 有效解决了数据关联问题 图优化 对闭环检测算法的要求严格 出现多种图优化框架，能够有效解决滤波器算法的缺陷，能用于大规模场景的地图创建]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> BA </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>相机标定</title>
+      <link href="/2020/03/28/2020-03-28-Camera-Calibration/"/>
+      <url>/2020/03/28/2020-03-28-Camera-Calibration/</url>
+      
+        <content type="html"><![CDATA[本节将探讨相机标定，主要探讨以下三个问题 相机标定原理 实现过程 棋盘格的好处 本文讲解相机标定，围绕标定原理、实现过程与棋盘格的好处三个问题展开。文章从世界、相机、图像、像素四个坐标系的变换出发推导内外参数矩阵，分析径向畸变与切向畸变的成因与校正，并梳理了传统标定、自标定、主动视觉及张正友标定法等主流方法，最后延伸至相机与 IMU 的联合标定。 标定得参数，二维像素还原三维世界 相机标定 1. 基本概念 图像测量过程以及计算器视觉中，为确定空间物体某点的三维几何关系位置与其在图像中对应点之间的相互关系，必须建立相机成像的几何模型，模型的参数就是相机的参数。 求解参数的过程 称为相机标定。 目的 ：求出相机的内、外参数，以及畸变参数。 标定相机后做的两件事： 通过相机标定校正这种镜头畸变，生成矫正后的图像； 是根据获得的图像重构三维场景。 2. 标定原理 先定义以下 涉及概念 ： 世界坐标系 ：用户定义的三维世界的坐标系，为了描述目标物在真实世界里的位置而被引入。单位为m。 相机坐标系 ：在相机上建立的坐标系，为了从相机的角度描述物体位置而定义，作为沟通世界坐标系和图像/像素坐标系的中间一环。单位为m。 图像坐标系 ：为了描述成像过程中物体从相机坐标系到图像坐标系的投影透射关系而引入，方便进一步得到像素坐标系下的坐标。 单位为m。 像素坐标系 ：为了描述物体成像后的像点在数字图像上（相片）的坐标而引入，即从相机内读取到的信息所在的坐标系。单位为像素。 下图可以清晰地表达四个坐标系之间的关系： 世界坐标系： Xw 、 Yw 、 Zw 。相机坐标系： Xc 、 Yc 、 Zc 。图像坐标系： x 、 y 。像素坐标系： u 、 v 。 其中，相机坐标系的 Zc 轴与光轴重合，且垂直于图像坐标系平面并通过图像坐标系的原点，相机坐标系与图像坐标系之间的距离为焦距f（也即图像坐标系原点与焦点重合）。像素坐标系平面 u-v 和图像坐标系平面 x-y 重合，但像素坐标系原点位于图中左上角（之所以这么定义，目的是从存储信息的首地址开始读写）。 下面将依次对刚体进行一系列变换，使之从世界坐标系进行仿射变换、投影透射，最终得到像素坐标系下的离散图像点，过程中会逐步引入各参数矩阵。 A. 从世界坐标系到相机坐标系 刚体从世界坐标系转换到相机坐标系的过程，可以通过旋转和平移来得到，我们将其变换矩阵由一个旋转矩阵和平移向量组合成的齐次坐标矩阵（为什么要引入齐次坐标可见后续文章）来表示： 其中，R为旋转矩阵，t为平移向量，因为假定在世界坐标系中物点所在平面过世界坐标系原点且与Zw轴垂直（也即棋盘平面与Xw-Yw平面重合，目的在于方便后续计算），所以 zw=0 ，可直接转换成式1的形式。其中变换矩阵 $$\left[\begin{matrix}R&t\\0_3^T&1\end{matri …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 相机标定 </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++ 字符串</title>
+      <link href="/2020/03/28/2020-03-28-Cpp-String/"/>
+      <url>/2020/03/28/2020-03-28-Cpp-String/</url>
+      
+        <content type="html"><![CDATA[string是C++标准库的一个重要的部分，主要用于字符串处理。可以使用输入输出流方式直接进行string操作，也可以通过文件等手段进行string操作。同时，C++的算法库对string类也有着很好的支持，并且string类还和c语言的字符串之间有着良好的接口。 本文将介绍字符串的基本概念和C++的常用操作。 本文介绍 C++ 字符串的基本概念与常用操作，涵盖下标、迭代器、新式 for 循环三种遍历方式，以及 length、find、insert、append、erase、substr、sort、replace、to_string 等成员函数的用法，并补充了字符串输入输出与 C 风格字符串函数的对比。 字符串虽小，操作技巧见真章 字符串 基本概念 字符串或串(String)是由数字、字母、下划线组成的一串字符。一般记为 s=“a1a2···an”(n&gt;=0) 。它是编程语言中表示文本的数据类型。在程序设计中，字符串（string）为符号或数值的一个连续序列，如符号串（一串字符）或二进制数字串（一串二进制数字）。 通常以串的整体作为操作对象，如：在串中查找某个子串、求取一个子串、在串的某个位置上插入一个子串以及删除一个子串等。两个字符串相等的充要条件是：长度相等，并且各个对应位置上的字符都相等。设p、q是两个串，求q在p中首次出现的位置的运算叫做模式匹配。 串的两种最基本的存储方式是顺序存储方式和链接存储方式。 C++ 遍历 1. 常规方式 下标+operator[] 2. 使用迭代器遍历 1 2 3 4 5 6 string::iterator it = str. begin (); //返回第一个位置的迭代器（类似于指针） while (it != str. end ()) //str.end()是最后一个数据的下一个位置 &#123; cout&lt;&lt;*it&lt;&lt;endl; it++; &#125; 3. 新式for循环 1 for ( auto ch:s) cout&lt;&lt;ch; 成员函数 长度 1 int len = str. length (); 查找 find() 方法检测字符串中是否包含子字符串 str ，如果指定 beg（开始） 和 end（结束） 范围，则检查是否包含在指定范围内，如果指定范围内如果包含指定索引值，返回的是索引值在字符串中的起始位置。如果不包含索引值，返回-1。 插入 对string字符串进行插入和删除字符操作函数原型： 1 2 3 string& insert ( int pos, const char * s) ; //插入字符串 string& insert ( int pos, const string& str) ; //插入字符串 string& insert ( int pos …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>对极约束</title>
+      <link href="/2020/03/26/2020-03-26-Epipolar-constraint/"/>
+      <url>/2020/03/26/2020-03-26-Epipolar-constraint/</url>
+      
+        <content type="html"><![CDATA[本文旨在了解一下几点： 对极约束是什么 基础矩阵F F的秩有什么意义 本质矩阵E E与F的区别与联系 本文学习 SLAM 中的对极约束，从两帧图像的匹配像素点出发推导出对极约束方程，介绍极点、基线、极线等基本概念及其”三点共面”的几何意义。文章重点讲解基础矩阵 F 与本质矩阵 E 的定义与联系（E&#x3D;t^R，F&#x3D;K^{-T}EK^{-1}），说明由匹配点求解 E 或 F 后即可分解出相机运动 R、t。 双视图匹配点，约束出相机运动 对极约束 目的 在已知 2D像素坐标的前提下，根据两幅图像间多组2D像素点对来估计相机的运动。 概念 推导过程 如上图所示，我们希望求取两帧图像 $I_1$,$ I_2$ 之间的运动，设第一帧到第二帧的运动为 $R$，$t$。两个相机中心分别为 $O_1$,$O_2$。现在，考虑 $I_1$ 中有一个特征点 $p_1$，它在 $I_2$ 中对应着特征点 $p_2$。我们知道两者是通过特征匹配得到的。首先，连线 $O_2P$与$O_1P$ 在三维空间中会相交于点 P。由$O_1$, $O_2$, $P$ 三点确定的平面为 极平面 （ Epipolar plane ）。$O_1O_2$ 连线与像平面 $I_1$, $I_2$ 的交点$e_1$, $e_2$ 称为 极点 （ Epipoles ），$O_1O_2$ 被称为 基线 （ Baseline ）。我们称极平面与两个像平面 $I_1$, $I_2$ 之间的相交线 $l_1$, $l_2$ 为 极线 （ Epipolar line ）。 设P的空间位置为 $P=[X,Y,Z]^T$。则根据针孔模型，两个像素点$p_1,p_2$的像素位置为: $$s_1p_1=KP,s_2p_2=K(RP+t)$$ 其中，K为相机内参矩阵，R，t为两个坐标系的相机运动。具体来说，计算的是$R_{21}$，$t_{21}$，因为他们把第一个坐标系下的坐标转换到了第二个坐标系下。其也可写作是李代数形式。 尺度意义下相等记作：$sp\simeq p$，可表示投影关系。 因此有: $$x_1=K^{-1}p_1, x_2=K^{-1}p_2$$ 其中，$x_1$,$x_2$表示像素点在归一化平面上的坐标。代入上式，得： $$x_2\simeq Rx_1+t$$ 两边同时左乘 t^ 。因此得到: $$t^{.}x_2\simeq t^{.}Rx_1$$ 然后同时左乘 x2^ ，得到 重新带入$p_1,p_2$有: 上述两式称为 对极约束 。 几何意义 :$O_1,P,O_2$三者共面。 把中间部分记作两个矩阵，基础矩阵F和本质矩阵E，可进一步检核对极约束： E=t^R ，$F=K^{-T}EK^{-1}$，$x^T_2Ex^1=p^T_2Fp_1=0$。 可看出，对极约束简洁地给出了两个匹配点 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> 多视图几何 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>哈希表与 C++</title>
+      <link href="/2020/03/26/2020-03-26-Hash-Table/"/>
+      <url>/2020/03/26/2020-03-26-Hash-Table/</url>
+      
+        <content type="html"><![CDATA[散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫做散列函数，存放记录的数组叫做散列表。 给定表M，存在函数f(key)，对任意给定的关键字值key，代入函数后若能得到包含该关键字的记录在表中的地址，则称表M为哈希(Hash）表，函数f(key)为哈希(Hash) 函数。 本节将介绍哈希表的基本概念，与C++实现方法。 本文介绍哈希表的基本概念、常用散列函数与冲突处理方法，分析影响查找性能的因素，并结合 C++11 的 unordered_map 讲解其构造函数、成员函数与遍历等实际用法。 以空间换时间，哈希表巧解查找之困 基本概念 若关键字为 k ，则其值存放在 f(k) 的存储位置上。由此，不需比较便可直接取得所查记录。称这个对应关系 f 为散列函数，按这个思想建立的表为散列表。 对不同的关键字可能得到同一散列地址，即 k1≠k2 ，而 f(k1)=f(k2) ，这种现象称为冲突（英语：Collision）。具有相同函数值的关键字对该散列函数来说称做同义词。综上所述，根据散列函数 f(k) 和处理冲突的方法将一组关键字映射到一个有限的连续的地址集（区间）上，并以关键字在地址集中的“像”作为记录在表中的存储位置，这种表便称为散列表，这一映射过程称为散列造表或散列，所得的存储位置称散列地址。 若对于关键字集合中的任一个关键字，经散列函数映象到地址集合中任何一个地址的概率是相等的，则称此类散列函数为均匀散列函数（Uniform Hash function），这就是使关键字经过散列函数得到一个“随机的地址”，从而减少冲突。 常用方法 散列函数能使对一个数据序列的访问过程更加迅速有效，通过散列函数，数据元素将被更快地定位。 实际工作中需视不同的情况采用不同的哈希函数，通常考虑的因素有： 计算哈希函数所需时间 关键字的长度 哈希表的大小 关键字的分布情况 记录的查找频率 1. 直接寻址法 取关键字或关键字的某个线性函数值为散列地址。即H(key)&#x3D;key或H(key) &#x3D; a·key + b，其中a和b为常数（这种 散列函数 叫做自身函数）。若其中H(key）中已经有值了，就往下一个找，直到H(key）中没有值了，就放进去。 2. 数字分析法 分析一组数据，比如一组员工的出生年月日，这时我们发现出生年月日的前几位数字大体相同，这样的话，出现冲突的几率就会很大，但是我们发现年月日的后几位表示月份和具体日期的数字差别很大，如果用后面的数字来构成散列地址，则冲突的几率会明显降低。因此数字分析法就是找出数字的规律，尽可能利用这些数据来构造冲突几率较低的散列地址。 3. 平方取中法 当无法确定关键字中哪几位分布较均 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 中的三角测量</title>
+      <link href="/2020/03/24/2020-03-24-Triangulation/"/>
+      <url>/2020/03/24/2020-03-24-Triangulation/</url>
+      
+        <content type="html"><![CDATA[三角测量是SLAM中，利用相机运动估计特征点空间位置的过程。 本节旨在解决以下问题： 三角测量的概念 三角测量的过程及代码实现； 三角测量有哪些不确定性 如何提高三角测量的精度 本文学习 SLAM 中的三角测量，即已知相机运动 R、t 后，利用两帧特征点的归一化坐标求解地图点的深度与空间位置。文章给出三角化的数学推导与基于 OpenCV 的代码实现，并分析了三角化的不确定性来源以及提高精度的措施。 三角测量，由视差求深度 1. 概念 在SLAM中，利用对极几何约束估计相机运动之后，我们还需要通过三角测量来估计地图点的深度。三角测量（三角化）指的是，通过在两处观测同一个点的夹角，从而确定该点的距离。 SLAM中主要用三角化来估计像素点的距离。 2. 过程 按照对极几何的定义，设$x_1,x_2$为两个特征点的归一化坐标，那么他们满足： $$s_1x_1=s_2Rx_2+t.$$ 经过对极几何之后，已得到了运动$R,t$，需要求解两个特征点的深度$s_1$,$s_2$。 两个深度可以分开算。若先算$s_2$,那么对上市两个做成一个$x_1$^,得： 该式子左侧为0，右侧可看成是$s_2$的一个方程，可以根据它直接求$s_2$。有了$s_2$,$s_1$也非常容易求出。预测就可以得到两帧下的深度，即确定了空间坐标。 3. 代码实现； 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 void triangulation ( const vector&lt;KeyPoint&gt;& keypoint_1, const vector&lt;KeyPoint&gt;& keypoint_2, const std::vector&lt; DMatch &gt;& matches, const Mat& R, const Mat& t, vector&lt;Point3d&gt;& points ) ; void triangulation ( const vector&lt; KeyPoint &gt;& keypoint_1, const vector&lt; KeyPoint &gt;& keypoint_2, const std::vector&lt; DMatch &gt;& matches, const Mat& R, const Mat& t, vector&lt; Point3d &gt;& points ) &#123; Mat T1 = ( Mat_ &lt; double &gt; ( 3 , 4 ) &lt;&lt; 1 , 0 , 0 , 0 , 0 , …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> 多视图几何 </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 初始化</title>
+      <link href="/2020/03/24/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
+      <url>/2020/03/24/2020-03-24-SLAM%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+      
+        <content type="html"><![CDATA[本节的学习要点： 初始化的目的(单目/双目) 初始化的两种方法 初始化过程 本文学习 SLAM 初始化，阐明单目初始化构建初始三维点云并为后续估计提供初始值的目的，介绍了追踪已知物体、计算单应矩阵与基础矩阵三种常用方法。文章重点梳理 ORB-SLAM2 单目初始化的完整流程——初始帧匹配、位姿计算（八点法与 RANSAC 模型选择）、三角测量与地图创建、BA 优化，并简述双目与 RGB-D 的初始化。 初始化定根基，后续估计方有所依 初始化的目的 ​单目SLAM初始化的目的是 &#x3D;&#x3D; 构建初始的三维点云地图（空间点）并为之后的计算提供初始值 &#x3D;&#x3D;。 ​由于仅从单帧的图像不能得到深度信息，因此需要从图像序列中选取两帧以上的图像以估计相机机姿态并重建出初始的三维点云。 常见的方法 方法一 ​追踪一个已知物体。单帧图像的每一个点都对应于空间的一条射线。通过不同角度不同位置扫描同一个物体，期望能够将三维点的不确定性缩小到可接受的范围。 方法二 ​基于假设空间存在一个平面物体，选取两帧不同位置的图像，通过计算 单应矩阵 来估计位姿。这类方法在视差较小或者平面上的点靠近某个主点时效果不好。 方法三 ​根据两帧之间的特征点匹配计算 基础矩阵 ，进一步估计位姿。这种方法要求存在不共面的特征点。 单目初始化 方法流程 匹配初始帧； 位姿计算； 三角测量和地图创建； BA优化。 基本步骤 1. 匹配初始帧 ​该阶段工作是，根据连续两帧图片中能够匹配的特征点数量来判断其是否可以作为初始帧，即只有连续两帧中能够匹配的特征点的数量大于某个值时才认为该帧（前一帧）为初始帧； ​在ORM-SLAM2中认为连续帧匹配点的数量大于100时可以将前一帧作为初始帧并记录两帧的匹配关系； ​以下是在ORB-SLAM2中相关部分的代码，功能为对两帧图片进行ORB特征点提取并进行匹配，当匹配的点的数量大于100时认为前一帧可以作为初始帧；可以通过修改代码中的参数来调整判断是否能够作为初始帧的条件。 1 int nmatches = matcher. SearchForInitialization (mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches, 100 ); 2. 位姿计算 ​得到超过100对匹配点后，ORB-SLAM2同时计算适用于平面场景的单应矩阵H和适用于普通场景的基础矩阵F; 方法是：首先由抽样点计算出单次抽样的H（四对点）和F矩阵（八点法）,通过若干次RANSAC抽样计算出最优的H和F矩阵；然后选择最合适的结果作为相机的初始位姿。 2.1. 八点法 相机位姿估计问题是为了求解本质矩阵E或者基础矩阵F，然后求解旋转R和平移t。 对于E矩阵认为是一个3*3的矩阵，因为任意常数乘以E不变，所以E …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>KMP 字符串匹配算法</title>
+      <link href="/2020/03/22/2020-03-22-KMP-Algorithm/"/>
+      <url>/2020/03/22/2020-03-22-KMP-Algorithm/</url>
+      
+        <content type="html"><![CDATA[KMP算法是一种改进的字符串匹配算法，由D.E.Knuth，J.H.Morris和V.R.Pratt提出的，因此人们称它为克努特—莫里斯—普拉特操作（简称KMP算法）。KMP算法的核心是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+n)。 本文讲解 KMP 字符串匹配算法的原理与实现，从暴力匹配的回溯缺陷出发，引入 next 数组记录模式串前缀后缀的最长公共长度，将时间复杂度从 O(nm) 优化到 O(m+n)，并给出完整的 next 数组构造与匹配源代码。 利用失配信息，让匹配不再回溯 问题描述 有一个文本串S，和一个模式串P，现在要查找P在S中的位置，怎么查找呢？ 暴力匹配算法 如果用暴力匹配的思路，并假设现在文本串S匹配到 i 位置，模式串P匹配到 j 位置，则有： 如果当前字符匹配成功（即S[i] &#x3D;&#x3D; P[j]），则i++，j++，继续匹配下一个字符； 如果失配（即S[i]! &#x3D; P[j]），令i &#x3D; i - (j - 1)，j &#x3D; 0。相当于每次匹配失败时，i 回溯，j 被置为0。 回溯的方法使得算法复杂度上升。 因此需要优化回溯的步骤以简化算法。 源代码： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 /* 字符串下标始于 0 */ int NaiveStringSearch ( string S, string P) &#123; int i = 0 ; // S 的下标 int j = 0 ; // P 的下标 int s_len = S.size(); int p_len = P.size(); while (i &lt; s_len && j &lt; p_len) &#123; if (S[i] == P[j]) // 若相等，都前进一步 &#123; i++; j++; &#125; else // 不相等 &#123; i = i - j + 1 ; j = 0 ; &#125; &#125; if (j == p_len) // 匹配成功 return i - j; return -1 ; &#125; 时间复杂度：$O(nm)$ 当n和m很大的时候不好用。 KMP算法 引入概念 前缀：指的是字符串的子串中从原串最前面开始的子串 后缀：指的是字符串的子串中在原串结尾处结尾的子串 算法思想 利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。KMP算法的时间复杂度O(m+ …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>运动一致性判断</title>
+      <link href="/2020/03/14/2020-03-15-Motion_consistency/"/>
+      <url>/2020/03/14/2020-03-15-Motion_consistency/</url>
+      
+        <content type="html"><![CDATA[直至以来，SLAM的研究共朝着三个方向努力：精度、速度、鲁棒性。尤以鲁棒性居多。通常动态场景中，根据IMU测量值与视觉测量值分别进行计算得到的结果会有所不同。因此需要进行一致性的检测，以得到真值。本文将主要讲运动一致性检测。 本文介绍 SLAM 动态场景下的运动一致性检测方法，分别梳理基于聚类残差的非参数统计模型、基于 IMU 与视觉重投影残差的冲突判断，以及基于光流的动态区域检测等几类论文方法，用于分离动态物体与静态背景。 动静分离，方能求得位姿真值 运动一致性判断 基于聚类将图片分割之后获得的区域需要判断其运动一致性以分离动态物体和静态背景。 目的：对图片中各部分进行运动一致性判断以分离出目标和背景。 下面介绍各个论文中的判断方法 Nonparametric Statistical and Clustering Based RGB-D Dense Visual Odometry in a Dynamic Environment 该论文将RGB图片与深度图结合后进行k均值聚类以实现图片分割 过程： 进行k-means聚类 计算每一个簇的残差 根据计算出的残差建立非参数统计模型 聚类的好处有两点： 能够将非刚体场景表示基于聚类的刚体场景 可有效增强密集运动的分割效果，从而支持场景流估计和避障。 本文使用了一个残差模型。该模型基于一个假设： 若图片对齐，则基于静态背景的聚类将会有一个很小的残差。 光照强度残差： $$r^p_I(\xi）= I_k(W(x^p_{k-n},\xi^k_{k-n}))-I_{k-n}(x^p_{k-n})$$ 图像扭曲，Warp函数： $$W(x^p_{k-n},\xi^k_{k-n})=\pi(T^k_{k-n}\pi^{-1}(x^p_{k-n},Z_{k-n}(x^p_{k-n})))$$ 第i个聚类的残差计算方法如下所示： $$\delta^{k,i}_{k-n}=\cfrac{\sum^{S_i-O_i}_{p=1}\alpha_Ir^p_I+r^P_Z/\hat Z_i}{S_i-O_i}$$ 其中，$S_i$是第i类的像素大小。$O_i$是第i类遮挡的区域大小。 $\hat Z_i$是第i类的平均深度，$\alpha_I$是平衡深度和广度的权重。 $$r_Z^P(\Chi)=Z_k(W(x^p_{k-n},\Chi^k_{k-n}))-|T^k_{k-n}|_Z$$ 非参数统计模型 该模型的用途是为了你和实际实验残差的直方图，为每个聚类提供权重以估计相机运动 静态背景部分的运动始终与相机运动具有双重关系。因此，静态簇的残差通常会很小或接近零，因为它们会完美对齐，而这些动态簇的残差通常是较大的值，由于动态对象的独立运动，它们的值会很明显的偏移于零。 对于不同的场景，残差分布并不总是相同的。应该探索聚类残差的分布特征。图 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>粒子滤波器</title>
+      <link href="/2020/03/14/2020-03-15-Particle_Filter/"/>
+      <url>/2020/03/14/2020-03-15-Particle_Filter/</url>
+      
+        <content type="html"><![CDATA[粒子滤波（Particle Filter）通过一组带权重的随机粒子近似状态的后验分布，适用于非线性非高斯系统的状态估计，是 EKF 之外的另一大类滤波方法。 以粒子之众，逼近状态之真 为什么需要粒子滤波 卡尔曼滤波（KF）在线性高斯假设下能得到解析的最优解，扩展卡尔曼滤波（EKF）通过一阶泰勒展开将非线性问题局部线性化。但现实中许多系统的运动模型与观测模型是强非线性的，噪声也往往不服从高斯分布，此时线性化会产生较大误差，甚至导致滤波器发散。 粒子滤波的思路是：既然无法用解析表达式描述后验分布，就用 一组带权重的随机样本（粒子） 来近似它。只要粒子足够多，采样近似就可以任意逼近真实的后验分布。 贝叶斯滤波框架 状态估计可以统一在贝叶斯滤波框架下。设系统状态为 $x_k$，观测为 $z_k$，则递推估计分为两步： 预测 ：利用运动模型 $p(x_k|x_{k-1})$ 由上一时刻的后验 $p(x_{k-1}|z_{1:k-1})$ 推得先验： $$p(x_k|z_{1:k-1}) = \int p(x_k|x_{k-1}) p(x_{k-1}|z_{1:k-1}) dx_{k-1}$$ 更新 ：利用观测模型 $p(z_k|x_k)$ 修正先验得到后验： $$p(x_k|z_{1:k}) \propto p(z_k|x_k) p(x_k|z_{1:k-1})$$ KF 在特定假设下有闭式解，而粒子滤波用数值采样的方式同时处理预测与更新两步。 重要性采样与序贯重要性采样（SIS） 直接从后验 $p(x_k|z_{1:k})$ 采样通常是困难的。重要性采样引入一个容易采样的 建议分布 $q(x)$，用粒子及其权重近似后验： $$w_k^{(i)} \propto \frac{p(x_k^{(i)}|z_{1:k})}{q(x_k^{(i)})}$$ 结合递推结构，可导出序贯重要性采样（Sequential Importance Sampling, SIS）的权重递推公式： $$w_k^{(i)} \propto w_{k-1}^{(i)} \frac{p(z_k|x_k^{(i)}) p(x_k^{(i)}|x_{k-1}^{(i)})}{q(x_k^{(i)}|x_{k-1}^{(i)}, z_k)}$$ 即每来一个新观测，只需利用运动模型与观测模型更新粒子权重，而无需重新采样所有历史粒子。 粒子退化与重采样 SIS 存在一个严重问题—— 粒子退化 ：经过若干次递推后，大部分粒子的权重趋近于 0，只剩少数粒子携带有效信息，浪费大量计算资源。 衡量退化程度的指标是有效粒子数 $N_{eff} = 1 / \sum_i (w^{(i)})^2$。当 $N_{eff}$ 低于阈值时，需要进行 重采样 ：按照权重大小从旧粒子集中重新抽取 $N$ 个粒子，权重大的粒子被复制、 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 滤波 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>高斯混合模型</title>
+      <link href="/2020/03/13/2020-03-14-GMM/"/>
+      <url>/2020/03/13/2020-03-14-GMM/</url>
+      
+        <content type="html"><![CDATA[高斯混合模型 本文学习高斯混合模型（GMM）：先给出由多个高斯分模型线性组合的概率分布定义与模型形式，再推导用 EM 算法估计模型参数的 E 步（求各分模型对观测数据的响应度）与 M 步（更新参数），最后介绍 GMM-HMM 及其在语音识别中的应用。 简单分布叠加，拟合复杂世界 高斯混合模型 概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类： 第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）； 第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork） 定义 高斯混合模型是指具有如下形式的概率分布模型。 $$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$ 其中，$\alpha_k$是系数，$\alpha_k\geq0$,$\sum^K_{k=1}\alpha_k=1$;$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\delta^2_k)$; $$\phi(y|\theta_k)=\cfrac{1}{\sqrt{2\pi}\delta^2}exp(-\cfrac{(y-\mu_k)^2}{2\delta^2_k})$$ 称为第k个分模型。 一般混合模型可以由任意概率分布密度代替上式的高斯分布密度。 高斯混合模型参数估计的EM算法 概率模型有时既含有观测变量（ observable variable），又含有隐变量或潜在变量（ latent variable）.如果概率模型的变量都是观测变量，那么给定数据，可以直接用极大似然估计法，或贝叶斯估计法估计模型参数。但是，当模型含有隐变量时，就不能简单地使用这些估计方法。EM算法就是含有隐变量的概率模型参数的极大似然估计法，或极大后验概率估计法。我们仅讨论极大似然估计，极大后验概率估计与其类似。 假设观测数据$y_1,y_2,...,y_N$由高斯混合模型生成， $$P(y|\theta)=\sum^K_{k=1}\alpha_k\phi(y|\theta_k)$$ 其中，$\theta=(\alpha_1,\alpha_2,...,\alpha_k;\theta_1,\theta_2,\theta_k)$。我们用EM算法估计高斯混合模型的参数$\theta$。 EM（期望最大化）算法 输入：观测数据$y_1,y_2,...,y_N$，高斯混合模型； 输出：高斯混合模型参数。 取参数的初始值开始迭代 求E步， …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概率图 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>概率图模型</title>
+      <link href="/2020/03/13/2020-03-14-Probability_graph_model/"/>
+      <url>/2020/03/13/2020-03-14-Probability_graph_model/</url>
+      
+        <content type="html"><![CDATA[概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类：第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）；第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork） 本节将用来介绍概率图模型。 本文介绍概率图模型的基础知识：以结点表示随机变量、边表示变量间关系的核心思想，有向图（贝叶斯网）与无向图（马尔可夫网）两类模型的区别，条件独立性在降低计算复杂度中的作用，以及因子分解、道德图与因子图等关键概念。 用图言变量，依赖一目了然 概率图模型 概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”. 分类 根据边的性质不同，概率图模型可大致分为两类： 第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）； 第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markovnetwork）； 前提背景 利用条件独立性可以降低概率模型的计算复杂度； 条件独立性要在图的结构上有所映射； 图的构建方法 拓扑排序; 根据拓扑排序构建的概率图能够得到联合概率的因子分解式； 性质： 如果父节点被观测，则其子节点独立； 因子图 有向图：$P(x)=\Pi(x_i|x_{pa_i})$ 无向图：$P(x)=\cfrac{1}{Z}\Pi^k_{i=1}\phi_{c_i}(x_{c_i})$ 道德图：有向图 → 无向图 出发点： 引入环 简便 因子图把因子引入图里边。]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概率图 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>隐马尔可夫模型</title>
+      <link href="/2020/03/12/2020-03-13-HMM_model/"/>
+      <url>/2020/03/12/2020-03-13-HMM_model/</url>
+      
+        <content type="html"><![CDATA[隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态的序列，再由各个状态随机生成一个观测而产生观测的序列的过程。 隐马尔可夫模型是可用于标注问题的统计学习模型，描述有隐藏的马尔科夫链随机生成观测序列的过程，属于生成模型。本文将学习隐马尔可夫模型，着重介绍掌握HMM的模型、应用、及理论推导过程。 来源：李航的《统计学习方法》 本文依据李航《统计学习方法》系统学习隐马尔可夫模型：阐述 HMM 的三要素定义、两个基本假设与观测序列生成过程，推导直接计算法与前向-后向算法的概率计算、Baum-Welch 学习算法和维特比预测算法，并介绍其在语音识别、自然语言处理与词性标注中的应用。 看不见的状态，可观测的序列 基本概念 隐马尔可夫模型是关于时序的概率模型，描述了由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再有各个状态生成一个观测而产生随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列成为状态序列；每个状态生成一个观测得到的观测随机序列成为观测序列。序列得每一个位置都可以看作是一个时刻。 背景 机器学习中的步骤优化： 确定模型 确定策略 即准则（损失函数） 算法：GN 概率图模型 概率图模型（ probabilistic graphical model）是一类用图来表达变量相关关系的概率模型。它以图为表示工具，最常见的是用一个结点表示一个或一组随机变量，结点之间的边表示变量间的概率相关关系，即“变量关系图”.根据边的性质不同，概率图模型可大致分为两类： 第一类是使用有向无环图表示变量间的依赖关系，称为有向图模型或贝叶斯网（ Bayesian network）； 第二类是使用无向图表示变量间的相关关系，称为无向图模型或马尔可夫网（ Markov network）; 概率图模型可以分为有向图(贝叶斯网络)、无向图（马尔可夫随机场）； 概率图模型+时间序列&#x3D;动态模型； 动态模型主要有：HMM、卡尔曼滤波器、粒子滤波器； HMM：系统状态离散 Kalman滤波器：系统状态连续且线性分布 Particle滤波器：系统状态连续且非线性分布 HMM定义 ​隐马尔可夫模型由初始概率分布、状态转移概率分布以及观测概率分布确定。形式定义如下： 设Q是所有可能的状态集合，V是所有可能的观测的集合。 $$Q = \{q_1,q_2,...,q_N\},V=\{v_1,v_2,...v_M\}$$ 其中，N是可能的状态数，M是可能的观测数。 I是长度为T的状态序列，O是对应的观测序列 $$I=\{i_1,i_2,...,i_N\},O=\{v_1,v_2,...,v_M\}$$ A是状态转移概率矩阵： $$A=[a_ij]_{N\times N}$$ 其中， $$a_{ij}=P(i_{t+1}=i_t|q_j),i=1,2,..N;j=1 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概率图 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Kalman 滤波器学习</title>
+      <link href="/2020/03/12/2020-03-13-Kalman_Filter/"/>
+      <url>/2020/03/12/2020-03-13-Kalman_Filter/</url>
+      
+        <content type="html"><![CDATA[概率图+时间&#x3D;动态系统 ​对概率图模型考虑其时间序列，可以得到动态系统。根据动态系统的隐状态的连续性和分布可以把系统大致分为三类： 若隐状态离散，不要求分布，则为隐马尔可夫模型 如果隐状态连续、线性且服从高斯分布，则为Kalman滤波器（线性高斯模型） 如果隐状态连续且非线性，作为得到粒子滤波器 本节主要来介绍kalman滤波器。 本文系统学习卡尔曼滤波器：从动态系统分类引出线性高斯系统，给出 KF 的前提假设与算法流程，并结合代码样例与基于后验概率的推导加深理解，最后介绍扩展卡尔曼滤波（EKF）的应用场景与局限性及其与 HMM 的关系。 预测加修正，噪声终让路 Kalman滤波器 简述 卡尔曼滤波器是由Swerling（1958）和Kalman（1960）作为线性高斯系统中的预测和滤波技术而发明的，使用矩来定义的。KF实现了对连续状态的置信度计算。KF用矩参数来表示置信度：在时刻k，置信度用均值$ \mu_k $（一阶矩）和方差$ \sum _{k-1} $（二阶矩）表达。 卡尔曼滤波建立在线性代数和隐马尔可夫模型上。其基本动态系统可以用一个马尔可夫链来表示，该马尔可夫链建立在一个线性高斯系统上。系统的状态可以用一个元素为实数的向量表示。随着离散时间的每一个增加，这个线性算子就会作用在当前状态上，产生一个新的状态，并也会带入一些噪声，同时系统的一些已知的控制器的控制信息也会被加入。同时，另一个受噪声干扰的线性算子产生出这些隐含状态的可见输出。 使后验为高斯分布的前提，同时也是KF的特性： （1）状态转移必须是带有随机高斯噪声的参数的线性函数。 （2）测量也与带有高斯噪声的自变量呈线性关系。 （3）初始置信度必须是正态分布的。 这三个假设足以确保后验在任何时刻 t 总符合高斯分布。 根据线性高斯系统可以得到 卡尔曼滤波器 。 卡尔曼滤波器的状态由以下两个变量表示： $\hat{x}_k$，在时刻k的状态的估计； $\Sigma_{k}$，后验估计误差协方差矩阵，度量估计值的精确程度。 线性高斯系统 线性高斯系统是说，运动方程和观测方程可以由线性方程来描述： $$\begin{cases}x_k=A_kx_{k-1}+u_k+w_k \quad k=1,...,N\\z_k=C_kx_k+v_k\end{cases}$$ 系统模型 $$x_k=A_kx_{k-1}+u_k+w_k \quad k=1,...,N$$ 其中,$A_k$是作用在$x_{k-1}$的状态变换模型（矩阵/矢量）。 $w_k$是过程噪声,满足$w_k\sim N(0,Q)$ 观测模型 $$z_k = C_kx_k+v_k$$ 其中$C_k$是观测模型，能把真实状态空间映射成观测空间。并假设了所有的状态和噪声均满足高斯分布。 $v_k$观测噪声服从零均值高斯分布：即$.v_k\s …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 滤波 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>经典聚类算法调研</title>
+      <link href="/2020/03/11/2020-03-12-Clustering_Survey/"/>
+      <url>/2020/03/11/2020-03-12-Clustering_Survey/</url>
+      
+        <content type="html"><![CDATA[本文将盘点六个经典的聚类算法，以便于后续研究。经典的聚类算法主要包括以下六种： Means-shift聚类 k-means聚类 Fuzzy C means聚类 Medoid shift算法 Turbopixel算法 SLIC算法 本文盘点六个经典聚类算法：均值漂移（Means-shift）、k-means、模糊 C 均值、Medoid shift、Turbo Pixel 与 SLIC，逐一介绍各算法的核心思想、实现步骤与优缺点，为后续图像分割等研究做算法选型准备。 物以类聚，算法以分见真章 Means-shift聚类（均值漂移） 核心思想 均值漂移聚类是基于滑动窗口的算法，用来寻找到数据最密集的区域。这是一个基于质心的算法，通过将中心点的候选点更新为滑动窗口内点的均值来完成，来定位每个组/类的中心点。 然后对这些候选窗口进行相似窗口进行去除，最终形成中心点集及相应的分组。 算法步骤 确定滑动窗口半径r，以随机选取的中心点C半径为r的圆形滑动窗口开始滑动。均值漂移类似一种爬山算法，在每一次迭代中向密度更高的区域移动，直到收敛。 每一次滑动到新的区域，计算滑动窗口内的均值来作为中心点，滑动窗口内的点的数量为窗口内的密度。在每一次移动中，窗口会想密度更高的区域移动。 移动窗口，计算窗口内的中心点以及窗口内的密度，知道没有方向在窗口内可以容纳更多的点，即一直移动到圆内密度不再增加为止。 步骤一到三会产生很多个滑动窗口，当多个滑动窗口重叠时，保留包含最多点的窗口，然后根据数据点所在的滑动窗口进行聚类。 下图演示了均值漂移聚类的计算步骤： 算法评价 优点：1.稳定性和鲁棒性较好，基于密度的算法相比于K-Means受均值影响较小。 2.不需要选择簇的数量 缺点：1.给定的图像语义信息较少；2.进行分割时效果较差；3.时间复杂度较高，导致分割速度慢；4.图像分割块数量不可控；5.固定了窗口大小/半径 K-means聚类 核心思想 输入参数 K，将给定的 N 个数据样本点平均分成 K 个组，把输入的 K 个点作为聚类起始点。计算簇中其他采样点到 K 个起始点的欧氏距离，并对比全部采样点和收敛中心点之间的距离。通过对比最小的欧氏距离进行归类，然后经重复迭代，逐次得计算K 个簇的均值。直到聚类的性能准则函数最优 算法步骤 选择一些类/组，随机初始化各自的中心点。中心点是与每个数据点向量长度相同的位置。这需要我们提前预知类的数量(即中心点的数量)。 计算每个数据点到中心点的距离，数据点距离哪个中心点最近就划分到哪一类中。 计算每一类中中心点作为新的中心点。 重复以上步骤，直至聚类中心变化在一定范围内为止 算法评价 优点：简单快速高效；对异常值不太敏感 缺点：聚类数目 K 值是必须事先给出；不适合处理不规则形状；距离函数对结果有影响。 下图演示了k均值聚类的过程： Fuzzy C-m …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 聚类 </tag>
+            
+            <tag> 图像处理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>VINS-Fusion 代码阅读</title>
+      <link href="/2020/03/09/2020-03-10-Read-VINS-Fusion/"/>
+      <url>/2020/03/09/2020-03-10-Read-VINS-Fusion/</url>
+      
+        <content type="html"><![CDATA[本文记录 VINS-Fusion 源码阅读笔记，重点分析 vins_estimator 节点的程序入口 rosNodeTest.cpp 与 Estimator 类，梳理话题订阅、数据同步线程、滑窗处理及非线性优化等核心流程。 读懂源码，方知系统运转之妙 Loop Fusion Loop Fusion结点包括： VINS_estimator VINS_estimator是VINS_Fusion的节点，其不包含回环检测部分，该节点可以单独对相机进行位姿估计。 rosNodeTest.cpp rosNodeTest.cpp是vins_estimator节点的程序入口。主要实现以下函数。 主程序包含以下流程： 读取配置文件参数 readParameter() 订阅了四个话题，分别是imu、双目相机图像以及feature_tracker所提供的跟踪光流点，收到各个话题的消息后执行回调函数，对各个数据进行相应的处理 开启一个新线程sync_process。 该线程的作用：若图像buffer里面有数据,读入数据并且添加到estimator中。利用图片携带的时间戳信息能够检测两图片是否同步，若两图片的时间戳差距在一定范围内，则添加到estimator中中，否则丢弃两帧图片。 estimator VIO系统的整个程序从Estimator estimator开启。 estimator类的定义由estimator.h和estimator.cpp两个文件完成。 包含以下重要的自定义成员： 成员 功能 Feature_Tracker featureTracker FeatureManager f_manager estimator类中包含两类成员函数： 接口函数 包括以下8个函数： 函数 功能 initFirstPose() 初始化初始位姿 inputIMU() 输入IMU数据 inputImage() 输入图片数据 inputFeature() 输入特征 ProcessIMU() 处理IMU数据，对IMU进行预积分； ProcessImage() 处理相机数据； 1. 基于特征点的视差来判断当前帧是否属于关键帧； 2. 判断相机到IMU的外参是否有校正，若无则用手眼标定法进行标定,具体在CalibrationExRotation里，此处只标定旋转矩阵，未标定平移矩阵，原因是系统对旋转矩阵较敏感，系统易因为小幅度的角度偏差而崩溃； 3. 判断是否有进行初始化;若已完成初始化，则调用optimization( )，用ceres_solver对滑窗进行非线性优化的求解，优化项主要有四项：边缘化残差、 imu残差、相机重投影残差以及相机与Imu间同步时间差的残差项。否则进行相应的初始化过程。 4. 本函数中包含一个failureDetection()函数,用于判断系统在一定条件下是否崩溃， …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> VIO </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>回环检测与 DBoW2 库</title>
+      <link href="/2020/03/09/2020-03-10-Use_DBoW2_to_Loop_Detection/"/>
+      <url>/2020/03/09/2020-03-10-Use_DBoW2_to_Loop_Detection/</url>
+      
+        <content type="html"><![CDATA[本文目的是为了更加详细的学习通用的回环检测算法 中的DBoW2库，了解其代码构成。 回环检测 DBOW2介绍 DBOW3介绍 本文介绍回环检测的基本原理与评价指标，包括准确率、召回率与 ROC 曲线。文章系统讲解 DBoW2 视觉词袋库的设计与使用：层次树构建视觉词汇、TF-IDF 加权与评分，以及 TemplatedVocabulary、TemplatedDatabase 等核心类结构，最后对比了 DBoW3 的主要改进。 视觉词袋，让回环检测又快又准 回环的评价指标 一个回环的结果，可能有以下四种情况出现： 算法结果事实 是回环 不是回环 是回环 真阳性 假阳性 不是回环 假阴性 真阴性 回环检测算法可以输出以下结果：四种结果的数量分别为 $$准确率=N_{TP}/{N_{TP}+N_{FP}}$$ $$Recall = N_{TP}/{N_{TP}+N_{FN}}$$ 准确率描述了检测到的回环中真回环的个数。 Recall描述了真回环中有多少个被检测出来了。 根据准确率和召回率可以得到ROC曲线. ROC曲线越靠右上方越好，但是通常这两者是矛盾的。 回环检测 闭环检测算法指的是通过检测算法检测出之前访问过的场景。 如图1所示，当机器人在移动过程中，特别是在探索大面积的场景时，由于模型的不确定性以及设备的噪声，不确定性会逐渐增长。通过引入闭环检测技术，识别出历史访问过的场景以增加位姿之间的约束，可以很好的减少这种不确定性。 主要方法 一、关键帧匹配 最简单的闭环检测算法是将新检测出来的关键帧和过去所有的关键帧一一进行比较，虽然这种方法能比较好的检测出当前场景是否在之前出现过，但是在大规模场景下，机器人往往有成千上万个关键帧，这种方法检测效率及其底下，不能再实际场景中使用。 二、将特征与路标对应 通过将图像中的特征和整个地图中的路标对应起来，然后建立一个所有路标的数据库，通过使用路标分类器来加快场景识别速度。比如讲所有路标构建成一棵KD-Tree，当新添加一帧关键帧时，将关键帧在KD-Tree中进行检索，从中检索之前出现过的场景。 三、视觉词袋方法 基于视觉词袋的闭环检测方法，这种方法通过将特征描述子抽象成词汇，通过TF-IDF方法识别出现过的场景。如图2所示，是闭环检测中基于词袋模型流程图。使用视觉词袋的方法效率很高，可用在大规模地图的创建上。 DBoW2视觉词袋库 Github地址 介绍 ​DBoW2是DBow库的改进版本，DBow库是一个开放源代码的C ++库，用于根据图像建立索引，并将其转换成词袋表示。它实现了一个层次树，用于近似图像特征空间中的最近邻居并创建视觉词汇。 DBoW2还使用反向和直接文件来实现图像数据库，以索引图像并支持快速查询和功能比较。与以前的DBow库的主要区别在于： DBoW2类是模板化的，因此它可以与任何类型的描述符一起使用 …]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 回环检测 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 evo 工具评测 SLAM</title>
+      <link href="/2020/02/18/2020-02-19-How_to_use_evo/"/>
+      <url>/2020/02/18/2020-02-19-How_to_use_evo/</url>
+      
+        <content type="html"><![CDATA[evo是一款用于视觉里程计和slam问题的轨迹评估工具。核心功能是能够绘制相机的轨迹，或评估估计轨迹与真值的误差。支持多种数据集的轨迹格式（TUM、KITTI、EuRoC MAV、ROS的bag），同时支持这些数据格式之间进行相互转换。在此仅对其基本功能做简要介绍。并且介绍如何修改经典的SLAM算法以输出可使用evo评测的轨迹。 github地址 本文介绍 SLAM 轨迹评估工具 evo 的安装与基本用法，说明 evo_ape、evo_rpe、evo_traj、evo_res 等命令的作用与参数，并以 EuRoC、TUM 数据为例演示轨迹绘制与误差对比，同时讲解如何修改 VINS-Mono 源码输出符合 TUM 格式的轨迹文件。 轨迹评估有据，SLAM 精度了然 安装 使用pypi直接安装： pip install evo --upgrade --no-binary evo 本地编译安装 pip install --editable . --upgrade --no-binary evo 安装完毕后，在命令行输入evo，若显示了相关信息，则表明安装成功。若提示”command not found”也不用惊慌，很多人遇到这种问题，重启电脑即可找到evo相应指令。 使用 指标 evo_ape - absolute pose error - 绝对误差计算绝对位姿误差(absolute pose error)，用于整体评估整条轨迹的全局一致性； evo_rpe：计算相对位姿误差(relative pose error)，用于评价轨迹局部的准确性。 evo_rpe - relative pose error - 相对误差 （相对误差&#x3D;绝对误差/真值） 工具命令 evo_traj - tool for analyzing, plotting or exporting one or more trajectories 对轨迹进行分析、画图 evo_res - tool for comparing one or multiple result files from evo_ape or evo_rpe 对比多个结果 evo_fig - (experimental) tool for re-opening serialized plots (saved with --serialize_plot ) evo_config - tool for global settings and config file manipulation -设置参数 -va a 对齐轨迹 evo绘制轨迹的指令为：evo_traj，后跟必要参数有：数据的格式（tum/kitti/bag/euroc等），轨迹文件。轨迹文件可以有多个，例如： evo_traj tum traj1.txt tra …]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+            <tag> VIO </tag>
+            
+            <tag> evo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 Kalibr 标定双目相机与 IMU</title>
+      <link href="/2020/02/14/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/"/>
+      <url>/2020/02/14/2020-02-15-Calibrate_IMU_Camera_by_Kalibr/</url>
+      
+        <content type="html"><![CDATA[本文介绍如何利用Kalibr标定工具进行双目相机与IMU的联合标定。主要过程包括以下四步： 生成标定板 标定双目相机 标定IMU 联合标定 本文介绍用 Kalibr 工具完成双目相机与 IMU 联合标定的完整流程，涵盖生成 AprilTag 标定板、标定双目相机内参与 IMU 噪声参数、录制数据并联合标定，最终得到相机到 IMU 的外参，同时整理了几类环境配置报错的解决办法。 联合标定做好，视觉惯性方可融合 1. 生成标定板 使用AprilTag 1 rosrun kalibr kalibr_create_target_pdf --type apriltag --nx 6 --ny 6 --tsize 0.002 --tspace 0.3 2. 标定双目相机 降低帧率 1 2 rosrun topic_tools throttle messages /l_cam/image_raw 4 /left rosrun topic_tools throttle messages /r_cam/image_raw 4 /right 1 advertised as /left //出现时说明将帧成功 录制bag包 1 rosbag record /left /right &gt;mycamera.bag 遇到的错误 ImportError: cannot import name NavigationToolbar2Wx 1 2 /home/cjn/kalibr/src/kalibr/Schweizer-Messer/sm_python/python/sm/PlotCollection.py 解决：将 PlotCollection.py 中的NavigationToolbar2Wx 改为 NavigationToolbar2WxAgg ImportError: No module named igraph 1 sudo apt-get install python2.7-igraph kalibr标定时出现：ImportError: No module named Image. 解决方法： 在kalibr_workspace/aslam_offline_calibration/kalibr/python/kalibr_camera_calibration/MulticamGraph.py中 将import Image改为from PIL import Image 1 rosrun kalibr kalibr_calibrate_cameras --bag &#x27;/home/guoben/stereocam.bag&#x27; --topics /left /right --models pinhole-radtan pinhole-radtan --target & …]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> IMU </tag>
+            
+            <tag> 相机标定 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>发布 IMU 信息到 ROS 系统</title>
+      <link href="/2020/02/14/2020-02-15-Pub_IMU_Message_To_ROS/"/>
+      <url>/2020/02/14/2020-02-15-Pub_IMU_Message_To_ROS/</url>
+      
+        <content type="html"><![CDATA[以下记录是在调试树莓派3b中得到的经验 ​本文记录调试树莓派3b中得到的经验，如何把IMU信息发布到ROS系统中。 本文记录在树莓派 3B 上把 IMU 信息发布到 ROS 系统的调试经验，先介绍 sensor_msgs/Imu 消息结构，再整理 WiringPi 安装、I2C 使能、创建 ROS 包等常见问题及解决办法。 消息结构清晰，数据方可流动 发布IMU信息到ROS sensor_msgs/Imu.msg 1 2 3 4 5 6 7 8 9 10 Header header geometry_msgs/Quaternion orientation float64[9] orientation_covariance # Row major about x, y, z axes geometry_msgs/Vector3 angular_velocity float64[9] angular_velocity_covariance # Row major about x, y, z axes geometry_msgs/Vector3 linear_acceleration float64[9] linear_acceleration_covariance # Row major x, y z 其中，文档描述了Imu的消息结构，其中姿态（orientation）类型为四元数（geometry_msgs/Quaternion）；角速度（angular_velocity）和线加速度（linear_acceleration）的类型为三维向量（geometry_msgs/Vector3）。 遇到的一些问题 WiringPi未安装 1 2 3 4 git clone WiringPi cd WiringPi sudo chmod 771 ./build sudo ./build I2C device 1 sudo raspi-config 创建ros包 1 catkin_create_pkg beginner_tutorials std_msgs rospy roscpp 然后修改XML和CMakeLists.txt]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> IMU </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ubuntu 连接蓝牙鼠标</title>
+      <link href="/2020/02/14/2020-02-15-UbuntuBluetooth/"/>
+      <url>/2020/02/14/2020-02-15-UbuntuBluetooth/</url>
+      
+        <content type="html"><![CDATA[本文介绍在 Ubuntu 16.04 上通过命令行连接蓝牙鼠标的完整流程，包括删除旧配对记录、重启蓝牙、扫描配对与信任设备等步骤，并给出连接成功后核对配对信息文件的排查经验。 命令行之下，蓝牙设备亦可驯服 $ sudo -i 1 2 3 4 5 6 7 8 9 [bluetooth]# power off [bluetooth]# power on [bluetooth]# scan on [bluetooth]# connect XX:XX:XX:XX:XX:XX [Arc Touch Mouse SE]# trust [Arc Touch Mouse SE]# pair [Arc Touch Mouse SE]# unblock [Arc Touch Mouse SE]# power off [bluetooth]# power on 注意先从系统设置的蓝牙里，把之前配对的设备删掉，我还把 /var/lib/bluetooth/…./XX:XX:XX:XX:XX 的老的配对文件也给删了。 重新配对后，info 文件里的内容比1楼里的内容多了 ConnectionParameters、IdentityResolvingKey、LocalSignatureKey、LongTermKey 等好几段数据]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Ubuntu </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>VIO 主流框架</title>
+      <link href="/2020/02/14/2020-02-15-VIO_Framework/"/>
+      <url>/2020/02/14/2020-02-15-VIO_Framework/</url>
+      
+        <content type="html"><![CDATA[本节主要说明当前主流的VIO算法流程。课程来源于 B站 。 需要理解约束关系的确定，以及确立相应约束的三个要素 本文梳理主流 VIO 算法的完整框架，先介绍 BA 优化与因子图中视觉、IMU 约束的建模，以及 IMU 预积分的作用。随后逐一解析 MSCKF、ROVIO、VI-ORB、ICE-BA 与 VINS 等紧耦合与松耦合方案的流程、状态向量与创新点。 视觉惯性融合，约束决定精度 Bundle Adjustment 定义：通过优化相机位姿和特征点的空间位置，使得每条光束都能打到光心； 作用：BA是SLAM后端的核心，SLAM其实就是一个BA问题，理解BA对于分析现有问题和建模新问题等都很有帮助；但是理解BA并不表示SLAM效果就好，SLAM最终结果的好坏很大取决于数据关联的好坏； 核心 ：误差项、优化变量、协方差 难点：李群、李代数、四元数的Jacobian，一通则百通，也可借鉴g2o写好的点和边，但要注意坐标系转换关系。 SLAM问题的整体求解思路 前置知识 高斯牛顿法 目标函数： $$\Delta x* = \arg\min_x||e(x+\Delta x||^2_P\\=\min_x e(x+|\Delta x)^TP^{-1} e(x+\Delta x)$$ 误差项: $$e(x+\Delta x)=e(x)+J(x)\Delta x$$ 令目标函数关于$\Delta x$的导数为0，得到高斯 牛顿方程，即增量方程： $$J^T P^{-1}\Delta x = -J^TP^{-1}e$$ 误差项设置 一次观测 其Jacobian矩阵如下： 得到相应的Hession矩阵如下所示： 多次观测 逆深度+VIO 举例，其中一个T1T1的小块的数学形式如下所示： 因子图 因子图中方块表示因子，圆圈表示优化变量。一个因子表示一个约束，即表示一个误差项，与之相连的圆圈是与该误差项相关的优化变量。 视觉约束 IMU约束 EKF滤波和优化 EKF铝箔相当于之迭代一次的优化，区别是滤波仅考虑上一帧的影响，而优化则考虑所有帧的影响 多次优化精度比滤波高，但效率低于滤波，因优化可以迭代多次，不断优化线性化点，是误差最小 IMU预积分 积分下一个时刻的PVQ作为视觉初始值 预计分相邻帧的PVQ变化量，作为IMU的约束 计算IMU误差的协方差和jacobian VIO分类 将视觉约束就加到联合优化是紧耦合 将视觉约束后的位姿加入到联合优化是松耦合 MSCKF 具体流程如下所示: 初始化 IMU预测 视觉跟踪 视觉增广 视觉更新—选老点或者看不见的点 视觉更新—边缘化 剔除老帧 误差状态向量 $$\hat{X_k}^{(15+6N)\times1} = [\hat{X_{IMU_k}} \delta \theta_{C_1} \ce{G}\hat{p}_{C_1} …\ce …]]></content>
+      
+      
+      <categories>
+          
+          <category> SLAM </category>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> VIO </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用 ROS 工具标定相机</title>
+      <link href="/2020/02/14/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/"/>
+      <url>/2020/02/14/2020-02-15-%E4%BD%BF%E7%94%A8ROS%E5%B7%A5%E5%85%B7%E6%A0%87%E5%AE%9AUSB%E7%9B%B8%E6%9C%BA/</url>
+      
+        <content type="html"><![CDATA[本文讲解利用ROS框架下的工具标定USB相机的过程。 本文讲解利用 ROS 中 camera_calibration 工具标定 USB 相机的具体流程，包括驱动摄像头、执行标定命令，并解释标定结果中相机内参矩阵、畸变系数等参数的含义。 标定相机参数，方能还原真实世界 利用 camera_calibration 标定相机流程 驱动USB摄像头 利用camera_calibration标定相机 执行命令为： 1 rosrun camera_calibration cameracalibrator.py --approximate 0.1 --size 9x6 --square 0.03 right:=/r_cam/image_raw left:=/l_cam/image_raw right_camera:=/r_cam left_camera:=/l_cam 参数 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 image_width: 320 image_height: 240 camera_matrix: rows: 3 cols: 3 data: [247.284755, 0.000000, 160.857882, 0.000000, 246.200449, 111.816057, 0.000000, 0.000000, 1.000000] distortion_coefficients: rows: 1 cols: 5 data: [-0.405110, 0.167545, -0.000400, -0.002129, 0.000000] rectification_matrix: rows: 3 cols: 3 data: [0.999530, -0.021547, 0.021827, 0.021830, 0.999680, -0.012768, -0.021545, 0.013239, 0.999680] projection_matrix: rows: 3 cols: 4 data: [227.343911, 0.000000, 160.318575, 0.000000, 0.000000, 227.343911, 109.066130, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000] 内参矩阵A：(cx,cy)为主光轴点,一般为图像的中心；fx和fy为焦距 畸变参数向量：[k1,k2,p1,p2] 1 2 3 4 5 6 7 camera matrix = [fx 0.0 cx 0.0 fy cy 0.0 0.0 1.0]]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ROS </tag>
+            
+            <tag> 相机标定 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SLAM 各算法运行方法与过程</title>
+      <link href="/2020/01/14/2020-01-15-SLAM_Alg_Indirect/"/>
+      <url>/2020/01/14/2020-01-15-SLAM_Alg_Indirect/</url>
+      
+        <content type="html"><![CDATA[本文介绍本人在实践过程中遇到的各个间接法的运行和配置过程。 主要包括以下五种算法: VINS_mono/fusion OKVIS ROVIO VI_ORB-SLAM MSCKF 本文介绍 VINS_mono/fusion、OKVIS、ROVIO、VI_ORB-SLAM 与 MSCKF 五种间接法 SLAM 算法的运行与配置过程，涵盖编译注意事项、启动命令、roslaunch 用法及输出轨迹等代码修改要点。 跑通五种算法，间接法体系尽收眼底 VINS_mono OKVIS Run OKVIS 可能需要加入std::ftream Opencv需要3.4.2或以下版本，需要opencvv模块 Opencv3.4.7没有这个模块 ROVIO 可参考： 该博客 1 catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON 运行ROVIO 1 2 $ source devel/setup.bash $ roslaunch rovio rovio_node.launch 修改代码以输出路径 在发送IMU数据下边添加输出到文件的代码 1 2 3 4 5 6 7 8 9 10 11 //把数据写到文档里 std::ofstream vio_result_file("/home/guoben/Documents/output/vio_result.csv", ios::app); vio_result_file &lt;&lt; ros::Time(mpFilter_-&gt;safe_.t_) &lt;&lt; " " &lt;&lt; imuOutput_.WrWB()(0) &lt;&lt; " " &lt;&lt; imuOutput_.WrWB()(1) &lt;&lt; " " &lt;&lt; imuOutput_.WrWB()(2) &lt;&lt; " " &lt;&lt; imuOutput_.qBW().x() &lt;&lt; " " &lt;&lt; imuOutput_.qBW().y()&lt;&lt; " " &lt;&lt; imuOutput_.qBW().z() &lt;&lt; " " &lt;&lt; -imuOutput_.qBW().w() &lt;&lt; std::endl; vio_result_file.close(); VI-ORB_SLAM LearnVIORB 的代码地址 代码运行方法 轨迹生成 输出位置位于 System.cc MSCKF 运行方法 1 2 3 roslaunch msckf_vio msckf_vio_euroc.launch rosrun rviz rviz -d ~/Project/msckf_vio_w …]]></content>
+      
+      
+      <categories>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SLAM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Markdown 语法简介</title>
+      <link href="/2020/01/14/2020-01-15-chinese-markdown-cheatsheet/"/>
+      <url>/2020/01/14/2020-01-15-chinese-markdown-cheatsheet/</url>
+      
+        <content type="html"><![CDATA[本文是一份 Markdown 语法速查手册，覆盖标题、引用、列表、代码块、链接、图片、强调与转义等常用语法，逐项给出书写格式与显示效果的对照示例。 语法记于心中，排版自然信手拈来 分段与分行 以一个或多个空行来隔开段落；以两个或多个空格来段内换行。 标题 1 2 3 4 5 6 7 8 9 10 11 12 This is an H1 ============= This is an H2 ------------- # This is an H1 ## This is an H2 ###### This is an H6 引用 在每一行前面写一个 &gt; ： 1 2 3 4 5 6 7 &gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, &gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. &gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. &gt; &gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse &gt; id sem consectetuer libero luctus adipiscing. 效果： This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse id sem consectetuer libero luctus adipiscing. 或者在每一段前面写一个 &gt; ： 1 2 3 4 5 6 7 &gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla …]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> markdown </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
